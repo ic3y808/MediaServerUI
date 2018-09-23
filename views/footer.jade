@@ -1,0 +1,52 @@
+footer.footer.bg-dark
+    .progress-bar.progress-bar-striped.progress-bar-animated.track-progress(role='progressbar', aria-valuenow='75', aria-valuemin='0', aria-valuemax='100')
+
+    .appfooter
+        .nowPlayingBar
+            .nowPlayingBarTop
+                .nowPlayingBarPositionContainer.sliderContainer.mdl-slider-container
+                    input.slider-medium-thumb.nowPlayingBarPositionSlider.mdl-slider.mdl-js-slider.mdl-slider-hoverthumb(type='range', is='emby-slider', pin='', step='.01', min='0', max='100', value='0', data-embyslider='true')
+                    .mdl-slider-background-flex
+                    .mdl-slider-background-flex-inner
+                        .mdl-slider-background-upper(style='left: 0%; width: 100%;')
+                        .mdl-slider-background-lower(style='width: 56.57%;')
+                    .sliderBubble.hide(style='left: 51.6299%;')
+                    h1.sliderBubbleText 0:30
+                .nowPlayingBarInfoContainer
+                    .nowPlayingImage(style='background-image: url("");')
+                    .nowPlayingBarText
+                    div
+                        button.btn.btn-dark.itemAction.textActionButton(data-id='673ab0193fa923d0c6e768387ad5d2d8', data-serverid='9460a6700a41412f99a36444d35a2227', data-type='MusicAlbum', data-mediatype='undefined', data-channelid='undefined', data-isfolder='true', type='button', data-action='link') Eminem - Conscience - 12 - 5 Star Generals
+                    .nowPlayingBarSecondaryText
+                        button.itemAction.textActionButton(data-id='8cd2cd42d793f651a0ef7ad495ebf565', data-serverid='9460a6700a41412f99a36444d35a2227', data-type='MusicArtist', data-mediatype='undefined', data-channelid='undefined', data-isfolder='true', type='button', data-action='link') 5 Star Generals
+                .nowPlayingBarCenter
+                    button.previousTrackButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon.fa.fa-step-backward 
+                    button.playPauseButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon.fa.fa-pause pause
+                    button.stopButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon.fa.fa-stop stop
+                    button.nextTrackButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon.fa.fa-step-forward 
+                    
+                .nowPlayingBarRight
+                    button.muteButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon 
+                    .sliderContainer.nowPlayingBarVolumeSliderContainer.mdl-slider-container(style='width:100px;vertical-align:middle;display:inline-flex;')
+                    input.slider-medium-thumb.nowPlayingBarVolumeSlider.mdl-slider.mdl-js-slider.mdl-slider-hoverthumb(type='range', is='emby-slider', pin='', step='1', min='0', max='100', value='0', data-embyslider='true')
+                    .mdl-slider-background-flex
+                        .mdl-slider-background-flex-inner
+                        .mdl-slider-background-upper
+                        .mdl-slider-background-lower(style='width: 100%;')
+                    .sliderBubble.hide
+                    button.toggleRepeatButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon repeat
+                    .nowPlayingBarUserDataButtons
+                    button.listItemButton.paper-icon-button-light.emby-button(is='emby-ratingbutton', type='button', data-id='5ac3527554ed92ae3fb386c724c86976', data-serverid='9460a6700a41412f99a36444d35a2227', data-itemtype='Audio', data-likes='', data-isfavorite='false', title='Favorite')
+                        i.md-icon 
+                    button.playPauseButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon pause
+                    button.remoteControlButton.mediaButton.paper-icon-button-light(is='paper-icon-button-light')
+                    i.md-icon 
+
+    
