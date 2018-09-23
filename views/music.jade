@@ -1,0 +1,10 @@
+
+table.row-border.hover.pageResize.nowrap(datatable='ng', dt-options='dtOptions')
+  thead
+    tr
+      th Artist
+      th Albums
+  tbody
+    tr(ng-repeat='artist in artists')
+      td {{ artist.name }}
+      td {{ artist.albumCount }}

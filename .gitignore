@@ -59,3 +59,9 @@ typings/
 
 # next.js build output
 .next
+
+# user data directory
+[Dd]ata/
+
+# package lock
+package-lock.json

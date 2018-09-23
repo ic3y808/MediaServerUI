@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Server",
+            "program": "${workspaceFolder}\\bin\\www",
+            "env": {
+                "DEV": "true",
+                "PORT":"3000"
+            }
+        }
+    ]
+}
