@@ -8,6 +8,8 @@ html(ng-app='subsonic')
     link(rel='stylesheet', href='/node_modules/datatables.net-dt/css/jquery.dataTables.min.css')
     link(rel='stylesheet', href='/node_modules/angular-datatables/dist/css/angular-datatables.min.css')
     link(rel='stylesheet', href='/node_modules/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.min.css')
+    link(rel='stylesheet', href='/bower_components/videogular-themes-default/videogular.min.css')
+    link(rel='stylesheet', href='/bower_components/bower-videogular-chromecast/dist/videogular-chromecast.min.css')
     link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
     link(rel='stylesheet', href='/CSS/style.css')
   body#page-top
@@ -21,20 +23,29 @@ html(ng-app='subsonic')
     
     script.
       if (typeof module === 'object') {window.module = module; module = undefined;}
+    script(src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js')
     script(src="/node_modules/jquery/dist/jquery.min.js")
     script(src="/node_modules/datatables.net/js/jquery.dataTables.min.js")
     script(src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js")
     script(src="/node_modules/jquery-easing/dist/jquery.easing.1.3.umd.min.js")
     script(src="/node_modules/@fortawesome/fontawesome-free/js/all.min.js")
     script(src="/socket.io/socket.io.js")
-    script(src="/node_modules/socket.io-stream/socket.io-stream.js")
     script(src="/node_modules/bootstrap/dist/js/bootstrap.min.js")
     script(src="/node_modules/moment/min/moment-with-locales.min.js")
     script(src="/node_modules/angular/angular.min.js")
+    script(src="/node_modules/angular-sanitize/angular-sanitize.min.js")
     script(src="/node_modules/angular-route/angular-route.min.js")
     script(src="/node_modules/angular-datatables/dist/angular-datatables.min.js")
     script(src="/node_modules/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js")
     script(src="/node_modules/angular-datatables/dist/plugins/buttons/angular-datatables.buttons.min.js")
+    script(src="/bower_components/bower-videogular-chromecast/dist/videogular-chromecast.min.js")
+    script(src="/bower_components/videogular/videogular.min.js")
+    script(src="/bower_components/videogular-buffering/vg-buffering.min.js")
+    script(src="/bower_components/videogular-controls/vg-controls.min.js")
+    script(src="/bower_components/videogular-overlay-play/vg-overlay-play.min.js")
+    script(src="/bower_components/videogular-poster/vg-poster.min.js")
+    
+
     script.
       if (window.module) module = window.module;
     script(src="/JS/dataTables.pageResize.min.js")
@@ -44,6 +55,8 @@ html(ng-app='subsonic')
     script(src="/controllers/controller.status.js")
     script(src="/controllers/controller.music.js")
     script(src="/controllers/controller.settings.js")
+    script(src="/controllers/controller.artist.js")
+    script(src="/controllers/controller.playlist.js")
     script(src="/JS/index.js")
   script.
     // Hide submenus

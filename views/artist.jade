@@ -1,0 +1,36 @@
+main(role='main')
+  section.jumbotron.text-center
+    .container
+      img#artistCoverImage
+      h1.jumbotron-heading {{artistName}}
+      p.lead.text-muted
+        | Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.
+      p
+        a.btn.btn-primary.my-2(href='#') Shuffle Play
+        a.btn.btn-secondary.my-2(href='#') Start Radio
+  .album.py-5.bg-light
+    .container
+      .row
+        .col-md-4(ng-repeat='album in albums')
+          .card.mb-4.box-shadow
+            img.card-img-top(alt='Thumbnail [100%x225]', style='height: 225px; width: 100%; display: block;', src='{{album.artUrl}}', data-holder-rendered='true')
+            .card-body
+              p.card-text
+                | {{album.name}}
+              .d-flex.justify-content-between.align-items-center
+                .btn-group
+                  button.btn.btn-sm.btn-outline-secondary(type='button') Songs: {{album.songCount}}
+                  button.btn.btn-sm.btn-outline-secondary(type='button') Plays: {{album.playCount}}
+                small.text-muted {{album.year}}  
+.container
+    .row
+    table#tracksTable.row-border.hover(datatable='ng', dt-options='dtOptions', style="min-height:500px;")
+        thead
+            th.hidden id
+            th Title
+        tbody
+            tr(ng-repeat='track in tracks')
+                td.hidden {{ track.id }}
+                td {{ track.title }}
+    
+        

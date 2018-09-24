@@ -4,28 +4,43 @@ var app = angular.module('subsonic',
         'datatables',
         'datatables.bootstrap',
         'datatables.buttons',
+        'ngSanitize',
+        'com.2fdevs.videogular',
+        'com.2fdevs.videogular.plugins.controls',
+        'com.2fdevs.videogular.plugins.overlayplay',
+        'com.2fdevs.videogular.plugins.poster',
+        'com.benjipott.videogular.plugins.chromecast',
         'factories-subsonic',
         'controllers-home',
         'controllers-settings',
         'controllers-status',
-        'controllers-music'
+        'controllers-music',
+        'controllers-artist',
+        'controllers-playlist'
     ]);
 
 app.config(['$routeProvider', '$locationProvider',
     function ($routeProvider, $locationProvider) {
-
+        $(".content").css("display", "none");
+        $(".loader").css("display", "block");
         $routeProvider.when('/', {
             templateUrl: 'template/home.jade',
             controller: 'homeController'
         }).when('/status', {
             templateUrl: 'template/status.jade',
             controller: 'statusController'
+        }).when('/playlist', {
+            templateUrl: 'template/playlist.jade',
+            controller: 'playlistController'
         }).when('/settings', {
             templateUrl: 'template/settings.jade',
             controller: 'settingsController'
         }).when('/music', {
             templateUrl: 'template/music.jade',
             controller: 'musicController'
+        }).when('/artist/:id', {
+            templateUrl: 'template/artist.jade',
+            controller: 'artistController'
         }).otherwise({
             redirectTo: '/'
         });

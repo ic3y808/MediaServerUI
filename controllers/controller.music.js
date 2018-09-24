@@ -1,7 +1,7 @@
 var controllers = angular.module('controllers-music', []);
 $(".content").css("display", "none");
 $(".loader").css("display", "block");
-controllers.controller('musicController', ['$rootScope', '$scope', 'subsonicService', 'DTOptionsBuilder', 'DTColumnBuilder', function ($rootScope, $scope, subsonicService, DTOptionsBuilder, DTColumnBuilder) {
+controllers.controller('musicController', ['$rootScope', '$scope', '$location', '$sce', 'subsonicService', 'DTOptionsBuilder', 'DTColumnBuilder', function ($rootScope, $scope, $location, $sce, subsonicService, DTOptionsBuilder, DTColumnBuilder) {
 	console.log('music-controller')
 	$scope.artists = [];
 	$scope.dtInstance = {};	
@@ -27,8 +27,28 @@ controllers.controller('musicController', ['$rootScope', '$scope', 'subsonicServ
 				$scope.getArtists(artistsCollection, function (result) {
 					$scope.artists = result;
 					$scope.$apply();
+
+					var table = $('#musicTable').DataTable();
+
+					$('#musicTable tbody').on('click', 'tr', function () {
+						var data = table.row( this ).data();
+						$location.path("/artist/" + data[0]);
+						$scope.$apply();
+					} );
+				
+					$('#musicTable tbody').on( 'click', 'tr', function () {
+						if ( $(this).hasClass('selected') ) {
+							$(this).removeClass('selected');
+						}
+						else {
+							table.$('tr.selected').removeClass('selected');
+							$(this).addClass('selected');
+						}
+					} );
 				})
 			});
+
+			
 		}
 	}
 
