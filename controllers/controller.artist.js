@@ -8,8 +8,53 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 	$scope.tracks = [];
 	$scope.artistName = '';
 
-	$scope.dtInstance = {};	
-	$scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+	var columnDefs = [
+		{ headerName: '', width: 30, suppressSizeToFit: true, checkboxSelection: true, suppressSorting: true, suppressMenu: true, pinned: true },
+		{ headerName: "Id", field: "id", width: 75, suppressSizeToFit: true },
+		{ headerName: "Title", field: "title" }
+	];
+
+	$scope.gridOptions = {
+		columnDefs: columnDefs,
+		rowData: null,
+		rowSelection: 'multiple',
+		domLayout: 'autoHeight',
+		enableColResize: true,
+		enableSorting: true,
+		enableFilter: true,
+		rowDeselection: true,
+		animateRows: true,
+		getRowNodeId: function (data) { return data.id; },
+		rowMultiSelectWithClick: true,
+		onModelUpdated: function (data) {
+			
+			var model = $scope.gridOptions.api.getModel();
+			if($scope.gridOptions.rowData != null){
+				var totalRows = $scope.gridOptions.rowData.length;
+				var processedRows = model.getRowCount();
+				$scope.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
+				console.log('onModelUpdated ' + $scope.rowCount)
+			}
+			
+		},
+		onSelectionChanged: function (data) {
+			console.log('selection changed')
+			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
+			
+			//$location.path("/artist/" + selectedRow.id.toString());
+			//$scope.$apply();
+
+			$rootScope.subsonic.streamUrl(selectedRow.id).then(function(result){
+				$rootScope.config.sources.push({
+					src: $sce.trustAsResourceUrl(result),
+					type: 'audio/mp3'
+				});
+				$rootScope.$digest();
+			});
+			
+
+		}
+	};
 
 	$scope.getArtist = function () {
 		if ($rootScope.isLoggedIn) {
@@ -35,6 +80,10 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 									console.log(song)
 									$scope.$apply();
 								});
+				
+								$scope.gridOptions.api.setRowData($scope.tracks);
+								$scope.gridOptions.api.sizeColumnsToFit();
+								$scope.$apply();
 							}									
 						})					
 					});
