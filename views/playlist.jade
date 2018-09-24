@@ -1,6 +1,6 @@
 .videogular-container
   videogular(vg-theme='config.theme.url')
-    vg-media(vg-src='config.sources', vg-chromecast='', title='test', description='a simple video cast', vg-tracks='config.tracks')
+    vg-media(vg-src='config.sources', vg-chromecast='', title='test', description='a simple video cast', vg-tracks='$root.config.tracks')
     vg-poster(vg-url='config.plugins.poster')
     vg-controls
       vg-play-pause-button

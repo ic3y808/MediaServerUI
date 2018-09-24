@@ -54,6 +54,14 @@ app.run(function ($rootScope, subsonicService) {
     $rootScope.isLoggedIn = false;
     $rootScope.activeSong = "";
     $rootScope.settings = [];
+    $rootScope.config = {
+        sources: null,
+        tracks: null,
+        theme: 'bower_components/videogular-themes-default/videogular.css',
+        plugins: {
+            poster: 'http://www.videogular.com/assets/images/videogular.png'
+        }
+    };
     $rootScope.socket = io('//' + document.location.hostname + ':' + document.location.port);
     $rootScope.socket.on('ping', function (data) {
         if (data)

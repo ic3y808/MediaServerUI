@@ -22,15 +22,8 @@ main(role='main')
                   button.btn.btn-sm.btn-outline-secondary(type='button') Songs: {{album.songCount}}
                   button.btn.btn-sm.btn-outline-secondary(type='button') Plays: {{album.playCount}}
                 small.text-muted {{album.year}}  
-.container
-    .row
-    table#tracksTable.row-border.hover(datatable='ng', dt-options='dtOptions', style="min-height:500px;")
-        thead
-            th.hidden id
-            th Title
-        tbody
-            tr(ng-repeat='track in tracks')
-                td.hidden {{ track.id }}
-                td {{ track.title }}
+div#artistsGrid.dataTable
+  .ag-theme-balham(ag-grid='gridOptions', style='height: 100%;', flex-direction="row")
+      
     
         

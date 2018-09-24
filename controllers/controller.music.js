@@ -13,14 +13,14 @@ controllers.controller('musicController', ['$rootScope', '$scope', '$location', 
 	$scope.gridOptions = {
 		columnDefs: columnDefs,
 		rowData: null,
-		rowSelection: 'multiple',
+		rowSelection: 'single',
 		enableColResize: true,
 		enableSorting: true,
 		enableFilter: true,
 		rowDeselection: true,
 		animateRows: true,
 		getRowNodeId: function (data) { return data.id; },
-		rowMultiSelectWithClick: true,
+		rowMultiSelectWithClick: false,
 		onModelUpdated: function (data) {
 			
 			var model = $scope.gridOptions.api.getModel();
@@ -34,22 +34,11 @@ controllers.controller('musicController', ['$rootScope', '$scope', '$location', 
 		},
 		onSelectionChanged: function (data) {
 			console.log('selection changed')
-			var selectedRows = $scope.gridOptions.api.getSelectedRows();
-			var selectedRowsString = ' ';
-			selectedRows.forEach(function (selectedRow, index) {
-				if (index > 5) {
-					return;
-				}
-				if (index !== 0) {
-					selectedRowsString += ', ';
-				}
-				selectedRowsString += selectedRow.name;
-			});
-
-			if (selectedRows.length >= 5) {
-				selectedRowsString += (' - and ' + (selectedRows.length - 5) + ' others');
-			}
-			console.log(' selectedRows' + selectedRowsString);
+			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
+			
+			$location.path("/artist/" + selectedRow.id.toString());
+			$scope.$apply();
+			console.log("/artist/" + selectedRow.id.toString());
 		}
 	};
 
