@@ -197,6 +197,24 @@ div.dataTables_length {
   font-size: 120%
 }
 
+.appfooter {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  bottom: 0;
+  -webkit-transition: -webkit-transform 180ms linear;
+  -o-transition: transform 180ms linear;
+  transition: transform 180ms linear;
+  contain: layout style
+}
+
+.appfooter.headroom--unpinned {
+  -webkit-transform: translateY(100%)!important;
+  transform: translateY(100%)!important
+}
+
+
 .nowPlayingBar .nowPlayingImage {
   background-position: center center;
   background-repeat: no-repeat;

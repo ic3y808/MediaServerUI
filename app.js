@@ -1,12 +1,9 @@
 var _ = require('underscore');
 var fs = require("fs");
-var moment = require('moment');
 var path = require('path');
-var logger = require('morgan');
 var express = require('express');
-
-var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var moment = require('moment');
 
 var app = express();
 var server = require('http').Server(app);
@@ -26,10 +23,8 @@ var index = require('./routes/index');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(function (req, res, next) { res.io = io; next(); });
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser())
 app.use("/node_modules/", express.static(path.join(__dirname, 'node_modules')));
 app.use("/bower_components/", express.static(path.join(__dirname, 'bower_components')));
 app.use("/CSS/", express.static(path.join(__dirname, 'CSS')));
@@ -40,12 +35,9 @@ app.use("/factories/", express.static(path.join(__dirname, 'factories')));
 /* Configure Routes. */
 app.use('/', index);
 
-app.get('/template/:name', function(req, server) {
-	var name = req.params.name;
-	console.log('looking up view ' + name)
-	  server.render(name);
-  });
-  
+app.get('/template/:name', function(req, server) {  server.render(req.params.name); });
+app.get('/artist/template/:name', function(req, server) {  server.render(req.params.name); });
+ 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
 	var err = new Error('Not Found');

@@ -1,0 +1,26 @@
+{
+  "name": "mediaserverui",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Jesse Nelson <ic3y808@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ic3y808/MediaServerUI",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bower-videogular-chromecast": "videogular-chromecast#^1.1.3",
+    "videogular": "^1.4.4",
+    "videogular-themes-default": "^1.4.4",
+    "videogular-controls": "^1.4.4",
+    "videogular-buffering": "^1.4.4",
+    "videogular-overlay-play": "^1.4.4",
+    "videogular-poster": "^1.4.4"
+  }
+}
