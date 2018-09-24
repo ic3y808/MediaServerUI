@@ -5,14 +5,16 @@ controllers.controller('statusController', ['$rootScope', '$scope', 'subsonicSer
 	console.log('status-controller')
 	
 	$scope.ping = function(){
-		var ping = subsonicService.ping();
-		if(ping){
-			ping.then(function(data) {
-				console.log('ping ' + data);
-				$scope.server = data;
-				$scope.$apply();
-			});
-		}	
+		if($rootScope.isLoggedIn){
+			var ping = subsonicService.ping();
+			if(ping){
+				ping.then(function(data) {
+					console.log('ping ' + data);
+					$scope.server = data;
+					$scope.$apply();
+				});
+			}	
+		}
 	}
 
 	$rootScope.$on('loginStatusChange', function (event, data) {
@@ -25,7 +27,8 @@ controllers.controller('statusController', ['$rootScope', '$scope', 'subsonicSer
 
 
 	$scope.$on('$destroy', function () { clearInterval($scope.refreshIntereval); });
+	$scope.ping();
+	if($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 	$(".loader").css("display", "none");
 	$(".content").css("display", "block");
-	$scope.ping();
 }]);

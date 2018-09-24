@@ -9,17 +9,19 @@ factories.factory('subsonicService', function ($http, $rootScope, $route, $windo
     if ($rootScope.settings && $rootScope.settings.subsonic_username !== undefined && $rootScope.settings.subsonic_password !== undefined) {
       if (!$rootScope.isLoggedIn) {
         console.log('logging into subsonic')
+          
         $rootScope.subsonic = new SubsonicAPI({
           https: $rootScope.settings.subsonic_use_ssl,
           ip: $rootScope.settings.subsonic_address,
           port: $rootScope.settings.subsonic_port,
           user: $rootScope.settings.subsonic_username,
-          password: $rootScope.settings.subsonic_password,
+          password: CryptoJS.AES.decrypt($rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8),
           appName: 'Test',
           md5Auth: true
         });
 
         document.addEventListener('subsonicApi-ready', event => {
+          console.log(event.detail.status);
           if (event.detail.status === 'ok') {
             console.log('connected to subsonic')
             $rootScope.isLoggingIn = false;
@@ -34,8 +36,7 @@ factories.factory('subsonicService', function ($http, $rootScope, $route, $windo
       }
     }
   }
-
-
+  
   return {
     login: doLogin,
     ping: function () {

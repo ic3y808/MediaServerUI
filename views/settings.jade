@@ -1,17 +1,17 @@
 form
   .form-group
     label(for='subsonicAddress') Address
-    input#subsonicAddress.form-control(type='text', placeholder='Subsonic Server Address', ng-model='$root.settings.subsonic_address')
+    input#subsonicAddress.form-control(type='text', placeholder='Subsonic Server Address', ng-model='settings.subsonic_address')
   .form-group
     label(for='subsonicEmail') Username
-    input#subsonicEmail.form-control(type='text', placeholder='Enter username', ng-model='$root.settings.subsonic_username')
+    input#subsonicEmail.form-control(type='text', placeholder='Enter username', ng-model='settings.subsonic_username')
   .form-group
     label(for='subsonicPassword') Password
-    input#subsonicPassword.form-control(type='password', placeholder='Password', ng-model='$root.settings.subsonic_password')
+    input#subsonicPassword.form-control(type='password', placeholder='Password', ng-model='settings.subsonic_password')
   .form-group
     label(for='subsonicPort') Port
-    input#subsonicPort.form-control(type='number', placeholder='443', ng-model='$root.settings.subsonic_port')
+    input#subsonicPort.form-control(type='number', placeholder='443', ng-model='settings.subsonic_port')
   .form-check
-    input#useSslCheck.form-check-input(type='checkbox', ng-model='$root.settings.subsonic_use_ssl')
+    input#useSslCheck.form-check-input(type='checkbox', ng-model='settings.subsonic_use_ssl')
     label.form-check-label(for='useSslCheck') Use SSL?
   button.btn.btn-success(type='submit', ng-click='saveSettings()') Save
