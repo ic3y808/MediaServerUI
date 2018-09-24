@@ -5,9 +5,7 @@ html(ng-app='subsonic')
     title= title
     link(rel='stylesheet', href='/node_modules/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/node_modules/@fortawesome/fontawesome-free/css/all.min.css')
-    link(rel='stylesheet', href='/node_modules/datatables.net-dt/css/jquery.dataTables.min.css')
-    link(rel='stylesheet', href='/node_modules/angular-datatables/dist/css/angular-datatables.min.css')
-    link(rel='stylesheet', href='/node_modules/angular-datatables/dist/plugins/bootstrap/datatables.bootstrap.min.css')
+    link(rel='stylesheet', href='/node_modules/ag-grid-community/dist/styles/ag-grid.css')
     link(rel='stylesheet', href='/bower_components/videogular-themes-default/videogular.min.css')
     link(rel='stylesheet', href='/bower_components/bower-videogular-chromecast/dist/videogular-chromecast.min.css')
     link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
@@ -24,6 +22,7 @@ html(ng-app='subsonic')
     script.
       if (typeof module === 'object') {window.module = module; module = undefined;}
     script(src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js')
+    script(src="/node_modules/crypto-js/crypto-js.js")
     script(src="/node_modules/jquery/dist/jquery.min.js")
     script(src="/node_modules/datatables.net/js/jquery.dataTables.min.js")
     script(src="/node_modules/datatables.net-dt/js/dataTables.dataTables.min.js")
@@ -35,9 +34,7 @@ html(ng-app='subsonic')
     script(src="/node_modules/angular/angular.min.js")
     script(src="/node_modules/angular-sanitize/angular-sanitize.min.js")
     script(src="/node_modules/angular-route/angular-route.min.js")
-    script(src="/node_modules/angular-datatables/dist/angular-datatables.min.js")
-    script(src="/node_modules/angular-datatables/dist/plugins/bootstrap/angular-datatables.bootstrap.min.js")
-    script(src="/node_modules/angular-datatables/dist/plugins/buttons/angular-datatables.buttons.min.js")
+    script(src="/node_modules/ag-grid-community/dist/ag-grid-community.min.js")
     script(src="/bower_components/bower-videogular-chromecast/dist/videogular-chromecast.min.js")
     script(src="/bower_components/videogular/videogular.min.js")
     script(src="/bower_components/videogular-buffering/vg-buffering.min.js")
@@ -58,33 +55,3 @@ html(ng-app='subsonic')
     script(src="/controllers/controller.artist.js")
     script(src="/controllers/controller.playlist.js")
     script(src="/JS/index.js")
-  script.
-    // Hide submenus
-    $('#body-row .collapse').collapse('hide'); 
-
-    // Collapse/Expand icon
-    $('#collapse-icon').addClass('fa-angle-double-left'); 
-
-    // Collapse click
-    $('[data-toggle=sidebar-colapse]').click(function() {
-        SidebarCollapse();
-    });
-
-    function SidebarCollapse () {
-        $('.menu-collapsed').toggleClass('d-none');
-        $('.sidebar-submenu').toggleClass('d-none');
-        $('.submenu-icon').toggleClass('d-none');
-        $('.content').toggleClass('content-wide');
-        $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
-        
-        // Treating d-flex/d-none on separators with title
-        var SeparatorTitle = $('.sidebar-separator-title');
-        if ( SeparatorTitle.hasClass('d-flex') ) {
-            SeparatorTitle.removeClass('d-flex');
-        } else {
-            SeparatorTitle.addClass('d-flex');
-        }
-        
-        // Collapse/Expand icon
-        $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-    }

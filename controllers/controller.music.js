@@ -1,11 +1,57 @@
 var controllers = angular.module('controllers-music', []);
 $(".content").css("display", "none");
 $(".loader").css("display", "block");
-controllers.controller('musicController', ['$rootScope', '$scope', '$location', '$sce', 'subsonicService', 'DTOptionsBuilder', 'DTColumnBuilder', function ($rootScope, $scope, $location, $sce, subsonicService, DTOptionsBuilder, DTColumnBuilder) {
+controllers.controller('musicController', ['$rootScope', '$scope', '$location', '$sce', 'subsonicService', function ($rootScope, $scope, $location, $sce, subsonicService) {
 	console.log('music-controller')
-	$scope.artists = [];
-	$scope.dtInstance = {};	
-	$scope.dtOptions = DTOptionsBuilder.newOptions().withPaginationType('full_numbers');
+
+	var columnDefs = [
+		{ headerName: '', width: 30, suppressSizeToFit: true, checkboxSelection: true, suppressSorting: true, suppressMenu: true, pinned: true },
+		{ headerName: "Id", field: "id", width: 75, suppressSizeToFit: true },
+		{ headerName: "Name", field: "name" }
+	];
+
+	$scope.gridOptions = {
+		columnDefs: columnDefs,
+		rowData: null,
+		rowSelection: 'multiple',
+		enableColResize: true,
+		enableSorting: true,
+		enableFilter: true,
+		rowDeselection: true,
+		animateRows: true,
+		getRowNodeId: function (data) { return data.id; },
+		rowMultiSelectWithClick: true,
+		onModelUpdated: function (data) {
+			
+			var model = $scope.gridOptions.api.getModel();
+			if($scope.gridOptions.rowData != null){
+				var totalRows = $scope.gridOptions.rowData.length;
+				var processedRows = model.getRowCount();
+				$scope.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
+				console.log('onModelUpdated ' + $scope.rowCount)
+			}
+			
+		},
+		onSelectionChanged: function (data) {
+			console.log('selection changed')
+			var selectedRows = $scope.gridOptions.api.getSelectedRows();
+			var selectedRowsString = ' ';
+			selectedRows.forEach(function (selectedRow, index) {
+				if (index > 5) {
+					return;
+				}
+				if (index !== 0) {
+					selectedRowsString += ', ';
+				}
+				selectedRowsString += selectedRow.name;
+			});
+
+			if (selectedRows.length >= 5) {
+				selectedRowsString += (' - and ' + (selectedRows.length - 5) + ' others');
+			}
+			console.log(' selectedRows' + selectedRowsString);
+		}
+	};
 
 	$scope.getArtists = function (artistsCollection, callback) {
 		var artists = [];
@@ -26,29 +72,13 @@ controllers.controller('musicController', ['$rootScope', '$scope', '$location', 
 			$rootScope.subsonic.getArtists().then(function (artistsCollection) {
 				$scope.getArtists(artistsCollection, function (result) {
 					$scope.artists = result;
+					$scope.gridOptions.api.setRowData($scope.artists);
+					$scope.gridOptions.api.sizeColumnsToFit();
 					$scope.$apply();
-
-					var table = $('#musicTable').DataTable();
-
-					$('#musicTable tbody').on('click', 'tr', function () {
-						var data = table.row( this ).data();
-						$location.path("/artist/" + data[0]);
-						$scope.$apply();
-					} );
-				
-					$('#musicTable tbody').on( 'click', 'tr', function () {
-						if ( $(this).hasClass('selected') ) {
-							$(this).removeClass('selected');
-						}
-						else {
-							table.$('tr.selected').removeClass('selected');
-							$(this).addClass('selected');
-						}
-					} );
 				})
 			});
 
-			
+
 		}
 	}
 
@@ -57,8 +87,14 @@ controllers.controller('musicController', ['$rootScope', '$scope', '$location', 
 		$scope.reloadArtists();
 	});
 
+	document.addEventListener("DOMContentLoaded", function () {
+		var eGridDiv = document.querySelector('#artistsGrid');
+		new agGrid.Grid(eGridDiv, $scope.gridOptions);
+	});
+
 	$scope.reloadArtists();
 
+	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 	$(".loader").css("display", "none");
 	$(".content").css("display", "block");
 }]);

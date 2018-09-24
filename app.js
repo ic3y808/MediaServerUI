@@ -4,7 +4,7 @@ var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
 var moment = require('moment');
-
+var CryptoJS = require("crypto-js");
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
@@ -68,35 +68,17 @@ io.on('connection', function (socket) {
 	console.log('connected');
 	socket.on('save_settings',function(settings){
 		console.log('save_settings');
-		console.log(settings);
 		db.saveSettings(settings, function(result){
 			console.log('settings saved');
 		})
-		
 	});
-	socket.on('load_settings',function(settings){
+	socket.on('load_settings',function(){
 		console.log('load_settings');
-		console.log(settings);
 		db.loadSettings(function(result){
 			socket.emit('settings_event', result);
 		})
-		
 	});
 });
-
-function formatDate(date) {
-	var year = date.getFullYear(),
-		month = date.getMonth() + 1, // months are zero indexed
-		day = date.getDate(),
-		hour = date.getHours(),
-		minute = date.getMinutes(),
-		second = date.getSeconds(),
-		hourFormatted = hour % 12 || 12, // hour returned in 24 hour format
-		minuteFormatted = minute < 10 ? "0" + minute : minute,
-		morning = hour < 12 ? "am" : "pm";
-
-	return month + "/" + day + "/" + year + " " + hourFormatted + ":" + minuteFormatted + ":" + second + morning;
-}
 
 setInterval(function () {
 	var dt = { date: moment().format("hh:mm:ss a | MM-DD-YYYY") };

@@ -1,7 +1,7 @@
 var controllers = angular.module('controllers-artist', []);
 $(".content").css("display", "none");
 $(".loader").css("display", "block");
-controllers.controller('artistController', ['$rootScope', '$scope', '$routeParams', 'subsonicService', 'DTOptionsBuilder', 'DTColumnBuilder', function ($rootScope, $scope, $routeParams, subsonicService, DTOptionsBuilder, DTColumnBuilder) {
+controllers.controller('artistController', ['$rootScope', '$scope', '$routeParams', 'subsonicService', function ($rootScope, $scope, $routeParams, subsonicService) {
 	console.log('artist-controller')
 	$scope.artist = {};
 	$scope.albums = [];
@@ -58,4 +58,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 	});
 
 	$scope.getArtist();
+	if($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
+	$(".loader").css("display", "none");
+	$(".content").css("display", "block");
 }]);

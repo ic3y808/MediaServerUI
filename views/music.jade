@@ -1,12 +1,3 @@
 
-table#musicTable.row-border.hover.pageResize.nowrap(datatable='ng', dt-options='dtOptions')
-  thead
-    tr
-      th.hidden id
-      th Artist
-      th Albums
-  tbody
-    tr(ng-repeat='artist in artists')
-      td.hidden {{ artist.id }}
-      td {{ artist.name }}
-      td {{ artist.albumCount }}
+div#artistsGrid.dataTable
+  .ag-theme-balham(ag-grid='gridOptions', style='height: 100%;')

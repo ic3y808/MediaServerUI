@@ -35,6 +35,7 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
     };
 
 
+	if($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 	$(".loader").css("display", "none");
 	$(".content").css("display", "block");
 }]);

@@ -10,6 +10,23 @@
                 "DEV": "true",
                 "PORT":"3000"
             }
+        },
+        {
+            "name": "ServerDebug",
+            "type": "chrome",
+            "request": "launch",
+            "port": 9222,
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "All",
+            "configurations": [
+                "Server",
+                "ServerDebug"
+            ]
         }
     ]
 }

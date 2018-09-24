@@ -5,6 +5,7 @@ controllers.controller('homeController', ['$rootScope', '$scope', 'subsonicServi
 	console.log('home-controller')
 
 	
+	if($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 	$(".loader").css("display", "none");
 	$(".content").css("display", "block");
 }]);
