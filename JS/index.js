@@ -55,8 +55,8 @@ app.run(function ($rootScope, subsonicService) {
     $rootScope.activeSong = "";
     $rootScope.settings = [];
     $rootScope.config = {
-        sources: null,
-        tracks: null,
+        sources: [],
+        tracks: [],
         theme: 'bower_components/videogular-themes-default/videogular.css',
         plugins: {
             poster: 'http://www.videogular.com/assets/images/videogular.png'
