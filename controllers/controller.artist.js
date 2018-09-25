@@ -17,7 +17,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 	$scope.gridOptions = {
 		columnDefs: columnDefs,
 		rowData: null,
-		rowSelection: 'multiple',
+		rowSelection: 'single',
 		domLayout: 'autoHeight',
 		enableColResize: true,
 		enableSorting: true,
@@ -44,12 +44,26 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 			//$location.path("/artist/" + selectedRow.id.toString());
 			//$scope.$apply();
 
-
+			console.log(selectedRow)
 			var url = $rootScope.subsonic.streamUrl(selectedRow.id, 320);
-			$rootScope.config.sources.push({
-				src: $sce.trustAsResourceUrl(url),
-				type: 'audio/mp3'
-			});
+			$rootScope.tracks = [{
+				track: 1,
+				title: selectedRow.title,
+				artist: selectedRow.artist,
+				artistId: selectedRow.artistId,
+				artistUrl: "/artist/" + selectedRow.artistId,
+				album: selectedRow.album,
+				albumId: selectedRow.albumId,
+				albumUrl: "/album/" + selectedRow.albumId,
+				contentType: selectedRow.contentType,
+				genre: selectedRow.genre,
+				playCount: selectedRow.playCount,
+				year: selectedRow.year,
+				
+				url: url
+			}];
+			$rootScope.loadTrack(0);
+	
 			console.log(url);
 			$rootScope.$digest();
 
@@ -79,7 +93,6 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 							if (result) {
 								result.song.forEach(function (song) {
 									$scope.tracks.push(song);
-									console.log(song)
 									$scope.$apply();
 								});
 
