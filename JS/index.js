@@ -1,4 +1,5 @@
 agGrid.initialiseAgGridWithAngular1(angular);
+
 var app = angular.module('subsonic',
     [
         'ngRoute',
@@ -53,7 +54,7 @@ app.config(['$routeProvider', '$locationProvider',
 app.factory('audio', function ($document) {
     var audio = $document[0].getElementById('playlist-audio');
     return audio;
-});
+}); 
 
 app.run(function ($rootScope, audio, subsonicService) {
     $rootScope.isLoggedIn = false;
@@ -65,9 +66,9 @@ app.run(function ($rootScope, audio, subsonicService) {
         'name': '',
         'length': '',
         'file': ''
-    }, ];
+    },];
     $rootScope.settings = [];
-    $rootScope.trackCount = $rootScope.tracks.length;
+    $rootScope.trackCount = function() { return $rootScope.tracks.length; }
     $rootScope.selectedTrack = function () {
         return $rootScope.tracks[$rootScope.selectedIndex]
     };
@@ -77,38 +78,38 @@ app.run(function ($rootScope, audio, subsonicService) {
 
     $rootScope.loadTrack = function (index) {
         $rootScope.selectedIndex = index;
-        console.log('setting source ')
-        console.log($rootScope.tracks)
+        console.log('loadTrack')
+       
+   
+
         var source = $rootScope.audioSource();
+        console.log(source)
+        source.artistUrl = "/artist/" + source.artistId;
+        source.albumUrl = "/album/" + source.albumId;
+        source.url = $rootScope.subsonic.streamUrl(source.id, 320);
+
         audio.src = source.url;
 
         $('#artistInfo').html(source.artist);
         $('#artistInfo').attr("href", source.artistUrl);
         $('#trackInfo').html(source.title);
         $('#trackInfo').attr("href", source.albumUrl);
+        
 
-        $("#skipBackButton").click(function () {
-            $rootScope.previous();
-        });
-        $("#playPauseButton").click(function () {
-            if ($rootScope.playing) $rootScope.pause();
-            else $rootScope.play();
-        });
-        $("#stopButton").click(function () {
-            $rootScope.stop();
-        });
-        $("#skipNextButton").click(function () {
-            $rootScope.next();
-        });
-        $('#volumeSlider').click(function (e) {
-            console.log(e)
-            var percent = e.offsetX / this.offsetWidth;
-            $('#volumeSlider').attr('aria-valuenow', percent).css('width', percent + "%");
-         
-        });
+        $rootScope.subsonic.getArtist(source.artistId).then(function (artist) {
+            if (artist.coverArt) {
+                $rootScope.subsonic.getCoverArt(artist.coverArt, 128).then(function (result) {
+                    $('#nowPlayingImageHolder').attr('src', result);
+                    $rootScope.$digest();
+                })
+            }
+        })
+
+
 
         audio.load();
         audio.play();
+        $('#volumeSlider').val(audio.volume * 100)  
     }
 
     $rootScope.play = function () {
@@ -164,6 +165,9 @@ app.run(function ($rootScope, audio, subsonicService) {
                 $('#playlist-audio').src = $rootScope.audioSource();
                 $("#playPauseIcon").removeClass("fa-pause");
                 $("#playPauseIcon").addClass("fa-play");
+                $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+                $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+                $('#mainTimeDisplay').html("0:00 / 0:00");
             } else {
                 $rootScope.playing = true;
                 $rootScope.next();
@@ -173,20 +177,41 @@ app.run(function ($rootScope, audio, subsonicService) {
     $("#playlist-audio").on("canplaythrough", function () {
         console.log(audio.duration);
         $('#mainTimeDisplay').html("0:00 / " + $rootScope.formatTime(audio.duration));
+        $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+        $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+
     });
     $("#playlist-audio").on("timeupdate", function () {
         var playPercent = 100 * (audio.currentTime / audio.duration);
+        var buffered = audio.buffered;
+        var loaded;
 
-        $("#mainProgress")
-            .animate({
-                "value": playPercent + "%"
-            }, {
-                duration: 100,
-                easing: 'linear'
-            });
+
+        if (buffered.length) {
+            loaded = 100 * buffered.end(0) / audio.duration;
+        }
+
+       
+        $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
         $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
         $('#mainTimeDisplay').html($rootScope.formatTime(audio.currentTime) + " / " + $rootScope.formatTime(audio.duration));
     });
+
+    $("#skipBackButton").click(function () {
+        $rootScope.previous();
+    });
+    $("#playPauseButton").click(function () {
+        if ($rootScope.playing) $rootScope.pause();
+        else $rootScope.play();
+    });
+    $("#stopButton").click(function () {
+        $rootScope.stop();
+    });
+    $("#skipNextButton").click(function () {
+        $rootScope.next();
+    });
+
+    $("#volumeSlider").on('change', function() { audio.volume = $('#volumeSlider').val() / 100 });
 
     $rootScope.socket = io('//' + document.location.hostname + ':' + document.location.port);
     $rootScope.socket.on('ping', function (data) {
@@ -246,5 +271,9 @@ app.run(function ($rootScope, audio, subsonicService) {
         $rootScope.isMenuCollapsed = !$rootScope.isMenuCollapsed;
     }
 
+    $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+    $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+
     $rootScope.socket.emit('load_settings');
+    console.log('wee')
 });

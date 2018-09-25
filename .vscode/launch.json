@@ -18,6 +18,14 @@
             "port": 9222,
             "url": "http://localhost:3000",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "ServerAttachDebug",
+            "type": "chrome",
+            "request": "attach",
+            "port": 9222,
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}"
         }
     ],
     "compounds": [
@@ -25,7 +33,7 @@
             "name": "All",
             "configurations": [
                 "Server",
-                "ServerDebug"
+                "ServerAttachDebug"
             ]
         }
     ]
