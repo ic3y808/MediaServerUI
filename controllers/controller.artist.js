@@ -1,7 +1,7 @@
 var controllers = angular.module('controllers-artist', []);
 $(".content").css("display", "none");
 $(".loader").css("display", "block");
-controllers.controller('artistController', ['$rootScope', '$scope', '$routeParams','$sce', 'subsonicService', function ($rootScope, $scope, $routeParams,$sce, subsonicService) {
+controllers.controller('artistController', ['$rootScope', '$scope', '$routeParams', '$sce', 'subsonicService', function ($rootScope, $scope, $routeParams, $sce, subsonicService) {
 	console.log('artist-controller')
 	$scope.artist = {};
 	$scope.albums = [];
@@ -11,7 +11,12 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 	var columnDefs = [
 		{ headerName: '', width: 30, suppressSizeToFit: true, checkboxSelection: true, suppressSorting: true, suppressMenu: true, pinned: true },
 		{ headerName: "Id", field: "id", width: 75, suppressSizeToFit: true },
-		{ headerName: "Title", field: "title" }
+		{ headerName: "#", field: "track", width: 75, suppressSizeToFit: true },
+		{ headerName: "Title", field: "title" },
+		{ headerName: "Album", field: "album" },
+		{ headerName: "Title", field: "title" },
+		{ headerName: "Genre", field: "genre" },
+		{ headerName: "Plays", field: "playCount", width: 75, suppressSizeToFit: true },
 	];
 
 	$scope.gridOptions = {
@@ -40,35 +45,11 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 		onSelectionChanged: function (data) {
 			console.log('selection changed')
 			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
-
-			//$location.path("/artist/" + selectedRow.id.toString());
-			//$scope.$apply();
-
-			console.log(selectedRow)
-			var url = $rootScope.subsonic.streamUrl(selectedRow.id, 320);
+			$rootScope.tracks = $scope.tracks;
 			
-			$rootScope.tracks = [{
-				track: 1,
-				title: selectedRow.title,
-				artist: selectedRow.artist,
-				artistId: selectedRow.artistId,
-				artistUrl: "/artist/" + selectedRow.artistId,
-				album: selectedRow.album,
-				albumId: selectedRow.albumId,
-				albumUrl: "/album/" + selectedRow.albumId,
-				contentType: selectedRow.contentType,
-				genre: selectedRow.genre,
-				playCount: selectedRow.playCount,
-				year: selectedRow.year,
-				
-				url: url
-			}];
-			$rootScope.loadTrack(0);
-	
-			console.log(url);
+			var index = _.findIndex($rootScope.tracks, function(track) { return track.id === selectedRow.id })
+			$rootScope.loadTrack(index);
 			$rootScope.$digest();
-
-
 
 		}
 	};
@@ -84,11 +65,14 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 					$scope.tracks = [];
 					artist.album.forEach(album => {
 
-						$rootScope.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
-							album.artUrl = result;
-							$scope.albums.push(album);
-							$scope.$apply();
-						})
+						if (album.coverArt) {
+							$rootScope.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
+								album.artUrl = result;
+								$scope.albums.push(album);
+								$scope.$apply();
+							});
+						}
+
 
 						$rootScope.subsonic.getAlbum(album.id).then(function (result) {
 							if (result) {
@@ -99,16 +83,20 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 
 								$scope.gridOptions.api.setRowData($scope.tracks);
 								$scope.gridOptions.api.sizeColumnsToFit();
+								$scope.gridOptions.api.setDomLayout('print');
+								
 								$scope.$apply();
 							}
 						})
 					});
 				}
 
-				$rootScope.subsonic.getCoverArt($scope.artist.coverArt, 128).then(function (result) {
-					$('#artistCoverImage').attr('src', result);
-					$scope.$apply();
-				})
+				if ($scope.artist.coverArt) {
+					$rootScope.subsonic.getCoverArt($scope.artist.coverArt, 128).then(function (result) {
+						$('#artistCoverImage').attr('src', result);
+						$scope.$apply();
+					});
+				}
 				$scope.$apply();
 				$(".loader").css("display", "none");
 				$(".content").css("display", "block");
