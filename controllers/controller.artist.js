@@ -46,6 +46,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 
 			console.log(selectedRow)
 			var url = $rootScope.subsonic.streamUrl(selectedRow.id, 320);
+			
 			$rootScope.tracks = [{
 				track: 1,
 				title: selectedRow.title,
