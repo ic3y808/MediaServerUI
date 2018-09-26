@@ -1,10 +1,9 @@
 main(role='main')
-  section.jumbotron.text-center
+  section#mainArtistContent.jumbotron
     .container
-      img#artistCoverImage
-      h1.jumbotron-heading {{artistName}}
-      p.lead.text-muted
-        | Something short and leading about the collection below—its contents, the creator, etc. Make it short and sweet, but not too short so folks don't simply skip over it entirely.
+      h1.jumbotron-heading.text-white.bg-dark {{artistName}}
+      p#artistBio.lead.text-white.bg-dark.text-center
+        
       p
         a.btn.btn-primary.my-2(href='#') Shuffle Play
         a.btn.btn-secondary.my-2(href='#') Start Radio

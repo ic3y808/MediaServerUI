@@ -68,6 +68,7 @@ app.run(function ($rootScope, audio, subsonicService) {
     $rootScope.playing = false;
     $rootScope.currentVolume = audio.volume;
     $rootScope.selectedIndex = 0;
+    $rootScope.repeatEnabled = false;
     $rootScope.tracks = [{
         'track': 1,
         'name': '',
@@ -112,6 +113,9 @@ app.run(function ($rootScope, audio, subsonicService) {
             $("#likeButtonIcon").addClass('far');
         }
 
+        $("#playPauseIcon").addClass("fa-pause");
+        $("#playPauseIcon").removeClass("fa-play");
+
         $rootScope.subsonic.getArtist(source.artistId).then(function (artist) {
             if (artist.coverArt) {
                 $rootScope.subsonic.getCoverArt(artist.coverArt, 128).then(function (result) {
@@ -146,7 +150,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         $rootScope.loadTrack($rootScope.selectedIndex);
     };
     $rootScope.next = function () {
-        $rootScope.selectedIndex++;
+       if(!$rootScope.repeatEnabled) $rootScope.selectedIndex++;
         $rootScope.selectedIndex = ($rootScope.selectedIndex >= $rootScope.tracks.length ? 0 : $rootScope.selectedIndex);
         $rootScope.loadTrack($rootScope.selectedIndex);
     };
@@ -237,16 +241,12 @@ app.run(function ($rootScope, audio, subsonicService) {
         else $rootScope.play();
     });
 
-    $("#stopButton").click(function () {
-        $rootScope.stop();
-    });
-
     $("#skipNextButton").click(function () {
         $rootScope.next();
     });
 
     $("#repeatButton").click(function () {
-
+        $rootScope.repeatEnabled = !$rootScope.repeatEnabled;
     });
 
     $("#downloadButton").click(function () {
