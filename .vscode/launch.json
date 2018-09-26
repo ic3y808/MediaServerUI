@@ -33,7 +33,7 @@
             "name": "All",
             "configurations": [
                 "Server",
-                "ServerAttachDebug"
+                "ServerDebug"
             ]
         }
     ]
