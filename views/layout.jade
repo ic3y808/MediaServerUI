@@ -21,7 +21,6 @@ html(ng-app='subsonic')
     
     script.
       if (typeof module === 'object') {window.module = module; module = undefined;}
-    script(src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js')
     script(src="/node_modules/crypto-js/crypto-js.js")
     script(src="/node_modules/underscore/underscore-min.js")
     script(src="/node_modules/jquery/dist/jquery.min.js")
@@ -42,7 +41,6 @@ html(ng-app='subsonic')
     script(src="/bower_components/videogular-controls/vg-controls.min.js")
     script(src="/bower_components/videogular-overlay-play/vg-overlay-play.min.js")
     script(src="/bower_components/videogular-poster/vg-poster.min.js")
-    
 
     script.
       if (window.module) module = window.module;
@@ -56,3 +54,8 @@ html(ng-app='subsonic')
     script(src="/controllers/controller.artist.js")
     script(src="/controllers/controller.playlist.js")
     script(src="/JS/index.js")
+
+    script(type='text/javascript', src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1')
+
+
+    

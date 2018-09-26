@@ -1,4 +1,10 @@
 agGrid.initialiseAgGridWithAngular1(angular);
+initializeCastApi = function () {
+    cast.framework.CastContext.getInstance().setOptions({
+        receiverApplicationId: "DAB06F7C",
+        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
+    });
+};
 
 var app = angular.module('subsonic',
     [
@@ -67,9 +73,11 @@ app.run(function ($rootScope, audio, subsonicService) {
         'name': '',
         'length': '',
         'file': ''
-    },];
+    }, ];
     $rootScope.settings = [];
-    $rootScope.trackCount = function () { return $rootScope.tracks.length; }
+    $rootScope.trackCount = function () {
+        return $rootScope.tracks.length;
+    }
     $rootScope.selectedTrack = function () {
         return $rootScope.tracks[$rootScope.selectedIndex]
     };
@@ -209,16 +217,15 @@ app.run(function ($rootScope, audio, subsonicService) {
 
     $("#muteButton").click(function () {
         $rootScope.isMuted = !$rootScope.isMuted;
-        if($rootScope.isMuted) {
+        if ($rootScope.isMuted) {
             audio.volume = 0;
             $('#volumeSlider').val(0)
-        }
-        else {
+        } else {
             audio.volume = $rootScope.currentVolume;
             $('#volumeSlider').val($rootScope.currentVolume * 100)
         }
 
-        
+
     });
 
     $("#skipBackButton").click(function () {
@@ -272,15 +279,18 @@ app.run(function ($rootScope, audio, subsonicService) {
 
     });
 
-    $("#volumeSlider").on('change', function () { audio.volume = $rootScope.currentVolume  = $('#volumeSlider').val() / 100 });
-  
+    $("#volumeSlider").on('change', function () {
+        audio.volume = $rootScope.currentVolume = $('#volumeSlider').val() / 100
+    });
+
     $("#clickProgress").click(function (e) {
-        if(e.offsetY <= $("#mainProgress").height()){
+        if (e.offsetY <= $("#mainProgress").height()) {
             var seekto = audio.duration * (e.offsetX / $("#clickProgress").width());
-            audio.currentTime = seekto;
+            if(seekto != NaN)
+             audio.currentTime = seekto;
         }
     });
-        
+
 
     $rootScope.socket = io('//' + document.location.hostname + ':' + document.location.port);
     $rootScope.socket.on('ping', function (data) {
@@ -345,5 +355,12 @@ app.run(function ($rootScope, audio, subsonicService) {
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
     $rootScope.socket.emit('load_settings');
-    console.log('wee')
+
+    window['__onGCastApiAvailable'] = function (isAvailable) {
+        if (isAvailable) {
+            initializeCastApi();
+        }
+    };
+
+    
 });
