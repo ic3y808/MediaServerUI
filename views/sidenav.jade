@@ -3,10 +3,10 @@
   // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
   // Bootstrap List Group
   ul.list-group
-    a.bg-dark.list-group-item.list-group-item-action(href='/music')
+    a.bg-dark.list-group-item.list-group-item-action(href='/artists')
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-music.fa-fw.mr-3
-        span.menu-collapsed Music
+        span.menu-collapsed Artists
     // Submenu content
     #submenu2.collapse.sidebar-submenu
     a.bg-dark.list-group-item.list-group-item-action(href='/settings')
@@ -15,7 +15,7 @@
         span.menu-collapsed Settings
     a.bg-dark.list-group-item.list-group-item-action(href='/playlist')
       .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-envelope-o.fa-fw.mr-3
+        span.fa.list-ul.fa-fw.mr-3
         span.menu-collapsed
           | Playlist 
           span.badge.badge-pill.badge-primary.ml-2 {{$root.trackCount()}}
