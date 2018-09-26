@@ -14,7 +14,7 @@ var app = angular.module('subsonic',
         'controllers-home',
         'controllers-settings',
         'controllers-status',
-        'controllers-music',
+        'controllers-artists',
         'controllers-artist',
         'controllers-playlist'
     ]);
@@ -35,9 +35,9 @@ app.config(['$routeProvider', '$locationProvider',
         }).when('/settings', {
             templateUrl: 'template/settings.jade',
             controller: 'settingsController'
-        }).when('/music', {
-            templateUrl: 'template/music.jade',
-            controller: 'musicController'
+        }).when('/artists', {
+            templateUrl: 'template/artists.jade',
+            controller: 'artistsController'
         }).when('/artist/:id', {
             templateUrl: 'template/artist.jade',
             controller: 'artistController'
@@ -54,12 +54,13 @@ app.config(['$routeProvider', '$locationProvider',
 app.factory('audio', function ($document) {
     var audio = $document[0].getElementById('playlist-audio');
     return audio;
-}); 
+});
 
 app.run(function ($rootScope, audio, subsonicService) {
     $rootScope.isLoggedIn = false;
     $rootScope.activeSong = "";
     $rootScope.playing = false;
+    $rootScope.currentVolume = audio.volume;
     $rootScope.selectedIndex = 0;
     $rootScope.tracks = [{
         'track': 1,
@@ -68,7 +69,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         'file': ''
     },];
     $rootScope.settings = [];
-    $rootScope.trackCount = function() { return $rootScope.tracks.length; }
+    $rootScope.trackCount = function () { return $rootScope.tracks.length; }
     $rootScope.selectedTrack = function () {
         return $rootScope.tracks[$rootScope.selectedIndex]
     };
@@ -79,8 +80,8 @@ app.run(function ($rootScope, audio, subsonicService) {
     $rootScope.loadTrack = function (index) {
         $rootScope.selectedIndex = index;
         console.log('loadTrack')
-       
-   
+
+
 
         var source = $rootScope.audioSource();
         console.log(source)
@@ -94,7 +95,14 @@ app.run(function ($rootScope, audio, subsonicService) {
         $('#artistInfo').attr("href", source.artistUrl);
         $('#trackInfo').html(source.title);
         $('#trackInfo').attr("href", source.albumUrl);
-        
+
+        if (source.starred) {
+            $("#likeButtonIcon").removeClass('far');
+            $("#likeButtonIcon").addClass('fa');
+        } else {
+            $("#likeButtonIcon").removeClass('fa');
+            $("#likeButtonIcon").addClass('far');
+        }
 
         $rootScope.subsonic.getArtist(source.artistId).then(function (artist) {
             if (artist.coverArt) {
@@ -109,7 +117,7 @@ app.run(function ($rootScope, audio, subsonicService) {
 
         audio.load();
         audio.play();
-        $('#volumeSlider').val(audio.volume * 100)  
+        $('#volumeSlider').val($rootScope.currentVolume * 100)
     }
 
     $rootScope.play = function () {
@@ -150,6 +158,7 @@ app.run(function ($rootScope, audio, subsonicService) {
             $("#playPauseIcon").removeClass("fa-play");
         });
     });
+
     $("#playlist-audio").on("pause", function () {
         $rootScope.$apply(function () {
             $rootScope.playing = false;
@@ -157,23 +166,23 @@ app.run(function ($rootScope, audio, subsonicService) {
             $("#playPauseIcon").addClass("fa-play");
         });
     });
+
     $("#playlist-audio").on("ended", function () {
-        $rootScope.$apply(function () {
-            if (($rootScope.selectedIndex + 1) === $rootScope.tracks.length) {
-                $rootScope.playing = false;
-                $rootScope.selectedIndex = 0;
-                $('#playlist-audio').src = $rootScope.audioSource();
-                $("#playPauseIcon").removeClass("fa-pause");
-                $("#playPauseIcon").addClass("fa-play");
-                $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-                $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-                $('#mainTimeDisplay').html("0:00 / 0:00");
-            } else {
-                $rootScope.playing = true;
-                $rootScope.next();
-            }
-        });
+        if (($rootScope.selectedIndex + 1) === $rootScope.tracks.length) {
+            $rootScope.playing = false;
+            $rootScope.selectedIndex = 0;
+            $('#playlist-audio').src = $rootScope.audioSource();
+            $("#playPauseIcon").removeClass("fa-pause");
+            $("#playPauseIcon").addClass("fa-play");
+            $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+            $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+            $('#mainTimeDisplay').html("0:00 / 0:00");
+        } else {
+            $rootScope.playing = true;
+            $rootScope.next();
+        }
     });
+
     $("#playlist-audio").on("canplaythrough", function () {
         console.log(audio.duration);
         $('#mainTimeDisplay').html("0:00 / " + $rootScope.formatTime(audio.duration));
@@ -181,6 +190,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
     });
+
     $("#playlist-audio").on("timeupdate", function () {
         var playPercent = 100 * (audio.currentTime / audio.duration);
         var buffered = audio.buffered;
@@ -191,27 +201,86 @@ app.run(function ($rootScope, audio, subsonicService) {
             loaded = 100 * buffered.end(0) / audio.duration;
         }
 
-       
+
         $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
         $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
         $('#mainTimeDisplay').html($rootScope.formatTime(audio.currentTime) + " / " + $rootScope.formatTime(audio.duration));
     });
 
+    $("#muteButton").click(function () {
+        $rootScope.isMuted = !$rootScope.isMuted;
+        if($rootScope.isMuted) {
+            audio.volume = 0;
+            $('#volumeSlider').val(0)
+        }
+        else {
+            audio.volume = $rootScope.currentVolume;
+            $('#volumeSlider').val($rootScope.currentVolume * 100)
+        }
+
+        
+    });
+
     $("#skipBackButton").click(function () {
         $rootScope.previous();
     });
+
     $("#playPauseButton").click(function () {
         if ($rootScope.playing) $rootScope.pause();
         else $rootScope.play();
     });
+
     $("#stopButton").click(function () {
         $rootScope.stop();
     });
+
     $("#skipNextButton").click(function () {
         $rootScope.next();
     });
 
-    $("#volumeSlider").on('change', function() { audio.volume = $('#volumeSlider').val() / 100 });
+    $("#repeatButton").click(function () {
+
+    });
+
+    $("#downloadButton").click(function () {
+        var dlUrl = $rootScope.subsonic.downloadUrl($rootScope.selectedTrack().id);
+        var win = window.open(dlUrl, '_blank');
+    });
+
+    $("#likeButton").click(function () {
+        console.log('liking track');
+        console.log($rootScope.selectedTrack());
+        var track = $rootScope.selectedTrack();
+        if (track.starred) {
+            $rootScope.subsonic.unstar($rootScope.selectedTrack().id).then(function (result) {
+                console.log('UnStarred');
+                $rootScope.selectedTrack().starred = undefined;
+                console.log(result);
+                $("#likeButtonIcon").addClass('far');
+                $("#likeButtonIcon").removeClass('fa');
+
+            });
+        } else {
+            $rootScope.subsonic.star($rootScope.selectedTrack().id).then(function (result) {
+                console.log('starred');
+                $rootScope.selectedTrack().starred = 1;
+                $("#likeButtonIcon").removeClass('far');
+                $("#likeButtonIcon").addClass('fa');
+                console.log(result);
+            });
+        }
+
+    });
+
+    $("#volumeSlider").on('change', function () { audio.volume = $rootScope.currentVolume  = $('#volumeSlider').val() / 100 });
+  
+    $("#clickProgress").click(function (e) {
+        if(e.offsetY <= $("#mainProgress").height()){
+            var seekto = audio.duration * (e.offsetX / $("#clickProgress").width());
+            audio.currentTime = seekto;
+        }
+    });
+        
 
     $rootScope.socket = io('//' + document.location.hostname + ':' + document.location.port);
     $rootScope.socket.on('ping', function (data) {
@@ -269,6 +338,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         // Collapse/Expand icon
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
         $rootScope.isMenuCollapsed = !$rootScope.isMenuCollapsed;
+        $rootScope.$broadcast('menuSizeChange');
     }
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");

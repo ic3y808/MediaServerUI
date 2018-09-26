@@ -1,10 +1,12 @@
 .appfooter.bg-dark
   .nowPlayingBar
-    .nowPlayingBarTop
+    .nowPlayingBarTop#clickProgress
+      #clickProgress.bg-secondary(style='height:10px;position:absolute;top:0;left:0;right:0;')
       .nowPlayingBarPositionContainer.sliderContainer.mdl-slider-container
-      .progress
+      #progressContainer
         #subProgress.progress-bar.progress-bar-animated.track-progress.bg-success(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
         #mainProgress.progress-bar.progress-bar-striped.progress-bar-animated.bg-success.track-progress(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+        
       .nowPlayingBarInfoContainer
         img#nowPlayingImageHolder.nowPlayingImage
         .nowPlayingBarText
@@ -25,22 +27,17 @@
           i.fa.fa-step-forward(aria-hidden='true')
         #mainTimeDisplay.text-light.bg-dark
       .nowPlayingBarRight
-        button.btn.btn-sm.btn-dark
+        button#muteButton.btn.btn-sm.btn-dark
           i.fa.fa-volume-off(aria-hidden='true')
         .sliderContainer.nowPlayingBarVolumeSliderContainer.mdl-slider-container(style='width:100px;vertical-align:middle;display:inline-flex;')
           .slidecontainer
             input#volumeSlider.slider(type='range', min='1', max='100', value='50')
 
-          //#volumeSlider.progress-bar.progress-bar-striped.progress-bar-animated.track-progress(role='progressbar', aria-valuenow='75', aria-valuemin='0', aria-valuemax='100')
-          .mdl-slider-background-flex
-            .mdl-slider-background-flex-inner
-              .mdl-slider-background-upper
-              .mdl-slider-background-lower(style='width: 100%;')
-          .sliderBubble.hide
-        button.btn.btn-sm.btn-dark
+        button#downloadButton.btn.btn-sm.btn-dark
+          i.fa.fa-download(aria-hidden='true')
+        button#repeatButton.btn.btn-sm.btn-dark
           i.fa.fa-redo-alt(aria-hidden='true')
-        .nowPlayingBarUserDataButtons
-          button.btn.btn-sm.btn-dark
-            i.fa.fa-heart(aria-hidden='true')
-        button.btn.btn-sm.btn-dark
+        button#likeButton.btn.btn-sm.btn-dark
+          i#likeButtonIcon.far.fa-heart(aria-hidden='true')
+        button#nowPlayingViewButton.btn.btn-sm.btn-dark
           i.fa.fa-list-ul(aria-hidden='true')

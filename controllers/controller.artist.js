@@ -46,8 +46,8 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 			console.log('selection changed')
 			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 			$rootScope.tracks = $scope.tracks;
-			
-			var index = _.findIndex($rootScope.tracks, function(track) { return track.id === selectedRow.id })
+
+			var index = _.findIndex($rootScope.tracks, function (track) { return track.id === selectedRow.id })
 			$rootScope.loadTrack(index);
 			$rootScope.$digest();
 
@@ -84,7 +84,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 								$scope.gridOptions.api.setRowData($scope.tracks);
 								$scope.gridOptions.api.sizeColumnsToFit();
 								$scope.gridOptions.api.setDomLayout('print');
-								
+
 								$scope.$apply();
 							}
 						})
@@ -108,6 +108,15 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 	$rootScope.$on('loginStatusChange', function (event, data) {
 		console.log('artist reloading on subsonic ready')
 		$scope.getArtist();
+	});
+
+	$rootScope.$on('menuSizeChange', function (event, data) {
+		console.log('fix width')
+		$('#artistsGrid').width($('.content').width());
+
+		$scope.gridOptions.api.doLayout();
+		$scope.gridOptions.api.sizeColumnsToFit();
+		$scope.gridOptions.api.setDomLayout('print');
 	});
 
 	$scope.getArtist();

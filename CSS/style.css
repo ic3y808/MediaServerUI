@@ -10,6 +10,10 @@
   height: calc(100vh - 140px);
 }
 
+.progressContainer{
+  width: 100%;
+}
+
 .ag-layout-print{
   margin-bottom:15px;
 }
@@ -270,10 +274,11 @@ div.dataTables_length {
   background-repeat: no-repeat;
   -webkit-background-size: contain;
   background-size: contain;
-  height: 70%;
-  width: 4.2em;
+  height: 50px;
+  width: 50px;
   -webkit-flex-shrink: 0;
-  flex-shrink: 0
+  flex-shrink: 0;
+  padding-top: 5px;
 }
 
 .nowPlayingBarText {
