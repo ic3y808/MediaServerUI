@@ -1,9 +1,15 @@
 main(role='main')
-  section#mainArtistContent.jumbotron
+  .PageToolbar-toolbar.bg-dark
+  .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+    .PageToolbarSection-section.PageToolbarSection-left
+      
+  .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+    .PageToolbarSection-section.PageToolbarSection-right
+  section#mainArtistContent.jumbotron.text-center
     .container
       h1.jumbotron-heading.text-white.bg-dark {{artistName}}
-      p#artistBio.lead.text-white.bg-dark.text-center
-        
+      p.lead.text-white.bg-dark
+        | {{artistBio}}
       p
         a.btn.btn-primary.my-2(href='#') Shuffle Play
         a.btn.btn-secondary.my-2(href='#') Start Radio

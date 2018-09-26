@@ -253,67 +253,394 @@ div.dataTables_length {
 
 
 .jumbotron {
+  background-size: contain;
+  width:100%;
+  background-size: 100% auto;
+}
+
+
+.widewrapper > img {
+  width:100%;
+}
+
+
+.PageContent-content {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+          flex-grow: 1;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.PageToolbar-toolbar {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+          flex: 0 0 auto;
+  padding: 0 20px;
+  height: 60px;
+  line-height: 60px;
+}
+
+.PageToolbarSection-sectionContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 10%;
+          flex: 1 1 10%;
+}
+
+.PageToolbarSection-section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+          flex-grow: 1;
+}
+
+.PageToolbarSection-left {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+          justify-content: flex-start;
+}
+
+.PageToolbarButton-toolbarButton {
+
+  width: 60px;
+  text-align: center;
+}
+
+.PageToolbarButton-labelContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  min-height: 16px;
+}
+
+.PageToolbarButton-label {
+  padding: 0 3px;
+  color: #8895aa;
+  font-size: 11px;
+  line-height: -webkit-calc(11px + 1px);
+  line-height: calc(11px + 1px);
+}
+
+.PageContentBody-contentBody {
+  /* 1px for flex-basis so the div grows correctly in Edge/Firefox */
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 1px;
+          flex: 1 0 1px;
+}
+
+.PageToolbarSeparator-separator {
+  margin: 10px 20px;
+  height: 40px;
+  border-right: 1px solid #e5e5e5;
+  opacity: 0.35;
+}
+
+.PageToolbarSection-sectionContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 10%;
+          flex: 1 1 10%;
+}
+
+.PageToolbarSection-section {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+          flex-grow: 1;
+}
+
+.PageToolbarSection-right {
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+
+.ArtistDetails-innerContentBody {
+  padding: 0;
+}
+
+.ArtistDetails-header {
+  position: relative;
+  width: 100%;
+  height: 375px;
+}
+
+.ArtistDetails-backdrop {
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
   background-size: cover;
 }
 
-#accordion3{
-  padding-left: 80px;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-#accordion3:before{
-  content: "";
-  width: 5px;
+.ArtistDetails-backdropOverlay {
+  position: absolute;
+  width: 100%;
   height: 100%;
-  background: #004e89;
-  position: absolute;
-  top: 0;
-  left: 22px;
-  z-index: -1;
+  background: #000;
+  opacity: 0.7;
 }
-#accordion3 .panel-title a{
-  display: block;
-  padding: 10px 30px 15px 0;
-  background: #fff;
-  font-size: 18px;
-  font-weight: 500;
-  color: #004e89;
-  position: relative;
-  transition: all 0.5s ease 0s;
-  box-shadow: 0 1px 2px rgba(43,59,93,0.30);
+
+.ArtistDetails-headerContent {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 30px;
+  width: 100%;
+  height: 100%;
+  color: #fff;
 }
-#accordion3 .panel-title a:before{
-  content: "\f068";
-  font-family: "Font Awesome 5 Free";
-  font-weight: 900;
-  width: 50px;
-  height: 50px;
-  line-height: 40px;
-  border-radius: 50%;
-  background: #cad5c2;
-  text-align: center;
+
+.ArtistDetails-poster {
+  -webkit-flex-shrink: 0;
+          flex-shrink: 0;
+  margin-right: 35px;
+  width: 250px;
+  height: 250px;
+}
+
+.ArtistDetails-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+          flex-grow: 1;
+  overflow: hidden;
+}
+
+.ArtistDetails-titleContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.ArtistDetails-titleRow {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+          flex: 0 0 auto;
+}
+
+.ArtistDetails-artistNavigationButtons {
+  white-space: no-wrap;
+}
+
+.ArtistDetails-details {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.HeartRating-heart {
+  margin-right: 5px;
+  color: #c4273c;
+}
+
+.ArtistDetails-detailsLabel {
+  margin: 5px 10px 5px 0;
+}
+
+.ArtistDetails-path,
+.ArtistDetails-sizeOnDisk,
+.ArtistDetails-qualityProfileName,
+.ArtistDetails-links,
+.ArtistDetails-tags {
+  margin-left: 8px;
+  font-weight: 300;
   font-size: 17px;
-  color: #004e89;
-  border: 6px solid #004e89;
+}
+
+.ArtistDetails-contentContainer {
+  padding: 20px;
+}
+
+.ArtistDetailsSeason-albumType- {
+  margin-bottom: 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background-color: #fff;
+}
+.ArtistDetailsSeason-albumType-:last-of-type {
+  margin-bottom: 0;
+}
+
+.ArtistDetailsSeason-expandButton {
+
+  -webkit-box-flex: 1;
+
+  -webkit-flex-grow: 1;
+
+          flex-grow: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.ArtistDetailsSeason-header {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 100%;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.ArtistDetailsSeason-left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 1 300px;
+          flex: 0 1 300px;
+}
+
+.ArtistDetailsSeason-albumCount {
+  color: #8895aa;
+  font-style: italic;
+  font-size: 18px;
+}
+
+.ArtistDetailsSeason-expandButtonIcon {
+
   position: absolute;
-  top: 0;
-  left: -80px;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -15px;
 }
-#accordion3 .panel-title a.collapsed:before{
-  content: "\f067";
-  background: #fff;
+
+.ArtistDetailsSeason-actionButton {
+
+  width: 30px;
 }
-#accordion3 .panel-body{
-  padding: 0px 15px;
-  background: #eee;
-  border: none;
+
+.ArtistDetailsSeason-albumTypeLabel- {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.ArtistDetails-metadataMessage {
+  color: #909293;
+  text-align: center;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.OverlayScroller-thumb {
+  min-height: 50px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background-color: #9ea4b9;
+  background-clip: padding-box;
+}
+
+.Label-label {
+  display: inline-block;
+  margin: 2px;
+  border: 1px solid;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5) inset, 0 1px 2px rgba(255, 255, 255, 0.9);
-  font-size: 14px;
-  color: #487677;
-  line-height: 25px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1;
+  cursor: default;
 }
+
+.Label-default {
+  border-color: #1d563d;
+  background-color: #1d563d;
+}
+
+.Label-large {
+  padding: 3px 7px;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.IconButton-button {
+
+  margin: 0 2px;
+  width: 22px;
+  border-radius: 4px;
+  background-color: transparent;
+  text-align: center;
+  font-size: inherit;
+}
+
+.Icon-default{
+  color: inherit;
+}
+
+.Link-to {
+  color: #0b8750;
+}
+
+.Link-link {
+  margin: 0;
+  padding: 0;
+  outline: none;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
 
 .appfooter {
   position: fixed;
@@ -501,3 +828,6 @@ div.dataTables_length {
   from{ bottom:-100px; opacity:0 } 
   to{ bottom:0; opacity:1 }
 }
+
+
+
