@@ -6,6 +6,18 @@
   display: none;
 }
 
+html,
+body,
+body 
+body .vertical-flex {
+  display: flex;
+  flex: 1 100%;
+  max-width: 100%;
+  max-height: 100%;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
 .dataTable{
   height: calc(100vh - 140px);
 }

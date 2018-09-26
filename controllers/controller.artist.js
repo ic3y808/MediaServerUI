@@ -23,7 +23,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 		columnDefs: columnDefs,
 		rowData: null,
 		rowSelection: 'single',
-		domLayout: 'autoHeight',
+	//	domLayout: 'autoHeight',
 		enableColResize: true,
 		enableSorting: true,
 		enableFilter: true,
@@ -118,13 +118,15 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 	});
 
 	$rootScope.$on('menuSizeChange', function (event, data) {
-		console.log('fix width')
+
 		$('#artistsGrid').width($('.content').width());
 
 		$scope.gridOptions.api.doLayout();
 		$scope.gridOptions.api.sizeColumnsToFit();
-		$scope.gridOptions.api.setDomLayout('print');
+		//$scope.gridOptions.api.setDomLayout('print');
 	});
+
+	
 
 	$scope.getArtist();
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
