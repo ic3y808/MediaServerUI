@@ -60,6 +60,18 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 				$scope.artist = artist;
 				$scope.artistName = artist.name;
 
+				$rootScope.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
+					console.log("getArtistDetails result")
+					console.log(result)
+
+					if (result) {
+						$('#artistBio').html(result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i,""));
+						$('#mainArtistContent').css('background-image', 'url(' + result.largeImageUrl + ')');
+						$('#artistCoverImage').attr('src', result.smallImageUrl);
+						$scope.$apply();
+					}
+				});
+
 				if (artist.album && artist.album.length > 0) {
 					$scope.albums = [];
 					$scope.tracks = [];
@@ -91,12 +103,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 					});
 				}
 
-				if ($scope.artist.coverArt) {
-					$rootScope.subsonic.getCoverArt($scope.artist.coverArt, 128).then(function (result) {
-						$('#artistCoverImage').attr('src', result);
-						$scope.$apply();
-					});
-				}
+				
 				$scope.$apply();
 				$(".loader").css("display", "none");
 				$(".content").css("display", "block");

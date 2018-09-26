@@ -1,17 +1,2 @@
-.videogular-container
-  videogular(vg-theme='config.theme.url')
-    vg-media(vg-src='config.sources', vg-chromecast='', title='test', description='a simple video cast', vg-tracks='$root.config.tracks')
-    vg-poster(vg-url='config.plugins.poster')
-    vg-controls
-      vg-play-pause-button
-      vg-time-display {{ currentTime | date:'mm:ss' }}
-      vg-scrub-bar
-        vg-scrub-bar-current-time
-      vg-chromecast-button
-      vg-time-display {{ timeLeft | date:'mm:ss' }}
-      vg-volume
-        vg-mute-button
-        vg-volume-bar
-      vg-fullscreen-button
-    vg-overlay-play
-    vg-poster(vg-url='config.plugins.poster')
+div#playlistGrid.dataTable
+  .ag-theme-balham(ag-grid='gridOptions', style='height: 100%;', flex-direction="row")
