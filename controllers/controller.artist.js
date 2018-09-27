@@ -126,7 +126,16 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 		//$scope.gridOptions.api.setDomLayout('print');
 	});
 
-	
+	$(window).on('resize', function () {
+		
+		_.debounce(function () {
+			$('.ag-root-wrapper-body').width($('.ag-root-wrapper').width())
+
+			//$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+			//$scope.gridOptions.api.setDomLayout('print');
+		}, 300);
+	});
 
 	$scope.getArtist();
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');

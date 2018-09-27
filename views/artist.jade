@@ -1,30 +1,33 @@
-main(role='main')
-  .PageToolbar-toolbar.bg-dark
-  .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
-    .PageToolbarSection-section.PageToolbarSection-left
-      
-  .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
-    .PageToolbarSection-section.PageToolbarSection-right
-  section#mainArtistContent.jumbotron.text-center
-    .container
-      h1.jumbotron-heading.text-white.bg-dark {{artistName}}
-      p.lead.text-white.bg-dark
-        | {{artistBio}}
-      p
-        a.btn.btn-primary.my-2(href='#') Shuffle Play
-        a.btn.btn-secondary.my-2(href='#') Start Radio
-  .album.py-5.bg-light
-    .container
-      .row
-        .col-md-4(ng-repeat='album in albums')
-          .card.mb-4.box-shadow
-            img.card-img-top(alt='Thumbnail [100%x225]', style='height: 225px; width: 100%; display: block;', src='{{album.artUrl}}', data-holder-rendered='true')
-            .card-body
-              p.card-text
-                | {{album.name}}
-              .d-flex.justify-content-between.align-items-center
-                .btn-group
-                  button.btn.btn-sm.btn-outline-secondary(type='button') Songs: {{album.songCount}}
-                  button.btn.btn-sm.btn-outline-secondary(type='button') Plays: {{album.playCount}}
-                small.text-muted {{album.year}}  
-  .ag-fresh.vertical-flex(ag-grid='gridOptions')  
+
+.PageToolbar-toolbar.bg-dark
+.PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+  .PageToolbarSection-section.PageToolbarSection-left
+    
+.PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+  .PageToolbarSection-section.PageToolbarSection-right
+section#mainArtistContent.jumbotron.text-center
+  .container
+    h1.jumbotron-heading.text-white.bg-dark {{artistName}}
+    p.lead.text-white.bg-dark
+      | {{artistBio}}
+    p
+      a.btn.btn-primary.my-2(href='#') Shuffle Play
+      a.btn.btn-secondary.my-2(href='#') Start Radio
+    .album.py-5.bg-light
+      .container
+        .row
+          .col-md-4(ng-repeat='album in albums')
+            .card.mb-4.box-shadow
+              img.card-img-top(alt='Thumbnail [100%x225]', style='height: 225px; width: 100%; display: block;', src='{{album.artUrl}}', data-holder-rendered='true')
+              .card-body
+                p.card-text
+                  | {{album.name}}
+                .d-flex.justify-content-between.align-items-center
+                  .btn-group
+                    button.btn.btn-sm.btn-outline-secondary(type='button') Songs: {{album.songCount}}
+                    button.btn.btn-sm.btn-outline-secondary(type='button') Plays: {{album.playCount}}
+                  small.text-muted {{album.year}}  
+    div#tracksGrid.dataTable
+      .ag-theme-balham(ag-grid='gridOptions', style='height: 100%;', flex-direction="row")
+
+       
