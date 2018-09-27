@@ -89,9 +89,9 @@ app.run(function ($rootScope, audio, subsonicService) {
     $rootScope.loadTrack = function (index) {
         $rootScope.selectedIndex = index;
         console.log('loadTrack')
+        $('#mainTimeDisplay').html("Loading...");
 
-
-
+       
         var source = $rootScope.audioSource();
         console.log(source)
         source.artistUrl = "/artist/" + source.artistId;
@@ -99,7 +99,8 @@ app.run(function ($rootScope, audio, subsonicService) {
         source.url = $rootScope.subsonic.streamUrl(source.id, 320);
 
         audio.src = source.url;
-
+        
+        
         $('#artistInfo').html(source.artist);
         $('#artistInfo').attr("href", source.artistUrl);
         $('#trackInfo').html(source.title);
@@ -150,7 +151,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         $rootScope.loadTrack($rootScope.selectedIndex);
     };
     $rootScope.next = function () {
-       if(!$rootScope.repeatEnabled) $rootScope.selectedIndex++;
+        if (!$rootScope.repeatEnabled) $rootScope.selectedIndex++;
         $rootScope.selectedIndex = ($rootScope.selectedIndex >= $rootScope.tracks.length ? 0 : $rootScope.selectedIndex);
         $rootScope.loadTrack($rootScope.selectedIndex);
     };
@@ -188,7 +189,7 @@ app.run(function ($rootScope, audio, subsonicService) {
             $("#playPauseIcon").addClass("fa-play");
             $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
             $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-            $('#mainTimeDisplay').html("0:00 / 0:00");
+            $('#mainTimeDisplay').html("");
         } else {
             $rootScope.playing = true;
             $rootScope.next();
@@ -196,27 +197,29 @@ app.run(function ($rootScope, audio, subsonicService) {
     });
 
     $("#playlist-audio").on("canplaythrough", function () {
-        console.log(audio.duration);
         $('#mainTimeDisplay').html("0:00 / " + $rootScope.formatTime(audio.duration));
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-
+        $("#playPauseIcon").addClass("fa-pause");
+        $("#playPauseIcon").removeClass("fa-play");
     });
 
     $("#playlist-audio").on("timeupdate", function () {
         var playPercent = 100 * (audio.currentTime / audio.duration);
-        var buffered = audio.buffered;
-        var loaded;
-
-
-        if (buffered.length) {
-            loaded = 100 * buffered.end(0) / audio.duration;
-        }
-
-
-        $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
-        $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
-        $('#mainTimeDisplay').html($rootScope.formatTime(audio.currentTime) + " / " + $rootScope.formatTime(audio.duration));
+        if(!isNaN(playPercent)){
+            var buffered = audio.buffered;
+            var loaded;
+    
+    
+            if (buffered.length) {
+                loaded = 100 * buffered.end(0) / audio.duration;
+            }
+    
+    
+            $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
+            $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
+            $('#mainTimeDisplay').html($rootScope.formatTime(audio.currentTime) + " / " + $rootScope.formatTime(audio.duration));
+        }       
     });
 
     $("#muteButton").click(function () {
@@ -284,11 +287,9 @@ app.run(function ($rootScope, audio, subsonicService) {
     });
 
     $("#clickProgress").click(function (e) {
-        if (e.offsetY <= $("#mainProgress").height()) {
-            var seekto = audio.duration * (e.offsetX / $("#clickProgress").width());
-            if(seekto != NaN)
-             audio.currentTime = seekto;
-        }
+        var seekto = audio.duration * (e.offsetX / $("#clickProgress").width());
+        if (seekto != NaN)
+            audio.currentTime = seekto;
     });
 
 
@@ -362,5 +363,5 @@ app.run(function ($rootScope, audio, subsonicService) {
         }
     };
 
-    
+
 });

@@ -4,10 +4,25 @@ $(".loader").css("display", "block");
 controllers.controller('artistsController', ['$rootScope', '$scope', '$location', '$sce', 'subsonicService', function ($rootScope, $scope, $location, $sce, subsonicService) {
 	console.log('artists-controller')
 
-	var columnDefs = [
-		{ headerName: '', width: 30, suppressSizeToFit: true, checkboxSelection: true, suppressSorting: true, suppressMenu: true, pinned: true },
-		{ headerName: "Name", field: "name" },
-		{ headerName: "Albums", field: "albumCount", width: 75, suppressSizeToFit: true }
+	var columnDefs = [{
+			headerName: '',
+			width: 30,
+			suppressSizeToFit: true,
+			checkboxSelection: true,
+			suppressSorting: true,
+			suppressMenu: true,
+			pinned: true
+		},
+		{
+			headerName: "Name",
+			field: "name"
+		},
+		{
+			headerName: "Albums",
+			field: "albumCount",
+			width: 150,
+			suppressSizeToFit: false
+		}
 	];
 
 	$scope.gridOptions = {
@@ -19,23 +34,37 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 		enableFilter: true,
 		rowDeselection: true,
 		animateRows: true,
-		getRowNodeId: function (data) { return data.id; },
+		getRowNodeId: function (data) {
+			return data.id;
+		},
 		rowMultiSelectWithClick: false,
 		onModelUpdated: function (data) {
-			
+
 			var model = $scope.gridOptions.api.getModel();
-			if($scope.gridOptions.rowData != null){
+			if ($scope.gridOptions.rowData != null) {
 				var totalRows = $scope.gridOptions.rowData.length;
 				var processedRows = model.getRowCount();
 				$scope.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
 				console.log('onModelUpdated ' + $scope.rowCount)
 			}
-			
+
+		},
+		onGridReady: function () {
+			console.log("onGridReady");
+			$scope.gridOptions.api.sizeColumnsToFit();
+			$scope.gridOptions.api.addGlobalListener(
+				function (foo) {
+					_.debounce(function () {
+						$scope.gridOptions.api.sizeColumnsToFit();
+					}, 300);
+					
+				}
+			);
 		},
 		onSelectionChanged: function (data) {
 			console.log('selection changed')
 			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
-			
+
 			$location.path("/artist/" + selectedRow.id.toString());
 			$scope.$apply();
 			console.log("/artist/" + selectedRow.id.toString());
@@ -79,6 +108,15 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 	document.addEventListener("DOMContentLoaded", function () {
 		var eGridDiv = document.querySelector('#artistsGrid');
 		new agGrid.Grid(eGridDiv, $scope.gridOptions);
+	});
+
+	$rootScope.$on('menuSizeChange', function (event, data) {
+
+		$('#artistsGrid').width($('.content').width());
+
+		$scope.gridOptions.api.doLayout();
+		$scope.gridOptions.api.sizeColumnsToFit();
+		//$scope.gridOptions.api.setDomLayout('print');
 	});
 
 	$scope.reloadArtists();
