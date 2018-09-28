@@ -112,13 +112,25 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 
 	$rootScope.$on('menuSizeChange', function (event, data) {
 
-		$('#artistsGrid').width($('.content').width());
+		$('#artistsGrid').width($('.wrapper').width());
+		$('#artistsGrid').height($('.wrapper').height());
 
 		$scope.gridOptions.api.doLayout();
 		$scope.gridOptions.api.sizeColumnsToFit();
 		//$scope.gridOptions.api.setDomLayout('print');
-	});
+    });
 
+	$rootScope.$on('windowResized', function (event, data) {
+
+		$('#artistsGrid').width($('.wrapper').width());
+		$('#artistsGrid').height($('.wrapper').height());
+
+		$scope.gridOptions.api.doLayout();
+		$scope.gridOptions.api.sizeColumnsToFit();
+		//$scope.gridOptions.api.setDomLayout('print');
+    });
+    
+  
 	$scope.reloadArtists();
 
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');

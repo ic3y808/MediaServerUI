@@ -23,7 +23,6 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 		columnDefs: columnDefs,
 		rowData: null,
 		rowSelection: 'single',
-	//	domLayout: 'autoHeight',
 		enableColResize: true,
 		enableSorting: true,
 		enableFilter: true,
@@ -95,7 +94,6 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 
 								$scope.gridOptions.api.setRowData($scope.tracks);
 								$scope.gridOptions.api.sizeColumnsToFit();
-								$scope.gridOptions.api.setDomLayout('print');
 
 								$scope.$apply();
 							}
@@ -126,16 +124,15 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 		//$scope.gridOptions.api.setDomLayout('print');
 	});
 
-	$(window).on('resize', function () {
-		
-		_.debounce(function () {
-			$('.ag-root-wrapper-body').width($('.ag-root-wrapper').width())
+    $rootScope.$on('windowResized', function (event, data) {
 
-			//$scope.gridOptions.api.doLayout();
-			$scope.gridOptions.api.sizeColumnsToFit();
-			//$scope.gridOptions.api.setDomLayout('print');
-		}, 300);
-	});
+		$('#tracksGrid').width($('.wrapper').width());
+		$('#tracksGrid').height($('.wrapper').height());
+
+		$scope.gridOptions.api.doLayout();
+		$scope.gridOptions.api.sizeColumnsToFit();
+		//$scope.gridOptions.api.setDomLayout('print');
+    });
 
 	$scope.getArtist();
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');

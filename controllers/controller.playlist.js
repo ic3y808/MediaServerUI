@@ -60,18 +60,15 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 
 	});
 
-	$(window).on('resize', function () {
-		
-		_.debounce(function () {
-			$('#playlistGrid').width($('.content').width())
-			$('#playlistGrid').height($('.content').height() - 60)
-			$scope.gridOptions.api.doLayout();
-			//$scope.gridOptions.api.sizeColumnsToFit();
-			//$scope.gridOptions.api.setDomLayout('print');
-		}, 300);
-	});
+    $rootScope.$on('windowResized', function (event, data) {
 
+		$('#playlistGrid').width($('.wrapper').width());
+		$('#playlistGrid').height($('.wrapper').height());
 
+		$scope.gridOptions.api.doLayout();
+		$scope.gridOptions.api.sizeColumnsToFit();
+		//$scope.gridOptions.api.setDomLayout('print');
+    });
 
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 	$(".loader").css("display", "none");
