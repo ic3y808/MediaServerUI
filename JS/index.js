@@ -24,7 +24,11 @@ var app = angular.module('subsonic',
         'controllers-status',
         'controllers-artists',
         'controllers-artist',
-        'controllers-playlist'
+        'controllers-genres',
+        'controllers-playing',
+        'controllers-playlist',
+        'controllers-playlists',
+        'controllers-podcasts'
     ]);
 
 app.config(['$routeProvider', '$locationProvider',
@@ -46,6 +50,18 @@ app.config(['$routeProvider', '$locationProvider',
         }).when('/playlist', {
             templateUrl: 'template/playlist.jade',
             controller: 'playlistController'
+        }).when('/playlists', {
+            templateUrl: 'template/playlists.jade',
+            controller: 'playlistsController'
+        }).when('/genres', {
+            templateUrl: 'template/genres.jade',
+            controller: 'genresController'
+        }).when('/podcasts', {
+            templateUrl: 'template/podcasts.jade',
+            controller: 'podcastsController'
+        }).when('/playing', {
+            templateUrl: 'template/playing.jade',
+            controller: 'playingController'
         }).when('/settings', {
             templateUrl: 'template/settings.jade',
             controller: 'settingsController'
@@ -98,7 +114,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         console.log('loadTrack')
         $('#mainTimeDisplay').html("Loading...");
 
-       
+
         var source = $rootScope.audioSource();
         console.log(source)
         source.artistUrl = "/artist/" + source.artistId;
@@ -106,8 +122,8 @@ app.run(function ($rootScope, audio, subsonicService) {
         source.url = $rootScope.subsonic.streamUrl(source.id, 320);
 
         audio.src = source.url;
-        
-        
+
+
         $('#artistInfo').html(source.artist);
         $('#artistInfo').attr("href", source.artistUrl);
         $('#trackInfo').html(source.title);
@@ -213,20 +229,20 @@ app.run(function ($rootScope, audio, subsonicService) {
 
     $("#playlist-audio").on("timeupdate", function () {
         var playPercent = 100 * (audio.currentTime / audio.duration);
-        if(!isNaN(playPercent)){
+        if (!isNaN(playPercent)) {
             var buffered = audio.buffered;
             var loaded;
-    
-    
+
+
             if (buffered.length) {
                 loaded = 100 * buffered.end(0) / audio.duration;
             }
-    
-    
+
+
             $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
             $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
             $('#mainTimeDisplay').html($rootScope.formatTime(audio.currentTime) + " / " + $rootScope.formatTime(audio.duration));
-        }       
+        }
     });
 
     $("#muteButton").click(function () {
@@ -257,6 +273,7 @@ app.run(function ($rootScope, audio, subsonicService) {
 
     $("#repeatButton").click(function () {
         $rootScope.repeatEnabled = !$rootScope.repeatEnabled;
+        $("#repeatButton").toggleClass('button-selected');
     });
 
     $("#downloadButton").click(function () {
@@ -294,9 +311,15 @@ app.run(function ($rootScope, audio, subsonicService) {
     });
 
     $("#clickProgress").click(function (e) {
-        var seekto = audio.duration * (e.offsetX / $("#clickProgress").width());
-        if (seekto != NaN)
+        var seekto = audio.duration * ((e.offsetX / $("#clickProgress").width()));
+
+        console.log(e.offsetX + " " + $("#clickProgress").width() + " " + seekto)
+
+
+        if (seekto != NaN) {
             audio.currentTime = seekto;
+        }
+
     });
 
 
@@ -363,7 +386,7 @@ app.run(function ($rootScope, audio, subsonicService) {
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
-   
+
 
 
     $rootScope.socket.emit('load_settings');
@@ -374,15 +397,11 @@ app.run(function ($rootScope, audio, subsonicService) {
         }
     };
 
-    $rootScope.debounceMethod = function(){
-       
-    }
-
     function debounce(func, wait, immediate) {
         var timeout;
-        return function() {
+        return function () {
             var context = this, args = arguments;
-            var later = function() {
+            var later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
             };
@@ -393,7 +412,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         };
     };
 
-    var myEfficientFn = debounce(function() {
+    var myEfficientFn = debounce(function () {
         $rootScope.$broadcast('windowResized');
     }, 25);
 
