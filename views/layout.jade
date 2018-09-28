@@ -1,4 +1,3 @@
-
 doctype html
 html(ng-app='subsonic')
   head
@@ -12,7 +11,7 @@ html(ng-app='subsonic')
     link(rel='stylesheet', href='/CSS/style.css')
   body#page-top
     
-    #body-row.row
+    #body-row.row((window:resize)='onResize($event)')
       include nav.jade  
       .loader 
       ng-view.content.content-wide.animate-bottom
@@ -57,5 +56,3 @@ html(ng-app='subsonic')
 
     script(type='text/javascript', src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1')
 
-
-    
