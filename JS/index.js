@@ -18,6 +18,7 @@ var app = angular.module('subsonic',
         'com.benjipott.videogular.plugins.chromecast',
         'factories-subsonic',
         'controllers-home',
+        'controllers-index',
         'controllers-settings',
         'controllers-status',
         'controllers-artists',
@@ -35,6 +36,9 @@ app.config(['$routeProvider', '$locationProvider',
         }).when('/status', {
             templateUrl: 'template/status.jade',
             controller: 'statusController'
+        }).when('/index', {
+            templateUrl: 'template/index-view.jade',
+            controller: 'indexController'
         }).when('/playlist', {
             templateUrl: 'template/playlist.jade',
             controller: 'playlistController'
@@ -69,16 +73,15 @@ app.run(function ($rootScope, audio, subsonicService) {
     $rootScope.currentVolume = audio.volume;
     $rootScope.selectedIndex = 0;
     $rootScope.repeatEnabled = false;
-    $rootScope.tracks = [{
-        'track': 1,
-        'name': '',
-        'length': '',
-        'file': ''
-    }, ];
+    $rootScope.tracks = [];
     $rootScope.settings = [];
     $rootScope.trackCount = function () {
         return $rootScope.tracks.length;
     }
+    $rootScope.showTrackCount = function () {
+        return $rootScope.tracks.length > 0;
+    }
+
     $rootScope.selectedTrack = function () {
         return $rootScope.tracks[$rootScope.selectedIndex]
     };

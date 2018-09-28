@@ -18,7 +18,7 @@
         span.fa.list-ul.fa-fw.mr-3
         span.menu-collapsed
           | Playlist 
-          span.badge.badge-pill.badge-primary.ml-2 {{$root.trackCount()}}
+          span(ng-show="$root.showTrackCount()").badge.badge-pill.badge-primary.ml-2 {{$root.trackCount()}}
 
     a.bg-dark.list-group-item.list-group-item-action(href='/status')
       .d-flex.w-100.justify-content-start.align-items-center
