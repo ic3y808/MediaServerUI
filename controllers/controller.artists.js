@@ -1,7 +1,7 @@
 var controllers = angular.module('controllers-artists', []);
 $(".content").css("display", "none");
 $(".loader").css("display", "block");
-controllers.controller('artistsController', ['$rootScope', '$scope', '$location', '$sce', 'subsonicService', function ($rootScope, $scope, $location, $sce, subsonicService) {
+controllers.controller('artistsController', ['$rootScope', '$scope', '$location', 'subsonicService', function ($rootScope, $scope, $location, $sce, subsonicService) {
 	console.log('artists-controller')
 
 	var columnDefs = [{
