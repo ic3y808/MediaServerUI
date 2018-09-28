@@ -336,6 +336,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         $('.sidebar-submenu').toggleClass('d-none');
         $('.submenu-icon').toggleClass('d-none');
         $('.content').toggleClass('content-wide');
+        $('.list-group').toggleClass('card-5');
         $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
 
         // Treating d-flex/d-none on separators with title
