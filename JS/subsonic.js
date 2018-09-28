@@ -978,23 +978,18 @@ window.SubsonicAPI = function () {
     }, {
       key: 'getStarred',
       value: function getStarred(folderId) {
-        var _this22 = this;
+        var _this11 = this;
 
         return new Promise(function (resolve, reject) {
-          var url = _this22._buildUrl('getStarred', function () {
-            if (folderId) {
-              return {
-                musicFolderId: folderId
-              };
-            } else {
-              return;
-            }
-          }());
-          _this22._xhr(url).then(function (e) {
-            var res = e.target.resolve['subsonic-response'].starred;
+          var url = _this11._buildUrl('getStarred');
+          _this11._xhr(url).then(function (e) {
+            var res = e.target.response['subsonic-response'].starred;
+            
             resolve(res);
           }, reject);
         });
+
+       
       }
 
       /**

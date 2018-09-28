@@ -20,6 +20,7 @@ var app = angular.module('subsonic',
         'controllers-home',
         'controllers-index',
         'controllers-settings',
+        'controllers-starred',
         'controllers-status',
         'controllers-artists',
         'controllers-artist',
@@ -39,6 +40,9 @@ app.config(['$routeProvider', '$locationProvider',
         }).when('/index', {
             templateUrl: 'template/index-view.jade',
             controller: 'indexController'
+        }).when('/starred', {
+            templateUrl: 'template/starred.jade',
+            controller: 'starredController'
         }).when('/playlist', {
             templateUrl: 'template/playlist.jade',
             controller: 'playlistController'
