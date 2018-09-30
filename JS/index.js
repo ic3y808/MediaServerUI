@@ -1,10 +1,5 @@
 agGrid.initialiseAgGridWithAngular1(angular);
-initializeCastApi = function () {
-    cast.framework.CastContext.getInstance().setOptions({
-        receiverApplicationId: "DAB06F7C",
-        autoJoinPolicy: chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED
-    });
-};
+
 
 var app = angular.module('subsonic',
     [
@@ -17,6 +12,7 @@ var app = angular.module('subsonic',
         'com.2fdevs.videogular.plugins.poster',
         'com.benjipott.videogular.plugins.chromecast',
         'factories-subsonic',
+        'factories-chromecast',
         'controllers-home',
         'controllers-index',
         'controllers-settings',
@@ -81,20 +77,42 @@ app.config(['$routeProvider', '$locationProvider',
     }
 ]);
 
-app.factory('audio', function ($document) {
-    var audio = $document[0].getElementById('playlist-audio');
-    return audio;
+app.factory('media', function ($document) {
+    var media = $document[0].getElementById('media-player');
+    return media;
 });
 
-app.run(function ($rootScope, audio, subsonicService) {
+
+app.run(function ($window, $rootScope, media, chromecastService, subsonicService) {
+
+    var myWindow = angular.element($window);
+    myWindow.on('__onGCastApiAvailable', function (isAvailable) {
+        console.log('cast is ' + isAvailable)
+        $rootScope.isCastAvailable = isAvailable;
+    })
     $rootScope.isLoggedIn = false;
     $rootScope.activeSong = "";
     $rootScope.playing = false;
-    $rootScope.currentVolume = audio.volume;
+    $rootScope.currentVolume = media.volume;
     $rootScope.selectedIndex = 0;
     $rootScope.repeatEnabled = false;
     $rootScope.tracks = [];
     $rootScope.settings = [];
+
+    var PLAYER_STATE = {
+        IDLE: 'IDLE',
+        LOADING: 'LOADING',
+        LOADED: 'LOADED',
+        PLAYING: 'PLAYING',
+        PAUSED: 'PAUSED',
+        STOPPED: 'STOPPED',
+        ERROR: 'ERROR'
+    };
+
+    $rootScope.castSession = function () {
+        return cast.framework.CastContext.getInstance().getCurrentSession();
+    }
+
     $rootScope.trackCount = function () {
         return $rootScope.tracks.length;
     }
@@ -114,58 +132,100 @@ app.run(function ($rootScope, audio, subsonicService) {
         console.log('loadTrack')
         $('#mainTimeDisplay').html("Loading...");
 
-
         var source = $rootScope.audioSource();
-        console.log(source)
         source.artistUrl = "/artist/" + source.artistId;
         source.albumUrl = "/album/" + source.albumId;
         source.url = $rootScope.subsonic.streamUrl(source.id, 320);
+        console.log(source)
 
-        audio.src = source.url;
+        $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+            console.log("getArtistDetails result")
+            console.log(result)
+
+            if (result) {
+
+                if ($rootScope.remotePlayer && $rootScope.remotePlayer.isConnected) {
+                    $rootScope.setupRemotePlayer();
 
 
-        $('#artistInfo').html(source.artist);
-        $('#artistInfo').attr("href", source.artistUrl);
-        $('#trackInfo').html(source.title);
-        $('#trackInfo').attr("href", source.albumUrl);
+                    var mediaInfo = new chrome.cast.media.MediaInfo(source.url, source.transcodedContentType);
 
-        if (source.starred) {
-            $("#likeButtonIcon").removeClass('far');
-            $("#likeButtonIcon").addClass('fa');
-        } else {
-            $("#likeButtonIcon").removeClass('fa');
-            $("#likeButtonIcon").addClass('far');
-        }
+                    mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+                    //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+                    //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+                    //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+                    mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+                    mediaInfo.customData = JSON.stringify(source);
+                    //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
+                    mediaInfo.metadata.title = source.title;
+                    mediaInfo.metadata.images = [{
+                        'url': result.largeImageUrl.replace('300x300', '1280x400')
+                    }];
 
-        $("#playPauseIcon").addClass("fa-pause");
-        $("#playPauseIcon").removeClass("fa-play");
+                    var request = new chrome.cast.media.LoadRequest(mediaInfo);
+                    cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
 
-        $rootScope.subsonic.getArtist(source.artistId).then(function (artist) {
-            if (artist.coverArt) {
-                $rootScope.subsonic.getCoverArt(artist.coverArt, 128).then(function (result) {
-                    $('#nowPlayingImageHolder').attr('src', result);
-                    $rootScope.$digest();
-                })
+
+                } else {
+                    media.src = source.url;
+                    media.load();
+                    if ($rootScope.shouldSeek) {
+                        $rootScope.shouldSeek = false;
+                        media.currentTime = $rootScope.prePlannedSeek;
+                    }
+                    media.play();
+                    $('#volumeSlider').val($rootScope.currentVolume * 100)
+                }
+
+                $('#artistInfo').html(source.artist);
+                $('#artistInfo').attr("href", source.artistUrl);
+                $('#trackInfo').html(source.title);
+                $('#trackInfo').attr("href", source.albumUrl);
+
+                if (source.starred) {
+                    $("#likeButtonIcon").removeClass('far');
+                    $("#likeButtonIcon").addClass('fa');
+                } else {
+                    $("#likeButtonIcon").removeClass('fa');
+                    $("#likeButtonIcon").addClass('far');
+                }
+
+                $("#playPauseIcon").addClass("fa-pause");
+                $("#playPauseIcon").removeClass("fa-play");
+
+
+
+
+                $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+                $rootScope.$digest();
             }
-        })
-
-
-
-        audio.load();
-        audio.play();
-        $('#volumeSlider').val($rootScope.currentVolume * 100)
-    }
+        });
+    };
 
     $rootScope.play = function () {
-        audio.play();
+        if ($rootScope.remotePlayer.isConnected) {
+            if ($rootScope.remotePlayer.isPaused) {
+                $rootScope.remotePlayerController.playOrPause();
+            }
+
+        } else {
+            media.play();
+        }
+
     }
 
     $rootScope.pause = function () {
-        audio.pause();
+        if ($rootScope.remotePlayer.isConnected) {
+            if (!$rootScope.remotePlayer.isPaused) {
+                $rootScope.remotePlayerController.playOrPause();
+            }
+        } else {
+            media.pause();
+        }
     }
 
     $rootScope.stop = function () {
-        audio.stop();
+        media.stop();
     }
 
     $rootScope.previous = function () {
@@ -187,7 +247,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         return minutes + ":" + seconds;
     }
 
-    $("#playlist-audio").on("play", function () {
+    $("#media-player").on("play", function () {
         $rootScope.$apply(function () {
             $rootScope.playing = true;
             $("#playPauseIcon").addClass("fa-pause");
@@ -195,7 +255,7 @@ app.run(function ($rootScope, audio, subsonicService) {
         });
     });
 
-    $("#playlist-audio").on("pause", function () {
+    $("#media-player").on("pause", function () {
         $rootScope.$apply(function () {
             $rootScope.playing = false;
             $("#playPauseIcon").removeClass("fa-pause");
@@ -203,11 +263,11 @@ app.run(function ($rootScope, audio, subsonicService) {
         });
     });
 
-    $("#playlist-audio").on("ended", function () {
+    $("#media-player").on("ended", function () {
         if (($rootScope.selectedIndex + 1) === $rootScope.tracks.length) {
             $rootScope.playing = false;
             $rootScope.selectedIndex = 0;
-            $('#playlist-audio').src = $rootScope.audioSource();
+            $('#media-player').src = $rootScope.audioSource();
             $("#playPauseIcon").removeClass("fa-pause");
             $("#playPauseIcon").addClass("fa-play");
             $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
@@ -219,43 +279,54 @@ app.run(function ($rootScope, audio, subsonicService) {
         }
     });
 
-    $("#playlist-audio").on("canplaythrough", function () {
-        $('#mainTimeDisplay').html("0:00 / " + $rootScope.formatTime(audio.duration));
+    $("#media-player").on("canplaythrough", function () {
+        $('#mainTimeDisplay').html("0:00 / " + $rootScope.formatTime(media.duration));
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
         $("#playPauseIcon").addClass("fa-pause");
         $("#playPauseIcon").removeClass("fa-play");
     });
 
-    $("#playlist-audio").on("timeupdate", function () {
-        var playPercent = 100 * (audio.currentTime / audio.duration);
+    $("#media-player").on("timeupdate", function () {
+        var playPercent = 100 * (media.currentTime / media.duration);
         if (!isNaN(playPercent)) {
-            var buffered = audio.buffered;
+            var buffered = media.buffered;
             var loaded;
 
 
             if (buffered.length) {
-                loaded = 100 * buffered.end(0) / audio.duration;
+                loaded = 100 * buffered.end(0) / media.duration;
             }
 
 
             $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
             $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
-            $('#mainTimeDisplay').html($rootScope.formatTime(audio.currentTime) + " / " + $rootScope.formatTime(audio.duration));
+            $('#mainTimeDisplay').html($rootScope.formatTime(media.currentTime) + " / " + $rootScope.formatTime(media.duration));
         }
     });
 
     $("#muteButton").click(function () {
-        $rootScope.isMuted = !$rootScope.isMuted;
-        if ($rootScope.isMuted) {
-            audio.volume = 0;
-            $('#volumeSlider').val(0)
+        var vol = 0;
+        if ($rootScope.remotePlayer.isConnected) {
+            $rootScope.remotePlayerController.muteOrUnmute();
+            $rootScope.isMuted = $rootScope.remotePlayer.isMuted;
+            if ($rootScope.isMuted) {
+                vol = 0;
+                $('#volumeSlider').val(vol);
+            } else {
+                vol = $rootScope.remotePlayer.volumeLevel;
+                $('#volumeSlider').val(vol * 100);
+            }
         } else {
-            audio.volume = $rootScope.currentVolume;
-            $('#volumeSlider').val($rootScope.currentVolume * 100)
+            $rootScope.isMuted = !$rootScope.isMuted;
+            if ($rootScope.isMuted) {
+                media.volume = 0;
+                $('#volumeSlider').val(0)
+            } else {
+                media.volume = $rootScope.currentVolume;
+                $('#volumeSlider').val($rootScope.currentVolume * 100);
+            }
         }
-
-
     });
 
     $("#skipBackButton").click(function () {
@@ -263,8 +334,17 @@ app.run(function ($rootScope, audio, subsonicService) {
     });
 
     $("#playPauseButton").click(function () {
-        if ($rootScope.playing) $rootScope.pause();
-        else $rootScope.play();
+
+        if ($rootScope.remotePlayer.isConnected) {
+            if (!$rootScope.remotePlayer.isPaused) $rootScope.pause();
+            else $rootScope.play();
+
+        } else {
+            if ($rootScope.playing) $rootScope.pause();
+            else $rootScope.play();
+        }
+
+
     });
 
     $("#skipNextButton").click(function () {
@@ -307,19 +387,31 @@ app.run(function ($rootScope, audio, subsonicService) {
     });
 
     $("#volumeSlider").on('change', function () {
-        audio.volume = $rootScope.currentVolume = $('#volumeSlider').val() / 100
+        var level = $rootScope.currentVolume = $('#volumeSlider').val() / 100;
+        if ($rootScope.remotePlayer.isConnected) {
+            $rootScope.remotePlayer.volumeLevel = level;
+            $rootScope.remotePlayerController.setVolumeLevel();
+        } else {
+            media.volume = level;
+        }
     });
 
     $("#clickProgress").click(function (e) {
-        var seekto = audio.duration * ((e.offsetX / $("#clickProgress").width()));
+        var seekto = NaN;
 
-        console.log(e.offsetX + " " + $("#clickProgress").width() + " " + seekto)
-
-
-        if (seekto != NaN) {
-            audio.currentTime = seekto;
+        if ($rootScope.remotePlayer.isConnected) {
+            var currentMediaDuration = $rootScope.remotePlayer.duration;
+            seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
+            if (seekto != NaN) {
+                $rootScope.remotePlayer.currentTime = seekto;
+                $rootScope.remotePlayerController.seek();
+            }
+        } else {
+            seekto = media.duration * ((e.offsetX / $("#clickProgress").width()));
+            if (seekto != NaN) {
+                media.currentTime = seekto;
+            }
         }
-
     });
 
 
@@ -342,14 +434,12 @@ app.run(function ($rootScope, audio, subsonicService) {
                 }
                 $rootScope.$broadcast('settingsReloadedEvent');
                 $rootScope.$digest();
-                var login = subsonicService.login();
-                if (login)
-                    login.then(function () {
-                        $rootScope.$digest();
-                    });
+                subsonicService.login();
             }
         }
     });
+
+
 
     $('#body-row .collapse').collapse('hide');
 
@@ -391,16 +481,11 @@ app.run(function ($rootScope, audio, subsonicService) {
 
     $rootScope.socket.emit('load_settings');
 
-    window['__onGCastApiAvailable'] = function (isAvailable) {
-        if (isAvailable) {
-            initializeCastApi();
-        }
-    };
-
     function debounce(func, wait, immediate) {
         var timeout;
         return function () {
-            var context = this, args = arguments;
+            var context = this,
+                args = arguments;
             var later = function () {
                 timeout = null;
                 if (!immediate) func.apply(context, args);
@@ -412,11 +497,217 @@ app.run(function ($rootScope, audio, subsonicService) {
         };
     };
 
-    var myEfficientFn = debounce(function () {
+    var windowResized = debounce(function () {
         $rootScope.$broadcast('windowResized');
     }, 25);
 
+    $(window).on('resize', windowResized);
 
-    $(window).on('resize', myEfficientFn);
+
+    $rootScope.remoteUpdateInfo = function () {
+        if ($rootScope.remotePlayer.isConnected) {
+            var currentMediaTime = $rootScope.remotePlayer.currentTime;
+            var currentMediaDuration = $rootScope.remotePlayer.duration;
+
+            var playPercent = 100 * (currentMediaTime / currentMediaDuration);
+            if (!isNaN(playPercent)) {
+                $('#subProgress').attr('aria-valuenow', "100").css('width', "100%");
+                $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
+                $('#mainTimeDisplay').html($rootScope.formatTime(currentMediaTime) + " / " + $rootScope.formatTime(currentMediaDuration));
+            }
+
+
+        }
+    };
+
+    $rootScope.startProgressTimer = function () {
+        $rootScope.stopProgressTimer();
+        $rootScope.timer = setInterval($rootScope.remoteUpdateInfo, 250);
+    };
+
+    /**
+     * Stops the timer to increment the media progress bar
+     */
+    $rootScope.stopProgressTimer = function () {
+        if ($rootScope.timer) {
+            clearInterval($rootScope.timer);
+            $rootScope.timer = null;
+        }
+    };
+
+    Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
+        get: function () {
+            return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
+        }
+    })
+
+    $rootScope.setupRemotePlayer = function () {
+
+        if (!$rootScope.remoteConfigured) {
+            $rootScope.remotePlayerController.addEventListener(
+                cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
+                function () {
+                    if ($rootScope.remotePlayer.isPaused) {
+                        $("#playPauseIcon").addClass("fa-play");
+                        $("#playPauseIcon").removeClass("fa-pause");
+                    } else {
+                        $("#playPauseIcon").addClass("fa-pause");
+                        $("#playPauseIcon").removeClass("fa-play");
+                    }
+                }
+            );
+
+            $rootScope.remotePlayerController.addEventListener(
+                cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
+                function () {
+                    $rootScope.isMuted = $rootScope.remotePlayer.isMuted;
+                    if ($rootScope.isMuted) {
+                        vol = 0;
+                        $('#volumeSlider').val(vol);
+                    } else {
+                        vol = $rootScope.remotePlayer.volumeLevel;
+                        $('#volumeSlider').val(vol * 100);
+                    }
+                }
+            );
+
+            $rootScope.remotePlayerController.addEventListener(
+                cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
+                function () {
+                    $('#volumeSlider').val($rootScope.remotePlayer.volumeLevel * 100)
+                }
+            );
+
+            $rootScope.remotePlayerController.addEventListener(
+                cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
+                function () {
+                    console.log('state change ')
+                    console.log($rootScope.remotePlayer.playerState)
+
+                    if ($rootScope.remotePlayer.playerState === null) {
+                        if ($rootScope.remotePlayer.savedPlayerState) {
+                            $rootScope.shouldSeek = true;
+                            $rootScope.prePlannedSeek = $rootScope.remotePlayer.savedPlayerState.currentTime;
+                            $rootScope.loadTrack($rootScope.selectedIndex);
+                            console.log('saved state')
+                        } else {
+                            $rootScope.next();
+                        }
+                    }
+                    if ($rootScope.remotePlayer.playerState === 'BUFFERING') {
+                        $('#mainTimeDisplay').html("Buffering...");
+                    }
+                    if ($rootScope.remotePlayer.playerState === 'PLAYING' && $rootScope.shouldSeek) {
+                        $rootScope.shouldSeek = false;
+                        $rootScope.remotePlayer.currentTime = $rootScope.prePlannedSeek;
+                        $rootScope.remotePlayerController.seek();
+
+                    }
+
+
+                    if (media.playing) {
+                        $rootScope.shouldSeek = true;
+                        $rootScope.prePlannedSeek = media.currentTime;
+                        media.pause();
+                        $rootScope.loadTrack($rootScope.selectedIndex);
+                    }
+                    $rootScope.isMuted = $rootScope.remotePlayer.isMuted;
+                    if ($rootScope.isMuted) {
+                        $('#volumeSlider').val(0);
+                    } else {
+                        $('#volumeSlider').val($rootScope.remotePlayer.volumeLevel * 100);
+                    }
+                    if ($rootScope.remotePlayer.isPaused) {
+                        $("#playPauseIcon").addClass("fa-play");
+                        $("#playPauseIcon").removeClass("fa-pause");
+                    } else {
+                        $("#playPauseIcon").addClass("fa-pause");
+                        $("#playPauseIcon").removeClass("fa-play");
+                    }
+                    // TODO fix resume support
+                    if ($rootScope.remotePlayer.mediaInfo && $rootScope.remotePlayer.mediaInfo.metadata) {
+                       //id = $rootScope.remotePlayer.mediaInfo.contentId;
+
+                       //id = id.split("&")[6];
+                       //id = id.substring(3,id.length - 1);
+
+                       //$rootScope.subsonic.getSong2(id).then(function (result) {
+                       //    console.log("getArtistDetails result")
+                       //    console.log(result)
+                
+                       //    if (result) {
+                
+                       //       
+                
+                       //        $('#artistInfo').html(source.artist);
+                       //        $('#artistInfo').attr("href", source.artistUrl);
+                       //        $('#trackInfo').html(source.title);
+                       //        $('#trackInfo').attr("href", source.albumUrl);
+                
+                       //        if (source.starred) {
+                       //            $("#likeButtonIcon").removeClass('far');
+                       //            $("#likeButtonIcon").addClass('fa');
+                       //        } else {
+                       //            $("#likeButtonIcon").removeClass('fa');
+                       //            $("#likeButtonIcon").addClass('far');
+                       //        }
+                
+                       //        $("#playPauseIcon").addClass("fa-pause");
+                       //        $("#playPauseIcon").removeClass("fa-play");
+                
+                
+                
+                
+                       //        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+                       //        $rootScope.$digest();
+                       //    }
+                       //});
+                    }
+                }
+            );
+            $rootScope.startProgressTimer();
+            $rootScope.remoteConfigured = true;
+        }
+        if ($rootScope.remotePlayer.isConnected) {
+            if (media.playing) {
+                $rootScope.shouldSeek = true;
+                $rootScope.prePlannedSeek = media.currentTime;
+                media.pause();
+                $rootScope.loadTrack($rootScope.selectedIndex);
+            }
+        }
+
+    }
+
+    $rootScope.setupLocalPlayer = function () {
+        $rootScope.stopProgressTimer();
+        $rootScope.remoteConfigured = false;
+    };
+
+
+
+
+    $rootScope.switchPlayer = function () {
+        console.log('switchPlayer')
+
+
+        if (cast && cast.framework) {
+            if ($rootScope.remotePlayer.isConnected) {
+
+                $rootScope.setupRemotePlayer();
+                return;
+            }
+        }
+
+
+        $rootScope.setupLocalPlayer();
+    }
+
+
+    setTimeout(() => {
+        if (chromecastService.castStatus()) {
+            chromecastService.initializeCast();
+        }
+    }, 1000);
+
 });
-

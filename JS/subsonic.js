@@ -480,7 +480,6 @@ window.SubsonicAPI = function () {
 
         return new Promise(function (resolve, reject) {
           var url = _this5._buildUrl('ping');
-          console.log(url);
           _this5._xhr(url).then(function (e) {
             var res = e.target.response['subsonic-response'];
             resolve(res);

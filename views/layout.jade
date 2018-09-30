@@ -17,7 +17,8 @@ html(ng-app='subsonic')
       ng-view.content.content-wide.animate-bottom
       include sidenav.jade
       include footer.jade
-    
+      audio#playlist-audio(preload='false', controls='hidden', style="display:none;")
+      video#media-player(preload='false', controls='hidden', style="display:none;")
     script.
       if (typeof module === 'object') {window.module = module; module = undefined;}
     script(src="/node_modules/crypto-js/crypto-js.js")
@@ -46,6 +47,7 @@ html(ng-app='subsonic')
     script(src="/JS/dataTables.pageResize.min.js")
     script(src="/JS/subsonic.js")
     script(src="/factories/factory.subsonic.js")
+    script(src="/factories/factory.chromecast.js")
     script(src="/controllers/controller.home.js")
     script(src="/controllers/controller.index.js")
     script(src="/controllers/controller.status.js")
@@ -58,8 +60,9 @@ html(ng-app='subsonic')
     script(src="/controllers/controller.playlist.js")
     script(src="/controllers/controller.playlists.js")
     script(src="/controllers/controller.podcasts.js")
-  
+    script(src="/JS/CastVideo.js")
     script(src="/JS/index.js")
+    
 
     script(type='text/javascript', src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1')
 

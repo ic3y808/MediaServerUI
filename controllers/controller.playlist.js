@@ -9,6 +9,7 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 		{ headerName: "Id", field: "id", width: 75, suppressSizeToFit: true },
 		{ headerName: "#", field: "track", width: 75, suppressSizeToFit: true },
 		{ headerName: "Title", field: "title" },
+		{ headerName: "Artist", field: "artist" },
 		{ headerName: "Album", field: "album" },
 		{ headerName: "Title", field: "title" },
 		{ headerName: "Genre", field: "genre" },
