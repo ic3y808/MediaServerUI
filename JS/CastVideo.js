@@ -104,7 +104,7 @@ CastPlayer.prototype.initializeCastPlayer = function() {
     // Set the receiver application ID to your own (created in the
     // Google Cast Developer Console), or optionally
     // use the chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID
-    options.receiverApplicationId = '4F8B3483';
+    options.receiverApplicationId = 'DAB06F7C';
 
     // Auto join policy can be one of the following three:
     // ORIGIN_SCOPED - Auto connect from same appId and page origin
@@ -757,14 +757,6 @@ CastPlayer.prototype.hideFullscreenButton = function() {
 };
 
 /**
- * Show the media control
- */
-CastPlayer.prototype.showMediaControl = function() {
-    document.getElementById('media_control').style.opacity = 0.7;
-};
-
-
-/**
  * Hide the media control
  */
 CastPlayer.prototype.hideMediaControl = function() {
@@ -845,14 +837,9 @@ CastPlayer.prototype.initializeUI = function() {
         'mouseout', this.hideVolumeSlider.bind(this));
     document.getElementById('audio_on').addEventListener(
         'mouseout', this.hideVolumeSlider.bind(this));
-    document.getElementById('main_video').addEventListener(
-        'mouseover', this.showMediaControl.bind(this));
-    document.getElementById('main_video').addEventListener(
-        'mouseout', this.hideMediaControl.bind(this));
-    document.getElementById('media_control').addEventListener(
-        'mouseover', this.showMediaControl.bind(this));
-    document.getElementById('media_control').addEventListener(
-        'mouseout', this.hideMediaControl.bind(this));
+
+
+
     document.getElementById('fullscreen_expand').addEventListener(
         'click', this.requestFullScreen.bind(this));
     document.getElementById('fullscreen_collapse').addEventListener(

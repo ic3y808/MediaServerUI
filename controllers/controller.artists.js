@@ -4,15 +4,7 @@ $(".loader").css("display", "block");
 controllers.controller('artistsController', ['$rootScope', '$scope', '$location', 'subsonicService', function ($rootScope, $scope, $location, $sce, subsonicService) {
 	console.log('artists-controller')
 
-	var columnDefs = [{
-			headerName: '',
-			width: 30,
-			suppressSizeToFit: true,
-			checkboxSelection: true,
-			suppressSorting: true,
-			suppressMenu: true,
-			pinned: true
-		},
+	var columnDefs = [
 		{
 			headerName: "Name",
 			field: "name"
@@ -98,8 +90,8 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 
 
 		}
-	}
-
+    }
+    
 	$rootScope.$on('loginStatusChange', function (event, data) {
 		console.log('music reloading on subsonic ready')
 		$scope.reloadArtists();

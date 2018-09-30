@@ -16,12 +16,11 @@ factories.factory('subsonicService', function ($http, $rootScope, $route, $windo
           port: $rootScope.settings.subsonic_port,
           user: $rootScope.settings.subsonic_username,
           password: CryptoJS.AES.decrypt($rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8),
-          appName: 'Test',
+          appName: 'MediaServerUI',
           md5Auth: true
         });
 
         document.addEventListener('subsonicApi-ready', event => {
-          console.log(event.detail.status);
           if (event.detail.status === 'ok') {
             console.log('connected to subsonic')
             $rootScope.isLoggingIn = false;
