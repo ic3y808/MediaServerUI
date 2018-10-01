@@ -3,17 +3,14 @@
     .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
       .PageToolbarSection-section.PageToolbarSection-left
         button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
-          i.fa.fa-sync.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', style='font-size: 21px;')
+          i.fa.fa-sync.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer-1XS0i
             .PageToolbarButton-label.text-white Shuffle
         button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button',ng-click='startRadio()')
-          i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', style='font-size: 21px;')
+          i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label.text-white Radio
-        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button',ng-click='share()')
-          i.fa.fa-bullhorn.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fa', data-icon='bullhorn', role='img', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label.text-white Share
+        
 
     
 .PageToolbarSection-sectionContainer.card-5(style='flex-grow: 1;')
@@ -26,7 +23,7 @@ section#mainArtistContent.jumbotron.jumbotron-fluid.text-center.card-5
     p
       small.text-white Similar Artists
     .btn-group(role='group', aria-label='Basic example')   
-      a(ng-repeat='artist in similarArtists', href="/artist/{{artist.id}}").btn.btn-secondary.btn-sm(type='button') {{artist.name}}
+      a(type='button', ng-repeat='artist in similarArtists', href="/artist/{{artist.id}}").btn.btn-secondary.btn-sm {{artist.name}}
 
 .album.py-5.bg-light
   .container
