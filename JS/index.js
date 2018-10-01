@@ -1,5 +1,5 @@
 agGrid.initialiseAgGridWithAngular1(angular);
-
+$('[data-toggle="popover"]').popover();
 
 var app = angular.module('subsonic',
     [
@@ -383,6 +383,55 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
                 console.log(result);
             });
         }
+
+    });
+
+    function fallbackCopyTextToClipboard(text) {
+        var textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+      
+        try {
+          var successful = document.execCommand('copy');
+          var msg = successful ? 'successful' : 'unsuccessful';
+          console.log('Fallback: Copying text command was ' + msg);
+        } catch (err) {
+          console.error('Fallback: Oops, unable to copy', err);
+        }
+      
+        document.body.removeChild(textArea);
+      }
+      function copyTextToClipboard(text) {
+        if (!navigator.clipboard) {
+          fallbackCopyTextToClipboard(text);
+          return;
+        }
+        navigator.clipboard.writeText(text).then(function() {
+          console.log('Async: Copying to clipboard was successful!');
+        }, function(err) {
+          console.error('Async: Could not copy text: ', err);
+        });
+      }
+
+    $("#shareButton").click(function () {
+        console.log('shareButton');
+        $rootScope.subsonic.createShare($rootScope.selectedTrack().id, 'Shared from MediaCenterUI').then(function (result) {
+            $('#shareButton').popover(
+                {
+                    animation: true,
+                    content: 'Success! Url Copied to Clipboard.',
+                    delay: { "show": 0, "hide": 5000 },
+                    placement: 'top'
+                }
+            ).popover('show');
+           var url = result.url.toString();
+           copyTextToClipboard(url);
+            setTimeout(() => {
+                $('#shareButton').popover('hide');
+            }, 5000);
+        });
 
     });
 

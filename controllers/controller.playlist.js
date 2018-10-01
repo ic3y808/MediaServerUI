@@ -5,7 +5,6 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 	console.log('playlist-controller')
 
 	var columnDefs = [
-		{ headerName: '', width: 30, suppressSizeToFit: true, checkboxSelection: true, suppressSorting: true, suppressMenu: true, pinned: true },
 		{ headerName: "Id", field: "id", width: 75, suppressSizeToFit: true },
 		{ headerName: "#", field: "track", width: 75, suppressSizeToFit: true },
 		{ headerName: "Title", field: "title" },
