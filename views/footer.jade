@@ -26,11 +26,7 @@
       .nowPlayingBarRight
         
  
-        button#muteButton.btn.btn-sm.btn-dark
-          i.fa.fa-volume-off(aria-hidden='true')
-        .sliderContainer.nowPlayingBarVolumeSliderContainer.mdl-slider-container(style='width:100px;vertical-align:middle;display:inline-flex;')
-          .slidecontainer
-            input#volumeSlider.slider(type='range', min='1', max='100', value='50')
+        
         google-cast-launcher.btn.btn-sm.btn-dark(style='max-height:35px;max-width:35px;')
         button#downloadButton.btn.btn-sm.btn-dark
           i.fa.fa-download(aria-hidden='true')
@@ -38,5 +34,12 @@
           i.fa.fa-redo-alt(aria-hidden='true')
         button#likeButton.btn.btn-sm.btn-dark
           i#likeButtonIcon.far.fa-heart(aria-hidden='true')
+        button#shareButton.btn.btn-sm.btn-dark
+          i.fa.fa-bullhorn(aria-hidden='true')
         a(href='/playing')#nowPlayingViewButton.btn.btn-sm.btn-dark
           i.fa.fa-list-ul(aria-hidden='true')
+        button#muteButton.btn.btn-sm.btn-dark
+          i.fa.fa-volume-off(aria-hidden='true')
+        .sliderContainer.nowPlayingBarVolumeSliderContainer.mdl-slider-container(style='width:100px;vertical-align:middle;display:inline-flex;')
+          .slidecontainer
+            input#volumeSlider.slider(type='range', min='1', max='100', value='50')
