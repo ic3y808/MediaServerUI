@@ -19,7 +19,6 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 		columnDefs: columnDefs,
 		rowData: null,
 		rowSelection: 'single',
-		//domLayout: 'autoHeight',
 		enableColResize: true,
 		enableSorting: true,
 		enableFilter: true,
@@ -28,15 +27,10 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 		getRowNodeId: function (data) { return data.id; },
 		rowMultiSelectWithClick: true,
 		onModelUpdated: function (data) {
-
-			var model = $scope.gridOptions.api.getModel();
-			if ($scope.gridOptions.rowData != null) {
-				var totalRows = $scope.gridOptions.rowData.length;
-				var processedRows = model.getRowCount();
-				$scope.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
-				console.log('onModelUpdated ' + $scope.rowCount)
+			if (data && data.api) {
+				data.api.doLayout();
+				data.api.sizeColumnsToFit();
 			}
-
 		},
 		onSelectionChanged: function (data) {
 			console.log('selection changed')
@@ -46,7 +40,13 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 			$rootScope.$digest();
 
 		},
-		onGridReady: function (event) { $scope.gridOptions.api.setRowData($rootScope.tracks); },
+		onGridReady: function (event) {
+			if ($scope.gridOptions && $scope.gridOptions.api) {
+				$scope.gridOptions.api.setRowData($rootScope.tracks);
+				$scope.gridOptions.api.doLayout();
+				$scope.gridOptions.api.sizeColumnsToFit();
+			}
+		},
 	};
 
 
@@ -56,19 +56,26 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 	});
 
 	$rootScope.$on('menuSizeChange', function (event, data) {
-		$('#playlistGrid').width($('.content').width());
+		$('#playlistGrid').width($('.wrapper').width());
+		$('#playlistGrid').height($('.wrapper').height());
+		if ($scope.gridOptions && $scope.gridOptions.api) {
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
 
 	});
 
-    $rootScope.$on('windowResized', function (event, data) {
+
+	$rootScope.$on('windowResized', function (event, data) {
 
 		$('#playlistGrid').width($('.wrapper').width());
 		$('#playlistGrid').height($('.wrapper').height());
 
-		$scope.gridOptions.api.doLayout();
-		$scope.gridOptions.api.sizeColumnsToFit();
-		//$scope.gridOptions.api.setDomLayout('print');
-    });
+		if ($scope.gridOptions && $scope.gridOptions.api) {
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
+	});
 
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 	$(".loader").css("display", "none");

@@ -31,15 +31,10 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 		},
 		rowMultiSelectWithClick: false,
 		onModelUpdated: function (data) {
-
-			var model = $scope.gridOptions.api.getModel();
-			if ($scope.gridOptions.rowData != null) {
-				var totalRows = $scope.gridOptions.rowData.length;
-				var processedRows = model.getRowCount();
-				$scope.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
-				console.log('onModelUpdated ' + $scope.rowCount)
+			if (data && data.api) {
+				data.api.doLayout();
+				data.api.sizeColumnsToFit();
 			}
-
 		},
 		onGridReady: function () {
 			console.log("onGridReady");
@@ -49,7 +44,7 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 					_.debounce(function () {
 						$scope.gridOptions.api.sizeColumnsToFit();
 					}, 300);
-					
+
 				}
 			);
 		},
@@ -90,8 +85,8 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 
 
 		}
-    }
-    
+	}
+
 	$rootScope.$on('loginStatusChange', function (event, data) {
 		console.log('music reloading on subsonic ready')
 		$scope.reloadArtists();
@@ -102,27 +97,29 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 		new agGrid.Grid(eGridDiv, $scope.gridOptions);
 	});
 
-	$rootScope.$on('menuSizeChange', function (event, data) {
+	$rootScope.$on('menuSizeChange', function (event, currentState) {
 
 		$('#artistsGrid').width($('.wrapper').width());
 		$('#artistsGrid').height($('.wrapper').height());
 
-		$scope.gridOptions.api.doLayout();
-		$scope.gridOptions.api.sizeColumnsToFit();
-		//$scope.gridOptions.api.setDomLayout('print');
-    });
+		if($scope.gridOptions && $scope.gridOptions.api){
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
+	});
 
 	$rootScope.$on('windowResized', function (event, data) {
 
 		$('#artistsGrid').width($('.wrapper').width());
 		$('#artistsGrid').height($('.wrapper').height());
 
-		$scope.gridOptions.api.doLayout();
-		$scope.gridOptions.api.sizeColumnsToFit();
-		//$scope.gridOptions.api.setDomLayout('print');
-    });
-    
-  
+		if($scope.gridOptions && $scope.gridOptions.api){
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
+	});
+
+
 	$scope.reloadArtists();
 
 	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');

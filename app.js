@@ -37,6 +37,7 @@ app.use('/', index);
 
 app.get('/template/:name', function(req, server) {  server.render(req.params.name); });
 app.get('/artist/template/:name', function(req, server) {  server.render(req.params.name); });
+app.get('/genre/template/:name', function(req, server) {  server.render(req.params.name); });
  
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

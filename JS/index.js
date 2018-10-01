@@ -20,6 +20,7 @@ var app = angular.module('subsonic',
         'controllers-status',
         'controllers-artists',
         'controllers-artist',
+        'controllers-genre',
         'controllers-genres',
         'controllers-playing',
         'controllers-playlist',
@@ -52,6 +53,9 @@ app.config(['$routeProvider', '$locationProvider',
         }).when('/genres', {
             templateUrl: 'template/genres.jade',
             controller: 'genresController'
+        }).when('/genre/:id', {
+            templateUrl: 'template/genre.jade',
+            controller: 'genreController'
         }).when('/podcasts', {
             templateUrl: 'template/podcasts.jade',
             controller: 'podcastsController'
@@ -77,13 +81,17 @@ app.config(['$routeProvider', '$locationProvider',
     }
 ]);
 
+app.factory('remotePlayerConnected', function ($rootScope) {
+    if (!$rootScope.remotePlayer) return false;
+    return $rootScope.remotePlayer.isConnected;
+});
+
 app.factory('media', function ($document) {
     var media = $document[0].getElementById('media-player');
     return media;
 });
 
-
-app.run(function ($window, $rootScope, media, chromecastService, subsonicService) {
+app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastService, subsonicService) {
 
     var myWindow = angular.element($window);
     myWindow.on('__onGCastApiAvailable', function (isAvailable) {
@@ -99,16 +107,6 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     $rootScope.tracks = [];
     $rootScope.settings = [];
 
-    var PLAYER_STATE = {
-        IDLE: 'IDLE',
-        LOADING: 'LOADING',
-        LOADED: 'LOADED',
-        PLAYING: 'PLAYING',
-        PAUSED: 'PAUSED',
-        STOPPED: 'STOPPED',
-        ERROR: 'ERROR'
-    };
-
     $rootScope.castSession = function () {
         return cast.framework.CastContext.getInstance().getCurrentSession();
     }
@@ -116,6 +114,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     $rootScope.trackCount = function () {
         return $rootScope.tracks.length;
     }
+
     $rootScope.showTrackCount = function () {
         return $rootScope.tracks.length > 0;
     }
@@ -123,6 +122,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     $rootScope.selectedTrack = function () {
         return $rootScope.tracks[$rootScope.selectedIndex]
     };
+
     $rootScope.audioSource = function () {
         return $rootScope.selectedTrack();
     };
@@ -136,15 +136,13 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
         source.artistUrl = "/artist/" + source.artistId;
         source.albumUrl = "/album/" + source.albumId;
         source.url = $rootScope.subsonic.streamUrl(source.id, 320);
-        console.log(source)
 
         $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
             console.log("getArtistDetails result")
-            console.log(result)
 
             if (result) {
 
-                if ($rootScope.remotePlayer && $rootScope.remotePlayer.isConnected) {
+                if (remotePlayerConnected) {
                     $rootScope.setupRemotePlayer();
 
 
@@ -154,9 +152,9 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
                     //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
                     //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
                     //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+                    //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
                     mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
                     mediaInfo.customData = JSON.stringify(source);
-                    //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
                     mediaInfo.metadata.title = source.title;
                     mediaInfo.metadata.images = [{
                         'url': result.largeImageUrl.replace('300x300', '1280x400')
@@ -192,10 +190,6 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
                 $("#playPauseIcon").addClass("fa-pause");
                 $("#playPauseIcon").removeClass("fa-play");
-
-
-
-
                 $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
                 $rootScope.$digest();
             }
@@ -203,7 +197,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     };
 
     $rootScope.play = function () {
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             if ($rootScope.remotePlayer.isPaused) {
                 $rootScope.remotePlayerController.playOrPause();
             }
@@ -215,7 +209,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     }
 
     $rootScope.pause = function () {
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             if (!$rootScope.remotePlayer.isPaused) {
                 $rootScope.remotePlayerController.playOrPause();
             }
@@ -307,7 +301,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
     $("#muteButton").click(function () {
         var vol = 0;
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             $rootScope.remotePlayerController.muteOrUnmute();
             $rootScope.isMuted = $rootScope.remotePlayer.isMuted;
             if ($rootScope.isMuted) {
@@ -335,7 +329,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
     $("#playPauseButton").click(function () {
 
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             if (!$rootScope.remotePlayer.isPaused) $rootScope.pause();
             else $rootScope.play();
 
@@ -386,34 +380,34 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
     });
 
-    function fallbackCopyTextToClipboard(text) {
+    $rootScope.fallbackCopyTextToClipboard = function(text) {
         var textArea = document.createElement("textarea");
         textArea.value = text;
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
-      
+
         try {
-          var successful = document.execCommand('copy');
-          var msg = successful ? 'successful' : 'unsuccessful';
-          console.log('Fallback: Copying text command was ' + msg);
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Fallback: Copying text command was ' + msg);
         } catch (err) {
-          console.error('Fallback: Oops, unable to copy', err);
+            console.error('Fallback: Oops, unable to copy', err);
         }
-      
+
         document.body.removeChild(textArea);
-      }
-      function copyTextToClipboard(text) {
+    }
+    $rootScope.copyTextToClipboard = function(text) {
         if (!navigator.clipboard) {
-          fallbackCopyTextToClipboard(text);
-          return;
+            $rootScope.fallbackCopyTextToClipboard(text);
+            return;
         }
-        navigator.clipboard.writeText(text).then(function() {
-          console.log('Async: Copying to clipboard was successful!');
-        }, function(err) {
-          console.error('Async: Could not copy text: ', err);
+        navigator.clipboard.writeText(text).then(function () {
+            console.log('Async: Copying to clipboard was successful!');
+        }, function (err) {
+            console.error('Async: Could not copy text: ', err);
         });
-      }
+    }
 
     $("#shareButton").click(function () {
         console.log('shareButton');
@@ -426,8 +420,8 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
                     placement: 'top'
                 }
             ).popover('show');
-           var url = result.url.toString();
-           copyTextToClipboard(url);
+            var url = result.url.toString();
+            $rootScope.copyTextToClipboard(url);
             setTimeout(() => {
                 $('#shareButton').popover('hide');
             }, 5000);
@@ -437,7 +431,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
     $("#volumeSlider").on('change', function () {
         var level = $rootScope.currentVolume = $('#volumeSlider').val() / 100;
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             $rootScope.remotePlayer.volumeLevel = level;
             $rootScope.remotePlayerController.setVolumeLevel();
         } else {
@@ -448,7 +442,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     $("#clickProgress").click(function (e) {
         var seekto = NaN;
 
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             var currentMediaDuration = $rootScope.remotePlayer.duration;
             seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
             if (seekto != NaN) {
@@ -479,7 +473,8 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
                     "subsonic_password": d.subsonic_password,
                     "subsonic_address": d.subsonic_address,
                     "subsonic_port": d.subsonic_port,
-                    "subsonic_use_ssl": d.subsonic_use_ssl
+                    "subsonic_use_ssl": d.subsonic_use_ssl,
+                    "subsonic_include_port_in_url": d.subsonic_include_port_in_url
                 }
                 $rootScope.$broadcast('settingsReloadedEvent');
                 $rootScope.$digest();
@@ -501,10 +496,10 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
     });
 
     $rootScope.SidebarCollapse = function () {
+        $rootScope.isMenuCollapsed = !$rootScope.isMenuCollapsed;
         $('.menu-collapsed').toggleClass('d-none');
         $('.sidebar-submenu').toggleClass('d-none');
         $('.submenu-icon').toggleClass('d-none');
-        $('.content').toggleClass('content-wide');
         $('.list-group').toggleClass('card-5');
         $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
 
@@ -518,7 +513,16 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
         // Collapse/Expand icon
         $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-        $rootScope.isMenuCollapsed = !$rootScope.isMenuCollapsed;
+
+        if ($rootScope.isMenuCollapsed) {
+            $('.content').removeClass('content-wide');
+            $('.gridContainer').removeClass('dataTable-wide');
+        }
+        else {
+            $('.content').addClass('content-wide');
+            $('.gridContainer').addClass('dataTable-wide');
+        }
+
         $rootScope.$broadcast('menuSizeChange');
     }
 
@@ -554,7 +558,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
 
     $rootScope.remoteUpdateInfo = function () {
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             var currentMediaTime = $rootScope.remotePlayer.currentTime;
             var currentMediaDuration = $rootScope.remotePlayer.duration;
 
@@ -675,49 +679,49 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
                     }
                     // TODO fix resume support
                     if ($rootScope.remotePlayer.mediaInfo && $rootScope.remotePlayer.mediaInfo.metadata) {
-                       //id = $rootScope.remotePlayer.mediaInfo.contentId;
+                        //id = $rootScope.remotePlayer.mediaInfo.contentId;
 
-                       //id = id.split("&")[6];
-                       //id = id.substring(3,id.length - 1);
+                        //id = id.split("&")[6];
+                        //id = id.substring(3,id.length - 1);
 
-                       //$rootScope.subsonic.getSong2(id).then(function (result) {
-                       //    console.log("getArtistDetails result")
-                       //    console.log(result)
-                
-                       //    if (result) {
-                
-                       //       
-                
-                       //        $('#artistInfo').html(source.artist);
-                       //        $('#artistInfo').attr("href", source.artistUrl);
-                       //        $('#trackInfo').html(source.title);
-                       //        $('#trackInfo').attr("href", source.albumUrl);
-                
-                       //        if (source.starred) {
-                       //            $("#likeButtonIcon").removeClass('far');
-                       //            $("#likeButtonIcon").addClass('fa');
-                       //        } else {
-                       //            $("#likeButtonIcon").removeClass('fa');
-                       //            $("#likeButtonIcon").addClass('far');
-                       //        }
-                
-                       //        $("#playPauseIcon").addClass("fa-pause");
-                       //        $("#playPauseIcon").removeClass("fa-play");
-                
-                
-                
-                
-                       //        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
-                       //        $rootScope.$digest();
-                       //    }
-                       //});
+                        //$rootScope.subsonic.getSong2(id).then(function (result) {
+                        //    console.log("getArtistDetails result")
+                        //    console.log(result)
+
+                        //    if (result) {
+
+                        //       
+
+                        //        $('#artistInfo').html(source.artist);
+                        //        $('#artistInfo').attr("href", source.artistUrl);
+                        //        $('#trackInfo').html(source.title);
+                        //        $('#trackInfo').attr("href", source.albumUrl);
+
+                        //        if (source.starred) {
+                        //            $("#likeButtonIcon").removeClass('far');
+                        //            $("#likeButtonIcon").addClass('fa');
+                        //        } else {
+                        //            $("#likeButtonIcon").removeClass('fa');
+                        //            $("#likeButtonIcon").addClass('far');
+                        //        }
+
+                        //        $("#playPauseIcon").addClass("fa-pause");
+                        //        $("#playPauseIcon").removeClass("fa-play");
+
+
+
+
+                        //        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+                        //        $rootScope.$digest();
+                        //    }
+                        //});
                     }
                 }
             );
             $rootScope.startProgressTimer();
             $rootScope.remoteConfigured = true;
         }
-        if ($rootScope.remotePlayer.isConnected) {
+        if (remotePlayerConnected) {
             if (media.playing) {
                 $rootScope.shouldSeek = true;
                 $rootScope.prePlannedSeek = media.currentTime;
@@ -741,7 +745,7 @@ app.run(function ($window, $rootScope, media, chromecastService, subsonicService
 
 
         if (cast && cast.framework) {
-            if ($rootScope.remotePlayer.isConnected) {
+            if (remotePlayerConnected) {
 
                 $rootScope.setupRemotePlayer();
                 return;

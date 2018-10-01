@@ -1331,6 +1331,34 @@ window.SubsonicAPI = function () {
          * @param {Object} obj - a object wihsearch params
          */
 
+      },
+      {
+        key: 'getSongsByGenre',
+        value: function getSongsByGenre(genre, count, offset) {
+          var _this34 = this;
+          if (!genre) {
+            throw new Error('genre required');
+            return;
+          }
+          return new Promise(function (resolve, reject) {
+            var url = _this34._buildUrl('getSongsByGenre', {
+              genre: genre,
+              count: count || 500,
+              offset: offset || 0
+            });
+            _this34._xhr(url).then(function (e) {
+              var res = e.target.response['subsonic-response'].songsByGenre;
+              resolve(res);
+            }, reject);
+          });
+        }
+
+        /**
+         *
+         *
+         * @param {Object} obj - a object wihsearch params
+         */
+
       }
     ]);
 

@@ -65,7 +65,18 @@ body body .vertical-flex {
     position: fixed;
     /* margin-top: 60px; */
     /* margin-bottom: 60px; */
-    left: 260px;
+    left: 60px;
+    top: 60px;
+    right: 0px;
+    bottom: 65px;
+    /* z-index: 1; */
+}
+
+.dataTable-wide {
+    position: fixed;
+    /* margin-top: 60px; */
+    /* margin-bottom: 60px; */
+    left: 230px;
     top: 60px;
     right: 0px;
     bottom: 65px;
