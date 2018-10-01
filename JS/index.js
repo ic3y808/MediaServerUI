@@ -178,7 +178,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
                 $('#artistInfo').html(source.artist);
                 $('#artistInfo').attr("href", source.artistUrl);
                 $('#trackInfo').html(source.title);
-                $('#trackInfo').attr("href", source.albumUrl);
+                $('#trackInfo').attr("href", "/playing");
 
                 if (source.starred) {
                     $("#likeButtonIcon").removeClass('far');
@@ -191,6 +191,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
                 $("#playPauseIcon").addClass("fa-pause");
                 $("#playPauseIcon").removeClass("fa-play");
                 $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+                $rootScope.$broadcast('trackChangedEvent');
                 $rootScope.$digest();
             }
         });
@@ -240,6 +241,14 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
         seconds = (seconds >= 10) ? seconds : "0" + seconds;
         return minutes + ":" + seconds;
     }
+
+    $rootScope.setContentBackground = function (img) {
+        $('.content').css('background-image', 'url(' + img + ')');
+    };
+
+    $rootScope.resetContentBackground = function (img) {
+        $('.content').css('background-image', 'url("")');
+    };
 
     $("#media-player").on("play", function () {
         $rootScope.$apply(function () {
