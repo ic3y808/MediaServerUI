@@ -19,3 +19,11 @@
 1. After cloning, ensure to pull to update your local copy
 2. Creating a new branch for new features would be suggested so a merge can later be accomplished. 
 3. Pull requests from forks are also acceptible 
+
+
+### Now Playing Preview
+![Alt text](/media/preview.png?raw=true "Overall interface")
+
+
+### GIF Preview
+![Alt Text](/media/preview.gif)
