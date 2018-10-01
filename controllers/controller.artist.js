@@ -53,19 +53,13 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
         },
         rowMultiSelectWithClick: true,
         onModelUpdated: function (data) {
-
-            var model = $scope.gridOptions.api.getModel();
-            if ($scope.gridOptions.rowData != null) {
-                var totalRows = $scope.gridOptions.rowData.length;
-                var processedRows = model.getRowCount();
-                $scope.rowCount = processedRows.toLocaleString() + ' / ' + totalRows.toLocaleString();
-                console.log('onModelUpdated ' + $scope.rowCount)
-            }
-
-        },
+			if (data && data.api) {
+				data.api.doLayout();
+				data.api.sizeColumnsToFit();
+			}
+		},
         onSelectionChanged: function (data) {
-            console.log('selection changed')
-            var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
+            var selectedRow = $scope.api.getSelectedRows()[0];
             $rootScope.tracks = $scope.tracks;
 
             var index = _.findIndex($rootScope.tracks, function (track) {
@@ -73,7 +67,10 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
             })
             $rootScope.loadTrack(index);
             $rootScope.$digest();
-
+        },
+        onGridReady: function(e){
+            $scope.api = e.api;
+            $scope.columnApi = e.columnApi;
         }
     };
 
@@ -83,11 +80,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
                 $scope.artist = artist;
                 $scope.artistName = artist.name;
 
-
                 $rootScope.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
-                    console.log("getArtistDetails result")
-                    console.log(result)
-
                     if (result) {
                         $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
                         $scope.similarArtists = result.similarArtist.slice(0, 5);
@@ -117,9 +110,11 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
                                     $scope.$apply();
                                 });
 
-                                $scope.gridOptions.api.setRowData($scope.tracks);
-                                $scope.gridOptions.api.sizeColumnsToFit();
-
+                                if($scope.gridOptions && $scope.gridOptions.api){
+                                    $scope.gridOptions.api.setRowData($scope.tracks);
+                                    $scope.gridOptions.api.doLayout();
+                                    $scope.gridOptions.api.sizeColumnsToFit();
+                                }
                                 $scope.$apply();
                             }
                         })
@@ -130,7 +125,6 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
                 $scope.$apply();
                 $(".loader").css("display", "none");
                 $(".content").css("display", "block");
-                console.log(artist);
             });
         }
     }
@@ -152,7 +146,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-        console.log('artist reloading on subsonic ready')
+        console.log('artist reloading on subsonic ready')   
         $scope.getArtist();
     });
 
@@ -160,9 +154,10 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 
         $('#artistsGrid').width($('.content').width());
 
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-        //$scope.gridOptions.api.setDomLayout('print');
+        if($scope.gridOptions && $scope.gridOptions.api){
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
     });
 
     $rootScope.$on('windowResized', function (event, data) {
@@ -170,9 +165,10 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
         $('#tracksGrid').width($('.wrapper').width());
         $('#tracksGrid').height($('.wrapper').height());
 
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-        //$scope.gridOptions.api.setDomLayout('print');
+        if($scope.gridOptions && $scope.gridOptions.api){
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
     });
 
     $scope.getArtist();

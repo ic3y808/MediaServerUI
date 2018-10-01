@@ -9,11 +9,10 @@ db.serialize(function () {
 		"`subsonic_address` TEXT," +
 		"`subsonic_port` INTEGER," +
 		"`subsonic_use_ssl` TEXT," +
+		"`subsonic_include_port_in_url` TEXT," +
 		"`subsonic_username` TEXT," +
 		"`subsonic_password` TEXT" +
 		");"
-
-
 	db.run(sql);
 });
 
@@ -25,13 +24,9 @@ module.exports.loadSettings = function (callback) {
 };
 
 module.exports.saveSettings = function (settings, callback) {
-	
-
-
-
 	try {
-		var stmt = db.prepare("INSERT OR REPLACE INTO subsonic_settings VALUES (?,?,?,?,?,?)");
-		stmt.run("general", settings.subsonic_address, settings.subsonic_port, settings.subsonic_use_ssl, settings.subsonic_username, settings.subsonic_password);
+		var stmt = db.prepare("INSERT OR REPLACE INTO subsonic_settings VALUES (?,?,?,?,?,?,?)");
+		stmt.run("general", settings.subsonic_address, settings.subsonic_port, settings.subsonic_use_ssl, settings.subsonic_include_port_in_url, settings.subsonic_username, settings.subsonic_password);
 		stmt.finalize();
 	} catch (error) {
 		if (error) {

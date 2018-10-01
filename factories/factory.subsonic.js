@@ -4,15 +4,29 @@ factories.factory('subsonicService', function ($http, $rootScope, $route, $windo
   $rootScope.isLoggingIn = true;
   $rootScope.isLoggedIn = false;
 
+  var generateConnectionString = function () {
+    var url = 'http://';
+    if ($rootScope.settings.subsonic_use_ssl)
+      url = 'https://';
+    url += $rootScope.settings.subsonic_address;
+    if ($rootScope.settings.subsonic_include_port_in_url)
+      url += ':' + $rootScope.settings.subsonic_port;
+
+    return url;
+  }
+
   var doLogin = function () {
 
-    if ($rootScope.settings && $rootScope.settings.subsonic_username !== undefined && $rootScope.settings.subsonic_password !== undefined) {
+    if ($rootScope.settings && $rootScope.settings.subsonic_username && $rootScope.settings.subsonic_password) {
       if (!$rootScope.isLoggedIn) {
         console.log('logging into subsonic')
-          
+
+        var ip = $rootScope.settings.subsonic_address;
+        if ($rootScope.settings.subsonic_include_port_in_url === true)
+          ip = ':' + $rootScope.settings.subsonic_port;
         $rootScope.subsonic = new SubsonicAPI({
           https: $rootScope.settings.subsonic_use_ssl,
-          ip: $rootScope.settings.subsonic_address,
+          ip: ip,
           port: $rootScope.settings.subsonic_port,
           user: $rootScope.settings.subsonic_username,
           password: CryptoJS.AES.decrypt($rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8),
@@ -35,7 +49,7 @@ factories.factory('subsonicService', function ($http, $rootScope, $route, $windo
       }
     }
   }
-  
+
   return {
     login: doLogin,
     ping: function () {
