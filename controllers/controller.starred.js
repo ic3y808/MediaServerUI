@@ -112,7 +112,10 @@ controllers.controller('starredController', ['$rootScope', '$scope', '$location'
 
     $scope.reloadStarred();
 
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
+    if ($rootScope.isMenuCollapsed === true) {
+		$('.content').toggleClass('content-wide');
+		$('.gridContainer ').toggleClass('dataTable-wide');
+	}
     $(".loader").css("display", "none");
     $(".content").css("display", "block");
 }]);

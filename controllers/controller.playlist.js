@@ -77,7 +77,10 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 		}
 	});
 
-	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
+	if ($rootScope.isMenuCollapsed === true) {
+		$('.content').toggleClass('content-wide');
+		$('.gridContainer ').toggleClass('dataTable-wide');
+	}
 	$(".loader").css("display", "none");
 	$(".content").css("display", "block");
 }]);

@@ -63,37 +63,37 @@ controllers.controller('genresController', ['$rootScope', '$scope', '$location',
 	};
 
 	$scope.getGenres = function (genreCollection, callback) {
-			var genres = [];
-			genreCollection.forEach(genreHolder => {
-				genreHolder.genre.forEach(genre => {
-					genres.push(genre);
-					});
+		var genres = [];
+		genreCollection.forEach(genreHolder => {
+			genreHolder.genre.forEach(genre => {
+				genres.push(genre);
 			});
+		});
 
-			Promise.all(genres).then(function (genreResult) {
-					callback(genreResult);
-			});
+		Promise.all(genres).then(function (genreResult) {
+			callback(genreResult);
+		});
 	}
 
 	$scope.reloadGenres = function () {
-			if ($rootScope.isLoggedIn) {
-					$scope.genres = [];
-					$rootScope.subsonic.getGenres().then(function (result) {
+		if ($rootScope.isLoggedIn) {
+			$scope.genres = [];
+			$rootScope.subsonic.getGenres().then(function (result) {
 
-							$scope.genres = result;
-							$scope.gridOptions.api.setRowData($scope.genres);
-							$scope.gridOptions.api.sizeColumnsToFit();
-							$scope.$apply();
+				$scope.genres = result;
+				$scope.gridOptions.api.setRowData($scope.genres);
+				$scope.gridOptions.api.sizeColumnsToFit();
+				$scope.$apply();
 
-					});
+			});
 
 
-			}
+		}
 	}
 
 	$rootScope.$on('loginStatusChange', function (event, data) {
-			console.log('genres reloading on subsonic ready')
-			$scope.reloadGenres();
+		console.log('genres reloading on subsonic ready')
+		$scope.reloadGenres();
 	});
 
 
@@ -101,11 +101,12 @@ controllers.controller('genresController', ['$rootScope', '$scope', '$location',
 	$scope.reloadGenres();
 
 
-	if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-	$(".loader").css("display", "none");
-	$(".content").css("display", "block");
-	
-	if($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
+
+
+	if ($rootScope.isMenuCollapsed === true) {
+		$('.content').toggleClass('content-wide');
+		$('.gridContainer ').toggleClass('dataTable-wide');
+	}
 	$(".loader").css("display", "none");
 	$(".content").css("display", "block");
 }]);
