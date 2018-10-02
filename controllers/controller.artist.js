@@ -41,7 +41,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
   $scope.gridOptions = {
     columnDefs: columnDefs,
     rowData: null,
-    rowSelection: 'single',
+    rowSelection: 'multiple',
     enableColResize: true,
     enableSorting: true,
     enableFilter: true,
@@ -68,8 +68,8 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
         data.api.sizeColumnsToFit();
       }
     },
-    onSelectionChanged: function (data) {
-      var selectedRow = $scope.api.getSelectedRows()[0];
+    onRowDoubleClicked: function (e) {
+      var selectedRow = e.data;
       if (selectedRow) {
         $rootScope.tracks = $scope.tracks;
 

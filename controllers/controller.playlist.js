@@ -16,7 +16,7 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 	$scope.gridOptions = {
 		columnDefs: columnDefs,
 		rowData: null,
-		rowSelection: 'single',
+		rowSelection: 'multiple',
 		enableColResize: true,
 		enableSorting: true,
 		enableFilter: true,
@@ -40,9 +40,9 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 				data.api.sizeColumnsToFit();
 			}
 		},
-		onSelectionChanged: function (data) {
+		onRowDoubleClicked: function (e) {
 			if ($scope.gridOptions && $scope.gridOptions.api) {
-				var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
+				var selectedRow = e.data;
 				if (selectedRow) {
 					console.log('selection changed')
 					var index = _.findIndex($rootScope.tracks, function (track) { return track.id === selectedRow.id })

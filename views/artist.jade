@@ -1,4 +1,4 @@
-div(style='height: calc(100vh - 155px);')
+div(style='height: calc(100vh - 125px);')
   div#mainArtistContent.page-header
     .pageToolbar-toolbar.bg-secondary.card-5
       .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
@@ -15,8 +15,8 @@ div(style='height: calc(100vh - 155px);')
       h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}}
       p.lead.text-white.bg-dark-transparent
         | {{artistBio}}
-    div(style='height:30px; position:fixed; left:0px; right:0px; bottom:0px').text-center
-      .btn-group(role='group')   
-        a(type='button', ng-repeat='artist in similarArtists', href="/artist/{{artist.id}}").btn.btn-secondary.btn-sm {{artist.name}}
+      div.text-center
+        .btn-group(role='group')   
+          a(type='button', ng-repeat='artist in similarArtists', href="/artist/{{artist.id}}").btn.btn-secondary.btn-sm {{artist.name}}
 
-  #tracksGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 50%;', flex-direction="row")
+  #tracksGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 40%;', flex-direction="row")

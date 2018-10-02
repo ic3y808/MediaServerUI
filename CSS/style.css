@@ -37,9 +37,9 @@ body body .vertical-flex {
 }
 
 .page-header {
-  height: 50%;
+  height: 60%;
   min-height: 30px;
-
+  overflow-y: auto;
   background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
