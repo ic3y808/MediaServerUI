@@ -19,7 +19,7 @@ html(ng-app='subsonic')
       include sidenav.jade
       include footer.jade
       audio#playlist-audio(preload='false', controls='hidden', style="display:none;")
-      video#media-player(preload='false', controls='hidden', style="display:none;")
+      video#media-player(preload='true', controls='hidden', style="display:none;")
     script.
       if (typeof module === 'object') {window.module = module; module = undefined;}
     script(src="/node_modules/crypto-js/crypto-js.js")

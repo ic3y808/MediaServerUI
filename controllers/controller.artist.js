@@ -9,33 +9,33 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
   $scope.artistName = '';
 
   var columnDefs = [{
-      headerName: "#",
-      field: "track",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "playCount",
-      width: 75,
-      suppressSizeToFit: true
-    },
+    headerName: "#",
+    field: "track",
+    width: 75,
+    suppressSizeToFit: true
+  },
+  {
+    headerName: "Title",
+    field: "title"
+  },
+  {
+    headerName: "Album",
+    field: "album"
+  },
+  {
+    headerName: "Title",
+    field: "title"
+  },
+  {
+    headerName: "Genre",
+    field: "genre"
+  },
+  {
+    headerName: "Plays",
+    field: "playCount",
+    width: 75,
+    suppressSizeToFit: true
+  },
   ];
 
   $scope.gridOptions = {
@@ -47,6 +47,17 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
     enableFilter: true,
     rowDeselection: true,
     animateRows: true,
+    rowClassRules: {
+      // row style function
+      'current-track': function (params) {
+
+        if ($rootScope.selectedTrack()) {
+          $scope.api.deselectAll();
+          return params.data.id === $rootScope.selectedTrack().id;
+        }
+        return false;
+      }
+    },
     getRowNodeId: function (data) {
       return data.id;
     },
@@ -59,13 +70,15 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
     },
     onSelectionChanged: function (data) {
       var selectedRow = $scope.api.getSelectedRows()[0];
-      $rootScope.tracks = $scope.tracks;
+      if (selectedRow) {
+        $rootScope.tracks = $scope.tracks;
 
-      var index = _.findIndex($rootScope.tracks, function (track) {
-        return track.id === selectedRow.id
-      })
-      $rootScope.loadTrack(index);
-      $rootScope.$digest();
+        var index = _.findIndex($rootScope.tracks, function (track) {
+          return track.id === selectedRow.id
+        })
+        $rootScope.loadTrack(index);
+        $rootScope.$digest();
+      }
     },
     onGridReady: function (e) {
       $scope.api = e.api;
@@ -83,7 +96,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
           if (result) {
             $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
             $scope.similarArtists = result.similarArtist.slice(0, 5);
-            $('.content').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
+            $('#mainArtistContent').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
             $scope.$apply();
           }
         });
@@ -143,6 +156,15 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
     $rootScope.loadTrack(0);
     $rootScope.$digest();
   };
+
+  $rootScope.$on('trackChangedEvent', function (event, data) {
+    $scope.api.redrawRows({ force: true });
+    if ($scope.gridOptions && $scope.gridOptions.api) {
+
+      $scope.gridOptions.api.doLayout();
+      $scope.gridOptions.api.sizeColumnsToFit();
+    }
+  });
 
   $rootScope.$on('loginStatusChange', function (event, data) {
     console.log('artist reloading on subsonic ready')
