@@ -4,16 +4,16 @@
       div.bg-secondary(style='height:10px;position:absolute;top:0;left:0;right:0;')
       .nowPlayingBarPositionContainer.sliderContainer.mdl-slider-container
       #progressContainer
-        #subProgress.progress-bar.progress-bar-animated.track-progress.bg-success(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
-        #mainProgress.progress-bar.progress-bar-striped.progress-bar-animated.bg-success.track-progress(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+        #subProgress.progress-bar.progress-bar-striped.progress-bar-animated.track-progress.buffer-color(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+        #mainProgress.progress-bar.progress-bar-animated.progress-color.track-progress(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
       div#clickProgress(style='height:10px;position:absolute;top:0;left:0;right:0;opacity: 0;')  
       .nowPlayingBarInfoContainer
         img#nowPlayingImageHolder.nowPlayingImage
         .nowPlayingBarText
           div
-            a#artistInfo.btn.btn-sm.btn-dark(href='#')
+            a#artistInfo.text-white(href='#')
           .nowPlayingBarSecondaryText
-            a#trackInfo.btn.btn-sm.btn-dark(href='#')
+            a#trackInfo.text-white(href='#')
 
       .nowPlayingBarCenter
         button#skipBackButton.btn.btn-sm.btn-dark

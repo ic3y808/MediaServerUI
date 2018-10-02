@@ -7,13 +7,11 @@ controllers.controller('genreController', ['$rootScope', '$scope', '$routeParams
   $scope.albums = [];
   $scope.tracks = [];
   $scope.artistName = '';
-
+  $scope.genre = $routeParams.id;
   var columnDefs = [
     {
-      headerName: "#",
-      field: "track",
-      width: 75,
-      suppressSizeToFit: true
+      headerName: "Artist",
+      field: "artist"
     },
     {
       headerName: "Title",
@@ -24,17 +22,9 @@ controllers.controller('genreController', ['$rootScope', '$scope', '$routeParams
       field: "album"
     },
     {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
       headerName: "Plays",
       field: "playCount",
-      width: 75,
+      width: 60,
       suppressSizeToFit: true
     },
   ];
@@ -103,7 +93,7 @@ controllers.controller('genreController', ['$rootScope', '$scope', '$routeParams
 
   $rootScope.$on('menuSizeChange', function (event, data) {
 
-    $('#genresGrid').width($('.content').width());
+    $('#genresGrid').width($('.wrapper').width());
 
     if ($scope.gridOptions && $scope.gridOptions.api) {
       $scope.gridOptions.api.doLayout();
@@ -113,8 +103,8 @@ controllers.controller('genreController', ['$rootScope', '$scope', '$routeParams
 
   $rootScope.$on('windowResized', function (event, data) {
 
-    $('#tracksGrid').width($('.wrapper').width());
-    $('#tracksGrid').height($('.wrapper').height());
+    $('#genresGrid').width($('.wrapper').width());
+    $('#genresGrid').height($('.wrapper').height());
 
     if ($scope.gridOptions && $scope.gridOptions.api) {
       $scope.gridOptions.api.doLayout();

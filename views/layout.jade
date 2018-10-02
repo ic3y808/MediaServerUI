@@ -5,6 +5,7 @@ html(ng-app='subsonic')
     link(rel='stylesheet', href='/node_modules/bootstrap/dist/css/bootstrap.min.css')
     link(rel='stylesheet', href='/node_modules/@fortawesome/fontawesome-free/css/all.min.css')
     link(rel='stylesheet', href='/node_modules/ag-grid-community/dist/styles/ag-grid.css')
+    link(rel='stylesheet', href='/node_modules/roboto-fontface/css/roboto/roboto-fontface.css')
     link(rel='stylesheet', href='/bower_components/videogular-themes-default/videogular.min.css')
     link(rel='stylesheet', href='/bower_components/bower-videogular-chromecast/dist/videogular-chromecast.min.css')
     link(href='https://fonts.googleapis.com/icon?family=Material+Icons', rel='stylesheet')
@@ -14,7 +15,7 @@ html(ng-app='subsonic')
     #body-row.row((window:resize)='onResize($event)')
       include nav.jade  
       .loader 
-      ng-view.content.content-wide.animate-bottom
+      ng-view.content.content-wide.animate-fade
       include sidenav.jade
       include footer.jade
       audio#playlist-audio(preload='false', controls='hidden', style="display:none;")

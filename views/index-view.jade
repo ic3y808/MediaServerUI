@@ -1,9 +1,9 @@
 div
-    .card(ng-repeat='container in artists')
+    .card(ng-repeat='container in artists').bg-dark.text-white
         .card-header
             {{container.name}}
         .card-body
             div(ng-repeat='artist in container.artist')
-                <a href="/artist/{{artist.id}}" class="card-link">{{artist.name}}</a>
+                <a href="/artist/{{artist.id}}" class="card-link text-white">{{artist.name}}</a>
        
     
