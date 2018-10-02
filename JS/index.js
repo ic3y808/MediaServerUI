@@ -417,7 +417,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
             console.error('Async: Could not copy text: ', err);
         });
     }
-
+    
     $("#shareButton").click(function () {
         console.log('shareButton');
         $rootScope.subsonic.createShare($rootScope.selectedTrack().id, 'Shared from MediaCenterUI').then(function (result) {

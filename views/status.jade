@@ -1,34 +1,34 @@
-.card.text-center
-  .card-header
+.card.bg-dark.text-center
+  .card-header.text-white
     | Backend Status
   .card-body
     div#ping
-.card.text-center
-  .card-header
+.card.bg-dark.text-center.text-center
+  .card-header.text-white
     | Subsonic Status
   .card-body
-    h5.card-title Server Status is {{server.status}}
-    p.card-text version {{server.version}}
+    h5.card-title.text-white Server Status is {{server.status}}
+    p.card-text.text-white version {{server.version}}
     
-.card.text-center
-  .card-header
+.card.bg-dark.text-center
+  .card-header.text-white
     | Enabled Folders
   .card-body
     div
       table.table
         tbody
           tr(ng-repeat='folder in folders')
-            td {{folder.name}}
-      button(ng-click='startScan()').btn.btn-success 
+            td.text-white {{folder.name}}
+      button(ng-click='startScan()').btn.btn-success.text-white
         i.fa.fa-sync 
         |  Rescan Library
 
-    div(ng-show='scanStatus.scanning')
+    div(ng-show='scanStatus.scanning').text-white
       |  Current Progress: {{scanStatus.count}}
-.card.text-center
-  .card-header
+.card.bg-dark.text-center
+  .card-header.text-white
     | User Info - {{userInfo.username}}
-  .card-body
+  .card-body.text-white
     div
       table.table
         tbody
