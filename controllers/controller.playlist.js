@@ -24,6 +24,16 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 		animateRows: true,
 		getRowNodeId: function (data) { return data.id; },
 		rowMultiSelectWithClick: true,
+		rowClassRules: {
+			// row style function
+			'current-track': function (params) {
+				if ($rootScope.selectedTrack()) {
+					$scope.api.deselectAll();
+					return params.data.id === $rootScope.selectedTrack().id;
+				}
+				return false;
+			}
+		},
 		onModelUpdated: function (data) {
 			if (data && data.api) {
 				data.api.doLayout();
@@ -31,14 +41,18 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 			}
 		},
 		onSelectionChanged: function (data) {
-			console.log('selection changed')
-			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
-			var index = _.findIndex($rootScope.tracks, function (track) { return track.id === selectedRow.id })
-			$rootScope.loadTrack(index);
-			$rootScope.$digest();
-
+			if ($scope.gridOptions && $scope.gridOptions.api) {
+				var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
+				if (selectedRow) {
+					console.log('selection changed')
+					var index = _.findIndex($rootScope.tracks, function (track) { return track.id === selectedRow.id })
+					$rootScope.loadTrack(index);
+					$rootScope.$digest();
+				}
+			}
 		},
 		onGridReady: function (event) {
+			$scope.api = event.api;
 			if ($scope.gridOptions && $scope.gridOptions.api) {
 				$scope.gridOptions.api.setRowData($rootScope.tracks);
 				$scope.gridOptions.api.doLayout();
@@ -48,6 +62,13 @@ controllers.controller('playlistController', ['$rootScope', '$scope', '$sce', 's
 	};
 
 
+	$rootScope.$on('trackChangedEvent', function (event, data) {
+		$scope.api.redrawRows({ force: true });
+		if ($scope.gridOptions && $scope.gridOptions.api) {
+			$scope.gridOptions.api.doLayout();
+			$scope.gridOptions.api.sizeColumnsToFit();
+		}
+	});
 
 	$rootScope.$on('loginStatusChange', function (event, data) {
 		$scope.gridOptions.api.setRowData($rootScope.tracks);

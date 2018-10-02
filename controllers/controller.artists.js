@@ -49,7 +49,7 @@ controllers.controller('artistsController', ['$rootScope', '$scope', '$location'
 			);
 		},
 		onSelectionChanged: function (data) {
-			console.log('selection changed')
+			console.log('onSelectionChanged')
 			var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
 			$location.path("/artist/" + selectedRow.id.toString());

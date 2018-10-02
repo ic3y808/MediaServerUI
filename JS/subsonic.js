@@ -684,7 +684,7 @@ window.SubsonicAPI = function () {
           return this._buildUrl('stream', {
             id: id,
             maxBitRate: bitRate || 320,
-            estimateContentLength: true
+            estimateContentLength: false
           });
         }
 
@@ -1348,6 +1348,30 @@ window.SubsonicAPI = function () {
             });
             _this34._xhr(url).then(function (e) {
               var res = e.target.response['subsonic-response'].songsByGenre;
+              resolve(res);
+            }, reject);
+          });
+        }
+
+        /**
+         *
+         *
+         * @param {Object} obj - a object wihsearch params
+         */
+
+      },
+      {
+        key: 'getRandomSongs',
+        value: function getRandomSongs(size, genre, fromYear, toYear) {
+          var _this35 = this;
+   
+          return new Promise(function (resolve, reject) {
+            var url = _this35._buildUrl('getRandomSongs', {
+              size: size || 10
+              
+            });
+            _this35._xhr(url).then(function (e) {
+              var res = e.target.response['subsonic-response'].randomSongs;
               resolve(res);
             }, reject);
           });
