@@ -11,7 +11,7 @@ controllers.controller('homeController', ['$rootScope', '$scope', 'chromecastSer
 
             if (song.coverArt) {
                 $rootScope.subsonic.getCoverArt(song.coverArt, 200).then(function (art) {
-                    song.artworkUrl = art;
+                    //song.artworkUrl = art;
                    // $scope.random.push(song);
                 });
             }
