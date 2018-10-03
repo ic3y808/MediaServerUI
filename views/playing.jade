@@ -12,11 +12,14 @@
 
 
 .container
-  h1.jumbotron-heading.text-white.bg-dark {{artistName}} - {{trackTitle}}
-  pre.text-white.bg-dark {{year}} - {{contentType}} - Plays: {{playCount}}
-  p.lead.text-white.bg-dark
+  h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}} - {{trackTitle}}
+  pre.text-white.bg-dark-transparent {{year}} - {{contentType}} - Plays: {{playCount}}
+  p.lead.text-white.bg-dark-transparent
     | {{artistBio}}
   p
-    small.text-white.bg-dark Similar Artists
-  .btn-group(role='group', aria-label='Basic example')   
-    a(type='button', ng-repeat='artist in similarArtists', href="/artist/{{artist.id}}").btn.btn-secondary.btn-sm {{artist.name}}
+    small.text-white.bg-dark-transparent Similar Artists  
+    ul.list-inline
+      li.list-inline-item(ng-repeat='artist in similarArtists') 
+        a(href="/artist/{{artist.id}}").text-white.bg-dark-transparent {{artist.name}}
+
+    

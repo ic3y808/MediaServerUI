@@ -24,7 +24,7 @@
         |  Rescan Library
 
     div(ng-show='scanStatus.scanning').text-white
-      |  Current Progress: {{scanStatus.count}}
+      |  Current Progress: {{scanStatus.count}} / {{scanStatusTotalFiles}}
 .card.bg-dark.text-center
   .card-header.text-white
     | User Info - {{userInfo.username}}

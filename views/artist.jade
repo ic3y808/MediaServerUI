@@ -15,8 +15,10 @@ div(style='height: calc(100vh - 125px);')
       h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}}
       p.lead.text-white.bg-dark-transparent
         | {{artistBio}}
-      div.text-center
-        .btn-group(role='group')   
-          a(type='button', ng-repeat='artist in similarArtists', href="/artist/{{artist.id}}").btn.btn-secondary.btn-sm {{artist.name}}
+      p
+        small.text-white.bg-dark-transparent Similar Artists  
+        ul.list-inline
+          li.list-inline-item(ng-repeat='artist in similarArtists') 
+            a(href="/artist/{{artist.id}}").text-white.bg-dark-transparent {{artist.name}}
 
   #tracksGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 40%;', flex-direction="row")
