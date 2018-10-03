@@ -83,6 +83,7 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
     onGridReady: function (e) {
       $scope.api = e.api;
       $scope.columnApi = e.columnApi;
+      $scope.api.showLoadingOverlay();
     }
   };
 
@@ -137,6 +138,8 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
               }
             })
           });
+        } else {
+          $scope.gridOptions.api.showNoRowsOverlay();
         }
 
 
