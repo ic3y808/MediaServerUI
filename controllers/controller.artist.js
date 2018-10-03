@@ -94,9 +94,15 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
 
         $rootScope.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
           if (result) {
-            $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-            $scope.similarArtists = result.similarArtist.slice(0, 5);
-            $('#mainArtistContent').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
+            if (result.biography) {
+              $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+            }
+            if (result.similarArtist) {
+              $scope.similarArtists = result.similarArtist.slice(0, 5);
+            }
+            if (result.largeImageUrl) {
+              $('#mainArtistContent').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
+            }
             $scope.$apply();
           }
         });

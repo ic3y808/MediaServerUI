@@ -6,11 +6,6 @@ var app = angular.module('subsonic',
     'ngRoute',
     'ngSanitize',
     'agGrid',
-    'com.2fdevs.videogular',
-    'com.2fdevs.videogular.plugins.controls',
-    'com.2fdevs.videogular.plugins.overlayplay',
-    'com.2fdevs.videogular.plugins.poster',
-    'com.benjipott.videogular.plugins.chromecast',
     'factories-subsonic',
     'factories-chromecast',
     'controllers-home',
@@ -138,73 +133,75 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
     if (source && source.id) {
       source.url = $rootScope.subsonic.streamUrl(source.id, 320);
 
-      $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
-        console.log("getArtistDetails result")
+      if (source.artistId) {
+        $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+          console.log("getArtistDetails result")
 
-        if (result) {
+          if (result) {
 
-          if (remotePlayerConnected) {
-            $rootScope.setupRemotePlayer();
-
-
-            var mediaInfo = new chrome.cast.media.MediaInfo(source.url, source.transcodedContentType);
-
-            mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
-            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
-            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
-            mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-            mediaInfo.customData = JSON.stringify(source);
-            mediaInfo.metadata.title = source.title;
-            mediaInfo.metadata.images = [{
-              'url': result.largeImageUrl.replace('300x300', '1280x400')
-            }];
-
-            var request = new chrome.cast.media.LoadRequest(mediaInfo);
-            cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
+            if (remotePlayerConnected) {
+              $rootScope.setupRemotePlayer();
 
 
-          } else {
-            console.log(source)
-            media.src = source.url;
-            media.load();
-            if ($rootScope.shouldSeek) {
-              $rootScope.shouldSeek = false;
-              media.currentTime = $rootScope.prePlannedSeek;
-            }
-            var playPromise = media.play();
+              var mediaInfo = new chrome.cast.media.MediaInfo(source.url, source.transcodedContentType);
 
-            if (playPromise !== undefined) {
-              playPromise.then(_ => {
-                console.log('success playing')
-                $('#artistInfo').html(source.artist);
-                $('#artistInfo').attr("href", source.artistUrl);
-                $('#trackInfo').html(source.title);
-                $('#trackInfo').attr("href", "/playing");
+              mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+              //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+              //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+              //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+              //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
+              mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+              mediaInfo.customData = JSON.stringify(source);
+              mediaInfo.metadata.title = source.title;
+              mediaInfo.metadata.images = [{
+                'url': result.largeImageUrl.replace('300x300', '1280x400')
+              }];
 
-                if (source.starred) {
-                  $("#likeButtonIcon").removeClass('far');
-                  $("#likeButtonIcon").addClass('fa');
-                } else {
-                  $("#likeButtonIcon").removeClass('fa');
-                  $("#likeButtonIcon").addClass('far');
-                }
+              var request = new chrome.cast.media.LoadRequest(mediaInfo);
+              cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
 
-                $("#playPauseIcon").addClass("fa-pause");
-                $("#playPauseIcon").removeClass("fa-play");
-                $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
-                $('#volumeSlider').val($rootScope.currentVolume * 100)
-                $rootScope.$broadcast('trackChangedEvent');
-                $rootScope.$digest();
-              }).catch(error => {
-                console.log('playing failed ' + error);
-              });
+
+            } else {
+              console.log(source)
+              media.src = source.url;
+              media.load();
+              if ($rootScope.shouldSeek) {
+                $rootScope.shouldSeek = false;
+                media.currentTime = $rootScope.prePlannedSeek;
+              }
+              var playPromise = media.play();
+
+              if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                  console.log('success playing')
+                  $('#artistInfo').html(source.artist);
+                  $('#artistInfo').attr("href", source.artistUrl);
+                  $('#trackInfo').html(source.title);
+                  $('#trackInfo').attr("href", "/playing");
+
+                  if (source.starred) {
+                    $("#likeButtonIcon").removeClass('far');
+                    $("#likeButtonIcon").addClass('fa');
+                  } else {
+                    $("#likeButtonIcon").removeClass('fa');
+                    $("#likeButtonIcon").addClass('far');
+                  }
+
+                  $("#playPauseIcon").addClass("fa-pause");
+                  $("#playPauseIcon").removeClass("fa-play");
+                  $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+                  $('#volumeSlider').val($rootScope.currentVolume * 100)
+                  $rootScope.$broadcast('trackChangedEvent');
+                  $rootScope.$digest();
+                }).catch(error => {
+                  console.log('playing failed ' + error);
+                });
+              }
             }
           }
-        }
-      });
-    } else ($rootScope.next());
+        });
+      } else { $rootScope.next() };
+    } else { $rootScope.next() };
   };
 
   $rootScope.play = function () {
