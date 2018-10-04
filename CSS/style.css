@@ -982,3 +982,29 @@ div.dataTables_length {
     opacity: 1
   }
 }
+
+
+
+.colmask {
+  z-index: 20;
+  position: relative;
+  clear: both;
+  float: left;
+  overflow: visible;
+  border: 1px solid #dfdede;
+  background-color: #FFF;
+  width: 100%
+}
+.advanced-button {
+  float: right;
+  width: auto;
+  margin: 0 4px 0px 0px;
+  font-size: 13px;
+  color: inherit;
+  height: auto;
+  padding-bottom: 5px;
+}
+#advanced-settings-button {
+  float: left;
+  margin: 2px 7px 0px 0px;
+}

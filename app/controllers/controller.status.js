@@ -1,7 +1,8 @@
-var controllers = angular.module('controllers-status', []);
-$(".content").css("display", "none");
-$(".loader").css("display", "block");
-controllers.controller('statusController', ['$rootScope', '$scope', 'subsonicService', function ($rootScope, $scope, subsonicService) {
+StatusController.$inject = ['$rootScope', '$scope', 'subsonicService'];
+
+function StatusController($rootScope, $scope, subsonicService) {
+  $(".content").css("display", "none");
+  $(".loader").css("display", "block");
   console.log('status-controller')
 
   $scope.ping = function () {
@@ -85,4 +86,6 @@ controllers.controller('statusController', ['$rootScope', '$scope', 'subsonicSer
   if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
   $(".loader").css("display", "none");
   $(".content").css("display", "block");
-}]);
+};
+
+module.exports = StatusController;

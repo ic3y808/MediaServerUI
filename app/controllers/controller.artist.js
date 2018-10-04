@@ -1,7 +1,10 @@
-var controllers = angular.module('controllers-artist', []);
-$(".content").css("display", "none");
-$(".loader").css("display", "block");
-controllers.controller('artistController', ['$rootScope', '$scope', '$routeParams', '$sce', 'subsonicService', function ($rootScope, $scope, $routeParams, $sce, subsonicService) {
+'use strict';
+
+ArtistController.$inject = ['$rootScope', '$scope', '$routeParams', 'subsonicService'];
+
+function ArtistController($rootScope, $scope, $routeParams, subsonicService) {
+  $(".content").css("display", "none");
+  $(".loader").css("display", "block");
   console.log('artist-controller')
   $scope.artist = {};
   $scope.albums = [];
@@ -9,33 +12,33 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
   $scope.artistName = '';
 
   var columnDefs = [{
-    headerName: "#",
-    field: "track",
-    width: 75,
-    suppressSizeToFit: true
-  },
-  {
-    headerName: "Title",
-    field: "title"
-  },
-  {
-    headerName: "Album",
-    field: "album"
-  },
-  {
-    headerName: "Title",
-    field: "title"
-  },
-  {
-    headerName: "Genre",
-    field: "genre"
-  },
-  {
-    headerName: "Plays",
-    field: "playCount",
-    width: 75,
-    suppressSizeToFit: true
-  },
+      headerName: "#",
+      field: "track",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
   ];
 
   $scope.gridOptions = {
@@ -167,7 +170,9 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
   };
 
   $rootScope.$on('trackChangedEvent', function (event, data) {
-    $scope.api.redrawRows({ force: true });
+    $scope.api.redrawRows({
+      force: true
+    });
     if ($scope.gridOptions && $scope.gridOptions.api) {
 
       $scope.gridOptions.api.doLayout();
@@ -206,4 +211,6 @@ controllers.controller('artistController', ['$rootScope', '$scope', '$routeParam
   $(".content").addClass("content-with-toolbar");
   $(".loader").css("display", "none");
   $(".content").css("display", "block");
-}]);
+};
+
+module.exports = ArtistController;

@@ -1,15 +1,18 @@
-var controllers = angular.module('controllers-genre', []);
-$(".content").css("display", "none");
-$(".loader").css("display", "block");
-controllers.controller('genreController', ['$rootScope', '$scope', '$routeParams', 'subsonicService', function ($rootScope, $scope, $routeParams, subsonicService) {
+'use strict';
+
+GenreController.$inject = ['$rootScope', '$scope', '$routeParams', 'subsonicService'];
+
+function GenreController($rootScope, $scope, $routeParams, subsonicService) {
+
+  $(".content").css("display", "none");
+  $(".loader").css("display", "block");
   console.log('genre-controller')
   $scope.artist = {};
   $scope.albums = [];
   $scope.tracks = [];
   $scope.artistName = '';
   $scope.genre = $routeParams.id;
-  var columnDefs = [
-    {
+  var columnDefs = [{
       headerName: "Artist",
       field: "artist"
     },
@@ -116,4 +119,6 @@ controllers.controller('genreController', ['$rootScope', '$scope', '$routeParams
   if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
   $(".loader").css("display", "none");
   $(".content").css("display", "block");
-}]);
+};
+
+module.exports = GenreController;

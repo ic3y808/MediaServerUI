@@ -1,6 +1,8 @@
-var factories = angular.module('factories-subsonic', []);
+'use strict';
 
-factories.factory('subsonicService', function ($http, $rootScope, $route, $window) {
+SubsonicService.$inject = ['$http', '$rootScope', '$route', '$window'];
+
+function SubsonicService($rootScope, $scope, subsonicService) {
   $rootScope.isLoggingIn = true;
   $rootScope.isLoggedIn = false;
 
@@ -59,4 +61,6 @@ factories.factory('subsonicService', function ($http, $rootScope, $route, $windo
       else return false;
     }
   }
-});
+};
+
+module.exports = SubsonicService;

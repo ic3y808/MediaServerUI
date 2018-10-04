@@ -1,10 +1,14 @@
-var factories = angular.module('factories-chromecast', []);
-var isCastAvailable = false;
-window.__onGCastApiAvailable = function (isAvailable) {
-  console.log('cast status ' + isAvailable)
-  isCastAvailable = isAvailable;
-};
-factories.factory('chromecastService', function ($http, $rootScope, $route, $window) {
+'use strict';
+
+ChromecastService.$inject = ['$http', '$rootScope', '$route', '$window'];
+
+function ChromecastService($http, $rootScope, $route, $window) {
+  var isCastAvailable = false;
+  window.__onGCastApiAvailable = function (isAvailable) {
+    console.log('cast status ' + isAvailable)
+    isCastAvailable = isAvailable;
+  };
+
   return {
     castStatus: function () {
       return isCastAvailable;
@@ -27,4 +31,6 @@ factories.factory('chromecastService', function ($http, $rootScope, $route, $win
 
     }
   };
-});
+};
+
+module.exports = ChromecastService;
