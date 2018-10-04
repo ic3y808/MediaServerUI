@@ -5,23 +5,11 @@ var app = angular.module('subsonic',
   [
     'ngRoute',
     'ngSanitize',
-    'agGrid',
-    'factories-subsonic',
-    'factories-chromecast',
-    'controllers-home',
-    'controllers-index',
-    'controllers-settings',
-    'controllers-starred',
-    'controllers-status',
-    'controllers-artists',
-    'controllers-artist',
-    'controllers-genre',
-    'controllers-genres',
-    'controllers-playing',
-    'controllers-playlist',
-    'controllers-playlists',
-    'controllers-podcasts'
+    'agGrid'
   ]);
+
+require('./factories');
+require('./controllers');
 
 app.config(['$routeProvider', '$locationProvider',
   function ($routeProvider, $locationProvider) {
@@ -76,17 +64,12 @@ app.config(['$routeProvider', '$locationProvider',
   }
 ]);
 
-app.factory('remotePlayerConnected', function ($rootScope) {
-  if (!$rootScope.remotePlayer) return false;
-  return $rootScope.remotePlayer.isConnected;
-});
-
 app.factory('media', function ($document) {
   var media = $document[0].getElementById('media-player');
   return media;
 });
 
-app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastService, subsonicService) {
+app.run(function ($window, $rootScope, media, chromecastService, subsonicService) {
 
   var myWindow = angular.element($window);
   myWindow.on('__onGCastApiAvailable', function (isAvailable) {
@@ -122,6 +105,11 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
     return $rootScope.selectedTrack();
   };
 
+  $rootScope.remotePlayerConnected = function () {
+    if (!$rootScope.remotePlayer) return false;
+    return $rootScope.remotePlayer.isConnected;
+  }
+
   $rootScope.loadTrack = function (index) {
     $rootScope.selectedIndex = index;
     console.log('loadTrack')
@@ -139,7 +127,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
 
           if (result) {
 
-            if (remotePlayerConnected) {
+            if ($rootScope.remotePlayerConnected()) {
               $rootScope.setupRemotePlayer();
 
 
@@ -200,12 +188,16 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
             }
           }
         });
-      } else { $rootScope.next() };
-    } else { $rootScope.next() };
+      } else {
+        $rootScope.next()
+      };
+    } else {
+      $rootScope.next()
+    };
   };
 
   $rootScope.play = function () {
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       if ($rootScope.remotePlayer.isPaused) {
         $rootScope.remotePlayerController.playOrPause();
       }
@@ -224,7 +216,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
   }
 
   $rootScope.pause = function () {
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       if (!$rootScope.remotePlayer.isPaused) {
         $rootScope.remotePlayerController.playOrPause();
       }
@@ -352,7 +344,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
 
   $("#muteButton").click(function () {
     var vol = 0;
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       $rootScope.remotePlayerController.muteOrUnmute();
       $rootScope.isMuted = $rootScope.remotePlayer.isMuted;
       if ($rootScope.isMuted) {
@@ -380,7 +372,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
 
   $("#playPauseButton").click(function () {
 
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       if (!$rootScope.remotePlayer.isPaused) $rootScope.pause();
       else $rootScope.play();
 
@@ -463,14 +455,15 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
   $("#shareButton").click(function () {
     console.log('shareButton');
     $rootScope.subsonic.createShare($rootScope.selectedTrack().id, 'Shared from MediaCenterUI').then(function (result) {
-      $('#shareButton').popover(
-        {
-          animation: true,
-          content: 'Success! Url Copied to Clipboard.',
-          delay: { "show": 0, "hide": 5000 },
-          placement: 'top'
-        }
-      ).popover('show');
+      $('#shareButton').popover({
+        animation: true,
+        content: 'Success! Url Copied to Clipboard.',
+        delay: {
+          "show": 0,
+          "hide": 5000
+        },
+        placement: 'top'
+      }).popover('show');
       var url = result.url.toString();
       $rootScope.copyTextToClipboard(url);
       setTimeout(() => {
@@ -486,7 +479,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
 
   $("#volumeSlider").on('input change', function () {
     var level = $rootScope.currentVolume = $('#volumeSlider').val() / 100;
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       $rootScope.remotePlayer.volumeLevel = level;
       $rootScope.remotePlayerController.setVolumeLevel();
     } else {
@@ -497,7 +490,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
   $("#clickProgress").click(function (e) {
     var seekto = NaN;
 
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       var currentMediaDuration = $rootScope.remotePlayer.duration;
       seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
       if (seekto != NaN) {
@@ -575,8 +568,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
     if ($rootScope.isMenuCollapsed) {
       $('.content').removeClass('content-wide');
       $('.gridContainer').removeClass('dataTable-wide');
-    }
-    else {
+    } else {
       $('.content').addClass('content-wide');
       $('.gridContainer').addClass('dataTable-wide');
     }
@@ -616,7 +608,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
 
 
   $rootScope.remoteUpdateInfo = function () {
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       var currentMediaTime = $rootScope.remotePlayer.currentTime;
       var currentMediaDuration = $rootScope.remotePlayer.duration;
 
@@ -779,7 +771,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
       $rootScope.startProgressTimer();
       $rootScope.remoteConfigured = true;
     }
-    if (remotePlayerConnected) {
+    if ($rootScope.remotePlayerConnected()) {
       if (media.playing) {
         $rootScope.shouldSeek = true;
         $rootScope.prePlannedSeek = media.currentTime;
@@ -800,7 +792,7 @@ app.run(function ($window, $rootScope, media, remotePlayerConnected, chromecastS
 
 
     if (cast && cast.framework) {
-      if (remotePlayerConnected) {
+      if ($rootScope.remotePlayerConnected()) {
 
         $rootScope.setupRemotePlayer();
         return;

@@ -3,7 +3,12 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "bundle": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ic3y808/MediaServerUI.git"
   },
   "dependencies": {
     "ag-grid-community": "^19.0.0",
@@ -27,5 +32,11 @@
     "sqlite3": "^4.0.2",
     "tooltip.js": "^1.3.0",
     "underscore": "^1.9.1"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^3.2.0",
+    "webpack": "^4.20.2",
+    "webpack-cli": "^3.1.2",
+    "webpack-livereload-plugin": "^2.1.1"
   }
 }
