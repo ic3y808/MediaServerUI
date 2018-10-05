@@ -11,7 +11,7 @@ var io = require('socket.io')(server);
 var httpProxy = require('http-proxy');
 var proxy = httpProxy.createProxyServer();
 
-var isProduction = process.env.NODE_ENV === 'production';
+var isProduction = process.env.DEV === true;
 var host = process.env.APP_HOST || 'localhost';
 
 process.env.DATA_DIR = path.join(__dirname, '..', "data");

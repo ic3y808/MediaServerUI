@@ -1,40 +1,40 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Server",
-            "program": "${workspaceFolder}\\index",
-            "env": {
-                "DEV": "true",
-                "PORT":"3000"
-            }
-        },
-        {
-            "name": "ServerDebug",
-            "type": "chrome",
-            "request": "launch",
-            "port": 9222,
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}"
-        },
-        {
-            "name": "ServerAttachDebug",
-            "type": "chrome",
-            "request": "attach",
-            "port": 9222,
-            "url": "*",
-            "webRoot": "${workspaceFolder}"
-        }
-    ],
-    "compounds": [
-        {
-            "name": "All",
-            "configurations": [
-                "Server",
-                "ServerDebug"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Server",
+      "program": "${workspaceFolder}/index.js",
+      "env": {
+        "DEV": "true",
+        "PORT": "3000",
+      }
+    },
+    {
+      "name": "ServerDebug",
+      "type": "chrome",
+      "request": "launch",
+      "port": 9222,
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "ServerAttachDebug",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9222,
+      "url": "*",
+      "webRoot": "${workspaceFolder}"
+    }
+  ],
+  "compounds": [
+    {
+      "name": "All",
+      "configurations": [
+        "Server",
+        "ServerDebug"
+      ]
+    }
+  ]
 }

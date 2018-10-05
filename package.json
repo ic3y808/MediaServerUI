@@ -2,9 +2,8 @@
   "name": "mediaserverui",
   "version": "0.0.1",
   "private": true,
-  "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node ./index.js"
   },
   "keywords": [],
   "license": "MIT",
