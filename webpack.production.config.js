@@ -11,30 +11,25 @@ var host = process.env.APP_HOST || 'localhost';
 
 var config = {
 
-  // Makes sure errors in console map to the correct file
-  // and line number
-  devtool: 'eval',
-  entry: [
-
-    // For hot style updates
-    'webpack/hot/dev-server',
-
-    // The script refreshing the browser on none hot updates
-    'webpack-dev-server/client?http://' + host + ':3001',
-
-    // Our application
-    entryPath
-  ],
+  // We change to normal source mapping
+  devtool: 'source-map',
+  entry: entryPath,
   output: {
+
+    // We need to give Webpack a path. It does not actually need it,
+    // because files are kept in memory in webpack-dev-server, but an
+    // error will occur if nothing is specified. We use the assetsPath
+    // as that points to where the files will eventually be bundled
+    // in production
     path: assetsPath,
-    filename: 'bundle.js'
-  },
-  resolve: {
-    alias: {
-      modules: path.join(__dirname, "node_modules")
-    }
+    filename: 'bundle.js',
+
+    // Everything related to Webpack should go through a assets path,
+    // localhost:3000/assets. That makes proxying easier to handle
+    publicPath: '/assets/'
   },
   module: {
+
     loaders: [
       { test: /\.es6.js$/, loader: 'babel-loader' },
       {
@@ -46,10 +41,6 @@ var config = {
         loader: ExtractTextPlugin.extract('css?sourceMap!postcss-loader?sourceMap!less?sourceMap')
       },
       {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!sass')
-      },
-      {
         test: /\.html$/,
         loader: 'html-loader'
       },
@@ -59,10 +50,6 @@ var config = {
           'file?hash=sha512&digest=hex&name=[hash].[ext]',
           'image?bypassOnDebug&optimizationLevel=7&interlaced=false'
         ]
-      },
-      {
-        test: /\.js$/,
-        loader: 'strip-loader?strip[]=debug'
       }
 
     ]
@@ -73,16 +60,8 @@ var config = {
     // We have to manually add the Hot Replacement plugin when running
     // from Node
     new ExtractTextPlugin("styles.css"),
-    new Webpack.HotModuleReplacementPlugin(),
-    new Webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      "window.jQuery": "jquery"
-    }),
-    new Webpack.ProvidePlugin({
-      underscore: "underscore",
-      _: "underscore"
-  })
+    new Webpack.optimize.UglifyJsPlugin({ minimize: true }),
+    new StatsPlugin(path.join(__dirname, 'stats.json'), { chunkModules: true })
   ]
 };
 

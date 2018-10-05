@@ -1,0 +1,31 @@
+nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top.card-1
+  button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarNavDropdown', aria-controls='navbarNavDropdown', aria-expanded='false', aria-label='Toggle navigation')
+    span.navbar-toggler-icon
+  a.navbar-brand(href='#')
+    span Subsonic
+  #navbarNavDropdown.collapse.navbar-collapse
+    ul.navbar-nav
+      li.nav-item.active
+        a.nav-link(href='/')
+          | Home 
+          span.sr-only (current)
+      li.nav-item
+        a.nav-link(href='/index') Index
+      li.nav-item
+        a.nav-link(href='/playing') Playing
+      li.nav-item
+        a.nav-link(href='/starred') Starred
+      li.nav-item
+        a.nav-link(href='/genres') Genres
+      li.nav-item
+        a.nav-link(href='/playlists') Playlists
+      li.nav-item
+        a.nav-link(href='/podcasts') Podcasts
+      li.nav-item.dropdown.d-sm-block.d-md-none
+        a#smallerscreenmenu.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
+          | Menu
+        .dropdown-menu(aria-labelledby='smallerscreenmenu')
+          a.dropdown-item(href='#') Dashboard
+          a.dropdown-item(href='#') Profile
+          a.dropdown-item(href='#') Tasks
+          a.dropdown-item(href='#') Etc ...
