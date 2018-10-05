@@ -1,7 +1,7 @@
 var nodemon = require('nodemon');
 var path = require('path');
 
-var isProduction = process.env.NODE_ENV === 'production';
+var isProduction = process.env.DEV === true;
 
 // We only want to run the workflow when not in production
 if (!isProduction) {
@@ -10,16 +10,15 @@ if (!isProduction) {
   // it is only needed in a development environment.
   var bundle = require('./bundler.js');
   bundle();
-
 }
 
 nodemon({
   execMap: {
     js: 'node'
   },
-  script: path.join(__dirname, 'backend/www'),
+  script: path.join(__dirname, './backend/www'),
   ignore: [],
-  watch: !isProduction ? ['backend/*'] : false,
+  watch: !isProduction ? ['./backend/*'] : false,
   ext: 'js'
 }).on('restart', function() {
   console.log('Backend restarted!');
