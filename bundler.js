@@ -1,6 +1,6 @@
 var Webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var webpackConfig = require('./webpack.config.js');
+var webpackConfig = require(process.env.DEV === 'true' ? './webpack.config.js' : './webpack.production.config.js');
 var path = require('path');
 var fs = require('fs');
 var host = process.env.APP_HOST || 'localhost';
@@ -30,7 +30,7 @@ module.exports = function () {
     // We need to tell Webpack to serve our bundled application
     // from the assets path. When proxying:
     // http://localhost:3000/assets -> http://localhost:8080/assets
-    publicPath: '/assets/',
+    publicPath: webpackConfig.publicPath,
 
     // Configure hot replacement
     hot: true,

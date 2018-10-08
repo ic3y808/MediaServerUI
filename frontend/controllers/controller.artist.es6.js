@@ -7,7 +7,7 @@ function ArtistController($scope, $rootScope, $routeParams) {
   $scope.albums = [];
   $scope.tracks = [];
   $scope.artistName = '';
-
+ 
   var columnDefs = [{
     headerName: "#",
     field: "track",
