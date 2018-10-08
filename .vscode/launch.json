@@ -1,10 +1,9 @@
 {
   "version": "0.2.0",
-  "configurations": [
-    {
+  "configurations": [{
       "type": "node",
       "request": "launch",
-      "name": "Server",
+      "name": "ServerDebug",
       "program": "${workspaceFolder}/index.js",
       "env": {
         "DEV": "true",
@@ -12,7 +11,17 @@
       }
     },
     {
-      "name": "ServerDebug",
+      "type": "node",
+      "request": "launch",
+      "name": "ServerRelease",
+      "program": "${workspaceFolder}/index.js",
+      "env": {
+        "DEV": "false",
+        "PORT": "3000",
+      }
+    },
+    {
+      "name": "LaunchChrome",
       "type": "chrome",
       "request": "launch",
       "port": 9222,
@@ -20,7 +29,7 @@
       "webRoot": "${workspaceFolder}"
     },
     {
-      "name": "ServerAttachDebug",
+      "name": "AttachToChrome",
       "type": "chrome",
       "request": "attach",
       "port": 9222,
@@ -28,13 +37,11 @@
       "webRoot": "${workspaceFolder}"
     }
   ],
-  "compounds": [
-    {
-      "name": "All",
-      "configurations": [
-        "Server",
-        "ServerDebug"
-      ]
-    }
-  ]
+  "compounds": [{
+    "name": "All",
+    "configurations": [
+      "Server",
+      "ServerDebug"
+    ]
+  }]
 }

@@ -1,14 +1,14 @@
-require('./reset.less');
-require('./styles.less');
-
 import 'popper.js';
 import 'tooltip.js';
 import 'bootstrap';
 import 'underscore';
-
+import 'typeface-roboto'
 import 'jquery-easing';
 import 'moment';
 
+//require('./less/reset.less');
+require('./css/styles.css');
+//require('./less/styles.less');
 
 
 require("ag-grid-community");
@@ -21,8 +21,7 @@ import './scss/app.scss';
 import angular from 'angular';
 import angularRoute from 'angular-route';
 import SubsonicAPI from './API/subsonic.api.es6';
-
-
+import Clipboard from 'clipboard';
 import ChromecastFactory from './factories/factory.chromecast.es6';
 import SubsonicFactory from './factories/factory.subsonic.es6';
 import MediaFactory from './factories/factory.media.es6';
