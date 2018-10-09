@@ -1,95 +1,24 @@
-var Webpack = require('webpack');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var autoprefixer = require('autoprefixer-core');
-var csswring = require('csswring');
-var path = require('path');
-var assetsPath = path.resolve(__dirname, 'public', 'assets');
-var entryPath = path.resolve(__dirname, 'frontend', 'app.es6.js');
-var host = process.env.APP_HOST || 'localhost';
+const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const LiveReloadPlugin = require('webpack-livereload-plugin');
+const ControllerHotLoader = require.resolve('./loaders/controller-loader');
+const ServiceHotLoader = require.resolve('./loaders/service-loader');
+const JadeHotLoader = require.resolve('./loaders/jade-loader');
+const webpack = require('webpack');
+const dist = path.resolve(__dirname, 'www');
+var entryPath = path.resolve(__dirname, 'frontend', 'app.js');
+const nodePath = path.resolve(__dirname, 'node_modules');
 
-var config = {
-
-  // Makes sure errors in console map to the correct file
-  // and line number
-  devtool: 'eval',
-  entry: [
-
-    // For hot style updates
-    'webpack/hot/dev-server',
-
-    // The script refreshing the browser on none hot updates
-    'webpack-dev-server/client?http://' + host + ':3001',
-
-    // Our application
-    entryPath
-  ],
-  output: {
-    path: assetsPath,
-    filename: 'bundle.js',
-    publicPath: '/'
+module.exports = {
+  entry: {
+    app: [entryPath, 'webpack-hot-middleware/client']
   },
-  resolve: {
-    alias: {
-      modules: path.join(__dirname, "node_modules")
-    }
-  },
-  module: {
-    loaders: [{
-        test: /\.es6.js$/,
-        loader: 'babel-loader'
-      },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!postcss-loader?sourceMap')
-      },
-      {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!postcss-loader?sourceMap!less?sourceMap')
-      },
-      {
-        test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('css!sass')
-      },
-      {
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image?bypassOnDebug&optimizationLevel=7&interlaced=false'
-        ]
-      },
-      {
-        test: /\.js$/,
-        include: [
-          path.resolve(__dirname, "node_modules/clipboard/src")
-        ],
-        loader: 'strip-loader?strip[]=debug'
-      },
-      {
-        test: /\.(ttf|eot|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader"
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file-loader?name=images/[name].[ext]',
-          'image-webpack-loader?bypassOnDebug'
-        ]
-      }
-
-    ]
-  },
-  postcss: [autoprefixer, csswring],
-
+  devtool: 'inline-source-map',
   plugins: [
-    // We have to manually add the Hot Replacement plugin when running
-    // from Node
-    new ExtractTextPlugin("styles.css"),
-    new Webpack.HotModuleReplacementPlugin(),
-    new Webpack.ProvidePlugin({
+    new CleanWebpackPlugin([dist]),
+    new webpack.HotModuleReplacementPlugin(),
+    new LiveReloadPlugin(),
+    new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
@@ -109,7 +38,85 @@ var config = {
       Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
       Util: 'exports-loader?Util!bootstrap/js/dist/util'
     })
-  ]
+  ],
+  module: {
+    rules: [{
+      test: /\.jade$/,
+      enforce: "post",
+      loader: JadeHotLoader,
+      exclude: [nodePath]
+    },
+    {
+      test: /\.component.js$/,
+      enforce: "pre",
+      loader: ControllerHotLoader,
+      exclude: [nodePath]
+    },
+    {
+      test: /\.service.js$/,
+      enforce: "pre",
+      loader: ServiceHotLoader,
+      exclude: [nodePath]
+    },
+    {
+      test: /\.js$/,
+      use: ['ng-annotate-loader', 'strip-loader?strip[]=debug', 'babel-loader'],
+      include: [
+        path.resolve(__dirname, "node_modules/clipboard/src")
+      ],
+      exclude: [nodePath]
+    },
+    {
+      test: /\.(png|svg|jpg|gif)$/,
+      use: ['file-loader']
+    },
+    {
+      test: /\.(ttf|eot|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+      loader: "url-loader"
+    },
+    {
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      use: [
+        'file-loader?name=images/[name].[ext]',
+        'image-webpack-loader?bypassOnDebug'
+      ]
+    },
+    {
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader']
+    },
+    {
+      test: /\.(scss|sass)$/,
+      use: [{
+        loader: 'style-loader'
+      },
+      {
+        loader: 'css-loader'
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: function () { // post css plugins, can be exported to postcss.config.js
+            return [
+              require('precss'),
+              require('autoprefixer')
+            ];
+          }
+        }
+      },
+      {
+        loader: 'sass-loader'
+      }
+      ]
+    },
+    {
+      test: /\.less$/,
+      use: ['style-loader', 'css-loader', 'less-loader']
+    }
+    ]
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, dist)
+  }
 };
-
-module.exports = config;

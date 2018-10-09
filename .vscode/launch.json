@@ -4,7 +4,7 @@
       "type": "node",
       "request": "launch",
       "name": "ServerDebug",
-      "program": "${workspaceFolder}/index.js",
+      "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "DEV": "true",
         "PORT": "3000",
@@ -14,7 +14,7 @@
       "type": "node",
       "request": "launch",
       "name": "ServerRelease",
-      "program": "${workspaceFolder}/index.js",
+      "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "DEV": "false",
         "PORT": "3000",
@@ -40,8 +40,8 @@
   "compounds": [{
     "name": "All",
     "configurations": [
-      "Server",
-      "ServerDebug"
+      "ServerDebug",
+      "LaunchChrome"
     ]
   }]
 }
