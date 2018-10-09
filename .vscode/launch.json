@@ -5,7 +5,7 @@
             "type": "node",
             "request": "launch",
             "name": "Server",
-            "program": "${workspaceFolder}\\bin\\www",
+            "program": "${workspaceFolder}/backend/bin/www",
             "env": {
                 "DEV": "true",
                 "PORT":"3000"
