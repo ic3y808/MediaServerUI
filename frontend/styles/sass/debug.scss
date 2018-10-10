@@ -1,3 +1,6 @@
+$debug-stack: 0px dashed salmon;
+
+
 .content {
-  border: 2px dashed salmon;
+  border: $debug-stack;
 }
