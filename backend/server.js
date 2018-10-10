@@ -17,45 +17,6 @@ const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-app.use(express.static('www'));
-app.use('/content', express.static(path.join(__dirname, '..', 'frontend', 'content')));
-const webpackCompiler = webpack(webpackconfig);
-const wpmw = webpackMiddleware(webpackCompiler, {});
-app.use(wpmw);
-const wphmw = webpackHotMiddleware(webpackCompiler);
-app.use(wphmw);
-
-const index = require('./routes');
-const db = require('./core/database');
-
-app.set('views', path.join(__dirname, '..', 'frontend', 'views'));
-app.set('view engine', 'jade');
-
-
-app.use(function (req, res, next) {
-  res.io = io;
-  next();
-});
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
-app.use('/', index);
-
-app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
-
-app.get('/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
-app.get('/artist/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
-app.get('/genre/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
-
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -97,6 +58,89 @@ function onListening() {
   console.log('Listening on ' + bind);
 }
 
+app.use(express.static('www'));
+app.use('/content', express.static(path.join(__dirname, '..', 'frontend', 'content')));
+const webpackCompiler = webpack(webpackconfig);
+const wpmw = webpackMiddleware(webpackCompiler, {});
+app.use(wpmw);
+const wphmw = webpackHotMiddleware(webpackCompiler);
+app.use(wphmw);
+
+app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
+
+var db = require('./core/database');
+var index = require('./routes/index');
+
+// view engine setup
+app.set('views', path.join(__dirname, '..', 'frontend', 'views'));
+app.set('view engine', 'jade');
+app.use(function (req, res, next) { res.io = io; next(); });
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use("/node_modules/", express.static(path.join(__dirname, '..','node_modules')));
+app.use("/bower_components/", express.static(path.join(__dirname,'..', 'bower_components')));
+app.all('/*.hot-update.json', function(req, res, next) {
+  console.log('Intercepting requests ...');
+  next();  // call next() here to move on to next middleware/router
+})
+app.use("/", express.static(path.join(__dirname, '..', 'frontend')));
+app.use("/controllers/", express.static(path.join(__dirname,'..', 'frontend', 'controllers')));
+app.use("/factories/", express.static(path.join(__dirname, '..', 'frontend','factories')));
+
+/* Configure Routes. */
+app.use('/', index);
+
+app.get('/template/:name', function(req, server) {  server.render(req.params.name); });
+app.get('/artist/template/:name', function(req, server) {  server.render(req.params.name); });
+app.get('/genre/template/:name', function(req, server) {  server.render(req.params.name); });
+ 
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+	var err = new Error('Not Found');
+	err.status = 404;
+	next(err);
+});
+
+if (process.env.DEV === 'true') {
+	app.locals.pretty = true;
+	app.use(function (err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: err
+		});
+	});
+} else {
+	app.use(function (err, req, res, next) {
+		res.status(err.status || 500);
+		res.render('error', {
+			message: err.message,
+			error: {}
+		});
+	});
+}
+
+io.on('connection', function (socket) {
+	console.log('connected');
+	socket.on('save_settings',function(settings){
+		console.log('save_settings');
+		db.saveSettings(settings, function(result){
+			console.log('settings saved');
+		})
+	});
+	socket.on('load_settings',function(){
+		console.log('load_settings');
+		db.loadSettings(function(result){
+			socket.emit('settings_event', result);
+		})
+	});
+});
+
+setInterval(function () {
+	var dt = { date: moment().format("hh:mm:ss a | MM-DD-YYYY") };
+	io.emit("ping", JSON.stringify(dt));
+}, 1000);
+
 server.listen(normalizePort(process.env.PORT || '3000'), () => {
   console.log('Example app listening on port 3000!')
 });
@@ -110,24 +154,3 @@ var livereload = require('livereload').createServer({
 });
 
 livereload.watch(path.join(__dirname, '..', 'frontend', 'views'));
-
-io.on('connection', function (socket) {
-  console.log('connected');
-  socket.on('save_settings', function (settings) {
-    console.log('save_settings');
-    db.saveSettings(settings, function (result) {
-      console.log('settings saved');
-    })
-  });
-  socket.on('load_settings', function () {
-    console.log('load_settings');
-    db.loadSettings(function (result) {
-      socket.emit('settings_event', result);
-    })
-  });
-});
-
-setInterval(function () {
-  var dt = { date: moment().format("hh:mm:ss a | MM-DD-YYYY") };
-  io.emit("ping", JSON.stringify(dt));
-}, 1000);
