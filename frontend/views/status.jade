@@ -1,0 +1,72 @@
+.card.bg-dark.text-center
+  .card-header.text-white
+    | Backend Status
+  .card-body
+    div#ping
+.card.bg-dark.text-center.text-center
+  .card-header.text-white
+    | Subsonic Status
+  .card-body
+    h5.card-title.text-white Server Status is {{server.status}}
+    p.card-text.text-white version {{server.version}}
+    
+.card.bg-dark.text-center
+  .card-header.text-white
+    | Enabled Folders
+  .card-body
+    div
+      table.table
+        tbody
+          tr(ng-repeat='folder in folders')
+            td.text-white {{folder.name}}
+      button(ng-click='startScan()').btn.btn-success.text-white
+        i.fa.fa-sync 
+        |  Rescan Library
+
+    div(ng-show='scanStatus.scanning').text-white
+      |  Current Progress: {{scanStatus.count}} / {{scanStatusTotalFiles}}
+.card.bg-dark.text-center
+  .card-header.text-white
+    | User Info - {{userInfo.username}}
+  .card-body.text-white
+    div
+      table.table
+        tbody
+          tr
+            td Admin
+            td {{userInfo.adminRole}}
+          tr
+            td Can Comment
+            td {{userInfo.commentRole}}
+          tr
+            td Has CoverArt
+            td {{userInfo.coverArtRole}}
+          tr
+            td Can Download
+            td {{userInfo.downloadRole}}
+          tr
+            td Has Jukebox
+            td {{userInfo.jukeboxRole}}
+          tr
+            td Has Playlists
+            td {{userInfo.playlistRole}}
+          tr
+            td Scrobbling Enabled
+            td {{userInfo.scrobblingEnabled}}
+          tr
+            td Access Settings
+            td {{userInfo.settingsRole}}
+          tr
+            td Can Share
+            td {{userInfo.shareRole}}
+          tr
+            td Can Stream
+            td {{userInfo.streamRole}}
+          tr
+            td Can Upload
+            td {{userInfo.uploadRole}}
+          tr
+            td Can Transcode
+            td {{userInfo.videoConversionRole}}
+    
+        
