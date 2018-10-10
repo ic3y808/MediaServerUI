@@ -101,11 +101,11 @@ function ApplicationRun($window, $rootScope, MediaService, ChromecastService, Su
                   $('#trackInfo').attr("href", "/playing");
 
                   if (source.starred) {
-                    $("#likeButtonIcon").removeClass('far');
-                    $("#likeButtonIcon").addClass('fa');
+                    $("#likeButtonIcon").removeClass('heart-o');
+                    $("#likeButtonIcon").addClass('heart');
                   } else {
-                    $("#likeButtonIcon").removeClass('fa');
-                    $("#likeButtonIcon").addClass('far');
+                    $("#likeButtonIcon").removeClass('heart');
+                    $("#likeButtonIcon").addClass('heart-o');
                   }
 
                   $("#playPauseIcon").addClass("fa-pause");
@@ -336,16 +336,16 @@ function ApplicationRun($window, $rootScope, MediaService, ChromecastService, Su
         console.log('UnStarred');
         $rootScope.selectedTrack().starred = undefined;
         console.log(result);
-        $("#likeButtonIcon").addClass('far');
-        $("#likeButtonIcon").removeClass('fa');
+        $("#likeButtonIcon").addClass('heart-o');
+        $("#likeButtonIcon").removeClass('heart');
 
       });
     } else {
       $rootScope.subsonic.star($rootScope.selectedTrack().id).then(function (result) {
         console.log('starred');
         $rootScope.selectedTrack().starred = 1;
-        $("#likeButtonIcon").removeClass('far');
-        $("#likeButtonIcon").addClass('fa');
+        $("#likeButtonIcon").removeClass('heart-o');
+        $("#likeButtonIcon").addClass('heart');
         console.log(result);
       });
     }
@@ -677,11 +677,11 @@ function ApplicationRun($window, $rootScope, MediaService, ChromecastService, Su
             //        $('#trackInfo').attr("href", source.albumUrl);
 
             //        if (source.starred) {
-            //            $("#likeButtonIcon").removeClass('far');
-            //            $("#likeButtonIcon").addClass('fa');
+            //            $("#likeButtonIcon").removeClass('heart-o');
+            //            $("#likeButtonIcon").addClass('heart');
             //        } else {
-            //            $("#likeButtonIcon").removeClass('fa');
-            //            $("#likeButtonIcon").addClass('far');
+            //            $("#likeButtonIcon").removeClass('heart');
+            //            $("#likeButtonIcon").addClass('heart-o');
             //        }
 
             //        $("#playPauseIcon").addClass("fa-pause");

@@ -20,7 +20,7 @@
           tr(ng-repeat='folder in folders')
             td.text-white {{folder.name}}
       button(ng-click='startScan()').btn.btn-success.text-white
-        i.fa.fa-sync 
+        i.fa.fa-refresh 
         |  Rescan Library
 
     div(ng-show='scanStatus.scanning').text-white
