@@ -1,0 +1,45 @@
+.appfooter.bg-dark
+  .nowPlayingBar
+    .nowPlayingBarTop
+      div.bg-secondary(style='height:10px;position:absolute;top:0;left:0;right:0;')
+      .nowPlayingBarPositionContainer.sliderContainer.mdl-slider-container
+      #progressContainer
+        #subProgress.progress-bar.progress-bar-striped.progress-bar-animated.track-progress.buffer-color(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+        #mainProgress.progress-bar.progress-bar-animated.progress-color.track-progress(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
+      div#clickProgress(style='height:10px;position:absolute;top:0;left:0;right:0;opacity: 0;')  
+      .nowPlayingBarInfoContainer
+        img#nowPlayingImageHolder.nowPlayingImage
+        .nowPlayingBarText
+          div
+            a#artistInfo.text-white(href='#')
+          .nowPlayingBarSecondaryText
+            a#trackInfo.text-white(href='#')
+
+      .nowPlayingBarCenter
+        button#skipBackButton.btn.btn-sm.btn-dark
+          i.fa.fa-step-backward(aria-hidden='true')
+        button#playPauseButton.btn.btn-sm.btn-dark
+          i#playPauseIcon.fa.fa-play(aria-hidden='true')
+        button#skipNextButton.btn.btn-sm.btn-dark
+          i.fa.fa-step-forward(aria-hidden='true')
+        #mainTimeDisplay.text-light.bg-dark
+      .nowPlayingBarRight
+        
+ 
+        
+        google-cast-launcher.btn.btn-sm.btn-dark(style='max-height:35px;max-width:35px;')
+        button#downloadButton.btn.btn-sm.btn-dark
+          i.fa.fa-download(aria-hidden='true')
+        button#repeatButton.btn.btn-sm.btn-dark
+          i.fa.fa-redo-alt(aria-hidden='true')
+        button#likeButton.btn.btn-sm.btn-dark
+          i#likeButtonIcon.far.fa-heart(aria-hidden='true')
+        button#shareButton.btn.btn-sm.btn-dark
+          i.fa.fa-bullhorn(aria-hidden='true')
+        a(href='/playing')#nowPlayingViewButton.btn.btn-sm.btn-dark
+          i.fa.fa-list-ul(aria-hidden='true')
+        button#muteButton.btn.btn-sm.btn-dark
+          i.fa.fa-volume-off(aria-hidden='true')
+        .sliderContainer.nowPlayingBarVolumeSliderContainer.mdl-slider-container(style='width:100px;vertical-align:middle;display:inline-flex;')
+          .slidecontainer
+            input#volumeSlider.slider(type='range', min='1', max='100', value='50')
