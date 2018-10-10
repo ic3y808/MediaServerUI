@@ -2,6 +2,7 @@ import CryptoJS from 'crypto-js';
 
 export default class SubsonicService {
   constructor($rootScope) {
+    "ngInject";
     this.$rootScope = $rootScope;
     this.$rootScope.isLoggingIn = true;
     this.$rootScope.isLoggedIn = false;
@@ -58,7 +59,7 @@ export default class SubsonicService {
   }
 
   ping() {
-    doLogin();
+    this.doLogin();
     if (this.$rootScope.isLoggedIn)
       return this.$rootScope.subsonic.ping();
     else return false;

@@ -6,6 +6,7 @@ window.__onGCastApiAvailable = function (isAvailable) {
 
 export default class ChromecastService {
   constructor($rootScope) {
+    "ngInject";
     this.$rootScope = $rootScope;
   }
 

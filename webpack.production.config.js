@@ -1,84 +1,19 @@
-var Webpack = require('webpack');
-var StatsPlugin = require('stats-webpack-plugin');
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var autoprefixer = require('autoprefixer-core');
-var csswring = require('csswring');
-var path = require('path');
-var nodeModulesPath = path.resolve(__dirname, 'node_modules');
-var assetsPath = path.resolve(__dirname, 'public', 'assets');
-var entryPath = path.resolve(__dirname, 'frontend', 'app.es6.js');
-var host = process.env.APP_HOST || 'localhost';
+const path = require('path');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const webpack = require('webpack');
+const dist = path.resolve(__dirname, 'www');
+var entryPath = path.resolve(__dirname, 'frontend', 'app.js');
+const nodePath = path.resolve(__dirname, 'node_modules');
 
-var config = {
-
-  // We change to normal source mapping
-  devtool: 'source-map',
-  entry: entryPath,
-  output: {
-
-    // We need to give Webpack a path. It does not actually need it,
-    // because files are kept in memory in webpack-dev-server, but an
-    // error will occur if nothing is specified. We use the assetsPath
-    // as that points to where the files will eventually be bundled
-    // in production
-    path: assetsPath,
-    filename: 'bundle.js',
-
-    // Everything related to Webpack should go through a assets path,
-    // localhost:3000/assets. That makes proxying easier to handle
-    publicPath: '/assets/'
+module.exports = {
+  entry: {
+    app: entryPath
   },
-  module: {
-
-    loaders: [
-      { test: /\.es6.js$/, loader: 'babel-loader' },
-      {
-        test: /\.css$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!postcss-loader?sourceMap')
-      },
-      {
-        test: /\.less$/,
-        loader: ExtractTextPlugin.extract('css?sourceMap!postcss-loader?sourceMap!less?sourceMap')
-      },
-      {
-        test: /\.html$/,
-        loader: 'html-loader'
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file?hash=sha512&digest=hex&name=[hash].[ext]',
-          'image?bypassOnDebug&optimizationLevel=7&interlaced=false'
-        ]
-      },
-      {
-        test: /\.js$/,
-        include: [
-          path.resolve(__dirname, "node_modules/clipboard/src")
-        ],
-        loader: 'strip-loader?strip[]=debug'
-      },
-      {
-        test: /\.(ttf|eot|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-        loader: "url-loader"
-      },
-      {
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        loaders: [
-          'file-loader?name=images/[name].[ext]',
-          'image-webpack-loader?bypassOnDebug'
-        ]
-      }
-
-    ]
-  },
-  postcss: [autoprefixer, csswring],
-
+  devtool: 'inline-source-map',
   plugins: [
-    // We have to manually add the Hot Replacement plugin when running
-    // from Node
-    new ExtractTextPlugin("styles.css"),
-    new Webpack.ProvidePlugin({
+    new CleanWebpackPlugin([dist]),
+    new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery',
@@ -98,9 +33,69 @@ var config = {
       Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
       Util: 'exports-loader?Util!bootstrap/js/dist/util'
     }),
-    new Webpack.optimize.UglifyJsPlugin({ minimize: true }),
-    new StatsPlugin(path.join(__dirname, 'stats.json'), { chunkModules: true })
-  ]
+    new webpack.optimize.UglifyJsPlugin({ minimize: true })
+  ],
+  module: {
+    rules: [
+    {
+      test: /\.js$/,
+      use: ['ng-annotate-loader', 'strip-loader?strip[]=debug', 'babel-loader'],
+      include: [
+        path.resolve(__dirname, "node_modules/clipboard/src")
+      ],
+      exclude: [nodePath]
+    },
+    {
+      test: /\.(png|svg|jpg|gif)$/,
+      use: ['file-loader']
+    },
+    {
+      test: /\.(ttf|eot|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
+      loader: "url-loader"
+    },
+    {
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      use: [
+        'file-loader?name=images/[name].[ext]',
+        'image-webpack-loader?bypassOnDebug'
+      ]
+    },
+    {
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader']
+    },
+    {
+      test: /\.(scss|sass)$/,
+      use: [{
+        loader: 'style-loader'
+      },
+      {
+        loader: 'css-loader'
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: function () { // post css plugins, can be exported to postcss.config.js
+            return [
+              require('precss'),
+              require('autoprefixer')
+            ];
+          }
+        }
+      },
+      {
+        loader: 'sass-loader'
+      }
+      ]
+    },
+    {
+      test: /\.less$/,
+      use: ['style-loader', 'css-loader', 'less-loader']
+    }
+    ]
+  },
+  output: {
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, dist)
+  }
 };
-
-module.exports = config;
