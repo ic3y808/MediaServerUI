@@ -37,6 +37,9 @@ module.exports = {
       Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
       Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
       Util: 'exports-loader?Util!bootstrap/js/dist/util'
+    }),
+    new webpack.DefinePlugin({
+      "DEV_MODE": process.env.DEV
     })
   ],
   module: {
@@ -60,7 +63,17 @@ module.exports = {
     },
     {
       test: /\.js$/,
-      use: ['ng-annotate-loader', 'strip-loader?strip[]=debug', 'babel-loader'],
+      use: [{
+        loader: 'ng-annotate-loader'
+      }, {
+        loader: 'strip-loader?strip[]=debug'
+      }, {
+        loader: 'babel-loader',
+        options: {
+          plugins: ['plugin-syntax-dynamic-import'],
+          presets: ['es2016']
+        }
+      }],
       include: [
         path.resolve(__dirname, "node_modules/clipboard/src")
       ],
