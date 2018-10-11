@@ -105,8 +105,8 @@ class ArtistsController {
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
 
-      $('#artistsGrid').width($('.wrapper').width());
-      $('#artistsGrid').height($('.wrapper').height());
+      $('#artistsGrid').width($('.main-content').width());
+      $('#artistsGrid').height($('.main-content').height());
 
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
@@ -116,8 +116,8 @@ class ArtistsController {
 
     $rootScope.$on('windowResized', function (event, data) {
 
-      $('#artistsGrid').width($('.wrapper').width());
-      $('#artistsGrid').height($('.wrapper').height());
+      $('#artistsGrid').width($('.main-content').width());
+      $('#artistsGrid').height($('.main-content').height());
 
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
@@ -128,8 +128,8 @@ class ArtistsController {
     });
 
     if ($rootScope.isMenuCollapsed === true) {
-      $('.content').toggleClass('content-wide');
-      $('.gridContainer ').toggleClass('dataTable-wide');
+    //  $('.content').toggleClass('content-wide');
+     // $('.gridContainer ').toggleClass('dataTable-wide');
     }
 
   }

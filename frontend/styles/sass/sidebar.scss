@@ -1,0 +1,26 @@
+.sidebar{
+  background-color: #333;
+  overflow: auto;
+  max-width: 230px;
+  padding: 0;
+}
+
+.list-group-item-dark {
+  color: #ffffff;
+  background-color: #343a40;
+}
+
+.list-group-item-dark-no-select {
+  color: #ffffff !important;
+  background-color: #343a40 !important;
+}
+
+.sidebar-expanded {
+  width: 230px;
+}
+
+.sidebar-collapsed {
+  width: 60px;
+}
+
+.list-group-item { cursor: pointer; }

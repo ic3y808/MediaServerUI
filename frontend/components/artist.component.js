@@ -103,7 +103,7 @@ class ArtistController {
                 $scope.similarArtists = result.similarArtist.slice(0, 5);
               }
               if (result.largeImageUrl) {
-                $('#mainArtistContent').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
+                $('.container').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
               }
               $scope.$apply();
             }
@@ -212,6 +212,7 @@ class ArtistController {
     $scope.getArtist();
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
     $(".content").addClass("content-with-toolbar");
+    var coverflow = $("#coverflow").flipster();
   }
 }
 

@@ -2,15 +2,20 @@ doctype html
 html(ng-app='subsonic')
   head
     title= title  
-  body#page-top
-     
-      #body-row.row((window:resize)='onResize($event)')
+  body
+      header
         include nav.jade  
-        .loader
-        ng-view.content.content-wide.animate-fade
-        include sidenav.jade
-        include footer.jade
+      main.container(role='main')
+        .row
+          .sidebar.sidebar-expanded
+            include sidenav.jade  
+          .loader
+          ng-view.main-content.col
         video#media-player(preload='true', controls='hidden', style="display:none;")
+      footer
+        include footer.jade
+          
+
 
     script(src='/bundle.js')
     script(src='http://localhost:35729/livereload.js')

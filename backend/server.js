@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require('path');
 const moment = require('moment');
 const express = require('express');
-const rewrite = require('express-urlrewrite');
 const webpack = require('webpack');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
