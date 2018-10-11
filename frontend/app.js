@@ -7,6 +7,7 @@ import 'underscore';
 import 'popper.js';
 import 'tooltip.js';
 import 'jquery-easing';
+import 'jquery.flipster';
 import 'moment';
 import 'bootstrap';
 import 'typeface-roboto'

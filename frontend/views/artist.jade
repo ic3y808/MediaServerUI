@@ -1,18 +1,6 @@
-div.artist-container
-  .pageToolbar-toolbar.bg-secondary.card-5
-      .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
-        .PageToolbarSection-section.PageToolbarSection-left
-          button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
-            i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-            .PageToolbarButton-labelContainer-1XS0i
-              .PageToolbarButton-label.text-white Shuffle
-          button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button',ng-click='startRadio()')
-            i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
-            .PageToolbarButton-labelContainer
-              .PageToolbarButton-label.text-white Radio
-  div#mainArtistContent.artist-page-header
-    
-    .container.text-center
+.artistWrapper
+  #artistHeader 
+    .text-center
       h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}}
       p.lead.text-white.bg-dark-transparent
         | {{artistBio}}
@@ -21,5 +9,31 @@ div.artist-container
         ul.list-inline
           li.list-inline-item(ng-repeat='artist in similarArtists') 
             a(href="/artist/{{artist.id}}").text-white.bg-dark-transparent {{artist.name}}
+  #artistAlbums 
+    #coverflow
+      ul.flip-items
+        li(data-flip-title='Red')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Razzmatazz', data-flip-category='Purples')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Deep Lilac', data-flip-category='Purples')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Daisy Bush', data-flip-category='Purples')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Cerulean Blue', data-flip-category='Blues')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Dodger Blue', data-flip-category='Blues')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Cyan', data-flip-category='Blues')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title="Robin's Egg", data-flip-category='Blues')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Deep Sea', data-flip-category='Greens')
+          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Apple', data-flip-category='Greens')
+          img(src='https://via.placeholder.com/350x150')
 
-  #tracksGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 40%;', flex-direction="row")
+
+  #artistTracks
+      #tracksGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 100%; width: 100%;', flex-direction="row")
+   

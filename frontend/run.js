@@ -367,7 +367,7 @@ class ApplicationRun {
       $rootScope.$broadcast('menuSizeChange');
     });
 
-    $rootScope.setupGrid = function(){
+    $rootScope.setupGrid = function () {
       if ($rootScope.isMenuCollapsed === true) {
         $('.content').toggleClass('content-wide');
         $('.gridContainer ').toggleClass('dataTable-wide');
@@ -427,6 +427,10 @@ class ApplicationRun {
         }, 5000);
       });
 
+    });
+
+    $('#sidebarCollapse').on('click', function () {
+      $('#sidebar').toggleClass('active');
     });
 
     $("#volumeSlider").on('change', function () {
@@ -508,7 +512,7 @@ class ApplicationRun {
       $('.sidebar-submenu').toggleClass('d-none');
       $('.submenu-icon').toggleClass('d-none');
       $('.list-group').toggleClass('card-5');
-      $('#sidebar-container').toggleClass('sidebar-expanded sidebar-collapsed');
+      $('.sidebar').toggleClass('sidebar-expanded sidebar-collapsed');
 
       // Treating d-flex/d-none on separators with title
       var SeparatorTitle = $('.sidebar-separator-title');
@@ -529,15 +533,29 @@ class ApplicationRun {
         $('.gridContainer').addClass('dataTable-wide');
       }
 
+      
+
       $rootScope.$broadcast('menuSizeChange');
     }
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
+    $('.list-group li').click(function(e) {
+      e.preventDefault()
 
+      $that = $(this);
 
+      $that.parent().find('li').removeClass('active');
+      $that.addClass('active');
+  });
 
+  jQuery(".list-group").hover(function () {
+    jQuery(this).addClass("active");
+}, 
+function () {
+    jQuery(this).removeClass("active");
+});
     $rootScope.socket.emit('load_settings');
 
     function debounce(func, wait, immediate) {

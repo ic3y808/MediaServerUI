@@ -1,9 +1,4 @@
-.artist-container{
-  height: calc(100vh - 190px);
-}
-
 .artist-page-header {
-  height: 60%;
   min-height: 30px;
   overflow-y: auto;
   background-attachment: fixed;
@@ -11,3 +6,55 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+#artistTracksGrid>div {
+  position: absolute;
+  padding: 0;
+  left: 0;
+  right: 0;
+  height: 50vh;
+}
+
+
+#artistTracksGrid {
+  position: relative;
+  padding: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+
+
+.artistWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+}
+
+#artistHeader {
+  flex: 0.5;
+}
+
+#artistAlbums {
+  flex: 0.25;
+  max-height:100px;
+}
+
+#artistTracks {
+  background-color: green;
+  height: 40%;
+  flex: 0.4;
+  display: flex;
+}
+
+
+
+
