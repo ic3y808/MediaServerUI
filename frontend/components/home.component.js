@@ -61,8 +61,7 @@ class HomeController {
     $scope.reloadRandomTracks();
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
+    $rootScope.hideLoader();
 
   }
 }

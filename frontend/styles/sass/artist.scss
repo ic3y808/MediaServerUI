@@ -1,0 +1,13 @@
+.artist-container{
+  height: calc(100vh - 190px);
+}
+
+.artist-page-header {
+  height: 60%;
+  min-height: 30px;
+  overflow-y: auto;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}

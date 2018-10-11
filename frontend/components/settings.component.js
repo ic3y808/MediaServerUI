@@ -32,6 +32,7 @@ class SettingsController {
         $scope.settings.subsonic_password = CryptoJS.AES.decrypt($rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8);
       }
       $scope.previewConnectionString();
+      $rootScope.hideLoader();
     });
 
     $scope.generateConnectionString = function () {
@@ -51,9 +52,19 @@ class SettingsController {
     }
 
     $rootScope.socket.emit('load_settings');
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
+    
+    $rootScope.$on('menuSizeChange', function (event, currentState) {
+      
+    });
+
+    $rootScope.$on('windowResized', function (event, data) {
+
+    });
+
+    if ($rootScope.isMenuCollapsed === true) {
+      $('.content').toggleClass('content-wide');
+      $('.gridContainer ').toggleClass('dataTable-wide');
+    }
   }
 }
 

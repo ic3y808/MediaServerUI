@@ -81,6 +81,7 @@ class PlaylistController {
           $scope.gridOptions.api.setRowData($rootScope.tracks);
           $scope.gridOptions.api.doLayout();
           $scope.gridOptions.api.sizeColumnsToFit();
+          $rootScope.hideLoader();
         }
       },
     };
@@ -124,8 +125,6 @@ class PlaylistController {
       $('.content').toggleClass('content-wide');
       $('.gridContainer ').toggleClass('dataTable-wide');
     }
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
   }
 }
 

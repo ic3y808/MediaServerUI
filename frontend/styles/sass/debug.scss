@@ -1,6 +1,21 @@
-$debug-stack: 0px dashed salmon;
+$debug-mode: false;
+$debug-stack: 0px;
+$colors: red, orange, yellow, lime, blue, pink;
 
 
+$debug-color: nth( $colors, random( length($colors) ) ) !default;
+@if $debug-mode {
+  $debug-stack: 1px dashed;
+}
+
+
+
+.card {
+  border:  $debug-stack nth( $colors, random( length($colors) ) );
+}
+.footer {
+  border: $debug-stack nth( $colors, random( length($colors) ) );
+}
 .content {
-  border: $debug-stack;
+  border: $debug-stack nth( $colors, random( length($colors) ) );
 }

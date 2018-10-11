@@ -84,10 +84,14 @@ class GenresController {
           $scope.gridOptions.api.setRowData($scope.genres);
           $scope.gridOptions.api.sizeColumnsToFit();
           $scope.$apply();
-
+          $rootScope.hideLoader();
         });
 
 
+      } else {
+        if ($scope.gridOptions.api)
+        $scope.gridOptions.api.showNoRowsOverlay();
+        $rootScope.hideLoader();
       }
     }
 
@@ -100,12 +104,32 @@ class GenresController {
 
     $scope.reloadGenres();
 
+    $rootScope.$on('menuSizeChange', function (event, currentState) {
+
+      $('#genresGrid').width($('.wrapper').width());
+      $('#genresGrid').height($('.wrapper').height());
+
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    });
+
+    $rootScope.$on('windowResized', function (event, data) {
+
+      $('#genresGrid').width($('.wrapper').width());
+      $('#genresGrid').height($('.wrapper').height());
+
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    });
+
     if ($rootScope.isMenuCollapsed === true) {
       $('.content').toggleClass('content-wide');
       $('.gridContainer ').toggleClass('dataTable-wide');
     }
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
   }
 }
 
