@@ -76,7 +76,12 @@ class GenreController {
           $scope.gridOptions.api.sizeColumnsToFit();
         }
         $scope.$apply();
+        $rootScope.hideLoader();
       });
+    } else{
+      if ($scope.gridOptions.api)
+      $scope.gridOptions.api.showNoRowsOverlay();
+      $rootScope.hideLoader();
     }
   }
 
@@ -115,8 +120,6 @@ class GenreController {
 
   $scope.getGenre();
   if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-  $(".loader").css("display", "none");
-  $(".content").css("display", "block");
   }
 }
 

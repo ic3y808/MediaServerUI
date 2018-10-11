@@ -15,11 +15,11 @@ body body .vertical-flex {
   margin-top: 60px;
   margin-bottom: 70px;
   width: 100%;
-  height:calc(100vh - 135px);
+  height:calc(100vh - 130px);
   display: flex;
   flex-direction: column;
   display: none;
-
+  overflow: auto;
   background-attachment: fixed;
   background-position: top;
   background-repeat: no-repeat;

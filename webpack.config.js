@@ -39,7 +39,9 @@ module.exports = {
       Util: 'exports-loader?Util!bootstrap/js/dist/util'
     }),
     new webpack.DefinePlugin({
-      "DEV_MODE": process.env.DEV
+      "DEV_MODE": process.env.DEV,
+      "SERVER_HOST": process.env.SERVER_HOST,
+      "SERVER_PORT": process.env.PORT
     })
   ],
   module: {

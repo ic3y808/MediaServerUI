@@ -102,9 +102,14 @@ class StarredController {
             $scope.gridOptions.api.sizeColumnsToFit();
           }
           $scope.$apply();
+          $rootScope.hideLoader();
         }, function (reject) {
           console.log(reject)
         });
+      } else {
+        if ($scope.gridOptions.api)
+        $scope.gridOptions.api.showNoRowsOverlay();
+        $rootScope.hideLoader();
       }
     }
 
@@ -147,8 +152,6 @@ class StarredController {
       $('.content').toggleClass('content-wide');
       $('.gridContainer ').toggleClass('dataTable-wide');
     }
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
   }
 }
 

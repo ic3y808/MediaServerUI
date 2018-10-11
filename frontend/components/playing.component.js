@@ -22,15 +22,20 @@ class PlayingController {
                 $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
                 if (result.similarArtist && result.similarArtist.length > 0)
                   $scope.similarArtists = result.similarArtist;
-                if(result.largeImageUrl){
+                if (result.largeImageUrl) {
                   $rootScope.setContentBackground(result.largeImageUrl.replace('300x300', Math.round($('.content').width()) + 'x' + Math.round($('.content').height())));
                 }
-                
+
                 $scope.$apply();
+                $rootScope.hideLoader();
               }
             });
           });
         }
+      } else {
+        if ($scope.gridOptions.api) 
+          $scope.gridOptions.api.showNoRowsOverlay();
+        $rootScope.hideLoader();
       }
     }
 
@@ -46,8 +51,6 @@ class PlayingController {
 
     $scope.getSong();
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
   }
 }
 

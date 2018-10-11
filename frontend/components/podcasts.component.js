@@ -6,8 +6,7 @@ class PodcastsController {
     this.$rootScope = $rootScope;
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
+    $rootScope.hideLoader();
   }
 }
 

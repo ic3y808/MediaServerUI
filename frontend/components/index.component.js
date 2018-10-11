@@ -24,14 +24,14 @@ class IndexController {
       if ($rootScope.isLoggedIn) {
         $scope.artists = [];
         $rootScope.subsonic.getArtists().then(function (result) {
-
           $scope.artists = result;
-
           $scope.$apply();
-
+          $rootScope.hideLoader();
         });
-
-
+      } else{
+        if ($scope.gridOptions.api)
+        $scope.gridOptions.api.showNoRowsOverlay();
+        $rootScope.hideLoader();
       }
     }
 
@@ -40,14 +40,9 @@ class IndexController {
       $scope.reloadArtists();
     });
 
-
-
     $scope.reloadArtists();
 
-
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
   }
 }
 

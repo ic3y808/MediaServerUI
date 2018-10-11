@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require('path');
 const moment = require('moment');
 const express = require('express');
+const rewrite = require('express-urlrewrite');
 const webpack = require('webpack');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
@@ -74,71 +75,81 @@ var index = require('./routes/index');
 // view engine setup
 app.set('views', path.join(__dirname, '..', 'frontend', 'views'));
 app.set('view engine', 'jade');
-app.use(function (req, res, next) { res.io = io; next(); });
+app.use(function (req, res, next) {
+  res.io = io;
+  next();
+});
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/node_modules/", express.static(path.join(__dirname, '..','node_modules')));
-app.use("/bower_components/", express.static(path.join(__dirname,'..', 'bower_components')));
-app.all('/*.hot-update.json', function(req, res, next) {
-  console.log('Intercepting requests ...');
-  next();  // call next() here to move on to next middleware/router
-})
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
+
 app.use("/", express.static(path.join(__dirname, '..', 'frontend')));
-app.use("/controllers/", express.static(path.join(__dirname,'..', 'frontend', 'controllers')));
-app.use("/factories/", express.static(path.join(__dirname, '..', 'frontend','factories')));
+app.use("/node_modules/", express.static(path.join(__dirname, '..', 'node_modules')));
+app.use("/bower_components/", express.static(path.join(__dirname, '..', 'bower_components')));
+app.use("/controllers/", express.static(path.join(__dirname, '..', 'frontend', 'controllers')));
+app.use("/factories/", express.static(path.join(__dirname, '..', 'frontend', 'factories')));
 
 /* Configure Routes. */
 app.use('/', index);
 
-app.get('/template/:name', function(req, server) {  server.render(req.params.name); });
-app.get('/artist/template/:name', function(req, server) {  server.render(req.params.name); });
-app.get('/genre/template/:name', function(req, server) {  server.render(req.params.name); });
- 
+app.get('/template/:name', function (req, server) {
+  server.render(req.params.name);
+});
+app.get('/artist/template/:name', function (req, server) {
+  server.render(req.params.name);
+});
+app.get('/genre/template/:name', function (req, server) {
+  server.render(req.params.name);
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-	var err = new Error('Not Found');
-	err.status = 404;
-	next(err);
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
 });
 
 if (process.env.DEV === 'true') {
-	app.locals.pretty = true;
-	app.use(function (err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: err
-		});
-	});
+  app.locals.pretty = true;
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
 } else {
-	app.use(function (err, req, res, next) {
-		res.status(err.status || 500);
-		res.render('error', {
-			message: err.message,
-			error: {}
-		});
-	});
+  app.use(function (err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: {}
+    });
+  });
 }
 
 io.on('connection', function (socket) {
-	console.log('connected');
-	socket.on('save_settings',function(settings){
-		console.log('save_settings');
-		db.saveSettings(settings, function(result){
-			console.log('settings saved');
-		})
-	});
-	socket.on('load_settings',function(){
-		console.log('load_settings');
-		db.loadSettings(function(result){
-			socket.emit('settings_event', result);
-		})
-	});
+  console.log('connected');
+  socket.on('save_settings', function (settings) {
+    console.log('save_settings');
+    db.saveSettings(settings, function (result) {
+      console.log('settings saved');
+    })
+  });
+  socket.on('load_settings', function () {
+    console.log('load_settings');
+    db.loadSettings(function (result) {
+      socket.emit('settings_event', result);
+    })
+  });
 });
 
 setInterval(function () {
-	var dt = { date: moment().format("hh:mm:ss a | MM-DD-YYYY") };
-	io.emit("ping", JSON.stringify(dt));
+  var dt = {
+    date: moment().format("hh:mm:ss a | MM-DD-YYYY")
+  };
+  io.emit("ping", JSON.stringify(dt));
 }, 1000);
 
 server.listen(normalizePort(process.env.PORT || '3000'), () => {

@@ -136,18 +136,23 @@ class ArtistController {
                     $scope.gridOptions.api.sizeColumnsToFit();
                   }
                   $scope.$apply();
+                  $rootScope.hideLoader();
                 }
               })
             });
           } else {
-            $scope.gridOptions.api.showNoRowsOverlay();
+            if ($scope.gridOptions.api)
+              $scope.gridOptions.api.showNoRowsOverlay();
           }
 
 
           $scope.$apply();
-          $(".loader").css("display", "none");
-          $(".content").css("display", "block");
+          $rootScope.hideLoader();
         });
+      } else {
+        if ($scope.gridOptions.api)
+          $scope.gridOptions.api.showNoRowsOverlay();
+        $rootScope.hideLoader();
       }
     }
 
@@ -207,8 +212,6 @@ class ArtistController {
     $scope.getArtist();
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
     $(".content").addClass("content-with-toolbar");
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
   }
 }
 

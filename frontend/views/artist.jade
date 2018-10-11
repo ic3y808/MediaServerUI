@@ -1,6 +1,5 @@
-div(style='height: calc(100vh - 125px);')
-  div#mainArtistContent.page-header
-    .pageToolbar-toolbar.bg-secondary.card-5
+div.artist-container
+  .pageToolbar-toolbar.bg-secondary.card-5
       .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
         .PageToolbarSection-section.PageToolbarSection-left
           button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
@@ -11,6 +10,8 @@ div(style='height: calc(100vh - 125px);')
             i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
             .PageToolbarButton-labelContainer
               .PageToolbarButton-label.text-white Radio
+  div#mainArtistContent.artist-page-header
+    
     .container.text-center
       h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}}
       p.lead.text-white.bg-dark-transparent

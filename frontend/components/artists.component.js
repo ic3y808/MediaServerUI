@@ -78,19 +78,24 @@ class ArtistsController {
         $rootScope.subsonic.getArtists().then(function (artistsCollection) {
           $scope.getArtists(artistsCollection, function (result) {
             $scope.artists = result;
-            $scope.gridOptions.api.setRowData($scope.artists);
-            $scope.gridOptions.api.sizeColumnsToFit();
-            $scope.$apply();
-          })
+            if ($scope.gridOptions.api) {
+              $scope.gridOptions.api.setRowData($scope.artists);
+              $scope.gridOptions.api.sizeColumnsToFit();
+              $scope.$apply();
+              $rootScope.hideLoader();
+            }
+          });
         });
-
-
+      } else {
+        if ($scope.gridOptions.api)
+          $scope.gridOptions.api.showNoRowsOverlay();
+        $rootScope.hideLoader();
       }
     }
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       console.log('music reloading on subsonic ready')
-      //$scope.reloadArtists();
+      $scope.reloadArtists();
     });
 
     document.addEventListener("DOMContentLoaded", function () {
@@ -118,17 +123,15 @@ class ArtistsController {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
       }
+
+
     });
-
-
-
 
     if ($rootScope.isMenuCollapsed === true) {
       $('.content').toggleClass('content-wide');
       $('.gridContainer ').toggleClass('dataTable-wide');
     }
-    $(".loader").css("display", "none");
-    $(".content").css("display", "block");
+
   }
 }
 

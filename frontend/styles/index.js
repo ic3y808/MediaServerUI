@@ -6,4 +6,5 @@ import 'ag-grid-community/dist/styles/ag-theme-dark.css';
 import './sass/main.scss';
 import './less/main.less';
 import './css/main.css';
+import './sass/artist.scss';
 import './sass/debug.scss';
