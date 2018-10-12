@@ -1,9 +1,10 @@
 .artistWrapper
   #artistHeader 
     .text-center
-      h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}}
-      p.lead.text-white.bg-dark-transparent
-        | {{artistBio}}
+      h1.text-white.bg-dark-transparent {{artistName}}
+        p.bio-text.bg-dark-transparent 
+          | {{artistBio}}
+
       p
         small.text-white.bg-dark-transparent Similar Artists  
         ul.list-inline
@@ -12,26 +13,9 @@
   #artistAlbums 
     #coverflow
       ul.flip-items
-        li(data-flip-title='Red')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Razzmatazz', data-flip-category='Purples')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Deep Lilac', data-flip-category='Purples')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Daisy Bush', data-flip-category='Purples')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Cerulean Blue', data-flip-category='Blues')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Dodger Blue', data-flip-category='Blues')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Cyan', data-flip-category='Blues')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title="Robin's Egg", data-flip-category='Blues')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Deep Sea', data-flip-category='Greens')
-          img(src='https://via.placeholder.com/350x150')
-        li(data-flip-title='Apple', data-flip-category='Greens')
-          img(src='https://via.placeholder.com/350x150')
+        li(data-flip-title='Red', ng-repeat='album in albums')
+          img(ng-src='{{album.artUrl}}')
+        
 
 
   #artistTracks
