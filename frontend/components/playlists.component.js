@@ -4,7 +4,7 @@ class PlaylistsController {
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     console.log('playlists-controller')
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
+
     $rootScope.hideLoader();
   }
 }

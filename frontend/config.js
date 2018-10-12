@@ -1,8 +1,6 @@
 class ApplicationConfig {
   constructor($routeProvider, $locationProvider) {
     "ngInject";
-    $(".content").css("display", "none");
-    $(".loader").css("display", "block");
     $routeProvider.when('/', {
       template: '<home></home>',
     }).when('/status', {

@@ -9,7 +9,7 @@ class PlayingController {
       if ($rootScope.isLoggedIn) {
         var track = $rootScope.selectedTrack();
         if (track) {
-          $rootScope.subsonic.getSong($rootScope.selectedTrack().id).then(function (song) {
+          $rootScope.subsonic.getSong(track.id).then(function (song) {
             $scope.song = song.song;
             $scope.artistName = $scope.song.artist;
             $scope.trackTitle = $scope.song.title;
@@ -23,7 +23,9 @@ class PlayingController {
                 if (result.similarArtist && result.similarArtist.length > 0)
                   $scope.similarArtists = result.similarArtist;
                 if (result.largeImageUrl) {
-                  $rootScope.setContentBackground(result.largeImageUrl.replace('300x300', Math.round($('.content').width()) + 'x' + Math.round($('.content').height())));
+                  var bgUrl = result.largeImageUrl.replace('300x300', Math.round($('.main-content').width()) + 'x' + Math.round($('.main-content').height()));
+                  console.log('getting image ' + bgUrl);
+                  $rootScope.setContentBackground(bgUrl);
                 }
 
                 $scope.$apply();
@@ -33,7 +35,7 @@ class PlayingController {
           });
         }
       } else {
-        if ($scope.gridOptions.api) 
+        if ($scope.gridOptions && $scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();
         $rootScope.hideLoader();
       }
@@ -50,7 +52,6 @@ class PlayingController {
     });
 
     $scope.getSong();
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
   }
 }
 

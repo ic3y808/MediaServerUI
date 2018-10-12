@@ -10,33 +10,29 @@ class ArtistController {
     $scope.artistName = '';
 
     var columnDefs = [{
-        headerName: "#",
-        field: "track",
-        width: 75,
-        suppressSizeToFit: true
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "#",
+      field: "track",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -103,7 +99,7 @@ class ArtistController {
                 $scope.similarArtists = result.similarArtist.slice(0, 5);
               }
               if (result.largeImageUrl) {
-                $('.container').css('background-image', 'url(' + result.largeImageUrl.replace('300x300', '1280x800') + ')');
+                $rootScope.setContentBackground(result.largeImageUrl.replace('300x300', '1280x800'));
               }
               $scope.$apply();
             }
@@ -158,6 +154,11 @@ class ArtistController {
       }
     }
 
+    $scope.refresh = function () {
+      console.log('refresh artist')
+      $scope.getArtist();
+    };
+
     $scope.startRadio = function () {
       $rootScope.subsonic.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
         console.log('starting radio')
@@ -192,7 +193,7 @@ class ArtistController {
 
     $rootScope.$on('menuSizeChange', function (event, data) {
 
-      $('#artistsGrid').width($('.wrapper').width());
+      //$('#artistsGrid').width($('.wrapper').width());
 
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
@@ -202,8 +203,8 @@ class ArtistController {
 
     $rootScope.$on('windowResized', function (event, data) {
 
-      $('#tracksGrid').width($('.wrapper').width());
-      $('#tracksGrid').height($('.wrapper').height());
+      //$('#artistTracksGrid').width($('.wrapper').width());
+      //$('#artistTracksGrid').height($('.wrapper').height());
 
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
@@ -212,9 +213,6 @@ class ArtistController {
     });
 
     $scope.getArtist();
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $(".content").addClass("content-with-toolbar");
- 
   }
 }
 

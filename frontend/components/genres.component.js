@@ -125,11 +125,6 @@ class GenresController {
         $scope.gridOptions.api.sizeColumnsToFit();
       }
     });
-
-    if ($rootScope.isMenuCollapsed === true) {
-      $('.content').toggleClass('content-wide');
-      $('.gridContainer ').toggleClass('dataTable-wide');
-    }
   }
 }
 

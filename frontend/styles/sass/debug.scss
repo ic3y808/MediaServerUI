@@ -1,4 +1,5 @@
 $debug-mode: false;
+$advanced-debug-mode: false;
 $debug-stack: 0px;
 $debug-sizing: content-box;
 $colors: red, orange, yellow, lime, blue, pink;
@@ -27,4 +28,9 @@ $debug-color: nth( $colors, random( length($colors) ) ) !default;
 }
 .sidebar {
   border: $debug-stack nth( $colors, random( length($colors) ) );
+}
+@if $advanced-debug-mode {
+  div {
+    border: $debug-stack nth( $colors, random( length($colors) ) );
+  }
 }

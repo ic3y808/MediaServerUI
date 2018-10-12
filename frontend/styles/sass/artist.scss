@@ -1,19 +1,36 @@
-.artist-page-header {
-  min-height: 30px;
-  overflow-y: auto;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  font-size: 0.7em;
-}
-
-#artistTracksGrid>div {
+.artistWrapper {
+  display: flex;
+  flex-direction: column;
   position: absolute;
   padding: 0;
+  top: 0;
   left: 0;
   right: 0;
-  height: 50vh;
+  height: 100%;
+  margin: 0;
+}
+
+.artistBodyWrapper {
+  position: absolute;
+  padding: 0;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+#artistHeader {
+  flex: 0.2 0;
+}
+
+#artistAlbums {
+  flex: 0.25 0;
+  max-height: 100px;
+}
+
+#artistTracksGrid {
+  flex: 1 0;
 }
 
 .bio-text {
@@ -27,43 +44,4 @@
   line-height: 18px;
   max-height: 75px;
   overflow: auto;
-}
-
-#artistTracksGrid {
-  position: relative;
-  padding: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
-
-
-
-.artistWrapper {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  padding: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  margin: 0;
-}
-
-#artistHeader {
-  flex: 0.2 0;
-}
-
-#artistAlbums {
-  flex: 0.25 0;
-  max-height: 100px;
-}
-
-#artistTracks {
-  background-color: green;
-  height: 40%;
-  flex: 1 1;
-  display: flex;
 }

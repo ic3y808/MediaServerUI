@@ -41,8 +41,6 @@ class IndexController {
     });
 
     $scope.reloadArtists();
-
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
   }
 }
 
