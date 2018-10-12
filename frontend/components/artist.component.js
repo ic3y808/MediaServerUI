@@ -115,10 +115,11 @@ class ArtistController {
             artist.album.forEach(album => {
 
               if (album.coverArt) {
-                $rootScope.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
+                $rootScope.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
                   album.artUrl = result;
                   $scope.albums.push(album);
                   $scope.$apply();
+                  $("#coverflow").flipster();
                 });
               }
 
@@ -136,6 +137,7 @@ class ArtistController {
                     $scope.gridOptions.api.sizeColumnsToFit();
                   }
                   $scope.$apply();
+                  $("#coverflow").flipster();
                   $rootScope.hideLoader();
                 }
               })
@@ -145,7 +147,7 @@ class ArtistController {
               $scope.gridOptions.api.showNoRowsOverlay();
           }
 
-
+          $("#coverflow").flipster();
           $scope.$apply();
           $rootScope.hideLoader();
         });
@@ -212,7 +214,7 @@ class ArtistController {
     $scope.getArtist();
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
     $(".content").addClass("content-with-toolbar");
-    var coverflow = $("#coverflow").flipster();
+ 
   }
 }
 

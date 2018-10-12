@@ -5,6 +5,7 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  font-size: 0.7em;
 }
 
 #artistTracksGrid>div {
@@ -15,6 +16,18 @@
   height: 50vh;
 }
 
+.bio-text {
+  font-size: 0.7em;
+  float: left;
+  color: white;
+  font-family: Candara, Trebuchet MS, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  border-right: thin dotted #666666;
+  line-height: 18px;
+  max-height: 75px;
+  overflow: auto;
+}
 
 #artistTracksGrid {
   position: relative;
@@ -40,21 +53,17 @@
 }
 
 #artistHeader {
-  flex: 0.5;
+  flex: 0.2 0;
 }
 
 #artistAlbums {
-  flex: 0.25;
-  max-height:100px;
+  flex: 0.25 0;
+  max-height: 100px;
 }
 
 #artistTracks {
   background-color: green;
   height: 40%;
-  flex: 0.4;
+  flex: 1 1;
   display: flex;
 }
-
-
-
-
