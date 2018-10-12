@@ -205,11 +205,11 @@ class ApplicationRun {
     });
 
     $rootScope.setContentBackground = function (img) {
-      $('.content').css('background-image', 'url(' + img + ')');
+      $('.container').css('background-image', 'url(' + img + ')');
     };
 
     $rootScope.resetContentBackground = function (img) {
-      $('.content').css('background-image', 'url("")');
+      $('.container').css('background-image', 'url("")');
     };
 
     $("#media-player").on("play", function () {
@@ -357,8 +357,9 @@ class ApplicationRun {
     });
 
     $rootScope.$on('$routeChangeStart', function ($event, next, current) {
-      $(".content").css("display", "none");
+      $(".main-content").css("display", "none");
       $(".loader").css("display", "block");
+      
     });
 
     $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
@@ -367,16 +368,9 @@ class ApplicationRun {
       $rootScope.$broadcast('menuSizeChange');
     });
 
-    $rootScope.setupGrid = function () {
-      if ($rootScope.isMenuCollapsed === true) {
-        $('.content').toggleClass('content-wide');
-        $('.gridContainer ').toggleClass('dataTable-wide');
-      }
-    }
-
     $rootScope.hideLoader = function () {
       $(".loader").css("display", "none");
-      $(".content").css("display", "block");
+      $(".main-content").css("display", "block");
     }
 
     $rootScope.fallbackCopyTextToClipboard = function (text) {
@@ -525,37 +519,27 @@ class ApplicationRun {
       // Collapse/Expand icon
       $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
 
-      if ($rootScope.isMenuCollapsed) {
-        $('.content').removeClass('content-wide');
-        $('.gridContainer').removeClass('dataTable-wide');
-      } else {
-        $('.content').addClass('content-wide');
-        $('.gridContainer').addClass('dataTable-wide');
-      }
-
-      
-
       $rootScope.$broadcast('menuSizeChange');
     }
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
-    $('.list-group li').click(function(e) {
+    $('.list-group li').click(function (e) {
       e.preventDefault()
 
       $that = $(this);
 
       $that.parent().find('li').removeClass('active');
       $that.addClass('active');
-  });
+    });
 
-  jQuery(".list-group").hover(function () {
-    jQuery(this).addClass("active");
-}, 
-function () {
-    jQuery(this).removeClass("active");
-});
+    jQuery(".list-group").hover(function () {
+      jQuery(this).addClass("active");
+    },
+      function () {
+        jQuery(this).removeClass("active");
+      });
     $rootScope.socket.emit('load_settings');
 
     function debounce(func, wait, immediate) {

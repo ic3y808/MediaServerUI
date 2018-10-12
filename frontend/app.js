@@ -1,5 +1,6 @@
 import angular from 'angular';
 import angularRoute from 'angular-route';
+import angularAnimate from 'angular-animate';
 __webpack_public_path__ = "http://localhost:" + SERVER_PORT + "/";
 
 import './styles/index'
@@ -25,6 +26,6 @@ import ApplicationRun from './run.js';
 agGridCommunity.initialiseAgGridWithAngular1(angular);
 $('[data-toggle="popover"]').popover();
 
-angular.module('subsonic', [angularRoute, 'agGrid', Components.name, Factories.name, Services.name])
+angular.module('subsonic', [angularRoute, angularAnimate, 'agGrid', Components.name, Factories.name, Services.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);

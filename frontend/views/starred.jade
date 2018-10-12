@@ -1,12 +1,31 @@
 .starredWrapper
-  #starredHeader 
-    .text-center
-      h1.text-white.bg-dark-transparent Starred
-  #starredAlbums 
-    #coverflow
-      ul.flip-items
-        li(data-flip-title='Red', ng-repeat='album in albums')
-          img(ng-src='{{album.artUrl}}', alt='{{album.name}}')
-  #starredTracks
-      #starredGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 100%; width: 100%;', flex-direction="row")
-          
+  .pageToolbar-toolbar.bg-secondary.card-5
+    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+      .PageToolbarSection-section.PageToolbarSection-left
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
+          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Refresh
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
+          i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Shuffle
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button',ng-click='startRadio()')
+          i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Radio
+  .artistBodyWrapper.d-flex.flex-column
+
+    #starredHeader 
+      .text-center
+        h1.text-white.bg-dark-transparent Starred
+    #starredAlbums 
+      #coverflow
+        ul.flip-items
+          li(data-flip-title='Red', ng-repeat='album in albums')
+            img(ng-src='{{album.artUrl}}')
+
+    #starredTracksGrid.ag-theme-dark(ag-grid='gridOptions')
+   
+
+

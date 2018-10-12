@@ -60,11 +60,6 @@ class SettingsController {
     $rootScope.$on('windowResized', function (event, data) {
 
     });
-
-    if ($rootScope.isMenuCollapsed === true) {
-      $('.content').toggleClass('content-wide');
-      $('.gridContainer ').toggleClass('dataTable-wide');
-    }
   }
 }
 

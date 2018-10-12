@@ -1,4 +1,4 @@
-#starredWrapper {
+.starredWrapper {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -10,37 +10,25 @@
   margin: 0;
 }
 
+.starredBodyWrapper {
+  position: absolute;
+  padding: 0;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
 #starredHeader {
   flex: 0.2 0;
 }
 
 #starredAlbums {
-  flex: 0.33 0;
+  flex: 0.25 0;
   max-height: 100px;
 }
 
-#starredTracks {
-  flex: 1 1;
-  display: flex;
-}
-
-#starredGrid>div {
-  position: absolute;
-  padding: 0;
-  left: 0;
-  right: 0;
-  height: 50vh;
-}
-
-.bio-text {
-  font-size: 0.7em;
-  float: left;
-  color: white;
-  font-family: Candara, Trebuchet MS, sans-serif;
-  font-size: 12px;
-  font-weight: bold;
-  border-right: thin dotted #666666;
-  line-height: 18px;
-  max-height: 75px;
-  overflow: auto;
+#starredTracksGrid {
+  flex: 1 0;
 }

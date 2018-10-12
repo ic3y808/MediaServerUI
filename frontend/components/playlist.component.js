@@ -101,8 +101,6 @@ class PlaylistController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-      $('#playlistGrid').width($('.main-content').width());
-      $('#playlistGrid').height($('.main-content').height());
 
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
@@ -113,19 +111,11 @@ class PlaylistController {
 
     $rootScope.$on('windowResized', function (event, data) {
 
-      $('#playlistGrid').width($('.main-content').width());
-      $('#playlistGrid').height($('.main-content').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
       }
     });
-
-    if ($rootScope.isMenuCollapsed === true) {
-     // $('.content').toggleClass('content-wide');
-      //$('.gridContainer ').toggleClass('dataTable-wide');
-    }
   }
 }
 

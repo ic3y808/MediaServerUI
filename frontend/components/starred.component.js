@@ -124,10 +124,6 @@ class StarredController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-
-      $('#starredGrid').width($('.wrapper').width());
-      $('#starredGrid').height($('.wrapper').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
@@ -135,10 +131,6 @@ class StarredController {
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-
-      $('#starredGrid').width($('.wrapper').width());
-      $('#starredGrid').height($('.wrapper').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
@@ -147,11 +139,6 @@ class StarredController {
 
 
     $scope.reloadStarred();
-
-    if ($rootScope.isMenuCollapsed === true) {
-      $('.content').toggleClass('content-wide');
-      $('.gridContainer ').toggleClass('dataTable-wide');
-    }
   }
 }
 

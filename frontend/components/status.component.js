@@ -83,7 +83,6 @@ class StatusController {
     $scope.ping();
     $scope.getUserInfo();
     $scope.getMediaFolders();
-    if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
     $rootScope.hideLoader();
   }
 }

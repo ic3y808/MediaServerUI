@@ -1,13 +1,15 @@
-div(style='height: calc(100vh - 125px);')
-  div#mainArtistContent.page-header2
+.genreWrapper
+  div
     .pageToolbar-toolbar.bg-secondary.card-5
       .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
         .PageToolbarSection-section.PageToolbarSection-left
-          button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
+          button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
             i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-            .PageToolbarButton-labelContainer-1XS0i
+            .PageToolbarButton-labelContainer
+              .PageToolbarButton-label.text-white Refresh
+          button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
+            i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+            .PageToolbarButton-labelContainer
               .PageToolbarButton-label.text-white Shuffle
-    .container.text-center(style='min-height:30px;height:30px;max-height:30px;')
-      h1.jumbotron-heading.text-white {{genre}}
 
-  #genresGrid.dataTable-inpage.ag-theme-dark(ag-grid='gridOptions', style='height: 80%;', flex-direction="row")
+  #genreTrackGrid.ag-theme-dark(ag-grid='gridOptions')
