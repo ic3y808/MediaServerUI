@@ -25,7 +25,9 @@ class IndexController {
         $scope.artists = [];
         $rootScope.subsonic.getArtists().then(function (result) {
           $scope.artists = result;
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
           $rootScope.hideLoader();
 
         });

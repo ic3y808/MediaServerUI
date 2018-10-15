@@ -68,6 +68,10 @@ main {
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
+.ag-theme-dark .current-track {
+  background-color: rgba(74, 112, 139, 0.50) !important;
+}
+
 .buffer-color {
   background-color: #8CBDC9 !important;
 }

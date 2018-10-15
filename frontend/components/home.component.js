@@ -30,7 +30,9 @@ class HomeController {
         $scope.random = [];
         $rootScope.subsonic.getRandomSongs().then(function (result) {
           $scope.processTracks(result.song, function (results) {
-            $scope.$apply();
+            if (!$scope.$$phase) {
+              $scope.$apply();
+            }
           });
 
         });
