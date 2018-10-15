@@ -3,6 +3,10 @@
     .pageToolbar-toolbar.bg-secondary.card-5
       .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
         .PageToolbarSection-section.PageToolbarSection-left
+          button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='$root.goBack()')
+            i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+            .PageToolbarButton-labelContainer
+              .PageToolbarButton-label.text-white Back
           button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
             i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
             .PageToolbarButton-labelContainer

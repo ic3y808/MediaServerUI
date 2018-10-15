@@ -27,10 +27,12 @@ class IndexController {
           $scope.artists = result;
           $scope.$apply();
           $rootScope.hideLoader();
+
         });
-      } else{
-        if ($scope.gridOptions.api)
-        $scope.gridOptions.api.showNoRowsOverlay();
+      } else {
+        if ($scope.gridOptions && $scope.gridOptions.api) {
+          $scope.gridOptions.api.showNoRowsOverlay();
+        }
         $rootScope.hideLoader();
       }
     }
