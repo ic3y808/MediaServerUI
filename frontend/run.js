@@ -3,10 +3,10 @@ import io from 'socket.io-client';
 class ApplicationRun {
   constructor($window, $rootScope, MediaService, ChromecastService, SubsonicService) {
     "ngInject";
-    console.log('starting application')
+    console.log('starting application');
     var myWindow = angular.element($window);
     myWindow.on('__onGCastApiAvailable', function (isAvailable) {
-      console.log('cast is ' + isAvailable)
+      console.log('cast is ' + isAvailable);
       $rootScope.isCastAvailable = isAvailable;
     });
     $rootScope.isLoggedIn = false;
@@ -20,18 +20,18 @@ class ApplicationRun {
 
     $rootScope.castSession = function () {
       return cast.framework.CastContext.getInstance().getCurrentSession();
-    }
+    };
 
     $rootScope.trackCount = function () {
       return $rootScope.tracks.length;
-    }
+    };
 
     $rootScope.showTrackCount = function () {
       return $rootScope.tracks.length > 0;
-    }
+    };
 
     $rootScope.selectedTrack = function () {
-      return $rootScope.tracks[$rootScope.selectedIndex]
+      return $rootScope.tracks[$rootScope.selectedIndex];
     };
 
     $rootScope.audioSource = function () {
@@ -41,11 +41,11 @@ class ApplicationRun {
     $rootScope.remotePlayerConnected = function () {
       if (!$rootScope.remotePlayer) return false;
       return $rootScope.remotePlayer.isConnected;
-    }
+    };
 
     $rootScope.loadTrack = function (index) {
       $rootScope.selectedIndex = index;
-      console.log('loadTrack')
+      console.log('loadTrack');
       $('#mainTimeDisplay').html("Loading...");
 
       var source = $rootScope.audioSource();
@@ -56,7 +56,7 @@ class ApplicationRun {
 
         if (source.artistId) {
           $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
-            console.log("getArtistDetails result")
+            console.log("getArtistDetails result");
 
             if (result) {
 
@@ -83,7 +83,7 @@ class ApplicationRun {
 
 
               } else {
-                console.log(source)
+                console.log(source);
                 MediaService.src = source.url;
                 MediaService.load();
                 if ($rootScope.shouldSeek) {
@@ -94,7 +94,7 @@ class ApplicationRun {
 
                 if (playPromise !== undefined) {
                   playPromise.then(_ => {
-                    console.log('success playing')
+                    console.log('success playing');
                     $('#artistInfo').html(source.artist);
                     $('#artistInfo').attr("href", source.artistUrl);
                     $('#trackInfo').html(source.title);
@@ -111,7 +111,7 @@ class ApplicationRun {
                     $("#playPauseIcon").addClass("fa-pause");
                     $("#playPauseIcon").removeClass("fa-play");
                     $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
-                    $('#volumeSlider').val($rootScope.currentVolume * 100)
+                    $('#volumeSlider').val($rootScope.currentVolume * 100);
                     $rootScope.$broadcast('trackChangedEvent');
                     $rootScope.$digest();
                   }).catch(error => {
@@ -122,11 +122,11 @@ class ApplicationRun {
             }
           });
         } else {
-          $rootScope.next()
-        };
+          $rootScope.next();
+        }
       } else {
-        $rootScope.next()
-      };
+        $rootScope.next();
+      }
     };
 
     $rootScope.play = function () {
@@ -140,13 +140,13 @@ class ApplicationRun {
 
         if (playPromise !== undefined) {
           playPromise.then(_ => {
-            console.log('success playing')
+            console.log('success playing');
           }).catch(error => {
             console.log('playing failed ' + error);
           });
         }
       }
-    }
+    };
 
     $rootScope.pause = function () {
       if ($rootScope.remotePlayerConnected()) {
@@ -156,11 +156,11 @@ class ApplicationRun {
       } else {
         MediaService.pause();
       }
-    }
+    };
 
     $rootScope.stop = function () {
       MediaService.stop();
-    }
+    };
 
     $rootScope.previous = function () {
       $rootScope.selectedIndex--;
@@ -179,12 +179,12 @@ class ApplicationRun {
       seconds = Math.floor(seconds % 60);
       seconds = (seconds >= 10) ? seconds : "0" + seconds;
       return minutes + ":" + seconds;
-    }
+    };
 
     $('#media-player').on('error', function failed(e) {
       // audio playback failed - show a message saying why
       // to get the source of the audio element use $(this).src
-      console.log('player error ' + e.target.error)
+      console.log('player error ' + e.target.error);
       switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
           alert('You aborted the video playback.');
@@ -291,7 +291,7 @@ class ApplicationRun {
         $rootScope.isMuted = !$rootScope.isMuted;
         if ($rootScope.isMuted) {
           MediaService.volume = 0;
-          $('#volumeSlider').val(0)
+          $('#volumeSlider').val(0);
         } else {
           MediaService.volume = $rootScope.currentVolume;
           $('#volumeSlider').val($rootScope.currentVolume * 100);
@@ -363,7 +363,7 @@ class ApplicationRun {
     });
 
     $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
-      console.log('routeChangeSuccess')
+      console.log('routeChangeSuccess');
       $rootScope.$broadcast('windowResized');
       $rootScope.$broadcast('menuSizeChange');
     });
@@ -371,7 +371,7 @@ class ApplicationRun {
     $rootScope.hideLoader = function () {
       $(".loader").css("display", "none");
       $(".main-content").css("display", "block");
-    }
+    };
 
     $rootScope.fallbackCopyTextToClipboard = function (text) {
       var textArea = document.createElement("textarea");
@@ -389,7 +389,7 @@ class ApplicationRun {
       }
 
       document.body.removeChild(textArea);
-    }
+    };
     $rootScope.copyTextToClipboard = function (text) {
       if (!navigator.clipboard) {
         $rootScope.fallbackCopyTextToClipboard(text);
@@ -400,7 +400,7 @@ class ApplicationRun {
       }, function (err) {
         console.error('Async: Could not copy text: ', err);
       });
-    }
+    };
 
     $("#shareButton").click(function () {
       console.log('shareButton');
@@ -447,7 +447,7 @@ class ApplicationRun {
       if ($rootScope.remotePlayerConnected()) {
         var currentMediaDuration = $rootScope.remotePlayer.duration;
         seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
-        if (seekto != NaN) {
+        if (!isNan(seekto)) {
           $rootScope.remotePlayer.currentTime = seekto;
           $rootScope.remotePlayerController.seek();
         }
@@ -456,7 +456,7 @@ class ApplicationRun {
         if (!isFinite(duration))
           duration = $rootScope.selectedTrack().duration;
         seekto = duration * ((e.offsetX / $("#clickProgress").width()));
-        if (seekto != NaN) {
+        if (!isNan(seekto)) {
           MediaService.currentTime = seekto;
         }
       }
@@ -470,7 +470,7 @@ class ApplicationRun {
     });
     $rootScope.socket.on('settings_event', function (data) {
       if (data) {
-        console.log('settings event')
+        console.log('settings event');
         var d = data[0];
         if (d) {
           $rootScope.settings = {
@@ -480,7 +480,7 @@ class ApplicationRun {
             "subsonic_port": d.subsonic_port,
             "subsonic_use_ssl": d.subsonic_use_ssl,
             "subsonic_include_port_in_url": d.subsonic_include_port_in_url
-          }
+          };
           $rootScope.$broadcast('settingsReloadedEvent');
           $rootScope.$digest();
           SubsonicService.login();
@@ -520,13 +520,13 @@ class ApplicationRun {
       $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
 
       $rootScope.$broadcast('menuSizeChange');
-    }
+    };
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
     $('.list-group li').click(function (e) {
-      e.preventDefault()
+      e.preventDefault();
 
       $that = $(this);
 
@@ -556,7 +556,7 @@ class ApplicationRun {
         timeout = setTimeout(later, wait);
         if (callNow) func.apply(context, args);
       };
-    };
+    }
 
     var windowResized = debounce(function () {
       $rootScope.$broadcast('windowResized');
@@ -600,7 +600,7 @@ class ApplicationRun {
       get: function () {
         return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
       }
-    })
+    });
 
     $rootScope.setupRemotePlayer = function () {
 
@@ -635,22 +635,22 @@ class ApplicationRun {
         $rootScope.remotePlayerController.addEventListener(
           cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
           function () {
-            $('#volumeSlider').val($rootScope.remotePlayer.volumeLevel * 100)
+            $('#volumeSlider').val($rootScope.remotePlayer.volumeLevel * 100);
           }
         );
 
         $rootScope.remotePlayerController.addEventListener(
           cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
           function () {
-            console.log('state change ')
-            console.log($rootScope.remotePlayer.playerState)
+            console.log('state change ');
+            console.log($rootScope.remotePlayer.playerState);
 
             if ($rootScope.remotePlayer.playerState === null) {
               if ($rootScope.remotePlayer.savedPlayerState) {
                 $rootScope.shouldSeek = true;
                 $rootScope.prePlannedSeek = $rootScope.remotePlayer.savedPlayerState.currentTime;
                 $rootScope.loadTrack($rootScope.selectedIndex);
-                console.log('saved state')
+                console.log('saved state');
               } else {
                 $rootScope.next();
               }
@@ -738,7 +738,7 @@ class ApplicationRun {
         }
       }
 
-    }
+    };
 
     $rootScope.setupLocalPlayer = function () {
       $rootScope.stopProgressTimer();
@@ -746,7 +746,7 @@ class ApplicationRun {
     };
 
     $rootScope.switchPlayer = function () {
-      console.log('switchPlayer')
+      console.log('switchPlayer');
 
 
       if (cast && cast.framework) {
@@ -759,7 +759,11 @@ class ApplicationRun {
 
 
       $rootScope.setupLocalPlayer();
-    }
+    };
+
+    $rootScope.goBack = function(){
+      window.history.back();
+    };
 
     setTimeout(() => {
       if (ChromecastService.castStatus()) {

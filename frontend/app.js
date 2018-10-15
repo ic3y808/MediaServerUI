@@ -3,7 +3,7 @@ import angularRoute from 'angular-route';
 import angularAnimate from 'angular-animate';
 __webpack_public_path__ = "http://localhost:" + SERVER_PORT + "/";
 
-import './styles/index'
+import './styles/index';
 import 'underscore';
 import 'popper.js';
 import 'tooltip.js';
@@ -11,7 +11,7 @@ import 'jquery-easing';
 import 'jquery.flipster';
 import 'moment';
 import 'bootstrap';
-import 'typeface-roboto'
+import 'typeface-roboto';
 
 require("ag-grid-community");
 import * as agGridCommunity from 'ag-grid-community';

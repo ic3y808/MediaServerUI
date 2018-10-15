@@ -30,6 +30,7 @@
     "jade": "^1.11.0",
     "jade-loader": "^0.8.0",
     "jquery-easing": "0.0.1",
+    "jquery-listnav": "^2.4.10",
     "jquery.flipster": "^1.1.2",
     "livereload": "^0.7.0",
     "lodash.kebabcase": "^4.1.1",

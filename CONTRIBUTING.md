@@ -10,7 +10,7 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 - VSCode
 - Node
 - [Chrome Dev Tools](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
-
+- use fontawesome 4.7.0 icons [Fontawesome](https://fontawesome.com/v4.7.0/icons/) 
 ### Getting started ###
 
 1.  Fork this project

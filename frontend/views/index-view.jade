@@ -1,9 +1,82 @@
-div
-  .card(ng-repeat='container in artists').bg-dark.text-white
-    .card-header
-      {{container.name}}
-    .card-body
-      div(ng-repeat='artist in container.artist')
-        <a href="/artist/{{artist.id}}" class="card-link text-white">{{artist.name}}</a>
-       
+.indexWrapper
+  .pageToolbar-toolbar.bg-secondary.card-5
+    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+      .PageToolbarSection-section.PageToolbarSection-left
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='$root.goBack()')
+          i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Back
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
+          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Refresh
+  .indexBodyWrapper.d-flex.flex-column.text-center
+    ul.pagination
+      li.page-item
+        a.page-link(href='#', aria-label='Previous')
+          span(aria-hidden='true') «
+      li.page-item
+        a.page-link(href='#') A
+      li.page-item
+        a.page-link(href='#') B
+      li.page-item
+        a.page-link(href='#') C
+      li.page-item
+        a.page-link(href='#') D
+      li.page-item
+        a.page-link(href='#') E
+      li.page-item
+        a.page-link(href='#') F
+      li.page-item
+        a.page-link(href='#') G
+      li.page-item
+        a.page-link(href='#') H
+      li.page-item
+        a.page-link(href='#') I
+      li.page-item
+        a.page-link(href='#') J
+      li.page-item
+        a.page-link(href='#') K
+      li.page-item
+        a.page-link(href='#') L
+      li.page-item
+        a.page-link(href='#') M
+      li.page-item
+        a.page-link(href='#') N
+      li.page-item
+        a.page-link(href='#') O
+      li.page-item
+        a.page-link(href='#') P
+      li.page-item
+        a.page-link(href='#') Q
+      li.page-item
+        a.page-link(href='#') R
+      li.page-item
+        a.page-link(href='#') S
+      li.page-item
+        a.page-link(href='#') T
+      li.page-item
+        a.page-link(href='#') U
+      li.page-item
+        a.page-link(href='#') V
+      li.page-item
+        a.page-link(href='#') W
+      li.page-item
+        a.page-link(href='#') X
+      li.page-item
+        a.page-link(href='#') Y
+      li.page-item
+        a.page-link(href='#') Z
+      li.page-item
+        a.page-link(href='#', aria-label='Next')
+          span(aria-hidden='true') »
+
+    #indexBody 
+      .card(ng-repeat='container in artists').bg-dark.text-white
+        .card-header
+          {{container.name}}
+        .card-body
+          div(ng-repeat='artist in container.artist')
+            <a href="/artist/{{artist.id}}" class="card-link text-white">{{artist.name}}</a>
+          
     
