@@ -28,7 +28,9 @@ class PlayingController {
                   $rootScope.setContentBackground(bgUrl);
                 }
 
-                $scope.$apply();
+                if (!$scope.$$phase) {
+                  $scope.$apply();
+                }
                 $rootScope.hideLoader();
               }
             });

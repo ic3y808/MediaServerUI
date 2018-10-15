@@ -6,39 +6,39 @@ class StarredController {
     this.$rootScope = $rootScope;
 
     var columnDefs = [{
-        headerName: "Id",
-        field: "id",
-        width: 75,
-        suppressSizeToFit: true
-      },
-      {
-        headerName: "#",
-        field: "track",
-        width: 75,
-        suppressSizeToFit: true
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "Id",
+      field: "id",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "#",
+      field: "track",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -50,10 +50,16 @@ class StarredController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      rowMultiSelectWithClick: true,
+      rowClassRules: {
+        'current-track': function (params) {
+          if ($scope.api) $scope.api.deselectAll();
+          return $rootScope.checkIfNowPlaying(params.data);
+        }
+      },
       getRowNodeId: function (data) {
         return data.id;
       },
-      rowMultiSelectWithClick: true,
       onModelUpdated: function (data) {
         if (data && data.api) {
           data.api.doLayout();
@@ -90,7 +96,9 @@ class StarredController {
               $rootScope.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
                 album.artUrl = result;
                 $scope.albums.push(album);
-                $scope.$apply();
+                if (!$scope.$$phase) {
+                  $scope.$apply();
+                }
               });
             }
           });
@@ -101,14 +109,16 @@ class StarredController {
             $scope.gridOptions.api.doLayout();
             $scope.gridOptions.api.sizeColumnsToFit();
           }
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
           $rootScope.hideLoader();
         }, function (reject) {
           console.log(reject)
         });
       } else {
         if ($scope.gridOptions.api)
-        $scope.gridOptions.api.showNoRowsOverlay();
+          $scope.gridOptions.api.showNoRowsOverlay();
         $rootScope.hideLoader();
       }
     }

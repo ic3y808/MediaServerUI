@@ -6,15 +6,15 @@ class ArtistsController {
     console.log('artists-controller')
 
     var columnDefs = [{
-        headerName: "Name",
-        field: "name"
-      },
-      {
-        headerName: "Albums",
-        field: "albumCount",
-        width: 150,
-        suppressSizeToFit: false
-      }
+      headerName: "Name",
+      field: "name"
+    },
+    {
+      headerName: "Albums",
+      field: "albumCount",
+      width: 150,
+      suppressSizeToFit: false
+    }
     ];
 
     $scope.gridOptions = {
@@ -54,7 +54,9 @@ class ArtistsController {
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
         $location.path("/artist/" + selectedRow.id.toString());
-        $scope.$apply();
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
         console.log("/artist/" + selectedRow.id.toString());
       }
     };
@@ -81,7 +83,9 @@ class ArtistsController {
             if ($scope.gridOptions.api) {
               $scope.gridOptions.api.setRowData($scope.artists);
               $scope.gridOptions.api.sizeColumnsToFit();
-              $scope.$apply();
+              if (!$scope.$$phase) {
+                $scope.$apply();
+              }
               $rootScope.hideLoader();
             }
           });

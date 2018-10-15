@@ -12,7 +12,9 @@ class StatusController {
           ping.then(function (data) {
             console.log('ping ' + data);
             $scope.server = data;
-            $scope.$apply();
+            if (!$scope.$$phase) {
+              $scope.$apply();
+            }
           });
         }
       }
@@ -23,7 +25,9 @@ class StatusController {
         $rootScope.subsonic.getUserInfo().then(function (userInfo) {
           console.log('ping ' + userInfo);
           $scope.userInfo = userInfo;
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
         });
       }
     };
@@ -33,7 +37,9 @@ class StatusController {
         $rootScope.subsonic.getMusicFolders().then(function (data) {
 
           $scope.folders = data;
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
         });
       }
     };
@@ -43,7 +49,9 @@ class StatusController {
         $rootScope.subsonic.startScan().then(function (data) {
           $scope.scanStatus = data;
           $scope.scanStatusTotalFiles = data.count;
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
           $scope.rescanInterval = setInterval(function () {
             $scope.getScanStatus();
           }, 500);

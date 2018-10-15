@@ -45,14 +45,9 @@ class ArtistController {
       rowDeselection: true,
       animateRows: true,
       rowClassRules: {
-        // row style function
         'current-track': function (params) {
-
-          if ($rootScope.selectedTrack()) {
-            $scope.api.deselectAll();
-            return params.data.id === $rootScope.selectedTrack().id;
-          }
-          return false;
+          if ($scope.api) $scope.api.deselectAll();
+          return $rootScope.checkIfNowPlaying(params.data);
         }
       },
       getRowNodeId: function (data) {
@@ -101,7 +96,9 @@ class ArtistController {
               if (result.largeImageUrl) {
                 $rootScope.setContentBackground(result.largeImageUrl.replace('300x300', '1280x800'));
               }
-              $scope.$apply();
+              if (!$scope.$$phase) {
+                $scope.$apply();
+              }
             }
           });
 
@@ -114,7 +111,9 @@ class ArtistController {
                 $rootScope.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
                   album.artUrl = result;
                   $scope.albums.push(album);
-                  $scope.$apply();
+                  if (!$scope.$$phase) {
+                    $scope.$apply();
+                  }
                   $("#coverflow").flipster();
                 });
               }
@@ -124,7 +123,9 @@ class ArtistController {
                 if (result) {
                   result.song.forEach(function (song) {
                     $scope.tracks.push(song);
-                    $scope.$apply();
+                    if (!$scope.$$phase) {
+                      $scope.$apply();
+                    }
                   });
 
                   if ($scope.gridOptions && $scope.gridOptions.api) {
@@ -132,7 +133,9 @@ class ArtistController {
                     $scope.gridOptions.api.doLayout();
                     $scope.gridOptions.api.sizeColumnsToFit();
                   }
-                  $scope.$apply();
+                  if (!$scope.$$phase) {
+                    $scope.$apply();
+                  }
                   $("#coverflow").flipster();
                   $rootScope.hideLoader();
                 }
@@ -144,7 +147,9 @@ class ArtistController {
           }
 
           $("#coverflow").flipster();
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
           $rootScope.hideLoader();
         });
       } else {
@@ -192,9 +197,6 @@ class ArtistController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-
-      //$('#artistsGrid').width($('.wrapper').width());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
@@ -202,10 +204,6 @@ class ArtistController {
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-
-      //$('#artistTracksGrid').width($('.wrapper').width());
-      //$('#artistTracksGrid').height($('.wrapper').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();

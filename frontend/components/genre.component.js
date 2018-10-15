@@ -39,10 +39,16 @@ class GenreController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      rowMultiSelectWithClick: true,
+      rowClassRules: {
+        'current-track': function (params) {
+          if ($scope.api) $scope.api.deselectAll();
+          return $rootScope.checkIfNowPlaying(params.data);
+        }
+      },
       getRowNodeId: function (data) {
         return data.id;
       },
-      rowMultiSelectWithClick: true,
       onModelUpdated: function (data) {
         if (data && data.api) {
           data.api.doLayout();
@@ -51,19 +57,25 @@ class GenreController {
       },
       onSelectionChanged: function (data) {
         var selectedRow = $scope.api.getSelectedRows()[0];
-        $rootScope.tracks = $scope.tracks;
+        if (selectedRow) {
+          if ($scope.tracks) {
+            $rootScope.tracks = $scope.tracks;
 
-        var index = _.findIndex($rootScope.tracks, function (track) {
-          return track.id === selectedRow.id
-        })
-        $rootScope.loadTrack(index);
-        $rootScope.$digest();
+            var index = _.findIndex($rootScope.tracks, function (track) {
+              if (track && selectedRow) {
+                return track.id === selectedRow.id
+              } else return false;
+            })
+            $rootScope.loadTrack(index);
+            $rootScope.$digest();
+          }
+        }
 
       },
       onGridReady: function (e) {
         $scope.api = e.api;
         $scope.columnApi = e.columnApi;
-      }
+      },
     };
 
     $scope.getGenre = function () {
@@ -75,7 +87,9 @@ class GenreController {
             $scope.gridOptions.api.doLayout();
             $scope.gridOptions.api.sizeColumnsToFit();
           }
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
           $rootScope.hideLoader();
         });
       } else {

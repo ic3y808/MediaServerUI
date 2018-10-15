@@ -57,7 +57,9 @@ class GenresController {
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
         $location.path("/genre/" + selectedRow.value.toString());
-        $scope.$apply();
+        if (!$scope.$$phase) {
+          $scope.$apply();
+        }
         console.log("/genre/" + selectedRow.value.toString());
       }
     };
@@ -83,7 +85,9 @@ class GenresController {
           $scope.genres = result;
           $scope.gridOptions.api.setRowData($scope.genres);
           $scope.gridOptions.api.sizeColumnsToFit();
-          $scope.$apply();
+          if (!$scope.$$phase) {
+            $scope.$apply();
+          }
           $rootScope.hideLoader();
         });
 
@@ -105,10 +109,6 @@ class GenresController {
     $scope.reloadGenres();
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
-
-      $('#genresGrid').width($('.wrapper').width());
-      $('#genresGrid').height($('.wrapper').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
@@ -116,10 +116,6 @@ class GenresController {
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-
-      $('#genresGrid').width($('.wrapper').width());
-      $('#genresGrid').height($('.wrapper').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();

@@ -48,7 +48,9 @@ class SettingsController {
 
     $scope.previewConnectionString = function () {
       $scope.connectionStringPreview = $scope.generateConnectionString();
-      $scope.$apply();
+      if (!$scope.$$phase) {
+        $scope.$apply();
+      }
     }
 
     $rootScope.socket.emit('load_settings');

@@ -6,31 +6,31 @@ class PlaylistController {
     console.log('playlist-controller')
 
     var columnDefs = [{
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Artist",
-        field: "artist"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Artist",
+      field: "artist"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -47,13 +47,9 @@ class PlaylistController {
       },
       rowMultiSelectWithClick: true,
       rowClassRules: {
-        // row style function
         'current-track': function (params) {
-          if ($rootScope.selectedTrack()) {
-            $scope.api.deselectAll();
-            return params.data.id === $rootScope.selectedTrack().id;
-          }
-          return false;
+          if($scope.api) $scope.api.deselectAll();
+          return $rootScope.checkIfNowPlaying(params.data);
         }
       },
       onModelUpdated: function (data) {

@@ -18,6 +18,12 @@ class ApplicationRun {
     $rootScope.tracks = [];
     $rootScope.settings = [];
 
+    $rootScope.apply = function(){
+      if(!$rootScope.$$phase) {
+        //$digest or $apply
+      }
+    }
+
     $rootScope.castSession = function () {
       return cast.framework.CastContext.getInstance().getCurrentSession();
     };
@@ -359,7 +365,7 @@ class ApplicationRun {
     $rootScope.$on('$routeChangeStart', function ($event, next, current) {
       $(".main-content").css("display", "none");
       $(".loader").css("display", "block");
-      
+
     });
 
     $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
@@ -761,8 +767,16 @@ class ApplicationRun {
       $rootScope.setupLocalPlayer();
     };
 
-    $rootScope.goBack = function(){
+    $rootScope.goBack = function () {
       window.history.back();
+    };
+
+    $rootScope.checkIfNowPlaying = function (track) {
+      var selected = $rootScope.selectedTrack();
+      if (selected && track) {
+        return track.id === selected.id;
+      }
+      return false;
     };
 
     setTimeout(() => {
