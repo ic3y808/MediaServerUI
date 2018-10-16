@@ -175,7 +175,7 @@ class ArtistController {
 
     $scope.shuffle = function () {
       console.log('shuffle play')
-      $rootScope.tracks = _.shuffle($scope.tracks);
+      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
       $rootScope.loadTrack(0);
       $rootScope.$digest();
     };
