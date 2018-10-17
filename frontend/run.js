@@ -118,7 +118,7 @@ class ApplicationRun {
                     $("#playPauseIcon").removeClass("fa-play");
                     $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
                     $('#volumeSlider').val($rootScope.currentVolume * 100);
-                    $rootScope.$broadcast('trackChangedEvent');
+                    $rootScope.$broadcast('trackChangedEvent', result);
                     $rootScope.$digest();
                   }).catch(error => {
                     console.log('playing failed ' + error);

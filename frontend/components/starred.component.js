@@ -22,12 +22,12 @@ class StarredController {
       field: "title"
     },
     {
-      headerName: "Album",
-      field: "album"
+      headerName: "Artist",
+      field: "artist"
     },
     {
-      headerName: "Title",
-      field: "title"
+      headerName: "Album",
+      field: "album"
     },
     {
       headerName: "Genre",
@@ -50,7 +50,6 @@ class StarredController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
-      rowMultiSelectWithClick: true,
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
@@ -60,27 +59,29 @@ class StarredController {
       getRowNodeId: function (data) {
         return data.id;
       },
+      rowMultiSelectWithClick: true,
       onModelUpdated: function (data) {
         if (data && data.api) {
           data.api.doLayout();
           data.api.sizeColumnsToFit();
         }
       },
-      onSelectionChanged: function (data) {
-        console.log('selection changed')
-        var selectedRow = $scope.api.getSelectedRows()[0];
-        $rootScope.tracks = $scope.tracks;
+      onRowDoubleClicked: function (e) {
+        var selectedRow = e.data;
+        if (selectedRow) {
+          $rootScope.tracks = $scope.tracks;
 
-        var index = _.findIndex($rootScope.tracks, function (track) {
-          return track.id === selectedRow.id
-        })
-        $rootScope.loadTrack(index);
-        $rootScope.$digest();
-
+          var index = _.findIndex($rootScope.tracks, function (track) {
+            return track.id === selectedRow.id
+          })
+          $rootScope.loadTrack(index);
+          $rootScope.$digest();
+        }
       },
       onGridReady: function (e) {
         $scope.api = e.api;
         $scope.columnApi = e.columnApi;
+        $scope.api.showLoadingOverlay();
       }
     };
 
@@ -123,6 +124,13 @@ class StarredController {
       }
     }
 
+    $scope.shuffle = function () {
+      console.log('shuffle play')
+      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
+      $rootScope.loadTrack(0);
+      $rootScope.$digest();
+    };
+
     $rootScope.$on('loginStatusChange', function (event, data) {
       console.log('starred reloading on subsonic ready')
       $scope.reloadStarred();
@@ -147,6 +155,19 @@ class StarredController {
       }
     });
 
+    $rootScope.$on('trackChangedEvent', function (event, data) {
+      if (data && data.largeImageUrl) {
+        $rootScope.setContentBackground(data.largeImageUrl.replace('300x300', '1280x800'));
+      }
+      $scope.api.redrawRows({
+        force: true
+      });
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    });
 
     $scope.reloadStarred();
   }
