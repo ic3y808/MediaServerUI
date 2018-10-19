@@ -9,5 +9,5 @@ ADD ./frontend/ /home/node/app/frontend
 RUN npm install
 RUN npm run build
 EXPOSE 3000
-VOLUME [ "/home/node/app/data" ]
+VOLUME [ "/home/node/app/data/" ]
 CMD [ "npm", "start" ]

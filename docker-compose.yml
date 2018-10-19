@@ -8,6 +8,6 @@ services:
     environment:
       - NODE_ENV=production
     volumes:
-      - ./data:/home/nodeuser/app/data
+      - ./data/:/home/nodeuser/app/data/
     ports:
      - "3000:3000"
