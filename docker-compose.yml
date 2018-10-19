@@ -1,0 +1,13 @@
+version: "2"
+services:
+  node:
+    build: ./
+    container_name: docker-mediacenterui
+    user: "${UID}:${GID}"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./data:/home/nodeuser/app/data
+    ports:
+     - "3000:3000"
