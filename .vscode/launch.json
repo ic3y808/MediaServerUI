@@ -7,8 +7,9 @@
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "DEV": "true",
-        "SERVER_HOST": "http://localhost",
         "PORT": "3000",
+        "LIVE_RELOAD_PORT": "35729",
+        "JADE_PORT": "34568",
       }
     },
     {
@@ -18,8 +19,7 @@
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "DEV": "false",
-        "SERVER_HOST": "http://localhost",
-        "PORT": "3000",
+        "PORT": "3000"
       }
     },
     {
