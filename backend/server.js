@@ -58,13 +58,18 @@ function onListening() {
   console.log('Listening on ' + bind);
 }
 
-app.use(express.static('dist'));
+
 app.use('/content', express.static(path.join(__dirname, '..', 'frontend', 'content')));
-const webpackCompiler = webpack(webpackconfig);
-const wpmw = webpackMiddleware(webpackCompiler, {});
-app.use(wpmw);
-const wphmw = webpackHotMiddleware(webpackCompiler);
-app.use(wphmw);
+
+if (process.env.DEV === 'true') {
+  const webpackCompiler = webpack(webpackconfig);
+  const wpmw = webpackMiddleware(webpackCompiler, {});
+  app.use(wpmw);
+  const wphmw = webpackHotMiddleware(webpackCompiler);
+  app.use(wphmw);
+} else {
+  app.use(express.static('dist'));
+}
 
 app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
 
