@@ -2,9 +2,7 @@ const path = require('path');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
 //const MinifyPlugin = require("babel-minify-webpack-plugin");
-const ControllerHotLoader = require.resolve('./loaders/controller-loader');
-const ServiceHotLoader = require.resolve('./loaders/service-loader');
-const JadeHotLoader = require.resolve('./loaders/jade-loader');
+
 const webpack = require('webpack');
 const dist = path.resolve(__dirname, 'dist');
 const nodePath = path.resolve(__dirname, 'node_modules');
@@ -110,6 +108,9 @@ if (process.env.DEV === 'true') {
   };
   profile.devtool = 'inline-source-map';
   profile.plugins.push(new CleanWebpackPlugin([dist]));
+  const ControllerHotLoader = require.resolve('./loaders/controller-loader');
+  const ServiceHotLoader = require.resolve('./loaders/service-loader');
+  const JadeHotLoader = require.resolve('./loaders/jade-loader');
   profile.module.rules.push({
     test: /\.jade$/,
     enforce: "post",
