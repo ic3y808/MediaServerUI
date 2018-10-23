@@ -5,9 +5,8 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-dark.css';
 import 'jquery.flipster/dist/jquery.flipster.min.css';
 
-import './less/main.less';
-import './css/main.css';
 import './sass/base.scss';
+import './sass/mixins.scss';
 import './sass/loader.scss';
 import './sass/toolbar.scss';
 import './sass/sidebar.scss';

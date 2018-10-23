@@ -8,8 +8,8 @@
       "env": {
         "DEV": "true",
         "PORT": "3000",
-        "LIVE_RELOAD_PORT": "35729",
-        "JADE_PORT": "34568",
+        "LIVE_RELOAD_PORT": "35724",
+        "LIVE_RELOAD_JADE_PORT": "35729",
       }
     },
     {

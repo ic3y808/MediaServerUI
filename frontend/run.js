@@ -110,11 +110,11 @@ class ApplicationRun {
                     $('#trackInfo').attr("href", "/playing");
 
                     if (source.starred) {
-                      $("#likeButtonIcon").removeClass('heart-o');
-                      $("#likeButtonIcon").addClass('heart');
+                      $("#likeButtonIcon").removeClass('fa-heart-o');
+                      $("#likeButtonIcon").addClass('fa-heart');
                     } else {
-                      $("#likeButtonIcon").removeClass('heart');
-                      $("#likeButtonIcon").addClass('heart-o');
+                      $("#likeButtonIcon").removeClass('fa-heart');
+                      $("#likeButtonIcon").addClass('fa-heart-o');
                     }
 
                     $("#playPauseIcon").addClass("fa-pause");
@@ -349,16 +349,17 @@ class ApplicationRun {
           console.log('UnStarred');
           $rootScope.selectedTrack().starred = undefined;
           console.log(result);
-          $("#likeButtonIcon").addClass('heart-o');
-          $("#likeButtonIcon").removeClass('heart');
-
+          $("#likeButtonIcon").addClass('fa-heart-o');
+          $("#likeButtonIcon").removeClass('fa-heart');
+          $rootScope.$digest();
         });
       } else {
         $rootScope.subsonic.star($rootScope.selectedTrack().id).then(function (result) {
           console.log('starred');
           $rootScope.selectedTrack().starred = 1;
-          $("#likeButtonIcon").removeClass('heart-o');
-          $("#likeButtonIcon").addClass('heart');
+          $("#likeButtonIcon").removeClass('fa-heart-o');
+          $("#likeButtonIcon").addClass('fa-heart');
+          $rootScope.$digest();
           console.log(result);
         });
       }
@@ -456,7 +457,7 @@ class ApplicationRun {
       if ($rootScope.remotePlayerConnected()) {
         var currentMediaDuration = $rootScope.remotePlayer.duration;
         seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
-        if (!isNan(seekto)) {
+        if (!isNaN(seekto)) {
           $rootScope.remotePlayer.currentTime = seekto;
           $rootScope.remotePlayerController.seek();
         }
@@ -465,7 +466,7 @@ class ApplicationRun {
         if (!isFinite(duration))
           duration = $rootScope.selectedTrack().duration;
         seekto = duration * ((e.offsetX / $("#clickProgress").width()));
-        if (!isNan(seekto)) {
+        if (!isNaN(seekto)) {
           MediaService.currentTime = seekto;
         }
       }
