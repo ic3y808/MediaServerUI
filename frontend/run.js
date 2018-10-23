@@ -101,6 +101,9 @@ class ApplicationRun {
                 if (playPromise !== undefined) {
                   playPromise.then(_ => {
                     console.log('success playing');
+                    $rootScope.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+                      if (scrobbleResult) console.log('scrobble success: ' + scrobbleResult.status);
+                    });
                     $('#artistInfo').html(source.artist);
                     $('#artistInfo').attr("href", source.artistUrl);
                     $('#trackInfo').html(source.title);
@@ -785,11 +788,11 @@ class ApplicationRun {
         randomIndex = Math.floor(Math.random() * currentIndex);
         var existing = array[currentIndex];
         var existing2 = array[randomIndex];
-        if(existing && existing2){
+        if (existing && existing2) {
 
-          while(true){
-            if(array[randomIndex].artist === array[currentIndex].artist)
-            randomIndex = Math.floor(Math.random() * currentIndex);
+          while (true) {
+            if (array[randomIndex].artist === array[currentIndex].artist)
+              randomIndex = Math.floor(Math.random() * currentIndex);
             else break;
           }
         }
