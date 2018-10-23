@@ -164,11 +164,11 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 if (process.env.DEV === 'true') {
-  //process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || '4567');
+  process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || '4567');
   process.env.LIVE_RELOAD_PORT = normalizePort(process.env.LIVE_RELOAD_PORT || '35729');
   var livereload = require('livereload').createServer({
     exts: ['jade'],
-    //port: process.env.JADE_PORT
+    port: process.env.JADE_PORT
   });
 
   livereload.watch(path.join(__dirname, '..', 'frontend', 'views'));
