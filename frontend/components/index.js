@@ -2,6 +2,7 @@ import angular from 'angular';
 
 import ArtistComponent from './artist.component';
 import ArtistsComponent from './artists.component';
+import FreshComponent from './fresh.component';
 import GenreComponent from './genre.component';
 import GenresComponent from './genres.component';
 import HomeComponent from './home.component';
@@ -18,6 +19,7 @@ export default angular
   .module('app.components', [])
   .component('artist', ArtistComponent)
   .component('artists', ArtistsComponent)
+  .component('fresh', FreshComponent)
   .component('genre', GenreComponent)
   .component('genres', GenresComponent)
   .component('home', HomeComponent)

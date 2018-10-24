@@ -139,13 +139,13 @@ io.on('connection', function (socket) {
     console.log('save_settings');
     db.saveSettings(settings, function (result) {
       console.log('settings saved');
-    })
+    });
   });
   socket.on('load_settings', function () {
     console.log('load_settings');
     db.loadSettings(function (result) {
       socket.emit('settings_event', result);
-    })
+    });
   });
 });
 
@@ -156,9 +156,7 @@ setInterval(function () {
   io.emit("ping", JSON.stringify(dt));
 }, 1000);
 
-server.listen(normalizePort(process.env.PORT || '3000'), () => {
-  console.log('Example app listening on port 3000!')
-});
+server.listen(normalizePort(process.env.PORT || '3000'));
 
 server.on('error', onError);
 server.on('listening', onListening);

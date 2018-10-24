@@ -5,19 +5,19 @@
     .row
       .col-md-12.column
         .list-group
-          .list-group-item
+          .list-group-item-dark
             h4.list-group-item-heading
               | Backend Status
             p.list-group-item-text
               span.label.label-danger#ping
-          .list-group-item
+          .list-group-item-dark
             h4.list-group-item-heading
               | Subsonic Status 
             p.list-group-item-text
               span.label.label-success 
               | Server Status is {{server.status}}
               | version {{server.version}}
-          .list-group-item
+          .list-group-item-dark
             h4.list-group-item-heading
               | Enabled Folders
             p.list-group-item-text
@@ -26,7 +26,7 @@
                   tbody
                     tr(ng-repeat='folder in folders')
                       td {{folder.name}}
-          .list-group-item
+          .list-group-item-dark
             h4.list-group-item-heading
               | Rescan Library
             p.list-group-item-text
@@ -36,7 +36,7 @@
                 div(ng-show='scanStatus.scanning')
                   |  Current Progress: {{scanStatus.count}} / {{scanStatusTotalFiles}}
                 
-          .list-group-item
+          .list-group-item-dark
             h4.list-group-item-heading
               | Subsonic Features and User Info - {{userInfo.username}}
             p.list-group-item-text

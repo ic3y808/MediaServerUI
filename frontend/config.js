@@ -3,6 +3,8 @@ class ApplicationConfig {
     "ngInject";
     $routeProvider.when('/', {
       template: '<home></home>',
+    }).when('/fresh', {
+      template: '<fresh></fresh>',
     }).when('/status', {
       template: '<status></status>',
     }).when('/index', {

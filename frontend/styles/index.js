@@ -17,6 +17,7 @@ import './sass/artists.scss';
 import './sass/index-view.scss';
 import './sass/playlist.scss';
 import './sass/playing.scss';
+import './sass/fresh.scss';
 import './sass/genre.scss';
 import './sass/genres.scss';
 import './sass/starred.scss';
