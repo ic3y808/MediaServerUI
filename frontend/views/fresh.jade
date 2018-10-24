@@ -1,0 +1,10 @@
+
+.freshWrapper
+  .freshBodyWrapper.d-flex.flex-column
+    #freshAlbums 
+      #coverflow
+        ul.flip-items
+          li(data-flip-title='{{album.id}}', ng-repeat='album in albums')
+            img(ng-src='{{album.artUrl}}')
+
+    #freshTracksGrid.ag-theme-dark(ag-grid='gridOptions')

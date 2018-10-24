@@ -3,7 +3,7 @@ class ArtistController {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('artist-controller')
+    console.log('artist-controller');
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
@@ -53,7 +53,7 @@ class ArtistController {
       getRowNodeId: function (data) {
         return data.id;
       },
-      rowMultiSelectWithClick: true,
+      
       onModelUpdated: function (data) {
         if (data && data.api) {
           data.api.doLayout();
@@ -66,8 +66,8 @@ class ArtistController {
           $rootScope.tracks = $scope.tracks;
 
           var index = _.findIndex($rootScope.tracks, function (track) {
-            return track.id === selectedRow.id
-          })
+            return track.id === selectedRow.id;
+          });
           $rootScope.loadTrack(index);
           $rootScope.$digest();
         }
@@ -139,7 +139,7 @@ class ArtistController {
                   $("#coverflow").flipster();
                   $rootScope.hideLoader();
                 }
-              })
+              });
             });
           } else {
             if ($scope.gridOptions.api)
@@ -157,16 +157,16 @@ class ArtistController {
           $scope.gridOptions.api.showNoRowsOverlay();
         $rootScope.hideLoader();
       }
-    }
+    };
 
     $scope.refresh = function () {
-      console.log('refresh artist')
+      console.log('refresh artist');
       $scope.getArtist();
     };
 
     $scope.startRadio = function () {
       $rootScope.subsonic.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
-        console.log('starting radio')
+        console.log('starting radio');
         $rootScope.tracks = similarSongs.song;
         $rootScope.loadTrack(0);
         $rootScope.$digest();
@@ -174,7 +174,7 @@ class ArtistController {
     };
 
     $scope.shuffle = function () {
-      console.log('shuffle play')
+      console.log('shuffle play');
       $rootScope.tracks = $rootScope.shuffle($scope.tracks);
       $rootScope.loadTrack(0);
       $rootScope.$digest();
@@ -192,7 +192,7 @@ class ArtistController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('artist reloading on subsonic ready')
+      console.log('artist reloading on subsonic ready');
       $scope.getArtist();
     });
 
