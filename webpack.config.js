@@ -33,7 +33,8 @@ var profile = {
     new webpack.DefinePlugin({
       "DEV_MODE": process.env.DEV,
       "SERVER_HOST": process.env.SERVER_HOST,
-      "SERVER_PORT": process.env.PORT
+      "SERVER_PORT": process.env.PORT,
+      "JADE_PORT": process.env.JADE_PORT
     })
   ],
   module: {
@@ -69,25 +70,25 @@ var profile = {
       {
         test: /\.(scss|sass)$/,
         use: [{
-          loader: 'style-loader'
-        },
-        {
-          loader: 'css-loader'
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            plugins: function () { // post css plugins, can be exported to postcss.config.js
-              return [
-                require('precss'),
-                require('autoprefixer')
-              ];
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () { // post css plugins, can be exported to postcss.config.js
+                return [
+                  require('precss'),
+                  require('autoprefixer')
+                ];
+              }
             }
+          },
+          {
+            loader: 'sass-loader'
           }
-        },
-        {
-          loader: 'sass-loader'
-        }
         ]
       },
       {
@@ -132,7 +133,7 @@ if (process.env.DEV === 'true') {
   profile.plugins.push(new CleanWebpackPlugin([dist]));
   profile.plugins.push(new webpack.HotModuleReplacementPlugin());
   profile.plugins.push(new LiveReloadPlugin({
-    port: process.env.LIVE_RELOAD_PORT
+    port: 1908
   }));
 
 } else {
