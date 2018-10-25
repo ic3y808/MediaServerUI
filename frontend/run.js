@@ -40,96 +40,125 @@ class ApplicationRun {
       return $rootScope.tracks[$rootScope.selectedIndex];
     };
 
-    $rootScope.audioSource = function () {
-      return $rootScope.selectedTrack();
-    };
-
     $rootScope.remotePlayerConnected = function () {
       if (!$rootScope.remotePlayer) return false;
       return $rootScope.remotePlayer.isConnected;
     };
+
+    $rootScope.checkStarred = function (source) {
+      if (source.starred) {
+        $("#likeButtonIcon").removeClass('fa-heart-o');
+        $("#likeButtonIcon").addClass('fa-heart');
+      } else {
+        $("#likeButtonIcon").removeClass('fa-heart');
+        $("#likeButtonIcon").addClass('fa-heart-o');
+      }
+    }
+
+    $rootScope.checkArtistInfo = function (source) {
+      $('#artistInfo').html(source.artist);
+      $('#artistInfo').attr("href", source.artistUrl);
+      $('#trackInfo').html(source.title);
+      $('#trackInfo').attr("href", "/playing");
+    }
+
+    $rootScope.checkVolume = function () {
+      $('#volumeSlider').val($rootScope.currentVolume * 100);
+    }
+
+    $rootScope.checkNowPlayingImage = function (source) {
+      $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+      });
+    }
+
+    $rootScope.togglePlayPause = function () {
+      var playing = false;
+      if ($rootScope.remotePlayerConnected()) {
+        playing = $rootScope.remotePlayer.playerState === 'PLAYING'
+      } else {
+        playing = $rootScope.playing;
+      }
+
+      if (playing) {
+        $("#playPauseIcon").addClass("fa-pause");
+        $("#playPauseIcon").removeClass("fa-play");
+      } else {
+        $("#playPauseIcon").addClass("fa-play");
+        $("#playPauseIcon").removeClass("fa-pause");
+      }
+    }
 
     $rootScope.loadTrack = function (index) {
       $rootScope.selectedIndex = index;
       console.log('loadTrack');
       $('#mainTimeDisplay').html("Loading...");
 
-      var source = $rootScope.audioSource();
+      var source = $rootScope.selectedTrack();
+      console.log(source);
       source.artistUrl = "/artist/" + source.artistId;
       source.albumUrl = "/album/" + source.albumId;
       if (source && source.id) {
         source.url = $rootScope.subsonic.streamUrl(source.id, 320);
 
+        $rootScope.checkVolume();
+
         if (source.artistId) {
-          $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
-            console.log("getArtistDetails result");
+          $rootScope.checkStarred(source);
+          $rootScope.checkArtistInfo(source);
+          $rootScope.checkNowPlayingImage(source);
 
-            if (result) {
-
-              if ($rootScope.remotePlayerConnected()) {
-                $rootScope.setupRemotePlayer();
-
-
-                var mediaInfo = new chrome.cast.media.MediaInfo(source.url, source.transcodedContentType);
-
-                mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-                //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-                //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
-                //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
-                //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
-                mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-                mediaInfo.customData = JSON.stringify(source);
-                mediaInfo.metadata.title = source.title;
-                mediaInfo.metadata.images = [{
-                  'url': result.largeImageUrl.replace('300x300', '1280x400')
-                }];
-
-                var request = new chrome.cast.media.LoadRequest(mediaInfo);
-                cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
+          if ($rootScope.remotePlayerConnected()) {
+            $rootScope.setupRemotePlayer();
 
 
-              } else {
-                console.log(source);
-                MediaService.src = source.url;
-                MediaService.load();
-                if ($rootScope.shouldSeek) {
-                  $rootScope.shouldSeek = false;
-                  MediaService.currentTime = $rootScope.prePlannedSeek;
-                }
-                var playPromise = MediaService.play();
+            var mediaInfo = new chrome.cast.media.MediaInfo(source.url, source.transcodedContentType);
 
-                if (playPromise !== undefined) {
-                  playPromise.then(_ => {
-                    console.log('success playing');
-                    $rootScope.subsonic.scrobble(source.id).then(function (scrobbleResult) {
-                      if (scrobbleResult) console.log('scrobble success: ' + scrobbleResult.status);
-                    });
-                    $('#artistInfo').html(source.artist);
-                    $('#artistInfo').attr("href", source.artistUrl);
-                    $('#trackInfo').html(source.title);
-                    $('#trackInfo').attr("href", "/playing");
+            mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
+            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+            //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
+            mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+            mediaInfo.customData = JSON.stringify(source);
+            mediaInfo.metadata.title = source.title;
+            mediaInfo.metadata.images = [{
+              'url': result.largeImageUrl.replace('300x300', '1280x400')
+            }];
 
-                    if (source.starred) {
-                      $("#likeButtonIcon").removeClass('fa-heart-o');
-                      $("#likeButtonIcon").addClass('fa-heart');
-                    } else {
-                      $("#likeButtonIcon").removeClass('fa-heart');
-                      $("#likeButtonIcon").addClass('fa-heart-o');
-                    }
+            var request = new chrome.cast.media.LoadRequest(mediaInfo);
+            cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
+            $rootScope.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+              if (scrobbleResult) console.log('scrobble success: ' + scrobbleResult.status);
+            });
+            $rootScope.togglePlayPause();
 
-                    $("#playPauseIcon").addClass("fa-pause");
-                    $("#playPauseIcon").removeClass("fa-play");
-                    $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
-                    $('#volumeSlider').val($rootScope.currentVolume * 100);
-                    $rootScope.$broadcast('trackChangedEvent', result);
-                    $rootScope.$digest();
-                  }).catch(error => {
-                    console.log('playing failed ' + error);
-                  });
-                }
-              }
+          } else {
+
+            MediaService.src = source.url;
+            MediaService.load();
+            if ($rootScope.shouldSeek) {
+              $rootScope.shouldSeek = false;
+              MediaService.currentTime = $rootScope.prePlannedSeek;
             }
-          });
+            var playPromise = MediaService.play();
+
+            if (playPromise !== undefined) {
+              playPromise.then(_ => {
+                $rootScope.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+                  if (scrobbleResult) console.log('scrobble success: ' + scrobbleResult.status);
+                });
+                $rootScope.togglePlayPause();
+                $rootScope.$broadcast('trackChangedEvent', source);
+                $rootScope.$digest();
+              }).catch(error => {
+                console.log('playing failed ' + error);
+                $rootScope.next();
+              });
+            } else {
+              $rootScope.next();
+            }
+          }
         } else {
           $rootScope.next();
         }
@@ -224,16 +253,14 @@ class ApplicationRun {
     $("#media-player").on("play", function () {
       $rootScope.$apply(function () {
         $rootScope.playing = true;
-        $("#playPauseIcon").addClass("fa-pause");
-        $("#playPauseIcon").removeClass("fa-play");
+        $rootScope.togglePlayPause();
       });
     });
 
     $("#media-player").on("pause", function () {
       $rootScope.$apply(function () {
         $rootScope.playing = false;
-        $("#playPauseIcon").removeClass("fa-pause");
-        $("#playPauseIcon").addClass("fa-play");
+        $rootScope.togglePlayPause();
       });
     });
 
@@ -241,12 +268,13 @@ class ApplicationRun {
       if (($rootScope.selectedIndex + 1) === $rootScope.tracks.length) {
         $rootScope.playing = false;
         $rootScope.selectedIndex = 0;
-        $('#media-player').src = $rootScope.audioSource();
-        $("#playPauseIcon").removeClass("fa-pause");
-        $("#playPauseIcon").addClass("fa-play");
+        $rootScope.togglePlayPause();
+        $('#media-player').src = $rootScope.selectedTrack();
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainTimeDisplay').html("");
+        console.log('playlist ended')
+        $rootScope.$broadcast('playlistEndEvent');
       } else {
         $rootScope.playing = true;
         $rootScope.next();
@@ -257,8 +285,7 @@ class ApplicationRun {
       $('#mainTimeDisplay').html("0:00 / " + $rootScope.formatTime(MediaService.duration));
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $("#playPauseIcon").addClass("fa-pause");
-      $("#playPauseIcon").removeClass("fa-play");
+      $rootScope.togglePlayPause();
     });
 
     $("#media-player").on("timeupdate", function () {
@@ -618,13 +645,7 @@ class ApplicationRun {
         $rootScope.remotePlayerController.addEventListener(
           cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
           function () {
-            if ($rootScope.remotePlayer.isPaused) {
-              $("#playPauseIcon").addClass("fa-play");
-              $("#playPauseIcon").removeClass("fa-pause");
-            } else {
-              $("#playPauseIcon").addClass("fa-pause");
-              $("#playPauseIcon").removeClass("fa-play");
-            }
+            $rootScope.togglePlayPause($rootScope.remotePlayer.isPaused);
           }
         );
 
@@ -688,13 +709,8 @@ class ApplicationRun {
             } else {
               $('#volumeSlider').val($rootScope.remotePlayer.volumeLevel * 100);
             }
-            if ($rootScope.remotePlayer.isPaused) {
-              $("#playPauseIcon").addClass("fa-play");
-              $("#playPauseIcon").removeClass("fa-pause");
-            } else {
-              $("#playPauseIcon").addClass("fa-pause");
-              $("#playPauseIcon").removeClass("fa-play");
-            }
+
+            $rootScope.togglePlayPause();
             // TODO fix resume support
             if ($rootScope.remotePlayer.mediaInfo && $rootScope.remotePlayer.mediaInfo.metadata) {
               //id = $rootScope.remotePlayer.mediaInfo.contentId;
@@ -723,8 +739,7 @@ class ApplicationRun {
               //            $("#likeButtonIcon").addClass('heart-o');
               //        }
 
-              //        $("#playPauseIcon").addClass("fa-pause");
-              //        $("#playPauseIcon").removeClass("fa-play");
+              //        $rootScope.togglePlayPause();
 
 
 
@@ -783,27 +798,36 @@ class ApplicationRun {
       return false;
     };
 
-    $rootScope.shuffle = function (array) {
-      var currentIndex = array.length, temporaryValue, randomIndex;
-      while (0 !== currentIndex) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        var existing = array[currentIndex];
-        var existing2 = array[randomIndex];
-        if (existing && existing2) {
 
-          while (true) {
-            if (array[randomIndex].artist === array[currentIndex].artist)
-              randomIndex = Math.floor(Math.random() * currentIndex);
-            else break;
-          }
-        }
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+    //$rootScope.shuffle = function (array) {
+    //  var currentIndex = array.length, temporaryValue, randomIndex;
+    //  while (0 !== currentIndex) {
+    //    randomIndex = Math.floor(Math.random() * currentIndex);
+    //    var existing = array[currentIndex];
+    //    var existing2 = array[randomIndex];
+    //    if (existing && existing2) {
+
+    //      while (true) {
+    //        if (array[randomIndex].artist === array[currentIndex].artist)
+    //          randomIndex = Math.floor(Math.random() * currentIndex);
+    //        else break;
+    //      }
+    //    }
+    //    currentIndex -= 1;
+    //    temporaryValue = array[currentIndex];
+    //    array[currentIndex] = array[randomIndex];
+    //    array[randomIndex] = temporaryValue;
+    //  }
+    //  return array;
+    //};
+
+    $rootScope.shuffle = function (a) {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
       }
-      return array;
-    };
+      return a;
+    }
 
     setTimeout(() => {
       if (ChromecastService.castStatus()) {

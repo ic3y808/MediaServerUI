@@ -12,16 +12,18 @@
       span.menu-collapsed
         | Playlist 
         span(ng-show="$root.showTrackCount()").badge.badge-pill.badge-primary.ml-2 {{$root.trackCount()}}
-  a#list-messages-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/fresh', role='tab', aria-controls='messages') 
+  a.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/fresh', role='tab', aria-controls='messages') 
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-cubes.fa-fw.mr-3
       span.menu-collapsed Fresh
-  a.list-group-item.list-group-item-action.list-group-item-dark-no-select(data-target='#item-1', data-toggle='collapse')
+  a.list-group-item.list-group-item-action.list-group-item-dark(data-target='#settings-items', data-toggle='collapse')
     .d-flex.w-100.justify-content-start.align-items-center
-      span.fa.fa-chevron-right.fa-fw.mr-3
+      span.fa.fa-cog.fa-fw.mr-3
       span.menu-collapsed Settings
-  #item-1.list-group.collapse
-    a.list-group-item.list-group-item-action.list-group-item-dark(href='/settings/subsonic') Subsonic
+  #settings-items.list-group.collapse
+    a.list-group-item.list-group-item-action.list-group-item-dark(href='/settings/subsonic', data-toggle='list', role='tab') 
+      span.fa.fa-wrench.fa-fw.mr-3
+      span.menu-collapsed Subsonic
 
   a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/status', role='tab', aria-controls='settings') 
     .d-flex.w-100.justify-content-start.align-items-center
