@@ -22,4 +22,5 @@ import './sass/genre.scss';
 import './sass/genres.scss';
 import './sass/starred.scss';
 import './sass/status.scss';
+import './sass/subsonicSettings.scss';
 import './sass/debug.scss';

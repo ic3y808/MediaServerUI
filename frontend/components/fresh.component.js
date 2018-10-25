@@ -58,7 +58,7 @@ class FreshController {
       },
       onGridReady: function () {
         console.log("onGridReady");
-        $scope.reloadAll();
+
         $scope.gridOptions.api.sizeColumnsToFit();
         $scope.gridOptions.api.addGlobalListener(
           function (foo) {
@@ -83,6 +83,11 @@ class FreshController {
       },
     };
 
+    $scope.updateList = function(){
+      $scope.flip.flipster('index');
+      $scope.$apply();
+    }
+
     $scope.reloadAll = function () {
       if ($rootScope.isLoggedIn) {
         $scope.artists = [];
@@ -103,7 +108,7 @@ class FreshController {
           });
           console.log($scope.albums);
           setTimeout(function () {
-            var flip = $("#coverflow").flipster({
+            $scope.flip = $("#coverflow").flipster({
               start: 0,
               fadeIn: 500,
               autoplay: false,
@@ -129,7 +134,8 @@ class FreshController {
                 });
               }
             });
-            flip.flipster('index');
+            $scope.flip.flipster('index');
+            $scope.flip.flipster('next');
           }, 750);
         });
       } else {
