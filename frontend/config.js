@@ -23,8 +23,8 @@ class ApplicationConfig {
       template: '<podcasts></podcasts>',
     }).when('/playing', {
       template: '<playing></playing>',
-    }).when('/settings', {
-      template: '<settings></settings>',
+    }).when('/settings/subsonic', {
+      template: '<subsonicSettings></subsonicSettings>',
     }).when('/artists', {
       template: '<artists></artists>',
     }).when('/artist/:id', {

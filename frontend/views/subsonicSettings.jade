@@ -1,0 +1,28 @@
+.settingsWrapper
+    #settingsBody
+      form
+        .form-group
+          label.text-white.bg-dark(for='subsonicAddress') Address
+          input#subsonicAddress.form-control.text-white.bg-dark(type='text', placeholder='Subsonic Server Address', ng-model='settings.subsonic_address', ng-change="previewConnectionString()")
+        .form-group
+          label.text-white.bg-dark(for='subsonicEmail') Username
+          input#subsonicEmail.form-control.text-white.bg-dark(type='text', placeholder='Enter username', ng-model='settings.subsonic_username')
+        .form-group
+          label.text-white.bg-dark(for='subsonicPassword') Password
+          input#subsonicPassword.form-control.text-white.bg-dark(type='password', placeholder='Password', ng-model='settings.subsonic_password')
+        .form-group
+          label.text-white.bg-dark(for='subsonicPort') Port
+          input#subsonicPort.form-control.text-white.bg-dark(type='number', placeholder='443', ng-model='settings.subsonic_port', ng-change="previewConnectionString()")
+        .form-check
+          input#useSslCheck.form-check-input.text-white.bg-dark(type='checkbox', ng-model='settings.subsonic_use_ssl', ng-change="previewConnectionString()")
+          label.form-check-label.text-white.bg-dark(for='useSslCheck') Use SSL?
+        .form-check
+          input#includePortInUrl.form-check-input.text-white.bg-dark(type='checkbox', ng-model='settings.subsonic_include_port_in_url', ng-change="previewConnectionString()")
+          label.form-check-label.text-white.bg-dark(for='includePortInUrl') Include port in URL?
+      div
+        p.text-white.bg-dark Preview of Connection string: {{connectionStringPreview}}
+      div
+        button.btn.btn-dark.text-white(type='submit', ng-click='saveSettings()') Save
+
+
+

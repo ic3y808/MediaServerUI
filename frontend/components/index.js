@@ -11,7 +11,7 @@ import PlayingComponent from './playing.component';
 import PlaylistComponent from './playlist.component';
 import PlaylistsComponent from './playlists.component';
 import PodcastsComponent from './podcasts.component';
-import SettingsComponent from './settings.component';
+import SubsonicSettingsComponent from './subsonic.settings.component';
 import StarredComponent from './starred.component';
 import StatusComponent from './status.component';
 
@@ -28,7 +28,7 @@ export default angular
   .component('playlist', PlaylistComponent)
   .component('playlists', PlaylistsComponent)
   .component('podcasts', PodcastsComponent)
-  .component('settings', SettingsComponent)
+  .component('subsonicsettings', SubsonicSettingsComponent)
   .component('starred', StarredComponent)
   .component('status', StatusComponent)
 ;

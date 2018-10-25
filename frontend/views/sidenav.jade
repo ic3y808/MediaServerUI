@@ -16,10 +16,13 @@
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-cubes.fa-fw.mr-3
       span.menu-collapsed Fresh
-  a#list-messages-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/settings', role='tab', aria-controls='messages') 
+  a.list-group-item.list-group-item-action.list-group-item-dark-no-select(data-target='#item-1', data-toggle='collapse')
     .d-flex.w-100.justify-content-start.align-items-center
-      span.fa.fa-cogs.fa-fw.mr-3
+      span.fa.fa-chevron-right.fa-fw.mr-3
       span.menu-collapsed Settings
+  #item-1.list-group.collapse
+    a.list-group-item.list-group-item-action.list-group-item-dark(href='/settings/subsonic') Subsonic
+
   a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/status', role='tab', aria-controls='settings') 
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-info-circle.fa-fw.mr-3

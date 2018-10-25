@@ -1,4 +1,4 @@
-.freshWrapper {
+.settingsWrapper {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -10,7 +10,7 @@
   margin: 0;
 }
 
-.freshBodyWrapper {
+.settingsBodyWrapper {
   position: absolute;
   padding: 0;
   top: 60px;
@@ -20,11 +20,6 @@
   margin: 0;
 }
 
-#freshAlbums {
-  height:100px;
-  background-color: black;
-}
-
-#freshTracksGrid {
+#settingsBody {
   flex: 1 0;
 }
