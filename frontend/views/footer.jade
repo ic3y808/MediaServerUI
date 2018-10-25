@@ -16,17 +16,18 @@
             a#trackInfo.text-white(href='#')
 
       .nowPlayingBarCenter
-        button#skipBackButton.btn.btn-sm.btn-dark
-          i.fa.fa-step-backward(aria-hidden='true')
-        button#playPauseButton.btn.btn-sm.btn-dark
-          i#playPauseIcon.fa.fa-play(aria-hidden='true')
-        button#skipNextButton.btn.btn-sm.btn-dark
-          i.fa.fa-step-forward(aria-hidden='true')
-        #mainTimeDisplay.text-light.bg-dark
+        .nowPlayingBarTimeContainer
+          div
+            button#skipBackButton.btn.btn-sm.btn-dark.mediaControlButton
+              i.fa.fa-step-backward(aria-hidden='true')
+            button#playPauseButton.btn.btn-sm.btn-dark.mediaControlButton
+              i#playPauseIcon.fa.fa-play(aria-hidden='true')
+            button#skipNextButton.btn.btn-sm.btn-dark.mediaControlButton
+              i.fa.fa-step-forward(aria-hidden='true')
+          .nowPlayingBarSecondaryText
+            #mainTimeDisplay.text-light.bg-dark
+        
       .nowPlayingBarRight
-        
- 
-        
         google-cast-launcher.btn.btn-sm.btn-dark(style='max-height:35px;max-width:35px;')
         button#downloadButton.btn.btn-sm.btn-dark
           i.fa.fa-download(aria-hidden='true')

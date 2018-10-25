@@ -21,10 +21,18 @@ footer {
   opacity: 0.33;
 }
 
+#mainTimeDisplay{
+  font-size: 0.9em;
+  text-align: center;
+}
+
 .nowPlayingBarInfoContainer {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  margin: 15px 0 0 0;
+  height: 100%;
+  height: 100%;
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
@@ -118,13 +126,35 @@ footer {
   flex-grow: 1;
   font-size: 92%;
   margin-right: 2.4em;
-  margin-left: 1em
+  margin-left: 1em;
+}
+
+.nowPlayingBarTimeContainer {
+  overflow: hidden;
+  white-space: nowrap;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  text-align: left;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  padding-bottom: 10px;
+}
+
+.mediaControlButton{
+  height: 10px;
+  margin: 0px;
+  padding-top: 0px;
+  padding-bottom: 10px;
 }
 
 .nowPlayingBarCenter {
   vertical-align: middle;
   text-align: center;
   z-index: 2;
+  margin: 10px 10px 0 auto;
+  height: 100%;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   flex-grow: 1;
@@ -155,8 +185,12 @@ footer {
 
 .nowPlayingBarRight {
   position: relative;
-  margin: 0 .5em 0 auto;
+  margin: 15px 0 0 auto;
+  height: 100%;
   z-index: 2;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

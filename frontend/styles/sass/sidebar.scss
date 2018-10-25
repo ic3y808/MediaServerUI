@@ -1,4 +1,4 @@
-.sidebar{
+.sidebar {
   background-color: #333;
   overflow: auto;
   max-width: 230px;
@@ -10,9 +10,19 @@
   background-color: #343a40;
 }
 
+.list-group-item-dark .active{
+  color: #ffffff;
+  background-color: #343a40;
+}
+
 .list-group-item-dark-no-select {
   color: #ffffff !important;
   background-color: #343a40 !important;
+}
+
+.sub-list-group-item-dark {
+  color: #ffffff;
+  background-color: #1a1b1d;
 }
 
 .sidebar-expanded {
@@ -23,4 +33,7 @@
   width: 60px;
 }
 
-.list-group-item { cursor: pointer; }
+.list-group-item {
+  color: #ffffff !important;
+  cursor: pointer;
+}

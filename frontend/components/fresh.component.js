@@ -5,6 +5,8 @@ class FreshController {
     this.$rootScope = $rootScope;
     console.log('fresh-controller');
     $scope.albums = [];
+    $scope.tracks = [];
+    $scope.continousPlay = true;
 
     var columnDefs = [{
       headerName: "#",
@@ -15,6 +17,10 @@ class FreshController {
     {
       headerName: "Title",
       field: "title"
+    },
+    {
+      headerName: "Artist",
+      field: "artist"
     },
     {
       headerName: "Album",
@@ -58,22 +64,22 @@ class FreshController {
       },
       onGridReady: function () {
         console.log("onGridReady");
-
-        $scope.gridOptions.api.sizeColumnsToFit();
-        $scope.gridOptions.api.addGlobalListener(
-          function (foo) {
-            _.debounce(function () {
-              $scope.gridOptions.api.sizeColumnsToFit();
-            }, 300);
-
-          }
-        );
+        setTimeout(function () {
+          $scope.reloadAll();
+          $scope.gridOptions.api.sizeColumnsToFit();
+          $scope.gridOptions.api.addGlobalListener(
+            function (foo) {
+              _.debounce(function () {
+                $scope.gridOptions.api.sizeColumnsToFit();
+              }, 300);
+            }
+          );
+        }, 750);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
         if (selectedRow) {
           $rootScope.tracks = $scope.tracks;
-
           var index = _.findIndex($rootScope.tracks, function (track) {
             return track.id === selectedRow.id;
           });
@@ -83,30 +89,28 @@ class FreshController {
       },
     };
 
-    $scope.updateList = function(){
-      $scope.flip.flipster('index');
-      $scope.$apply();
+    $scope.toggleContinousPlay = function () {
+      $scope.continousPlay = !$scope.continousPlay;
     }
 
     $scope.reloadAll = function () {
       if ($rootScope.isLoggedIn) {
-        $scope.artists = [];
+        $scope.albums = [];
         $rootScope.subsonic.getAlbumList2("newest").then(function (newestCollection) {
-
           $scope.albums = newestCollection;
-          $scope.$apply();
-
-
-          $rootScope.hideLoader();
           $scope.albums.forEach(album => {
             if (album.coverArt) {
               $rootScope.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
                 album.artUrl = result;
-                $scope.$apply();
+                if (!$scope.$$phase) {
+                  $scope.$apply();
+                }
               });
+            } else {
+              album.artUrl = '/content/no-art.png';
             }
           });
-          console.log($scope.albums);
+
           setTimeout(function () {
             $scope.flip = $("#coverflow").flipster({
               start: 0,
@@ -134,8 +138,12 @@ class FreshController {
                 });
               }
             });
+            if (!$scope.$$phase) {
+              $scope.$apply();
+            }
             $scope.flip.flipster('index');
             $scope.flip.flipster('next');
+            $rootScope.hideLoader();
           }, 750);
         });
       } else {
@@ -146,14 +154,51 @@ class FreshController {
       }
     };
 
+    $scope.startRadio = function () {
+      var track = $rootScope.selectedTrack();
+      if (!track || !track.artistId) {
+        track = $scope.tracks[0];
+      }
+
+      $rootScope.subsonic.getSimilarSongs2(track.artistId).then(function (similarSongs) {
+        console.log('starting radio');
+        if (similarSongs && similarSongs.song) {
+          $rootScope.tracks = similarSongs.song;
+          $rootScope.loadTrack(0);
+        };
+      });
+    };
+
+    $scope.shuffle = function () {
+      console.log('shuffle play');
+      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
+      $rootScope.loadTrack(0);
+      $rootScope.$digest();
+    };
+
+    $rootScope.$on('playlistEndEvent', function (event, data) {
+      if ($scope.continousPlay) {
+        $scope.flip.flipster('next');
+        setTimeout(function () {
+          $rootScope.tracks = $scope.tracks;
+          $rootScope.loadTrack(0);
+        }, 500);
+      };
+    });
+
+    $rootScope.$on('trackChangedEvent', function (event, data) {
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.redrawRows({
+          force: true
+        });
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    });
+
     $rootScope.$on('loginStatusChange', function (event, data) {
       console.log('music reloading on subsonic ready');
       $scope.reloadAll();
-    });
-
-    document.addEventListener("DOMContentLoaded", function () {
-      var eGridDiv = document.querySelector('#artistsGrid');
-      new agGrid.Grid(eGridDiv, $scope.gridOptions);
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
@@ -164,7 +209,6 @@ class FreshController {
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
