@@ -51,7 +51,15 @@ profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
 // Rules and loaders
 profile.module.rules.push({
   test: /\.js$/,
-  use: ['ng-annotate-loader', 'strip-loader?strip[]=debug', 'babel-loader'],
+  use: [
+    { loader: 'ng-annotate-loader' },
+    { loader: 'strip-loader?strip[]=debug' },
+    {
+      loader: 'babel-loader',
+      options: {
+        presets: ['env']
+      }
+    }],
   include: [
     path.resolve(__dirname, "node_modules/clipboard/src")
   ],
@@ -114,7 +122,7 @@ profile.module.rules.push({
 // Output
 profile.output = {
   filename: '[name].js',
-  chunkFilename: '[name]-[chunkhash].js', 
+  chunkFilename: '[name]-[chunkhash].js',
   path: path.resolve(__dirname, dist)
 };
 
@@ -163,6 +171,9 @@ if (process.env.DEV === 'true') {
     app: ['./frontend/app.js']
   };
 
+  const MinifyPlugin = require('babel-minify-webpack-plugin');
+
+
   profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
     mangle: true,
     compress: {
@@ -175,7 +186,7 @@ if (process.env.DEV === 'true') {
     output: {
       comments: false,
     },
-    exclude: ['index.js', 'app.js', 'config.js', 'run.js', /\.component\.js$/gi, /\.service\.js$/gi, /\.controller\.js$/gi, /\.min\.js$/gi] // skip pre-minified libs
+    exclude: ['index.js', 'app.js', /\.component\.js$/gi, /\.service\.js$/gi, /\.controller\.js$/gi, /\.min\.js$/gi] // skip pre-minified libs
   }));
 
 }

@@ -1233,7 +1233,7 @@ exports = module.exports = __webpack_require__(11)(false);
 
 
 // module
-exports.push([module.i, ".card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px orange; }\n\n.row {\n  border: 0px lime; }\n\n.col {\n  border: 0px lime; }\n\n.container {\n  border: 0px yellow; }\n\n.sidebar {\n  border: 0px red; }\n\n* {\n  border: 0px lime; }\n", ""]);
+exports.push([module.i, ".card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px orange; }\n\n.row {\n  border: 0px pink; }\n\n.col {\n  border: 0px blue; }\n\n.container {\n  border: 0px pink; }\n\n.sidebar {\n  border: 0px blue; }\n\n* {\n  border: 0px lime; }\n", ""]);
 
 // exports
 
