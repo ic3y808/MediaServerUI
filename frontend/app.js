@@ -16,6 +16,8 @@ import 'typeface-roboto';
 require("ag-grid-community");
 import * as agGridCommunity from 'ag-grid-community';
 import SubsonicAPI from './API/subsonic.api';
+import CastFramework from './API/cast.framework';
+import CastAPI from './API/cast.v1';
 import Clipboard from 'clipboard';
 import Components from './components';
 import Services from './services';

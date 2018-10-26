@@ -14,10 +14,6 @@ html(ng-app='subsonic', style='background-color:#333333;')
         video#media-player(preload='true', controls='hidden', style="display:none;")
       footer
         include footer.jade
-          
-
-
     script(src='/bundle.js')
-    script(type='text/javascript', src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1')
   - if(dev_mode)
     include jsinclude

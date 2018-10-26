@@ -6,7 +6,7 @@ class ApplicationRun {
     console.log('starting application');
     var myWindow = angular.element($window);
     myWindow.on('__onGCastApiAvailable', function (isAvailable) {
-      console.log('cast is ' + isAvailable);
+      console.log('constructor cast is ' + isAvailable);
       $rootScope.isCastAvailable = isAvailable;
     });
     $rootScope.isLoggedIn = false;
@@ -22,7 +22,7 @@ class ApplicationRun {
       if (!$rootScope.$$phase) {
         //$digest or $apply
       }
-    }
+    };
 
     $rootScope.castSession = function () {
       return cast.framework.CastContext.getInstance().getCurrentSession();
@@ -53,29 +53,29 @@ class ApplicationRun {
         $("#likeButtonIcon").removeClass('fa-heart');
         $("#likeButtonIcon").addClass('fa-heart-o');
       }
-    }
+    };
 
     $rootScope.checkArtistInfo = function (source) {
       $('#artistInfo').html(source.artist);
       $('#artistInfo').attr("href", source.artistUrl);
       $('#trackInfo').html(source.title);
       $('#trackInfo').attr("href", "/playing");
-    }
+    };
 
     $rootScope.checkVolume = function () {
       $('#volumeSlider').val($rootScope.currentVolume * 100);
-    }
+    };
 
     $rootScope.checkNowPlayingImage = function (source) {
       $rootScope.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
         $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
       });
-    }
+    };
 
     $rootScope.togglePlayPause = function () {
       var playing = false;
       if ($rootScope.remotePlayerConnected()) {
-        playing = $rootScope.remotePlayer.playerState === 'PLAYING'
+        playing = $rootScope.remotePlayer.playerState === 'PLAYING';
       } else {
         playing = $rootScope.playing;
       }
@@ -87,7 +87,7 @@ class ApplicationRun {
         $("#playPauseIcon").addClass("fa-play");
         $("#playPauseIcon").removeClass("fa-pause");
       }
-    }
+    };
 
     $rootScope.loadTrack = function (index) {
       $rootScope.selectedIndex = index;
@@ -273,7 +273,7 @@ class ApplicationRun {
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainTimeDisplay').html("");
-        console.log('playlist ended')
+        console.log('playlist ended');
         $rootScope.$broadcast('playlistEndEvent');
       } else {
         $rootScope.playing = true;
@@ -827,7 +827,7 @@ class ApplicationRun {
         [a[i], a[j]] = [a[j], a[i]];
       }
       return a;
-    }
+    };
 
     setTimeout(() => {
       if (ChromecastService.castStatus()) {
