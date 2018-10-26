@@ -49,11 +49,13 @@
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/preset-es2016": "^7.0.0-beta.53",
+    "assets-webpack-plugin": "^3.9.7",
     "autoprefixer": "^9.1.5",
     "autoprefixer-core": "^6.0.1",
     "babel-core": "^5.6.15",
     "babel-loader": "^5.3.1",
     "clean-webpack-plugin": "^0.1.17",
+    "compression-webpack-plugin": "^2.0.0",
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "exports-loader": "^0.7.0",
@@ -74,8 +76,10 @@
     "uglifyjs-webpack-plugin": "^2.0.1",
     "url-loader": "^1.1.1",
     "webpack": "^3.9.1",
+    "webpack-bundle-analyzer": "^3.0.3",
     "webpack-dev-middleware": "^1.12.2",
     "webpack-hot-middleware": "^2.24.2",
-    "webpack-livereload-plugin": "^1.2.0"
+    "webpack-livereload-plugin": "^1.2.0",
+    "webpack-md5-hash": "0.0.6"
   }
 }

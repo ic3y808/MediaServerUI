@@ -1,2 +1,3 @@
-script(src='http://localhost:#{jade_port}/livereload.js?snipver=1')
+- if(dev_mode)
+  script(src='http://localhost:#{jade_port}/livereload.js?snipver=1')
 -console.log('included hot module reload scripts')  

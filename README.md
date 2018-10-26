@@ -13,6 +13,11 @@
 ## Feature Requests
 * Post am issue
 
+## To run: 
+* npm run build
+* npm start
+* navigate to http://localhost:3000
+
 ### Now Playing Preview
 ![Alt text](/media/preview.png?raw=true "Overall interface")
 
