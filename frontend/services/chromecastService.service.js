@@ -1,6 +1,8 @@
+import '../API/cast.framework';
+import '../API/cast.v1';
 var isCastAvailable = false;
 window.__onGCastApiAvailable = function (isAvailable) {
-  console.log('cast status ' + isAvailable)
+  console.log('cast status ' + isAvailable);
   isCastAvailable = isAvailable;
 };
 
