@@ -44,26 +44,39 @@ profile.plugins.push(new webpack.DefinePlugin({
 
 profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
   name: 'vendor',
-  minChunks: ({ resource }) => /node_modules/.test(resource),
+  minChunks: ({
+    resource
+  }) => /node_modules/.test(resource),
 }));
 
 
 // Rules and loaders
 profile.module.rules.push({
   test: /\.js$/,
-  use: [
-    { loader: 'ng-annotate-loader' },
-    { loader: 'strip-loader?strip[]=debug' },
+  use: [{
+      loader: 'strip-loader?strip[]=debug'
+    },
     {
       loader: 'babel-loader',
       options: {
-        presets: ['env']
+        plugins: [
+          '@babel/plugin-transform-runtime',
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true,
+            }
+          ],
+          "@babel/plugin-proposal-class-properties",
+          ["angularjs-annotate", {
+            explicitOnly: true
+          }]
+        ],
+        presets: ['@babel/preset-env']
       }
-    }],
-  include: [
-    path.resolve(__dirname, "node_modules/clipboard/src")
+    }
   ],
-  exclude: [nodePath]
+  exclude: /(node_modules|bower_components)/
 });
 
 profile.module.rules.push({
@@ -92,25 +105,25 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.(scss|sass)$/,
   use: [{
-    loader: 'style-loader'
-  },
-  {
-    loader: 'css-loader'
-  },
-  {
-    loader: 'postcss-loader',
-    options: {
-      plugins: function () { // post css plugins, can be exported to postcss.config.js
-        return [
-          require('precss'),
-          require('autoprefixer')
-        ];
+      loader: 'style-loader'
+    },
+    {
+      loader: 'css-loader'
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: function () { // post css plugins, can be exported to postcss.config.js
+          return [
+            require('precss'),
+            require('autoprefixer')
+          ];
+        }
       }
+    },
+    {
+      loader: 'sass-loader'
     }
-  },
-  {
-    loader: 'sass-loader'
-  }
   ]
 });
 
@@ -171,9 +184,6 @@ if (process.env.DEV === 'true') {
     app: ['./frontend/app.js']
   };
 
-  const MinifyPlugin = require('babel-minify-webpack-plugin');
-
-
   profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
     mangle: true,
     compress: {
@@ -186,7 +196,7 @@ if (process.env.DEV === 'true') {
     output: {
       comments: false,
     },
-    exclude: ['index.js', 'app.js', /\.component\.js$/gi, /\.service\.js$/gi, /\.controller\.js$/gi, /\.min\.js$/gi] // skip pre-minified libs
+    exclude: [ /\.min\.js$/gi] // skip pre-minified libs
   }));
 
 }
