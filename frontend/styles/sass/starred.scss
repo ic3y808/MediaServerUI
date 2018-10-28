@@ -20,13 +20,9 @@
   margin: 0;
 }
 
-#starredHeader {
-  flex: 0.2 0;
-}
-
 #starredAlbums {
-  flex: 0.25 0;
-  max-height: 100px;
+  height:100px;
+  background-color: black;
 }
 
 #starredTracksGrid {

@@ -39,7 +39,8 @@ profile.plugins.push(new webpack.DefinePlugin({
   "DEV_MODE": process.env.DEV,
   "SERVER_HOST": process.env.SERVER_HOST,
   "SERVER_PORT": process.env.PORT,
-  "JADE_PORT": process.env.JADE_PORT
+  "JADE_PORT": process.env.JADE_PORT,
+  "DEBUG_LEVEL" : process.env.DEBUG_LEVEL
 }));
 
 profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
@@ -49,35 +50,7 @@ profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
   }) => /node_modules/.test(resource),
 }));
 
-
 // Rules and loaders
-profile.module.rules.push({
-  test: /\.js$/,
-  use: [{
-      loader: 'strip-loader?strip[]=debug'
-    },
-    {
-      loader: 'babel-loader',
-      options: {
-        plugins: [
-          '@babel/plugin-transform-runtime',
-          [
-            "@babel/plugin-proposal-decorators",
-            {
-              "legacy": true,
-            }
-          ],
-          "@babel/plugin-proposal-class-properties",
-          ["angularjs-annotate", {
-            explicitOnly: true
-          }]
-        ],
-        presets: ['@babel/preset-env']
-      }
-    }
-  ],
-  exclude: /(node_modules|bower_components)/
-});
 
 profile.module.rules.push({
   test: /\.(png|svg|jpg|gif)$/,
@@ -148,8 +121,10 @@ if (process.env.DEV === 'true') {
   profile.devtool = 'eval';
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 
-  //const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-  //profile.plugins.push(new BundleAnalyzerPlugin());
+  if (process.env.USE_ANALYZER === 'true') {
+    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+    profile.plugins.push(new BundleAnalyzerPlugin());
+  }
 
   const ControllerHotLoader = require.resolve('./loaders/controller-loader');
   const ServiceHotLoader = require.resolve('./loaders/service-loader');
@@ -184,6 +159,34 @@ if (process.env.DEV === 'true') {
     app: ['./frontend/app.js']
   };
 
+  profile.module.rules.push({
+    test: /\.js$/,
+    use: [{
+        loader: 'strip-loader?strip[]=debug'
+      },
+      {
+        loader: 'babel-loader',
+        options: {
+          plugins: [
+            '@babel/plugin-transform-runtime',
+            [
+              "@babel/plugin-proposal-decorators",
+              {
+                "legacy": true,
+              }
+            ],
+            "@babel/plugin-proposal-class-properties",
+            ["angularjs-annotate", {
+              explicitOnly: true
+            }]
+          ],
+          presets: ['@babel/preset-env']
+        }
+      }
+    ],
+    exclude: /(node_modules|bower_components)/
+  });
+
   profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
     mangle: true,
     compress: {
@@ -196,11 +199,9 @@ if (process.env.DEV === 'true') {
     output: {
       comments: false,
     },
-    exclude: [ /\.min\.js$/gi] // skip pre-minified libs
+    exclude: [/\.min\.js$/gi] // skip pre-minified libs
   }));
 
 }
-
-
 
 module.exports = profile;

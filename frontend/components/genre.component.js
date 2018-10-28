@@ -1,16 +1,22 @@
 class GenreController {
-  constructor($scope, $rootScope, $routeParams) {
+  constructor($scope, $rootScope, $routeParams, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('genre-controller')
+    this.$routeParams = $routeParams;
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('genre-controller');
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
     $scope.artistName = '';
-    $scope.genre = $routeParams.id;
-    var columnDefs = [
-      {
+    $scope.genre = this.$routeParams.id;
+    var that = this;
+    var columnDefs = [{
         headerName: "Artist",
         field: "artist"
       },
@@ -43,7 +49,7 @@ class GenreController {
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
-          return $rootScope.checkIfNowPlaying(params.data);
+          return MediaPlayer.checkIfNowPlaying(params.data);
         }
       },
       getRowNodeId: function (data) {
@@ -59,15 +65,14 @@ class GenreController {
         var selectedRow = $scope.api.getSelectedRows()[0];
         if (selectedRow) {
           if ($scope.tracks) {
-            $rootScope.tracks = $scope.tracks;
+            that.MediaPlayer.tracks = $scope.tracks;
 
-            var index = _.findIndex($rootScope.tracks, function (track) {
+            var index = _.findIndex(that.MediaPlayer.tracks, function (track) {
               if (track && selectedRow) {
-                return track.id === selectedRow.id
+                return track.id === selectedRow.id;
               } else return false;
-            })
-            $rootScope.loadTrack(index);
-            $rootScope.$digest();
+            });
+            that.MediaPlayer.loadTrack(index);
           }
         }
 
@@ -79,8 +84,8 @@ class GenreController {
     };
 
     $scope.getGenre = function () {
-      if ($rootScope.isLoggedIn) {
-        $rootScope.subsonic.getSongsByGenre($routeParams.id, 500, 0).then(function (result) {
+      if (SubsonicService.isLoggedIn) {
+        that.SubsonicService.subsonic.getSongsByGenre(that.$routeParams.id, 500, 0).then(function (result) {
           $scope.tracks = result.song;
           if ($scope.gridOptions && $scope.gridOptions.api) {
             $scope.gridOptions.api.setRowData($scope.tracks);
@@ -90,37 +95,32 @@ class GenreController {
           if (!$scope.$$phase) {
             $scope.$apply();
           }
-          $rootScope.hideLoader();
+          that.AppUtilities.hideLoader();
         });
       } else {
         if ($scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();
-        $rootScope.hideLoader();
+        AppUtilities.hideLoader();
       }
-    }
+    };
 
     $scope.refresh = function () {
-      console.log('refresh genre')
+      that.Backend.debug('refresh genre');
       $scope.getGenre();
     };
 
     $scope.shuffle = function () {
-      console.log('shuffle play')
-      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
-      $rootScope.loadTrack(0);
-      $rootScope.$digest();
+      that.Backend.debug('shuffle play');
+      MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      MediaPlayer.loadTrack(0);
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('genre reloading on subsonic ready')
+      that.Backend.debug('genre reloading on subsonic ready');
       $scope.getGenre();
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-
-      //$('#genreTrackGrid').width($('.main-content').width());
-      //$('#genreTrackGrid').height($('.main-content').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
@@ -128,9 +128,6 @@ class GenreController {
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      //$('#genreTrackGrid').width($('.main-content').width());
-      //$('#genreTrackGrid').height($('.main-content').height());
-
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();

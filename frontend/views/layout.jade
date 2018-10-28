@@ -4,16 +4,13 @@ html(ng-app='subsonic', style='background-color:#333333;')
     title= title  
   body
       header
-        include nav.jade  
       main.container(role='main')
         .row
-          .sidebar.sidebar-expanded
-            include sidenav.jade  
+          sidenav.sidebar.sidebar-expanded
           .loader
           ng-view.main-content.col
         video#media-player(preload='true', controls='hidden', style="display:none;")
       footer
-        include footer.jade
-      script(src='vendor.js', type='text/javascript')
-      script(src='app.js', type='text/javascript')
+      script(src='/vendor.js', type='text/javascript')
+      script(src='/app.js', type='text/javascript')
       include jsinclude

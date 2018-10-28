@@ -1,11 +1,16 @@
 class IndexController {
-  constructor($scope, $rootScope) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('index-controller')
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('index-controller');
     $scope.artists = [];
-
+    var that = this;
 
     $scope.getArtists = function (artistsCollection, callback) {
       var artists = [];
@@ -18,29 +23,29 @@ class IndexController {
       Promise.all(artists).then(function (artistsResult) {
         callback(artistsResult);
       });
-    }
+    };
 
     $scope.reloadArtists = function () {
-      if ($rootScope.isLoggedIn) {
+      if (SubsonicService.isLoggedIn) {
         $scope.artists = [];
-        $rootScope.subsonic.getArtists().then(function (result) {
+        that.SubsonicService.subsonic.getArtists().then(function (result) {
           $scope.artists = result;
           if (!$scope.$$phase) {
             $scope.$apply();
           }
-          $rootScope.hideLoader();
+          that.AppUtilities.hideLoader();
 
         });
       } else {
         if ($scope.gridOptions && $scope.gridOptions.api) {
           $scope.gridOptions.api.showNoRowsOverlay();
         }
-        $rootScope.hideLoader();
+        that.AppUtilities.hideLoader();
       }
-    }
+    };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('music reloading on subsonic ready')
+      that.Backend.debug('music reloading on subsonic ready');
       $scope.reloadArtists();
     });
 

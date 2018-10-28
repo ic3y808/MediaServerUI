@@ -1,34 +1,35 @@
 class HomeController {
-  constructor($scope, $rootScope) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
-    console.log('home-controller')
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('home-controller');
     $scope.processTracks = function (songCollection, callback) {
       var songs = [];
       songCollection.forEach(song => {
 
         if (song.coverArt) {
-          $rootScope.subsonic.getCoverArt(song.coverArt, 200).then(function (art) {
+          SubsonicService.subsonic.getCoverArt(song.coverArt, 200).then(function (art) {
             // song.artworkUrl = art;
             // $scope.random.push(song);
           });
         }
-
-
-
       });
 
       Promise.all(songs).then(function (songsResult) {
         callback(songsResult);
       });
-    }
-
+    };
 
     $scope.reloadRandomTracks = function () {
-      if ($rootScope.isLoggedIn) {
+      if (SubsonicService.isLoggedIn) {
         $scope.random = [];
-        $rootScope.subsonic.getRandomSongs().then(function (result) {
+        SubsonicService.subsonic.getRandomSongs().then(function (result) {
           $scope.processTracks(result.song, function (results) {
             if (!$scope.$$phase) {
               $scope.$apply();
@@ -45,7 +46,7 @@ class HomeController {
 
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('home reloading on subsonic ready')
+      this.Backend.debug('home reloading on subsonic ready');
       $scope.reloadRandomTracks();
     });
 
@@ -63,7 +64,7 @@ class HomeController {
     $scope.reloadRandomTracks();
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    $rootScope.hideLoader();
+    AppUtilities.hideLoader();
 
   }
 }

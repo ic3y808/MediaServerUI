@@ -1,16 +1,22 @@
 class StatusController {
-  constructor($scope, $rootScope, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
-    console.log('status-controller')
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('status-controller');
+    var that = this;
     $scope.ping = function () {
-      if ($rootScope.isLoggedIn) {
-        var ping = SubsonicService.ping();
+      if (that.SubsonicService.isLoggedIn) {
+        var ping = that.SubsonicService.ping();
         if (ping) {
           ping.then(function (data) {
-            console.log('ping ' + data);
+            that.Backend.debug('ping');
+            that.Backend.debug(data);
             $scope.server = data;
             if (!$scope.$$phase) {
               $scope.$apply();
@@ -21,9 +27,10 @@ class StatusController {
     };
 
     $scope.getUserInfo = function () {
-      if ($rootScope.isLoggedIn) {
-        $rootScope.subsonic.getUserInfo().then(function (userInfo) {
-          console.log('ping ' + userInfo);
+      if (that.SubsonicService.isLoggedIn) {
+        that.SubsonicService.subsonic.getUserInfo().then(function (userInfo) {
+          that.Backend.debug('getUserInfo');
+          that.Backend.debug(userInfo);
           $scope.userInfo = userInfo;
           if (!$scope.$$phase) {
             $scope.$apply();
@@ -33,9 +40,8 @@ class StatusController {
     };
 
     $scope.getMediaFolders = function () {
-      if ($rootScope.isLoggedIn) {
-        $rootScope.subsonic.getMusicFolders().then(function (data) {
-
+      if (that.SubsonicService.isLoggedIn) {
+        that.SubsonicService.subsonic.getMusicFolders().then(function (data) {
           $scope.folders = data;
           if (!$scope.$$phase) {
             $scope.$apply();
@@ -45,8 +51,8 @@ class StatusController {
     };
 
     $scope.startScan = function () {
-      if ($rootScope.isLoggedIn) {
-        $rootScope.subsonic.startScan().then(function (data) {
+      if (that.SubsonicService.isLoggedIn) {
+        that.SubsonicService.subsonic.startScan().then(function (data) {
           $scope.scanStatus = data;
           $scope.scanStatusTotalFiles = data.count;
           if (!$scope.$$phase) {
@@ -60,8 +66,8 @@ class StatusController {
     };
 
     $scope.getScanStatus = function () {
-      if ($rootScope.isLoggedIn) {
-        $rootScope.subsonic.getScanStatus().then(function (data) {
+      if (that.SubsonicService.isLoggedIn) {
+        that.SubsonicService.subsonic.getScanStatus().then(function (data) {
           $scope.scanStatus = data;
           if ($scope.scanStatus.count === $scope.scanStatusTotalFiles) {
             clearInterval($scope.rescanInterval);
@@ -91,7 +97,7 @@ class StatusController {
     $scope.ping();
     $scope.getUserInfo();
     $scope.getMediaFolders();
-    $rootScope.hideLoader();
+    AppUtilities.hideLoader();
   }
 }
 

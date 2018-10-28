@@ -8,7 +8,10 @@
       "env": {
         "DEV": "true",
         "PORT": "3000",
-        "JADE_PORT": "34568"
+        "JADE_PORT": "34568",
+        "USE_ANALYZER": "false",
+        "DEBUG_LEVEL":"debug"
+        //error, warn, info, verbose, debug, silly.
       }
     },
     {
