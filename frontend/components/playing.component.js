@@ -1,15 +1,20 @@
 class PlayingController {
-  constructor($scope, $rootScope) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('playing-controller')
-
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('playing-controller');
+    var that = this;
     $scope.getSong = function () {
-      if ($rootScope.isLoggedIn) {
-        var track = $rootScope.selectedTrack();
+      if (that.SubsonicService.isLoggedIn) {
+        var track = that.MediaPlayer.selectedTrack();
         if (track) {
-          $rootScope.subsonic.getSong(track.id).then(function (song) {
+          that.SubsonicService.subsonic.getSong(track.id).then(function (song) {
             $scope.song = song.song;
             $scope.artistName = $scope.song.artist;
             $scope.trackTitle = $scope.song.title;
@@ -17,21 +22,18 @@ class PlayingController {
             $scope.contentType = $scope.song.contentType;
             $scope.bitrate = $scope.song.bitrate;
             $scope.playCount = $scope.song.playCount;
-            $rootScope.subsonic.getArtistInfo2($scope.song.artistId, 50).then(function (result) {
+            that.SubsonicService.subsonic.getArtistInfo2($scope.song.artistId, 50).then(function (result) {
               if (result) {
                 $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
                 if (result.similarArtist && result.similarArtist.length > 0)
                   $scope.similarArtists = result.similarArtist;
                 if (result.largeImageUrl) {
                   var bgUrl = result.largeImageUrl.replace('300x300', Math.round($('.main-content').width()) + 'x' + Math.round($('.main-content').height()));
-                  console.log('getting image ' + bgUrl);
+                  that.Backend.debug('getting image ' + bgUrl);
                   $rootScope.setContentBackground(bgUrl);
                 }
-
-                if (!$scope.$$phase) {
-                  $scope.$apply();
-                }
-                $rootScope.hideLoader();
+                that.AppUtilities.apply();
+                that.AppUtilities.hideLoader();
               }
             });
           });
@@ -39,17 +41,17 @@ class PlayingController {
       } else {
         if ($scope.gridOptions && $scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();
-        $rootScope.hideLoader();
+        AppUtilities.hideLoader();
       }
-    }
+    };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
-      console.log('Track Changed reloading now playing')
+      that.Backend.debug('Track Changed reloading now playing');
       $scope.getSong();
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('login changed reloading now playing')
+      that.Backend.debug('login changed reloading now playing');
       $scope.getSong();
     });
 

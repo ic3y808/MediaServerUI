@@ -26,7 +26,7 @@
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label.text-white Continous Play
   .freshBodyWrapper.d-flex.flex-column
-    #freshAlbums 
+    #freshAlbums(style='display:none;') 
       #coverflow
         ul.flip-items
           li(data-flip-title='{{album.id}}', ng-repeat='album in albums')

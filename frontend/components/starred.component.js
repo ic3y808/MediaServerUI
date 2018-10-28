@@ -1,44 +1,43 @@
 class StarredController {
-  constructor($scope, $rootScope, $location) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
-    console.log('starred-controller')
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('starred-controller');
+    var that = this;
     var columnDefs = [{
-      headerName: "Id",
-      field: "id",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "#",
-      field: "track",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Artist",
-      field: "artist"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "playCount",
-      width: 75,
-      suppressSizeToFit: true
-    },
+        headerName: "#",
+        field: "track",
+        width: 75,
+        suppressSizeToFit: true
+      },
+      {
+        headerName: "Title",
+        field: "title"
+      },
+      {
+        headerName: "Artist",
+        field: "artist"
+      },
+      {
+        headerName: "Album",
+        field: "album"
+      },
+      {
+        headerName: "Genre",
+        field: "genre"
+      },
+      {
+        headerName: "Plays",
+        field: "playCount",
+        width: 75,
+        suppressSizeToFit: true
+      },
     ];
 
     $scope.gridOptions = {
@@ -52,8 +51,8 @@ class StarredController {
       animateRows: true,
       rowClassRules: {
         'current-track': function (params) {
-          if ($scope.api) $scope.api.deselectAll();
-          return $rootScope.checkIfNowPlaying(params.data);
+          if ($scope.gridOptions.api) $scope.gridOptions.api.deselectAll();
+          return MediaPlayer.checkIfNowPlaying(params.data);
         }
       },
       getRowNodeId: function (data) {
@@ -69,79 +68,113 @@ class StarredController {
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
         if (selectedRow) {
-          $rootScope.tracks = $scope.tracks;
+          that.MediaPlayer.tracks = $scope.tracks;
 
-          var index = _.findIndex($rootScope.tracks, function (track) {
-            return track.id === selectedRow.id
-          })
-          $rootScope.loadTrack(index);
-          $rootScope.$digest();
+          var index = _.findIndex(that.MediaPlayer.tracks, function (track) {
+            return track.id === selectedRow.id;
+          });
+          that.MediaPlayer.loadTrack(index);
         }
       },
-      onGridReady: function (e) {
-        $scope.api = e.api;
-        $scope.columnApi = e.columnApi;
-        $scope.api.showLoadingOverlay();
-      }
+      onGridReady: function () {
+        setTimeout(function () {
+          $scope.reloadAll();
+          $scope.gridOptions.api.sizeColumnsToFit();
+          $scope.gridOptions.api.addGlobalListener(
+            function (foo) {
+              _.debounce(function () {
+                $scope.gridOptions.api.sizeColumnsToFit();
+              }, 300);
+            }
+          );
+        }, 750);
+      },
     };
 
-    $scope.reloadStarred = function () {
-      if ($rootScope.isLoggedIn) {
+    $scope.reloadAll = function () {
+      if (that.SubsonicService.isLoggedIn) {
         $scope.albums = [];
         $scope.tracks = [];
-        $rootScope.subsonic.getStarred().then(function (result) {
+        that.SubsonicService.subsonic.getStarred().then(function (result) {
 
           result.album.forEach(album => {
 
             if (album.coverArt) {
-              $rootScope.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
+              that.SubsonicService.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
                 album.artUrl = result;
                 $scope.albums.push(album);
-                if (!$scope.$$phase) {
-                  $scope.$apply();
-                }
               });
             }
           });
           $scope.tracks = result.song;
+          $scope.gridOptions.api.setRowData($scope.tracks);
+          $scope.gridOptions.api.doLayout();
+          $scope.gridOptions.api.sizeColumnsToFit();
+          setTimeout(function () {
+            $scope.flip = $("#coverflow").flipster({
+              start: 0,
+              fadeIn: 500,
+              autoplay: false,
+              style: 'coverflow',
+              spacing: -0.6,
+              onItemSwitch: function (currentItem, previousItem) {
+                var id = currentItem.dataset.flipTitle;
+                that.SubsonicService.subsonic.getAlbum(id).then(function (result) {
+                  if (result) {
+                    $scope.tracks = [];
+                    result.song.forEach(function (song) {
+                      $scope.tracks.push(song);
+                    });
+                    if ($scope.gridOptions && $scope.gridOptions.api) {
+                      $scope.gridOptions.api.setRowData($scope.tracks);
+                      $scope.gridOptions.api.doLayout();
+                      $scope.gridOptions.api.sizeColumnsToFit();
+                    }
+                    that.AppUtilities.apply();
+                  }
+                });
+              }
+            });
+            that.AppUtilities.apply();
+            $('#starredAlbums').show();
+            $scope.flip.flipster('index');
 
-          if ($scope.gridOptions && $scope.gridOptions.api) {
-            $scope.gridOptions.api.setRowData($scope.tracks);
-            $scope.gridOptions.api.doLayout();
-            $scope.gridOptions.api.sizeColumnsToFit();
-          }
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
-          $rootScope.hideLoader();
+            AppUtilities.hideLoader();
+          }, 750);
+
+
         }, function (reject) {
-          console.log(reject)
+          that.Backend.error(reject);
         });
       } else {
         if ($scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();
-        $rootScope.hideLoader();
+        that.AppUtilities.hideLoader();
       }
-    }
-
-    $scope.shuffle = function () {
-      console.log('shuffle play')
-      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
-      $rootScope.loadTrack(0);
-      $rootScope.$digest();
     };
 
+    $scope.shuffle = function () {
+      that.Backend.debug('shuffle play');
+      MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      MediaPlayer.loadTrack(0);
+    };
+
+    $rootScope.$on('trackChangedEvent', function (event, data) {
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.redrawRows({
+          force: true
+        });
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    });
+
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('starred reloading on subsonic ready')
-      $scope.reloadStarred();
+      that.Backend.debug('music reloading on subsonic ready');
+      $scope.reloadAll();
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-      var eGridDiv = document.querySelector('#starredGrid');
-      new agGrid.Grid(eGridDiv, $scope.gridOptions);
-    });
-
-    $rootScope.$on('menuSizeChange', function (event, data) {
+    $rootScope.$on('menuSizeChange', function (event, currentState) {
       if ($scope.gridOptions && $scope.gridOptions.api) {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
@@ -154,22 +187,6 @@ class StarredController {
         $scope.gridOptions.api.sizeColumnsToFit();
       }
     });
-
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      if (data && data.largeImageUrl) {
-        $rootScope.setContentBackground(data.largeImageUrl.replace('300x300', '1280x800'));
-      }
-      $scope.api.redrawRows({
-        force: true
-      });
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
-    });
-
-    $scope.reloadStarred();
   }
 }
 

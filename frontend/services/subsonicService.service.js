@@ -1,11 +1,12 @@
 import CryptoJS from 'crypto-js';
 
 export default class SubsonicService {
-  constructor($rootScope) {
+  constructor($rootScope, AppUtilities) {
     "ngInject";
     this.$rootScope = $rootScope;
-    this.$rootScope.isLoggingIn = true;
-    this.$rootScope.isLoggedIn = false;
+    this.AppUtilities = AppUtilities;
+    this.isLoggingIn = true;
+    this.isLoggedIn = false;
   }
 
   generateConnectionString() {
@@ -22,13 +23,13 @@ export default class SubsonicService {
   doLogin() {
 
     if (this.$rootScope.settings && this.$rootScope.settings.subsonic_username && this.$rootScope.settings.subsonic_password) {
-      if (!this.$rootScope.isLoggedIn) {
+      if (!this.isLoggedIn) {
         console.log('logging into subsonic')
 
         var ip = this.$rootScope.settings.subsonic_address;
         if (this.$rootScope.settings.subsonic_include_port_in_url === true)
           ip = ':' + this.$rootScope.settings.subsonic_port;
-          this.$rootScope.subsonic = new SubsonicAPI({
+          this.subsonic = new SubsonicAPI({
           https: this.$rootScope.settings.subsonic_use_ssl,
           ip: ip,
           port: this.$rootScope.settings.subsonic_port,
@@ -38,17 +39,19 @@ export default class SubsonicService {
           md5Auth: true
         });
 
+        var that = this;
+
         document.addEventListener('subsonicApi-ready', event => {
           if (event.detail.status === 'ok') {
             console.log('connected to subsonic')
-            this.$rootScope.isLoggingIn = false;
-            this.$rootScope.isLoggedIn = true;
+            that.isLoggingIn = false;
+            that.isLoggedIn = true;
           } else {
             console.log('failed to connect to subsonic')
-            this.$rootScope.isLoggingIn = false;
-            this.$rootScope.isLoggedIn = false;
+            that.isLoggingIn = false;
+            that.isLoggedIn = false;
           }
-          this.$rootScope.$broadcast('loginStatusChange', this.$rootScope.isLoggedIn);
+          that.AppUtilities.broadcast('loginStatusChange', that.isLoggedIn);
         });
       }
     }
@@ -60,8 +63,8 @@ export default class SubsonicService {
 
   ping() {
     this.doLogin();
-    if (this.$rootScope.isLoggedIn)
-      return this.$rootScope.subsonic.ping();
+    if (this.isLoggedIn)
+      return this.subsonic.ping();
     else return false;
   }
 }

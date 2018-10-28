@@ -1,38 +1,42 @@
 class ArtistController {
-  constructor($scope, $rootScope, $routeParams) {
+  constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('artist-controller');
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.MediaPlayer = MediaPlayer;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('artist-controller');
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
     $scope.artistName = '';
-
+    var that = this;
     var columnDefs = [{
-      headerName: "#",
-      field: "track",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "playCount",
-      width: 75,
-      suppressSizeToFit: true
-    },
+        headerName: "#",
+        field: "track",
+        width: 75,
+        suppressSizeToFit: true
+      },
+      {
+        headerName: "Title",
+        field: "title"
+      },
+      {
+        headerName: "Album",
+        field: "album"
+      },
+      {
+        headerName: "Genre",
+        field: "genre"
+      },
+      {
+        headerName: "Plays",
+        field: "playCount",
+        width: 75,
+        suppressSizeToFit: true
+      },
     ];
 
     $scope.gridOptions = {
@@ -47,13 +51,13 @@ class ArtistController {
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
-          return $rootScope.checkIfNowPlaying(params.data);
+          return MediaPlayer.checkIfNowPlaying(params.data);
         }
       },
       getRowNodeId: function (data) {
         return data.id;
       },
-      
+
       onModelUpdated: function (data) {
         if (data && data.api) {
           data.api.doLayout();
@@ -63,13 +67,12 @@ class ArtistController {
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
         if (selectedRow) {
-          $rootScope.tracks = $scope.tracks;
+          MediaPlayer.tracks = $scope.tracks;
 
-          var index = _.findIndex($rootScope.tracks, function (track) {
+          var index = _.findIndex(MediaPlayer.tracks, function (track) {
             return track.id === selectedRow.id;
           });
-          $rootScope.loadTrack(index);
-          $rootScope.$digest();
+          MediaPlayer.loadTrack(index);
         }
       },
       onGridReady: function (e) {
@@ -80,12 +83,12 @@ class ArtistController {
     };
 
     $scope.getArtist = function () {
-      if ($rootScope.isLoggedIn) {
-        $rootScope.subsonic.getArtist($routeParams.id).then(function (artist) {
+      if (SubsonicService.isLoggedIn) {
+        SubsonicService.subsonic.getArtist($routeParams.id).then(function (artist) {
           $scope.artist = artist;
           $scope.artistName = artist.name;
 
-          $rootScope.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
+          SubsonicService.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
             if (result) {
               if (result.biography) {
                 $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
@@ -94,7 +97,7 @@ class ArtistController {
                 $scope.similarArtists = result.similarArtist.slice(0, 5);
               }
               if (result.largeImageUrl) {
-                $rootScope.setContentBackground(result.largeImageUrl.replace('300x300', '1280x800'));
+                that.AppUtilities.setContentBackground(result.largeImageUrl.replace('300x300', '1280x800'));
               }
               if (!$scope.$$phase) {
                 $scope.$apply();
@@ -108,7 +111,7 @@ class ArtistController {
             artist.album.forEach(album => {
 
               if (album.coverArt) {
-                $rootScope.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
+                that.SubsonicService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
                   album.artUrl = result;
                   $scope.albums.push(album);
                   if (!$scope.$$phase) {
@@ -119,7 +122,7 @@ class ArtistController {
               }
 
 
-              $rootScope.subsonic.getAlbum(album.id).then(function (result) {
+              SubsonicService.subsonic.getAlbum(album.id).then(function (result) {
                 if (result) {
                   result.song.forEach(function (song) {
                     $scope.tracks.push(song);
@@ -137,7 +140,7 @@ class ArtistController {
                     $scope.$apply();
                   }
                   $("#coverflow").flipster();
-                  $rootScope.hideLoader();
+                  AppUtilities.hideLoader();
                 }
               });
             });
@@ -150,34 +153,32 @@ class ArtistController {
           if (!$scope.$$phase) {
             $scope.$apply();
           }
-          $rootScope.hideLoader();
+          AppUtilities.hideLoader();
         });
       } else {
         if ($scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();
-        $rootScope.hideLoader();
+        AppUtilities.hideLoader();
       }
     };
 
     $scope.refresh = function () {
-      console.log('refresh artist');
+      that.Backend.debug('refresh artist');
       $scope.getArtist();
     };
 
     $scope.startRadio = function () {
-      $rootScope.subsonic.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
-        console.log('starting radio');
-        $rootScope.tracks = similarSongs.song;
-        $rootScope.loadTrack(0);
-        $rootScope.$digest();
+      SubsonicService.subsonic.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
+        that.Backend.debug('starting radio');
+        MediaPlayer.tracks = similarSongs.song;
+        MediaPlayer.loadTrack(0);
       });
     };
 
     $scope.shuffle = function () {
-      console.log('shuffle play');
-      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
-      $rootScope.loadTrack(0);
-      $rootScope.$digest();
+      that.Backend.debug('shuffle play');
+      that.MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      that.MediaPlayer.loadTrack(0);
     };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
@@ -192,7 +193,7 @@ class ArtistController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('artist reloading on subsonic ready');
+      that.Backend.debug('artist reloading on subsonic ready');
       $scope.getArtist();
     });
 

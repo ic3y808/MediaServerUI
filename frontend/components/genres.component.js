@@ -1,12 +1,17 @@
 class GenresController {
-  constructor($scope, $rootScope, $location) {
+  constructor($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('genres-controller')
-
+    this.$location = $location;
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('genres-controller');
     $scope.genres = [];
-
+    var that = this;
     var columnDefs = [{
         headerName: "Genre",
         field: "value"
@@ -41,7 +46,6 @@ class GenresController {
         }
       },
       onGridReady: function () {
-        console.log("onGridReady");
         $scope.gridOptions.api.sizeColumnsToFit();
         $scope.gridOptions.api.addGlobalListener(
           function (foo) {
@@ -53,14 +57,14 @@ class GenresController {
         );
       },
       onSelectionChanged: function (data) {
-        console.log('selection changed')
+        that.Backend.debug('selection changed');
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
-        $location.path("/genre/" + selectedRow.value.toString());
+        that.$location.path("/genre/" + selectedRow.value.toString());
         if (!$scope.$$phase) {
           $scope.$apply();
         }
-        console.log("/genre/" + selectedRow.value.toString());
+        that.Backend.debug("/genre/" + selectedRow.value.toString());
       }
     };
 
@@ -75,12 +79,12 @@ class GenresController {
       Promise.all(genres).then(function (genreResult) {
         callback(genreResult);
       });
-    }
+    };
 
     $scope.reloadGenres = function () {
-      if ($rootScope.isLoggedIn) {
+      if (SubsonicService.isLoggedIn) {
         $scope.genres = [];
-        $rootScope.subsonic.getGenres().then(function (result) {
+        SubsonicService.subsonic.getGenres().then(function (result) {
 
           $scope.genres = result;
           $scope.gridOptions.api.setRowData($scope.genres);
@@ -88,19 +92,19 @@ class GenresController {
           if (!$scope.$$phase) {
             $scope.$apply();
           }
-          $rootScope.hideLoader();
+          AppUtilities.hideLoader();
         });
 
 
       } else {
         if ($scope.gridOptions.api)
-        $scope.gridOptions.api.showNoRowsOverlay();
-        $rootScope.hideLoader();
+          $scope.gridOptions.api.showNoRowsOverlay();
+        AppUtilities.hideLoader();
       }
-    }
+    };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('genres reloading on subsonic ready')
+      that.Backend.debug('genres reloading on subsonic ready');
       $scope.reloadGenres();
     });
 

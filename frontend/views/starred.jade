@@ -2,6 +2,11 @@
   .pageToolbar-toolbar.bg-secondary.card-5
     .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
       .PageToolbarSection-section.PageToolbarSection-left
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='$root.goBack()')
+          i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Back
+        .PageToolbarSeparator-separator
         button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
           i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
@@ -9,15 +14,13 @@
         button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
           i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
-            .PageToolbarButton-label.text-white Shuffle
+            .PageToolbarButton-label.text-white Shuffle Starred
+
   .starredBodyWrapper.d-flex.flex-column
-    #starredAlbums 
+    #starredAlbums(style='display:none;') 
       #coverflow
         ul.flip-items
-          li(data-flip-title='Red', ng-repeat='album in albums')
-            img(ng-src='{{album.artUrl}}')
+          li(data-flip-title='{{album.id}}', ng-repeat='album in albums')
+            img.coverflowImage(ng-src='{{album.artUrl}}')
 
     #starredTracksGrid.ag-theme-dark(ag-grid='gridOptions')
-   
-
-

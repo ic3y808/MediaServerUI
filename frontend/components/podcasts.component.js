@@ -1,11 +1,15 @@
 class PodcastsController {
-  constructor($scope, $rootScope) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
-    console.log('podcasts-controller')
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-
-    $rootScope.hideLoader();
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('podcasts-controller');
+    AppUtilities.hideLoader();
   }
 }
 

@@ -1,41 +1,47 @@
 class FreshController {
-  constructor($scope, $rootScope) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('fresh-controller');
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('fresh-controller');
     $scope.albums = [];
     $scope.tracks = [];
     $scope.continousPlay = true;
-
+    $('#freshAlbums').hide();
+    var that = this;
     var columnDefs = [{
-      headerName: "#",
-      field: "track",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Artist",
-      field: "artist"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "playCount",
-      width: 75,
-      suppressSizeToFit: true
-    },
+        headerName: "#",
+        field: "track",
+        width: 75,
+        suppressSizeToFit: true
+      },
+      {
+        headerName: "Title",
+        field: "title"
+      },
+      {
+        headerName: "Artist",
+        field: "artist"
+      },
+      {
+        headerName: "Album",
+        field: "album"
+      },
+      {
+        headerName: "Genre",
+        field: "genre"
+      },
+      {
+        headerName: "Plays",
+        field: "playCount",
+        width: 75,
+        suppressSizeToFit: true
+      },
     ];
 
     $scope.gridOptions = {
@@ -49,8 +55,8 @@ class FreshController {
       animateRows: true,
       rowClassRules: {
         'current-track': function (params) {
-          if ($scope.api) $scope.api.deselectAll();
-          return $rootScope.checkIfNowPlaying(params.data);
+          if ($scope.gridOptions.api) $scope.gridOptions.api.deselectAll();
+          return MediaPlayer.checkIfNowPlaying(params.data);
         }
       },
       getRowNodeId: function (data) {
@@ -63,7 +69,6 @@ class FreshController {
         }
       },
       onGridReady: function () {
-        console.log("onGridReady");
         setTimeout(function () {
           $scope.reloadAll();
           $scope.gridOptions.api.sizeColumnsToFit();
@@ -79,32 +84,29 @@ class FreshController {
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
         if (selectedRow) {
-          $rootScope.tracks = $scope.tracks;
-          var index = _.findIndex($rootScope.tracks, function (track) {
+          MediaPlayer.tracks = $scope.tracks;
+          var index = _.findIndex(MediaPlayer.tracks, function (track) {
             return track.id === selectedRow.id;
           });
-          $rootScope.loadTrack(index);
-          $rootScope.$digest();
+          MediaPlayer.loadTrack(index);
         }
       },
     };
 
     $scope.toggleContinousPlay = function () {
       $scope.continousPlay = !$scope.continousPlay;
-    }
+    };
 
     $scope.reloadAll = function () {
-      if ($rootScope.isLoggedIn) {
+      if (that.SubsonicService.isLoggedIn) {
         $scope.albums = [];
-        $rootScope.subsonic.getAlbumList2("newest").then(function (newestCollection) {
+        that.SubsonicService.subsonic.getAlbumList2("newest").then(function (newestCollection) {
           $scope.albums = newestCollection;
           $scope.albums.forEach(album => {
             if (album.coverArt) {
-              $rootScope.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
+              that.SubsonicService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
                 album.artUrl = result;
-                if (!$scope.$$phase) {
-                  $scope.$apply();
-                }
+                that.AppUtilities.apply();
               });
             } else {
               album.artUrl = '/content/no-art.png';
@@ -120,7 +122,7 @@ class FreshController {
               spacing: -0.6,
               onItemSwitch: function (currentItem, previousItem) {
                 var id = currentItem.dataset.flipTitle;
-                $rootScope.subsonic.getAlbum(id).then(function (result) {
+                SubsonicService.subsonic.getAlbum(id).then(function (result) {
                   if (result) {
                     $scope.tracks = [];
                     result.song.forEach(function (song) {
@@ -131,59 +133,55 @@ class FreshController {
                       $scope.gridOptions.api.doLayout();
                       $scope.gridOptions.api.sizeColumnsToFit();
                     }
-                    if (!$scope.$$phase) {
-                      $scope.$apply();
-                    }
+                    that.AppUtilities.apply();
                   }
                 });
               }
             });
-            if (!$scope.$$phase) {
-              $scope.$apply();
-            }
+            that.AppUtilities.apply();
+            $('#freshAlbums').show();
             $scope.flip.flipster('index');
             $scope.flip.flipster('next');
-            $rootScope.hideLoader();
+            AppUtilities.hideLoader();
           }, 750);
         });
       } else {
         if ($scope.gridOptions.api) {
           $scope.gridOptions.api.showNoRowsOverlay();
         }
-        $rootScope.hideLoader();
+        AppUtilities.hideLoader();
       }
     };
 
     $scope.startRadio = function () {
-      var track = $rootScope.selectedTrack();
+      var track = that.MediaPlayer.selectedTrack();
       if (!track || !track.artistId) {
         track = $scope.tracks[0];
       }
 
-      $rootScope.subsonic.getSimilarSongs2(track.artistId).then(function (similarSongs) {
-        console.log('starting radio');
+      SubsonicService.subsonic.getSimilarSongs2(track.artistId).then(function (similarSongs) {
+        that.Backend.debug('starting radio');
         if (similarSongs && similarSongs.song) {
-          $rootScope.tracks = similarSongs.song;
-          $rootScope.loadTrack(0);
-        };
+          MediaPlayer.tracks = similarSongs.song;
+          MediaPlayer.loadTrack(0);
+        }
       });
     };
 
     $scope.shuffle = function () {
-      console.log('shuffle play');
-      $rootScope.tracks = $rootScope.shuffle($scope.tracks);
-      $rootScope.loadTrack(0);
-      $rootScope.$digest();
+      that.Backend.debug('shuffle play');
+      MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      MediaPlayer.loadTrack(0);
     };
 
     $rootScope.$on('playlistEndEvent', function (event, data) {
       if ($scope.continousPlay) {
         $scope.flip.flipster('next');
         setTimeout(function () {
-          $rootScope.tracks = $scope.tracks;
-          $rootScope.loadTrack(0);
+          MediaPlayer.tracks = $scope.tracks;
+          MediaPlayer.loadTrack(0);
         }, 500);
-      };
+      }
     });
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
@@ -197,7 +195,7 @@ class FreshController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('music reloading on subsonic ready');
+      that.Backend.debug('music reloading on subsonic ready');
       $scope.reloadAll();
     });
 

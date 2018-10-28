@@ -13,6 +13,12 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 process.env.DATA_DIR = path.join(__dirname, '..', "data");
 if (!fs.existsSync(process.env.DATA_DIR)) fs.mkdirSync(process.env.DATA_DIR);
 
+
+var db = require('./core/database');
+var log = require('./core/logger');
+
+log.info('Starting up server');
+
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
@@ -40,11 +46,11 @@ function onError(error) {
 
   switch (error.code) {
     case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
+      log.error(bind + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
+      log.error(bind + ' is already in use');
       process.exit(1);
       break;
     default:
@@ -55,7 +61,7 @@ function onError(error) {
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  console.log('Listening on ' + bind);
+  log.info('Listening on ' + bind);
 }
 
 
@@ -73,7 +79,6 @@ if (process.env.DEV === 'true') {
 
 app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
 
-var db = require('./core/database');
 var index = require('./routes/index');
 
 // view engine setup
@@ -134,16 +139,20 @@ if (process.env.DEV === 'true') {
 }
 
 io.on('connection', function (socket) {
-  console.log('connected');
+  log.debug('Client connected');
+  socket.on('log', function (data) {
+    log.log(data.method, data.message);
+  });
   socket.on('save_settings', function (settings) {
-    console.log('save_settings');
+    log.debug('Settings save requested');
     db.saveSettings(settings, function (result) {
-      console.log('settings saved');
+      log.debug('Settings saved');
     });
   });
   socket.on('load_settings', function () {
-    console.log('load_settings');
+    log.debug('settings loading');
     db.loadSettings(function (result) {
+      log.debug('Settings loaded');
       socket.emit('settings_event', result);
     });
   });

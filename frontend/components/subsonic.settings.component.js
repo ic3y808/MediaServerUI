@@ -1,28 +1,32 @@
 import CryptoJS from 'crypto-js';
 
 class SubsonicSettingsController {
-  constructor($scope, $rootScope, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
-
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('settings-controller')
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('settings-controller');
+    var that = this;
     $scope.settings = {};
-
     $scope.saveSettings = function () {
-      console.log('save settings');
+      that.Backend.debug('save settings');
       $rootScope.settings.subsonic_address = $scope.settings.subsonic_address;
       $rootScope.settings.subsonic_port = $scope.settings.subsonic_port;
       $rootScope.settings.subsonic_use_ssl = $scope.settings.subsonic_use_ssl;
       $rootScope.settings.subsonic_include_port_in_url = $scope.settings.subsonic_include_port_in_url;
       $rootScope.settings.subsonic_username = $scope.settings.subsonic_username;
       $rootScope.settings.subsonic_password = CryptoJS.AES.encrypt($scope.settings.subsonic_password, "12345").toString();
-      $rootScope.socket.emit('save_settings', $rootScope.settings);
+      Backend.emit('save_settings', $rootScope.settings);
       SubsonicService.login();
-    }
+    };
 
     $rootScope.$on('settingsReloadedEvent', function (event, data) {
-      console.log('settings reloading');
+      that.Backend.debug('settings reloading');
       $scope.settings.subsonic_address = $rootScope.settings.subsonic_address;
       $scope.settings.subsonic_port = $rootScope.settings.subsonic_port;
       $scope.settings.subsonic_use_ssl = !!+$rootScope.settings.subsonic_use_ssl;
@@ -32,7 +36,7 @@ class SubsonicSettingsController {
         $scope.settings.subsonic_password = CryptoJS.AES.decrypt($rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8);
       }
       $scope.previewConnectionString();
-      $rootScope.hideLoader();
+      AppUtilities.hideLoader();
     });
 
     $scope.generateConnectionString = function () {
@@ -44,16 +48,13 @@ class SubsonicSettingsController {
         url += ':' + $scope.settings.subsonic_port;
 
       return url;
-    }
+    };
 
     $scope.previewConnectionString = function () {
       $scope.connectionStringPreview = $scope.generateConnectionString();
-      if (!$scope.$$phase) {
-        $scope.$apply();
-      }
-    }
+    };
 
-    $rootScope.socket.emit('load_settings');
+    Backend.emit('load_settings');
     
     $rootScope.$on('menuSizeChange', function (event, currentState) {
       

@@ -1,11 +1,15 @@
 class PlaylistsController {
-  constructor($scope, $rootScope) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('playlists-controller')
-
-    $rootScope.hideLoader();
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('playlists-controller');
+    AppUtilities.hideLoader();
   }
 }
 

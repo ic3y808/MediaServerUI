@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const kebabCase = require('lodash.kebabcase');
 const camelCase = require('lodash.camelcase');
@@ -12,7 +10,6 @@ module.exports = function (input) {
 
   return input + `
     if (module.hot) {
-      module.hot.accept(console.log.bind(console));
       const newTpl = module.exports;
       const doc = angular.element(document);
       const injector = doc.injector();

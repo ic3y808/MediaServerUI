@@ -1,9 +1,14 @@
 class ArtistsController {
-  constructor($scope, $rootScope, $location) {
+  constructor($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
-    console.log('artists-controller')
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.MediaPlayer = MediaPlayer;
+    this.SubsonicService = SubsonicService;
+    this.Backend.debug('artists-controller');
+    var that = this;
 
     var columnDefs = [{
       headerName: "Name",
@@ -37,7 +42,6 @@ class ArtistsController {
         }
       },
       onGridReady: function () {
-        console.log("onGridReady");
         $scope.reloadArtists();
         $scope.gridOptions.api.sizeColumnsToFit();
         $scope.gridOptions.api.addGlobalListener(
@@ -50,14 +54,14 @@ class ArtistsController {
         );
       },
       onSelectionChanged: function (data) {
-        console.log('onSelectionChanged')
+        that.Backend.debug('onSelectionChanged');
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
         $location.path("/artist/" + selectedRow.id.toString());
         if (!$scope.$$phase) {
           $scope.$apply();
         }
-        console.log("/artist/" + selectedRow.id.toString());
+        that.Backend.debug("/artist/" + selectedRow.id.toString());
       }
     };
 
@@ -72,12 +76,12 @@ class ArtistsController {
       Promise.all(artists).then(function (artistsResult) {
         callback(artistsResult);
       });
-    }
+    };
 
     $scope.reloadArtists = function () {
-      if ($rootScope.isLoggedIn) {
+      if (SubsonicService.isLoggedIn) {
         $scope.artists = [];
-        $rootScope.subsonic.getArtists().then(function (artistsCollection) {
+        SubsonicService.subsonic.getArtists().then(function (artistsCollection) {
           $scope.getArtists(artistsCollection, function (result) {
             $scope.artists = result;
             if ($scope.gridOptions.api) {
@@ -86,19 +90,19 @@ class ArtistsController {
               if (!$scope.$$phase) {
                 $scope.$apply();
               }
-              $rootScope.hideLoader();
+              AppUtilities.hideLoader();
             }
           });
         });
       } else {
         if ($scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();
-        $rootScope.hideLoader();
+        AppUtilities.hideLoader();
       }
-    }
+    };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      console.log('music reloading on subsonic ready')
+      that.Backend.debug('music reloading on subsonic ready');
       $scope.reloadArtists();
     });
 

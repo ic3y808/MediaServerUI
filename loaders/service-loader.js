@@ -1,5 +1,3 @@
-'use strict';
-
 const path = require('path');
 const camelCase = require('lodash.camelcase');
 const capitalize = require('./capitalize');
@@ -13,7 +11,6 @@ module.exports = function (input) {
 
     return input + `
     if (module.hot) {
-      module.hot.accept(console.log.bind(console));
       // get service instance
       const name = ${classToInject}.name;
       const doc = angular.element(document);
