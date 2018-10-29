@@ -9,12 +9,14 @@ class HomeController {
     this.Backend = Backend;
     this.SubsonicService = SubsonicService;
     this.Backend.debug('home-controller');
+    var that = this;
+
     $scope.processTracks = function (songCollection, callback) {
       var songs = [];
       songCollection.forEach(song => {
 
         if (song.coverArt) {
-          SubsonicService.subsonic.getCoverArt(song.coverArt, 200).then(function (art) {
+          that.SubsonicService.subsonic.getCoverArt(song.coverArt, 200).then(function (art) {
             // song.artworkUrl = art;
             // $scope.random.push(song);
           });
@@ -27,9 +29,9 @@ class HomeController {
     };
 
     $scope.reloadRandomTracks = function () {
-      if (SubsonicService.isLoggedIn) {
+      if (that.SubsonicService.isLoggedIn) {
         $scope.random = [];
-        SubsonicService.subsonic.getRandomSongs().then(function (result) {
+        that.SubsonicService.subsonic.getRandomSongs().then(function (result) {
           $scope.processTracks(result.song, function (results) {
             if (!$scope.$$phase) {
               $scope.$apply();
@@ -46,7 +48,7 @@ class HomeController {
 
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      this.Backend.debug('home reloading on subsonic ready');
+      that.Backend.debug('home reloading on subsonic ready');
       $scope.reloadRandomTracks();
     });
 
@@ -64,7 +66,8 @@ class HomeController {
     $scope.reloadRandomTracks();
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    AppUtilities.hideLoader();
+    
+    this.AppUtilities.hideLoader();
 
   }
 }

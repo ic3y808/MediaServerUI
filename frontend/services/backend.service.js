@@ -42,7 +42,7 @@ export default class Backend {
       message: data,
       method: type
     };
-
+    console.log(data);
     this.emit('log', message);
   }
   info(data) {
@@ -50,7 +50,6 @@ export default class Backend {
   }
   debug(data) {
     this.formMessage('debug', data);
-    console.log(data);
   }
   error(data) {
     this.formMessage('error', data);
