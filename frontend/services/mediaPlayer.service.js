@@ -20,7 +20,6 @@ export default class MediaPlayer {
     this.selectedIndex = 0;
     this.repeatEnabled = false;
     this.tracks = [];
-    this.lastUpdate = new Date();
     var that = this;
     this.MediaElement.addEventListener('play', function () {
       that.playing = true;
@@ -58,36 +57,26 @@ export default class MediaPlayer {
     });
 
     this.MediaElement.addEventListener('timeupdate', function () {
+      var duration = MediaElement.duration;
+      if (!isFinite(duration))
+        duration = that.selectedTrack().duration;
 
-      var seconds = (new Date().getTime() - that.lastUpdate.getTime()) / 1000;
-
-      if (seconds >= 1) {
-        that.lastUpdate = new Date();
-        var duration = MediaElement.duration;
-        if (!isFinite(duration))
-          duration = that.selectedTrack().duration;
-
-        var playPercent = 100 * (MediaElement.currentTime / duration);
-        if (!isNaN(playPercent)) {
-          var buffered = MediaElement.buffered;
-          var loaded;
+      var playPercent = 100 * (MediaElement.currentTime / duration);
+      if (!isNaN(playPercent)) {
+        var buffered = MediaElement.buffered;
+        var loaded;
 
 
-          if (buffered.length) {
-            loaded = 100 * buffered.end(0) / duration;
-          }
-
-
-          $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
-          $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
-          $('#mainTimeDisplay').html(that.AppUtilities.formatTime(MediaElement.currentTime) + " / " + that.AppUtilities.formatTime(duration));
+        if (buffered.length) {
+          loaded = 100 * buffered.end(0) / duration;
         }
+
+
+        $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
+        $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
+        $('#mainTimeDisplay').html(that.AppUtilities.formatTime(MediaElement.currentTime) + " / " + that.AppUtilities.formatTime(duration));
       }
-
     });
-
-
-
   }
 
   castStatus() {

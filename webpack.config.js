@@ -39,8 +39,7 @@ profile.plugins.push(new webpack.DefinePlugin({
   "DEV_MODE": process.env.DEV,
   "SERVER_HOST": process.env.SERVER_HOST,
   "SERVER_PORT": process.env.PORT,
-  "JADE_PORT": process.env.JADE_PORT,
-  "DEBUG_LEVEL" : process.env.DEBUG_LEVEL
+  "JADE_PORT": process.env.JADE_PORT
 }));
 
 profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({

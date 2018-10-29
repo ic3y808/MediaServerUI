@@ -2,7 +2,29 @@ footer {
   height: 60px;
 }
 
-.track-progress {
+.progress-bar {
+  -webkit-transition: initial !important;
+  -o-transition: initial !important;
+  transition: initial !important;
+}
+
+.progress-bar.active,
+.progress.active .progress-bar {
+  -webkit-animation: initial !important;
+  -o-animation: initial !important;
+  animation: initial !important;
+}
+
+.progress .bar .progress-bar .progress-bar.active,
+.progress.active {
+  -webkit-transition: none;
+  -moz-transition: none;
+  -ms-transition: none;
+  -o-transition: none;
+  transition: none;
+}
+
+​ .track-progress {
   height: 10px;
   width: 100vw;
 }
@@ -21,7 +43,7 @@ footer {
   opacity: 0.33;
 }
 
-#mainTimeDisplay{
+#mainTimeDisplay {
   font-size: 0.9em;
   text-align: center;
 }
@@ -142,7 +164,7 @@ footer {
   padding-bottom: 10px;
 }
 
-.mediaControlButton{
+.mediaControlButton {
   height: 10px;
   margin: 0px;
   padding-top: 0px;
@@ -230,7 +252,6 @@ footer {
 }
 
 @media all and (max-width: 68.75em) {
-
   .nowPlayingBar .muteButton,
   .nowPlayingBar .unmuteButton,
   .nowPlayingBarVolumeSliderContainer {
@@ -242,7 +263,6 @@ footer {
   .nowPlayingBarCenter {
     display: none !important
   }
-
   .toggleRepeatButton {
     display: none
   }
@@ -252,7 +272,6 @@ footer {
   .nowPlayingBarRight .playPauseButton {
     display: none
   }
-
   .nowPlayingBarInfoContainer {
     max-width: 40%
   }

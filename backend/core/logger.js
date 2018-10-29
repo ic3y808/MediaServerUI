@@ -25,8 +25,7 @@ const logger = winston.createLogger({
 // 
 if (process.env.DEV === 'true') {
   logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-    level: 'silly'
+    format: winston.format.simple()
   }));
 } else {
   logger.add(new winston.transports.Console({
