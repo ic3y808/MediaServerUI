@@ -1,6 +1,4 @@
 const path = require('path');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
 const webpack = require('webpack');
 const dist = path.resolve(__dirname, 'dist');
 const nodePath = path.resolve(__dirname, 'node_modules');
@@ -10,6 +8,19 @@ profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
 
+if (process.env.DEV === 'true') {
+  profile.entry = {
+    app: ['./frontend/app.js', 'webpack-hot-middleware/client']
+  };
+  profile.devtool = 'inline-source-map';
+  console.log('packing dev mode source');
+} else {
+  profile.devtool = 'cheap-module-source-map';
+  profile.entry = {
+    app: ['./frontend/app.js']
+  };
+  console.log('packing release mode source');
+}
 
 // Required plugins 
 profile.plugins.push(new webpack.ProvidePlugin({
@@ -42,12 +53,7 @@ profile.plugins.push(new webpack.DefinePlugin({
   "JADE_PORT": process.env.JADE_PORT
 }));
 
-profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-  name: 'vendor',
-  minChunks: ({
-    resource
-  }) => /node_modules/.test(resource),
-}));
+
 
 // Rules and loaders
 
@@ -114,10 +120,7 @@ profile.output = {
 // Dev - Production specific
 
 if (process.env.DEV === 'true') {
-  profile.entry = {
-    app: ['./frontend/app.js', 'webpack-hot-middleware/client'],
-  };
-  profile.devtool = 'eval';
+  const CleanWebpackPlugin = require('clean-webpack-plugin');
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 
   if (process.env.USE_ANALYZER === 'true') {
@@ -146,18 +149,14 @@ if (process.env.DEV === 'true') {
     loader: ServiceHotLoader,
     exclude: [nodePath]
   });
-  profile.plugins.push(new CleanWebpackPlugin([dist]));
-  profile.plugins.push(new webpack.HotModuleReplacementPlugin());
+
+  const LiveReloadPlugin = require('webpack-livereload-plugin');
   profile.plugins.push(new LiveReloadPlugin({
     port: 1908
   }));
-
+  profile.plugins.push(new webpack.HotModuleReplacementPlugin());
+  
 } else {
-  profile.devtool = 'cheap-module-source-map';
-  profile.entry = {
-    app: ['./frontend/app.js']
-  };
-
   profile.module.rules.push({
     test: /\.js$/,
     use: [{
@@ -185,6 +184,13 @@ if (process.env.DEV === 'true') {
     ],
     exclude: /(node_modules|bower_components)/
   });
+
+  profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+    name: 'vendor',
+    minChunks: ({
+      resource
+    }) => /node_modules/.test(resource),
+  }));
 
   profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
     mangle: true,
