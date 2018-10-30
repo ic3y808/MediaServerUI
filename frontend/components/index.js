@@ -2,6 +2,8 @@ import angular from 'angular';
 
 import ArtistComponent from './artist.component';
 import ArtistsComponent from './artists.component';
+import AlbumComponent from './album.component';
+import AlbumsComponent from './albums.component';
 import FreshComponent from './fresh.component';
 import FooterComponent from './footer.component';
 import GenreComponent from './genre.component';
@@ -22,6 +24,8 @@ export default angular
   .module('app.components', [])
   .component('artist', ArtistComponent)
   .component('artists', ArtistsComponent)
+  .component('album', AlbumComponent)
+  .component('albums', AlbumsComponent)
   .component('fresh', FreshComponent)
   .component('footer', FooterComponent)
   .component('genre', GenreComponent)

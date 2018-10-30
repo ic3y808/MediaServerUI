@@ -28,6 +28,10 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<artists></artists>',
   }).when('/artist/:id', {
     template: '<artist></artist>',
+  }).when('/albums', {
+    template: '<albums></albums>',
+  }).when('/album/:id', {
+    template: '<album></album>',
   }).otherwise({
     redirectTo: '/'
   });

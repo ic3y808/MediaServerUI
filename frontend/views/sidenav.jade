@@ -2,35 +2,39 @@
 // d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu'
 // Bootstrap List Group
 #list-tab.list-group.list-group-flush.card-5(role='tablist')
-  a#list-home-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/artists', role='tab', aria-controls='home') 
+  a#list-home-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/artists', role='tab', aria-controls='artists') 
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-music.fa-fw.mr-3
       span.menu-collapsed Artists
-  a#list-profile-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/playlist', role='tab', aria-controls='profile')
+  a#list-home-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/albums', role='tab', aria-controls='albums') 
+    .d-flex.w-100.justify-content-start.align-items-center
+      span.fa.fa-id-card.fa-fw.mr-3
+      span.menu-collapsed Albums
+  a.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/fresh', role='tab', aria-controls='fresh') 
+    .d-flex.w-100.justify-content-start.align-items-center
+      span.fa.fa-cubes.fa-fw.mr-3
+      span.menu-collapsed Fresh
+  a#list-profile-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/playlist', role='tab', aria-controls='playlist')
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-list-ul.fa-fw.mr-3
       span.menu-collapsed
         | Playlist 
         span(ng-show="$root.showTrackCount()").badge.badge-pill.badge-primary.ml-2 {{$root.trackCount()}}
-  a.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/fresh', role='tab', aria-controls='messages') 
-    .d-flex.w-100.justify-content-start.align-items-center
-      span.fa.fa-cubes.fa-fw.mr-3
-      span.menu-collapsed Fresh
   a.list-group-item.list-group-item-action.list-group-item-dark(data-target='#settings-items', data-toggle='collapse')
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-cog.fa-fw.mr-3
       span.menu-collapsed Settings
   #settings-items.list-group.collapse
-    a.list-group-item.list-group-item-action.list-group-item-dark.sub-list-group-item-dark(data-toggle='list', href='/settings/subsonic', role='tab' aria-controls='settings') 
+    a.list-group-item.list-group-item-action.list-group-item-dark.sub-list-group-item-dark(data-toggle='list', href='/settings/subsonic', role='tab' aria-controls='subsonic') 
       .d-flex.w-100.justify-content-start.align-items-center
         span.fa.fa-wrench.fa-fw.mr-3
         span.menu-collapsed Subsonic
 
-  a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/status', role='tab', aria-controls='settings') 
+  a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/status', role='tab', aria-controls='status') 
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-info-circle.fa-fw.mr-3
       span.menu-collapsed Status
-  a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark-no-select(data-toggle='sidebar-colapse', href='#', role='tab', aria-controls='settings') 
+  a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark-no-select(data-toggle='sidebar-colapse', href='#', role='tab', aria-controls='collapse') 
     .d-flex.w-100.justify-content-start.align-items-center
       span#collapse-icon.fa.fa-2x.mr-3
       span#collapse-text.menu-collapsed Collapse

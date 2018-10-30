@@ -1,4 +1,4 @@
-class ArtistController {
+class AlbumController {
   constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
@@ -8,35 +8,38 @@ class ArtistController {
     this.MediaPlayer = MediaPlayer;
     this.SubsonicService = SubsonicService;
     this.Backend.debug('artist-controller');
-    $scope.artist = {};
-    $scope.albums = [];
+    $scope.album = {};
     $scope.tracks = [];
-    $scope.artistName = '';
+    $scope.albumName = '';
     var that = this;
     var columnDefs = [{
-        headerName: "#",
-        field: "track",
-        width: 75,
-        suppressSizeToFit: true
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "#",
+      field: "track",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Artist",
+      field: "artist"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -67,12 +70,12 @@ class ArtistController {
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
         if (selectedRow) {
-          MediaPlayer.tracks = $scope.tracks;
+          that.MediaPlayer.tracks = $scope.tracks;
 
-          var index = _.findIndex(MediaPlayer.tracks, function (track) {
+          var index = _.findIndex(that.MediaPlayer.tracks, function (track) {
             return track.id === selectedRow.id;
           });
-          MediaPlayer.loadTrack(index);
+          that.MediaPlayer.loadTrack(index);
         }
       },
       onGridReady: function (e) {
@@ -82,77 +85,55 @@ class ArtistController {
       }
     };
 
-    $scope.getArtist = function () {
+    $scope.getAlbum = function () {
       if (SubsonicService.isLoggedIn) {
-        SubsonicService.subsonic.getArtist($routeParams.id).then(function (artist) {
-          $scope.artist = artist;
-          $scope.artistName = artist.name;
+        SubsonicService.subsonic.getAlbum($routeParams.id).then(function (album) {
+          $scope.album = album;
+          $scope.albumName = album.name;
+          $scope.tracks = album.song;
 
-          SubsonicService.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
+          SubsonicService.subsonic.getArtistInfo2($scope.album.artistId, 50).then(function (result) {
             if (result) {
-              if (result.biography) {
-                $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-              }
               if (result.similarArtist) {
                 $scope.similarArtists = result.similarArtist.slice(0, 5);
               }
-              if (result.largeImageUrl) {
-                that.AppUtilities.setContentBackground(result.largeImageUrl);
-              }
-              if (!$scope.$$phase) {
-                $scope.$apply();
-              }
+              AppUtilities.apply();
             }
           });
 
-          if (artist.album && artist.album.length > 0) {
-            $scope.albums = [];
-            $scope.tracks = [];
-            artist.album.forEach(album => {
-
-              if (album.coverArt) {
-                that.SubsonicService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
-                  album.artUrl = result;
-                  $scope.albums.push(album);
-                  if (!$scope.$$phase) {
-                    $scope.$apply();
-                  }
-                  $("#coverflow").flipster();
-                });
+          SubsonicService.subsonic.getAlbumInfo2($scope.album.id, 50).then(function (result) {
+            if (result) {
+              if (result.notes) {
+                $scope.albumNotes = result.notes.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
               }
-
-
-              SubsonicService.subsonic.getAlbum(album.id).then(function (result) {
-                if (result) {
-                  result.song.forEach(function (song) {
-                    $scope.tracks.push(song);
-                    if (!$scope.$$phase) {
-                      $scope.$apply();
+              if (result.largeImageUrl) {
+                that.AppUtilities.setContentBackground(result.largeImageUrl);
+              } else {
+                if ($scope.album.coverArt) {
+                  SubsonicService.subsonic.getCoverArt($scope.album.coverArt, 1920).then(function (result) {
+                    $scope.album.artUrl = result;
+                    if($scope.album.artUrl){
+                      AppUtilities.setContentBackground($scope.album.artUrl);
                     }
                   });
-
-                  if ($scope.gridOptions && $scope.gridOptions.api) {
-                    $scope.gridOptions.api.setRowData($scope.tracks);
-                    $scope.gridOptions.api.doLayout();
-                    $scope.gridOptions.api.sizeColumnsToFit();
-                  }
-                  if (!$scope.$$phase) {
-                    $scope.$apply();
-                  }
-                  $("#coverflow").flipster();
-                  AppUtilities.hideLoader();
                 }
-              });
-            });
+              }
+              AppUtilities.apply();
+            }
+          });
+
+          if ($scope.tracks && $scope.tracks.length > 0) {
+            if ($scope.gridOptions && $scope.gridOptions.api) {
+              $scope.gridOptions.api.setRowData($scope.tracks);
+              $scope.gridOptions.api.doLayout();
+              $scope.gridOptions.api.sizeColumnsToFit();
+            }
           } else {
             if ($scope.gridOptions.api)
               $scope.gridOptions.api.showNoRowsOverlay();
           }
 
-          $("#coverflow").flipster();
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+          AppUtilities.apply();
           AppUtilities.hideLoader();
         });
       } else {
@@ -163,8 +144,8 @@ class ArtistController {
     };
 
     $scope.refresh = function () {
-      that.Backend.debug('refresh artist');
-      $scope.getArtist();
+      that.Backend.debug('refresh album');
+      $scope.getAlbum();
     };
 
     $scope.startRadio = function () {
@@ -193,8 +174,8 @@ class ArtistController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('artist reloading on subsonic ready');
-      $scope.getArtist();
+      that.Backend.debug('album reloading on subsonic ready');
+      $scope.getAlbum();
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
@@ -211,12 +192,12 @@ class ArtistController {
       }
     });
 
-    $scope.getArtist();
+    $scope.getAlbum();
   }
 }
 
 export default {
   bindings: {},
-  controller: ArtistController,
-  templateUrl: '/template/artist.jade'
+  controller: AlbumController,
+  templateUrl: '/template/album.jade'
 };

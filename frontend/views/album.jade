@@ -1,0 +1,38 @@
+.albumWrapper
+  .pageToolbar-toolbar.bg-secondary.card-5
+    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+      .PageToolbarSection-section.PageToolbarSection-left
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='$root.goBack()')
+          i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Back
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
+          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Refresh
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='shuffle()')
+          i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Shuffle
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button',ng-click='startRadio()')
+          i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Radio
+  .albumBodyWrapper.d-flex.flex-column
+
+    #albumHeader 
+      .text-center
+        h1.text-white.bg-dark-transparent {{albumName}}
+          p.bio-text.bg-dark-transparent 
+            | {{albumNotes}}
+
+        p
+          small.text-white.bg-dark-transparent Similar Artists  
+          ul.list-inline
+            li.list-inline-item(ng-repeat='artist in similarArtists') 
+              a(href="/artist/{{artist.id}}").text-white.bg-dark-transparent {{artist.name}}
+
+    #albumTracksGrid.ag-theme-dark(ag-grid='gridOptions')
+   
+
+
