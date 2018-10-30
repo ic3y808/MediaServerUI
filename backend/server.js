@@ -108,6 +108,9 @@ app.get('/template/:name', function (req, server) {
 app.get('/artist/template/:name', function (req, server) {
   server.render(req.params.name);
 });
+app.get('/album/template/:name', function (req, server) {
+  server.render(req.params.name);
+});
 app.get('/genre/template/:name', function (req, server) {
   server.render(req.params.name);
 });

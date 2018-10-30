@@ -790,6 +790,65 @@ window.SubsonicAPI = function () {
        */
 
     }, {
+      key: 'getAlbumInfo',
+      value: function getAlbumInfo(id) {
+        var _this14 = this;
+
+        return new Promise(function (resolve, reject) {
+          if (!id) {
+            throw new Error('id required');
+          }
+          var url = _this14._buildUrl('getAlbumInfo', {
+            id: id
+          });
+          _this14._xhr(url).then(function (e) {
+            var res = e.target.response['subsonic-response'].albumInfo;
+            resolve(res);
+          }, reject);
+        });
+      }
+
+      /**
+       * Returns a list of random, newest, highest rated etc. albums.
+       * Similar to the album lists on the home page of the Subsonic web interface.
+       *
+       * @param {String} sort
+       * @param {Number} count
+       * @param {Number} offset
+       * @param {Number} folderId
+       */
+
+    }, {
+      key: 'getAlbumInfo2',
+      value: function getAlbumInfo2(id) {
+        var _this14 = this;
+
+        return new Promise(function (resolve, reject) {
+          if (!id) {
+            throw new Error('id required');
+            return;
+          }
+          var url = _this14._buildUrl('getAlbumInfo2', {
+            id: id
+          });
+          _this14._xhr(url).then(function (e) {
+            var res = e.target.response['subsonic-response'].albumInfo;
+            resolve(res);
+          }, reject);
+        });
+      }
+
+      /**
+       * Returns a list of random, newest, highest rated etc. albums.
+       * Similar to the album lists on the home page of the Subsonic web interface.
+       *
+       * @param {String} sort
+       * @param {Number} count
+       * @param {Number} offset
+       * @param {Number} folderId
+       */
+
+    }, {
       key: 'getAlbumList',
       value: function getAlbumList(sort, count, offset, folderId) {
         var _this15 = this;

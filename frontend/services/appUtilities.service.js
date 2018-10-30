@@ -3,8 +3,6 @@ export default class AppUtilities {
     "ngInject";
     this.$rootScope = $rootScope;
     this.$rootScope.goBack = this.goBack;
-    this.$rootScope.setContentBackground = this.setContentBackground;
-    this.$rootScope.resetContentBackground = this.resetContentBackground;
     this.$rootScope.apply = this.apply;
 
   }
@@ -38,11 +36,15 @@ export default class AppUtilities {
   }
 
   setContentBackground(img) {
-    $('.container').css('background-image', 'url(' + img + ')');
+    if(img){
+      var bgUrl = img.replace('300x300', Math.round($('.main-content').width()) + 'x' + Math.round($('.main-content').height()));
+      $('.main-content').css('background-image', 'url(' + bgUrl + ')');
+      this.apply();
+    }
   }
 
   resetContentBackground() {
-    $('.container').css('background-image', 'url("")');
+    $('.main-content').css('background-image', 'url("")');
   }
 
   fallbackCopyTextToClipboard(text) {

@@ -28,9 +28,7 @@ class PlayingController {
                 if (result.similarArtist && result.similarArtist.length > 0)
                   $scope.similarArtists = result.similarArtist;
                 if (result.largeImageUrl) {
-                  var bgUrl = result.largeImageUrl.replace('300x300', Math.round($('.main-content').width()) + 'x' + Math.round($('.main-content').height()));
-                  that.Backend.debug('getting image ' + bgUrl);
-                  $rootScope.setContentBackground(bgUrl);
+                  that.AppUtilities.setContentBackground(result.largeImageUrl);
                 }
                 that.AppUtilities.apply();
                 that.AppUtilities.hideLoader();
@@ -39,9 +37,10 @@ class PlayingController {
           });
         }
       } else {
-        if ($scope.gridOptions && $scope.gridOptions.api)
+        if ($scope.gridOptions && $scope.gridOptions.api) {
           $scope.gridOptions.api.showNoRowsOverlay();
-        AppUtilities.hideLoader();
+        }
+        that.AppUtilities.hideLoader();
       }
     };
 

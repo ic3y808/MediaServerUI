@@ -11,19 +11,23 @@
         img#nowPlayingImageHolder.nowPlayingImage
         .nowPlayingBarText
           div
-            a#artistInfo.text-white(href='#')
+            a#artistInfo.text-white(href='#') 
+            a#trackTitle.text-white(href='#')
+
           .nowPlayingBarSecondaryText
-            a#trackInfo.text-white(href='#')
+            
+             a#trackAlbum.text-white(href='#')
 
       .nowPlayingBarCenter
         .nowPlayingBarTimeContainer
-          div
-            button#skipBackButton.btn.btn-sm.btn-dark.mediaControlButton
+          .mediaControlButtonGroup.btn-group(role='group')
+            button#skipBackButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
               i.fa.fa-step-backward(aria-hidden='true')
-            button#playPauseButton.btn.btn-sm.btn-dark.mediaControlButton
+            button#playPauseButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
               i#playPauseIcon.fa.fa-play(aria-hidden='true')
-            button#skipNextButton.btn.btn-sm.btn-dark.mediaControlButton
+            button#skipNextButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
               i.fa.fa-step-forward(aria-hidden='true')
+  
           .nowPlayingBarSecondaryText
             #mainTimeDisplay.text-light.bg-dark
         

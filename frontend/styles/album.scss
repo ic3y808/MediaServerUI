@@ -1,0 +1,42 @@
+.albumWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+}
+
+.albumBodyWrapper {
+  position: absolute;
+  padding: 0;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+#albumHeader {
+  flex: 0.5 0;
+}
+
+#albumTracksGrid {
+  flex: 0.5 0;
+}
+
+.bio-text {
+  font-size: 0.7em;
+  float: left;
+  color: white;
+  font-family: Candara, Trebuchet MS, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  border-right: thin dotted #666666;
+  line-height: 18px;
+  max-height: 75px;
+  overflow: auto;
+}
