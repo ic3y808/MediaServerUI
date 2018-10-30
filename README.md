@@ -14,6 +14,7 @@
 * Post am issue
 
 ## To run: 
+* npm install
 * npm run build
 * npm start
 * navigate to http://localhost:3000

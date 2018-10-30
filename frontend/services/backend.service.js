@@ -42,7 +42,7 @@ export default class Backend {
       message: data,
       method: type
     };
-    console.log(data);
+    if (data) console.log(data);
     this.emit('log', message);
   }
   info(data) {

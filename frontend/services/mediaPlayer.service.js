@@ -91,9 +91,20 @@ export default class MediaPlayer {
       cast.framework.CastContext.getInstance().setOptions(options);
       this.remotePlayer = new cast.framework.RemotePlayer();
       this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
+      var that = this;
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-        this.switchPlayer
+        function () {
+          that.Backend.debug('switchPlayer');
+          if (cast && cast.framework) {
+            if (that.remotePlayerConnected()) {
+
+              that.setupRemotePlayer();
+              return;
+            }
+          }
+          that.setupLocalPlayer();
+        }
       );
 
       this.castSession = cast.framework.CastContext.getInstance().getCurrentSession();
@@ -137,28 +148,29 @@ export default class MediaPlayer {
       if (!source.artistId) {
         throw new Error('no artist id');
       }
-
-      var mediaInfo = new chrome.cast.media.MediaInfo(source.url, source.transcodedContentType);
-
-      mediaInfo.metadata = new chrome.cast.media.GenericMediaMetadata();
-      //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-      //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
-      //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
-      //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
-      mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-      mediaInfo.metadata.customData = JSON.stringify(source);
-      mediaInfo.metadata.title = source.title;
-
-
       that.SubsonicService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+        var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
+        mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
+        mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+        mediaInfo.metadata.customData = JSON.stringify(source);
+        mediaInfo.metadata.albumArtist = source.albumArtist;
+        mediaInfo.metadata.albumName = source.album;
+        mediaInfo.metadata.artist = source.artist;
+        mediaInfo.metadata.artistName = source.artist;
+        mediaInfo.metadata.composer = source.artist;
+        mediaInfo.metadata.discNumber = source.track;
+        mediaInfo.metadata.songName = source.title;
+        mediaInfo.metadata.title = source.title;
         mediaInfo.metadata.images = [{
           'url': result.largeImageUrl.replace('300x300', '1280x400')
         }];
         resolve(mediaInfo);
       });
     });
-
-
   }
 
   togglePlayPause() {
@@ -188,7 +200,7 @@ export default class MediaPlayer {
     $('#mainTimeDisplay').html("Loading...");
 
     var source = t.selectedTrack();
-    t.Backend.debug(source);
+    t.Backend.debug(source.artist + " - " + source.title);
     source.artistUrl = "/artist/" + source.artistId;
     source.albumUrl = "/album/" + source.albumId;
     if (source && source.id) {
@@ -341,14 +353,14 @@ export default class MediaPlayer {
   setupRemotePlayer() {
 
     if (!this.remoteConfigured) {
+      var that = this;
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
         function () {
-          this.togglePlayPause(this.remotePlayer.isPaused);
+          that.togglePlayPause(that.remotePlayer.isPaused);
         }
       );
 
-      var that = this;
       that.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
         function () {
@@ -378,10 +390,10 @@ export default class MediaPlayer {
           if (that.remotePlayer && that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
             var customData = that.remotePlayer.mediaInfo.metadata.customData;
             if (customData) {
-              if (MediaPlayer.tracks.length > 0) {
+              if (that.tracks.length > 0) {
 
               } else {
-                MediaPlayer.tracks[0] = JSON.parse(customData);
+                that.tracks[0] = JSON.parse(customData);
                 that.selectedIndex = 0;
               }
             }
@@ -488,18 +500,6 @@ export default class MediaPlayer {
     this.remoteConfigured = false;
   }
 
-  switchPlayer() {
-    this.Backend.debug('switchPlayer');
-    if (cast && cast.framework) {
-      if (this.remotePlayerConnected()) {
-
-        this.setupRemotePlayer();
-        return;
-      }
-    }
-    this.setupLocalPlayer();
-  }
-
   checkIfNowPlaying(track) {
     var selected = this.selectedTrack();
     if (selected && track) {
@@ -507,5 +507,4 @@ export default class MediaPlayer {
     }
     return false;
   }
-
 }
