@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  unity:
+    build: ./
+    container_name: docker-unity
+    ports:
+      - "1226:80"
+    networks:
+      - unity-net
+     
+networks:
+ unity-net:
