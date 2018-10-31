@@ -1,4 +1,4 @@
-# MediaServerUI
+# Alloy
 
 ## Major Features Include:
 ###Please use Issues page for any new feature requests

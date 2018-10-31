@@ -35,7 +35,7 @@ export default class SubsonicService {
           port: this.$rootScope.settings.subsonic_port,
           user: this.$rootScope.settings.subsonic_username,
           password: CryptoJS.AES.decrypt(this.$rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8),
-          appName: 'MediaServerUI',
+          appName: 'Alloy',
           md5Auth: true
         });
 
