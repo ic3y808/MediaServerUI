@@ -27,15 +27,13 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
-
   switch (error.code) {
     case 'EACCES':
-      console.log(bind + ' requires elevated privileges');
+      console.log(process.env.PORT + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.log(bind + ' is already in use');
+      console.log(process.env.PORT + ' is already in use');
       process.exit(1);
       break;
     default:

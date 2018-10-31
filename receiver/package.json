@@ -9,9 +9,9 @@
     "url": "https://github.com/ic3y808/MediaServerUI.git"
   },
   "scripts": {
-    "start": "cross-env DEV=production node server.js",
-    "dev": "cross-env DEV=true node server.js",
-    "build": "cross-env NODE_ENV=production webpack"
+    "start": "cross-env DEV=production PORT=1226 node server.js",
+    "dev": "cross-env DEV=true PORT=1226 node server.js",
+    "build": "cross-env NODE_ENV=production PORT=1226 webpack"
   },
   "keywords": [],
   "license": "MIT",
@@ -25,6 +25,7 @@
     "assets-webpack-plugin": "^3.9.7",
     "autoprefixer": "^9.1.5",
     "autoprefixer-core": "^6.0.1",
+    "bootstrap": "^4.1.3",
     "clean-webpack-plugin": "^0.1.17",
     "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
