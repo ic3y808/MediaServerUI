@@ -2,7 +2,7 @@ version: "2"
 services:
   node:
     build: ./
-    container_name: docker-mediacenterui
+    container_name: docker-alloy
     user: "${UID}:${GID}"
     working_dir: /home/node/app
     environment:
