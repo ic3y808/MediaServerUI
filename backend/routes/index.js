@@ -1,10 +1,81 @@
 var express = require('express');
 var router = express.Router();
-router.get('/', function (req, res) {
-  res.render('index', {
-    title: 'Alloy (Preview)',
-    jade_port: process.env.JADE_PORT,
-    dev_mode: process.env.DEV === 'true'
-  });
+var options = {
+  title: 'Alloy (Preview)',
+  jade_port: process.env.JADE_PORT,
+  dev_mode: process.env.DEV === 'true'
+};
+
+//template renderer
+
+router.get('/template/:name', function (req, res) {
+  res.render(req.params.name, options);
 });
+
+//required extra routes to supply variables
+
+router.get('/', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/fresh', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/status', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/index', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/starred', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/playlist', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/playlists', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/genres', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/genre/:name', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/podcasts', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/playing', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/settings/subsonic', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/artists', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/artist/:name', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/albums', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/album/:name', function (req, res) {
+  res.render('index', options);
+});
+
 module.exports = router;
