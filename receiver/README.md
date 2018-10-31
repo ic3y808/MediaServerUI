@@ -1,4 +1,4 @@
-# MediaServerUI - Chromecast Receiver Application
+# Alloy - Chromecast Receiver Application
 * server and webroot for chromecast receiver used in Alloy
 
 

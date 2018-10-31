@@ -6,7 +6,7 @@
   "contributors": [],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ic3y808/MediaServerUI.git"
+    "url": "https://github.com/ic3y808/Alloy.git"
   },
   "scripts": {
     "start": "cross-env DEV=production PORT=1226 node server.js",
