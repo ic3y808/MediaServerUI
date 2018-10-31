@@ -1,5 +1,7 @@
 export default function ApplicationConfig($routeProvider, $locationProvider) {
   "ngInject";
+  // adding a new route requires that route to also be added to backend/routes/index.js
+  // this allows the variables to be passed when navigating directly to that page instead of linking to that page. 
   $routeProvider.when('/', {
     template: '<home></home>',
   }).when('/fresh', {

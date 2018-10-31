@@ -16,7 +16,7 @@ if (!fs.existsSync(process.env.DATA_DIR)) fs.mkdirSync(process.env.DATA_DIR);
 
 var db = require('./core/database');
 var log = require('./core/logger');
-
+var index = require('./routes/index');
 log.info('Starting up server');
 
 const app = express();
@@ -80,8 +80,6 @@ if (process.env.DEV === 'true') {
 
 app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
 
-var index = require('./routes/index');
-
 // view engine setup
 app.set('views', path.join(__dirname, '..', 'frontend', 'views'));
 app.set('view engine', 'jade');
@@ -94,27 +92,13 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+/* Configure Routes. */
+app.use('/', index);
 app.use("/", express.static(path.join(__dirname, '..', 'frontend')));
 app.use("/node_modules/", express.static(path.join(__dirname, '..', 'node_modules')));
 app.use("/bower_components/", express.static(path.join(__dirname, '..', 'bower_components')));
 app.use("/controllers/", express.static(path.join(__dirname, '..', 'frontend', 'controllers')));
 app.use("/factories/", express.static(path.join(__dirname, '..', 'frontend', 'factories')));
-
-/* Configure Routes. */
-app.use('/', index);
-
-app.get('/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
-app.get('/artist/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
-app.get('/album/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
-app.get('/genre/template/:name', function (req, server) {
-  server.render(req.params.name);
-});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
