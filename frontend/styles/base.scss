@@ -3,9 +3,9 @@
 html,
 body {
   height: 100%;
-  background-color: #333333;
-  font-family: 'Roboto', sans-serif;
-  font-size: 1em;
+  background-color: $main-background-color;
+  font-family: $main-font;
+  font-size: $main-font-size;
 }
 
 body {
@@ -24,7 +24,6 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  border: solid blue; 
   margin: 0;
   margin-top: $navbar-height;
   max-width: none;
@@ -78,31 +77,19 @@ main {
 }
 
 .ag-theme-dark .current-track {
-  background-color: rgba(74, 112, 139, 0.50) !important;
+  background-color: $now-playing-track !important;
 }
 
 .buffer-color {
-  background-color: #8CBDC9 !important;
+  background-color: $buffer-color !important;
 }
 
 .progress-color {
-  background-color: #4A708B !important;
+  background-color: $progress-color !important;
 }
 
 .bg-dark-transparent {
-  background-color: rgba(.3, .3, .3, .45) !important;
-}
-
-.ag-theme-dark .current-track {
-  background-color: rgba(74, 112, 139, 0.50) !important;
-}
-
-.OverlayScroller-thumb {
-  min-height: 50px;
-  border: 1px solid transparent;
-  border-radius: 5px;
-  background-color: #9ea4b9;
-  background-clip: padding-box;
+  background-color: $main-background-color-transparent !important;
 }
 
 .Label-label {

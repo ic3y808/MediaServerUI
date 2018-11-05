@@ -120,9 +120,7 @@ profile.output = {
 // Dev - Production specific
 
 if (process.env.DEV === 'true') {
-  const CleanWebpackPlugin = require('clean-webpack-plugin');
-  profile.plugins.push(new CleanWebpackPlugin([dist]));
-
+  
   if (process.env.USE_ANALYZER === 'true') {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
     profile.plugins.push(new BundleAnalyzerPlugin());
@@ -157,6 +155,9 @@ if (process.env.DEV === 'true') {
   profile.plugins.push(new webpack.HotModuleReplacementPlugin());
   
 } else {
+  const CleanWebpackPlugin = require('clean-webpack-plugin');
+  profile.plugins.push(new CleanWebpackPlugin([dist]));
+  
   profile.module.rules.push({
     test: /\.js$/,
     use: [{

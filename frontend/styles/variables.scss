@@ -1,12 +1,17 @@
 
 //colors
-$main-background-color: #333;
+$main-background-color: rgb(33, 33, 33);
+$main-background-color-transparent: rgba($main-background-color, .45);
 $main-text-color: #fff;
-$sub-background-color: #343a40;
+$sub-background-color: #707479;
 $alt-sub-background-color: #1a1b1d;
+$now-playing-track:  rgba(74, 112, 139, 0.50);
+$buffer-color:   #8CBDC9;
+$progress-color:   #4A708B;
 
 //typography
 $main-font: 'Roboto', sans-serif;
+$main-font-size: 1em;
 
 
 //navbar
@@ -21,7 +26,13 @@ $footer-height:60px;
 $sidebar-width: 160px;
 $sidebar-collapsed-width: 50px;
 $sidebar-font-size: .8em;
-$sidebar-font: black 1em 'Roboto', sans-serif;
+$sidebar-font: 'Roboto', sans-serif;
+$sidebar-font-weight: bold;
 
 //toolbar
 $toolbar-height:45px;
+
+//scrollbar
+$scrollbar-track-color: mix($main-background-color, white,  50%);
+$scrollbar-thumb-color: mix($sub-background-color, black,  50%);
+$scrollbar-thickness: 0.5em;

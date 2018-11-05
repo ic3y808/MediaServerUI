@@ -10,24 +10,33 @@
 .list-group-item-dark {
   color: $main-text-color;
   background-color: $sub-background-color;
-  font-family: 'Roboto', sans-serif;
-  font-weight: bold;
-  font-size: .9em;
+  font-family: $sidebar-font;
+  font-weight: $sidebar-font-weight;
+  font-size: $sidebar-font-size;
 }
 
 .list-group-item-dark .active {
   color: $main-text-color;
   background-color: $sub-background-color;
+  font-family: $sidebar-font;
+  font-weight: $sidebar-font-weight;
+  font-size: $sidebar-font-size;
 }
 
 .list-group-item-dark-no-select {
   color: $main-text-color !important;
   background-color: $sub-background-color !important;
+  font-family: $sidebar-font;
+  font-weight: $sidebar-font-weight;
+  font-size: $sidebar-font-size;
 }
 
 .sub-list-group-item-dark {
   color: $main-text-color !important;
   background-color: $alt-sub-background-color !important;
+  font-family: $sidebar-font;
+  font-weight: $sidebar-font-weight;
+  font-size: $sidebar-font-size;
 }
 
 .sidebar-expanded {
