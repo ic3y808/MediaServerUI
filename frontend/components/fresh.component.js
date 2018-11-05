@@ -218,5 +218,5 @@ class FreshController {
 export default {
   bindings: {},
   controller: FreshController,
-  templateUrl: '/template/fresh.jade'
+  templateUrl: '/template/fresh.pug'
 };

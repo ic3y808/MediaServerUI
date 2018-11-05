@@ -11,7 +11,7 @@ html(ng-app='subsonic', style='background-color:#333333;')
           ng-view.main-content.col
         video#media-player(preload='true', controls='hidden', style="display:none;")
       footer
-      - if(!dev_mode)
-        script(src='/vendor.js', type='text/javascript')
+      //- if(!dev_mode)
+        //script(src='/vendor.js', type='text/javascript')
       script(src='/app.js', type='text/javascript')
       include jsinclude

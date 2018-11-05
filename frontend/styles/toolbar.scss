@@ -1,4 +1,7 @@
-.pageToolbar-toolbar{
+@import "./variables";
+@import "./variables";
+
+.pageToolbar-toolbar {
   position: absolute;
   padding: 0;
   left: 0;
@@ -15,9 +18,9 @@
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
-  
-  height: 60px;
-  line-height: 60px;
+
+  height: $toolbar-height;
+  line-height: $toolbar-height;
 }
 
 .PageToolbarSection-sectionContainer {
@@ -45,12 +48,13 @@
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
+  padding-left: 10px;
 }
 
 .PageToolbarButton-toolbarButton {
   width: 60px;
   text-align: center;
-  line-height: 1.528571429;
+  line-height: 0.25em;
 }
 
 .PageToolbarButton-labelContainer {

@@ -58,7 +58,11 @@ router.get('/playing', function (req, res) {
   res.render('index', options);
 });
 
-router.get('/settings/subsonic', function (req, res) {
+router.get('/config/', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/config/:name', function (req, res) {
   res.render('index', options);
 });
 

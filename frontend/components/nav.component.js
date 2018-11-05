@@ -18,5 +18,5 @@ class NavController {
 export default {
   bindings: {},
   controller: NavController,
-  templateUrl: '/template/nav.jade'
+  templateUrl: '/template/nav.pug'
 };

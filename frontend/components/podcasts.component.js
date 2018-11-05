@@ -16,5 +16,5 @@ class PodcastsController {
 export default {
   bindings: {},
   controller: PodcastsController,
-  templateUrl: '/template/podcasts.jade'
+  templateUrl: '/template/podcasts.pug'
 };

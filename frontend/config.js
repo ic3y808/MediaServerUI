@@ -24,8 +24,10 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<podcasts></podcasts>',
   }).when('/playing', {
     template: '<playing></playing>',
-  }).when('/settings/subsonic', {
-    template: '<subsonicSettings></subsonicSettings>',
+  }).when('/config', {
+    template: '<config></config>',
+  }).when('/config/:id', {
+    template: '<config/>'
   }).when('/artists', {
     template: '<artists></artists>',
   }).when('/artist/:id', {

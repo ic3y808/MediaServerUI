@@ -1,3 +1,5 @@
+@import "./variables";
+
 .artistWrapper {
   display: flex;
   flex-direction: column;
@@ -13,7 +15,7 @@
 .artistBodyWrapper {
   position: absolute;
   padding: 0;
-  top: 60px;
+  top: $toolbar-height;
   left: 0;
   right: 0;
   bottom: 0;

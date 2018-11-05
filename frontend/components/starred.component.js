@@ -193,5 +193,5 @@ class StarredController {
 export default {
   bindings: {},
   controller: StarredController,
-  templateUrl: '/template/starred.jade'
+  templateUrl: '/template/starred.pug'
 };

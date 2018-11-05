@@ -119,5 +119,5 @@ class PlaylistController {
 export default {
   bindings: {},
   controller: PlaylistController,
-  templateUrl: '/template/playlist.jade'
+  templateUrl: '/template/playlist.pug'
 };

@@ -56,5 +56,5 @@ class IndexController {
 export default {
   bindings: {},
   controller: IndexController,
-  templateUrl: '/template/index-view.jade'
+  templateUrl: '/template/index-view.pug'
 };

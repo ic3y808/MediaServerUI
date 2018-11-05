@@ -104,5 +104,5 @@ class StatusController {
 export default {
   bindings: {},
   controller: StatusController,
-  templateUrl: '/template/status.jade'
+  templateUrl: '/template/status.pug'
 };

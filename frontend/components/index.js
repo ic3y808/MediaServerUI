@@ -16,7 +16,8 @@ import PlaylistComponent from './playlist.component';
 import PlaylistsComponent from './playlists.component';
 import PodcastsComponent from './podcasts.component';
 import SideNavComponent from './sidenav.component';
-import SubsonicSettingsComponent from './subsonic.settings.component';
+import ConfigComponent from './config/config.component'
+import ConfigSubsonicComponent from './config/subsonic/configSubsonic.Component';
 import StarredComponent from './starred.component';
 import StatusComponent from './status.component';
 
@@ -38,7 +39,8 @@ export default angular
   .component('playlists', PlaylistsComponent)
   .component('podcasts', PodcastsComponent)
   .component('sidenav', SideNavComponent)
-  .component('subsonicsettings', SubsonicSettingsComponent)
+  .component('config', ConfigComponent)
+  .component('configsubsonic', ConfigSubsonicComponent)
   .component('starred', StarredComponent)
   .component('status', StatusComponent)
 ;

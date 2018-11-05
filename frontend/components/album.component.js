@@ -199,5 +199,5 @@ class AlbumController {
 export default {
   bindings: {},
   controller: AlbumController,
-  templateUrl: '/template/album.jade'
+  templateUrl: '/template/album.pug'
 };
