@@ -4,7 +4,7 @@ nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top.card-1
   a.navbar-brand(href='#')
     span Alloy
   #navbarNavDropdown.collapse.navbar-collapse
-    ul.navbar-nav
+    ul.navbar-nav.mr-auto
       li.nav-item.active
         a.nav-link(href='/')
           | Home 
@@ -29,3 +29,5 @@ nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top.card-1
           a.dropdown-item(href='#') Profile
           a.dropdown-item(href='#') Tasks
           a.dropdown-item(href='#') Etc ...
+    form.form-inline
+      input.form-control.form-control-sm.mr-sm-2(type='text', placeholder='Search')

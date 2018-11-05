@@ -131,5 +131,5 @@ class GenresController {
 export default {
   bindings: {},
   controller: GenresController,
-  templateUrl: '/template/genres.jade'
+  templateUrl: '/template/genres.pug'
 };

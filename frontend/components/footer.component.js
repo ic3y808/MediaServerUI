@@ -158,6 +158,6 @@ class FooterController {
 export default {
   bindings: {},
   controller: FooterController,
-  templateUrl: '/template/footer.jade',
+  templateUrl: '/template/footer.pug',
   selector: 'footer-mediaplayer'
 };

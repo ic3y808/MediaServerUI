@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-class SubsonicSettingsController {
+class ConfigSubsonicComponent {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
@@ -68,7 +68,7 @@ class SubsonicSettingsController {
 
 export default {
   bindings: {},
-  controller: SubsonicSettingsController,
-  templateUrl: '/template/subsonicSettings.jade',
+  controller: ConfigSubsonicComponent,
+  templateUrl: '/template/configSubsonic.pug',
   
 };

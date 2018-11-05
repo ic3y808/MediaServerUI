@@ -75,5 +75,5 @@ class HomeController {
 export default {
   bindings: {},
   controller: HomeController,
-  templateUrl: '/template/home.jade'
+  templateUrl: '/template/home.pug'
 };

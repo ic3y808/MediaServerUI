@@ -82,7 +82,7 @@ app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')
 
 // view engine setup
 app.set('views', path.join(__dirname, '..', 'frontend', 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 app.use(function (req, res, next) {
   res.io = io;
   next();

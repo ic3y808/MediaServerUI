@@ -1,0 +1,33 @@
+@import "./variables";
+
+.configWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+}
+
+.configBodyWrapper {
+  position: absolute;
+  padding: 0;
+  top: $toolbar-height;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.config-background{
+  font-size: 2em;
+  font-weight: bolder;
+  color: rgba($color: #ffffff, $alpha: 0.15);
+  vertical-align: middle;
+  text-align: center;
+  overflow: hidden;
+}

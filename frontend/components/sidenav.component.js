@@ -70,5 +70,5 @@ class SidenavController {
 export default {
   bindings: {},
   controller: SidenavController,
-  templateUrl: '/template/sidenav.jade'
+  templateUrl: '/template/sidenav.pug'
 };

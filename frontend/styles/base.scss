@@ -1,3 +1,5 @@
+@import "./variables";
+
 html,
 body {
   height: 100%;
@@ -13,7 +15,7 @@ body {
 
 main {
   flex: 1;
-  margin-top: 60px;
+  margin-top: $navbar-height;
   display: flex;
   flex-direction: column;
 }
@@ -24,7 +26,7 @@ main {
   flex-direction: column;
   border: solid blue; 
   margin: 0;
-  margin-top: 60px;
+  margin-top: $navbar-height;
   max-width: none;
   background-attachment: fixed;
   background-position: top;

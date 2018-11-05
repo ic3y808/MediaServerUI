@@ -20,15 +20,11 @@
       span.menu-collapsed
         | Playlist 
         span(ng-show="$root.showTrackCount()").badge.badge-pill.badge-primary.ml-2 {{$root.trackCount()}}
-  a.list-group-item.list-group-item-action.list-group-item-dark(data-target='#settings-items', data-toggle='collapse')
+
+  a.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/config', role='tab', aria-controls='config') 
     .d-flex.w-100.justify-content-start.align-items-center
       span.fa.fa-cog.fa-fw.mr-3
-      span.menu-collapsed Settings
-  #settings-items.list-group.collapse
-    a.list-group-item.list-group-item-action.list-group-item-dark.sub-list-group-item-dark(data-toggle='list', href='/settings/subsonic', role='tab' aria-controls='subsonic') 
-      .d-flex.w-100.justify-content-start.align-items-center
-        span.fa.fa-wrench.fa-fw.mr-3
-        span.menu-collapsed Subsonic
+      span.menu-collapsed Config
 
   a#list-settings-list.list-group-item.list-group-item-action.list-group-item-dark(data-toggle='list', href='/status', role='tab', aria-controls='status') 
     .d-flex.w-100.justify-content-start.align-items-center

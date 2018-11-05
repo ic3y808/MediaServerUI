@@ -4,7 +4,7 @@ const camelCase = require('lodash.camelcase');
 
 module.exports = function (input) {
   this.cacheable();
-  const fileName = path.basename(this.resourcePath,  '.jade');
+  const fileName = path.basename(this.resourcePath,  '.pug');
   const tagName = kebabCase(fileName);
   const directiveName = camelCase(fileName);
 

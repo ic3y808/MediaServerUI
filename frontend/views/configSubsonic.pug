@@ -1,0 +1,37 @@
+.settingsWrapper
+  .pageToolbar-toolbar.bg-secondary.card-5
+    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+      .PageToolbarSection-section.PageToolbarSection-left
+        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='refresh()')
+          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label.text-white Accounts
+
+  .settingsBodyWrapper.d-flex.flex-column
+   
+    form
+      .form-group
+        label.text-white.bg-dark(for='subsonicAddress') Address
+        input#subsonicAddress.form-control.text-white.bg-dark(type='text', placeholder='Subsonic Server Address', ng-model='settings.subsonic_address', ng-change="previewConnectionString()")
+      .form-group
+        label.text-white.bg-dark(for='subsonicEmail') Username
+        input#subsonicEmail.form-control.text-white.bg-dark(type='text', placeholder='Enter username', ng-model='settings.subsonic_username')
+      .form-group
+        label.text-white.bg-dark(for='subsonicPassword') Password
+        input#subsonicPassword.form-control.text-white.bg-dark(type='password', placeholder='Password', ng-model='settings.subsonic_password')
+      .form-group
+        label.text-white.bg-dark(for='subsonicPort') Port
+        input#subsonicPort.form-control.text-white.bg-dark(type='number', placeholder='443', ng-model='settings.subsonic_port', ng-change="previewConnectionString()")
+      .form-check
+        input#useSslCheck.form-check-input.text-white.bg-dark(type='checkbox', ng-model='settings.subsonic_use_ssl', ng-change="previewConnectionString()")
+        label.form-check-label.text-white.bg-dark(for='useSslCheck') Use SSL?
+      .form-check
+        input#includePortInUrl.form-check-input.text-white.bg-dark(type='checkbox', ng-model='settings.subsonic_include_port_in_url', ng-change="previewConnectionString()")
+        label.form-check-label.text-white.bg-dark(for='includePortInUrl') Include port in URL?
+    div
+      p.text-white.bg-dark Preview of Connection string: {{connectionStringPreview}}
+    div
+      button.btn.btn-dark.text-white(type='submit', ng-click='saveSettings()') Save
+
+
+

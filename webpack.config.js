@@ -132,7 +132,7 @@ if (process.env.DEV === 'true') {
   const ServiceHotLoader = require.resolve('./loaders/service-loader');
   const JadeHotLoader = require.resolve('./loaders/jade-loader');
   profile.module.rules.push({
-    test: /\.jade$/,
+    test: /\.pug$/,
     enforce: "post",
     loader: JadeHotLoader,
     exclude: [nodePath]

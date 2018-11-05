@@ -138,5 +138,5 @@ class ArtistsController {
 export default {
   bindings: {},
   controller: ArtistsController,
-  templateUrl: '/template/artists.jade'
+  templateUrl: '/template/artists.pug'
 };

@@ -61,5 +61,5 @@ class PlayingController {
 export default {
   bindings: {},
   controller: PlayingController,
-  templateUrl: '/template/playing.jade'
+  templateUrl: '/template/playing.pug'
 };
