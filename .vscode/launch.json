@@ -20,7 +20,7 @@
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "DEV": "false",
-        "PORT": "3000"
+        "PORT": "4000"
       }
     },
     {

@@ -1,6 +1,7 @@
 const _ = require('underscore');
 const fs = require("fs");
 const path = require('path');
+const shell = require('shelljs');
 const moment = require('moment');
 const express = require('express');
 const webpack = require('webpack');
@@ -10,9 +11,13 @@ const webpackconfig = require('../webpack.config');
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-process.env.DATA_DIR = path.join(__dirname, '..', "data");
-if (!fs.existsSync(process.env.DATA_DIR)) fs.mkdirSync(process.env.DATA_DIR);
+if (process.env.DEV === 'true') {
+  process.env.DATA_DIR = path.join(__dirname, '..', "data");
+} else {
+  process.env.DATA_DIR = path.join(__dirname, '..', 'dist', "data");
+}
 
+if (!fs.existsSync(process.env.DATA_DIR)) shell.mkdir('-p', process.env.DATA_DIR);
 
 var db = require('./core/database');
 var log = require('./core/logger');
@@ -43,7 +48,7 @@ function onError(error) {
   }
 
   var addr = server.address();
-  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port; 
+  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
 
   switch (error.code) {
     case 'EACCES':

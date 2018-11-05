@@ -15,33 +15,33 @@ class FreshController {
     $('#freshAlbums').hide();
     var that = this;
     var columnDefs = [{
-        headerName: "#",
-        field: "track",
-        width: 75,
-        suppressSizeToFit: true
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Artist",
-        field: "artist"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "#",
+      field: "track",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Artist",
+      field: "artist"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -97,6 +97,23 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
+    $scope.getAlbum = function (id,) {
+      that.SubsonicService.subsonic.getAlbum(id).then(function (result) {
+        if (result) {
+          that.$scope.tracks = [];
+          result.song.forEach(function (song) {
+            that.$scope.tracks.push(song);
+          });
+          if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
+            that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
+            that.$scope.gridOptions.api.doLayout();
+            that.$scope.gridOptions.api.sizeColumnsToFit();
+          }
+          that.AppUtilities.apply();
+        }
+      });
+    }
+
     $scope.reloadAll = function () {
       if (that.SubsonicService.isLoggedIn) {
         $scope.albums = [];
@@ -104,7 +121,7 @@ class FreshController {
           $scope.albums = newestCollection;
           $scope.albums.forEach(album => {
             if (album.coverArt) {
-              that.SubsonicService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
+              that.SubsonicService.subsonic.getCoverArt(album.coverArt, 300).then(function (result) {
                 album.artUrl = result;
                 that.AppUtilities.apply();
               });
@@ -116,32 +133,24 @@ class FreshController {
           setTimeout(function () {
             $scope.flip = $("#coverflow").flipster({
               start: 0,
-              fadeIn: 500,
+              fadeIn: 100,
               autoplay: false,
-              style: 'coverflow',
-              spacing: -0.6,
+              style: 'carousel',
+              spacing: -.2,
+              buttons: true,
+              nav: false,
               onItemSwitch: function (currentItem, previousItem) {
                 var id = currentItem.dataset.flipTitle;
-                SubsonicService.subsonic.getAlbum(id).then(function (result) {
-                  if (result) {
-                    $scope.tracks = [];
-                    result.song.forEach(function (song) {
-                      $scope.tracks.push(song);
-                    });
-                    if ($scope.gridOptions && $scope.gridOptions.api) {
-                      $scope.gridOptions.api.setRowData($scope.tracks);
-                      $scope.gridOptions.api.doLayout();
-                      $scope.gridOptions.api.sizeColumnsToFit();
-                    }
-                    that.AppUtilities.apply();
-                  }
-                });
+                that.$scope.getAlbum(id);
               }
             });
             that.AppUtilities.apply();
             $('#freshAlbums').show();
             $scope.flip.flipster('index');
-            $scope.flip.flipster('next');
+            if ($scope.albums && $scope.albums.length > 0) {
+              $scope.getAlbum($scope.albums[0].id);
+            }
+
             AppUtilities.hideLoader();
           }, 750);
         });
