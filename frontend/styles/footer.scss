@@ -2,6 +2,7 @@
 
 footer {
   height: $footer-height;
+  background-color: $main-background-color !important;
 }
 
 .progress-bar {
@@ -24,6 +25,19 @@ footer {
   -ms-transition: none;
   -o-transition: none;
   transition: none;
+}
+
+.buffer-color {
+  background-color: $buffer-color !important;
+}
+
+.progress-color {
+  background-color: $progress-color !important;
+}
+
+.progress-background {
+  background-color: $progress-container-color !important;
+  border: 1px solid $general-border-color !important;
 }
 
 ​ .track-progress {
@@ -52,15 +66,24 @@ footer {
 
 #artistInfo {
   margin-right: 7px;
+  color: $main-text-color !important;
+  font-family: $main-font;
+  font-size: $sub-font-size;
 }
 
 #trackTitle {
   margin-left: 7px;
+  color: $main-text-color !important;
+  font-family: $main-font;
+  font-size: $sub-font-size;
 }
 
 #trackAlbum {
   font-size: 1em;
   text-align: center;
+  color: $main-text-color !important;
+  font-family: $main-font;
+  font-size: $sub-font-size;
 }
 
 .nowPlayingBarInfoContainer {
@@ -132,7 +155,9 @@ footer {
   -webkit-transition: -webkit-transform 180ms linear;
   -o-transition: transform 180ms linear;
   transition: transform 180ms linear;
-  contain: layout style
+  contain: layout style;
+  background-color: $main-background-color !important;
+  border: 1px solid $toolbar-border-color;
 }
 
 .appfooter.headroom--unpinned {
@@ -167,6 +192,13 @@ footer {
   margin-bottom: 0.2em;
 }
 
+.nowPlayingBarSecondaryText{
+  background-color: $main-background-color !important;
+  color: $main-text-color !important;
+  font-family: $main-font;
+  font-size: $sub-font-size;
+}
+
 .nowPlayingBarTimeContainer {
   overflow: hidden;
   white-space: nowrap;
@@ -177,11 +209,12 @@ footer {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   flex-grow: 1;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 }
 
 .mediaControlButtonGroup {
   text-align: center;
+  vertical-align: middle;
 }
 
 .mediaControlButtonGroup.btn-group {
@@ -189,6 +222,8 @@ footer {
   text-align: center;
   width: inherit;
   display: inline-block;
+  font-size: 0.5em;
+  vertical-align: middle;
 }
 
 .mediaControlButton {
@@ -205,8 +240,6 @@ footer {
   vertical-align: middle;
   text-align: center;
   z-index: 2;
-  margin-top: 10px;
-
   height: 100%;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
