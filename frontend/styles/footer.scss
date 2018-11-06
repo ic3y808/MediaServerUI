@@ -1,8 +1,11 @@
 @import "./variables";
-
 footer {
   height: $footer-height;
   background-color: $main-background-color !important;
+}
+
+.sliderContainer {
+  padding-left: 15px;
 }
 
 .progress-bar {
@@ -157,7 +160,7 @@ footer {
   transition: transform 180ms linear;
   contain: layout style;
   background-color: $main-background-color !important;
-  border: 1px solid $toolbar-border-color;
+  border: 1px solid $general-border-color;
 }
 
 .appfooter.headroom--unpinned {
@@ -185,14 +188,12 @@ footer {
   text-align: left;
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
-
-
   margin-left: 0.25em;
   padding-top: 0.1em;
   margin-bottom: 0.2em;
 }
 
-.nowPlayingBarSecondaryText{
+.nowPlayingBarSecondaryText {
   background-color: $main-background-color !important;
   color: $main-text-color !important;
   font-family: $main-font;
@@ -316,7 +317,6 @@ footer {
 }
 
 @media all and (max-width: 68.75em) {
-
   .nowPlayingBar .muteButton,
   .nowPlayingBar .unmuteButton,
   .nowPlayingBarVolumeSliderContainer {
@@ -328,7 +328,6 @@ footer {
   .nowPlayingBarCenter {
     display: none !important
   }
-
   .toggleRepeatButton {
     display: none
   }
@@ -338,7 +337,6 @@ footer {
   .nowPlayingBarRight .playPauseButton {
     display: none
   }
-
   .nowPlayingBarInfoContainer {
     max-width: 40%
   }

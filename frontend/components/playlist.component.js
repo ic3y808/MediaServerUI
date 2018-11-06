@@ -82,6 +82,7 @@ class PlaylistController {
           $scope.gridOptions.api.doLayout();
           $scope.gridOptions.api.sizeColumnsToFit();
           AppUtilities.hideLoader();
+          AppUtilities.apply();
         }
       },
     };

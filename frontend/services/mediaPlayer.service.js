@@ -134,9 +134,11 @@ export default class MediaPlayer {
   }
 
   checkNowPlayingImage(source) {
-    this.SubsonicService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
-      $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
-    });
+    if (source.artistId) {
+      this.SubsonicService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+      });
+    }
   }
 
   generateRemoteMetadata(source) {
@@ -208,50 +210,50 @@ export default class MediaPlayer {
 
       t.checkVolume();
 
-      if (source.artistId) {
-        t.checkStarred(source);
-        t.checkArtistInfo(source);
-        t.checkNowPlayingImage(source);
+      //if (source.artistId) {
+      t.checkStarred(source);
+      t.checkArtistInfo(source);
+      t.checkNowPlayingImage(source);
 
-        if (t.remotePlayerConnected()) {
-          t.setupRemotePlayer();
-          t.generateRemoteMetadata(source).then(function (mediaInfo) {
-            var request = new chrome.cast.media.LoadRequest(mediaInfo);
-            cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
-            t.SubsonicService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
-              if (scrobbleResult) t.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
+      if (t.remotePlayerConnected()) {
+        t.setupRemotePlayer();
+        t.generateRemoteMetadata(source).then(function (mediaInfo) {
+          var request = new chrome.cast.media.LoadRequest(mediaInfo);
+          cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
+          t.SubsonicService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+            if (scrobbleResult) t.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
+          });
+          t.togglePlayPause();
+          t.startProgressTimer();
+        });
+      } else {
+
+        t.MediaElement.src = source.url;
+        t.MediaElement.load();
+        if (t.shouldSeek) {
+          t.shouldSeek = false;
+          t.MediaElement.currentTime = t.prePlannedSeek;
+        }
+        var playPromise = t.MediaElement.play();
+        var that2 = t;
+        if (playPromise !== undefined) {
+          playPromise.then(_ => {
+            that2.SubsonicService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+              if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
             });
-            t.togglePlayPause();
-            t.startProgressTimer();
+            that2.togglePlayPause();
+            that2.AppUtilities.broadcast('trackChangedEvent', source);
+          }).catch(error => {
+            that2.Backend.error('playing failed ' + error);
+            that2.next();
           });
         } else {
-
-          t.MediaElement.src = source.url;
-          t.MediaElement.load();
-          if (t.shouldSeek) {
-            t.shouldSeek = false;
-            t.MediaElement.currentTime = t.prePlannedSeek;
-          }
-          var playPromise = t.MediaElement.play();
-          var that2 = t;
-          if (playPromise !== undefined) {
-            playPromise.then(_ => {
-              that2.SubsonicService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
-                if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
-              });
-              that2.togglePlayPause();
-              that2.AppUtilities.broadcast('trackChangedEvent', source);
-            }).catch(error => {
-              that2.Backend.error('playing failed ' + error);
-              that2.next();
-            });
-          } else {
-            t.next();
-          }
+          t.next();
         }
-      } else {
-        t.next();
       }
+      //} else {
+      //  t.next();
+      //}
     } else {
       t.next();
     }

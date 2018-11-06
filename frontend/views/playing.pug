@@ -1,25 +1,24 @@
-.pageToolbar-toolbar.bg-secondary.card-5
+.playingWrapper
+  .pageToolbar-toolbar.bg-secondary.card-5
     .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
       .PageToolbarSection-section.PageToolbarSection-left
-        button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button', ng-click='$root.goBack()')
+        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='$root.goBack()')
           i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
-            .PageToolbarButton-label.text-white Back
+            .PageToolbarButton-label Back
+        .PageToolbarSeparator-separator
         button.PageToolbarButton-toolbarButton.Link-link.text-white(type='button',ng-click='startRadio()')
           i.fa.fa-heart-o.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label.text-white Star
 
-
-.container
-  h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}} - {{trackTitle}}
-  pre.text-white.bg-dark-transparent {{year}} - {{contentType}} - Plays: {{playCount}}
-  p.lead.text-white.bg-dark-transparent
-    | {{artistBio}}
-  p
-    small.text-white.bg-dark-transparent Similar Artists  
-    ul.list-inline
-      li.list-inline-item(ng-repeat='artist in similarArtists') 
-        a(href="/artist/{{artist.id}}").text-white.bg-dark-transparent {{artist.name}}
-
-    
+  .playingBodyWrapper.d-flex.flex-column
+    h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}} - {{trackTitle}}
+    pre.text-white.bg-dark-transparent {{year}} - {{contentType}} - Plays: {{playCount}}
+    p.lead.text-white.bg-dark-transparent
+      | {{artistBio}}
+    p
+      small.similar-artist-link Similar Artists  
+      ul.list-inline
+        li.list-inline-item(ng-repeat='artist in similarArtists') 
+          a(href="/artist/{{artist.id}}").similar-artist-link {{artist.name}}
