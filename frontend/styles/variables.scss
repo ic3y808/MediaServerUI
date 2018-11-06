@@ -15,7 +15,7 @@ $main-font-size: 1em;
 $sub-font-size: 0.85em;
 
 //buttons
-$main-btn-background-color:$main-background-color-transparent;
+$main-btn-background-color:rgba($main-background-color, .45);
 $main-btn-hover-color:$now-playing-track;
 
 //navbar
