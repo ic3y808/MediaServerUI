@@ -2,4 +2,14 @@
 
 .navbar {
   height: $navbar-height;
+  background-color: $main-background-color !important;
+  border: 1px solid $general-border-color;
+}
+
+.navbar-brand{
+  color: $main-text-color !important;
+}
+
+.nav-link{
+  color: $main-text-color !important;
 }

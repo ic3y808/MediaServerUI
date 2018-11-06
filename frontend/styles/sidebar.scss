@@ -3,13 +3,14 @@
 .sidebar {
   background-color: $main-background-color;
   max-width: $sidebar-width;
+  border: 1px solid $toolbar-border-color !important;
   overflow: auto;
   padding: 0;
 }
 
 .list-group-item-dark {
   color: $main-text-color;
-  background-color: $sub-background-color;
+  background-color: $main-background-color;
   font-family: $sidebar-font;
   font-weight: $sidebar-font-weight;
   font-size: $sidebar-font-size;
@@ -17,7 +18,7 @@
 
 .list-group-item-dark .active {
   color: $main-text-color;
-  background-color: $sub-background-color;
+  background-color: $main-background-color;
   font-family: $sidebar-font;
   font-weight: $sidebar-font-weight;
   font-size: $sidebar-font-size;
@@ -25,7 +26,7 @@
 
 .list-group-item-dark-no-select {
   color: $main-text-color !important;
-  background-color: $sub-background-color !important;
+  background-color: $main-background-color !important;
   font-family: $sidebar-font;
   font-weight: $sidebar-font-weight;
   font-size: $sidebar-font-size;

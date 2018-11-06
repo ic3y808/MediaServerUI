@@ -1,7 +1,7 @@
-.appfooter.bg-dark
+.appfooter
   .nowPlayingBar
     .nowPlayingBarTop
-      div.bg-secondary(style='height:10px;position:absolute;top:0;left:0;right:0;')
+      div.progress-background(style='height:10px;position:absolute;top:0;left:0;right:0;')
       .nowPlayingBarPositionContainer.sliderContainer.mdl-slider-container
       #progressContainer
         #subProgress.progress-bar.track-progress.buffer-color(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
@@ -14,12 +14,11 @@
             a#artistInfo.text-white(href='#') 
             a#trackTitle.text-white(href='#')
 
-          .nowPlayingBarSecondaryText
-            
+          div            
              a#trackAlbum.text-white(href='#')
 
       .nowPlayingBarCenter
-        .nowPlayingBarTimeContainer
+        .nowPlayingBarTimeContainer.text-center
           .mediaControlButtonGroup.btn-group(role='group')
             button#skipBackButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
               i.fa.fa-step-backward(aria-hidden='true')
@@ -29,7 +28,7 @@
               i.fa.fa-step-forward(aria-hidden='true')
   
           .nowPlayingBarSecondaryText
-            #mainTimeDisplay.text-light.bg-dark
+            #mainTimeDisplay
         
       .nowPlayingBarRight
         google-cast-launcher.btn.btn-sm.btn-dark(style='max-height:35px;max-width:35px;')

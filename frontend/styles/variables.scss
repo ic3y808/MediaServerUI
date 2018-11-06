@@ -1,38 +1,50 @@
-
 //colors
-$main-background-color: rgb(33, 33, 33);
+$main-background-color: rgb(255, 255, 255);
 $main-background-color-transparent: rgba($main-background-color, .45);
-$main-text-color: #fff;
-$sub-background-color: #707479;
+$main-text-color: rgb(0, 0, 0);
+$sub-background-color: #b2b7bd;
 $alt-sub-background-color: #1a1b1d;
-$now-playing-track:  rgba(74, 112, 139, 0.50);
-$buffer-color:   #8CBDC9;
-$progress-color:   #4A708B;
+$now-playing-track: rgba(131, 191, 233, 0.728);
+$general-border-color:rgba(white, .25);
 
 //typography
 $main-font: 'Roboto', sans-serif;
 $main-font-size: 1em;
+$sub-font-size: 0.75em;
 
+//buttons
+$main-btn-background-color:$main-background-color-transparent;
 
 //navbar
 $navbar-height:30px;
 
+
 //footer
 $footer-height:60px;
+$buffer-color: rgb(190, 207, 211);
+$progress-color: rgb(150, 205, 218);
+$progress-container-color: rgb(160, 164, 165);
 
 
-
-//siebar
+//sidebar
 $sidebar-width: 160px;
 $sidebar-collapsed-width: 50px;
 $sidebar-font-size: .8em;
 $sidebar-font: 'Roboto', sans-serif;
 $sidebar-font-weight: bold;
 
-//toolbar
+//slider
+$slider-track-color:rgb(90, 90, 90);
+$slider-thumb-color:rgb(224, 224, 224);
+$slider-thumb-border-color:rgb(25, 24, 24);
+
+
+//toolbar 
 $toolbar-height:45px;
+$toolbar-color: $sub-background-color;
+$toolbar-border-color: rgb(90, 90, 90);
 
 //scrollbar
-$scrollbar-track-color: mix($main-background-color, white,  50%);
-$scrollbar-thumb-color: mix($sub-background-color, black,  50%);
+$scrollbar-track-color: mix($main-background-color, white, 50%);
+$scrollbar-thumb-color: mix($sub-background-color, black, 50%);
 $scrollbar-thickness: 0.5em;
