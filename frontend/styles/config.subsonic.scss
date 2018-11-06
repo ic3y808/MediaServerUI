@@ -1,8 +1,8 @@
 @import "./variables";
 
-.settingsWrapper {
+.subsonicSettingsWrapper {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   position: absolute;
   padding: 0;
   top: 0;
@@ -10,14 +10,10 @@
   right: 0;
   height: 100%;
   margin: 0;
+  vertical-align: middle;
 }
 
-.settingsBodyWrapper {
-  position: absolute;
-  padding: 0;
-  top: $toolbar-height;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
+.subsonicSettingsBodyWrapper {
+  margin-top: $toolbar-height;
+  overflow: auto;
 }

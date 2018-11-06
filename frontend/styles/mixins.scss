@@ -1,4 +1,6 @@
 @import 'mixins/scrollbars';
+@import 'mixins/range';
+@import 'mixins/inputs';
 @import "./variables";
 
 @include scrollbars($scrollbar-thickness, $scrollbar-thumb-color, $scrollbar-track-color);

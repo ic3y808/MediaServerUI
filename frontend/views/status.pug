@@ -1,10 +1,15 @@
- 
-
 .statusWrapper
-  .containerz
-    .row
-      .col-md-12.column
-        .list-group
+  .pageToolbar-toolbar.bg-secondary
+    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
+      .PageToolbarSection-section.PageToolbarSection-left
+        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='refresh()')
+          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label Accounts
+
+  .statusBodyWrapper.container.h-100
+    .row.h-100.justify-content-center
+      .list-group
           .list-group-item-dark
             h4.list-group-item-heading
               | Backend Status
@@ -79,3 +84,8 @@
                     tr
                       td Can Transcode
                       td {{userInfo.videoConversionRole}}
+      
+
+
+
+

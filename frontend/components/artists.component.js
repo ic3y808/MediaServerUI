@@ -128,10 +128,6 @@ class ArtistsController {
 
 
     });
-
-    if ($rootScope.isMenuCollapsed === true) {
-    }
-
   }
 }
 
