@@ -23,6 +23,11 @@ class ConfigController {
       that.$scope.navigate('subsonic');
     };
 
+    this.$scope.configSabnzbd = function () {
+      that.Backend.debug('configSabnzbd');
+      that.$scope.navigate('sabnzbd');
+    };
+
     AppUtilities.apply();
     AppUtilities.hideLoader();
   }

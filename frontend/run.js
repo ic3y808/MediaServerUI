@@ -24,8 +24,9 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
   }, 25);
 
   $(window).on('resize', windowResized);
-  Backend.debug('load settings');
-  Backend.emit('load_settings');
+  Backend.debug('loading settings');
+  Backend.emit('load_subsonic_settings');
+  Backend.emit('load_sabnzbd_settings');
 
   setTimeout(() => {
     if (MediaPlayer.castStatus()) {

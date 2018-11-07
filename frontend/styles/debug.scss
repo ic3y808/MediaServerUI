@@ -23,7 +23,7 @@ $debug-color: nth( $colors, random( length($colors) ) ) !default;
 .col {
   border: $debug-stack nth( $colors, random( length($colors) ) );
 }
-.container {
+.main-container {
   border: $debug-stack nth( $colors, random( length($colors) ) );
 }
 .sidebar {

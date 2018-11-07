@@ -16,8 +16,9 @@ import PlaylistComponent from './playlist.component';
 import PlaylistsComponent from './playlists.component';
 import PodcastsComponent from './podcasts.component';
 import SideNavComponent from './sidenav.component';
-import ConfigComponent from './config/config.component'
-import ConfigSubsonicComponent from './config/subsonic/configSubsonic.Component';
+import ConfigComponent from './config/config.component';
+import ConfigSubsonicComponent from './config/subsonic/configSubsonic.component';
+import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
 import StarredComponent from './starred.component';
 import StatusComponent from './status.component';
 
@@ -41,6 +42,7 @@ export default angular
   .component('sidenav', SideNavComponent)
   .component('config', ConfigComponent)
   .component('configsubsonic', ConfigSubsonicComponent)
+  .component('configsabnzbd', ConfigSabnzbdComponent)
   .component('starred', StarredComponent)
   .component('status', StatusComponent)
 ;

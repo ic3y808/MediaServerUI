@@ -24,6 +24,9 @@ var log = require('./core/logger');
 var index = require('./routes/index');
 log.info('Starting up server');
 
+log.info('Loading Plugins');
+var SABnzbd = require('./core/plugins/sabnzbd');
+
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
@@ -136,17 +139,30 @@ io.on('connection', function (socket) {
   socket.on('log', function (data) {
     log.log(data.method, data.message);
   });
-  socket.on('save_settings', function (settings) {
-    log.debug('Settings save requested');
-    db.saveSettings(settings, function (result) {
-      log.debug('Settings saved');
+  socket.on('save_subsonic_settings', function (settings) {
+    log.debug('Subsonic Settings save requested');
+    db.saveSubsonicSettings(settings, function (result) {
+      log.debug('Subsonic Settings saved');
     });
   });
-  socket.on('load_settings', function () {
-    log.debug('settings loading');
-    db.loadSettings(function (result) {
-      log.debug('Settings loaded');
-      socket.emit('settings_event', result);
+  socket.on('load_subsonic_settings', function () {
+    log.debug('Subsonic Settings loading');
+    db.loadSubsonicSettings(function (result) {
+      socket.emit('subsonic_settings_event', result);
+      log.debug('Subsonic Settings loaded');
+    });
+  });
+  socket.on('save_sabnzbd_settings', function (settings) {
+    log.debug('Sabnzbd Settings save requested');
+    db.saveSabnzbdSettings(settings, function (result) {
+      log.debug('Sabnzbd Settings saved');
+    });
+  });
+  socket.on('load_sabnzbd_settings', function () {
+    log.debug('Sabnzbd Settings loading');
+    db.loadSabnzbdSettings(function (result) {
+      socket.emit('sabnzbd_settings_event', result);
+      log.debug('Sabnzbd Settings loaded');
     });
   });
 });
@@ -173,3 +189,5 @@ if (process.env.DEV === 'true') {
 
   livereload.watch(path.join(__dirname, '..', 'frontend', 'views'));
 }
+
+const sabnzbd = new SABnzbd('http://localhost:8080/', "API_KEY");

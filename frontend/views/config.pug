@@ -7,15 +7,15 @@
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label Back
         .PageToolbarSeparator-separator
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='refresh()')
+        a.PageToolbarButton-toolbarButton.Link-link(href='/config/general')
           i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label General
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='shuffle()')
+        a.PageToolbarButton-toolbarButton.Link-link(href='/config/sabnzbd')
           i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Media
-        a.PageToolbarButton-toolbarButton.Link-link( href='/config/subsonic')
+            .PageToolbarButton-label SabNZBd
+        a.PageToolbarButton-toolbarButton.Link-link(href='/config/subsonic')
           i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label Subsonic
