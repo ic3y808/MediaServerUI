@@ -17,7 +17,7 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
     AppUtilities.broadcast('menuSizeChange');
   });
 
-  
+
 
   var windowResized = AppUtilities.debounce(function () {
     AppUtilities.broadcast('windowResized');
@@ -34,4 +34,16 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
       MediaPlayer.initializeCast();
     }
   }, 1000);
+
+  $window.onkeyup = function (e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+    if(key === 32){
+      MediaPlayer.togglePlayPause();
+    }
+  }
+  $window.onbeforeunload = function () {
+    return "Are you sure to leave this page?";
+  }
+
 }
+
