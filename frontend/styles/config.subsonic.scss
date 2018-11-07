@@ -1,19 +1,1 @@
 @import "./variables";
-
-.subsonicSettingsWrapper {
-  display: flex;
-  flex-direction: row;
-  position: absolute;
-  padding: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  margin: 0;
-  vertical-align: middle;
-}
-
-.subsonicSettingsBodyWrapper {
-  margin-top: $toolbar-height;
-  overflow: auto;
-}

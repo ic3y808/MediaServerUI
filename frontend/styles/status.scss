@@ -2,7 +2,7 @@
 
 .statusWrapper {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: absolute;
   padding: 0;
   top: 0;
@@ -10,10 +10,8 @@
   right: 0;
   height: 100%;
   margin: 0;
-  vertical-align: middle;
 }
 
 .statusBodyWrapper {
-  margin-top: $toolbar-height;
   overflow: auto;
 }

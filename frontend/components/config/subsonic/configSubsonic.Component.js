@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-class ConfigSubsonicComponent {
+class ConfigSubsonicController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
@@ -21,11 +21,11 @@ class ConfigSubsonicComponent {
       $rootScope.settings.subsonic_include_port_in_url = $scope.settings.subsonic_include_port_in_url;
       $rootScope.settings.subsonic_username = $scope.settings.subsonic_username;
       $rootScope.settings.subsonic_password = CryptoJS.AES.encrypt($scope.settings.subsonic_password, "12345").toString();
-      Backend.emit('save_settings', $rootScope.settings);
+      Backend.emit('save_subsonic_settings', $rootScope.settings);
       SubsonicService.login();
     };
 
-    $rootScope.$on('settingsReloadedEvent', function (event, data) {
+    $rootScope.$on('subsonicSettingsReloadedEvent', function (event, data) {
       that.Backend.debug('settings reloading');
       $scope.settings.subsonic_address = $rootScope.settings.subsonic_address;
       $scope.settings.subsonic_port = $rootScope.settings.subsonic_port;
@@ -54,7 +54,7 @@ class ConfigSubsonicComponent {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
 
-    Backend.emit('load_settings');
+    Backend.emit('load_subsonic_settings');
     
     $rootScope.$on('menuSizeChange', function (event, currentState) {
       
@@ -68,7 +68,7 @@ class ConfigSubsonicComponent {
 
 export default {
   bindings: {},
-  controller: ConfigSubsonicComponent,
+  controller: ConfigSubsonicController,
   templateUrl: '/template/configSubsonic.pug',
   
 };
