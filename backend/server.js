@@ -11,6 +11,8 @@ const webpackconfig = require('../webpack.config');
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
+var sabnzbd = {};
+
 if (process.env.DEV === 'true') {
   process.env.DATA_DIR = path.join(__dirname, '..', "data");
 } else {
@@ -155,7 +157,16 @@ io.on('connection', function (socket) {
   socket.on('save_sabnzbd_settings', function (settings) {
     log.debug('Sabnzbd Settings save requested');
     db.saveSabnzbdSettings(settings, function (result) {
+
+    
+     
       log.debug('Sabnzbd Settings saved');
+
+      log.debug('connecting to sabnzbd');
+     // sabnzbd = new SABnzbd(settings.sabnzbd_host, settings.sabnzbd_api_key);
+     // var version = sabnzbd.version();
+      //log.debug('version version: ' + version);
+
     });
   });
   socket.on('load_sabnzbd_settings', function () {
@@ -190,4 +201,3 @@ if (process.env.DEV === 'true') {
   livereload.watch(path.join(__dirname, '..', 'frontend', 'views'));
 }
 
-const sabnzbd = new SABnzbd('http://localhost:8080/', "API_KEY");

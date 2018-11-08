@@ -14,30 +14,34 @@ class ConfigSabnzbdController {
     $scope.settings = {};
     $scope.saveSettings = function () {
       that.Backend.debug('save sabnzbd settings');
-      $rootScope.settings.sabnzbd_host = $scope.settings.sabnzbd_host;
-      $rootScope.settings.sabnzbd_port = $scope.settings.sabnzbd_port;
-      $rootScope.settings.sabnzbd_use_ssl = $scope.settings.sabnzbd_use_ssl;
-      $rootScope.settings.sabnzbd_url_base = $scope.settings.sabnzbd_url_base;
-      $rootScope.settings.sabnzbd_apikey = $scope.settings.sabnzbd_apikey;
-      $rootScope.settings.sabnzbd_include_port_in_url = $scope.settings.sabnzbd_include_port_in_url;
-      $rootScope.settings.sabnzbd_username = $scope.settings.sabnzbd_username;
-      $rootScope.settings.sabnzbd_password = CryptoJS.AES.encrypt($scope.settings.sabnzbd_password, "12345").toString();
-      Backend.emit('save_sabnzbd_settings', $rootScope.settings);
+      $rootScope.settings.sabnzbd = {};
+      $rootScope.settings.sabnzbd.host = $scope.settings.sabnzbd_host;
+      $rootScope.settings.sabnzbd.port = $scope.settings.sabnzbd_port;
+      $rootScope.settings.sabnzbd.use_ssl = $scope.settings.sabnzbd_use_ssl;
+      $rootScope.settings.sabnzbd.url_base = $scope.settings.sabnzbd_url_base;
+      $rootScope.settings.sabnzbd.apikey = $scope.settings.sabnzbd_apikey;
+      $rootScope.settings.sabnzbd.include_port_in_url = $scope.settings.sabnzbd_include_port_in_url;
+      $rootScope.settings.sabnzbd.username = $scope.settings.sabnzbd_username;
+      $rootScope.settings.sabnzbd.password = CryptoJS.AES.encrypt($scope.settings.sabnzbd_password, "12345").toString();
+      Backend.emit('save_sabnzbd_settings', $rootScope.settings.sabnzbd);
       //sabnzbdService.login();
     };
 
     $rootScope.$on('sabnzbdSettingsReloadedEvent', function (event, data) {
       that.Backend.debug('sabnzbd settings reloading');
-      that.$scope.settings.sabnzbd_host = that.$rootScope.settings.sabnzbd_host;
-      that.$scope.settings.sabnzbd_port = that.$rootScope.settings.sabnzbd_port;
-      that.$scope.settings.sabnzbd_url_base = that.$rootScope.settings.sabnzbd_url_base;
-      that.$scope.settings.sabnzbd_apikey = that.$rootScope.settings.sabnzbd_apikey;
-      that.$scope.settings.sabnzbd_use_ssl = !!+that.$rootScope.settings.sabnzbd_use_ssl;
-      that.$scope.settings.sabnzbd_include_port_in_url = !!+that.$rootScope.settings.sabnzbd_include_port_in_url;
-      that.$scope.settings.sabnzbd_username = that.$rootScope.settings.sabnzbd_username;
-      if (that.$rootScope.settings.sabnzbd_password) {
-        that.$scope.settings.sabnzbd_password = CryptoJS.AES.decrypt(that.$rootScope.settings.sabnzbd_password.toString(), "12345").toString(CryptoJS.enc.Utf8);
+      if(that.$rootScope.settings.sabnzbd){
+        that.$scope.settings.sabnzbd_host = that.$rootScope.settings.sabnzbd.host;
+        that.$scope.settings.sabnzbd_port = that.$rootScope.settings.sabnzbd.port;
+        that.$scope.settings.sabnzbd_url_base = that.$rootScope.settings.sabnzbd.url_base;
+        that.$scope.settings.sabnzbd_apikey = that.$rootScope.settings.sabnzbd.apikey;
+        that.$scope.settings.sabnzbd_use_ssl = !!+that.$rootScope.settings.sabnzbd.use_ssl;
+        that.$scope.settings.sabnzbd_include_port_in_url = !!+that.$rootScope.settings.sabnzbd.include_port_in_url;
+        that.$scope.settings.sabnzbd_username = that.$rootScope.settings.sabnzbd.username;
+        if (that.$rootScope.settings.sabnzbd.password) {
+          that.$scope.settings.sabnzbd_password = CryptoJS.AES.decrypt(that.$rootScope.settings.sabnzbd.password.toString(), "12345").toString(CryptoJS.enc.Utf8);
+        }
       }
+     
       that.$scope.previewConnectionString();
       that.AppUtilities.hideLoader();
     });

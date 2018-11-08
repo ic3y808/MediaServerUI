@@ -9,32 +9,21 @@ export default class SubsonicService {
     this.isLoggedIn = false;
   }
 
-  generateConnectionString() {
-    var url = 'http://';
-    if ($rootScope.settings.subsonic_use_ssl)
-      url = 'https://';
-    url += $rootScope.settings.subsonic_address;
-    if ($rootScope.settings.subsonic_include_port_in_url)
-      url += ':' + $rootScope.settings.subsonic_port;
-
-    return url;
-  }
-
   doLogin() {
 
-    if (this.$rootScope.settings && this.$rootScope.settings.subsonic_username && this.$rootScope.settings.subsonic_password) {
+    if (this.$rootScope.settings && this.$rootScope.settings.subsonic.username && this.$rootScope.settings.subsonic.password) {
       if (!this.isLoggedIn) {
         console.log('logging into subsonic')
 
-        var ip = this.$rootScope.settings.subsonic_address;
-        if (this.$rootScope.settings.subsonic_include_port_in_url === true)
-          ip = ':' + this.$rootScope.settings.subsonic_port;
+        var ip = this.$rootScope.settings.subsonic.host;
+        if (this.$rootScope.settings.subsonic.include_port_in_url === true)
+          ip = ':' + this.$rootScope.settings.subsonic.port;
           this.subsonic = new SubsonicAPI({
-          https: this.$rootScope.settings.subsonic_use_ssl,
+          https: this.$rootScope.settings.subsonic.use_ssl,
           ip: ip,
-          port: this.$rootScope.settings.subsonic_port,
-          user: this.$rootScope.settings.subsonic_username,
-          password: CryptoJS.AES.decrypt(this.$rootScope.settings.subsonic_password.toString(), "12345").toString(CryptoJS.enc.Utf8),
+          port: this.$rootScope.settings.subsonic.port,
+          user: this.$rootScope.settings.subsonic.username,
+          password: CryptoJS.AES.decrypt(this.$rootScope.settings.subsonic.password.toString(), "12345").toString(CryptoJS.enc.Utf8),
           appName: 'Alloy',
           md5Auth: true
         });
