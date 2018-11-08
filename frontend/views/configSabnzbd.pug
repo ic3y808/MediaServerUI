@@ -30,6 +30,8 @@
         .form-group
           p Preview of Connection string: {{connectionStringPreview}}
         .form-group
+          button#test-settings-button.btn.btn-dark(type='submit', ng-click='testSettings()') Test
+        .form-group
           button.btn.btn-dark(type='submit', ng-click='saveSettings()') Save
       
 

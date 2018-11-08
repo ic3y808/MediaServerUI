@@ -135,6 +135,12 @@ main {
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
+.notification{
+  position: fixed;
+  top: 10em;
+  right: 10em;
+}
+
 .ag-theme-dark .current-track {
   background-color: $now-playing-track !important;
 }
