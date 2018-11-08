@@ -38,7 +38,7 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     if(key === 32){
-      MediaPlayer.togglePlayPause();
+      MediaPlayer.togglePlayPause();  
     }
   }
   $window.onbeforeunload = function () {

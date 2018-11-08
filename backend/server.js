@@ -27,7 +27,7 @@ var index = require('./routes/index');
 log.info('Starting up server');
 
 log.info('Loading Plugins');
-var SABnzbd = require('./core/plugins/sabnzbd');
+var sabnzbd = require('./core/plugins/sabnzbd');
 
 const app = express();
 var server = require('http').Server(app);
@@ -137,6 +137,7 @@ if (process.env.DEV === 'true') {
 }
 
 io.on('connection', function (socket) {
+  sabnzbd.socketConnect(socket);
   log.debug('Client connected');
   socket.on('log', function (data) {
     log.log(data.method, data.message);

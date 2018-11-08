@@ -12,6 +12,11 @@ class ConfigSabnzbdController {
     this.Backend.debug('sabnzbd-controller');
     var that = this;
     $scope.settings = {};
+
+    $scope.testSettings = function () {
+      Backend.emit('test_sabnzbd_settings', $scope.settings);
+    };
+
     $scope.saveSettings = function () {
       that.Backend.debug('save sabnzbd settings');
       $rootScope.settings.sabnzbd = {};
@@ -29,7 +34,7 @@ class ConfigSabnzbdController {
 
     $rootScope.$on('sabnzbdSettingsReloadedEvent', function (event, data) {
       that.Backend.debug('sabnzbd settings reloading');
-      if(that.$rootScope.settings.sabnzbd){
+      if (that.$rootScope.settings.sabnzbd) {
         that.$scope.settings.sabnzbd_host = that.$rootScope.settings.sabnzbd.host;
         that.$scope.settings.sabnzbd_port = that.$rootScope.settings.sabnzbd.port;
         that.$scope.settings.sabnzbd_url_base = that.$rootScope.settings.sabnzbd.url_base;
@@ -41,9 +46,33 @@ class ConfigSabnzbdController {
           that.$scope.settings.sabnzbd_password = CryptoJS.AES.decrypt(that.$rootScope.settings.sabnzbd.password.toString(), "12345").toString(CryptoJS.enc.Utf8);
         }
       }
-     
+
       that.$scope.previewConnectionString();
       that.AppUtilities.hideLoader();
+    });
+
+    $rootScope.$on('sabnzbdConnectionTestResult', function (event, data) {
+      that.Backend.debug('sabnzbd connection result');
+      that.Backend.debug(data);
+      if (data) {
+        if(data.result ==='Success!'){
+          $('.generalConfigBodyWrapper').append('<div class="alert alert-primary sabnzbd-alert notification" role="alert">' + data.result + '</div>');
+        } else{
+          $('.generalConfigBodyWrapper').append('<div class="alert alert-danger sabnzbd-alert notification" role="alert">' + data.result + '</div>');
+        }
+       
+
+        setTimeout(() => {
+
+          $('.sabnzbd-alert').hide(500);
+
+
+        }, 3000);
+
+
+      }
+
+
     });
 
     $scope.generateConnectionString = function () {
@@ -62,9 +91,9 @@ class ConfigSabnzbdController {
     };
 
     Backend.emit('load_sabnzbd_settings');
-    
+
     $rootScope.$on('menuSizeChange', function (event, currentState) {
-      
+
     });
 
     $rootScope.$on('windowResized', function (event, data) {
@@ -77,5 +106,5 @@ export default {
   bindings: {},
   controller: ConfigSabnzbdController,
   templateUrl: '/template/configSabnzbd.pug',
-  
+
 };

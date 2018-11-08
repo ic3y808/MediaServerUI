@@ -58,6 +58,12 @@ export default class Backend {
       }
     });
 
+    this.socket.on('test_sabnzbd_connection_result', function(data){
+      if (data) {
+        that.AppUtilities.broadcast('sabnzbdConnectionTestResult', data);
+      }
+    });
+
   }
 
   emit(message, data) {
