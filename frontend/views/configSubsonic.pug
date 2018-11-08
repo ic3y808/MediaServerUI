@@ -11,8 +11,8 @@
     .row.h-100.justify-content-center
       form.col-6
         .form-group
-          label(for='subsonicAddress') Address
-          input#subsonicAddress.form-control(type='text', placeholder='Subsonic Server Address', ng-model='settings.subsonic_address', ng-change="previewConnectionString()")
+          label(for='subsonicHost') Host
+          input#subsonicHost.form-control(type='text', placeholder='Subsonic Server Host', ng-model='settings.subsonic_host', ng-change="previewConnectionString()")
         .form-group
           label(for='subsonicEmail') Username
           input#subsonicEmail.form-control(type='text', placeholder='Enter username', ng-model='settings.subsonic_username')

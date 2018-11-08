@@ -21,31 +21,31 @@ $("#player").css("--slideshow-image-8", "url('" + url + "')");
 $("#player").css("--slideshow-image-9", "url('" + url + "')");
 
 const playerData = {};
-const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
-
-// Update ui according to player state
-playerDataBinder.addEventListener(
-    cast.framework.ui.PlayerDataEventType.STATE_CHANGED,
-    e => {
-      switch (e.value) {
-        case cast.framework.ui.State.LAUNCHING:
-        case cast.framework.ui.State.IDLE:
-          // Write your own event handling code
-          break;
-        case cast.framework.ui.State.LOADING:
-          // Write your own event handling code
-          break;
-        case cast.framework.ui.State.BUFFERING:
-          // Write your own event handling code
-          break;
-        case cast.framework.ui.State.PAUSED:
-          // Write your own event handling code
-          break;
-        case cast.framework.ui.State.PLAYING:
-          // Write your own event handling code
-          break;
-      }
-    });
+//const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
+//
+//// Update ui according to player state
+//playerDataBinder.addEventListener(
+//    cast.framework.ui.PlayerDataEventType.STATE_CHANGED,
+//    e => {
+//      switch (e.value) {
+//        case cast.framework.ui.State.LAUNCHING:
+//        case cast.framework.ui.State.IDLE:
+//          // Write your own event handling code
+//          break;
+//        case cast.framework.ui.State.LOADING:
+//          // Write your own event handling code
+//          break;
+//        case cast.framework.ui.State.BUFFERING:
+//          // Write your own event handling code
+//          break;
+//        case cast.framework.ui.State.PAUSED:
+//          // Write your own event handling code
+//          break;
+//        case cast.framework.ui.State.PLAYING:
+//          // Write your own event handling code
+//          break;
+//      }
+//    });
 
 // listen to all Core Events
 playerManager.addEventListener(cast.framework.events.category.CORE,
