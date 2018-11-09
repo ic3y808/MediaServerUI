@@ -8,32 +8,57 @@ class FooterController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.SubsonicService = SubsonicService;
-    this.Backend.debug('footer-controller');    
+    
+    this.Backend.debug('footer-controller');
   }
 
-  $onInit(){
-    this.Backend.debug('footer-init');
+  updateVolume(val) {
+    this.MediaPlayer.currentVolume = val;
+    if (this.MediaPlayer.remotePlayerConnected()) {
+      this.MediaPlayer.remotePlayer.volumeLevel = val;
+      this.MediaPlayer.remotePlayerController.setVolumeLevel();
+    } else {
+      this.MediaElement.volume = val;
+    }
+  }
+  
+  $onInit() {
     var that = this;
+    that.Backend.debug('footer-init');
+    
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+
+    $('.btn').on('click', function (event) {
+      this.blur();
+    });
+
+    $('#volumeSlider').on('mousewheel', function (event) {
+      event.preventDefault();
+      var value = parseInt($("#volumeSlider").val());
+      if (event.originalEvent.deltaY < 0) {
+        value = value + 5;
+        $("#volumeSlider").val(value);
+      }
+      else if (event.originalEvent.deltaY > 0) {
+        value = value - 5;
+        $("#volumeSlider").val(value);
+      }
+
+      that.updateVolume($('#volumeSlider').val() / 100);
+    });
 
     $("#volumeSlider").on('change', function () {
 
     });
-  
+
     $("#volumeSlider").on('input change', function () {
-      var level = that.MediaPlayer.currentVolume = $('#volumeSlider').val() / 100;
-      if (that.MediaPlayer.remotePlayerConnected()) {
-        that.MediaPlayer.remotePlayer.volumeLevel = level;
-        that.MediaPlayer.remotePlayerController.setVolumeLevel();
-      } else {
-        that.MediaElement.volume = level;
-      }
+      that.updateVolume($('#volumeSlider').val() / 100);
     });
-  
+
     $("#clickProgress").click(function (e) {
       var seekto = NaN;
-  
+
       if (that.MediaPlayer.remotePlayerConnected()) {
         var currentMediaDuration = that.MediaPlayer.remotePlayer.duration;
         seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
@@ -70,7 +95,7 @@ class FooterController {
           $('#shareButton').popover('hide');
         }, 5000);
       });
-  
+
     });
 
     $("#muteButton").click(function () {
@@ -95,40 +120,43 @@ class FooterController {
           $('#volumeSlider').val(that.MediaPlayer.currentVolume * 100);
         }
       }
+      this.blur();
     });
-  
+
     $("#skipBackButton").click(function () {
       that.MediaPlayer.previous();
+      this.blur();
     });
-  
+
     $("#playPauseButton").click(function () {
-  
+
       if (that.MediaPlayer.remotePlayerConnected()) {
         if (!that.MediaPlayer.remotePlayer.isPaused) that.MediaPlayer.pause();
         else that.MediaPlayer.play();
-  
+
       } else {
         if (that.MediaPlayer.playing) that.MediaPlayer.pause();
         else that.MediaPlayer.play();
       }
-  
-  
+      this.blur();
     });
-  
+
     $("#skipNextButton").click(function () {
       that.MediaPlayer.next();
+      this.blur();
     });
-  
+
     $("#repeatButton").click(function () {
       that.MediaPlayer.repeatEnabled = !that.MediaPlayer.repeatEnabled;
       $("#repeatButton").toggleClass('button-selected');
+      this.blur();
     });
-  
+
     $("#downloadButton").click(function () {
       var dlUrl = that.SubsonicService.subsonic.downloadUrl(that.MediaPlayer.selectedTrack().id);
       window.open(dlUrl, '_blank');
     });
-  
+
     $("#likeButton").click(function () {
       var track = that.MediaPlayer.selectedTrack();
       that.Backend.info('liking track: ' + track.artist + " - " + track.title);

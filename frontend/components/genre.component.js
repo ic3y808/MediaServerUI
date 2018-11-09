@@ -61,21 +61,16 @@ class GenreController {
           data.api.sizeColumnsToFit();
         }
       },
-      onSelectionChanged: function (data) {
-        var selectedRow = $scope.api.getSelectedRows()[0];
+      onRowDoubleClicked: function (e) {
+        var selectedRow = e.data;
         if (selectedRow) {
-          if ($scope.tracks) {
-            that.MediaPlayer.tracks = $scope.tracks;
+          MediaPlayer.tracks = $scope.tracks;
 
-            var index = _.findIndex(that.MediaPlayer.tracks, function (track) {
-              if (track && selectedRow) {
-                return track.id === selectedRow.id;
-              } else return false;
-            });
-            that.MediaPlayer.loadTrack(index);
-          }
+          var index = _.findIndex(MediaPlayer.tracks, function (track) {
+            return track.id === selectedRow.id;
+          });
+          MediaPlayer.loadTrack(index);
         }
-
       },
       onGridReady: function (e) {
         $scope.api = e.api;

@@ -192,6 +192,20 @@ export default class MediaPlayer {
     }
   }
 
+  toggleCurrentStatus() {
+    var playing = false;
+    if (this.remotePlayerConnected()) {
+      playing = this.remotePlayer.playerState === 'PLAYING';
+    } else {
+      playing = this.playing;
+    }
+    if (playing) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+
   loadTrack(index, that) {
     var t = this;
     if (that) {
