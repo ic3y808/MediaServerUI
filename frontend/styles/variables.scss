@@ -2,6 +2,7 @@
 $main-background-color: rgb(255, 255, 255);
 $main-background-color-transparent: rgba(black, .35);
 $main-text-color: rgb(0, 0, 0);
+$faded-text-color: mix($main-text-color, white, 50%);
 $alt-text-color: rgb(255, 255, 255);
 $sub-background-color:rgb(255, 255, 255);
 $alt-sub-background-color: #1a1b1d;

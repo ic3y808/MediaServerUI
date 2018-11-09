@@ -18,9 +18,6 @@ class StatusController {
             that.Backend.debug('ping');
             that.Backend.debug(data);
             $scope.server = data;
-            if (!$scope.$$phase) {
-              $scope.$apply();
-            }
           });
         }
       }
@@ -89,9 +86,14 @@ class StatusController {
       $scope.getMediaFolders();
     }, 5000);
 
+    $scope.uiRefreshIntereval = setInterval(function () {
+      AppUtilities.apply();
+    }, 1000);
+
 
     $scope.$on('$destroy', function () {
       clearInterval($scope.refreshIntereval);
+      clearInterval($scope.uiRefreshIntereval);
       clearInterval($scope.rescanInterval);
     });
     $scope.ping();

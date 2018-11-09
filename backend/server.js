@@ -11,8 +11,6 @@ const webpackconfig = require('../webpack.config');
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-var sabnzbd = {};
-
 if (process.env.DEV === 'true') {
   process.env.DATA_DIR = path.join(__dirname, '..', "data");
 } else {
@@ -25,13 +23,15 @@ var db = require('./core/database');
 var log = require('./core/logger');
 var index = require('./routes/index');
 log.info('Starting up server');
-
 log.info('Loading Plugins');
 var sabnzbd = require('./core/plugins/sabnzbd');
+var subsonic = require('./core/plugins/subsonic');
+
 
 const app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+sabnzbd.io = io;
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -72,6 +72,7 @@ function onError(error) {
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  sabnzbd.login();
   log.info('Listening on ' + bind);
 }
 
@@ -138,45 +139,11 @@ if (process.env.DEV === 'true') {
 
 io.on('connection', function (socket) {
   sabnzbd.socketConnect(socket);
+  subsonic.socketConnect(socket);
   log.debug('Client connected');
   socket.on('log', function (data) {
     log.log(data.method, data.message);
-  });
-  socket.on('save_subsonic_settings', function (settings) {
-    log.debug('Subsonic Settings save requested');
-    db.saveSubsonicSettings(settings, function (result) {
-      log.debug('Subsonic Settings saved');
-    });
-  });
-  socket.on('load_subsonic_settings', function () {
-    log.debug('Subsonic Settings loading');
-    db.loadSubsonicSettings(function (result) {
-      socket.emit('subsonic_settings_event', result);
-      log.debug('Subsonic Settings loaded');
-    });
-  });
-  socket.on('save_sabnzbd_settings', function (settings) {
-    log.debug('Sabnzbd Settings save requested');
-    db.saveSabnzbdSettings(settings, function (result) {
-
-    
-     
-      log.debug('Sabnzbd Settings saved');
-
-      log.debug('connecting to sabnzbd');
-     // sabnzbd = new SABnzbd(settings.sabnzbd_host, settings.sabnzbd_api_key);
-     // var version = sabnzbd.version();
-      //log.debug('version version: ' + version);
-
-    });
-  });
-  socket.on('load_sabnzbd_settings', function () {
-    log.debug('Sabnzbd Settings loading');
-    db.loadSabnzbdSettings(function (result) {
-      socket.emit('sabnzbd_settings_event', result);
-      log.debug('Sabnzbd Settings loaded');
-    });
-  });
+  });  
 });
 
 setInterval(function () {
@@ -201,4 +168,3 @@ if (process.env.DEV === 'true') {
 
   livereload.watch(path.join(__dirname, '..', 'frontend', 'views'));
 }
-

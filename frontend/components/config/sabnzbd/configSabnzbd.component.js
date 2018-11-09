@@ -29,6 +29,7 @@ class ConfigSabnzbdController {
       $rootScope.settings.sabnzbd.username = $scope.settings.sabnzbd_username;
       $rootScope.settings.sabnzbd.password = CryptoJS.AES.encrypt($scope.settings.sabnzbd_password, "12345").toString();
       Backend.emit('save_sabnzbd_settings', $rootScope.settings.sabnzbd);
+      that.$rootScope.triggerConfigAlert("Saved!", 'success');
       //sabnzbdService.login();
     };
 
@@ -55,24 +56,12 @@ class ConfigSabnzbdController {
       that.Backend.debug('sabnzbd connection result');
       that.Backend.debug(data);
       if (data) {
-        if(data.result ==='Success!'){
-          $('.generalConfigBodyWrapper').append('<div class="alert alert-primary sabnzbd-alert notification" role="alert">' + data.result + '</div>');
-        } else{
-          $('.generalConfigBodyWrapper').append('<div class="alert alert-danger sabnzbd-alert notification" role="alert">' + data.result + '</div>');
+        if (data.result === 'Success!') {
+          that.$rootScope.triggerConfigAlert(data.result, 'primary');
+        } else {
+          that.$rootScope.triggerConfigAlert(data.result, 'danger');
         }
-       
-
-        setTimeout(() => {
-
-          $('.sabnzbd-alert').hide(500);
-
-
-        }, 3000);
-
-
       }
-
-
     });
 
     $scope.generateConnectionString = function () {

@@ -23,6 +23,7 @@ class ConfigSubsonicController {
       $rootScope.settings.subsonic.username = $scope.settings.subsonic_username;
       $rootScope.settings.subsonic.password = CryptoJS.AES.encrypt($scope.settings.subsonic_password, "12345").toString();
       Backend.emit('save_subsonic_settings', $rootScope.settings.subsonic);
+      that.$rootScope.triggerConfigAlert("Saved!", 'success');
       SubsonicService.login(); 
     };
 
