@@ -9,6 +9,14 @@ class NavController {
     this.Backend = Backend;
     this.SubsonicService = SubsonicService;
     this.Backend.debug('nav-controller');
+
+    $( "#search-box" ).mouseleave(function() {
+      $('#search-box').blur();
+    });
+
+    $( "#search-box" ).mouseenter(function() {
+      $('#search-box').focus();
+    });
   }
 
   $onInit(){
