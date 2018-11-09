@@ -17,6 +17,7 @@ import PlaylistsComponent from './playlists.component';
 import PodcastsComponent from './podcasts.component';
 import SideNavComponent from './sidenav.component';
 import ConfigComponent from './config/config.component';
+import ConfigGeneralComponent from './config/general/configGeneral.component';
 import ConfigSubsonicComponent from './config/subsonic/configSubsonic.component';
 import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
 import StarredComponent from './starred.component';
@@ -41,6 +42,7 @@ export default angular
   .component('podcasts', PodcastsComponent)
   .component('sidenav', SideNavComponent)
   .component('config', ConfigComponent)
+  .component('configgeneral', ConfigGeneralComponent)
   .component('configsubsonic', ConfigSubsonicComponent)
   .component('configsabnzbd', ConfigSabnzbdComponent)
   .component('starred', StarredComponent)

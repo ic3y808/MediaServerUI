@@ -6,7 +6,13 @@
             h4.list-group-item-heading
               | Backend Status
             p.list-group-item-text
-              span.label.label-success#ping
+              | Status: {{$root.backend_ping}}
+          .list-group-item-dark
+            h4.list-group-item-heading
+              | Sabnzbd Status
+            p.list-group-item-text
+              span.label.label-success
+              | Status: {{$root.sabnzbd_ping}}
           .list-group-item-dark
             h4.list-group-item-heading
               | Subsonic Status 

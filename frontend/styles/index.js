@@ -26,5 +26,4 @@ import './genres.scss';
 import './starred.scss';
 import './status.scss';
 import './config.scss';
-import './config.subsonic.scss';
 import './debug.scss';

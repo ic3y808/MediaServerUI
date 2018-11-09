@@ -10,7 +10,11 @@ export default class Backend {
     var that = this;
     this.socket.on('ping', function (data) {
       if (data)
-        $('#ping').html("<code>Connected: " + JSON.parse(data).date + "</code>");
+        $rootScope.backend_ping = JSON.parse(data).date;
+    });
+    this.socket.on('sabnzbd_ping', function (data) {
+      if (data)
+        $rootScope.sabnzbd_ping = data;
     });
     $rootScope.settings = {
       subsonic: {},

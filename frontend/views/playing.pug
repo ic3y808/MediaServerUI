@@ -13,12 +13,11 @@
             .PageToolbarButton-label.text-white Star
 
   .playingBodyWrapper.d-flex.flex-column
-    h1.jumbotron-heading.text-white.bg-dark-transparent {{artistName}} - {{trackTitle}}
-    pre.text-white.bg-dark-transparent {{year}} - {{contentType}} - Plays: {{playCount}}
-    p.lead.text-white.bg-dark-transparent
-      | {{artistBio}}
-    p
-      small.similar-artist-link Similar Artists  
-      ul.list-inline
-        li.list-inline-item(ng-repeat='artist in similarArtists') 
-          a(href="/artist/{{artist.id}}").similar-artist-link {{artist.name}}
+    .playing-artist-name.bg-dark-transparent {{artistName}} - {{trackTitle}}
+    .playing-sub-info.bg-dark-transparent {{year}} - {{contentType}} - Plays: {{playCount}}
+    .playing-bio.bg-dark-transparent {{artistBio}}
+    .similar-artists-container
+      .similar-artist-header.bg-dark-transparent Similar Artists  
+        ul.list-inline
+          li.list-inline-item(ng-repeat='artist in similarArtists') 
+            a(href="/artist/{{artist.id}}").similar-artist-link {{artist.name}}

@@ -68,41 +68,30 @@ footer {
 }
 
 #artistInfo {
-  margin-right: 7px;
-  color: $main-text-color !important;
+  color: $faded-text-color !important;
   font-family: $main-font;
   font-size: $sub-font-size;
+  font-weight: 400;
 }
 
 #trackTitle {
-  margin-left: 7px;
   color: $main-text-color !important;
   font-family: $main-font;
   font-size: $sub-font-size;
-}
-
-#trackAlbum {
-  font-size: 1em;
-  text-align: center;
-  color: $main-text-color !important;
-  font-family: $main-font;
-  font-size: $sub-font-size;
+  font-weight: 500;
 }
 
 .nowPlayingBarInfoContainer {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  margin: 15px 0 0 0;
-  height: 100%;
-  height: 100%;
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
   height: 100%;
   -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
+  -webkit-flex-shrink: 1;
+  flex-shrink: 1;
   overflow: hidden
 }
 
@@ -189,8 +178,7 @@ footer {
   -webkit-box-flex: 1;
   -webkit-flex-grow: 1;
   margin-left: 0.25em;
-  padding-top: 0.1em;
-  margin-bottom: 0.2em;
+  margin-top:5px;
 }
 
 .nowPlayingBarSecondaryText {
@@ -317,19 +305,31 @@ footer {
 }
 
 @media all and (max-width: 68.75em) {
-  .nowPlayingBar .muteButton,
-  .nowPlayingBar .unmuteButton,
   .nowPlayingBarVolumeSliderContainer {
     display: none !important
   }
 }
 
 @media all and (max-width: 50em) {
-  .nowPlayingBarCenter {
+  #downloadButton {
     display: none !important
   }
-  .toggleRepeatButton {
-    display: none
+  #repeatButton {
+    display: none !important
+  }
+  #shareButton {
+    display: none !important
+  }
+  #muteButton {
+    display: none !important
+  }
+  #artistInfo {
+    max-width: 50px;
+    overflow: hidden;
+  }
+  #trackTitle {
+    max-width: 50px;
+    overflow: hidden;
   }
 }
 

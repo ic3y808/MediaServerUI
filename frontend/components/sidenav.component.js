@@ -50,7 +50,7 @@ class SidenavController {
     $('.menu-collapsed').toggleClass('d-none');
     $('.sidebar-submenu').toggleClass('d-none');
     $('.submenu-icon').toggleClass('d-none');
-    $('.list-group').toggleClass('card-5');
+    $('#list-tab').toggleClass('card-5');
     $('.sidebar').toggleClass('sidebar-expanded sidebar-collapsed');
 
     // Treating d-flex/d-none on separators with title

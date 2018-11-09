@@ -99,9 +99,7 @@ class ArtistController {
               if (result.largeImageUrl) {
                 that.AppUtilities.setContentBackground(result.largeImageUrl);
               }
-              if (!$scope.$$phase) {
-                $scope.$apply();
-              }
+              that.AppUtilities.apply();
             }
           });
 
@@ -114,9 +112,7 @@ class ArtistController {
                 that.SubsonicService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
                   album.artUrl = result;
                   $scope.albums.push(album);
-                  if (!$scope.$$phase) {
-                    $scope.$apply();
-                  }
+                  that.AppUtilities.apply();
                   $("#coverflow").flipster();
                 });
               }
@@ -126,9 +122,7 @@ class ArtistController {
                 if (result) {
                   result.song.forEach(function (song) {
                     $scope.tracks.push(song);
-                    if (!$scope.$$phase) {
-                      $scope.$apply();
-                    }
+                    that.AppUtilities.apply();
                   });
 
                   if ($scope.gridOptions && $scope.gridOptions.api) {
@@ -136,9 +130,7 @@ class ArtistController {
                     $scope.gridOptions.api.doLayout();
                     $scope.gridOptions.api.sizeColumnsToFit();
                   }
-                  if (!$scope.$$phase) {
-                    $scope.$apply();
-                  }
+                  that.AppUtilities.apply();
                   $("#coverflow").flipster();
                   AppUtilities.hideLoader();
                 }
@@ -150,9 +142,7 @@ class ArtistController {
           }
 
           $("#coverflow").flipster();
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+          that.AppUtilities.apply();
           AppUtilities.hideLoader();
         });
       } else {

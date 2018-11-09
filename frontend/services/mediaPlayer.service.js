@@ -324,8 +324,6 @@ export default class MediaPlayer {
     $('#artistInfo').attr("href", source.artistUrl);
     $('#trackTitle').html(source.title);
     $('#trackTitle').attr("href", "/playing");
-    $('#trackAlbum').html(source.album);
-    $('#trackAlbum').attr("href", source.albumUrl);
   }
 
   startProgressTimer() {
