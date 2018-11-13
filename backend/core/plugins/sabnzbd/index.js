@@ -69,16 +69,18 @@ module.exports.login = function () {
     if (s) {
       var settings = s[0];
       sabnzbd = {};
-      if (settings.host && settings.apikey) {
-        sabnzbd = new SABnzbd(settings.host, settings.apikey);
-        if (sabnzbd) {
-          sabnzbd.status().then(function (status) {
-            log.debug('sabnzbd status  : ' + status.result);
-            module.exports.isLoggedIn = true;
-            module.exports.ping();
-          }).catch(function (error) {
-            log.error('sabnzbd status  : ' + error);
-          });
+      if(settings){
+        if (settings.host && settings.apikey) {
+          sabnzbd = new SABnzbd(settings.host, settings.apikey);
+          if (sabnzbd) {
+            sabnzbd.status().then(function (status) {
+              log.debug('sabnzbd status  : ' + status.result);
+              module.exports.isLoggedIn = true;
+              module.exports.ping();
+            }).catch(function (error) {
+              log.error('sabnzbd status  : ' + error);
+            });
+          }
         }
       }
     }
