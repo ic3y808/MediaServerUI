@@ -1,4 +1,4 @@
-
+import './activityQueue.scss';
 class ActivityQueueController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";

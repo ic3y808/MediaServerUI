@@ -1,4 +1,4 @@
-
+import './activityHistory.scss';
 class ActivityHistoryController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
