@@ -68,6 +68,12 @@ export default class Backend {
       }
     });
 
+    this.socket.on('sabnzbd_history_result', function(data){
+      if (data) {
+        that.AppUtilities.broadcast('sabnzbdHistoryResult', data);
+      }
+    });
+
   }
 
   emit(message, data) {

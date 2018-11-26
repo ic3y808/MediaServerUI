@@ -1,6 +1,6 @@
 @import "./variables";
 
-.genreWrapper {
+.activityHistoryWrapper {
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -12,18 +12,11 @@
   margin: 0;
 }
 
-#genreTrackGrid {
+#sabnzbdHistoryGrid {
   position: absolute;
   padding: 0;
-  top:$toolbar-height;
+  top:0;
   left: 0;
   right: 0;
   bottom: 0;
 }
-
-//genreTrackGrid > .ag-root-wrapper.ag-layout-normal {
-// position: absolute;
-// padding: 0;
-// left: 0;
-// right: 0;
-//
