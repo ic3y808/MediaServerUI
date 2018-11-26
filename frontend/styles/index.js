@@ -26,5 +26,6 @@ import './genres.scss';
 import './starred.scss';
 import './status.scss';
 import './activity.scss';
+import './activityHistory.scss';
 import './config.scss';
 import './debug.scss';

@@ -1,7 +1,7 @@
 const SABnzbd = require('./plugin')
 var log = require('../../logger');
 var db = require('../../database');
-var sabnzbd = {};
+var sabnzbd = null;
 var timer = {};
 module.exports.io = {};
 module.exports.isLoggedIn = false;
@@ -47,6 +47,20 @@ module.exports.socketConnect = function (socket) {
       };
       socket.emit('test_sabnzbd_connection_result', status);
     }
+  });
+  socket.on('get_sabnzbd_history', function () {
+    log.debug('get_sabnzbd_history');
+
+    module.exports.login();
+
+    if (sabnzbd) {
+      sabnzbd.entries().then(function (entries) {
+        module.exports.io.emit("sabnzbd_history_result", JSON.stringify(entries));
+      }).catch(function (error) {
+        log.error('sabnzbd status  : ' + error);
+      });
+    }
+
 
   });
 };
@@ -68,18 +82,27 @@ module.exports.login = function () {
   db.loadSabnzbdSettings(function (s) {
     if (s) {
       var settings = s[0];
-      sabnzbd = {};
-      if(settings){
-        if (settings.host && settings.apikey) {
-          sabnzbd = new SABnzbd(settings.host, settings.apikey);
-          if (sabnzbd) {
-            sabnzbd.status().then(function (status) {
-              log.debug('sabnzbd status  : ' + status.result);
-              module.exports.isLoggedIn = true;
-              module.exports.ping();
-            }).catch(function (error) {
-              log.error('sabnzbd status  : ' + error);
-            });
+      if (sabnzbd) {
+        sabnzbd.status().then(function (status) {
+          log.debug('sabnzbd status  : ' + status.result);
+          module.exports.isLoggedIn = true;
+          module.exports.ping();
+        }).catch(function (error) {
+          log.error('sabnzbd status  : ' + error);
+        });
+      } else {
+        if (settings) {
+          if (settings.host && settings.apikey) {
+            sabnzbd = new SABnzbd(settings.host, settings.apikey);
+            if (sabnzbd) {
+              sabnzbd.status().then(function (status) {
+                log.debug('sabnzbd status  : ' + status.result);
+                module.exports.isLoggedIn = true;
+                module.exports.ping();
+              }).catch(function (error) {
+                log.error('sabnzbd status  : ' + error);
+              });
+            }
           }
         }
       }
