@@ -3,39 +3,43 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   // adding a new route requires that route to also be added to backend/routes/index.js
   // this allows the variables to be passed when navigating directly to that page instead of linking to that page. 
   $routeProvider.when('/', {
-    template: '<home></home>',
+    template: '<home/>',
   }).when('/fresh', {
-    template: '<fresh></fresh>',
+    template: '<fresh/>',
   }).when('/status', {
-    template: '<status></status>',
+    template: '<status/>',
   }).when('/index', {
-    template: '<index></index>',
+    template: '<index/>',
   }).when('/starred', {
-    template: '<starred></starred>',
+    template: '<starred/>',
   }).when('/playlist', {
-    template: '<playlist></playlist>',
+    template: '<playlist/>',
   }).when('/playlists', {
-    template: '<playlists></playlists>',
+    template: '<playlists/>',
   }).when('/genres', {
-    template: '<genres></genres>',
+    template: '<genres/>',
   }).when('/genre/:id', {
-    template: '<genre></genre>',
+    template: '<genre/>',
   }).when('/podcasts', {
-    template: '<podcasts></podcasts>',
+    template: '<podcasts/>',
   }).when('/playing', {
-    template: '<playing></playing>',
+    template: '<playing/>',
   }).when('/config', {
-    template: '<config></config>',
+    template: '<config/>',
   }).when('/config/:id', {
     template: '<config/>'
+  }).when('/activity', {
+    template: '<activity/>',
+  }).when('/activity/:id', {
+    template: '<activity/>'
   }).when('/artists', {
-    template: '<artists></artists>',
+    template: '<artists/>',
   }).when('/artist/:id', {
-    template: '<artist></artist>',
+    template: '<artist/>',
   }).when('/albums', {
-    template: '<albums></albums>',
+    template: '<albums/>',
   }).when('/album/:id', {
-    template: '<album></album>',
+    template: '<album/>',
   }).otherwise({
     redirectTo: '/'
   });

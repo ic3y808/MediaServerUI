@@ -17,7 +17,7 @@ export default class SubsonicService {
 
         var ip = this.$rootScope.settings.subsonic.host;
         if (this.$rootScope.settings.subsonic.include_port_in_url === true)
-          ip = ':' + this.$rootScope.settings.subsonic.port;
+          ip = ip  + ':' + this.$rootScope.settings.subsonic.port;
           this.subsonic = new SubsonicAPI({
           https: this.$rootScope.settings.subsonic.use_ssl,
           ip: ip,

@@ -66,6 +66,14 @@ router.get('/config/:name', function (req, res) {
   res.render('index', options);
 });
 
+router.get('/activity/', function (req, res) {
+  res.render('index', options);
+});
+
+router.get('/activity/:name', function (req, res) {
+  res.render('index', options);
+});
+
 router.get('/artists', function (req, res) {
   res.render('index', options);
 });
