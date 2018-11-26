@@ -21,9 +21,9 @@ import ConfigGeneralComponent from './config/general/configGeneral.component';
 import ConfigSubsonicComponent from './config/subsonic/configSubsonic.component';
 import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
 import ActivityComponent from './activity/activity.component';
-import ActivityQueueComponent from './activity/activityQueue.component';
-import ActivityHistoryComponent from './activity/activityHistory.component';
-import ActivityBlacklistComponent from './activity/activityBlacklist.component';
+import ActivityQueueComponent from './activity/queue/activityQueue.component';
+import ActivityHistoryComponent from './activity/history/activityHistory.component';
+import ActivityBlacklistComponent from './activity/blacklist/activityBlacklist.component';
 import StarredComponent from './starred.component';
 import StatusComponent from './status.component';
 
@@ -50,9 +50,9 @@ export default angular
   .component('configsubsonic', ConfigSubsonicComponent)
   .component('configsabnzbd', ConfigSabnzbdComponent)
   .component('activity', ActivityComponent)
-  .component('activityQueue', ActivityQueueComponent)
-  .component('activityHistory', ActivityHistoryComponent)
-  .component('activityBlacklist', ActivityBlacklistComponent)
+  .component('activityqueue', ActivityQueueComponent)
+  .component('activityhistory', ActivityHistoryComponent)
+  .component('activityblacklist', ActivityBlacklistComponent)
   .component('starred', StarredComponent)
   .component('status', StatusComponent)
 ;
