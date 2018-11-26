@@ -50,18 +50,37 @@ module.exports.socketConnect = function (socket) {
   });
   socket.on('get_sabnzbd_history', function () {
     log.debug('get_sabnzbd_history');
-
     module.exports.login();
-
     if (sabnzbd) {
       sabnzbd.entries().then(function (entries) {
-        module.exports.io.emit("sabnzbd_history_result", JSON.stringify(entries));
+        var result = [];
+        entries.forEach(element => {
+          if(element._history_slot){
+            result.push(element);
+          }
+        });
+        module.exports.io.emit("sabnzbd_history_result", JSON.stringify(result));
       }).catch(function (error) {
         log.error('sabnzbd status  : ' + error);
       });
     }
-
-
+  });
+  socket.on('get_sabnzbd_queue', function () {
+    log.debug('get_sabnzbd_queue');
+    module.exports.login();
+    if (sabnzbd) {
+      sabnzbd.entries().then(function (entries) {
+        var result = [];
+        entries.forEach(element => {
+          if(element._queue_slot){
+            result.push(element);
+          }
+        });
+        module.exports.io.emit("sabnzbd_queue_result", JSON.stringify(result));
+      }).catch(function (error) {
+        log.error('sabnzbd status  : ' + error);
+      });
+    }
   });
 };
 

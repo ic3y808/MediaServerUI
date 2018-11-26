@@ -27,5 +27,6 @@ import './starred.scss';
 import './status.scss';
 import './activity.scss';
 import './activityHistory.scss';
+import './activityQueue.scss';
 import './config.scss';
 import './debug.scss';

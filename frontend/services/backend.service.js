@@ -74,6 +74,12 @@ export default class Backend {
       }
     });
 
+    this.socket.on('sabnzbd_queue_result', function(data){
+      if (data) {
+        that.AppUtilities.broadcast('sabnzbdQueueResult', data);
+      }
+    });
+
   }
 
   emit(message, data) {
@@ -86,7 +92,7 @@ export default class Backend {
       message: data,
       method: type
     };
-    if (data) console.log(data);
+    console.log(data);
     this.emit('log', message);
   }
 

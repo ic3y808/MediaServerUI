@@ -11,51 +11,60 @@ class ActivityHistoryController {
     //this.sabnzbdService = sabnzbdService;
     this.Backend.debug('activity-history-controller');
     var that = this;
-    this.$scope.history= [];
+    this.$scope.history = [];
     var columnDefs = [{
       headerName: "Name",
       field: "name"
     },
     {
       headerName: "Category",
-      field: "category"
+      field: "category",
+      width: 100,
+      suppressSizeToFit: true
     },
     {
-      headerName: "Completeness",
-      field: "completeness"
+      headerName: "Status",
+      field: "status",
+      width: 100,
+      suppressSizeToFit: true,
+      cellClass: function (params) { return (params.value === 'Failed' ? 'bg-danger' : 'bg-success'); }
     }
-  ];
+    ];
 
-  $scope.gridOptions = {
-    columnDefs: columnDefs,
-    rowData: null,
-    rowSelection: 'single',
-    enableColResize: true,
-    enableSorting: true,
-    enableFilter: true,
-    rowDeselection: true,
-    animateRows: true,
-    rowMultiSelectWithClick: true,
-    getRowNodeId: function (data) {
-      return data.id;
-    },
-    onModelUpdated: function (data) {
-      if (data && data.api) {
-        data.api.doLayout();
-        data.api.sizeColumnsToFit();
-      }
-    },
-    onRowDoubleClicked: function (e) {
-      var selectedRow = e.data;
-      if (selectedRow) {
-        
-      }
-    },
-    onGridReady: function (e) {
-      $scope.api = e.api;
-      $scope.columnApi = e.columnApi;
-    },
-  };
+    $scope.gridOptions = {
+      columnDefs: columnDefs,
+      rowData: null,
+      rowSelection: 'single',
+      enableColResize: true,
+      enableSorting: true,
+      enableFilter: true,
+      rowDeselection: true,
+      animateRows: true,
+      rowMultiSelectWithClick: true,
+      getRowNodeId: function (data) {
+        return data.id;
+      },
+      onModelUpdated: function (data) {
+        if (data && data.api) {
+          data.api.doLayout();
+          data.api.sizeColumnsToFit();
+        }
+      },
+      onRowDoubleClicked: function (e) {
+        var selectedRow = e.data;
+        if (selectedRow) {
+
+        }
+      },
+      onGridReady: function (e) {
+        $scope.api = e.api;
+        $scope.columnApi = e.columnApi;
+      },
+    };
+
+    $scope.$on('$destroy', function () {
+      clearInterval($scope.refreshIntereval);
+    });
 
     $rootScope.$on('sabnzbdHistoryResult', function (event, data) {
       that.Backend.debug('sabnzbd history result');
@@ -69,7 +78,9 @@ class ActivityHistoryController {
       that.AppUtilities.hideLoader();
     });
 
-    Backend.emit('get_sabnzbd_history');
+    $scope.refreshIntereval = setInterval(function () {
+      Backend.emit('get_sabnzbd_history');
+    }, 10000);
   }
 }
 
