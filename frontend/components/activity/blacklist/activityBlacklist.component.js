@@ -1,4 +1,4 @@
-
+import './activityBlacklist.scss';
 class ActivityBlacklistController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";

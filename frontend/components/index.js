@@ -5,17 +5,17 @@ import ArtistsComponent from './artists.component';
 import AlbumComponent from './album.component';
 import AlbumsComponent from './albums.component';
 import FreshComponent from './fresh.component';
-import FooterComponent from './footer.component';
+import FooterComponent from './footer/footer.component';
 import GenreComponent from './genre.component';
 import GenresComponent from './genres.component';
 import HomeComponent from './home.component';
 import IndexComponent from './index.component';
-import NavComponent from './nav.component';
+import NavbarComponent from './navbar/navbar.component';
 import PlayingComponent from './playing.component';
 import PlaylistComponent from './playlist.component';
 import PlaylistsComponent from './playlists.component';
 import PodcastsComponent from './podcasts.component';
-import SideNavComponent from './sidenav.component';
+import SideNavComponent from './sidenav/sidenav.component';
 import ConfigComponent from './config/config.component';
 import ConfigGeneralComponent from './config/general/configGeneral.component';
 import ConfigSubsonicComponent from './config/subsonic/configSubsonic.component';
@@ -39,7 +39,7 @@ export default angular
   .component('genres', GenresComponent)
   .component('home', HomeComponent)
   .component('index', IndexComponent)
-  .component('header', NavComponent)
+  .component('header', NavbarComponent)
   .component('playing', PlayingComponent)
   .component('playlist', PlaylistComponent)
   .component('playlists', PlaylistsComponent)

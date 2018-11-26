@@ -1,3 +1,4 @@
+import './activity.scss';
 class ActivityController {
   constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
     "ngInject";

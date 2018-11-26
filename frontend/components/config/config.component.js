@@ -1,3 +1,4 @@
+import './config.scss';
 class ConfigController {
   constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
     "ngInject";

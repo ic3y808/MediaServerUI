@@ -9,10 +9,10 @@ import './base.scss';
 import './mixins.scss';
 import './loader.scss';
 import './toolbar.scss';
-import './navbar.scss';
-import './sidebar.scss';
+
+
 import './header.scss';
-import './footer.scss';
+
 import './artist.scss';
 import './artists.scss';
 import './album.scss';
@@ -25,8 +25,4 @@ import './genre.scss';
 import './genres.scss';
 import './starred.scss';
 import './status.scss';
-import './activity.scss';
-import './activityHistory.scss';
-import './activityQueue.scss';
-import './config.scss';
 import './debug.scss';
