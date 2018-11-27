@@ -1,5 +1,5 @@
-import './navbar.scss';
-class NavbarController {
+import './playlists.scss';
+class PlaylistsController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
     "ngInject";
     this.$scope = $scope;
@@ -9,23 +9,13 @@ class NavbarController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.SubsonicService = SubsonicService;
-    this.Backend.debug('nav-controller');
-
-    $( "#search-box" ).mouseleave(function() {
-      $('#search-box').blur();
-    });
-
-    $( "#search-box" ).mouseenter(function() {
-      $('#search-box').focus();
-    });
-  }
-
-  $onInit(){
+    this.Backend.debug('playlists-controller');
+    AppUtilities.hideLoader();
   }
 }
 
 export default {
   bindings: {},
-  controller: NavbarController,
-  templateUrl: '/template/navbar.jade'
+  controller: PlaylistsController,
+  templateUrl: '/template/playlists.jade'
 };

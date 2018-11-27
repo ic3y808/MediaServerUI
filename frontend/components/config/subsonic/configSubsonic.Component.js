@@ -73,5 +73,5 @@ class ConfigSubsonicController {
 export default {
   bindings: {},
   controller: ConfigSubsonicController,
-  templateUrl: '/template/configSubsonic.pug'
+  templateUrl: '/template/configSubsonic.jade'
 };

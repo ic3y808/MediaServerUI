@@ -87,6 +87,6 @@ class ActivityHistoryController {
 export default {
   bindings: {},
   controller: ActivityHistoryController,
-  templateUrl: '/template/activityHistory.pug',
+  templateUrl: '/template/activityHistory.jade',
 
 };

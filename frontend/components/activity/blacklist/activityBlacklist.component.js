@@ -18,6 +18,6 @@ class ActivityBlacklistController {
 export default {
   bindings: {},
   controller: ActivityBlacklistController,
-  templateUrl: '/template/activityBlacklist.pug',
+  templateUrl: '/template/activityBlacklist.jade',
 
 };
