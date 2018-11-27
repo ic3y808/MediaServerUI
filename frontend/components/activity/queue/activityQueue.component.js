@@ -110,6 +110,6 @@ class ActivityQueueController {
 export default {
   bindings: {},
   controller: ActivityQueueController,
-  templateUrl: '/template/activityQueue.pug',
+  templateUrl: '/template/activityQueue.jade',
 
 };

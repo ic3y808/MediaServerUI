@@ -51,5 +51,5 @@ class ConfigController {
 export default {
   bindings: {},
   controller: ConfigController,
-  templateUrl: '/template/config.pug'
+  templateUrl: '/template/config.jade'
 };

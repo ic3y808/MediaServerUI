@@ -18,6 +18,6 @@ class ConfigGeneralController {
 export default {
   bindings: {},
   controller: ConfigGeneralController,
-  templateUrl: '/template/configGeneral.pug',
+  templateUrl: '/template/configGeneral.jade',
 
 };

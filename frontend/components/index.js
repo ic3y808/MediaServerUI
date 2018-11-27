@@ -1,20 +1,20 @@
 import angular from 'angular';
 
-import ArtistComponent from './artist.component';
-import ArtistsComponent from './artists.component';
-import AlbumComponent from './album.component';
-import AlbumsComponent from './albums.component';
-import FreshComponent from './fresh.component';
+import ArtistComponent from './artist/artist.component';
+import ArtistsComponent from './artists/artists.component';
+import AlbumComponent from './album/album.component';
+import AlbumsComponent from './albums/albums.component';
+import FreshComponent from './fresh/fresh.component';
 import FooterComponent from './footer/footer.component';
-import GenreComponent from './genre.component';
-import GenresComponent from './genres.component';
-import HomeComponent from './home.component';
-import IndexComponent from './index.component';
+import GenreComponent from './genre/genre.component';
+import GenresComponent from './genres/genres.component';
+import HomeComponent from './home/home.component';
+import IndexComponent from './index/index.component';
 import NavbarComponent from './navbar/navbar.component';
-import PlayingComponent from './playing.component';
-import PlaylistComponent from './playlist.component';
-import PlaylistsComponent from './playlists.component';
-import PodcastsComponent from './podcasts.component';
+import PlayingComponent from './playing/playing.component';
+import PlaylistComponent from './playlist/playlist.component';
+import PlaylistsComponent from './playlists/playlists.component';
+import PodcastsComponent from './podcasts/podcasts.component';
 import SideNavComponent from './sidenav/sidenav.component';
 import ConfigComponent from './config/config.component';
 import ConfigGeneralComponent from './config/general/configGeneral.component';
@@ -24,8 +24,8 @@ import ActivityComponent from './activity/activity.component';
 import ActivityQueueComponent from './activity/queue/activityQueue.component';
 import ActivityHistoryComponent from './activity/history/activityHistory.component';
 import ActivityBlacklistComponent from './activity/blacklist/activityBlacklist.component';
-import StarredComponent from './starred.component';
-import StatusComponent from './status.component';
+import StarredComponent from './starred/starred.component';
+import StatusComponent from './status/status.component';
 
 export default angular
   .module('app.components', [])

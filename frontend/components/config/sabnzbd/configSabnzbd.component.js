@@ -94,6 +94,6 @@ class ConfigSabnzbdController {
 export default {
   bindings: {},
   controller: ConfigSabnzbdController,
-  templateUrl: '/template/configSabnzbd.pug',
+  templateUrl: '/template/configSabnzbd.jade',
 
 };

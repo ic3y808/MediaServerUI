@@ -56,5 +56,5 @@ class ActivityController {
 export default {
   bindings: {},
   controller: ActivityController,
-  templateUrl: '/template/activity.pug'
+  templateUrl: '/template/activity.jade'
 };

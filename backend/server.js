@@ -2,11 +2,13 @@ const _ = require('underscore');
 const fs = require("fs");
 const path = require('path');
 const shell = require('shelljs');
+const { join } = require('path');
 const moment = require('moment');
 const express = require('express');
 const webpack = require('webpack');
 const favicon = require('serve-favicon');
 const bodyParser = require('body-parser');
+const { readdirSync, statSync } = require('fs')
 const webpackconfig = require('../webpack.config');
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
@@ -92,8 +94,14 @@ if (process.env.DEV === 'true') {
 app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
 
 // view engine setup
-app.set('views', path.join(__dirname, '..', 'frontend', 'views'));
-app.set('view engine', 'pug');
+function flatten(lists) { return lists.reduce((a, b) => a.concat(b), []); }
+function getDirectories(srcpath) { return fs.readdirSync(srcpath).map(file => path.join(srcpath, file)).filter(path => fs.statSync(path).isDirectory()); }
+function getDirectoriesRecursive(srcpath) { return [srcpath, ...flatten(getDirectories(srcpath).map(getDirectoriesRecursive))]; }
+var componentdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'components'))
+var viewdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'views'))
+
+app.set('views', componentdirs.concat(viewdirs));
+app.set('view engine', 'jade');
 app.use(function (req, res, next) {
   res.io = io;
   next();
@@ -143,7 +151,7 @@ io.on('connection', function (socket) {
   log.debug('Client connected');
   socket.on('log', function (data) {
     log.log(data.method, data.message);
-  });  
+  });
 });
 
 setInterval(function () {
@@ -166,5 +174,5 @@ if (process.env.DEV === 'true') {
     port: process.env.JADE_PORT
   });
 
-  livereload.watch(path.join(__dirname, '..', 'frontend', 'views'));
+  livereload.watch(path.join(__dirname, '..', 'frontend'));
 }

@@ -32,8 +32,8 @@ export default class Backend {
           that.$rootScope.settings.subsonic.password = d.password;
           that.$rootScope.settings.subsonic.host = d.host;
           that.$rootScope.settings.subsonic.port = d.port;
-          that.$rootScope.settings.subsonic.use_ssl = d.use_ssl;
-          that.$rootScope.settings.subsonic.include_port_in_url = d.include_port_in_url;
+          that.$rootScope.settings.subsonic.use_ssl = d.use_ssl === "1";
+          that.$rootScope.settings.subsonic.include_port_in_url = d.include_port_in_url === "1";
           that.AppUtilities.broadcast('subsonicSettingsReloadedEvent');
           that.AppUtilities.apply();
           that.SubsonicService.login();
@@ -62,19 +62,19 @@ export default class Backend {
       }
     });
 
-    this.socket.on('test_sabnzbd_connection_result', function(data){
+    this.socket.on('test_sabnzbd_connection_result', function (data) {
       if (data) {
         that.AppUtilities.broadcast('sabnzbdConnectionTestResult', data);
       }
     });
 
-    this.socket.on('sabnzbd_history_result', function(data){
+    this.socket.on('sabnzbd_history_result', function (data) {
       if (data) {
         that.AppUtilities.broadcast('sabnzbdHistoryResult', data);
       }
     });
 
-    this.socket.on('sabnzbd_queue_result', function(data){
+    this.socket.on('sabnzbd_queue_result', function (data) {
       if (data) {
         that.AppUtilities.broadcast('sabnzbdQueueResult', data);
       }
