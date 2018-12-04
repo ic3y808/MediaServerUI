@@ -47,8 +47,10 @@
   text-align: left;
 }
 .similar-artists-container{
-  position: fixed;
-  bottom: $footer-height;
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   text-align: center;
   margin: 10px;
   font-size: 1em;

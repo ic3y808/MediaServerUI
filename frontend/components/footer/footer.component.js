@@ -79,7 +79,7 @@ class FooterController {
     });
 
     $("#shareButton").click(function () {
-      this.Backend.debug('shareButton');
+      that.Backend.debug('shareButton');
       that.SubsonicService.subsonic.createShare(that.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
         $('#shareButton').popover({
           animation: true,
