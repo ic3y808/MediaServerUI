@@ -36,7 +36,8 @@
       #coverflow
         ul.flip-items
           li(data-flip-title='Red', ng-repeat='album in albums')
-            img(ng-src='{{album.artUrl}}')
+            a(href='/album/{{album.id}}')
+              img(ng-src='{{album.artUrl}}')
 
     #artistTracksGrid.ag-theme-dark(ag-grid='gridOptions')
    

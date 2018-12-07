@@ -163,6 +163,26 @@ class AlbumController {
       that.MediaPlayer.loadTrack(0);
     };
 
+    $scope.shareAlbum = function () {
+      that.Backend.debug('shareButton');
+      that.SubsonicService.subsonic.createShare($scope.album.id, 'Shared from Alloy').then(function (result) {
+        $('#shareAlbumButton').popover({
+          animation: true,
+          content: 'Success! Url Copied to Clipboard.',
+          delay: {
+            "show": 0,
+            "hide": 5000
+          },
+          placement: 'top'
+        }).popover('show');
+        var url = result.url.toString();
+        that.AppUtilities.copyTextToClipboard(url);
+        setTimeout(() => {
+          $('#shareAlbumButton').popover('hide');
+        }, 5000);
+      });
+    };
+
     $rootScope.$on('trackChangedEvent', function (event, data) {
       $scope.api.redrawRows({
         force: true
