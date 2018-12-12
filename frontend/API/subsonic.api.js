@@ -1317,7 +1317,7 @@ window.SubsonicAPI = function () {
           }
           var url = _this31._buildUrl('search3', obj);
           _this31._xhr(url).then(function (e) {
-            var res = e.target.response['subsonic-response'].search3Result.match;
+            var res = e.target.response['subsonic-response'].searchResult3;
             resolve(res);
           }, reject);
         });
