@@ -9,6 +9,8 @@ import 'tooltip.js';
 import 'jquery.flipster';
 import 'moment';
 import 'typeface-roboto';
+import 'angular-sanitize';
+import 'angular-auto-complete';
 import 'bootstrap/js/dist/carousel';
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/popover';
@@ -29,6 +31,6 @@ import ApplicationRun from './run.js';
 agGridCommunity.initialiseAgGridWithAngular1(angular);
 $('[data-toggle="popover"]').popover();
 
-angular.module('subsonic', [angularRoute, 'agGrid', Components.name, Factories.name, Services.name])
+angular.module('subsonic', [angularRoute, 'ngSanitize', 'agGrid', 'autoCompleteModule', Components.name, Factories.name, Services.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);

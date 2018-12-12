@@ -30,4 +30,7 @@ nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top.card-1
           a.dropdown-item(href='#') Tasks
           a.dropdown-item(href='#') Etc ...
     form.form-inline
-      input#search-box.form-control.form-control-sm.mr-sm-2(type='text', placeholder='Search')
+      //input#search-box.form-control.form-control-sm.mr-sm-2(type='text', placeholder='Search')
+      
+      input#search-box.form-control.form-control-sm.mr-sm-2(type='text', ng-model='searchText', placeholder="Search...", auto-complete='autoCompleteOptions')
+
