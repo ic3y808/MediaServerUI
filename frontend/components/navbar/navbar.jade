@@ -1,4 +1,4 @@
-nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top.card-1
+nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top
   button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarNavDropdown', aria-controls='navbarNavDropdown', aria-expanded='false', aria-label='Toggle navigation')
     span.navbar-toggler-icon
   a.navbar-brand(href='/')
@@ -32,5 +32,5 @@ nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top.card-1
     form.form-inline
       //input#search-box.form-control.form-control-sm.mr-sm-2(type='text', placeholder='Search')
       
-      input#search-box.form-control.form-control-sm.mr-sm-2(type='text', ng-model='searchText', placeholder="Search...", auto-complete='autoCompleteOptions')
+      input#search-box.form-control.form-control-sm.mr-sm-2(type='text', ng-model='searchText', placeholder="Search...", auto-complete='autoCompleteOptions', autocomplete="off")
 

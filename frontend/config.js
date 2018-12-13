@@ -40,6 +40,8 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<albums/>',
   }).when('/album/:id', {
     template: '<album/>',
+  }).when('/album/:id/:trackid', {
+    template: '<album/>',
   }).otherwise({
     redirectTo: '/'
   });

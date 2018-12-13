@@ -35,6 +35,7 @@
     "jquery-listnav": "^2.4.10",
     "jquery.flipster": "^1.1.2",
     "livereload": "^0.7.0",
+    "lodash": "^4.17.11",
     "lodash.kebabcase": "^4.1.1",
     "moment": "^2.22.2",
     "popper.js": "^1.14.4",

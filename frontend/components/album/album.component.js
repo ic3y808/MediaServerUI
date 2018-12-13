@@ -82,7 +82,6 @@ class AlbumController {
       onGridReady: function (e) {
         $scope.api = e.api;
         $scope.columnApi = e.columnApi;
-        $scope.api.showLoadingOverlay();
       }
     };
 
@@ -128,6 +127,13 @@ class AlbumController {
               $scope.gridOptions.api.setRowData($scope.tracks);
               $scope.gridOptions.api.doLayout();
               $scope.gridOptions.api.sizeColumnsToFit();
+              if($routeParams.trackid){
+                $scope.gridOptions.api.forEachNode( function (node) {
+                  if (node.data.id === $routeParams.trackid) {
+                      $scope.gridOptions.api.selectNode(node, true);
+                  }
+              });
+              }
             }
           } else {
             if ($scope.gridOptions.api)

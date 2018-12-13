@@ -90,4 +90,8 @@ router.get('/album/:name', function (req, res) {
   res.render('index', options);
 });
 
+router.get('/album/:name/:trackid', function (req, res) {
+  res.render('index', options);
+});
+
 module.exports = router;

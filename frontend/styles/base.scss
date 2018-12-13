@@ -145,10 +145,15 @@ main {
   background-color: $now-playing-track !important;
 }
 
+.ag-row-selected{
+  background-color: $grid-selection-color !important;
+}
+
 .bg-dark-transparent {
   background-color: $main-background-color-transparent !important;
   color: $alt-text-color !important;
 }
+
 
 .Label-label {
   display: inline-block;
