@@ -12,6 +12,7 @@ class AlbumController {
     $scope.album = {};
     $scope.tracks = [];
     $scope.albumName = '';
+    $scope.artistName = '';
     var that = this;
     var columnDefs = [{
       headerName: "#",
@@ -90,6 +91,7 @@ class AlbumController {
         SubsonicService.subsonic.getAlbum($routeParams.id).then(function (album) {
           $scope.album = album;
           $scope.albumName = album.name;
+          $scope.artistName = album.artist;
           $scope.tracks = album.song;
 
           SubsonicService.subsonic.getArtistInfo2($scope.album.artistId, 50).then(function (result) {
