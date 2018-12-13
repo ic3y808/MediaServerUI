@@ -1,22 +1,9 @@
 .indexWrapper
-  .pageToolbar-toolbar.bg-secondary.card-5
-    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
-      .PageToolbarSection-section.PageToolbarSection-left
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='$root.goBack()')
-          i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Back
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='refresh()')
-          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Refresh
-  .indexBodyWrapper.d-flex.flex-column.text-center
-    #indexBody 
-      .card(ng-repeat='container in artists')
-        .card-header
-        | {{container.name}}
-        .card-body
-          div(ng-repeat='artist in container.artist')
-            <a href="/artist/{{artist.id}}" class="card-link">{{artist.name}}</a>
-          
-    
+  .indexBodyWrapper.d-flex.flex-column
+
+    .card(ng-repeat='container in artists')
+      .card-header
+      | {{container.name}}
+      .card-body
+        div(ng-repeat='artist in container.artist')
+          <a href="/artist/{{artist.id}}" class="card-link">{{artist.name}}</a>

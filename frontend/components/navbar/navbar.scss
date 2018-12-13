@@ -13,3 +13,13 @@
 .nav-link{
   color: $main-text-color !important;
 }
+
+.autocomplete-container{
+  position: absolute;
+  right: 10px; 
+  width: 500px;
+  left: auto !important;
+  top: $toolbar-height !important;
+  max-height: 50vh;
+  overflow: auto;
+}
