@@ -1,71 +1,47 @@
 ﻿var path = require("path");
-var sqlite3 = require("sqlite3").verbose();
+const db = require('better-sqlite3')(path.join(process.env.DATA_DIR, "database.db"));
+var dbmigrate = require('db-migrate');
+var dbm = dbmigrate.getInstance(true);
 
-var db = new sqlite3.Database(path.join(process.env.DATA_DIR, "database.db"));
+module.exports.init = function () {
+  return dbm.up();
+};
 
-db.serialize(function () {
-  var subsonicSettings = "CREATE TABLE IF NOT EXISTS `subsonic_settings` (" +
-    "`name` TEXT UNIQUE," +
-    "`host` TEXT," +
-    "`port` INTEGER," +
-    "`use_ssl` TEXT," +
-    "`include_port_in_url` TEXT," +
-    "`username` TEXT," +
-    "`password` TEXT" +
-    ");";
-  db.run(subsonicSettings);
-  var sabnzbdSettings = "CREATE TABLE IF NOT EXISTS `sabnzbd_settings` (" +
-    "`name` TEXT UNIQUE," +
-    "`host` TEXT," +
-    "`port` INTEGER," +
-    "`url_base` TEXT," +
-    "`apikey` TEXT," +
-    "`use_ssl` TEXT," +
-    "`include_port_in_url` TEXT," +
-    "`username` TEXT," +
-    "`password` TEXT" +
-    ");";
-  db.run(sabnzbdSettings);
-});
+module.exports.loadSettings = function (key, callback) {
+  var settingsResult = db.prepare('SELECT * from Settings WHERE settings_key=?').get(key);
+  if (settingsResult && settingsResult.settings_value) {
+    var settings = JSON.parse(settingsResult.settings_value);
+    if (settings) {
+      callback(settings);
+    } else callback(null);
+  } else callback(null);
+};
+
+module.exports.saveSettings = function (key,value, callback) {
+  try {
+    const stmt = db.prepare('INSERT OR REPLACE INTO Settings (settings_key, settings_value) VALUES (?, ?) ON CONFLICT(settings_key) DO UPDATE SET settings_value=?');
+    var obj = JSON.stringify(value);
+    const info = stmt.run(key, obj, obj);
+  } catch (error) {
+    if (error) {
+      console.log(error);
+    }
+  }
+  callback();
+};
 
 module.exports.loadSubsonicSettings = function (callback) {
-  db.all("SELECT * FROM subsonic_settings", function (err, row) {
-    if (err) console.log(err);
-    callback(row);
-  });
+  module.exports.loadSettings('subsonic_settings', callback);
 };
 
 module.exports.saveSubsonicSettings = function (settings, callback) {
-  try {
-    var stmt = db.prepare("INSERT OR REPLACE INTO subsonic_settings VALUES (?,?,?,?,?,?,?)");
-    stmt.run("general", settings.host, settings.port, settings.use_ssl, settings.include_port_in_url, settings.username, settings.password);
-    stmt.finalize();
-  } catch (error) {
-    if (error) {
-      console.log(error);
-      console.log(sql);
-    }
-  }
-  callback();
+ module.exports.saveSettings('subsonic_settings', settings, callback);
 };
 
 module.exports.loadSabnzbdSettings = function (callback) {
-  db.all("SELECT * FROM sabnzbd_settings", function (err, row) {
-    if (err) console.log(err);
-    callback(row);
-  });
+  module.exports.loadSettings('sabnzbd_settings', callback);
 };
 
 module.exports.saveSabnzbdSettings = function (settings, callback) {
-  try {
-    var stmt = db.prepare("INSERT OR REPLACE INTO sabnzbd_settings VALUES (?,?,?,?,?,?,?,?,?)");
-    stmt.run("general", settings.host, settings.port, settings.url_base, settings.apikey, settings.use_ssl, settings.include_port_in_url, settings.username, settings.password);
-    stmt.finalize();
-  } catch (error) {
-    if (error) {
-      console.log(error);
-      console.log(sql);
-    }
-  }
-  callback();
+  module.exports.saveSettings('sabnzbd_settings', settings, callback);
 };

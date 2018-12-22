@@ -26,8 +26,17 @@ module.exports.socketConnect = function (socket) {
     log.debug('test_sabnzbd_settings');
     if (settings.sabnzbd_host && settings.sabnzbd_apikey) {
       module.exports.login();
+      var url = 'http://'
 
-      var test = new SABnzbd(settings.sabnzbd_host, settings.sabnzbd_api_key);
+      if (settings.sabnzbd_use_ssl)
+        url = "https://";
+
+      url += settings.sabnzbd_host;
+
+      if (settings.sabnzbd_include_port_in_url)
+        url += ":" + settings.sabnzbd_port;
+
+      var test = new SABnzbd(url, settings.sabnzbd_apikey);
 
       test.status().then(function (status) {
         log.info('sabnzbd status  : ' + status);
@@ -37,7 +46,7 @@ module.exports.socketConnect = function (socket) {
         socket.emit('test_sabnzbd_connection_result', status);
       }).catch(function (error) {
         var status = {
-          result: 'Failed!'
+          result: 'Failed! : ' + error.stack
         };
         socket.emit('test_sabnzbd_connection_result', status);
       });
@@ -55,7 +64,7 @@ module.exports.socketConnect = function (socket) {
       sabnzbd.entries().then(function (entries) {
         var result = [];
         entries.forEach(element => {
-          if(element._history_slot){
+          if (element._history_slot) {
             result.push(element);
           }
         });
@@ -72,7 +81,7 @@ module.exports.socketConnect = function (socket) {
       sabnzbd.entries().then(function (entries) {
         var result = [];
         entries.forEach(element => {
-          if(element._queue_slot){
+          if (element._queue_slot) {
             result.push(element);
           }
         });
@@ -87,7 +96,7 @@ module.exports.socketConnect = function (socket) {
 module.exports.ping = function () {
   clearInterval(timer);
   timer = setInterval(function () {
-    if (sabnzbd) {
+      if (sabnzbd) {
       sabnzbd.version().then(function (version) {
         module.exports.io.emit("sabnzbd_ping", JSON.stringify(version));
       }).catch(function (error) {
@@ -98,9 +107,9 @@ module.exports.ping = function () {
 };
 
 module.exports.login = function () {
-  db.loadSabnzbdSettings(function (s) {
-    if (s) {
-      var settings = s[0];
+  db.loadSabnzbdSettings(function (settings) {
+    if (settings) {
+
       if (sabnzbd) {
         sabnzbd.status().then(function (status) {
           log.debug('sabnzbd status  : ' + status.result);
@@ -111,8 +120,19 @@ module.exports.login = function () {
         });
       } else {
         if (settings) {
-          if (settings.host && settings.apikey) {
-            sabnzbd = new SABnzbd(settings.host, settings.apikey);
+          if (settings.sabnzbd_host && settings.sabnzbd_apikey) {
+            var url = 'http://'
+
+            if (settings.sabnzbd_use_ssl)
+              url = "https://";
+
+            url += settings.sabnzbd_host;
+
+            if (settings.sabnzbd_include_port_in_url)
+              url += ":" + settings.sabnzbd_port;
+
+            sabnzbd = new SABnzbd(url, settings.sabnzbd_apikey);
+
             if (sabnzbd) {
               sabnzbd.status().then(function (status) {
                 log.debug('sabnzbd status  : ' + status.result);
