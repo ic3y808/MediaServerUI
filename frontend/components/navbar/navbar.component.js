@@ -24,7 +24,7 @@ class NavbarController {
     });
 
     var html = '';
-    html += '<div class="auto-complete-container unselectable card-5" data-instance-id="{{ ctrl.instanceId }} ng-show="ctrl.containerVisible">';
+    html += '<div class="unselectable card-5" data-instance-id="{{ ctrl.instanceId }} ng-show="ctrl.containerVisible">';
     html += ' <ul class="list-group">';
     html += '   <li ng-repeat="item in ctrl.renderItems" class="list-group-item" ng-if="item.value.data.length">';
     html += '     <p>{{item.value.title}} - {{item.value.data.length}}</p>';

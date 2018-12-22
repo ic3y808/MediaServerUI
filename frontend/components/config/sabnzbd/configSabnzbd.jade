@@ -10,7 +10,7 @@
           input#sabnzbdPort.form-control(type='number', placeholder='443', ng-model='settings.sabnzbd_port', ng-change="previewConnectionString()")
         .form-group
           label(for='sabnzbdUrlBase') URL Base
-          input#sabnzbdUrlBase.form-control(type='text', placeholder='URL Base', ng-model='settings.sabnzbd_url_base') 
+          input#sabnzbdUrlBase.form-control(type='text', placeholder='URL Base', ng-model='settings.sabnzbd_url_base', ng-change="previewConnectionString()") 
           cite(title='Source Title') Adds a prefix to the Sabnzbd url, e.g. http://[host]:[port]/[urlBase]/api
         .form-group
           label(for='sabnzbdApiKey') API Key
