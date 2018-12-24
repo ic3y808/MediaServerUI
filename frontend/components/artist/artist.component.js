@@ -115,25 +115,25 @@ class ArtistController {
           var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
           if (artistInfo) {
             artistInfo.then(function (info) {
-              $scope.artistInfo = info.artistInfo;
-              if ($scope.artistInfo.bio) {
-                $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+              if (info.artistInfo) {
+                $scope.artistInfo = info.artistInfo;
+                if ($scope.artistInfo.bio) {
+                  $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+                }
+                if ($scope.artistInfo.similar) {
+                  $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+                }
+                if ($scope.artistInfo.image) {
+                  $scope.artistInfo.image.forEach(function (image) {
+                    if (image['@'].size === 'extralarge') {
+                      that.AppUtilities.setContentBackground(image['#']);
+                    }
+                  });
+                }
+                that.AppUtilities.apply();
               }
-              if ($scope.artistInfo.similar) {
-                $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-              }
-              if ($scope.artistInfo.image) {
-                $scope.artistInfo.image.forEach(function(image){
-                  if(image['@'].size==='extralarge'){
-                    that.AppUtilities.setContentBackground(image['#']);
-                  }
-                })
-
-                
-              }
-              that.AppUtilities.apply();
             });
-          } 
+          }
 
           that.AppUtilities.apply();
           $("#coverflow").flipster();
