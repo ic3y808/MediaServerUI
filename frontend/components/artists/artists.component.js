@@ -33,7 +33,7 @@ class ArtistsController {
       rowDeselection: true,
       animateRows: true,
       getRowNodeId: function (data) {
-        return data.id;
+        return data.base_id;
       },
       rowMultiSelectWithClick: false,
       onModelUpdated: function (data) {
@@ -58,11 +58,11 @@ class ArtistsController {
         that.Backend.debug('onSelectionChanged');
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
-        $location.path("/artist/" + selectedRow.id.toString());
+        $location.path("/artist/" + selectedRow.base_id.toString());
         if (!$scope.$$phase) {
           $scope.$apply();
         }
-        that.Backend.debug("/artist/" + selectedRow.id.toString());
+        that.Backend.debug("/artist/" + selectedRow.base_id.toString());
       }
     };
 

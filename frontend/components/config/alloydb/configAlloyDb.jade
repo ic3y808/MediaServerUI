@@ -17,6 +17,15 @@
         .form-check
           input#includePortInUrl.form-check-input(type='checkbox', ng-model='settings.alloydb_include_port_in_url', ng-change="previewConnectionString()")
           label.form-check-label(for='includePortInUrl') Include port in URL?
+        .form-check
+          input#scrobbleTracks.form-check-input(type='checkbox', ng-model='settings.alloydb_scrobble', ng-change="previewConnectionString()")
+          label.form-check-label(for='scrobbleTracks') Scrobble Tracks?
+        .form-group
+          label(for='lastFmUsername') Last.FM Username
+          input#lastFmUsername.form-control(type='text', placeholder='Enter username', ng-model='settings.alloydb_lastfm_username')
+        .form-group
+          label(for='lastFmPassword') Last.FM Password
+          input#lastFmPassword.form-control(type='password', placeholder='Password', ng-model='settings.alloydb_lastfm_password')
         .form-group
           p Preview of Connection string: {{connectionStringPreview}}
         .form-group
