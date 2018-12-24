@@ -35,6 +35,7 @@ db.init().then(function () {
   const app = express();
   var server = require('http').Server(app);
   var io = require('socket.io')(server);
+  db.io = io;
   sabnzbd.io = io;
 
   function normalizePort(val) {
@@ -148,6 +149,7 @@ db.init().then(function () {
   }
 
   io.on('connection', function (socket) {
+    db.socketConnect(socket);
     sabnzbd.socketConnect(socket);
     subsonic.socketConnect(socket);
     log.debug('Client connected');

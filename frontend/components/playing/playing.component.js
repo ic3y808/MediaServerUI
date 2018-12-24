@@ -1,6 +1,6 @@
 import './playing.scss';
 class PlayingController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,35 +8,47 @@ class PlayingController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('playing-controller');
     var that = this;
     $scope.getSong = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        var track = that.MediaPlayer.selectedTrack();
-        if (track) {
-          that.SubsonicService.subsonic.getSong(track.id).then(function (song) {
-            $scope.song = song.song;
-            $scope.artistName = $scope.song.artist;
-            $scope.trackTitle = $scope.song.title;
-            $scope.year = $scope.song.year;
-            $scope.contentType = $scope.song.contentType;
-            $scope.bitrate = $scope.song.bitrate;
-            $scope.playCount = $scope.song.playCount;
-            that.SubsonicService.subsonic.getArtistInfo2($scope.song.artistId, 50).then(function (result) {
-              if (result) {
-                $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-                if (result.similarArtist && result.similarArtist.length > 0)
-                  $scope.similarArtists = result.similarArtist;
-                if (result.largeImageUrl) {
-                  that.AppUtilities.setContentBackground(result.largeImageUrl);
+      var track = that.MediaPlayer.selectedTrack();
+      if (track) {
+        that.AlloyDbService.getTrackInfo(track.id).then(function (song) {
+          $scope.song = song.trackInfo;
+          $scope.artistName = $scope.song.artist.name;
+          $scope.trackTitle = $scope.song.name;
+          //$scope.year = $scope.song.year;
+         // $scope.contentType = $scope.song.contentType;
+          //$scope.bitrate = $scope.song.bitrate;
+          $scope.playCount = $scope.song. playcount;
+          
+          
+          that.AlloyDbService.getArtistInfo(track.artist).then(function (info) {
+            if (info) {
+
+              $scope.artistInfo = info.artistInfo;
+                if ($scope.artistInfo.bio) {
+                  $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
                 }
-                that.AppUtilities.apply();
-                that.AppUtilities.hideLoader();
-              }
-            });
+                if ($scope.artistInfo.similar) {
+                  $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+                }
+                if ($scope.artistInfo.image) {
+                  $scope.artistInfo.image.forEach(function(image){
+                    if(image['@'].size==='extralarge'){
+                      that.AppUtilities.setContentBackground(image['#']);
+                    }
+                  });
+                }
+
+             
+              that.AppUtilities.apply();
+            }
           });
-        }
+
+          that.AppUtilities.hideLoader();
+        });
       } else {
         if ($scope.gridOptions && $scope.gridOptions.api) {
           $scope.gridOptions.api.showNoRowsOverlay();

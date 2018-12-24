@@ -15,11 +15,10 @@
               | Status: {{$root.sabnzbd_ping}}
           .list-group-item-dark
             h4.list-group-item-heading
-              | Subsonic Status 
+              | AlloyDB Status 
             p.list-group-item-text
               span.label.label-success 
-              | Server Status is {{server.status}}
-              | version {{server.version}}
+              | Connection: {{alloydb.status}}
           .list-group-item-dark
             h4.list-group-item-heading
               | Enabled Folders
@@ -27,62 +26,46 @@
               span.label.label-success 
                 table.table
                   tbody
-                    tr(ng-repeat='folder in folders')
-                      td {{folder.name}}
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | Rescan Library
-            p.list-group-item-text
-              span.label.label-success 
-                button(ng-click='startScan()').btn.btn-success
-                  i.fa.fa-refresh Refresh
-                div(ng-show='scanStatus.scanning')
-                  |  Current Progress: {{scanStatus.count}} / {{scanStatusTotalFiles}}
+                    tr(ng-repeat='mediaPath in mediaPaths')
+                      td {{mediaPath.display_name}} - {{mediaPath.path}}
                 
           .list-group-item-dark
             h4.list-group-item-heading
-              | Subsonic Features and User Info - {{userInfo.username}}
+              | Library Statistics
             p.list-group-item-text
               span.label.label-success
                 table.table
                   tbody
                     tr
-                      td Admin
-                      td {{userInfo.adminRole}}
+                      td Tracks
+                      td {{libraryInfo.track_count}}
                     tr
-                      td Can Comment
-                      td {{userInfo.commentRole}}
+                      td Artists
+                      td {{libraryInfo.artist_count}}
                     tr
-                      td Has CoverArt
-                      td {{userInfo.coverArtRole}}
+                      td Albums
+                      td {{libraryInfo.album_count}}
                     tr
-                      td Can Download
-                      td {{userInfo.downloadRole}}
+                      td Root Folders
+                      td {{libraryInfo.folder_count}}
                     tr
-                      td Has Jukebox
-                      td {{userInfo.jukeboxRole}}
+                      td Genres
+                      td {{libraryInfo.genre_count}}
                     tr
-                      td Has Playlists
-                      td {{userInfo.playlistRole}}
-                    tr
-                      td Scrobbling Enabled
-                      td {{userInfo.scrobblingEnabled}}
-                    tr
-                      td Access Settings
-                      td {{userInfo.settingsRole}}
-                    tr
-                      td Can Share
-                      td {{userInfo.shareRole}}
-                    tr
-                      td Can Stream
-                      td {{userInfo.streamRole}}
-                    tr
-                      td Can Upload
-                      td {{userInfo.uploadRole}}
-                    tr
-                      td Can Transcode
-                      td {{userInfo.videoConversionRole}}
-      
+                      td Total Memory
+                      td {{libraryInfo.memory_used}}
+                    
+          .list-group-item-dark
+            h4.list-group-item-heading
+              | Rescan Library
+            p.list-group-item-text
+              span.label.label-success 
+                button(ng-click='scanStart()', ng-show='!scanStatus.result.isScanning').btn.btn-success
+                  i.fa.fa-refresh Start Rescan
+                button(ng-click='scanCancel()', ng-show='scanStatus.result.isScanning').btn.btn-success
+                  i.fa.fa-refresh Cancel
+                div(ng-show='scanStatus.result.status')
+                  |  Current Progress: {{scanStatus.result.status}}      
 
 
 

@@ -1,6 +1,6 @@
 import './genre.scss';
 class GenreController {
-  constructor($scope, $rootScope, $routeParams, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, $routeParams, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -9,7 +9,7 @@ class GenreController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('genre-controller');
     $scope.artist = {};
     $scope.albums = [];
@@ -80,9 +80,9 @@ class GenreController {
     };
 
     $scope.getGenre = function () {
-      if (SubsonicService.isLoggedIn) {
-        that.SubsonicService.subsonic.getSongsByGenre(that.$routeParams.id, 500, 0).then(function (result) {
-          $scope.tracks = result.song;
+      if (AlloyDbService.isLoggedIn) {
+        that.AlloyDbService.getSongsByGenre(that.$routeParams.id, 500, 0).then(function (result) {
+          $scope.tracks = result;
           if ($scope.gridOptions && $scope.gridOptions.api) {
             $scope.gridOptions.api.setRowData($scope.tracks);
             $scope.gridOptions.api.doLayout();

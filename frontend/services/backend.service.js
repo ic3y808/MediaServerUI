@@ -1,10 +1,11 @@
 import io from 'socket.io-client';
 
 export default class Backend {
-  constructor($rootScope, AppUtilities, SubsonicService) {
+  constructor($rootScope, AppUtilities, AlloyDbService, SubsonicService) {
     "ngInject";
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
+    this.AlloyDbService = AlloyDbService;
     this.SubsonicService = SubsonicService;
     this.socket = io('//' + document.location.hostname + ':' + document.location.port);
     var that = this;
@@ -17,6 +18,7 @@ export default class Backend {
         $rootScope.sabnzbd_ping = data;
     });
     $rootScope.settings = {
+      alloydb: {},
       subsonic: {},
       sabnzbd: {}
     };
@@ -37,6 +39,52 @@ export default class Backend {
         that.SubsonicService.login();
       }
 
+    });
+
+    this.socket.on('settings_loaded_event', function (settings) {
+
+      //if (d) {
+      //  that.$rootScope.settings.subsonic = {};
+      //  that.$rootScope.settings.subsonic.username = d.username;
+      //  that.$rootScope.settings.subsonic.password = d.password;
+      //  that.$rootScope.settings.subsonic.host = d.host;
+      //  that.$rootScope.settings.subsonic.port = d.port;
+      //  that.$rootScope.settings.subsonic.use_ssl = d.use_ssl;
+      //  that.$rootScope.settings.subsonic.include_port_in_url = d.include_port_in_url;
+//
+      //  that.SubsonicService.login();
+      //}
+
+      
+
+
+      if (settings.key === 'sabnzbd_settings') {
+        $rootScope.settings.sabnzbd = {};
+        $rootScope.settings.sabnzbd.sabnzbd_host = settings.data.sabnzbd_host;
+        $rootScope.settings.sabnzbd.sabnzbd_port = settings.data.sabnzbd_port;
+        $rootScope.settings.sabnzbd.sabnzbd_use_ssl = settings.data.sabnzbd_use_ssl;
+        $rootScope.settings.sabnzbd.sabnzbd_url_base = settings.data.sabnzbd_url_base;
+        $rootScope.settings.sabnzbd.sabnzbd_apikey = settings.data.sabnzbd_apikey;
+        $rootScope.settings.sabnzbd.sabnzbd_include_port_in_url = settings.data.sabnzbd_include_port_in_url;
+        $rootScope.settings.sabnzbd.sabnzbd_username = settings.data.sabnzbd_username;
+        $rootScope.settings.sabnzbd.sabnzbd_password = settings.data.sabnzbd_password;
+        //that.AlloyDbService.login();
+      }
+
+
+      if (settings.key === 'alloydb_settings') {
+        $rootScope.settings.alloydb = {};
+        $rootScope.settings.alloydb.alloydb_host = settings.data.alloydb_host;
+        $rootScope.settings.alloydb.alloydb_port = settings.data.alloydb_port;
+        $rootScope.settings.alloydb.alloydb_apikey = settings.data.alloydb_apikey;
+        $rootScope.settings.alloydb.alloydb_use_ssl = settings.data.alloydb_use_ssl;
+        $rootScope.settings.alloydb.alloydb_include_port_in_url = settings.data.alloydb_include_port_in_url;
+        that.AlloyDbService.login();
+      }
+
+      that.AppUtilities.broadcast('settingsReloadedEvent', settings);
+
+      that.AppUtilities.apply();
     });
 
     this.socket.on('sabnzbd_settings_event', function (d) {

@@ -7,12 +7,12 @@ window.__onGCastApiAvailable = function (isAvailable) {
 };
 
 export default class MediaPlayer {
-  constructor(MediaElement, AppUtilities, Backend, SubsonicService) {
+  constructor(MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.MediaElement = MediaElement;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('init media player');
     this.activeSong = "";
     this.playing = false;
@@ -135,7 +135,7 @@ export default class MediaPlayer {
 
   checkNowPlayingImage(source) {
     if (source.artistId) {
-      this.SubsonicService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+      this.AlloyDbService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
         $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
       });
     }
@@ -150,7 +150,7 @@ export default class MediaPlayer {
       if (!source.artistId) {
         throw new Error('no artist id');
       }
-      that.SubsonicService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
+      that.AlloyDbService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
         var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
         mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
         //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
@@ -220,7 +220,7 @@ export default class MediaPlayer {
     source.artistUrl = "/artist/" + source.artistId;
     source.albumUrl = "/album/" + source.albumId;
     if (source && source.id) {
-      source.url = t.SubsonicService.subsonic.streamUrl(source.id, 320);
+      source.url = t.AlloyDbService.stream(source.id, 320);
 
       t.checkVolume();
 
@@ -234,7 +234,7 @@ export default class MediaPlayer {
         t.generateRemoteMetadata(source).then(function (mediaInfo) {
           var request = new chrome.cast.media.LoadRequest(mediaInfo);
           cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
-          t.SubsonicService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+          t.AlloyDbService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
             if (scrobbleResult) t.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
           });
           t.togglePlayPause();
@@ -252,9 +252,9 @@ export default class MediaPlayer {
         var that2 = t;
         if (playPromise !== undefined) {
           playPromise.then(_ => {
-            that2.SubsonicService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
-              if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
-            });
+            //that2.AlloyDbService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
+            //  if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
+            //});
             that2.togglePlayPause();
             that2.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {
@@ -465,7 +465,7 @@ export default class MediaPlayer {
             //id = id.split("&")[6];
             //id = id.substring(3,id.length - 1);
 
-            //this.SubsonicService.subsonic.getSong2(id).then(function (result) {
+            //this.AlloyDbService.subsonic.getSong2(id).then(function (result) {
             //    this.Backend.debug("getArtistDetails result")
             //    this.Backend.debug(result)
 
