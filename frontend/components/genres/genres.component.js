@@ -1,6 +1,6 @@
 import './genres.scss';
 class GenresController {
-  constructor($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -9,22 +9,20 @@ class GenresController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('genres-controller');
     $scope.genres = [];
     var that = this;
     var columnDefs = [{
-        headerName: "Genre",
-        field: "value"
-      },
-      {
-        headerName: "Albums",
-        field: "albumCount"
-      },
-      {
-        headerName: "Songs",
-        field: "songCount"
-      }
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Tracks",
+      field: "track_count",
+      width: 100,
+      suppressSizeToFit: true
+    }
     ];
 
     $scope.gridOptions = {
@@ -57,46 +55,25 @@ class GenresController {
           }
         );
       },
-      onSelectionChanged: function (data) {
-        that.Backend.debug('selection changed');
-        var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
-
-        that.$location.path("/genre/" + selectedRow.value.toString());
-        if (!$scope.$$phase) {
-          $scope.$apply();
+      onRowDoubleClicked: function (e) {
+        var selectedRow = e.data;
+        if (selectedRow) {
+          that.$location.path("/genre/" + selectedRow.id.toString());
+          that.AppUtilities.apply();
         }
-        that.Backend.debug("/genre/" + selectedRow.value.toString());
       }
     };
 
-    $scope.getGenres = function (genreCollection, callback) {
-      var genres = [];
-      genreCollection.forEach(genreHolder => {
-        genreHolder.genre.forEach(genre => {
-          genres.push(genre);
-        });
-      });
-
-      Promise.all(genres).then(function (genreResult) {
-        callback(genreResult);
-      });
-    };
-
     $scope.reloadGenres = function () {
-      if (SubsonicService.isLoggedIn) {
+      if (AlloyDbService.isLoggedIn) {
         $scope.genres = [];
-        SubsonicService.subsonic.getGenres().then(function (result) {
-
+        AlloyDbService.getGenres().then(function (result) {
           $scope.genres = result;
           $scope.gridOptions.api.setRowData($scope.genres);
           $scope.gridOptions.api.sizeColumnsToFit();
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+          AppUtilities.apply();
           AppUtilities.hideLoader();
         });
-
-
       } else {
         if ($scope.gridOptions.api)
           $scope.gridOptions.api.showNoRowsOverlay();

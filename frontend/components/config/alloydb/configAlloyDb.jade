@@ -1,0 +1,28 @@
+.generalConfigWrapper
+  .generalConfigBodyWrapper.container.h-100
+    .row.h-100.justify-content-center
+      form.col-6
+        .form-group
+          label(for='alloydbHost') Host
+          input#alloydbHost.form-control(type='text', placeholder='Database Host', ng-model='settings.alloydb_host', ng-change="previewConnectionString()")
+        .form-group
+          label(for='alloydbPort') Port
+          input#alloydbPort.form-control(type='number', placeholder='4000', ng-model='settings.alloydb_port', ng-change="previewConnectionString()")
+        .form-group
+          label(for='alloydbHost') API Key
+          input#alloydbHost.form-control(type='text', placeholder='Api Key', ng-model='settings.alloydb_apikey')
+        .form-check
+          input#useSslCheck.form-check-input(type='checkbox', ng-model='settings.alloydb_use_ssl', ng-change="previewConnectionString()")
+          label.form-check-label(for='useSslCheck') Use SSL?
+        .form-check
+          input#includePortInUrl.form-check-input(type='checkbox', ng-model='settings.alloydb_include_port_in_url', ng-change="previewConnectionString()")
+          label.form-check-label(for='includePortInUrl') Include port in URL?
+        .form-group
+          p Preview of Connection string: {{connectionStringPreview}}
+        .form-group
+          button.btn.btn-dark(type='submit', ng-click='saveSettings()') Save
+      
+
+
+
+

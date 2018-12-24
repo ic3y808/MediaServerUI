@@ -22,8 +22,8 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
 
   $(window).on('resize', windowResized);
   Backend.debug('loading settings');
-  Backend.emit('load_subsonic_settings');
-  Backend.emit('load_sabnzbd_settings');
+  Backend.emit('load_settings', 'alloydb_settings');
+  Backend.emit('load_settings', 'sabnzbd_settings');
 
   setTimeout(() => {
     if (MediaPlayer.castStatus()) {

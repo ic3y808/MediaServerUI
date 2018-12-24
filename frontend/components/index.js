@@ -18,7 +18,7 @@ import PodcastsComponent from './podcasts/podcasts.component';
 import SideNavComponent from './sidenav/sidenav.component';
 import ConfigComponent from './config/config.component';
 import ConfigGeneralComponent from './config/general/configGeneral.component';
-import ConfigSubsonicComponent from './config/subsonic/configSubsonic.component';
+import ConfigAlloyDbComponent from './config/alloydb/configAlloyDb.Component';
 import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
 import ActivityComponent from './activity/activity.component';
 import ActivityQueueComponent from './activity/queue/activityQueue.component';
@@ -47,7 +47,7 @@ export default angular
   .component('sidenav', SideNavComponent)
   .component('config', ConfigComponent)
   .component('configgeneral', ConfigGeneralComponent)
-  .component('configsubsonic', ConfigSubsonicComponent)
+  .component('configalloydb', ConfigAlloyDbComponent)
   .component('configsabnzbd', ConfigSabnzbdComponent)
   .component('activity', ActivityComponent)
   .component('activityqueue', ActivityQueueComponent)

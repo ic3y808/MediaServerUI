@@ -1,19 +1,19 @@
 import './artists.scss';
 class ArtistsController {
-  constructor($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, SubsonicService) {
+  constructor($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artists-controller');
     var that = this;
 
     var columnDefs = [{
       headerName: "Name",
-      field: "name"
+      field: "base_path"
     },
     {
       headerName: "Albums",
@@ -66,40 +66,41 @@ class ArtistsController {
       }
     };
 
-    $scope.getArtists = function (artistsCollection, callback) {
-      var artists = [];
-      artistsCollection.forEach(artistHolder => {
-        artistHolder.artist.forEach(artist => {
-          artists.push(artist);
-        });
-      });
-
-      Promise.all(artists).then(function (artistsResult) {
-        callback(artistsResult);
-      });
-    };
-
     $scope.reloadArtists = function () {
-      if (SubsonicService.isLoggedIn) {
-        $scope.artists = [];
-        SubsonicService.subsonic.getArtists().then(function (artistsCollection) {
-          $scope.getArtists(artistsCollection, function (result) {
-            $scope.artists = result;
-            if ($scope.gridOptions.api) {
-              $scope.gridOptions.api.setRowData($scope.artists);
-              $scope.gridOptions.api.sizeColumnsToFit();
-              if (!$scope.$$phase) {
-                $scope.$apply();
-              }
-              AppUtilities.hideLoader();
-            }
-          });
+
+      $scope.artists = [];
+
+      var artists = that.AlloyDbService.getMusicFolders();
+      if (artists) {
+        artists.then(function (result) {
+
+          $scope.artists = result;
+          $scope.gridOptions.api.setRowData($scope.artists);
+          $scope.gridOptions.api.sizeColumnsToFit();
+          AppUtilities.apply();
+          AppUtilities.hideLoader();
         });
-      } else {
-        if ($scope.gridOptions.api)
-          $scope.gridOptions.api.showNoRowsOverlay();
-        AppUtilities.hideLoader();
       }
+
+
+      //AlloyDbService.subsonic.getArtists().then(function (artistsCollection) {
+      //  $scope.getArtists(artistsCollection, function (result) {
+      //    $scope.artists = result;
+      //    if ($scope.gridOptions.api) {
+      //      $scope.gridOptions.api.setRowData($scope.artists);
+      //      $scope.gridOptions.api.sizeColumnsToFit();
+      //      if (!$scope.$$phase) {
+      //        $scope.$apply();
+      //      }
+      //      AppUtilities.hideLoader();
+      //    }
+      //  });
+      //});
+
+      if ($scope.gridOptions.api)
+        $scope.gridOptions.api.showNoRowsOverlay();
+      AppUtilities.hideLoader();
+
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {

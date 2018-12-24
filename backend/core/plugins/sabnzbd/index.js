@@ -8,20 +8,12 @@ module.exports.isLoggedIn = false;
 
 module.exports.socketConnect = function (socket) {
   log.debug('sabnzbd plugin socketConnect');
-  socket.on('save_sabnzbd_settings', function (settings) {
-    log.debug('Sabnzbd Settings save requested');
-    db.saveSabnzbdSettings(settings, function (result) {
-      module.exports.login();
-      log.debug('Sabnzbd Settings saved');
-    });
+
+  socket.on('sabnzbd_reset_settings', function (settings) {
+    sabnzbd = null;
+    module.exports.login();
   });
-  socket.on('load_sabnzbd_settings', function () {
-    log.debug('Sabnzbd Settings loading');
-    db.loadSabnzbdSettings(function (result) {
-      socket.emit('sabnzbd_settings_event', result);
-      log.debug('Sabnzbd Settings loaded');
-    });
-  });
+
   socket.on('test_sabnzbd_settings', function (settings) {
     log.debug('test_sabnzbd_settings');
     if (settings.sabnzbd_host && settings.sabnzbd_apikey) {
@@ -57,6 +49,7 @@ module.exports.socketConnect = function (socket) {
       socket.emit('test_sabnzbd_connection_result', status);
     }
   });
+
   socket.on('get_sabnzbd_history', function () {
     log.debug('get_sabnzbd_history');
     module.exports.login();
@@ -96,7 +89,7 @@ module.exports.socketConnect = function (socket) {
 module.exports.ping = function () {
   clearInterval(timer);
   timer = setInterval(function () {
-      if (sabnzbd) {
+    if (sabnzbd) {
       sabnzbd.version().then(function (version) {
         module.exports.io.emit("sabnzbd_ping", JSON.stringify(version));
       }).catch(function (error) {
@@ -107,9 +100,8 @@ module.exports.ping = function () {
 };
 
 module.exports.login = function () {
-  db.loadSabnzbdSettings(function (settings) {
+  db.loadSettings('sabnzbd_settings', function (settings) {
     if (settings) {
-
       if (sabnzbd) {
         sabnzbd.status().then(function (status) {
           log.debug('sabnzbd status  : ' + status.result);
@@ -119,19 +111,19 @@ module.exports.login = function () {
           log.error('sabnzbd status  : ' + error);
         });
       } else {
-        if (settings) {
-          if (settings.sabnzbd_host && settings.sabnzbd_apikey) {
+        if (settings.data) {
+          if (settings.data.sabnzbd_host && settings.data.sabnzbd_apikey) {
             var url = 'http://'
 
-            if (settings.sabnzbd_use_ssl)
+            if (settings.data.sabnzbd_use_ssl)
               url = "https://";
 
-            url += settings.sabnzbd_host;
+            url += settings.data.sabnzbd_host;
 
-            if (settings.sabnzbd_include_port_in_url)
-              url += ":" + settings.sabnzbd_port;
+            if (settings.data.sabnzbd_include_port_in_url)
+              url += ":" + settings.data.sabnzbd_port;
 
-            sabnzbd = new SABnzbd(url, settings.sabnzbd_apikey);
+            sabnzbd = new SABnzbd(url, settings.data.sabnzbd_apikey);
 
             if (sabnzbd) {
               sabnzbd.status().then(function (status) {

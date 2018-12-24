@@ -1,6 +1,6 @@
 import './status.scss';
 class StatusController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,54 +8,55 @@ class StatusController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('status-controller');
     var that = this;
+
     $scope.ping = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        var ping = that.SubsonicService.ping();
-        if (ping) {
-          ping.then(function (data) {
-            that.Backend.debug('ping');
-            that.Backend.debug(data);
-            $scope.server = data;
-          });
-        }
+      var ping = that.AlloyDbService.ping();
+      if (ping) {
+        ping.then(function (data) {
+          that.Backend.debug('ping');
+          that.Backend.debug(data);
+          $scope.alloydb = data;
+          that.AppUtilities.apply();
+        });
       }
+
     };
 
-    $scope.getUserInfo = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        that.SubsonicService.subsonic.getUserInfo().then(function (userInfo) {
-          that.Backend.debug('getUserInfo');
-          that.Backend.debug(userInfo);
-          $scope.userInfo = userInfo;
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+    $scope.getLibraryInfo = function () {
+      var libraryInfo = that.AlloyDbService.getLibraryInfo();
+      if (libraryInfo) {
+        libraryInfo.then(function (info) {
+          that.Backend.debug('getLibraryInfo');
+          that.Backend.debug(info);
+          $scope.libraryInfo = info;
+          that.AppUtilities.apply();
         });
       }
     };
 
-    $scope.getMediaFolders = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        that.SubsonicService.subsonic.getMusicFolders().then(function (data) {
-          $scope.folders = data;
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+    $scope.getMediaPaths = function () {
+      var mediaPaths = that.AlloyDbService.getMediaPaths();
+      if (mediaPaths) {
+        mediaPaths.then(function (paths) {
+          that.Backend.debug('getMediaPaths');
+          that.Backend.debug(paths);
+          $scope.mediaPaths = paths;
+          that.AppUtilities.apply();
         });
       }
     };
 
-    $scope.startScan = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        that.SubsonicService.subsonic.startScan().then(function (data) {
-          $scope.scanStatus = data;
-          $scope.scanStatusTotalFiles = data.count;
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+    $scope.scanStart = function () {
+      var scanner = that.AlloyDbService.scanStart();
+      if (scanner) {
+        scanner.then(function (result) {
+          that.Backend.debug('startScan');
+          that.Backend.debug(result);
+          $scope.scanStatus = result;
+          that.AppUtilities.apply();
           $scope.rescanInterval = setInterval(function () {
             $scope.getScanStatus();
           }, 500);
@@ -64,27 +65,51 @@ class StatusController {
     };
 
     $scope.getScanStatus = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        that.SubsonicService.subsonic.getScanStatus().then(function (data) {
-          $scope.scanStatus = data;
-          if ($scope.scanStatus.count === $scope.scanStatusTotalFiles) {
+      var scanner = that.AlloyDbService.scanStatus();
+      if (scanner) {
+        scanner.then(function (result) {
+          that.Backend.debug('getScanStatus');
+          that.Backend.debug(result);
+          $scope.scanStatus = result;
+          that.AppUtilities.apply();
+
+
+          if (!$scope.scanStatus.result.isScanning) {
             clearInterval($scope.rescanInterval);
+          } else {
+            if (!$scope.rescanInterval) {
+              $scope.rescanInterval = setInterval(function () {
+                $scope.getScanStatus();
+              }, 500);
+            }
           }
-          $scope.$apply();
+        });
+      }
+      $scope.getLibraryInfo();
+    };
+
+    $scope.scanCancel = function () {
+      var scanner = that.AlloyDbService.scanCancel();
+      if (scanner) {
+        scanner.then(function (result) {
+          that.Backend.debug('cancelScan');
+          that.Backend.debug(result);
+          $scope.scanStatus = result;
+          that.AppUtilities.apply();
         });
       }
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       $scope.ping();
-      $scope.getUserInfo();
-      $scope.getMediaFolders();
+      $scope.getLibraryInfo();
+      $scope.getMediaPaths();
     });
 
     $scope.refreshIntereval = setInterval(function () {
       $scope.ping();
-      $scope.getUserInfo();
-      $scope.getMediaFolders();
+      $scope.getLibraryInfo();
+      $scope.getMediaPaths();
     }, 5000);
 
     $scope.uiRefreshIntereval = setInterval(function () {
@@ -98,8 +123,11 @@ class StatusController {
       clearInterval($scope.rescanInterval);
     });
     $scope.ping();
-    $scope.getUserInfo();
-    $scope.getMediaFolders();
+    $scope.getLibraryInfo();
+    $scope.getMediaPaths();
+    setTimeout(() => {
+      $scope.getScanStatus();
+    }, 500);
     AppUtilities.hideLoader();
   }
 }
