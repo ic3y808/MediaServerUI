@@ -79,6 +79,7 @@ export default class Backend {
           $rootScope.settings.alloydb.alloydb_use_ssl = settings.data.alloydb_use_ssl;
           $rootScope.settings.alloydb.alloydb_include_port_in_url = settings.data.alloydb_include_port_in_url;
           $rootScope.settings.alloydb.alloydb_scrobble = settings.data.alloydb_scrobble;
+          $rootScope.settings.alloydb.alloydb_love_tracks = settings.data.alloydb_love_tracks;
           $rootScope.settings.alloydb.alloydb_lastfm_username = settings.data.alloydb_lastfm_username;
           $rootScope.settings.alloydb.alloydb_lastfm_password = settings.data.alloydb_lastfm_password;
           that.AlloyDbService.login();
