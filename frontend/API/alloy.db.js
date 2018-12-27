@@ -111,11 +111,13 @@ window.AlloyApi = function () {
       }
     },
     {
-      key: 'ping',
-      value: function ping() {
+      key: '_get',
+      value: function _get(method, options) {
         var _that = this;
+        var opt = {};
+        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
         return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('system/ping', { api_key: _that._settings.alloydb_apikey });
+          var url = _that._buildUrl(method, opt);
           _that._xhr(url).then(function (e) {
             var res = e.target.response;
             resolve(res);
@@ -123,216 +125,113 @@ window.AlloyApi = function () {
             reject(e);
           });
         });
+      }
+    },
+    {
+      key: '_put',
+      value: function _put(method, options) {
+        var _that = this;
+        var opt = {};
+        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
+        return new Promise(function (resolve, reject) {
+          var url = _that._buildUrl(method, opt);
+          _that._xhrput(url).then(function (e) {
+            var res = e.target.response;
+            resolve(res);
+          }, function (e) {
+            reject(e);
+          });
+        });
+      }
+    },
+    {
+      key: 'ping',
+      value: function ping() {
+        return this._get('system/ping');
       }
     },
     {
       key: 'getLibraryInfo',
       value: function getLibraryInfo() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('system/stats', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('system/stats');
       }
     },
     {
       key: 'getMediaPaths',
       value: function getLibraryInfo() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('config/mediapaths', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('config/mediapaths');
       }
     },
     {
       key: 'getMusicFolders',
       value: function getMusicFolders() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('browse/music_folders', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('browse/music_folders');
       }
     },
     {
       key: 'getGenres',
       value: function getGenres() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('browse/genres', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('browse/genres');
       }
     },
     {
       key: 'getSongsByGenre',
       value: function getSongsByGenre(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('list/songs_by_genre', { api_key: _that._settings.alloydb_apikey, id: id });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('list/songs_by_genre', { id: id });
       }
     },
     {
       key: 'getArtist',
       value: function getArtist(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('browse/artist', { api_key: _that._settings.alloydb_apikey, id: id });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('browse/artist', { id: id });
       }
     },
     {
       key: 'getArtistInfo',
       value: function getArtistInfo(artist) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('lastfm/artist_info', { api_key: _that._settings.alloydb_apikey, artist: artist });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('lastfm/artist_info', { artist: artist });
       }
     },
     {
       key: 'getTrackInfo',
       value: function getTrackInfo(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('lastfm/track_info', { api_key: _that._settings.alloydb_apikey, id: id });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('lastfm/track_info', { id: id });
       }
     },
     {
       key: 'scanStart',
       value: function scanStart() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('system/start_scan', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('system/start_scan');
       }
     },
     {
       key: 'scanStatus',
       value: function scanStatus() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('system/scan_status', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('system/scan_status');
       }
     },
     {
       key: 'scanCancel',
       value: function scanCancel() {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('system/cancel_scan', { api_key: _that._settings.alloydb_apikey });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('system/cancel_scan');
       }
     },
     {
       key: 'search',
       value: function search(query) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('search', { api_key: _that._settings.alloydb_apikey, any: query });
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('search', { any: query });
       }
     },
     {
       key: 'star',
       value: function star(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('annotation/star', { api_key: _that._settings.alloydb_apikey, id: id });
-          _that._xhrput(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('annotation/star', { id: id });
       }
     },
     {
       key: 'unstar',
       value: function unstar(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('annotation/unstar', { api_key: _that._settings.alloydb_apikey, id: id });
-          _that._xhrput(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._get('annotation/unstar', { id: id });
       }
     },
     {
@@ -350,46 +249,19 @@ window.AlloyApi = function () {
     {
       key: 'lastFmLogin',
       value: function lastFmLogin(username, password) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('lastfm/lastfm_login', { api_key: _that._settings.alloydb_apikey, username: username, password: password })
-          _that._xhrput(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._put('lastfm/lastfm_login', { username: username, password: password });
       }
     },
     {
       key: 'scrobble',
       value: function scrobble(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('lastfm/scrobble', { api_key: _that._settings.alloydb_apikey, id: id, submission: 'true' })
-          _that._xhrput(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._put('lastfm/scrobble', { id: id, submission: 'true' });
       }
     },
     {
       key: 'scrobbleNowPlaying',
       value: function scrobbleNowPlaying(id) {
-        var _that = this;
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl('lastfm/scrobble', { api_key: _that._settings.alloydb_apikey, id: id, submission: 'false' })
-          _that._xhrput(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
+        return this._put('lastfm/scrobble', { id: id, submission: 'false' });
       }
     },
     ]);
