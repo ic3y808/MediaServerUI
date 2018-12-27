@@ -20,9 +20,10 @@ class ConfigAlloyDbController {
       $rootScope.settings.alloydb.alloydb_port = $scope.settings.alloydb_port;
       $rootScope.settings.alloydb.alloydb_apikey = $scope.settings.alloydb_apikey;
       $rootScope.settings.alloydb.alloydb_use_ssl = $scope.settings.alloydb_use_ssl;
-     
+
       $rootScope.settings.alloydb.alloydb_include_port_in_url = $scope.settings.alloydb_include_port_in_url;
       $rootScope.settings.alloydb.alloydb_scrobble = $scope.settings.alloydb_scrobble;
+      $rootScope.settings.alloydb.alloydb_love_tracks = $scope.settings.alloydb_love_tracks;
       $rootScope.settings.alloydb.alloydb_lastfm_username = $scope.settings.alloydb_lastfm_username;
 
       $rootScope.settings.alloydb.alloydb_lastfm_password = CryptoJS.AES.encrypt($scope.settings.alloydb_lastfm_password, "12345").toString();
@@ -30,6 +31,7 @@ class ConfigAlloyDbController {
       Backend.emit('save_settings', { key: 'alloydb_settings', data: $rootScope.settings.alloydb });
       that.$rootScope.triggerConfigAlert("Saved!", 'success');
       AlloyDbService.login();
+      AlloyDbService.lastFmLogin($rootScope.settings.alloydb.alloydb_lastfm_username, $scope.settings.alloydb_lastfm_password);
     };
 
     $rootScope.$on('settingsReloadedEvent', function (event, settings) {
@@ -42,9 +44,10 @@ class ConfigAlloyDbController {
         $scope.settings.alloydb_include_port_in_url = $rootScope.settings.alloydb.alloydb_include_port_in_url;
 
         $scope.settings.alloydb_scrobble = $rootScope.settings.alloydb.alloydb_scrobble;
+        $scope.settings.alloydb_love_tracks = $rootScope.settings.alloydb.alloydb_love_tracks;
         $scope.settings.alloydb_lastfm_username = $rootScope.settings.alloydb.alloydb_lastfm_username;
 
-        if ($rootScope.settings.alloydb.alloydb_host) {
+        if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
           $scope.settings.alloydb_lastfm_password = CryptoJS.AES.decrypt($rootScope.settings.alloydb.alloydb_lastfm_password.toString(), "12345").toString(CryptoJS.enc.Utf8);
         }
 

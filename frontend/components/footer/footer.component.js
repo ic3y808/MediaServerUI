@@ -1,6 +1,6 @@
 import './footer.scss';
 class FooterController {
-  constructor($scope, $rootScope, MediaElement, AppUtilities, Backend, MediaPlayer, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,8 +8,8 @@ class FooterController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
-    
+    this.AlloyDbService = AlloyDbService;
+
     this.Backend.debug('footer-controller');
   }
 
@@ -22,11 +22,11 @@ class FooterController {
       this.MediaElement.volume = val;
     }
   }
-  
+
   $onInit() {
     var that = this;
     that.Backend.debug('footer-init');
-    
+
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
 
@@ -80,22 +80,22 @@ class FooterController {
 
     $("#shareButton").click(function () {
       that.Backend.debug('shareButton');
-      that.SubsonicService.subsonic.createShare(that.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
-        $('#shareButton').popover({
-          animation: true,
-          content: 'Success! Url Copied to Clipboard.',
-          delay: {
-            "show": 0,
-            "hide": 5000
-          },
-          placement: 'top'
-        }).popover('show');
-        var url = result.url.toString();
-        that.AppUtilities.copyTextToClipboard(url);
-        setTimeout(() => {
-          $('#shareButton').popover('hide');
-        }, 5000);
-      });
+      //that.AlloyDbService.createShare(that.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
+      //  $('#shareButton').popover({
+      //    animation: true,
+      //    content: 'Success! Url Copied to Clipboard.',
+      //    delay: {
+      //      "show": 0,
+      //      "hide": 5000
+      //    },
+      //    placement: 'top'
+      //  }).popover('show');
+      //  var url = result.url.toString();
+      //  that.AppUtilities.copyTextToClipboard(url);
+      //  setTimeout(() => {
+      //    $('#shareButton').popover('hide');
+      //  }, 5000);
+      //});
 
     });
 
@@ -134,7 +134,6 @@ class FooterController {
       if (that.MediaPlayer.remotePlayerConnected()) {
         if (!that.MediaPlayer.remotePlayer.isPaused) that.MediaPlayer.pause();
         else that.MediaPlayer.play();
-
       } else {
         if (that.MediaPlayer.playing) that.MediaPlayer.pause();
         else that.MediaPlayer.play();
@@ -154,27 +153,27 @@ class FooterController {
     });
 
     $("#downloadButton").click(function () {
-      var dlUrl = that.SubsonicService.subsonic.downloadUrl(that.MediaPlayer.selectedTrack().id);
+      var dlUrl = that.AlloyDbService.download(that.MediaPlayer.selectedTrack().id);
       window.open(dlUrl, '_blank');
     });
 
     $("#likeButton").click(function () {
       var track = that.MediaPlayer.selectedTrack();
       that.Backend.info('liking track: ' + track.artist + " - " + track.title);
-      if (track.starred) {
-        that.SubsonicService.subsonic.unstar(that.MediaPlayer.selectedTrack().id).then(function (result) {
+      if (track.starred === 'true') {
+        that.AlloyDbService.unstar(that.MediaPlayer.selectedTrack().id).then(function (result) {
           that.Backend.info('UnStarred');
           that.Backend.info(result);
-          that.MediaPlayer.selectedTrack().starred = undefined;
+          that.MediaPlayer.selectedTrack().starred = 'false';
           $("#likeButtonIcon").addClass('fa-heart-o');
           $("#likeButtonIcon").removeClass('fa-heart');
           that.AppUtilities.apply();
         });
       } else {
-        that.SubsonicService.subsonic.star(that.MediaPlayer.selectedTrack().id).then(function (result) {
+        that.AlloyDbService.star(that.MediaPlayer.selectedTrack().id).then(function (result) {
           that.Backend.info('starred');
           that.Backend.info(result);
-          that.MediaPlayer.selectedTrack().starred = 1;
+          that.MediaPlayer.selectedTrack().starred = 'true';
           $("#likeButtonIcon").removeClass('fa-heart-o');
           $("#likeButtonIcon").addClass('fa-heart');
           that.AppUtilities.apply();

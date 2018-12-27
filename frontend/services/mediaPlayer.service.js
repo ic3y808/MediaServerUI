@@ -217,8 +217,8 @@ export default class MediaPlayer {
 
     var source = t.selectedTrack();
     t.Backend.debug(source.artist + " - " + source.title);
-    source.artistUrl = "/artist/" + source.artistId;
-    source.albumUrl = "/album/" + source.albumId;
+    source.artistUrl = "/artist/" + source.base_id;
+    source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {
       source.url = t.AlloyDbService.stream(source.id, 320);
 
@@ -252,24 +252,27 @@ export default class MediaPlayer {
         var that2 = t;
         if (playPromise !== undefined) {
           playPromise.then(_ => {
-            //that2.AlloyDbService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
-            //  if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
-            //});
+            that2.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
+              if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+            });
+            that2.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
+              if (scrobbleResult) that2.Backend.info('scrobbleNowPlaying success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+            });
             that2.togglePlayPause();
             that2.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {
             that2.Backend.error('playing failed ' + error);
-            that2.next();
+            //that2.next();
           });
         } else {
-          t.next();
+          //t.next();
         }
       }
       //} else {
       //  t.next();
       //}
     } else {
-      t.next();
+      //t.next();
     }
   }
 
@@ -317,14 +320,12 @@ export default class MediaPlayer {
     this.loadTrack(this.selectedIndex);
   }
 
-
-
   checkVolume() {
     $('#volumeSlider').val(this.currentVolume * 100);
   }
 
   checkStarred(source) {
-    if (source.starred) {
+    if (source.starred === 'true') {
       $("#likeButtonIcon").removeClass('fa-heart-o');
       $("#likeButtonIcon").addClass('fa-heart');
     } else {

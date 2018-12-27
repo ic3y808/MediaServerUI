@@ -133,10 +133,52 @@ export default class AlloyDbService {
     else return false;
   }
 
+  star(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.star(id);
+    else return false;
+  }
+
+  unstar(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.unstar(id);
+    else return false;
+  }
+
   stream(id, quality) {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.stream(id, quality);
+    else return false;
+  }
+
+  download(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.download(id);
+    else return false;
+  }
+
+  lastFmLogin(username, password) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.lastFmLogin(username, password);
+    else return false;
+  }
+
+  scrobble(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.scrobble(id);
+    else return false;
+  }
+
+  scrobbleNowPlaying(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.scrobbleNowPlaying(id);
     else return false;
   }
 }
