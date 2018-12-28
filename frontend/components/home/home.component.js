@@ -1,6 +1,6 @@
 import './home.scss';
 class HomeController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,7 +8,7 @@ class HomeController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('home-controller');
     var that = this;
 
@@ -16,8 +16,8 @@ class HomeController {
       var songs = [];
       songCollection.forEach(song => {
 
-        if (song.coverArt) {
-          that.SubsonicService.subsonic.getCoverArt(song.coverArt, 200).then(function (art) {
+        if (song.cover_art) {
+          that.AlloyDbService.getCoverArt(song.cover_art).then(function (art) {
             // song.artworkUrl = art;
             // $scope.random.push(song);
           });
@@ -30,9 +30,9 @@ class HomeController {
     };
 
     $scope.reloadRandomTracks = function () {
-      if (that.SubsonicService.isLoggedIn) {
+      if (that.AlloyDbService.isLoggedIn) {
         $scope.random = [];
-        that.SubsonicService.subsonic.getRandomSongs().then(function (result) {
+        that.AlloyDbService.getRandomSongs().then(function (result) {
           $scope.processTracks(result.song, function (results) {
             if (!$scope.$$phase) {
               $scope.$apply();
@@ -49,7 +49,7 @@ class HomeController {
 
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('home reloading on subsonic ready');
+      that.Backend.debug('Home reload on loginsatuschange');
       $scope.reloadRandomTracks();
     });
 

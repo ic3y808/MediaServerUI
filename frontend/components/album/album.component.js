@@ -1,13 +1,13 @@
 import './album.scss';
 class AlbumController {
-  constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
+  constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artist-controller');
     $scope.album = {};
     $scope.tracks = [];
@@ -87,68 +87,73 @@ class AlbumController {
     };
 
     $scope.getAlbum = function () {
-      if (SubsonicService.isLoggedIn) {
-        SubsonicService.subsonic.getAlbum($routeParams.id).then(function (album) {
-          $scope.album = album;
-          $scope.albumName = album.name;
-          $scope.artistName = album.artist;
-          $scope.tracks = album.song;
+      var alb = AlloyDbService.getAlbum($routeParams.id);
+      if (alb) {
+        alb.then(function (album) {
 
-          SubsonicService.subsonic.getArtistInfo2($scope.album.artistId, 50).then(function (result) {
-            if (result) {
-              if (result.similarArtist) {
-                $scope.similarArtists = result.similarArtist.slice(0, 5);
-              }
-              AppUtilities.apply();
+          if (album) {
+            $scope.album = album;
+            $scope.albumName = album.name;
+            $scope.artistName = album.base_path;
+            $scope.tracks = album.tracks;
+
+
+            var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
+            if (artistInfo) {
+              artistInfo.then(function (info) {
+                if (info.artistInfo) {
+                  $scope.artistInfo = info.artistInfo;
+                  if ($scope.artistInfo.bio) {
+                    $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+                  }
+                  if ($scope.artistInfo.similar) {
+                    $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+                  }
+                  if ($scope.artistInfo.image) {
+                    $scope.artistInfo.image.forEach(function (image) {
+                      if (image['@'].size === 'extralarge') {
+                        that.AppUtilities.setContentBackground(image['#']);
+                      }
+                    });
+                  }
+                  that.AppUtilities.apply();
+                }
+              });
             }
-          });
 
-          SubsonicService.subsonic.getAlbumInfo2($scope.album.id, 50).then(function (result) {
-            if (result) {
-              if (result.notes) {
-                $scope.albumNotes = result.notes.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-              }
-              if (result.largeImageUrl) {
-                that.AppUtilities.setContentBackground(result.largeImageUrl);
-              } else {
-                if ($scope.album.coverArt) {
-                  SubsonicService.subsonic.getCoverArt($scope.album.coverArt, 1920).then(function (result) {
-                    $scope.album.artUrl = result;
-                    if($scope.album.artUrl){
-                      AppUtilities.setContentBackground($scope.album.artUrl);
+            var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);
+            if (albumInfo) {
+              albumInfo.then(function (info) {
+                if (info.albumInfo) {
+                  $scope.albumInfo = info.albumInfo;
+
+                  that.AppUtilities.apply();
+                }
+              });
+            }
+
+            if ($scope.tracks && $scope.tracks.length > 0) {
+              if ($scope.gridOptions && $scope.gridOptions.api) {
+                $scope.gridOptions.api.setRowData($scope.tracks);
+                $scope.gridOptions.api.doLayout();
+                $scope.gridOptions.api.sizeColumnsToFit();
+                if ($routeParams.trackid) {
+                  $scope.gridOptions.api.forEachNode(function (node) {
+                    if (node.data.id === $routeParams.trackid) {
+                      $scope.gridOptions.api.selectNode(node, true);
                     }
                   });
                 }
               }
-              AppUtilities.apply();
+            } else {
+              if ($scope.gridOptions.api)
+                $scope.gridOptions.api.showNoRowsOverlay();
             }
-          });
-
-          if ($scope.tracks && $scope.tracks.length > 0) {
-            if ($scope.gridOptions && $scope.gridOptions.api) {
-              $scope.gridOptions.api.setRowData($scope.tracks);
-              $scope.gridOptions.api.doLayout();
-              $scope.gridOptions.api.sizeColumnsToFit();
-              if($routeParams.trackid){
-                $scope.gridOptions.api.forEachNode( function (node) {
-                  if (node.data.id === $routeParams.trackid) {
-                      $scope.gridOptions.api.selectNode(node, true);
-                  }
-              });
-              }
-            }
-          } else {
-            if ($scope.gridOptions.api)
-              $scope.gridOptions.api.showNoRowsOverlay();
           }
 
           AppUtilities.apply();
           AppUtilities.hideLoader();
         });
-      } else {
-        if ($scope.gridOptions.api)
-          $scope.gridOptions.api.showNoRowsOverlay();
-        AppUtilities.hideLoader();
       }
     };
 
@@ -158,7 +163,7 @@ class AlbumController {
     };
 
     $scope.startRadio = function () {
-      SubsonicService.subsonic.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
+      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
         that.Backend.debug('starting radio');
         MediaPlayer.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
@@ -173,7 +178,7 @@ class AlbumController {
 
     $scope.shareAlbum = function () {
       that.Backend.debug('shareButton');
-      that.SubsonicService.subsonic.createShare($scope.album.id, 'Shared from Alloy').then(function (result) {
+      that.AlloyDbService.createShare($scope.album.id, 'Shared from Alloy').then(function (result) {
         $('#shareAlbumButton').popover({
           animation: true,
           content: 'Success! Url Copied to Clipboard.',
@@ -203,8 +208,8 @@ class AlbumController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('album reloading on subsonic ready');
-      $scope.getAlbum();
+      that.Backend.debug('Album reload on loginsatuschange');
+      $scope.refresh();
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
@@ -221,7 +226,7 @@ class AlbumController {
       }
     });
 
-    $scope.getAlbum();
+    $scope.refresh();
   }
 }
 

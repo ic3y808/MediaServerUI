@@ -83,6 +83,30 @@ class ArtistController {
       }
     };
 
+    $scope.menuOptions = [
+      // NEW IMPLEMENTATION
+      {
+        text: 'Object-Select',
+        click: function ($itemScope, $event, modelValue, text, $li) {
+          $scope.selected = $itemScope.item.name;
+        }
+      },
+      {
+        text: 'Object-Remove',
+        click: function ($itemScope, $event, modelValue, text, $li) {
+          $scope.items.splice($itemScope.$index, 1);
+        }
+      },
+      // LEGACY IMPLEMENTATION
+      ['Select', function ($itemScope, $event, modelValue, text, $li) {
+        $scope.selected = $itemScope.item.name;
+      }],
+      null, // Dividier
+      ['Remove', function ($itemScope, $event, modelValue, text, $li) {
+        $scope.items.splice($itemScope.$index, 1);
+      }]
+    ];
+
     $scope.getArtist = function () {
 
       var artist = that.AlloyDbService.getArtist($routeParams.id);
@@ -97,7 +121,7 @@ class ArtistController {
           artist.tracks.forEach(track => {
             $scope.tracks.push(track);
             //if (album.coverArt) {
-            //  that.AlloyDbService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
+            //  that.AlloyDbService.getCoverArt(album.coverArt, 100).then(function (result) {
             //    album.artUrl = result;
             //    $scope.albums.push(album);
             //    that.AppUtilities.apply();
@@ -150,7 +174,7 @@ class ArtistController {
       //  $scope.artist = artist;
       //  $scope.artistName = artist.name;
       //
-      //  AlloyDbService.subsonic.getArtistInfo2($routeParams.id, 50).then(function (result) {
+      //  AlloyDbService.getArtistInfo2($routeParams.id, 50).then(function (result) {
       //    if (result) {
       //      if (result.biography) {
       //        $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
@@ -171,7 +195,7 @@ class ArtistController {
       //    artist.album.forEach(album => {
       //
       //      if (album.coverArt) {
-      //        that.AlloyDbService.subsonic.getCoverArt(album.coverArt, 100).then(function (result) {
+      //        that.AlloyDbService.getCoverArt(album.coverArt, 100).then(function (result) {
       //          album.artUrl = result;
       //          $scope.albums.push(album);
       //          that.AppUtilities.apply();
@@ -180,7 +204,7 @@ class ArtistController {
       //      }
       //
       //
-      //      AlloyDbService.subsonic.getAlbum(album.id).then(function (result) {
+      //      AlloyDbService.getAlbum(album.id).then(function (result) {
       //        if (result) {
       //          result.song.forEach(function (song) {
       //            $scope.tracks.push(song);
@@ -218,7 +242,7 @@ class ArtistController {
     };
 
     $scope.startRadio = function () {
-      AlloyDbService.subsonic.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
+      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
         that.Backend.debug('starting radio');
         MediaPlayer.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
@@ -229,6 +253,25 @@ class ArtistController {
       that.Backend.debug('shuffle play');
       that.MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
       that.MediaPlayer.loadTrack(0);
+    };
+
+    $scope.starArtist = function () {
+      that.Backend.info('starring artist: ' + $scope.artist);
+      if ($scope.artist.starred === 'true') {
+        that.AlloyDbService.unstar({ artist: that.$scope.artist.id }).then(function (result) {
+          that.Backend.info('UnStarred');
+          that.Backend.info(result);
+          that.$scope.artist.starred = 'false'
+          that.AppUtilities.apply();
+        });
+      } else {
+        that.AlloyDbService.star({ artist: that.$scope.artist.id }).then(function (result) {
+          that.Backend.info('starred');
+          that.Backend.info(result);
+          that.$scope.artist.starred = 'true'
+          that.AppUtilities.apply();
+        });
+      }
     };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
@@ -243,7 +286,7 @@ class ArtistController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('artist reloading on subsonic ready');
+      that.Backend.debug('Artist reload on loginsatuschange');
       $scope.getArtist();
     });
 

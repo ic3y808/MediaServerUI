@@ -1,6 +1,6 @@
 import './activity.scss';
 class ActivityController {
-  constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
+  constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -9,7 +9,6 @@ class ActivityController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.SubsonicService = SubsonicService;
     this.Backend.debug('activity-controller');
     var that = this;
 

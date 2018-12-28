@@ -161,21 +161,27 @@ class FooterController {
       var track = that.MediaPlayer.selectedTrack();
       that.Backend.info('liking track: ' + track.artist + " - " + track.title);
       if (track.starred === 'true') {
-        that.AlloyDbService.unstar(that.MediaPlayer.selectedTrack().id).then(function (result) {
+        that.AlloyDbService.unstar({ id: that.MediaPlayer.selectedTrack().id }).then(function (result) {
+          if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
+            that.AlloyDbService.unlove({ id: that.MediaPlayer.selectedTrack().id })
+          }
           that.Backend.info('UnStarred');
           that.Backend.info(result);
           that.MediaPlayer.selectedTrack().starred = 'false';
-          $("#likeButtonIcon").addClass('fa-heart-o');
-          $("#likeButtonIcon").removeClass('fa-heart');
+          $("#likeButtonIcon").addClass('fa-star-o');
+          $("#likeButtonIcon").removeClass('fa-star');
           that.AppUtilities.apply();
         });
       } else {
-        that.AlloyDbService.star(that.MediaPlayer.selectedTrack().id).then(function (result) {
+        that.AlloyDbService.star({ id: that.MediaPlayer.selectedTrack().id }).then(function (result) {
+          if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
+            that.AlloyDbService.love({ id: that.MediaPlayer.selectedTrack().id })
+          }
           that.Backend.info('starred');
           that.Backend.info(result);
           that.MediaPlayer.selectedTrack().starred = 'true';
-          $("#likeButtonIcon").removeClass('fa-heart-o');
-          $("#likeButtonIcon").addClass('fa-heart');
+          $("#likeButtonIcon").removeClass('fa-star-o');
+          $("#likeButtonIcon").addClass('fa-star');
           that.AppUtilities.apply();
         });
       }

@@ -1,12 +1,11 @@
 import io from 'socket.io-client';
 
 export default class Backend {
-  constructor($rootScope, AppUtilities, AlloyDbService, SubsonicService) {
+  constructor($rootScope, AppUtilities, AlloyDbService) {
     "ngInject";
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
-    this.SubsonicService = SubsonicService;
     this.socket = io('//' + document.location.hostname + ':' + document.location.port);
     var that = this;
     this.socket.on('ping', function (data) {
@@ -19,43 +18,10 @@ export default class Backend {
     });
     $rootScope.settings = {
       alloydb: {},
-      subsonic: {},
       sabnzbd: {}
     };
 
-
-    this.socket.on('subsonic_settings_event', function (d) {
-
-      if (d) {
-        that.$rootScope.settings.subsonic = {};
-        that.$rootScope.settings.subsonic.username = d.username;
-        that.$rootScope.settings.subsonic.password = d.password;
-        that.$rootScope.settings.subsonic.host = d.host;
-        that.$rootScope.settings.subsonic.port = d.port;
-        that.$rootScope.settings.subsonic.use_ssl = d.use_ssl;
-        that.$rootScope.settings.subsonic.include_port_in_url = d.include_port_in_url;
-        that.AppUtilities.broadcast('subsonicSettingsReloadedEvent');
-        that.AppUtilities.apply();
-        that.SubsonicService.login();
-      }
-
-    });
-
     this.socket.on('settings_loaded_event', function (settings) {
-
-      //if (d) {
-      //  that.$rootScope.settings.subsonic = {};
-      //  that.$rootScope.settings.subsonic.username = d.username;
-      //  that.$rootScope.settings.subsonic.password = d.password;
-      //  that.$rootScope.settings.subsonic.host = d.host;
-      //  that.$rootScope.settings.subsonic.port = d.port;
-      //  that.$rootScope.settings.subsonic.use_ssl = d.use_ssl;
-      //  that.$rootScope.settings.subsonic.include_port_in_url = d.include_port_in_url;
-      //
-      //  that.SubsonicService.login();
-      //}
-
-
       if (settings) {
         if (settings.key === 'sabnzbd_settings') {
           $rootScope.settings.sabnzbd = {};
@@ -109,7 +75,6 @@ export default class Backend {
         that.$rootScope.settings.sabnzbd.include_port_in_url = d.include_port_in_url;
         that.AppUtilities.broadcast('sabnzbdSettingsReloadedEvent');
         that.AppUtilities.apply();
-        //that.SubsonicService.login();
       }
 
     });

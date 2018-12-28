@@ -14,12 +14,6 @@ class ArtistsController {
     var columnDefs = [{
       headerName: "Name",
       field: "base_path"
-    },
-    {
-      headerName: "Albums",
-      field: "albumCount",
-      width: 150,
-      suppressSizeToFit: false
     }
     ];
 
@@ -83,7 +77,7 @@ class ArtistsController {
       }
 
 
-      //AlloyDbService.subsonic.getArtists().then(function (artistsCollection) {
+      //AlloyDbService.getArtists().then(function (artistsCollection) {
       //  $scope.getArtists(artistsCollection, function (result) {
       //    $scope.artists = result;
       //    if ($scope.gridOptions.api) {
@@ -104,7 +98,7 @@ class ArtistsController {
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('music reloading on subsonic ready');
+      that.Backend.debug('Artists reload on loginsatuschange');
       $scope.reloadArtists();
     });
 

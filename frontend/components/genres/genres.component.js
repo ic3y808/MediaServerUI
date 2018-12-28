@@ -82,7 +82,7 @@ class GenresController {
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('genres reloading on subsonic ready');
+      that.Backend.debug('Genres reload on loginsatuschange');
       $scope.reloadGenres();
     });
 

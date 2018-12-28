@@ -19,6 +19,11 @@
           i.fa.fa-rss.fa-w-14.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
           .PageToolbarButton-labelContainer
             .PageToolbarButton-label Radio
+      .PageToolbarSection-section.PageToolbarSection-right
+        button.PageToolbarButton-toolbarButton.Link-link(type='button',ng-click='starArtist()')
+          i.fa.fa-w-14.Icon-default(ng-class=" artist.starred == 'true' ? 'fa-star' : 'fa-star-o'", aria-hidden='true', data-prefix='fas', data-icon='rss', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 448 512', style='font-size: 21px;')
+          .PageToolbarButton-labelContainer
+            .PageToolbarButton-label Star
   .artistBodyWrapper.d-flex.flex-column
 
     #artistHeader 
@@ -39,7 +44,7 @@
             a(href='/album/{{album.id}}')
               img(ng-src='{{album.artUrl}}')
 
-    #artistTracksGrid.ag-theme-dark(ag-grid='gridOptions')
+    #artistTracksGrid.ag-theme-dark(ag-grid='gridOptions',context-menu="menuOptions")
    
 
 

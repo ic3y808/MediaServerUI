@@ -1,13 +1,13 @@
 import './albums.scss';
 class AlbumsController {
-  constructor($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, SubsonicService) {
+  constructor($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('albums-controller');
     var that = this;
 
@@ -17,11 +17,15 @@ class AlbumsController {
     },
     {
       headerName: "Artist",
-      field: "artist"
+      field: "base_path"
     },
     {
       headerName: "Genre",
       field: "genre"
+    },
+    {
+      headerName: "Path",
+      field: "path"
     },
     {
       headerName: "Tracks",
@@ -78,28 +82,20 @@ class AlbumsController {
     };
 
     $scope.reloadAlbums = function () {
-      if (SubsonicService.isLoggedIn) {
-        $scope.albums = [];
-        SubsonicService.subsonic.getAlbumList2('alphabeticalByName', 500).then(function (result) {
-          
-            $scope.albums = result;
-            if ($scope.gridOptions.api) {
-              $scope.gridOptions.api.setRowData($scope.albums);
-              $scope.gridOptions.api.sizeColumnsToFit();
-              AppUtilities.apply();
-              AppUtilities.hideLoader();
-            }
-       
-        });
-      } else {
-        if ($scope.gridOptions.api)
-          $scope.gridOptions.api.showNoRowsOverlay();
-        AppUtilities.hideLoader();
-      }
+      $scope.albums = [];
+      AlloyDbService.getAlbums().then(function (result) {
+        $scope.albums = result;
+        if ($scope.gridOptions.api) {
+          $scope.gridOptions.api.setRowData($scope.albums);
+          $scope.gridOptions.api.sizeColumnsToFit();
+          AppUtilities.apply();
+          AppUtilities.hideLoader();
+        }
+      });
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('albums reloading on subsonic ready');
+      that.Backend.debug('Albums reload on loginsatuschange');
       $scope.reloadAlbums();
     });
 

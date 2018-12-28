@@ -70,6 +70,20 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getAlbums() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getAlbums();
+    else return false;
+  }
+
+  getAlbum(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getAlbum(id);
+    else return false;
+  }
+
   getGenres() {
     this.doLogin();
     if (this.isLoggedIn)
@@ -98,10 +112,24 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getAlbumInfo(artist, album) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getAlbumInfo(artist, album);
+    else return false;
+  }
+
   getTrackInfo(id) {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.getTrackInfo(id);
+    else return false;
+  }
+
+  getStarred() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getStarred();
     else return false;
   }
 
@@ -133,17 +161,31 @@ export default class AlloyDbService {
     else return false;
   }
 
-  star(id) {
+  love(params) {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.star(id);
+      return this.alloydb.love(params);
     else return false;
   }
 
-  unstar(id) {
+  unlove(params) {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.unstar(id);
+      return this.alloydb.unlove(params);
+    else return false;
+  }
+
+  star(params) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.star(params);
+    else return false;
+  }
+
+  unstar(params) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.unstar(params);
     else return false;
   }
 
@@ -158,6 +200,13 @@ export default class AlloyDbService {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.download(id);
+    else return false;
+  }
+
+  getCoverArt(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getCoverArt(id);
     else return false;
   }
 

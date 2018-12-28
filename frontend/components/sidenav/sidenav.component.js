@@ -1,6 +1,6 @@
 import './sidenav.scss';
 class SidenavController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,7 +8,6 @@ class SidenavController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
     this.Backend.debug('sidenav-controller');
   }
 
