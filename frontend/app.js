@@ -6,6 +6,7 @@ import './styles/index';
 import 'lodash';
 import 'popper.js';
 import 'tooltip.js';
+import 'angular-bootstrap-contextmenu/contextMenu';
 import 'jquery.flipster';
 import 'moment';
 import 'typeface-roboto';
@@ -19,7 +20,6 @@ import 'bootstrap/js/dist/util';
 require("ag-grid-community");
 import * as agGridCommunity from 'ag-grid-community';
 import './API/alloy.db';
-import './API/subsonic.api';
 import './API/cast.framework';
 import './API/cast.v1';
 import './API/angular-auto-complete';
@@ -32,6 +32,6 @@ import ApplicationRun from './run.js';
 agGridCommunity.initialiseAgGridWithAngular1(angular);
 $('[data-toggle="popover"]').popover();
 
-angular.module('subsonic', [angularRoute, 'ngSanitize', 'agGrid', 'autoCompleteModule', Components.name, Factories.name, Services.name])
+angular.module('alloy', [angularRoute, 'ngSanitize', 'agGrid', 'autoCompleteModule', 'ui.bootstrap.contextMenu', Components.name, Factories.name, Services.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);

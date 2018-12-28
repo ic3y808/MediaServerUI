@@ -1,6 +1,6 @@
 import './playlist.scss';
 class PlaylistController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,7 +8,6 @@ class PlaylistController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
     this.Backend.debug('playlist-controller');
     var that = this;
     var columnDefs = [{

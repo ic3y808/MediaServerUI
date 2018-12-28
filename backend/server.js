@@ -30,7 +30,6 @@ db.init().then(function () {
   log.info('Starting up server');
   log.info('Loading Plugins');
   var sabnzbd = require('./core/plugins/sabnzbd');
-  var subsonic = require('./core/plugins/subsonic');
 
   const app = express();
   var server = require('http').Server(app);
@@ -151,7 +150,6 @@ db.init().then(function () {
   io.on('connection', function (socket) {
     db.socketConnect(socket);
     sabnzbd.socketConnect(socket);
-    subsonic.socketConnect(socket);
     log.debug('Client connected');
     socket.on('log', function (data) {
       log.log(data.method, data.message);

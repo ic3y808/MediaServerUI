@@ -2,7 +2,6 @@ import angular from 'angular';
 
 //import HomeController from './controller.home';
 //import './factory.chromecast'
-//import './factory.subsonic'
 //import './controller.artist'
 //import './controller.artists'
 //import './controller.genre'

@@ -1,6 +1,6 @@
 import './fresh.scss';
 class FreshController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,7 +8,7 @@ class FreshController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('fresh-controller');
     $scope.albums = [];
     $scope.tracks = [];
@@ -99,7 +99,7 @@ class FreshController {
     };
 
     $scope.getAlbum = function (id,) {
-      that.SubsonicService.subsonic.getAlbum(id).then(function (result) {
+      that.AlloyDbService.getAlbum(id).then(function (result) {
         if (result) {
           that.$scope.tracks = [];
           result.song.forEach(function (song) {
@@ -116,13 +116,13 @@ class FreshController {
     }
 
     $scope.reloadAll = function () {
-      if (that.SubsonicService.isLoggedIn) {
+      if (that.AlloyDbService.isLoggedIn) {
         $scope.albums = [];
-        that.SubsonicService.subsonic.getAlbumList2("newest").then(function (newestCollection) {
+        that.AlloyDbService.getAlbumList2("newest").then(function (newestCollection) {
           $scope.albums = newestCollection;
           $scope.albums.forEach(album => {
             if (album.coverArt) {
-              that.SubsonicService.subsonic.getCoverArt(album.coverArt, 300).then(function (result) {
+              that.AlloyDbService.getCoverArt(album.cover_art, 300).then(function (result) {
                 album.artUrl = result;
                 that.AppUtilities.apply();
               });
@@ -169,7 +169,7 @@ class FreshController {
         track = $scope.tracks[0];
       }
 
-      SubsonicService.subsonic.getSimilarSongs2(track.artistId).then(function (similarSongs) {
+      AlloyDbService.getSimilarSongs2(track.artistId).then(function (similarSongs) {
         that.Backend.debug('starting radio');
         if (similarSongs && similarSongs.song) {
           MediaPlayer.tracks = similarSongs.song;
@@ -205,7 +205,7 @@ class FreshController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('music reloading on subsonic ready');
+      that.Backend.debug('Fresh reload on loginsatuschange');
       $scope.reloadAll();
     });
 

@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-export default class SubsonicService {
+export default class SabnzbdService {
   constructor($rootScope, AppUtilities) {
     "ngInject";
     this.$rootScope = $rootScope;

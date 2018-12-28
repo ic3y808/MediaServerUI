@@ -1,6 +1,6 @@
 import './config.scss';
 class ConfigController {
-  constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer, SubsonicService) {
+  constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -9,7 +9,6 @@ class ConfigController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.SubsonicService = SubsonicService;
     this.Backend.debug('config-controller');
     var that = this;
 
@@ -17,11 +16,6 @@ class ConfigController {
     this.$scope.navigate = function (to) {
       $('.configBodyWrapper').append(that.$compile("<config" + to + "/>")(that.$scope));
       that.AppUtilities.apply();
-    };
-
-    this.$scope.configSubsonic = function () {
-      that.Backend.debug('configSubsonic');
-      that.$scope.navigate('subsonic');
     };
 
     this.$scope.configSabnzbd = function () {

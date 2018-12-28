@@ -134,10 +134,9 @@ export default class MediaPlayer {
   }
 
   checkNowPlayingImage(source) {
-    if (source.artistId) {
-      this.AlloyDbService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
-        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
-      });
+    if (source.cover_art) {
+
+      $('#nowPlayingImageHolder').attr('src', this.AlloyDbService.getCoverArt(source.cover_art));
     }
   }
 
@@ -150,28 +149,28 @@ export default class MediaPlayer {
       if (!source.artistId) {
         throw new Error('no artist id');
       }
-      that.AlloyDbService.subsonic.getArtistInfo2(source.artistId, 50).then(function (result) {
-        var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
-        mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
-        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
-        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
-        //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
-        mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-        mediaInfo.metadata.customData = JSON.stringify(source);
-        mediaInfo.metadata.albumArtist = source.albumArtist;
-        mediaInfo.metadata.albumName = source.album;
-        mediaInfo.metadata.artist = source.artist;
-        mediaInfo.metadata.artistName = source.artist;
-        mediaInfo.metadata.composer = source.artist;
-        mediaInfo.metadata.discNumber = source.track;
-        mediaInfo.metadata.songName = source.title;
-        mediaInfo.metadata.title = source.title;
-        mediaInfo.metadata.images = [{
-          'url': result.largeImageUrl.replace('300x300', '1280x400')
-        }];
-        resolve(mediaInfo);
-      });
+      //that.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
+      //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
+      //  mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
+      //  mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+      //  mediaInfo.metadata.customData = JSON.stringify(source);
+      //  mediaInfo.metadata.albumArtist = source.albumArtist;
+      //  mediaInfo.metadata.albumName = source.album;
+      //  mediaInfo.metadata.artist = source.artist;
+      //  mediaInfo.metadata.artistName = source.artist;
+      //  mediaInfo.metadata.composer = source.artist;
+      //  mediaInfo.metadata.discNumber = source.track;
+      //  mediaInfo.metadata.songName = source.title;
+      //  mediaInfo.metadata.title = source.title;
+      //  mediaInfo.metadata.images = [{
+      //    'url': result.largeImageUrl.replace('300x300', '1280x400')
+      //  }];
+      //  resolve(mediaInfo);
+      //});
     });
   }
 
@@ -206,6 +205,15 @@ export default class MediaPlayer {
     }
   }
 
+  scrobble(instance, source) {
+    instance.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
+      if (scrobbleResult) instance.Backend.info('scrobble success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+    });
+    instance.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
+      if (scrobbleResult) instance.Backend.info('scrobbleNowPlaying success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+    });
+  }
+
   loadTrack(index, that) {
     var t = this;
     if (that) {
@@ -234,9 +242,7 @@ export default class MediaPlayer {
         t.generateRemoteMetadata(source).then(function (mediaInfo) {
           var request = new chrome.cast.media.LoadRequest(mediaInfo);
           cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
-          t.AlloyDbService.subsonic.scrobble(source.id).then(function (scrobbleResult) {
-            if (scrobbleResult) t.Backend.info('scrobble success: ' + scrobbleResult.status + " : " + source.artist + " - " + source.title);
-          });
+          t.scrobble(t, source);
           t.togglePlayPause();
           t.startProgressTimer();
         });
@@ -252,12 +258,7 @@ export default class MediaPlayer {
         var that2 = t;
         if (playPromise !== undefined) {
           playPromise.then(_ => {
-            that2.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
-              if (scrobbleResult) that2.Backend.info('scrobble success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
-            });
-            that2.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
-              if (scrobbleResult) that2.Backend.info('scrobbleNowPlaying success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
-            });
+            that2.scrobble(that2, source);
             that2.togglePlayPause();
             that2.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {
@@ -326,11 +327,11 @@ export default class MediaPlayer {
 
   checkStarred(source) {
     if (source.starred === 'true') {
-      $("#likeButtonIcon").removeClass('fa-heart-o');
-      $("#likeButtonIcon").addClass('fa-heart');
+      $("#likeButtonIcon").removeClass('fa-star-o');
+      $("#likeButtonIcon").addClass('fa-star');
     } else {
-      $("#likeButtonIcon").removeClass('fa-heart');
-      $("#likeButtonIcon").addClass('fa-heart-o');
+      $("#likeButtonIcon").removeClass('fa-star');
+      $("#likeButtonIcon").addClass('fa-star-o');
     }
   }
 
@@ -466,7 +467,7 @@ export default class MediaPlayer {
             //id = id.split("&")[6];
             //id = id.substring(3,id.length - 1);
 
-            //this.AlloyDbService.subsonic.getSong2(id).then(function (result) {
+            //this.AlloyDbService.getTrack(id).then(function (result) {
             //    this.Backend.debug("getArtistDetails result")
             //    this.Backend.debug(result)
 
@@ -480,11 +481,11 @@ export default class MediaPlayer {
             //        $('#trackInfo').attr("href", source.albumUrl);
 
             //        if (source.starred) {
-            //            $("#likeButtonIcon").removeClass('heart-o');
-            //            $("#likeButtonIcon").addClass('heart');
+            //            $("#likeButtonIcon").removeClass('star-o');
+            //            $("#likeButtonIcon").addClass('star');
             //        } else {
-            //            $("#likeButtonIcon").removeClass('heart');
-            //            $("#likeButtonIcon").addClass('heart-o');
+            //            $("#likeButtonIcon").removeClass('star');
+            //            $("#likeButtonIcon").addClass('star-o');
             //        }
 
             //        this.togglePlayPause();

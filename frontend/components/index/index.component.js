@@ -1,5 +1,5 @@
 class IndexController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -7,7 +7,7 @@ class IndexController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('index-controller');
     $scope.artists = [];
     var that = this;
@@ -26,9 +26,9 @@ class IndexController {
     };
 
     $scope.reloadArtists = function () {
-      if (SubsonicService.isLoggedIn) {
+      if (AlloyDbService.isLoggedIn) {
         $scope.artists = [];
-        that.SubsonicService.subsonic.getArtists().then(function (result) {
+        that.AlloyDbService.getArtists().then(function (result) {
           $scope.artists = result;
           if (!$scope.$$phase) {
             $scope.$apply();
@@ -45,7 +45,7 @@ class IndexController {
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('music reloading on subsonic ready');
+      that.Backend.debug('Index reload on loginsatuschange');
       $scope.reloadArtists();
     });
 

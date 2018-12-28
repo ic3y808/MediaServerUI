@@ -1,7 +1,7 @@
 ## Work in progress
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
 * Convert existing JS to ES6-JS
-* Full subsonic API control
+* AlloyDB
 
 
 ## Upcoming requested features

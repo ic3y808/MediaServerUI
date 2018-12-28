@@ -33,22 +33,6 @@ module.exports.saveSettings = function (key, value, callback) {
   callback();
 };
 
-module.exports.loadSubsonicSettings = function (callback) {
-  module.exports.loadSettings('subsonic_settings', callback);
-};
-
-module.exports.saveSubsonicSettings = function (settings, callback) {
-  module.exports.saveSettings('subsonic_settings', settings, callback);
-};
-
-module.exports.loadSabnzbdSettings = function (callback) {
-  module.exports.loadSettings('sabnzbd_settings', callback);
-};
-
-module.exports.saveSabnzbdSettings = function (settings, callback) {
-  module.exports.saveSettings('sabnzbd_settings', settings, callback);
-};
-
 module.exports.socketConnect = function (socket) {
   socket.on('load_settings', function (key) {
     log.debug('Load settings requested for key: ' + key);

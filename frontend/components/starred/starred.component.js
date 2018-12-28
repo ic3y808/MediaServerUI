@@ -1,6 +1,6 @@
 import './starred.scss';
 class StarredController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, SubsonicService) {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,37 +8,37 @@ class StarredController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.SubsonicService = SubsonicService;
+    this.AlloyDbService = AlloyDbService;
     this.Backend.debug('starred-controller');
     var that = this;
     var columnDefs = [{
-        headerName: "#",
-        field: "track",
-        width: 75,
-        suppressSizeToFit: true
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Artist",
-        field: "artist"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "#",
+      field: "track",
+      width: 75,
+      suppressSizeToFit: true
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Artist",
+      field: "artist"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -79,7 +79,7 @@ class StarredController {
       },
       onGridReady: function () {
         setTimeout(function () {
-          $scope.reloadAll();
+          $scope.refresh();
           $scope.gridOptions.api.sizeColumnsToFit();
           $scope.gridOptions.api.addGlobalListener(
             function (foo) {
@@ -92,24 +92,23 @@ class StarredController {
       },
     };
 
-    $scope.reloadAll = function () {
-      if (that.SubsonicService.isLoggedIn) {
-        $scope.albums = [];
-        $scope.tracks = [];
-        that.SubsonicService.subsonic.getStarred().then(function (result) {
-          if(result.album){
-            result.album.forEach(album => {
+    $scope.refresh = function () {
+      $scope.albums = [];
+      $scope.tracks = [];
+      var starred = that.AlloyDbService.getStarred();
+      if (starred) {
+        that.AlloyDbService.getStarred().then(function (result) {
+          if (result.albums) {
+            result.albums.forEach(album => {
 
               if (album.coverArt) {
-                that.SubsonicService.subsonic.getCoverArt(album.coverArt, 128).then(function (result) {
-                  album.artUrl = result;
-                  $scope.albums.push(album);
-                });
+                album.artUrl = that.AlloyDbService.getCoverArt(album.cover_art);
+                $scope.albums.push(album);
               }
             });
           }
-          
-          $scope.tracks = result.song;
+
+          $scope.tracks = result.tracks;
           $scope.gridOptions.api.setRowData($scope.tracks);
           $scope.gridOptions.api.doLayout();
           $scope.gridOptions.api.sizeColumnsToFit();
@@ -122,7 +121,7 @@ class StarredController {
               spacing: -0.6,
               onItemSwitch: function (currentItem, previousItem) {
                 var id = currentItem.dataset.flipTitle;
-                that.SubsonicService.subsonic.getAlbum(id).then(function (result) {
+                that.AlloyDbService.getAlbum(id).then(function (result) {
                   if (result) {
                     $scope.tracks = [];
                     result.song.forEach(function (song) {
@@ -149,10 +148,6 @@ class StarredController {
         }, function (reject) {
           that.Backend.error(reject);
         });
-      } else {
-        if ($scope.gridOptions.api)
-          $scope.gridOptions.api.showNoRowsOverlay();
-        that.AppUtilities.hideLoader();
       }
     };
 
@@ -173,8 +168,8 @@ class StarredController {
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('music reloading on subsonic ready');
-      $scope.reloadAll();
+      that.Backend.debug('Starred reload on loginsatuschange');
+      $scope.refresh();
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
@@ -190,6 +185,8 @@ class StarredController {
         $scope.gridOptions.api.sizeColumnsToFit();
       }
     });
+
+    $scope.refresh();
   }
 }
 

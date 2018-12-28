@@ -1,71 +1,70 @@
 .statusWrapper
   .statusBodyWrapper.container.h-100
-    .row.h-100.justify-content-center
-      .list-group
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | Backend Status
-            p.list-group-item-text
-              | Status: {{$root.backend_ping}}
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | Sabnzbd Status
-            p.list-group-item-text
-              span.label.label-success
-              | Status: {{$root.sabnzbd_ping}}
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | AlloyDB Status 
-            p.list-group-item-text
-              span.label.label-success 
-              | Connection: {{alloydb.status}}
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | Enabled Folders
-            p.list-group-item-text
-              span.label.label-success 
-                table.table
-                  tbody
-                    tr(ng-repeat='mediaPath in mediaPaths')
-                      td {{mediaPath.display_name}} - {{mediaPath.path}}
-                
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | Library Statistics
-            p.list-group-item-text
-              span.label.label-success
-                table.table
-                  tbody
-                    tr
-                      td Tracks
-                      td {{libraryInfo.track_count}}
-                    tr
-                      td Artists
-                      td {{libraryInfo.artist_count}}
-                    tr
-                      td Albums
-                      td {{libraryInfo.album_count}}
-                    tr
-                      td Root Folders
-                      td {{libraryInfo.folder_count}}
-                    tr
-                      td Genres
-                      td {{libraryInfo.genre_count}}
-                    tr
-                      td Total Memory
-                      td {{libraryInfo.memory_used}}
-                    
-          .list-group-item-dark
-            h4.list-group-item-heading
-              | Rescan Library
-            p.list-group-item-text
-              span.label.label-success 
-                button(ng-click='scanStart()', ng-show='!scanStatus.result.isScanning').btn.btn-success
-                  i.fa.fa-refresh Start Rescan
-                button(ng-click='scanCancel()', ng-show='scanStatus.result.isScanning').btn.btn-success
-                  i.fa.fa-refresh Cancel
-                div(ng-show='scanStatus.result.status')
-                  |  Current Progress: {{scanStatus.result.status}}      
+    .list-group
+        .list-group-item-dark
+          h4.list-group-item-heading
+            | Backend Status
+          p.list-group-item-text
+            | Status: {{$root.backend_ping}}
+        .list-group-item-dark
+          h4.list-group-item-heading
+            | Sabnzbd Status
+          p.list-group-item-text
+            span.label.label-success
+            | Status: {{$root.sabnzbd_ping}}
+        .list-group-item-dark
+          h4.list-group-item-heading
+            | AlloyDB Status 
+          p.list-group-item-text
+            span.label.label-success 
+            | Connection: {{alloydb.status}}
+        .list-group-item-dark
+          h4.list-group-item-heading
+            | Enabled Folders
+          p.list-group-item-text
+            span.label.label-success 
+              table.table
+                tbody
+                  tr(ng-repeat='mediaPath in mediaPaths')
+                    td {{mediaPath.display_name}} - {{mediaPath.path}}
+              
+        .list-group-item-dark
+          h4.list-group-item-heading
+            | Library Statistics
+          p.list-group-item-text
+            span.label.label-success
+              table.table
+                tbody
+                  tr
+                    td Tracks
+                    td {{libraryInfo.track_count}}
+                  tr
+                    td Artists
+                    td {{libraryInfo.artist_count}}
+                  tr
+                    td Albums
+                    td {{libraryInfo.album_count}}
+                  tr
+                    td Root Folders
+                    td {{libraryInfo.folder_count}}
+                  tr
+                    td Genres
+                    td {{libraryInfo.genre_count}}
+                  tr
+                    td Total Memory
+                    td {{libraryInfo.memory_used}}
+                  
+        .list-group-item-dark
+          h4.list-group-item-heading
+            | Rescan Library
+          p.list-group-item-text
+            span.label.label-success 
+              button(ng-click='scanStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
+                i.fa.fa-refresh Start Rescan
+              button(ng-click='scanCancel()', ng-show='scanStatus.result.isScanning').btn.btn-block.btn-success
+                i.fa.fa-refresh Cancel
+              div(ng-show='scanStatus.result.status')
+                |  Current Progress: {{scanStatus.result.status}}      
 
 
 

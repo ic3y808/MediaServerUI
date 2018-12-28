@@ -111,6 +111,22 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: '_xhrdel',
+      value: function _xhrput(url, dataType) {
+        var _this2 = this;
+
+        return new Promise(function (resolve, reject) {
+          var xhr = new XMLHttpRequest();
+          xhr.open("DELETE", url, true);
+          xhr.responseType = dataType || 'json';
+          xhr.onload = resolve;
+          xhr.onerror = reject;
+          xhr.send();
+          _this2._lastXhr = xhr;
+        });
+      }
+    },
+    {
       key: '_get',
       value: function _get(method, options) {
         var _that = this;
@@ -145,6 +161,23 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: '_delete',
+      value: function _delete(method, options) {
+        var _that = this;
+        var opt = {};
+        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
+        return new Promise(function (resolve, reject) {
+          var url = _that._buildUrl(method, opt);
+          _that._xhrdel(url).then(function (e) {
+            var res = e.target.response;
+            resolve(res);
+          }, function (e) {
+            reject(e);
+          });
+        });
+      }
+    },
+    {
       key: 'ping',
       value: function ping() {
         return this._get('system/ping');
@@ -169,6 +202,24 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: 'getStarred',
+      value: function getStarred() {
+        return this._get('list/starred');
+      }
+    },
+    {
+      key: 'getAlbums',
+      value: function getAlbums() {
+        return this._get('list/album_list');
+      }
+    },
+    {
+      key: 'getAlbum',
+      value: function id(id) {
+        return this._get('browse/album', { id: id });
+      }
+    },
+    {
       key: 'getGenres',
       value: function getGenres() {
         return this._get('browse/genres');
@@ -190,6 +241,12 @@ window.AlloyApi = function () {
       key: 'getArtistInfo',
       value: function getArtistInfo(artist) {
         return this._get('lastfm/artist_info', { artist: artist });
+      }
+    },
+    {
+      key: 'getAlbumInfo',
+      value: function getAlbumInfo(artist, album) {
+        return this._get('lastfm/album_info', { artist: artist, album: album });
       }
     },
     {
@@ -223,15 +280,27 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: 'love',
+      value: function love(params) {
+        return this._put('lastfm/love', params);
+      }
+    },
+    {
+      key: 'unlove',
+      value: function unlove(params) {
+        return this._delete('lastfm/love', params);
+      }
+    },
+    {
       key: 'star',
-      value: function star(id) {
-        return this._get('annotation/star', { id: id });
+      value: function star(params) {
+        return this._put('annotation/star', params);
       }
     },
     {
       key: 'unstar',
-      value: function unstar(id) {
-        return this._get('annotation/unstar', { id: id });
+      value: function unstar(params) {
+        return this._put('annotation/unstar', params);
       }
     },
     {
@@ -244,6 +313,12 @@ window.AlloyApi = function () {
       key: 'download',
       value: function download(id, quality) {
         return this._buildUrl('media/download', { api_key: this._settings.alloydb_apikey, id: id })
+      }
+    },
+    {
+      key: 'getCoverArt',
+      value: function getCoverArt(id) {
+        return this._buildUrl('media/cover_art', { api_key: this._settings.alloydb_apikey, id: id })
       }
     },
     {
@@ -271,4 +346,3 @@ window.AlloyApi = function () {
 
   return AlloyApi;
 }();
-//# sourceMappingURL=subsonic-api.js.map
