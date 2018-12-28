@@ -1,9 +1,8 @@
 .indexWrapper
   .indexBodyWrapper.d-flex.flex-column
-
     .card(ng-repeat='container in artists')
       .card-header
       | {{container.name}}
       .card-body
-        div(ng-repeat='artist in container.artist')
-          <a href="/artist/{{artist.id}}" class="card-link">{{artist.name}}</a>
+        div(ng-repeat='artist in container.value')
+          <a href="/artist/{{artist.base_id}}" class="card-link">{{artist.base_path}}</a>

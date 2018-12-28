@@ -12,45 +12,21 @@ class HomeController {
     this.Backend.debug('home-controller');
     var that = this;
 
-    $scope.processTracks = function (songCollection, callback) {
-      var songs = [];
-      songCollection.forEach(song => {
+    $scope.refresh = function () {
 
-        if (song.cover_art) {
-          that.AlloyDbService.getCoverArt(song.cover_art).then(function (art) {
-            // song.artworkUrl = art;
-            // $scope.random.push(song);
-          });
-        }
-      });
-
-      Promise.all(songs).then(function (songsResult) {
-        callback(songsResult);
-      });
-    };
-
-    $scope.reloadRandomTracks = function () {
-      if (that.AlloyDbService.isLoggedIn) {
-        $scope.random = [];
-        that.AlloyDbService.getRandomSongs().then(function (result) {
-          $scope.processTracks(result.song, function (results) {
-            if (!$scope.$$phase) {
-              $scope.$apply();
-            }
-          });
-
+      $scope.random = [];
+      var getRandomSongs = that.AlloyDbService.getRandomSongs();
+      if (getRandomSongs) {
+        getRandomSongs.then(function (result) {
+          $scope.random = result;
+          that.AppUtilities.apply();
         });
-
-
       }
     };
 
-
-
-
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Home reload on loginsatuschange');
-      $scope.reloadRandomTracks();
+      $scope.refresh();
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
@@ -64,10 +40,10 @@ class HomeController {
     });
 
 
-    $scope.reloadRandomTracks();
+    $scope.refresh();
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
-    
+
     this.AppUtilities.hideLoader();
 
   }

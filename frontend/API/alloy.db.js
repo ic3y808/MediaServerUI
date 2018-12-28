@@ -202,6 +202,24 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: 'getMusicFoldersIndex',
+      value: function getMusicFoldersIndex() {
+        return this._get('browse/music_folders_index');
+      }
+    },
+    {
+      key: 'getRandomSongs',
+      value: function getRandomSongs() {
+        return this._get('list/random_songs');
+      }
+    },
+    {
+      key: 'getFresh',
+      value: function getFresh(daysBack) {
+        return this._get('browse/fresh', { days_back: daysBack });
+      }
+    },
+    {
       key: 'getStarred',
       value: function getStarred() {
         return this._get('list/starred');
@@ -277,6 +295,12 @@ window.AlloyApi = function () {
       key: 'search',
       value: function search(query) {
         return this._get('search', { any: query });
+      }
+    },
+    {
+      key: 'addPlay',
+      value: function addPlay(id) {
+        return this._put('annotation/add_play', { id: id });
       }
     },
     {

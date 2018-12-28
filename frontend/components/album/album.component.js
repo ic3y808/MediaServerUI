@@ -16,7 +16,7 @@ class AlbumController {
     var that = this;
     var columnDefs = [{
       headerName: "#",
-      field: "track",
+      field: "no",
       width: 75,
       suppressSizeToFit: true
     },
@@ -38,7 +38,7 @@ class AlbumController {
     },
     {
       headerName: "Plays",
-      field: "playCount",
+      field: "play_count",
       width: 75,
       suppressSizeToFit: true
     },
