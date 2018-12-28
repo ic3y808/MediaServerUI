@@ -15,10 +15,6 @@ class NavbarController {
 
     $scope.selectedObject = null;
 
-    $("#search-box").mouseleave(function () {
-      $('#search-box').blur();
-    });
-
     $("#search-box").mouseenter(function () {
       $('#search-box').focus();
     });

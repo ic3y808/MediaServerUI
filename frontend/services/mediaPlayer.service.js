@@ -214,6 +214,16 @@ export default class MediaPlayer {
     });
   }
 
+  addPlay(instance, source) {
+    instance.AlloyDbService.addPlay(source.id).then(function (result) {
+      if (result) {
+        instance.Backend.info('addPlay success: ' + result.result + " : " + source.artist + " - " + source.title);
+        source.play_count++;
+        instance.AppUtilities.broadcast('trackChangedEvent', source);
+      }
+    });
+  }
+
   loadTrack(index, that) {
     var t = this;
     if (that) {
@@ -259,6 +269,7 @@ export default class MediaPlayer {
         if (playPromise !== undefined) {
           playPromise.then(_ => {
             that2.scrobble(that2, source);
+            that2.addPlay(that2, source);
             that2.togglePlayPause();
             that2.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {

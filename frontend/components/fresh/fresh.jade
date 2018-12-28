@@ -29,7 +29,7 @@
     #freshAlbums(style='display:none;') 
       #coverflow
         ul.flip-items
-          li(data-flip-title='{{album.id}}', ng-repeat='album in albums')
-            img.coverflowImage(ng-src='{{album.artUrl}}')
+          li(data-flip-title='{{album.album_id}}', ng-repeat='album in albums')
+            img.coverflowImage(ng-src='{{getCoverArt(album.cover_art)}}')
 
     #freshTracksGrid.ag-theme-dark(ag-grid='gridOptions')

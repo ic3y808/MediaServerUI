@@ -17,7 +17,6 @@ class StatusController {
       if (ping) {
         ping.then(function (data) {
           that.Backend.debug('ping');
-          that.Backend.debug(data);
           $scope.alloydb = data;
           that.AppUtilities.apply();
         });
@@ -29,8 +28,6 @@ class StatusController {
       var libraryInfo = that.AlloyDbService.getLibraryInfo();
       if (libraryInfo) {
         libraryInfo.then(function (info) {
-          that.Backend.debug('getLibraryInfo');
-          that.Backend.debug(info);
           $scope.libraryInfo = info;
           that.AppUtilities.apply();
         });
@@ -42,7 +39,6 @@ class StatusController {
       if (mediaPaths) {
         mediaPaths.then(function (paths) {
           that.Backend.debug('getMediaPaths');
-          that.Backend.debug(paths);
           $scope.mediaPaths = paths;
           that.AppUtilities.apply();
         });
@@ -54,7 +50,6 @@ class StatusController {
       if (scanner) {
         scanner.then(function (result) {
           that.Backend.debug('startScan');
-          that.Backend.debug(result);
           $scope.scanStatus = result;
           that.AppUtilities.apply();
           $scope.rescanInterval = setInterval(function () {
@@ -68,12 +63,8 @@ class StatusController {
       var scanner = that.AlloyDbService.scanStatus();
       if (scanner) {
         scanner.then(function (result) {
-          that.Backend.debug('getScanStatus');
-          that.Backend.debug(result);
           $scope.scanStatus = result;
           that.AppUtilities.apply();
-
-
           if (!$scope.scanStatus.result.isScanning) {
             clearInterval($scope.rescanInterval);
           } else {
@@ -93,7 +84,6 @@ class StatusController {
       if (scanner) {
         scanner.then(function (result) {
           that.Backend.debug('cancelScan');
-          that.Backend.debug(result);
           $scope.scanStatus = result;
           that.AppUtilities.apply();
         });

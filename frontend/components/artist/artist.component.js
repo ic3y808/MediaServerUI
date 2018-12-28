@@ -16,7 +16,7 @@ class ArtistController {
     var that = this;
     var columnDefs = [{
       headerName: "#",
-      field: "track",
+      field: "no",
       width: 75,
       suppressSizeToFit: true
     },
@@ -34,7 +34,7 @@ class ArtistController {
     },
     {
       headerName: "Plays",
-      field: "playCount",
+      field: "play_count",
       width: 75,
       suppressSizeToFit: true
     },
@@ -279,7 +279,6 @@ class ArtistController {
         force: true
       });
       if ($scope.gridOptions && $scope.gridOptions.api) {
-
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
       }

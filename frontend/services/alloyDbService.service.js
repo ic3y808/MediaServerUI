@@ -70,6 +70,27 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getMusicFoldersIndex() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getMusicFoldersIndex();
+    else return false;
+  }
+
+  getRandomSongs() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getRandomSongs();
+    else return false;
+  }
+
+  getFresh(daysBack) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getFresh(daysBack);
+    else return false;
+  }
+
   getAlbums() {
     this.doLogin();
     if (this.isLoggedIn)
@@ -158,6 +179,13 @@ export default class AlloyDbService {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.search(query);
+    else return false;
+  }
+
+  addPlay(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.addPlay(id);
     else return false;
   }
 

@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import CryptoJS from 'crypto-js';
 
 export default class Backend {
   constructor($rootScope, AppUtilities, AlloyDbService) {
@@ -49,6 +50,11 @@ export default class Backend {
           $rootScope.settings.alloydb.alloydb_lastfm_username = settings.data.alloydb_lastfm_username;
           $rootScope.settings.alloydb.alloydb_lastfm_password = settings.data.alloydb_lastfm_password;
           that.AlloyDbService.login();
+
+          if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
+            that.AlloyDbService.lastFmLogin(that.$rootScope.settings.alloydb.alloydb_lastfm_username, CryptoJS.AES.decrypt(that.$rootScope.settings.alloydb.alloydb_lastfm_password.toString(), "12345").toString(CryptoJS.enc.Utf8));
+          }
+
         }
 
         that.AppUtilities.broadcast('settingsReloadedEvent', settings);

@@ -12,35 +12,15 @@ class IndexController {
     $scope.artists = [];
     var that = this;
 
-    $scope.getArtists = function (artistsCollection, callback) {
-      var artists = [];
-      artistsCollection.forEach(artistHolder => {
-        artistHolder.artist.forEach(artist => {
-          artists.push(artist);
-        });
-      });
-
-      Promise.all(artists).then(function (artistsResult) {
-        callback(artistsResult);
-      });
-    };
-
     $scope.reloadArtists = function () {
-      if (AlloyDbService.isLoggedIn) {
-        $scope.artists = [];
-        that.AlloyDbService.getArtists().then(function (result) {
+      $scope.artists = [];
+      var getMusicFoldersIndex = that.AlloyDbService.getMusicFoldersIndex();
+      if (getMusicFoldersIndex) {
+        getMusicFoldersIndex.then(function (result) {
           $scope.artists = result;
-          if (!$scope.$$phase) {
-            $scope.$apply();
-          }
+          that.AppUtilities.apply();
           that.AppUtilities.hideLoader();
-
         });
-      } else {
-        if ($scope.gridOptions && $scope.gridOptions.api) {
-          $scope.gridOptions.api.showNoRowsOverlay();
-        }
-        that.AppUtilities.hideLoader();
       }
     };
 

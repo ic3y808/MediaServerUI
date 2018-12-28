@@ -17,7 +17,7 @@ class FreshController {
     var that = this;
     var columnDefs = [{
       headerName: "#",
-      field: "track",
+      field: "no",
       width: 75,
       suppressSizeToFit: true
     },
@@ -71,7 +71,7 @@ class FreshController {
       },
       onGridReady: function () {
         setTimeout(function () {
-          $scope.reloadAll();
+          $scope.refresh();
           $scope.gridOptions.api.sizeColumnsToFit();
           $scope.gridOptions.api.addGlobalListener(
             function (foo) {
@@ -98,13 +98,11 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
-    $scope.getAlbum = function (id,) {
+    $scope.getAlbum = function (id, ) {
       that.AlloyDbService.getAlbum(id).then(function (result) {
         if (result) {
-          that.$scope.tracks = [];
-          result.song.forEach(function (song) {
-            that.$scope.tracks.push(song);
-          });
+          that.$scope.tracks = result.tracks;
+
           if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
             that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
             that.$scope.gridOptions.api.doLayout();
@@ -115,52 +113,42 @@ class FreshController {
       });
     }
 
-    $scope.reloadAll = function () {
-      if (that.AlloyDbService.isLoggedIn) {
-        $scope.albums = [];
-        that.AlloyDbService.getAlbumList2("newest").then(function (newestCollection) {
-          $scope.albums = newestCollection;
-          $scope.albums.forEach(album => {
-            if (album.coverArt) {
-              that.AlloyDbService.getCoverArt(album.cover_art, 300).then(function (result) {
-                album.artUrl = result;
-                that.AppUtilities.apply();
-              });
-            } else {
-              album.artUrl = '/content/no-art.png';
+    $scope.getCoverArt = function (id) {
+      return that.AlloyDbService.getCoverArt(id);
+    }
+
+    $scope.refresh = function () {
+
+      $scope.albums = [];
+      that.AlloyDbService.getFresh(30).then(function (newestCollection) {
+        $scope.albums = newestCollection.albums;
+
+        setTimeout(function () {
+          $scope.flip = $("#coverflow").flipster({
+            start: 0,
+            fadeIn: 100,
+            autoplay: false,
+            style: 'carousel',
+            spacing: -.2,
+            buttons: true,
+            nav: false,
+            onItemSwitch: function (currentItem, previousItem) {
+              var id = currentItem.dataset.flipTitle;
+              that.$scope.getAlbum(id);
             }
           });
+          that.AppUtilities.apply();
+          $('#freshAlbums').show();
+          $scope.flip.flipster('index');
+          if ($scope.albums && $scope.albums.length > 0) {
+            $scope.getAlbum($scope.albums[0].album_id);
+          }
 
-          setTimeout(function () {
-            $scope.flip = $("#coverflow").flipster({
-              start: 0,
-              fadeIn: 100,
-              autoplay: false,
-              style: 'carousel',
-              spacing: -.2,
-              buttons: true,
-              nav: false,
-              onItemSwitch: function (currentItem, previousItem) {
-                var id = currentItem.dataset.flipTitle;
-                that.$scope.getAlbum(id);
-              }
-            });
-            that.AppUtilities.apply();
-            $('#freshAlbums').show();
-            $scope.flip.flipster('index');
-            if ($scope.albums && $scope.albums.length > 0) {
-              $scope.getAlbum($scope.albums[0].id);
-            }
+          AppUtilities.hideLoader();
+        }, 750);
+      });
 
-            AppUtilities.hideLoader();
-          }, 750);
-        });
-      } else {
-        if ($scope.gridOptions.api) {
-          $scope.gridOptions.api.showNoRowsOverlay();
-        }
-        AppUtilities.hideLoader();
-      }
+      AppUtilities.hideLoader();
     };
 
     $scope.startRadio = function () {
@@ -206,7 +194,7 @@ class FreshController {
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Fresh reload on loginsatuschange');
-      $scope.reloadAll();
+      $scope.refresh();
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
