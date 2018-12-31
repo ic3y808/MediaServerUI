@@ -4,6 +4,7 @@ import './fontawesome.scss';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-dark.css';
 import 'jquery.flipster/dist/jquery.flipster.min.css';
+import '@glidejs/glide/dist/css/glide.core.min.css';
 import './angular.autocomplete.scss';
 
 import './base.scss';

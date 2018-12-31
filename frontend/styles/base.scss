@@ -68,6 +68,13 @@ main {
 .generalConfigBodyWrapper {
   margin-top: $toolbar-height;
   overflow: auto;
+  flex-direction: column;
+  position: absolute;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
 }
 
 .btn-dark{

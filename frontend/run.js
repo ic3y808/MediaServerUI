@@ -39,7 +39,7 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
     }
   }
 
-  $window.onbeforeunload = function () {
-    return "Are you sure to leave this page?";
-  }
+  //$window.onbeforeunload = function () {
+  //  return "Are you sure to leave this page?";
+  //}
 }

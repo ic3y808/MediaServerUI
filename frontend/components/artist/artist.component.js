@@ -1,4 +1,7 @@
 import './artist.scss';
+import Glide from '@glidejs/glide'
+
+
 class ArtistController {
   constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
@@ -107,6 +110,10 @@ class ArtistController {
       }]
     ];
 
+    $scope.getCoverArt = function (id) {
+      return that.AlloyDbService.getCoverArt(id);
+    }
+
     $scope.getArtist = function () {
 
       var artist = that.AlloyDbService.getArtist($routeParams.id);
@@ -115,6 +122,9 @@ class ArtistController {
 
           $scope.artist = artist;
           $scope.artistName = artist.name;
+          $scope.artist.albums.forEach(function(album){
+            album.cover_art = $scope.getCoverArt(album.cover_art);
+          })
 
           $scope.tracks = [];
 
@@ -160,9 +170,18 @@ class ArtistController {
           }
 
           that.AppUtilities.apply();
-          $("#coverflow").flipster();
+        //  $("#coverflow").flipster();
           AppUtilities.hideLoader();
-
+            var glide = new Glide('#intro', {
+            type: 'carousel',
+            perView: 4,
+            focusAt: 'center',
+            800: {
+              perView: 2
+            }
+          })
+          
+          glide.mount()
         });
 
 
