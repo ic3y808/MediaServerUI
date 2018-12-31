@@ -299,6 +299,29 @@ footer {
   height: 1.2em !important
 }
 
+
+@media all and (max-width:$break-xxxsmall) { }
+@media all and (max-width:$break-xxsmall) { }
+@media all and (max-width:$break-xsmall) { }
+@media all and (max-width:$break-small) { }
+@media all and (max-width:$break-xxxmed) { }
+@media all and (max-width:$break-xxmed) { }
+@media all and (max-width:$break-xmed) { }
+@media all and (max-width:$break-med) { 
+  .nowPlayingBarVolumeSliderContainer {
+    display: none !important
+  }
+}
+@media all and (max-width:$break-large) { }
+@media all and (max-width:$break-xlarge) { }
+@media all and (max-width:$break-xxlarge) { }
+@media all and (max-width:$break-xxxlarge) { }
+@media all and (max-width:$break-huge) { }
+@media all and (max-width:$break-xhuge) { }
+@media all and (max-width:$break-xxhuge) { }
+@media all and (max-width:$break-xxxhuge) { }
+@media all and (max-width:$break-maximum) { }
+
 @media all and (max-width: 87.5em) {
   .nowPlayingBarUserDataButtons {
     display: none

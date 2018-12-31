@@ -9,11 +9,59 @@ $alt-sub-background-color: #1a1b1d;
 $now-playing-track: rgba(131, 191, 233, 0.728);
 $general-border-color:rgb(90,90,90);
 
+//page size breaks 
+$break-xxxsmall: 320px;
+$break-xxsmall: 375px;
+$break-xsmall: 384px;
+$break-small: 414px;
+$break-xxxmed: 480px;
+$break-xxmed: 568px;
+$break-xmed: 600px;
+$break-med: 640px;
+$break-large: 667px;
+$break-xlarge: 768px;
+$break-xxlarge: 800px;
+$break-xxxlarge: 991px;
+$break-huge: 1024px;
+$break-xhuge: 1280px;
+$break-xxhuge: 1366px;
+$break-xxxhuge: 1440px;
+$break-maximum: 1600px;
+
+//@media screen and (max-width:$break-xxxsmall) { }
+//@media screen and (max-width:$break-xxsmall) { }
+//@media screen and (max-width:$break-xsmall) { }
+//@media screen and (max-width:$break-small) { }
+//@media screen and (max-width:$break-xxxmed) { }
+//@media screen and (max-width:$break-xxmed) { }
+//@media screen and (max-width:$break-xmed) { }
+//@media screen and (max-width:$break-med) { }
+//@media screen and (max-width:$break-large) { }
+//@media screen and (max-width:$break-xlarge) { }
+//@media screen and (max-width:$break-xxlarge) { }
+//@media screen and (max-width:$break-xxxlarge) { }
+//@media screen and (max-width:$break-huge) { }
+//@media screen and (max-width:$break-xhuge) { }
+//@media screen and (max-width:$break-xxhuge) { }
+//@media screen and (max-width:$break-xxxhuge) { }
+//@media screen and (max-width:$break-maximum) { }
 
 //typography
 $main-font: 'Roboto', sans-serif;
 $main-font-size: 1em;
+$sub-font: 'Lato-Regular', sans-serif;
 $sub-font-size: 0.85em;
+$extra-font: 'MavenPro-Regular', sans-serif;
+$extra-font-size: 0.85em;
+
+@font-face{
+  font-family:$sub-font;
+  src:url(/content/Lato-Regular.ttf)format('truetype');
+}
+@font-face{
+  font-family:$extra-font;
+  src:url(/content/MavenPro-Regular.ttf)format('truetype');
+}
 
 //buttons
 $main-btn-background-color:rgba($main-background-color, .45);
