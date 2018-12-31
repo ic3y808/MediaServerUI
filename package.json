@@ -16,6 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/runtime": "^7.1.2",
+    "@glidejs/glide": "^3.2.4",
     "ag-grid-community": "^19.0.0",
     "angular": "^1.7.5",
     "angular-auto-complete": "^1.7.4",

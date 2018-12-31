@@ -20,6 +20,7 @@ import ConfigComponent from './config/config.component';
 import ConfigGeneralComponent from './config/general/configGeneral.component';
 import ConfigAlloyDbComponent from './config/alloydb/configAlloyDb.Component';
 import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
+import ConfigSchedulerComponent from './config/scheduler/configScheduler.component';
 import ActivityComponent from './activity/activity.component';
 import ActivityQueueComponent from './activity/queue/activityQueue.component';
 import ActivityHistoryComponent from './activity/history/activityHistory.component';
@@ -49,6 +50,7 @@ export default angular
   .component('configgeneral', ConfigGeneralComponent)
   .component('configalloydb', ConfigAlloyDbComponent)
   .component('configsabnzbd', ConfigSabnzbdComponent)
+  .component('configscheduler', ConfigSchedulerComponent)
   .component('activity', ActivityComponent)
   .component('activityqueue', ActivityQueueComponent)
   .component('activityhistory', ActivityHistoryComponent)

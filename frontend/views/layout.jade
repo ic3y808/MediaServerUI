@@ -8,7 +8,7 @@ html(ng-app='alloy')
         .row
           sidenav.sidebar.sidebar-expanded
           .loader
-          ng-view.main-content.col
+          ng-view.main-content.col.animate-fade
         video#media-player(preload='true', controls='hidden', style="display:none;")
       footer
       - if(!dev_mode)

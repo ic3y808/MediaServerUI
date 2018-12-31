@@ -184,6 +184,12 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: 'getSchedulerStatus',
+      value: function getSchedulerStatus() {
+        return this._get('system/scheduler');
+      }
+    },
+    {
       key: 'getLibraryInfo',
       value: function getLibraryInfo() {
         return this._get('system/stats');

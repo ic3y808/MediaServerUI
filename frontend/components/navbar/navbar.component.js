@@ -41,15 +41,15 @@ class NavbarController {
 
     $scope.autoCompleteOptions = {
       minimumChars: 1,
-      pagingEnabled: true,
+      //pagingEnabled: true,
       dropdownWidth: '500px',
       containerCssClass: "autocomplete-container",
-      pageSize: 5,
+      //pageSize: 5,
       containerTemplate: html,
-      noMatchTemplate: noMatch,
+      //noMatchTemplate: noMatch,
       activateOnFocus: true,
       itemSelected: function (e) {
-        that.selectedObject = e.item;
+       // that.selectedObject = e.item;
 
 
         switch (e.type.title) {
@@ -57,13 +57,15 @@ class NavbarController {
             that.$location.path("/artist/" + e.item.base_id);
             break;
           case "Songs":
-            that.$location.path("/album/" + e.item.albumId + "/" + e.item.id);
+            that.$location.path("/album/" + e.item.album_id + "/" + e.item.id);
             break;
           case "Albums":
-            that.$location.path("/album/" + e.item.id);
+            that.$location.path("/album/" + e.item.album_id);
+            break;
+          case "Genres":
+            that.$location.path("/genre/" + e.item.genre_id);
             break;
         }
-
 
       },
       data: function (searchText, pagingParams) {

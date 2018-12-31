@@ -1,39 +1,40 @@
 .generalConfigWrapper
-  .generalConfigBodyWrapper.container.h-100
-    .row.h-100.justify-content-center
-      form.col-6
-        .form-group
-          label(for='sabnzbdAddress') Host
-          input#sabnzbdAddress.form-control(type='text', placeholder='Hostname for SabNZBd', ng-model='settings.sabnzbd_host', ng-change="previewConnectionString()")
-        .form-group
-          label(for='sabnzbdPort') Port
-          input#sabnzbdPort.form-control(type='number', placeholder='443', ng-model='settings.sabnzbd_port', ng-change="previewConnectionString()")
-        .form-group
-          label(for='sabnzbdUrlBase') URL Base
-          input#sabnzbdUrlBase.form-control(type='text', placeholder='URL Base', ng-model='settings.sabnzbd_url_base', ng-change="previewConnectionString()") 
-          cite(title='Source Title') Adds a prefix to the Sabnzbd url, e.g. http://[host]:[port]/[urlBase]/api
-        .form-group
-          label(for='sabnzbdApiKey') API Key
-          input#sabnzbdApiKey.form-control(type='text', placeholder='API Key', ng-model='settings.sabnzbd_apikey')  
-        .form-group
-          label(for='sabnzbdUsername') Username
-          input#sabnzbdUsername.form-control(type='text', placeholder='Enter username', ng-model='settings.sabnzbd_username')
-        .form-group
-          label(for='sabnzbdPassword') Password
-          input#sabnzbdPassword.form-control(type='password', placeholder='Password', ng-model='settings.sabnzbd_password')
-        .form-check
-          input#useSslCheck.form-check-input(type='checkbox', ng-model='settings.sabnzbd_use_ssl', ng-change="previewConnectionString()")
-          label.form-check-label(for='useSslCheck') Use SSL?
-        .form-check
-          input#includePortInUrl.form-check-input(type='checkbox', ng-model='settings.sabnzbd_include_port_in_url', ng-change="previewConnectionString()")
-          label.form-check-label(for='includePortInUrl') Include port in URL?
-        .form-group
-          p Preview of Connection string: {{connectionStringPreview}}
-        .form-group
-          button#test-settings-button.btn.btn-dark(type='submit', ng-click='testSettings()') Test
-        
-        .form-group
-          button.btn.btn-dark(type='submit', ng-click='saveSettings()') Save
+  .generalConfigBodyWrapper
+    .row
+      .col-lg-8.mx-auto
+        form
+          .form-group
+            label(for='sabnzbdAddress') Host
+            input#sabnzbdAddress.form-control(type='text', placeholder='Hostname for SabNZBd', ng-model='settings.sabnzbd_host', ng-change="previewConnectionString()")
+          .form-group
+            label(for='sabnzbdPort') Port
+            input#sabnzbdPort.form-control(type='number', placeholder='443', ng-model='settings.sabnzbd_port', ng-change="previewConnectionString()")
+          .form-group
+            label(for='sabnzbdUrlBase') URL Base
+            input#sabnzbdUrlBase.form-control(type='text', placeholder='URL Base', ng-model='settings.sabnzbd_url_base', ng-change="previewConnectionString()") 
+            cite(title='Source Title') Adds a prefix to the Sabnzbd url, e.g. http://[host]:[port]/[urlBase]/api
+          .form-group
+            label(for='sabnzbdApiKey') API Key
+            input#sabnzbdApiKey.form-control(type='text', placeholder='API Key', ng-model='settings.sabnzbd_apikey')  
+          .form-group
+            label(for='sabnzbdUsername') Username
+            input#sabnzbdUsername.form-control(type='text', placeholder='Enter username', ng-model='settings.sabnzbd_username')
+          .form-group
+            label(for='sabnzbdPassword') Password
+            input#sabnzbdPassword.form-control(type='password', placeholder='Password', ng-model='settings.sabnzbd_password')
+          .form-check
+            input#useSslCheck.form-check-input(type='checkbox', ng-model='settings.sabnzbd_use_ssl', ng-change="previewConnectionString()")
+            label.form-check-label(for='useSslCheck') Use SSL?
+          .form-check
+            input#includePortInUrl.form-check-input(type='checkbox', ng-model='settings.sabnzbd_include_port_in_url', ng-change="previewConnectionString()")
+            label.form-check-label(for='includePortInUrl') Include port in URL?
+          .form-group
+            p Preview of Connection string: {{connectionStringPreview}}
+          .form-group
+            button#test-settings-button.btn.btn-dark.btn-block(type='submit', ng-click='testSettings()') Test
+          
+          .form-group
+            button.btn.btn-dark.btn-block(type='submit', ng-click='saveSettings()') Save
       
 
 

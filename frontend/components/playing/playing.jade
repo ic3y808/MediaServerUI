@@ -18,6 +18,5 @@
     .playing-bio.bg-dark-transparent {{artistBio}}
     .similar-artists-container
       .similar-artist-header.bg-dark-transparent Similar Artists  
-        ul.list-inline
-          li.list-inline-item(ng-repeat='artist in similarArtists') 
-            a(href="/artist/{{artist.id}}").similar-artist-link {{artist.name}}
+        .btn-group(role='group', aria-label='...')
+          button.btn.btn-default(type='button', ng-repeat='artist in similarArtists', ng-click='navigateToAritst({{artist.id}})') {{artist.name}}

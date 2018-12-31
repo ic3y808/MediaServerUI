@@ -49,6 +49,13 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getSchedulerStatus() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getSchedulerStatus();
+    else return false;
+  }
+
   getLibraryInfo() {
     this.doLogin();
     if (this.isLoggedIn)

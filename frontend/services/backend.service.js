@@ -11,12 +11,13 @@ export default class Backend {
     var that = this;
     this.socket.on('ping', function (data) {
       if (data)
-        $rootScope.backend_ping = JSON.parse(data).date;
+        $rootScope.backend_ping = data;
     });
     this.socket.on('sabnzbd_ping', function (data) {
       if (data)
         $rootScope.sabnzbd_ping = data;
     });
+
     $rootScope.settings = {
       alloydb: {},
       sabnzbd: {}
@@ -34,7 +35,6 @@ export default class Backend {
           $rootScope.settings.sabnzbd.sabnzbd_include_port_in_url = settings.data.sabnzbd_include_port_in_url;
           $rootScope.settings.sabnzbd.sabnzbd_username = settings.data.sabnzbd_username;
           $rootScope.settings.sabnzbd.sabnzbd_password = settings.data.sabnzbd_password;
-          //that.AlloyDbService.login();
         }
 
 

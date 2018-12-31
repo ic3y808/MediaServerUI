@@ -17,12 +17,7 @@ class ConfigController {
       $('.configBodyWrapper').append(that.$compile("<config" + to + "/>")(that.$scope));
       that.AppUtilities.apply();
     };
-
-    this.$scope.configSabnzbd = function () {
-      that.Backend.debug('configSabnzbd');
-      that.$scope.navigate('sabnzbd');
-    };
-
+    
     this.$rootScope.triggerConfigAlert = function (message, type) {
       $('.generalConfigBodyWrapper').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
       setTimeout(() => {

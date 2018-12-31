@@ -40,6 +40,8 @@ class HomeController {
     });
 
 
+    
+    
     $scope.refresh();
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');

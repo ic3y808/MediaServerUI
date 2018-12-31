@@ -158,9 +158,9 @@ db.init().then(function () {
 
   setInterval(function () {
     var dt = {
-      date: moment().format("hh:mm:ss a | MM-DD-YYYY")
+      date: moment().format("hh:mm:ss a")
     };
-    io.emit("ping", JSON.stringify(dt));
+    io.emit("ping", { status: 'success', server_time: dt.date });
   }, 1000);
 
   server.listen(normalizePort(process.env.PORT || '3000'));

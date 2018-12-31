@@ -91,7 +91,7 @@ module.exports.ping = function () {
   timer = setInterval(function () {
     if (sabnzbd) {
       sabnzbd.version().then(function (version) {
-        module.exports.io.emit("sabnzbd_ping", JSON.stringify(version));
+        module.exports.io.emit("sabnzbd_ping", { status: 'success', version: version });
       }).catch(function (error) {
         log.error('sabnzbd status  : ' + error);
       });

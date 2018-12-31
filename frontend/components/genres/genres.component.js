@@ -35,7 +35,7 @@ class GenresController {
       rowDeselection: true,
       animateRows: true,
       getRowNodeId: function (data) {
-        return data.value;
+        return data.id;
       },
       rowMultiSelectWithClick: false,
       onModelUpdated: function (data) {
@@ -55,12 +55,12 @@ class GenresController {
           }
         );
       },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-          that.$location.path("/genre/" + selectedRow.id.toString());
-          that.AppUtilities.apply();
-        }
+      onSelectionChanged: function (data) {
+        var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
+
+        $location.path("/genre/" + selectedRow.id.toString());
+        that.AppUtilities.apply();
+        that.Backend.debug("/genre/" + selectedRow.id.toString());
       }
     };
 

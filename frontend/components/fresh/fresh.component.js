@@ -120,7 +120,7 @@ class FreshController {
     $scope.refresh = function () {
 
       $scope.albums = [];
-      that.AlloyDbService.getFresh(30).then(function (newestCollection) {
+      that.AlloyDbService.getFresh(5).then(function (newestCollection) {
         $scope.albums = newestCollection.albums;
 
         setTimeout(function () {
@@ -143,12 +143,9 @@ class FreshController {
           if ($scope.albums && $scope.albums.length > 0) {
             $scope.getAlbum($scope.albums[0].album_id);
           }
-
-          AppUtilities.hideLoader();
         }, 750);
+        AppUtilities.hideLoader();
       });
-
-      AppUtilities.hideLoader();
     };
 
     $scope.startRadio = function () {
