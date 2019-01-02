@@ -81,7 +81,7 @@
                     | Rescan Library
                   p.list-group-item-text
                     span.label.label-success 
-                      div(ng-show='scanStatus.result.status')
+                      div(ng-show='scanStatus.result.isScanning')
                         |  Current Progress: {{scanStatus.result.status}} 
                       button(ng-click='scanStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
                         i.fa.fa-refresh Start Rescan

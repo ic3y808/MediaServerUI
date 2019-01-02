@@ -173,11 +173,11 @@ class ArtistController {
         //  $("#coverflow").flipster();
           AppUtilities.hideLoader();
             var glide = new Glide('#intro', {
-            type: 'carousel',
-            perView: 4,
+            type: 'slider',
+            perView: 8,
             focusAt: 'center',
             800: {
-              perView: 2
+              perView: 8
             }
           })
           

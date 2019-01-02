@@ -1,7 +1,4 @@
 @import "../../styles/variables";
-div#page-wrapper {
-  padding: 3em 2em;
-}
 
 .music-left {
   float: left;
@@ -18,31 +15,157 @@ div#page-wrapper {
   margin-top: 1.4em;
 }
 
-[role="button"] {
+body p {
+  font-family: $main-font;
+}
+
+h3,
+h4,
+h5 {
+  font-family: $sub-font;
+}
+
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: " ";
+}
+
+.clearfix:after {
+  clear: both;
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*:before,
+*:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+a {
+  background-color: transparent;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+a {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  color: #23527c;
+  text-decoration: underline;
+}
+
+a:focus {
+  outline: thin dotted;
+  outline: 5px auto -webkit-focus-ring-color;
+  outline-offset: -2px;
+}
+
+body a {
+  transition: 0.5s all;
+  -webkit-transition: 0.5s all;
+  -moz-transition: 0.5s all;
+  -o-transition: 0.5s all;
+  -ms-transition: 0.5s all;
+}
+
+a:focus,
+a:active,
+a:hover {
+  outline: none;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+  color: #111;
+}
+
+a {
+  background-color: none;
+}
+
+img {
+  vertical-align: middle;
+}
+
+.img-responsive {
+  display: block;
+  min-width: 100%;
+  height: auto;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+button {
+  margin: 0;
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  overflow: visible;
+}
+
+button {
+  text-transform: none;
+}
+
+button {
+  -webkit-appearance: button;
   cursor: pointer;
 }
 
-p {
-  margin: 0 0 10px;
+button::-moz-focus-inner {
+  padding: 0;
+  border: 0;
 }
 
-ul {
-  margin-top: 0;
+h3,
+h4,
+h5 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+h3 {
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
 h4,
-h5,
+h5 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 h3 {
-  margin-top: 0;
+  font-size: 24px;
 }
 
-ul {
-  margin: 0;
+h4 {
+  font-size: 18px;
 }
 
-p {
-  margin: 0;
+h5 {
+  font-size: 14px;
 }
 
 .col-md-3 {
@@ -52,21 +175,13 @@ p {
   padding-left: 15px;
 }
 
-@media (min-width: 992px) {
-  .col-md-3 {
-    float: left;
-  }
-  .col-md-3 {
-    width: 25%;
-  }
-}
 
 .content-grid img {
   width: 100%;
 }
 
 .content-grid {
-  width: 25%;
+  
   float: left;
   text-align: center;
   box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.35);
@@ -117,9 +232,7 @@ p {
   width: 100%;
 }
 
-.content-grid {
-  width: 21.2%;
-}
+
 
 span.new {
   display: inline-block;
@@ -158,7 +271,7 @@ h4.tittle.two {
 
 .nbs-flexisel-container {
   position: relative;
-  max-width: 100%;
+  min-width: 100%;
 }
 
 .nbs-flexisel-item a img {
@@ -199,7 +312,7 @@ h4.tittle.two {
   border: 1px solid #ddd;
 }
 
-@media screen and (max-width:$break-xxxsmall) {
+@media screen and (min-width:$break-xxxsmall) {
   h3.tittle {
     float: left;
     font-size: 1.3em;
@@ -226,7 +339,7 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxsmall) {
+@media screen and (min-width:$break-xxsmall) {
   .content-grid:hover .inner-info {
     padding: 3px 10px;
     width: 143px;
@@ -237,7 +350,7 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xsmall) {
+@media screen and (min-width:$break-xsmall) {
   span.new {
     display: inline-block;
     padding: 6px 10px;
@@ -286,7 +399,7 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-small) {
+@media screen and (min-width:$break-small) {
   .content-grid:hover .inner-info {
     padding: 3px 10px;
     width: 143px;
@@ -297,7 +410,7 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxxmed) {
+@media screen and (min-width:$break-xxxmed) {
   h3.tittle {
     float: left;
     font-size: 1.3em;
@@ -324,9 +437,9 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxmed) {
+@media screen and (min-width:$break-xxmed) {
   .content-grid {
-    width: 49.5%;
+    width: 17%;
     margin-right: 0%;
   }
   h4.tittle {
@@ -334,7 +447,7 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xmed) {
+@media screen and (min-width:$break-xmed) {
   h4.tittle {
     margin-left: 45%;
   }
@@ -347,10 +460,10 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-med) {
+@media screen and (min-width:$break-med) {
   .content-grid {
-    width: 32.33%;
-    margin-right: 1%;
+    width: 18%;
+    margin-right: 0%;
   }
   h3.tittle {
     float: left;
@@ -371,14 +484,20 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-large) {
+@media screen and (min-width:$break-large) {
   .music-left {
     float: left;
     width: 100%;
   }
   .content-grid {
-    width: 25%;
+    width: 19%;
     margin-right: 0%;
+  }
+  .col-md-3 {
+    float: left;
+  }
+  .col-md-3 {
+    width: 25%;
   }
   .content-grid.last-grid {
     margin-right: 0%;
@@ -402,7 +521,10 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xlarge) {
+@media screen and (min-width:$break-xlarge) {
+  .content-grid {
+    width: 20%;
+  }
   .music-right {
     float: left;
     width: 80%;
@@ -415,12 +537,15 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxlarge) {
+@media screen and (min-width:$break-xxlarge) {
   .music-right {
     float: left;
     width: 80%;
     margin-left: 2%;
     margin-top: 3%;
+  }
+  .content-grid {
+    width: 21%;
   }
   .content-grid:hover .inner-info {
     padding: 3px 10px;
@@ -428,18 +553,15 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxxlarge) {
+@media screen and (min-width:$break-xxxlarge) {
   .music-left {
     float: left;
     width: 100%;
   }
   .content-grid {
     width: 22%;
-    margin-right: 1%;
   }
-  .content-grid.last-grid {
-    margin-right: 1%;
-  }
+
   .music-right {
     float: left;
     width: 65%;
@@ -457,14 +579,11 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-huge) {
+@media screen and (min-width:$break-huge) {
   .content-grid {
-    width: 25%;
-    margin-right: 0%;
+    width: 23%;
   }
-  .content-grid.last-grid {
-    margin-right: 0%;
-  }
+
   h4.tittle {
     margin-left: 48%;
   }
@@ -485,10 +604,9 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xhuge) {
+@media screen and (min-width:$break-xhuge) {
   .content-grid {
     width: 24%;
-    margin-right: 1%;
   }
   .content-grid:hover .inner-info {
     padding: 3px 10px;
@@ -504,14 +622,11 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxhuge) {
+@media screen and (min-width:$break-xxhuge) {
   .content-grid {
     width: 23.5%;
-    margin-right: 2%;
   }
-  .content-grid.last-grid {
-    margin-right: 0%;
-  }
+
   .content-grid:hover .inner-info {
     padding: 3px 10px;
     width: 176px;
@@ -530,14 +645,11 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-xxxhuge) {
+@media screen and (min-width:$break-xxxhuge) {
   .content-grid {
-    width: 24.1%;
-    margin-right: 1%;
+    width: 24%;
   }
-  .content-grid.last-grid {
-    margin-right: 0%;
-  }
+
   .content-grid:hover .inner-info {
     padding: 3px 10px;
     width: 190px;
@@ -558,7 +670,7 @@ h4.tittle.two {
   }
 }
 
-@media screen and (max-width:$break-maximum) {
+@media screen and (min-width:$break-maximum) {
   .content-grid {
     width: 25%;
   }
