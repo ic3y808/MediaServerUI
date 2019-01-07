@@ -161,10 +161,17 @@ export default class AlloyDbService {
     else return false;
   }
 
-  scanStart() {
+  scanFullStart() {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.scanStart();
+      return this.alloydb.scanFullStart();
+    else return false;
+  }
+
+  scanQuickStart() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.scanQuickStart();
     else return false;
   }
 

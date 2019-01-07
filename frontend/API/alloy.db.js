@@ -280,9 +280,15 @@ window.AlloyApi = function () {
       }
     },
     {
-      key: 'scanStart',
-      value: function scanStart() {
-        return this._get('system/start_scan');
+      key: 'scanFullStart',
+      value: function scanFullStart() {
+        return this._get('system/start_full_scan');
+      }
+    },
+    {
+      key: 'scanQuickStart',
+      value: function scanQuickStart() {
+        return this._get('system/start_quick_scan');
       }
     },
     {

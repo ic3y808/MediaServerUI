@@ -1,4 +1,7 @@
 import './fresh.scss';
+import Glide from '@glidejs/glide'
+import moment from 'moment'
+
 class FreshController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -12,8 +15,9 @@ class FreshController {
     this.Backend.debug('fresh-controller');
     $scope.albums = [];
     $scope.tracks = [];
+    $scope.last_run = moment();
     $scope.continousPlay = true;
-    $('#freshAlbums').hide();
+
     var that = this;
     var columnDefs = [{
       headerName: "#",
@@ -98,8 +102,16 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
+    $scope.getCoverArt = function (id) {
+      return that.AlloyDbService.getCoverArt(id);
+    }
+
     $scope.getAlbum = function (id, ) {
-      that.AlloyDbService.getAlbum(id).then(function (result) {
+      console.log(moment().diff($scope.last_run, 'miliseconds'))
+      if (moment().diff($scope.last_run, 'miliseconds') < 250) return;
+      $scope.last_run = moment();
+
+      that.AlloyDbService.getAlbum($scope.albums[$scope.glide.index].album_id).then(function (result) {
         if (result) {
           that.$scope.tracks = result.tracks;
 
@@ -113,37 +125,34 @@ class FreshController {
       });
     }
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
-    }
-
     $scope.refresh = function () {
 
       $scope.albums = [];
       that.AlloyDbService.getFresh(5).then(function (newestCollection) {
         $scope.albums = newestCollection.albums;
+        $scope.albums.forEach(function (album) {
+          album.cover_art = that.AlloyDbService.getCoverArt(album.cover_art);
+        })
 
-        setTimeout(function () {
-          $scope.flip = $("#coverflow").flipster({
-            start: 0,
-            fadeIn: 100,
-            autoplay: false,
-            style: 'carousel',
-            spacing: -.2,
-            buttons: true,
-            nav: false,
-            onItemSwitch: function (currentItem, previousItem) {
-              var id = currentItem.dataset.flipTitle;
-              that.$scope.getAlbum(id);
-            }
-          });
-          that.AppUtilities.apply();
-          $('#freshAlbums').show();
-          $scope.flip.flipster('index');
-          if ($scope.albums && $scope.albums.length > 0) {
-            $scope.getAlbum($scope.albums[0].album_id);
+        $scope.glide = new Glide('#intro', {
+          type: 'slider',
+          perView: 8,
+          focusAt: 'center',
+          800: {
+            perView: 8
           }
-        }, 750);
+        })
+
+        $scope.glide.mount();
+
+        $scope.glide.on(['move.after'], $scope.getAlbum);
+
+        that.AppUtilities.apply();
+
+        //$scope.flip.flipster('index');
+        if ($scope.albums && $scope.albums.length > 0) {
+          $scope.getAlbum($scope.albums[0].album_id);
+        }
         AppUtilities.hideLoader();
       });
     };

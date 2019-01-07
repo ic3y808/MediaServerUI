@@ -83,8 +83,11 @@
                     span.label.label-success 
                       div(ng-show='scanStatus.result.isScanning')
                         |  Current Progress: {{scanStatus.result.status}} 
-                      button(ng-click='scanStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
-                        i.fa.fa-refresh Start Rescan
+                        | {{scanStatus.result.currentlyScanned}} - {{scanStatus.result.totalFiles}}
+                      button(ng-click='scanFullStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
+                        i.fa.fa-refresh Start Full Rescan
+                      button(ng-click='scanQuickStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
+                        i.fa.fa-refresh Start Quick Rescan
                       button(ng-click='scanCancel()', ng-show='scanStatus.result.isScanning').btn.btn-block.btn-success
                         i.fa.fa-refresh Cancel
 
