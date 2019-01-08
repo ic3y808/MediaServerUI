@@ -24,6 +24,7 @@ import './API/alloy.db';
 import './API/cast.framework';
 import './API/cast.v1';
 import './API/angular-auto-complete';
+import Directives from './directives';
 import Components from './components';
 import Services from './services';
 import Factories from './factories';
@@ -33,6 +34,6 @@ import ApplicationRun from './run.js';
 agGridCommunity.initialiseAgGridWithAngular1(angular);
 $('[data-toggle="popover"]').popover();
 
-angular.module('alloy', [angularRoute, 'ngSanitize', 'agGrid', 'autoCompleteModule', 'ui.bootstrap.contextMenu', Components.name, Factories.name, Services.name])
+angular.module('alloy', [angularRoute, 'ngSanitize', 'agGrid', 'autoCompleteModule', 'ui.bootstrap.contextMenu', Directives.name, Components.name, Factories.name, Services.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);

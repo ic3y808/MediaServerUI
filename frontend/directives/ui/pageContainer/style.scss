@@ -1,0 +1,80 @@
+@import "../../../styles/variables";
+svg:not(:root).svg-inline--fa {
+  overflow: visible;
+}
+
+.root {
+  overflow: hidden;
+  height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    height: auto;
+  }
+}
+
+.Page-page-10MZd {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  height: 100%;
+}
+
+.Page-main-1x4lI {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+@media only screen and (max-width: 768px) {
+  .Page-page-10MZd {
+    -webkit-box-flex: 1;
+    -webkit-flex-grow: 1;
+    flex-grow: 1;
+    height: initial;
+  }
+}
+
+.PageContent-content-2-LcY {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.PageContent-content-2-LcY {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  overflow-x: hidden;
+  width: 100%;
+}

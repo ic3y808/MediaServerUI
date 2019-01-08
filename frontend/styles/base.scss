@@ -173,58 +173,7 @@ main {
 .bg-dark-transparent {
   background-color: $main-background-color-transparent !important;
   color: $alt-text-color !important;
-}
-
-.Label-label {
-  display: inline-block;
-  margin: 2px;
-  border: 1px solid;
-  border-radius: 2px;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  line-height: 1;
-  cursor: default;
-}
-
-.Label-default {
-  border-color: #1d563d;
-  background-color: #1d563d;
-}
-
-.Label-large {
-  padding: 3px 7px;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.IconButton-button {
-  margin: 0 2px;
-  width: 22px;
-  border-radius: 4px;
-  background-color: transparent;
-  text-align: center;
-  font-size: inherit;
-}
-
-.Icon-default {
-  color: inherit;
-}
-
-.Link-to {
-  color: #0b8750;
-}
-
-.Link-link {
-  margin: 0;
-  padding: 0;
-  outline: none;
-  border: 0;
-  background: none;
-  color: inherit;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
+  border-color: $general-border-color !important;
 }
 
 .coverflowImage {
