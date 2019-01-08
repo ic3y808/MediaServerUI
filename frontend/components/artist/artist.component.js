@@ -122,7 +122,7 @@ class ArtistController {
 
           $scope.artist = artist;
           $scope.artistName = artist.name;
-          $scope.artist.albums.forEach(function(album){
+          $scope.artist.albums.forEach(function (album) {
             album.cover_art = $scope.getCoverArt(album.cover_art);
           })
 
@@ -170,18 +170,18 @@ class ArtistController {
           }
 
           that.AppUtilities.apply();
-        //  $("#coverflow").flipster();
+          //  $("#coverflow").flipster();
           AppUtilities.hideLoader();
-            var glide = new Glide('#intro', {
-            type: 'slider',
-            perView: 8,
-            focusAt: 'center',
-            800: {
-              perView: 8
-            }
-          })
-          
-          glide.mount()
+          //var glide = new Glide('#intro', {
+          //  type: 'slider',
+          //  perView: 8,
+          //  focusAt: 'center',
+          //  800: {
+          //    perView: 8
+          //  }
+          //})
+
+          //glide.mount()
         });
 
 
@@ -323,6 +323,7 @@ class ArtistController {
     });
 
     $scope.getArtist();
+    AppUtilities.hideLoader();
   }
 }
 

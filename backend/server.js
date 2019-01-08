@@ -120,6 +120,7 @@ db.init().then(function () {
   app.use("/bower_components/", express.static(path.join(__dirname, '..', 'bower_components')));
   app.use("/controllers/", express.static(path.join(__dirname, '..', 'frontend', 'controllers')));
   app.use("/factories/", express.static(path.join(__dirname, '..', 'frontend', 'factories')));
+  app.use("/directives/", express.static(path.join(__dirname, '..', 'frontend', 'directives')));
 
   // catch 404 and forward to error handler
   app.use(function (req, res, next) {

@@ -19,4 +19,4 @@
     .similar-artists-container
       .similar-artist-header.bg-dark-transparent Similar Artists  
         .btn-group(role='group', aria-label='...')
-          button.btn.btn-default(type='button', ng-repeat='artist in similarArtists', ng-click='navigateToAritst({{artist.id}})') {{artist.name}}
+          button.btn.btn-default(type='button', ng-repeat='artist in similarArtists', ng-click='navigateToAritst(artist.id)') {{artist.name}}

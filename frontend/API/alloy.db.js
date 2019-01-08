@@ -34,7 +34,6 @@ window.AlloyApi = function () {
         return;
       }
       if (obj.hasOwnProperty('alloydb_host') && obj.hasOwnProperty('alloydb_port') && obj.hasOwnProperty('alloydb_apikey')) {
-        console.log(obj);
 
       } else {
         throw new TypeError('Input must be an object & contain url and apikey fields');

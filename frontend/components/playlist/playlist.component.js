@@ -41,16 +41,14 @@ class PlaylistController {
     $scope.gridOptions = {
       columnDefs: columnDefs,
       rowData: null,
-      rowSelection: 'multiple',
+      rowSelection: 'single',
       enableColResize: true,
       enableSorting: true,
       enableFilter: true,
-      rowDeselection: true,
       animateRows: true,
       getRowNodeId: function (data) {
         return data.id;
       },
-      rowMultiSelectWithClick: true,
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();

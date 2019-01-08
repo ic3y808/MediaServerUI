@@ -1,5 +1,6 @@
 import angular from 'angular';
 
+//Page Components
 import ArtistComponent from './artist/artist.component';
 import ArtistsComponent from './artists/artists.component';
 import AlbumComponent from './album/album.component';

@@ -47,30 +47,22 @@ class StatusController {
 
     $scope.scanFullStart = function () {
       var scanner = that.AlloyDbService.scanFullStart();
-      if (scanner) {
-        scanner.then(function (result) {
-          that.Backend.debug('scanFullStart');
-          $scope.scanStatus = result;
-          that.AppUtilities.apply();
-          $scope.rescanInterval = setInterval(function () {
-            $scope.getScanStatus();
-          }, 500);
-        });
-      }
+      that.Backend.debug('scanFullStart');
+      $scope.scanStatus = result;
+      that.AppUtilities.apply();
+      $scope.rescanInterval = setInterval(function () {
+        $scope.getScanStatus();
+      }, 500);
     };
 
     $scope.scanQuickStart = function () {
       var scanner = that.AlloyDbService.scanQuickStart();
-      if (scanner) {
-        scanner.then(function (result) {
-          that.Backend.debug('scanQuickStart');
-          $scope.scanStatus = result;
-          that.AppUtilities.apply();
-          $scope.rescanInterval = setInterval(function () {
-            $scope.getScanStatus();
-          }, 500);
-        });
-      }
+      that.Backend.debug('scanQuickStart');
+      $scope.scanStatus = result;
+      that.AppUtilities.apply();
+      $scope.rescanInterval = setInterval(function () {
+        $scope.getScanStatus();
+      }, 500);
     };
 
     $scope.getScanStatus = function () {
