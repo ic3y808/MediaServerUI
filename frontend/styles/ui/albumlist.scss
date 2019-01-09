@@ -1,0 +1,115 @@
+
+
+.Table-tableContainer {
+	overflow-x: auto;
+}
+
+@media only screen and (max-width: 768px) {
+	.Table-tableContainer {
+		overflow-y: hidden;
+		width: 100%;
+	}
+}
+
+.Table-table {
+	max-width: 100%;
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.TableHeaderCell-headerCell {
+	padding: 8px;
+	border: none!important;
+	text-align: left;
+	font-weight: bold;
+}
+
+.TableHeaderCell-sortIcon {
+	margin-left: 10px;
+}
+
+@media only screen and (max-width: 768px) {
+	.TableHeaderCell-headerCell {
+		white-space: nowrap;
+	}
+}
+
+.TableRow-row {
+	-webkit-transition: background-color 500ms;
+	transition: background-color 500ms;
+}
+
+.TableRow-row:hover {
+	background-color: #fafbfc;
+}
+
+.TableRowCell-cell-3hR4a {
+	padding: 8px;
+	border-top: 1px solid #eee;
+	line-height: 1.52857143;
+}
+
+@media only screen and (max-width: 768px) {
+	.TableRowCell-cell-3hR4a {
+		white-space: nowrap;
+	}
+}
+
+.RelativeDateCell-cell-36pGa {
+	width: 180px;
+}
+
+.AlbumSearchCell-AlbumSearchCell {
+	width: 70px;
+	white-space: nowrap;
+}
+
+
+.AlbumRow-monitored {
+	width: 42px;
+}
+
+.AlbumRow-title {
+	white-space: nowrap;
+}
+
+
+
+.AlbumRow-status {
+	width: 100px;
+}
+
+.StarRating-starRating {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-box-align: left;
+	-webkit-align-items: left;
+	align-items: left;
+	-webkit-box-pack: left;
+	-webkit-justify-content: left;
+	justify-content: left;
+}
+
+.StarRating-backStar {
+	position: relative;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	color: #515253;
+}
+
+.StarRating-frontStar {
+	position: absolute;
+	top: 0;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: flex;
+	overflow: hidden;
+	color: #ffbc0b;
+}
+
+.MonitorToggleButton-toggleButton {
+	padding: 0;
+	font-size: inherit;
+}

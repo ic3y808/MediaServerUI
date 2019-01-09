@@ -12,3 +12,8 @@ import './mixins.scss';
 import './loader.scss';
 import './toolbar.scss';
 import './debug.scss';
+
+//ui components
+import './ui/pagecontainer.scss'
+import './ui/pagetoolbar.scss'
+import './ui/albumlist.scss'

@@ -37,14 +37,14 @@ export default class AppUtilities {
 
   setContentBackground(img) {
     if(img){
-      var bgUrl = img.replace('300x300', Math.round($('.main-content').width()) + 'x' + Math.round($('.main-content').height()));
-      $('.main-content').css('background-image', 'url(' + bgUrl + ')');
+      var bgUrl = img.replace('300x300', Math.round($('.ArtistDetails-backdrop').width()) + 'x' + Math.round($('.ArtistDetails-backdrop').height()));
+      $('.ArtistDetails-backdrop').css('background-image', 'url(' + bgUrl + ')');
       this.apply();
     }
   }
 
   resetContentBackground() {
-    $('.main-content').css('background-image', 'url("")');
+    $('.ArtistDetails-backdrop').css('background-image', 'url("")');
   }
 
   fallbackCopyTextToClipboard(text) {
