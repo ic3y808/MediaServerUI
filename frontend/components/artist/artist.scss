@@ -20,38 +20,7 @@
   color: #666;
 }
 
-.Label-label {
-  display: inline-block;
-  margin: 2px;
-  border: 1px solid;
-  border-radius: 2px;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  line-height: 1;
-  cursor: default;
-}
 
-.Label-default {
-  border-color: $label-color;
-  background-color: #1d563d;
-}
-
-.Label-success {
-  border-color: #27c24c;
-  background-color: #27c24c;
-}
-
-.Label-medium {
-  padding: 2px 5px;
-  font-size: 12px;
-}
-
-.Label-large {
-  padding: 3px 7px;
-  font-weight: bold;
-  font-size: 14px;
-}
 
 .ArtistDetailsSeason-albumType {
   margin-bottom: 20px;

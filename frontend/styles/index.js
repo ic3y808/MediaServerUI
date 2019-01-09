@@ -17,3 +17,4 @@ import './debug.scss';
 import './ui/pagecontainer.scss'
 import './ui/pagetoolbar.scss'
 import './ui/albumlist.scss'
+import './ui/detaillabel.scss'

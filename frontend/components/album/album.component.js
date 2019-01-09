@@ -53,6 +53,7 @@ class AlbumController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      domLayout:'autoHeight',
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
@@ -86,6 +87,10 @@ class AlbumController {
       }
     };
 
+    $scope.getCoverArt = function (id) {
+      return that.AlloyDbService.getCoverArt(id);
+    }
+
     $scope.getAlbum = function () {
       var alb = AlloyDbService.getAlbum($routeParams.id);
       if (alb) {
@@ -94,6 +99,7 @@ class AlbumController {
           if (album) {
             $scope.album = album;
             $scope.albumName = album.name;
+            $scope.albumArt =  $scope.getCoverArt(album.cover_art);
             $scope.artistName = album.base_path;
             $scope.tracks = album.tracks;
 

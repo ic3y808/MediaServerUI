@@ -258,26 +258,3 @@
   cursor: pointer;
 }
 
-.Label-label {
-  display: inline-block;
-  margin: 2px;
-  border: 1px solid;
-  border-radius: 2px;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  line-height: 1;
-  cursor: default;
-}
-
-.Label-default {
-  border-color: $general-border-color;
-  background-color: $main-background-color-transparent !important;
-  color: $alt-text-color !important;
-}
-
-.Label-large {
-  padding: 3px 7px;
-  font-weight: bold;
-  font-size: 14px;
-}
