@@ -1,32 +1,127 @@
 @import "../../styles/variables";
 
-.albumWrapper {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
+
+.AlbumDetails-innerContentBody {
   padding: 0;
-  top: 0;
-  left: 0;
-  right: 0;
+}
+
+.AlbumDetails-header {
+  position: relative;
+  width: 100%;
+  height: 375px;
+}
+
+.AlbumDetails-backdrop {
+  position: absolute;
+  width: 100%;
   height: 100%;
-  margin: 0;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center; 
 }
 
-.albumBodyWrapper {
+.AlbumDetails-backdropOverlay {
   position: absolute;
-  padding: 0;
-  top: $toolbar-height;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.445);
 }
 
-#albumHeader {
-  flex: 0.5 0;
+.AlbumDetails-headerContent {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding: 30px;
+  width: 100%;
+  height: 100%;
+  color: #fff;
 }
 
-#albumTracksGrid {
-  flex: 0.5 0;
+.AlbumDetails-poster {
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  margin-right: 35px;
+  width: 250px;
+  height: 250px;
 }
 
+.AlbumDetails-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.AlbumDetails-metadataMessage {
+  color: #909293;
+  text-align: center;
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.AlbumDetails-titleContainer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+
+
+.AlbumDetails-title {
+  margin-bottom: 5px;
+  font-weight: 300;
+  font-size: 50px;
+  line-height: 50px;
+}
+
+.AlbumDetails-AlbumNavigationButtons {
+  white-space: nowrap;
+}
+
+.AlbumDetails-AlbumNavigationButton {
+  margin-left: 5px;
+  width: 30px;
+  color: #e1e2e3;
+  white-space: nowrap;
+}
+
+.AlbumDetails-details {
+  font-weight: 300;
+  font-size: 20px;
+}
+
+.AlbumDetails-overview {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1 0 auto;
+  flex: 1 0 auto;
+  min-height: 0;
+}
+
+.AlbumDetails-contentContainer {
+  padding: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .AlbumDetails-contentContainer {
+    padding: 20px 0;
+  }
+  .AlbumDetails-headerContent {
+    padding: 15px;
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .AlbumDetails-poster {
+    display: none;
+  }
+}
