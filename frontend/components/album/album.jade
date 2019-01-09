@@ -10,9 +10,9 @@ include ./../../views/pagecontainer
       
     .PageToolbarSection-sectionContainer-_eFLL(style='flex-grow: 1;')
       .PageToolbarSection-section.PageToolbarSection-right-1OQWC
-        toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
+        toolbarbutton(buttontext='Star', buttonclick='starAlbum()', buttonicon="{{album.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
   div(style='position: relative; overflow: hidden; width: 100%; height: 100%;')
-    .PageContentBody-contentBody-1Ranh(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; overflow: scroll; margin-right: -15px; margin-bottom: -15px;')
+    .PageContentBody-contentBody(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; overflow: scroll; margin-right: -15px; margin-bottom: -15px;')
       .AlbumDetails-innerContentBody
         .AlbumDetails-header
           .AlbumDetails-backdrop.art-backdrop(ng-style="getBackgroundStyle(artistImage)")
@@ -40,8 +40,12 @@ include ./../../views/pagecontainer
                     detaillabel(buttontext="{{artistName}}", buttonicon="fa-folder-o", buttonclick="goToArtist(artist.id)")
                     detaillabel(buttontext="{{album.size}}", buttonicon="fa-hdd-o")
                     detaillabel(buttontext="Tracks: {{tracks.length}}", buttonicon="fa-list-ul")
+                    detaillabel(buttontext="Listeners: {{albumInfo.listeners}}", buttonicon="fa-bullhorn")
+                    detaillabel(buttontext="All Plays: {{albumInfo.playcount}}", buttonicon="fa-bullhorn")
+                    detaillabel(buttontext="My Plays: {{albumInfo.userplaycount}}", buttonicon="fa-bullhorn")
                     detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
   
+
 
                     
                   .AlbumDetails-overview 
