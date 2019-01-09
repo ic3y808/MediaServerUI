@@ -15,6 +15,7 @@ class ArtistController {
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
+    $scope.albums_expanded = true;
     $scope.artistName = '';
     var that = this;
     var columnDefs = [{
@@ -114,6 +115,18 @@ class ArtistController {
       return that.AlloyDbService.getCoverArt(id);
     }
 
+    $scope.getBackgroundStyle = function (imagepath) {
+      return {
+        'background-image': 'url(' + imagepath + ')'
+      }
+    }
+
+    $scope.toggleAlbums = function () {
+      if ($scope.albums_expanded) $('#albumListContainer').hide();
+      else $('#albumListContainer').show();
+      $scope.albums_expanded = !$scope.albums_expanded;
+    }
+
     $scope.getArtist = function () {
 
       var artist = that.AlloyDbService.getArtist($routeParams.id);
@@ -159,8 +172,12 @@ class ArtistController {
                 }
                 if ($scope.artistInfo.image) {
                   $scope.artistInfo.image.forEach(function (image) {
+                    if (image['@'].size === 'large') {
+                      $scope.artistImage = image['#'];
+                    }
                     if (image['@'].size === 'extralarge') {
-                      that.AppUtilities.setContentBackground(image['#']);
+                      $scope.artistImage = image['#'];
+                      //that.AppUtilities.setContentBackground(image['#']);
                     }
                   });
                 }
