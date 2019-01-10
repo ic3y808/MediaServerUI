@@ -16,6 +16,7 @@ class ArtistController {
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
+    $scope.all_expanded = false;
     $scope.albums_expanded = true;
     $scope.tracks_expanded = false;
     $('#trackListContainer').hide();
@@ -141,6 +142,24 @@ class ArtistController {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
       }
+    }
+
+    $scope.toggleAll = function () {
+      $scope.tracks_expanded = $scope.all_expanded;
+      $scope.albums_expanded = $scope.all_expanded;
+
+      if ($scope.albums_expanded) $('#albumListContainer').hide();
+      else $('#albumListContainer').show();
+
+      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      else $('#trackListContainer').show();
+
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+
+      $scope.all_expanded = !$scope.all_expanded;
     }
 
     $scope.getArtist = function () {
@@ -356,23 +375,23 @@ class ArtistController {
     });
 
     var popoverTemplate = ['<div class="timePickerWrapper popover">',
-                                '<div class="arrow"></div>',
-                                '<div class="popover-content">',                                    
-                                '</div>',
-                            '</div>'].join('');
-  
-  	var content = ['<div class="timePickerCanvas">asfaf asfsadf</div>',
-                   '<div class="timePickerClock timePickerHours">asdf asdfasf</div>',
-                   '<div class="timePickerClock timePickerMinutes"> asfa </div>',].join('');
+      '<div class="arrow"></div>',
+      '<div class="popover-content">',
+      '</div>',
+      '</div>'].join('');
+
+    var content = ['<div class="timePickerCanvas">asfaf asfsadf</div>',
+      '<div class="timePickerClock timePickerHours">asdf asdfasf</div>',
+      '<div class="timePickerClock timePickerMinutes"> asfa </div>',].join('');
 
 
     $('body').popover({
-        selector: '[rel=popover]',
-        trigger: 'click',
-      	content : content,
-        template: popoverTemplate,
-        placement: "bottom",
-        html: true
+      selector: '[rel=popover]',
+      trigger: 'click',
+      content: content,
+      template: popoverTemplate,
+      placement: "bottom",
+      html: true
     });
 
     $scope.getArtist();
