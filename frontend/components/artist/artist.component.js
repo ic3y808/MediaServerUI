@@ -12,11 +12,15 @@ class ArtistController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artist-controller');
+    $scope.artistName = '';
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
     $scope.albums_expanded = true;
-    $scope.artistName = '';
+    $scope.tracks_expanded = false;
+    $('#trackListContainer').hide();
+
+
     var that = this;
     var columnDefs = [{
       headerName: "#",
@@ -53,6 +57,7 @@ class ArtistController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      domLayout: 'autoHeight',
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
@@ -125,6 +130,17 @@ class ArtistController {
       if ($scope.albums_expanded) $('#albumListContainer').hide();
       else $('#albumListContainer').show();
       $scope.albums_expanded = !$scope.albums_expanded;
+    }
+
+    $scope.toggleTracks = function () {
+      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      else $('#trackListContainer').show();
+      $scope.tracks_expanded = !$scope.tracks_expanded;
+
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
     }
 
     $scope.getArtist = function () {
@@ -337,6 +353,26 @@ class ArtistController {
         $scope.gridOptions.api.doLayout();
         $scope.gridOptions.api.sizeColumnsToFit();
       }
+    });
+
+    var popoverTemplate = ['<div class="timePickerWrapper popover">',
+                                '<div class="arrow"></div>',
+                                '<div class="popover-content">',                                    
+                                '</div>',
+                            '</div>'].join('');
+  
+  	var content = ['<div class="timePickerCanvas">asfaf asfsadf</div>',
+                   '<div class="timePickerClock timePickerHours">asdf asdfasf</div>',
+                   '<div class="timePickerClock timePickerMinutes"> asfa </div>',].join('');
+
+
+    $('body').popover({
+        selector: '[rel=popover]',
+        trigger: 'click',
+      	content : content,
+        template: popoverTemplate,
+        placement: "bottom",
+        html: true
     });
 
     $scope.getArtist();
