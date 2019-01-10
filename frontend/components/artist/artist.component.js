@@ -307,6 +307,8 @@ class ArtistController {
 
     };
 
+   
+
     $scope.refresh = function () {
       that.Backend.debug('refresh artist');
       $scope.getArtist();

@@ -163,6 +163,11 @@ class AlbumController {
       }
     };
 
+    $scope.goToArtist = function (id) {
+     window.location.href = '/artist/' + id;
+
+    };
+
     $scope.refresh = function () {
       that.Backend.debug('refresh album');
       $scope.getAlbum();

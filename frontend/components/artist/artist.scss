@@ -1,27 +1,4 @@
 @import "../../styles/variables";
-.HeartRating-heart {
-  margin-right: 5px;
-  color: #c4273c;
-}
-
-.IconButton-button {
-  display: inline-block;
-  margin: 0 2px;
-  width: 22px;
-  border-radius: 4px;
-  background-color: transparent;
-  text-align: center;
-  font-size: inherit;
-}
-
-.IconButton-button:hover {
-  border: none;
-  background-color: inherit;
-  color: #666;
-}
-
-
-
 .ArtistDetailsSeason-albumType {
   margin-bottom: 20px;
   border: 1px solid #e5e5e5;
