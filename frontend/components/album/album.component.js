@@ -103,6 +103,7 @@ class AlbumController {
             $scope.artistName = album.base_path;
             $scope.tracks = album.tracks;
 
+            that.AppUtilities.setContentBackground($scope.albumArt);
 
             var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
             if (artistInfo) {
@@ -118,7 +119,7 @@ class AlbumController {
                   if ($scope.artistInfo.image) {
                     $scope.artistInfo.image.forEach(function (image) {
                       if (image['@'].size === 'extralarge') {
-                        that.AppUtilities.setContentBackground(image['#']);
+                        //that.AppUtilities.setContentBackground(image['#']);
                       }
                     });
                   }
@@ -132,7 +133,13 @@ class AlbumController {
               albumInfo.then(function (info) {
                 if (info.albumInfo) {
                   $scope.albumInfo = info.albumInfo;
-
+                  if ($scope.albumInfo.image) {
+                    $scope.artistInfo.image.forEach(function (image) {
+                      if (image['@'].size === 'extralarge') {
+                        //that.AppUtilities.setContentBackground(image['#']);
+                      }
+                    });
+                  }
                   that.AppUtilities.apply();
                 }
               });

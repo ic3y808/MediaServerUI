@@ -31,11 +31,19 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
       MediaPlayer.initializeCast();
     }
   }, 1000);
-  
+
+  $window.onkeydown = function (e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+    if (key === 32) {
+      e.preventDefault();
+    }
+  }
+
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    if(key === 32){
-      MediaPlayer.toggleCurrentStatus();  
+    if (key === 32) {
+      e.preventDefault();
+      MediaPlayer.toggleCurrentStatus();
     }
   }
 

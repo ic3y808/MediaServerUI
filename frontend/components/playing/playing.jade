@@ -3,8 +3,8 @@ include ./../../views/pagecontainer
     .PageToolbarSection-section.PageToolbarSection-left
       toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
       
-    .PageToolbarSection-sectionContainer-_eFLL(style='flex-grow: 1;')
-      .PageToolbarSection-section.PageToolbarSection-right-1OQWC
+    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+      .PageToolbarSection-section.PageToolbarSection-right
         toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
 
 

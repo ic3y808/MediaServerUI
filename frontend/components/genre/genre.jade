@@ -8,8 +8,8 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
       toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
 
-    .PageToolbarSection-sectionContainer-_eFLL(style='flex-grow: 1;')
-      .PageToolbarSection-section.PageToolbarSection-right-1OQWC
+    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+      .PageToolbarSection-section.PageToolbarSection-right
         toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
         toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")
         toolbarbutton(buttontext='Hide All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-up', ng-show="all_expanded")
