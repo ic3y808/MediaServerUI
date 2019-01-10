@@ -15,6 +15,9 @@ class GenreController {
     $scope.albums = [];
     $scope.tracks = [];
     $scope.artistName = '';
+    $scope.all_expanded = false;
+    $scope.albums_expanded = true;
+    $scope.tracks_expanded = false;
     $scope.genre = this.$routeParams.id;
     var that = this;
     var columnDefs = [{
@@ -40,13 +43,13 @@ class GenreController {
     $scope.gridOptions = {
       columnDefs: columnDefs,
       rowData: null,
-      rowSelection: 'single',
+      rowSelection: 'multiple',
       enableColResize: true,
       enableSorting: true,
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
-      rowMultiSelectWithClick: true,
+      domLayout: 'autoHeight',
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
@@ -100,6 +103,41 @@ class GenreController {
       }
     };
 
+    $scope.toggleAlbums = function () {
+      if ($scope.albums_expanded) $('#albumListContainer').hide();
+      else $('#albumListContainer').show();
+      $scope.albums_expanded = !$scope.albums_expanded;
+    }
+
+    $scope.toggleTracks = function () {
+      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      else $('#trackListContainer').show();
+      $scope.tracks_expanded = !$scope.tracks_expanded;
+
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    }
+
+    $scope.toggleAll = function () {
+      $scope.tracks_expanded = $scope.all_expanded;
+      $scope.albums_expanded = $scope.all_expanded;
+
+      if ($scope.albums_expanded) $('#albumListContainer').hide();
+      else $('#albumListContainer').show();
+
+      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      else $('#trackListContainer').show();
+
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+
+      $scope.all_expanded = !$scope.all_expanded;
+    }
+
     $scope.refresh = function () {
       that.Backend.debug('refresh genre');
       $scope.getGenre();
@@ -110,6 +148,16 @@ class GenreController {
       MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
       MediaPlayer.loadTrack(0);
     };
+
+    $rootScope.$on('trackChangedEvent', function (event, data) {
+      $scope.api.redrawRows({
+        force: true
+      });
+      if ($scope.gridOptions && $scope.gridOptions.api) {
+        $scope.gridOptions.api.doLayout();
+        $scope.gridOptions.api.sizeColumnsToFit();
+      }
+    });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Genre reload on loginsatuschange');
