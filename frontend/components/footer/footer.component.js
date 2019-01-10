@@ -157,6 +157,11 @@ class FooterController {
       window.open(dlUrl, '_blank');
     });
 
+    $("#nowPlayingImageHolder").click(function () {
+      var dlUrl = that.AlloyDbService.download(that.MediaPlayer.selectedTrack().id);
+      window.open(dlUrl, '_blank');
+    });
+
     $("#likeButton").click(function () {
       var track = that.MediaPlayer.selectedTrack();
       that.Backend.info('liking track: ' + track.artist + " - " + track.title);

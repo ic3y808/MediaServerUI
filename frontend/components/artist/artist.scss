@@ -131,9 +131,14 @@
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.ArtistDetails-backdrop-bg{
   background-size: 100% auto;
   background-repeat: no-repeat;
   background-position: center; 
+  filter: blur(28px);
+  -webkit-filter: blur(28px);
 }
 
 .ArtistDetails-backdropOverlay {

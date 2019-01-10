@@ -99,7 +99,7 @@ class AlbumController {
           if (album) {
             $scope.album = album;
             $scope.albumName = album.name;
-            $scope.albumArt =  $scope.getCoverArt(album.cover_art);
+            $scope.albumArt =  $scope.getCoverArt(album.tracks[0].cover_art);
             $scope.artistName = album.base_path;
             $scope.tracks = album.tracks;
 

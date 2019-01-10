@@ -27,6 +27,14 @@
   background: rgba(0, 0, 0, 0.445);
 }
 
+.AlbumDetails-backdrop-bg{
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  background-position: center; 
+  filter: blur(28px);
+  -webkit-filter: blur(28px);
+}
+
 .AlbumDetails-headerContent {
   display: -webkit-box;
   display: -webkit-flex;
