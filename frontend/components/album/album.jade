@@ -8,8 +8,8 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
       toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
       
-    .PageToolbarSection-sectionContainer-_eFLL(style='flex-grow: 1;')
-      .PageToolbarSection-section.PageToolbarSection-right-1OQWC
+    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+      .PageToolbarSection-section.PageToolbarSection-right
         toolbarbutton(buttontext='Star', buttonclick='starAlbum()', buttonicon="{{album.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
   div(style='position: relative; overflow: hidden; width: 100%; height: 100%;')
     .PageContentBody-contentBody(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; overflow: scroll; margin-right: -15px; margin-bottom: -15px;')
@@ -38,12 +38,12 @@ include ./../../views/pagecontainer
                           path(fill='currentColor', d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z')
                         | 0%
                   div
-                    detaillabel(buttontext="{{artistName}}", buttonicon="fa-folder-o", href="/artist/{{album.base_id}}")
+                    detaillabel(buttontext="{{artistName}}", buttonicon="fa-level-up", href="/artist/{{album.base_id}}")
                     detaillabel(buttontext="{{album.size}}", buttonicon="fa-hdd-o")
                     detaillabel(buttontext="Tracks: {{tracks.length}}", buttonicon="fa-list-ul")
                     detaillabel(buttontext="Listeners: {{albumInfo.listeners}}", buttonicon="fa-bullhorn")
-                    detaillabel(buttontext="All Plays: {{albumInfo.playcount}}", buttonicon="fa-bullhorn")
-                    detaillabel(buttontext="My Plays: {{albumInfo.userplaycount}}", buttonicon="fa-bullhorn")
+                    detaillabel(buttontext="All Plays: {{albumInfo.playcount}}", buttonicon="fa-play")
+                    detaillabel(buttontext="My Plays: {{albumInfo.userplaycount}}", buttonicon="fa-play-circle-o")
                     detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
   
 

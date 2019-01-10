@@ -8,8 +8,8 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
       toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
 
-    .PageToolbarSection-sectionContainer-_eFLL(style='flex-grow: 1;')
-      .PageToolbarSection-section.PageToolbarSection-right-1OQWC
+    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+      .PageToolbarSection-section.PageToolbarSection-right
         toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
         toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")
         toolbarbutton(buttontext='Hide All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-up', ng-show="all_expanded")
@@ -28,7 +28,7 @@ include ./../../views/pagecontainer
                   .ArtistDetails-titleContainer
                     .ArtistDetails-title {{artistName}}
                     .ArtistDetails-artistNavigationButtons
-                      a.ArtistDetails-artistNavigationButton.IconButton-button.Link-link.Link-link.Link-to(title='Go to {{artist.previous_artist.base_path}}', href='/artist/{{artist.previous_artist.base_id}}')
+                      a.ArtistDetails-artistNavigationButton.IconButton-button.Link-link.Link-link.Link-to(title='Go to {{artist.previous_artist.base_path}}', href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path")
                         svg.svg-inline--fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='arrow-circle-left', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 30px;')
                           path(fill='currentColor', d='M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zm28.9-143.6L209.4 288H392c13.3 0 24-10.7 24-24v-16c0-13.3-10.7-24-24-24H209.4l75.5-72.4c9.7-9.3 9.9-24.8.4-34.3l-11-10.9c-9.4-9.4-24.6-9.4-33.9 0L107.7 239c-9.4 9.4-9.4 24.6 0 33.9l132.7 132.7c9.4 9.4 24.6 9.4 33.9 0l11-10.9c9.5-9.5 9.3-25-.4-34.3z')
                       a.ArtistDetails-artistNavigationButton.IconButton-button.Link-link.Link-link.Link-to(title='Go to {{artist.next_artist.base_path}}', href='/artist/{{artist.next_artist.base_id}}')
