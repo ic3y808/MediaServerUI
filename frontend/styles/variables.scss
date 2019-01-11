@@ -9,7 +9,6 @@ $alt-sub-background-color: #1a1b1d;
 $now-playing-track: rgba(204, 214, 216, 0.904);
 $general-border-color:rgba(204, 214, 216, 0.904);
 $label-color:rgba(204, 214, 216, 0.904);
-
 //page size breaks 
 $break-xxxsmall: 320px;
 $break-xxsmall: 375px;
@@ -28,56 +27,53 @@ $break-xhuge: 1280px;
 $break-xxhuge: 1366px;
 $break-xxxhuge: 1440px;
 $break-maximum: 1600px;
-
-//@media screen and (max-width:$break-xxxsmall) { }
-//@media screen and (max-width:$break-xxsmall) { }
-//@media screen and (max-width:$break-xsmall) { }
-//@media screen and (max-width:$break-small) { }
-//@media screen and (max-width:$break-xxxmed) { }
-//@media screen and (max-width:$break-xxmed) { }
-//@media screen and (max-width:$break-xmed) { }
-//@media screen and (max-width:$break-med) { }
-//@media screen and (max-width:$break-large) { }
-//@media screen and (max-width:$break-xlarge) { }
-//@media screen and (max-width:$break-xxlarge) { }
-//@media screen and (max-width:$break-xxxlarge) { }
-//@media screen and (max-width:$break-huge) { }
-//@media screen and (max-width:$break-xhuge) { }
-//@media screen and (max-width:$break-xxhuge) { }
-//@media screen and (max-width:$break-xxxhuge) { }
-//@media screen and (max-width:$break-maximum) { }
-
+//@media screen and (max-width:$break-xxxsmall) { } //320px;
+//@media screen and (max-width:$break-xxsmall) { } //375px;
+//@media screen and (max-width:$break-xsmall) { } //384px;
+//@media screen and (max-width:$break-small) { } //414px;
+//@media screen and (max-width:$break-xxxmed) { } //480px;
+//@media screen and (max-width:$break-xxmed) { } //568px;
+//@media screen and (max-width:$break-xmed) { } //600px;
+//@media screen and (max-width:$break-med) { } //640px;
+//@media screen and (max-width:$break-large) { } //667px;
+//@media screen and (max-width:$break-xlarge) { } //768px;
+//@media screen and (max-width:$break-xxlarge) { } //800px;
+//@media screen and (max-width:$break-xxxlarge) { } //991px;
+//@media screen and (max-width:$break-huge) { } //1024px;
+//@media screen and (max-width:$break-xhuge) { } //1280px;
+//@media screen and (max-width:$break-xxhuge) { } //1366px;
+//@media screen and (max-width:$break-xxxhuge) { } //1440px;
+//@media screen and (max-width:$break-maximum) { } //1600px;
 //typography
-$main-font: 'Roboto', sans-serif;
+$main-font: 'Roboto',
+sans-serif;
 $main-font-size: 1em;
-$sub-font: 'Lato-Regular', sans-serif;
+$sub-font: 'Lato-Regular',
+sans-serif;
 $sub-font-size: 0.85em;
-$extra-font: 'MavenPro-Regular', sans-serif;
+$extra-font: 'MavenPro-Regular',
+sans-serif;
 $extra-font-size: 0.85em;
-
-@font-face{
-  font-family:$sub-font;
-  src:url(/content/Lato-Regular.ttf)format('truetype');
+@font-face {
+  font-family: $sub-font;
+  src: url(/content/Lato-Regular.ttf)format('truetype');
 }
-@font-face{
-  font-family:$extra-font;
-  src:url(/content/MavenPro-Regular.ttf)format('truetype');
+
+@font-face {
+  font-family: $extra-font;
+  src: url(/content/MavenPro-Regular.ttf)format('truetype');
 }
 
 //buttons
 $main-btn-background-color:rgba($main-background-color, .45);
 $main-btn-hover-color:$now-playing-track;
-
 //navbar
 $navbar-height:40px;
-
 //grid 
 $grid-selection-color: rgba(131, 191, 233, 0.728);
-
 //range
 $track-color: $alt-sub-background-color !default;
 $thumb-color: $sub-background-color !default;
-
 $thumb-radius: 3px !default;
 $thumb-height: 24px !default;
 $thumb-width: 10px !default;
@@ -86,7 +82,6 @@ $thumb-shadow-blur: 4px !default;
 $thumb-shadow-color: rgba(0, 0, 0, .2) !default;
 $thumb-border-width: 2px !default;
 $thumb-border-color: $general-border-color !default;
-
 $track-width: 100% !default;
 $track-height: 8px !default;
 $track-shadow-size: 1px !default;
@@ -94,36 +89,27 @@ $track-shadow-blur: 1px !default;
 $track-shadow-color: rgba(0, 0, 0, .2) !default;
 $track-border-width: 2px !default;
 $track-border-color: #cfd8dc !default;
-
 $track-radius: 5px !default;
 $contrast: 5% !default;
-
 $ie-bottom-track-color: darken($track-color, $contrast) !default;
-
-
 //footer
 $footer-height:60px;
 $buffer-color: rgb(190, 207, 211);
 $progress-color: rgba(131, 191, 233, 0.728);
 $progress-container-color: rgb(160, 164, 165);
-
-
 //sidebar
 $sidebar-width: 160px;
 $sidebar-collapsed-width: 50px;
 $sidebar-font-size: .8em;
-$sidebar-font: 'Roboto', sans-serif;
+$sidebar-font: 'Roboto',
+sans-serif;
 $sidebar-font-weight: bold;
-
 //slider
 $slider-track-color:rgb(90, 90, 90);
 $slider-thumb-color:rgb(224, 224, 224);
 $slider-thumb-border-color:rgb(25, 24, 24);
-
-
 //toolbar 
 $toolbar-height:45px;
-
 //scrollbar
 $scrollbar-track-color: mix($main-background-color, white, 50%);
 $scrollbar-thumb-color: mix($sub-background-color, black, 50%);

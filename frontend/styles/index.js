@@ -10,7 +10,6 @@ import './angular.autocomplete.scss';
 import './base.scss';
 import './mixins.scss';
 import './loader.scss';
-import './toolbar.scss';
 import './debug.scss';
 
 //ui components
