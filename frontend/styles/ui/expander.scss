@@ -1,0 +1,95 @@
+@import "../variables";
+.ExpanderContainer {
+  margin-bottom: 20px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  background-color: #fff;
+}
+
+.ExpanderContainer:last-of-type {
+  margin-bottom: 0;
+}
+
+.ExpanderContainer-header {
+  position: relative;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  width: 100%;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.ExpanderContainer-body {
+  padding-top: 15px;
+  border-top: 1px solid #e5e5e5;
+}
+
+.ExpanderContainer-left {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 1 300px;
+  flex: 0 1 300px;
+  padding: 15px 10px;
+}
+
+.ExpanderContainer-label {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.ExpanderContainer-sublabel {
+  color: #8895aa;
+  font-style: italic;
+  font-size: 18px;
+}
+
+.ExpanderContainer-expandButton {
+  -webkit-box-flex: 1;
+  -webkit-flex-grow: 1;
+  flex-grow: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.ExpanderContainer-actionButton {
+  width: 30px;
+}
+
+.ExpanderContainer-expandButtonIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -15px;
+}
+
+.ExpanderContainer-collapseButtonContainer {
+  padding: 10px 15px;
+  width: 100%;
+  border-top: 1px solid #e5e5e5;
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+@media only screen and (max-width: 768px) {
+  .ExpanderContainer {
+    border-right: 0;
+    border-left: 0;
+    border-radius: 0;
+  }
+  .ExpanderContainer-expandButtonIcon {
+    position: static;
+    margin: 0;
+  }
+}

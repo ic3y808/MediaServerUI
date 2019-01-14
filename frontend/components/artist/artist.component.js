@@ -3,16 +3,19 @@ import Glide from '@glidejs/glide'
 
 
 class ArtistController {
-  constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, $compile, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$routeParams = $routeParams;
+    this.$compile = $compile;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artist-controller');
     $scope.artistName = '';
+    $scope.artist = {};
     $scope.artist = {};
     $scope.albums = [];
     $scope.tracks = [];
@@ -52,7 +55,7 @@ class ArtistController {
     $scope.gridOptions = {
       columnDefs: columnDefs,
       rowData: null,
-      rowSelection: 'multiple',
+      rowSelection: 'single',
       enableColResize: true,
       enableSorting: true,
       enableFilter: true,
@@ -121,12 +124,6 @@ class ArtistController {
       return that.AlloyDbService.getCoverArt(id);
     }
 
-    $scope.getBackgroundStyle = function (imagepath) {
-      return {
-        'background-image': 'url(' + imagepath + ')'
-      }
-    }
-
     $scope.toggleAlbums = function () {
       if ($scope.albums_expanded) $('#albumListContainer').hide();
       else $('#albumListContainer').show();
@@ -160,6 +157,10 @@ class ArtistController {
       }
 
       $scope.all_expanded = !$scope.all_expanded;
+    }
+
+    $scope.getTags = function(obj){
+      return obj;
     }
 
     $scope.getArtist = function () {
@@ -199,6 +200,12 @@ class ArtistController {
             artistInfo.then(function (info) {
               if (info.artistInfo) {
                 $scope.artistInfo = info.artistInfo;
+
+                angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope));
+
+               // $('#linkContainer').append('<popoverbutton buttontext="Tags" buttonicon="fa-tags" data="artistInfo.tags.tag"><popoverbutton>')
+
+
                 if ($scope.artistInfo.bio) {
                   $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
                 }
@@ -376,25 +383,7 @@ class ArtistController {
       }
     });
 
-    var popoverTemplate = ['<div class="timePickerWrapper popover">',
-      '<div class="arrow"></div>',
-      '<div class="popover-content">',
-      '</div>',
-      '</div>'].join('');
-
-    var content = ['<div class="timePickerCanvas">asfaf asfsadf</div>',
-      '<div class="timePickerClock timePickerHours">asdf asdfasf</div>',
-      '<div class="timePickerClock timePickerMinutes"> asfa </div>',].join('');
-
-
-    $('body').popover({
-      selector: '[rel=popover]',
-      trigger: 'click',
-      content: content,
-      template: popoverTemplate,
-      placement: "bottom",
-      html: true
-    });
+   
 
     $scope.getArtist();
     AppUtilities.hideLoader();

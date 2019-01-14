@@ -1,92 +1,85 @@
 include ./../../views/pagecontainer
   include ./../../views/pagetoolbar
-    .PageToolbarSection-section.PageToolbarSection-left
+    include ./../../views/toolbarsection-left
       toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
       toolbarseperator
       toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
       toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
       toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
       toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
-
-    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
-      .PageToolbarSection-section.PageToolbarSection-right
-        toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
-        toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")
-        toolbarbutton(buttontext='Hide All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-up', ng-show="all_expanded")
-
-  div(style='position: relative; overflow: hidden; width: 100%; height: 100%;')
-    .PageContentBody-contentBody(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; overflow: scroll; margin-right: -15px; margin-bottom: -15px;')
-      .ArtistDetails-innerContentBody
-        .ArtistDetails-header
-          .ArtistDetails-backdrop
-            .ArtistDetails-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="getBackgroundStyle(artistImage)")
-            .ArtistDetails-backdropOverlay 
-              .ArtistDetails-headerContent
-                img.ArtistDetails-poster(ng-show="!artistImage", src='data:image/png;base64,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')
-                img.ArtistDetails-poster(ng-show="artistImage", src='{{artistImage}}')
-                .ArtistDetails-info
-                  .ArtistDetails-titleContainer
-                    .ArtistDetails-title {{artistName}}
-                    .ArtistDetails-artistNavigationButtons
-                      a.ArtistDetails-artistNavigationButton.IconButton-button.Link-link.Link-link.Link-to(title='Go to {{artist.previous_artist.base_path}}', href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path")
-                        svg.svg-inline--fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='arrow-circle-left', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 30px;')
-                          path(fill='currentColor', d='M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zm28.9-143.6L209.4 288H392c13.3 0 24-10.7 24-24v-16c0-13.3-10.7-24-24-24H209.4l75.5-72.4c9.7-9.3 9.9-24.8.4-34.3l-11-10.9c-9.4-9.4-24.6-9.4-33.9 0L107.7 239c-9.4 9.4-9.4 24.6 0 33.9l132.7 132.7c9.4 9.4 24.6 9.4 33.9 0l11-10.9c9.5-9.5 9.3-25-.4-34.3z')
-                      a.ArtistDetails-artistNavigationButton.IconButton-button.Link-link.Link-link.Link-to(title='Go to {{artist.next_artist.base_path}}', href='/artist/{{artist.next_artist.base_id}}')
-                        svg.svg-inline--fa.fa-arrow-circle-right.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='arrow-circle-right', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 30px;')
-                          path(fill='currentColor', d='M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z')
-                  .ArtistDetails-details
-                    div
-                      span
-                        svg.svg-inline--fa.fa-heart.fa-w-16.HeartRating-heart.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='heart', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 20px;')
-                          path(fill='currentColor', d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z')
-                        | 0%
-                  div
-                    detaillabel(buttontext="{{artist.size}}", buttonicon="fa-hdd-o")
-                    detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
-                    detaillabel(buttontext="Tags", buttonicon="fa-tags", buttonclick="showExternalLinks(artist.id)")
-                    detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-
-                  .ArtistDetails-overview 
-                    div(style='overflow: hidden;')
-                      span
-                      | {{artistBio}}
-                    
-        .ArtistDetails-contentContainer
-          div
-            .ArtistDetailsSeason-albumType
-              button.ArtistDetailsSeason-expandButton.Link-link.Link-link(type='button', ng-click='toggleAlbums()')
-                .ArtistDetailsSeason-header
-                  .ArtistDetailsSeason-left
-                    div
-                      span.ArtistDetailsSeason-albumTypeLabel Album
-                      span.ArtistDetailsSeason-albumCount {{artist.albums.length}} {{artist.albums.length > 1 ? 'Releases' : 'Release'}}
-                  span(title='Hide albums')
-                    expandbutton(direction="up", ng-show="albums_expanded")
-                    expandbutton(direction="down", ng-show="!albums_expanded")
-                  span  
-              div#albumListContainer
-                .ArtistDetailsSeason-albums
-                  albumlist(data="artist")
-                  .ArtistDetailsSeason-collapseButtonContainer
-                    button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleAlbums()')
-                      expandbutton(ng-show="albums_expanded", mini)
-                      expandbutton(ng-show="!albums_expanded", mini)
-            .ArtistDetailsSeason-albumType
-              button.ArtistDetailsSeason-expandButton.Link-link.Link-link(type='button', ng-click='toggleTracks()')
-                .ArtistDetailsSeason-header
-                  .ArtistDetailsSeason-left
-                    div
-                      span.ArtistDetailsSeason-albumTypeLabel All Tracks
-                      span.ArtistDetailsSeason-albumCount {{artist.tracks.length}} {{artist.tracks.length > 1 ? 'Tracks' : 'Track'}}
-                  span(title='Hide albums')
-                    expandbutton(direction="up", ng-show="tracks_expanded")
-                    expandbutton(direction="down", ng-show="!tracks_expanded")
+    include ./../../views/toolbarsection-right
+      toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
+      toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")
+      toolbarbutton(buttontext='Hide All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-up', ng-show="all_expanded")
+  
+  include ./../../views/pagebody
+    include ./../../views/pageheader
+      .PageContent-backdrop
+        .PageContent-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="$root.getBackgroundStyle(artistImage)")
+        .PageContent-backdropOverlay 
+          .PageContent-headerContent
+            img.PageContent-HeaderDetails-poster(ng-show="!artistImage", src='data:image/png;base64,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')
+            img.PageContent-HeaderDetails-poster(ng-show="artistImage", src='{{artistImage}}')
+            .PageContent-HeaderDetails-info
+              .PageContent-HeaderDetails-titleContainer
+                .PageContent-HeaderDetails-title {{artistName}}
+                .PageContent-HeaderDetails-navigation-buttons
+                  navbutton(buttontext="Go to {{artist.previous_artist.base_path}}", href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path", direction="left")
+                  navbutton(buttontext="Go to {{artist.next_artist.base_path}}", href='/artist/{{artist.next_artist.base_id}}', ng-show="artist.next_artist.base_path", direction="right")
                   
-                  span  
-              div#trackListContainer
-                .ArtistDetailsSeason-albums
-                  #albumTracksGrid.ag-theme-dark(ag-grid='gridOptions', style="width: 100%; height: 100%;")
-                  .ArtistDetailsSeason-collapseButtonContainer
-                    button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
-                      expandbutton(ng-show="albums_expanded", mini)
-                      expandbutton(ng-show="!albums_expanded", mini)
+              div
+                div
+                  span
+                    svg.svg-inline--fa.fa-heart.fa-w-16.HeartRating-heart.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='heart', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 20px;')
+                      path(fill='currentColor', d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z')
+                    | 0%
+              div
+                detaillabel(buttontext="{{artist.size}}", buttonicon="fa-hdd-o")
+              div
+                detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
+                popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artistInfo.tags.tag")
+                detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+
+              .PageContent-HeaderDetails-overview 
+                div(style='overflow: hidden;')
+                  span
+                  | {{artistBio}}
+                
+    include ./../../views/pagecontent
+      .ExpanderContainer
+        button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleAlbums()')
+          .ExpanderContainer-header
+            .ExpanderContainer-left
+              div
+                span.ExpanderContainer-label Album
+                span.ExpanderContainer-sublabel {{artist.albums.length}} {{artist.albums.length > 1 ? 'Releases' : 'Release'}}
+            span(title='Hide albums')
+              expandbutton(direction="up", ng-show="albums_expanded")
+              expandbutton(direction="down", ng-show="!albums_expanded")
+            span  
+        div#albumListContainer
+          .ExpanderContainer-body
+            albumlist(data="artist")
+            .ExpanderContainer-collapseButtonContainer
+              button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleAlbums()')
+                expandbutton(ng-show="albums_expanded", mini)
+                expandbutton(ng-show="!albums_expanded", mini)
+      .ExpanderContainer
+        button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleTracks()')
+          .ExpanderContainer-header
+            .ExpanderContainer-left
+              div
+                span.ExpanderContainer-label All Tracks
+                span.ExpanderContainer-sublabel {{artist.tracks.length}} {{artist.tracks.length > 1 ? 'Tracks' : 'Track'}}
+            span(title='Hide albums')
+              expandbutton(direction="up", ng-show="tracks_expanded")
+              expandbutton(direction="down", ng-show="!tracks_expanded")
+            
+            span  
+        div#trackListContainer
+          .ExpanderContainer-body
+            #albumTracksGrid.ag-theme-dark(ag-grid='gridOptions', style="width: 100%; height: 100%;")
+            .ExpanderContainer-collapseButtonContainer
+              button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
+                expandbutton(ng-show="albums_expanded", mini)
+                expandbutton(ng-show="!albums_expanded", mini)

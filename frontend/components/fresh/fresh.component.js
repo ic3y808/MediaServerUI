@@ -107,7 +107,6 @@ class FreshController {
     }
 
     $scope.getAlbum = function (id, ) {
-      console.log(moment().diff($scope.last_run, 'miliseconds'))
       if (moment().diff($scope.last_run, 'miliseconds') < 250) return;
       $scope.last_run = moment();
 

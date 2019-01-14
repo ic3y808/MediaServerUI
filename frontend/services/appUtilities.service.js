@@ -3,6 +3,7 @@ export default class AppUtilities {
     "ngInject";
     this.$rootScope = $rootScope;
     this.$rootScope.goBack = this.goBack;
+    this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
 
   }
@@ -20,6 +21,12 @@ export default class AppUtilities {
 
   goBack() {
     window.history.back();
+  }
+
+  getBackgroundStyle(imagepath) {
+    return {
+      'background-image': 'url(' + imagepath + ')'
+    }
   }
 
   shuffle(a) {

@@ -14,6 +14,9 @@ import './debug.scss';
 
 //ui components
 import './ui/pagecontainer.scss'
+import './ui/pageheader.scss'
+import './ui/pagecontent.scss'
 import './ui/pagetoolbar.scss'
 import './ui/albumlist.scss'
 import './ui/detaillabel.scss'
+import './ui/expander.scss'

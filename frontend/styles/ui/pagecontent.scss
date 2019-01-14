@@ -1,0 +1,9 @@
+.PageContent-contentContainer {
+  padding: 20px;
+}
+
+@media only screen and (max-width: 768px) {
+  .PageContent-contentContainer {
+    padding: 20px 0;
+  }
+}

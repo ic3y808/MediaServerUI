@@ -45,7 +45,9 @@ class PlaylistController {
       enableColResize: true,
       enableSorting: true,
       enableFilter: true,
+      rowDeselection: true,
       animateRows: true,
+      domLayout: 'autoHeight',
       getRowNodeId: function (data) {
         return data.id;
       },
