@@ -15,7 +15,7 @@ module.exports = function () {
         element.html(t);
       } else {
         var t = '<span title="Hide albums">' +
-          '  <svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-{{direction}}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 24px;" class="svg-inline--fa fa-chevron-circle-down fa-w-16 ArtistDetailsSeason-expandButtonIcon ArtistDetailsSeason-actionButton IconButton-button Link-link Icon-default">';
+          '  <svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-{{direction}}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 24px;" class="svg-inline--fa fa-chevron-circle-down fa-w-16 ExpanderContainer-expandButtonIcon ExpanderContainer-actionButton IconButton-button Link-link Icon-default">';
 
         switch (scope.direction) {
           case 'up':

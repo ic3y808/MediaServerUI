@@ -1,16 +1,18 @@
-.generalConfigWrapper
-  .pageToolbar-toolbar.bg-secondary
-    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
-      .PageToolbarSection-section.PageToolbarSection-left
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='refresh()')
-          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Placeholder
+include ./../../views/pagecontainer
+  include ./../../views/pagetoolbar
+    .PageToolbarSection-section.PageToolbarSection-left
+      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
+      .PageToolbarSeparator-separator
+      toolbarbutton(buttontext='General', buttonclick='jumpTo("general")', buttonicon='fa-refresh')
+      toolbarbutton(buttontext='Scheduler', buttonclick='jumpTo("scheduler")', buttonicon='fa-calendar')
+      toolbarbutton(buttontext='SabNZBd', buttonclick='jumpTo("sabnzbd")', buttonicon='fa-random')
+      toolbarbutton(buttontext='AlloyDB', buttonclick='jumpTo("alloydb")', buttonicon='fa-adn')
+      
+   
 
-  .generalConfigBodyWrapper.container.h-100
-    .row.h-100.justify-content-center
-      h1 General Configuration
-
-
+  .configBodyWrapper.d-flex.flex-column
+    .row.align-items-center.h-100
+      .col-6.mx-auto.config-background
+        | Configuration
 
 

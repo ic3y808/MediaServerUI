@@ -1,11 +1,12 @@
 import './activity.scss';
 class ActivityController {
-  constructor($scope, $rootScope, $compile, $routeParams, AppUtilities, Backend, MediaPlayer) {
+  constructor($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$compile = $compile;
     this.$routeParams = $routeParams;
+    this.$location = $location;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
@@ -13,8 +14,12 @@ class ActivityController {
     var that = this;
 
 
+    this.$scope.jumpTo = function (to) {
+      that.$location.path('/activity/' + to);
+    };
+
     this.$scope.navigate = function (to) {
-      $('.activityBodyWrapper').append(that.$compile("<activity" + to + "/>")(that.$scope));
+      $('.PageContentBody-contentBody').append(that.$compile("<activity" + to + "/>")(that.$scope));
       that.AppUtilities.apply();
     };
 
@@ -34,7 +39,7 @@ class ActivityController {
     };
 
     this.$rootScope.triggerConfigAlert = function (message, type) {
-      $('.generalConfigBodyWrapper').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
+      $('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
       setTimeout(() => {
         $('.config-alert').hide(500);
       }, 3000);
