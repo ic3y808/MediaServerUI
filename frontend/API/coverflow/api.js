@@ -1,7 +1,7 @@
 
 var Signal = require('./signal');
 var _ = require('./_');
-var Html5 = require('./Html5');
+var Html5 = require('./html5');
 var Modernizr = require('./modernizr');
 
 var Api = function (id) {
@@ -41,7 +41,7 @@ var Api = function (id) {
       reflectionratio: 155,
       reflectionoffset: 0,
       showtext: true,
-      textstyle: '.coverflow-text{color:#f1f1f1;text-align:center;font-family:Arial Rounded MT Bold,Arial;} .coverflow-text h1{font-size:14px;font-weight:normal;line-height:21px;} .coverflow-text h2{font-size:11px;font-weight:normal;} .coverflow-text a{color:#0000EE;}',
+      textstyle: '.coverflow-text{text-align:center;} .coverflow-text h1{font-size:14px;font-weight:normal;line-height:21px;} .coverflow-text h2{font-size:11px;font-weight:normal;} .coverflow-text a{color:#0000EE;}',
       textoffset: 75,
       tweentime: 0.8,
       rotatedelay: 0,

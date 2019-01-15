@@ -1,6 +1,4 @@
 import './fresh.scss';
-import Glide from '@glidejs/glide'
-import moment from 'moment'
 
 class FreshController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
@@ -13,9 +11,11 @@ class FreshController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('fresh-controller');
+    this.AppUtilities.showLoader();
+
     $scope.albums = [];
     $scope.tracks = [];
-    $scope.last_run = moment();
+
     $scope.continousPlay = true;
 
     var that = this;
@@ -43,7 +43,7 @@ class FreshController {
     },
     {
       headerName: "Plays",
-      field: "playCount",
+      field: "play_count",
       width: 75,
       suppressSizeToFit: true
     },
@@ -58,6 +58,7 @@ class FreshController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      domLayout: 'autoHeight',
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.gridOptions.api) $scope.gridOptions.api.deselectAll();
@@ -106,53 +107,89 @@ class FreshController {
       return that.AlloyDbService.getCoverArt(id);
     }
 
-    $scope.getAlbum = function (id, ) {
-      if (moment().diff($scope.last_run, 'miliseconds') < 250) return;
-      $scope.last_run = moment();
+    $scope.findNowPlaying = function (id) {
+      $scope.albums.forEach(function (album) {
 
-      that.AlloyDbService.getAlbum($scope.albums[$scope.glide.index].album_id).then(function (result) {
-        if (result) {
-          that.$scope.tracks = result.tracks;
-
-          if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
-            that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
-            that.$scope.gridOptions.api.doLayout();
-            that.$scope.gridOptions.api.sizeColumnsToFit();
-          }
-          that.AppUtilities.apply();
-        }
       });
     }
 
-    $scope.refresh = function () {
+    $scope.getAlbum = function (album) {
+      that.$scope.tracks = album.tracks;
 
-      $scope.albums = [];
-      that.AlloyDbService.getFresh(5).then(function (newestCollection) {
-        $scope.albums = newestCollection.albums;
-        $scope.albums.forEach(function (album) {
-          album.cover_art = that.AlloyDbService.getCoverArt(album.cover_art);
-        })
+      if ($scope.play_prev_album) {
+        MediaPlayer.tracks = $scope.tracks;
+        MediaPlayer.loadTrack($scope.tracks.length - 1);
+        $scope.play_prev_album = false;
+      }
 
-        $scope.glide = new Glide('#intro', {
-          type: 'slider',
-          perView: 8,
-          focusAt: 'center',
-          800: {
-            perView: 8
+      if ($scope.play_next_album) {
+        MediaPlayer.tracks = $scope.tracks;
+        MediaPlayer.loadTrack(0);
+        $scope.play_next_album = false;
+      }
+
+      if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
+        that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
+        that.$scope.gridOptions.api.doLayout();
+        that.$scope.gridOptions.api.sizeColumnsToFit();
+      }
+
+      that.AppUtilities.apply();
+      that.AppUtilities.hideLoader();
+    }
+
+    $scope.findNowPlaying = function() {
+      var found = false;
+      for (var i = 0; i < $scope.albums.length; i++) {
+        if (found) return;
+        var album = $scope.albums[i];
+        album.tracks.forEach(function (track) {
+          if (found) return;
+          if (MediaPlayer.checkIfNowPlaying(track)) {
+            $scope.coverflow.to(i);
+            found = true;
           }
         })
+      }
+    };
 
-        $scope.glide.mount();
+    $scope.refresh = function () {
+      $scope.albums = [];
 
-        $scope.glide.on(['move.after'], $scope.getAlbum);
+      that.AlloyDbService.getFresh(50).then(function (newestCollection) {
+        $scope.albums = newestCollection.albums;
+        $scope.albums.forEach(function (album) {
+          album.image = that.AlloyDbService.getCoverArt(album.cover_art);
+          album.title = album.album;
+        });
+
+        $scope.coverflow = coverflow('player').setup({
+          backgroundcolor: "ffffff",
+          playlist: $scope.albums,
+          width: '100%',
+          coverwidth: 200,
+          coverheight: 200,
+          fixedsize: true,
+        }).on('ready', function () {
+          this.on('focus', function (index) {
+            if ($scope.albums && $scope.albums.length > 0) {
+              $scope.getAlbum($scope.albums[index]);
+            }
+          });
+
+          this.on('click', function (index, link) {
+            if ($scope.albums && $scope.albums.length > 0) {
+              $scope.getAlbum($scope.albums[index]);
+            }
+          });
+        });
 
         that.AppUtilities.apply();
 
-        //$scope.flip.flipster('index');
         if ($scope.albums && $scope.albums.length > 0) {
-          $scope.getAlbum($scope.albums[0].album_id);
+          $scope.getAlbum($scope.albums[0]);
+          $scope.findNowPlaying();
         }
-        AppUtilities.hideLoader();
       });
     };
 
@@ -177,13 +214,17 @@ class FreshController {
       MediaPlayer.loadTrack(0);
     };
 
+    $rootScope.$on('playlistBeginEvent', function (event, data) {
+      if ($scope.continousPlay) {
+        $scope.play_prev_album = true;
+        $scope.coverflow.prev();
+      }
+    });
+
     $rootScope.$on('playlistEndEvent', function (event, data) {
       if ($scope.continousPlay) {
-        $scope.flip.flipster('next');
-        setTimeout(function () {
-          MediaPlayer.tracks = $scope.tracks;
-          MediaPlayer.loadTrack(0);
-        }, 500);
+        $scope.play_next_album = true;
+        $scope.coverflow.next();
       }
     });
 

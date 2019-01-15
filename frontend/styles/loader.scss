@@ -2,6 +2,7 @@
 
 .loader {
   position: absolute;
+  z-index: 1000 !important;
   margin-top: $navbar-height;
   margin-bottom: $footer-height;
   left: calc(50vw + #{$sidebar-width} - 75px);

@@ -91,10 +91,10 @@ export default class AlloyDbService {
     else return false;
   }
 
-  getFresh(daysBack) {
+  getFresh(limit) {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.getFresh(daysBack);
+      return this.alloydb.getFresh(limit);
     else return false;
   }
 

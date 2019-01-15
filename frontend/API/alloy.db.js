@@ -220,8 +220,8 @@ window.AlloyApi = function () {
     },
     {
       key: 'getFresh',
-      value: function getFresh(daysBack) {
-        return this._get('browse/fresh', { days_back: daysBack });
+      value: function getFresh(limit) {
+        return this._get('browse/fresh', { limit: limit });
       }
     },
     {
