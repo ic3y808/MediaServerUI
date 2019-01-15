@@ -1,161 +1,85 @@
 @import "../../styles/variables";
-.freshWrapper {
-  display: flex;
-  flex-direction: column;
+
+#player{
+  width:100%;
+}
+
+.coverflow {
+  z-index: 10;
+  position: relative;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: none;
+  -ms-text-size-adjust: none;
+  -webkit-touch-callout: none;
+}
+
+.coverflow .coverflow-wrap {
   position: absolute;
-  padding: 0;
-  top: 0;
-  left: 0;
-  right: 0;
+  width: 100%;
   height: 100%;
+  overflow: hidden;
+}
+
+.coverflow .coverflow-tray,
+.coverflow .coverflow-rect {
+  position: absolute;
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  -ms-transform-style: preserve-3d;
+  -o-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.coverflow .coverflow-tray,
+.coverflow .coverflow-cell {
+  pointer-events: none;
+  position: absolute;
+  -webkit-transition: -webkit-transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  -moz-transition: -moz-transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  -ms-transition: -ms-transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  -o-transition: -o-transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.coverflow .coverflow-hit {
+  position: absolute;
+  opacity: 0;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.coverflow .coverflow-cell canvas {
+  pointer-events: none;
+  outline: 1px solid transparent;
+  position: absolute;
+}
+
+.coverflow-text {
+  position: absolute;
+  width: 100%;
+  padding-top: 60px;
+  color: $main-text-color;
+  font-weight: bolder;
+  font-family: $sub-font;
+  font-size: $sub-font-size;
+}
+
+.coverflow-text h1,
+.coverflow-text h2 {
   margin: 0;
 }
 
-.freshBodyWrapper {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  top: $toolbar-height;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: 0;
-}
-
-#freshHeader {
-  height: 10%;
-}
-
-#freshAlbums {
-  height: 10%;
-  max-height: 300px;
-  width: 100%
-}
-
-#freshTracksGrid {
-  height: 60%;
-  position: absolute;
-  bottom: 0px;
-  left: 0px;
-  right:0px;
-}
 
 
-.glide {
-  cursor: -webkit-grab;
-}
-
-.glide__slides {
-  margin: 0;
-}
-
-.glide__arrow {
-  cursor: pointer;
-  padding: 0;
-  background-color: transparent;
-  border: 0;
-  outline: 0;
-}
-
-.slider__frame {
-  border-radius: .16667em;
-  text-align: center;
-  height: 150px;
-  line-height: 150px; //-webkit-box-shadow:inset 0 0 0 2px hsla(0,0%,100%,.5);
-  //box-shadow:inset 0 0 0 2px hsla(0,0%,100%,.5);
-  color: #fff;
-  background: transparent;
-  font-size: 1em;
-  font-weight: 900;
-}
-
-.slider__frame[class*=active] {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  background:linear-gradient(-45deg,#ed145b,#7b31f4);
-  
-  margin: 0px;
-  padding: 0px;
-  cursor: pointer;
-
-  box-shadow: 0px 0px 12px -1px rgba(215, 215, 215, 0.44);
-  -webkit-box-shadow: 0px 0px 12px -1px rgba(215, 215, 215, 0.44);
-  -moz-box-shadow: 0px 0px 12px -1px rgba(215, 215, 215, 0.44);
-  -o-box-shadow: 0px 0px 12px -1px rgba(215, 215, 215, 0.44);
-  -ms-box-shadow: 0px 0px 12px -1px rgba(215, 215, 215, 0.44);
-  border: 1px solid #ddd;
-}
-
-.slider__arrow {
-  position: absolute;
-  top: 50%;
-  z-index: 1;
-  width: 24px;
-  height: 24px;
-  margin-top: -9px;
-  border-radius: 50%;
-  background-color: #818999;
-  -webkit-transition: all .2s ease-in-out;
-  transition: all .2s ease-in-out;
-  -webkit-box-shadow: 0 .5rem 4rem 0 rgba(0, 0, 0, .5);
-  box-shadow: 0 .5rem 4rem 0 rgba(0, 0, 0, .5);
-}
-
-.slider__arrow:hover {
-  background-color: #ed145b;
-}
-
-.slider__arrow--next {
-  right: 1.5rem;
-}
-
-.slider__arrow--prev {
-  left: 1.5rem;
-}
-
-.slider__bullets {
-  position: absolute;
-  z-index: 2;
-  bottom: 1.5rem;
-  left: 50%;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
-  list-style: none;
-  -webkit-transform: translateX(-50%);
-  transform: translateX(-50%);
-}
-
-.slider__bullet {
-  background-color: hsla(0, 0%, 100%, .5);
-  width: 9px;
-  height: 9px;
-  padding: 0;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  -webkit-transition: all .3s ease-in-out;
-  transition: all .3s ease-in-out;
-  cursor: pointer;
-  line-height: 0;
-  -webkit-box-shadow: 0 .25em .5em 0 rgba(0, 0, 0, .1);
-  box-shadow: 0 .25em .5em 0 rgba(0, 0, 0, .1);
-  margin: 0 .25em;
-}
-
-.slider__bullet:focus {
-  outline: none;
-}
-
-.slider__bullet:focus,
-.slider__bullet:hover {
-  border: 2px solid #fff;
-  background-color: hsla(0, 0%, 100%, .5);
-}
-
-.slider__bullet[class*=active] {
-  background-color: #fff;
-}
 
 @media screen and (max-width:$break-xxxsmall) {}
 
@@ -183,14 +107,7 @@
 
 @media screen and (max-width:$break-huge) {}
 
-@media screen and (max-width:$break-xhuge) {
-  #freshAlbums {
-    flex: 0.25 0;
-    max-height: 300px;
-    width: 90%
-      
-  }
-}
+@media screen and (max-width:$break-xhuge) {}
 
 @media screen and (max-width:$break-xxhuge) {}
 

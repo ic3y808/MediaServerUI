@@ -5,11 +5,6 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
   Backend.debug('starting application');
   $rootScope.settings = [];
 
-  $rootScope.$on('$routeChangeStart', function ($event, next, current) {
-    $(".main-content").css("display", "none");
-    $(".loader").css("display", "block");
-  });
-
   $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
     Backend.debug('routeChangeSuccess');
     AppUtilities.broadcast('windowResized');

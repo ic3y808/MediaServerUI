@@ -37,6 +37,11 @@ export default class AppUtilities {
     return a;
   }
 
+  showLoader() {
+    $(".main-content").css("display", "none");
+    $(".loader").css("display", "block");
+  }
+
   hideLoader() {
     $(".loader").css("display", "none");
     $(".main-content").css("display", "block");

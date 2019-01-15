@@ -140,6 +140,36 @@ export default class MediaPlayer {
     }
   }
 
+  checkPlaylistBeginning(newIndex) {
+    if (newIndex <= 0) {
+      this.playing = false;
+      this.selectedIndex = 0;
+      this.togglePlayPause();
+      $('#media-player').src = this.selectedTrack();
+      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('#mainTimeDisplay').html("");
+      this.Backend.debug('Playlist ended');
+      this.AppUtilities.broadcast('playlistBeginEvent');
+      return true;
+    } return false;
+  }
+
+  checkPlaylistEnding(newIndex) {
+    if (newIndex >= this.tracks.length) {
+      this.playing = false;
+      this.selectedIndex = 0;
+      this.togglePlayPause();
+      $('#media-player').src = this.selectedTrack();
+      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('#mainTimeDisplay').html("");
+      this.Backend.debug('Playlist ended');
+      this.AppUtilities.broadcast('playlistEndEvent');
+      return true;
+    } return false;
+  }
+
   generateRemoteMetadata(source) {
     var that = this;
     return new Promise(function (resolve, reject) {
@@ -322,14 +352,16 @@ export default class MediaPlayer {
   }
 
   previous() {
-    this.selectedIndex--;
-    this.selectedIndex = (this.selectedIndex < 0 ? this.tracks.length - 1 : this.selectedIndex);
-    this.loadTrack(this.selectedIndex);
+    if (!this.repeatEnabled) this.selectedIndex--;
+    if (!this.checkPlaylistBeginning(this.selectedIndex)) {
+      this.loadTrack(this.selectedIndex);
+    }
   }
   next() {
     if (!this.repeatEnabled) this.selectedIndex++;
-    this.selectedIndex = (this.selectedIndex >= this.tracks.length ? 0 : this.selectedIndex);
-    this.loadTrack(this.selectedIndex);
+    if (!this.checkPlaylistEnding(this.selectedIndex)) {
+      this.loadTrack(this.selectedIndex);
+    }
   }
 
   checkVolume() {
@@ -350,7 +382,7 @@ export default class MediaPlayer {
     $('#artistInfo').html(source.artist);
     $('#artistInfo').attr("href", source.artistUrl);
     $('#trackTitle').html(source.title);
-    $('#trackTitle').attr("href",source.albumUrl);
+    $('#trackTitle').attr("href", source.albumUrl);
   }
 
   startProgressTimer() {
