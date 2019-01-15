@@ -83,25 +83,25 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.(scss|sass)$/,
   use: [{
-      loader: 'style-loader'
-    },
-    {
-      loader: 'css-loader'
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        plugins: function () { // post css plugins, can be exported to postcss.config.js
-          return [
-            require('precss'),
-            require('autoprefixer')
-          ];
-        }
+    loader: 'style-loader'
+  },
+  {
+    loader: 'css-loader'
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: function () { // post css plugins, can be exported to postcss.config.js
+        return [
+          require('precss'),
+          require('autoprefixer')
+        ];
       }
-    },
-    {
-      loader: 'sass-loader'
     }
+  },
+  {
+    loader: 'sass-loader'
+  }
   ]
 });
 
@@ -109,6 +109,12 @@ profile.module.rules.push({
   test: /\.less$/,
   use: ['style-loader', 'css-loader', 'less-loader']
 });
+
+profile.module.rules.push(
+  {
+    test: /modernizr\.js$/,
+    loader: "imports-loader?this=>window!exports-loader?window.Modernizr"
+  });
 
 // Output
 profile.output = {
@@ -120,7 +126,7 @@ profile.output = {
 // Dev - Production specific
 
 if (process.env.DEV === 'true') {
-  
+
   if (process.env.USE_ANALYZER === 'true') {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
     profile.plugins.push(new BundleAnalyzerPlugin());
@@ -153,35 +159,35 @@ if (process.env.DEV === 'true') {
     port: 1908
   }));
   profile.plugins.push(new webpack.HotModuleReplacementPlugin());
-  
+
 } else {
   const CleanWebpackPlugin = require('clean-webpack-plugin');
   profile.plugins.push(new CleanWebpackPlugin([dist]));
-  
+
   profile.module.rules.push({
     test: /\.js$/,
     use: [{
-        loader: 'strip-loader?strip[]=debug'
-      },
-      {
-        loader: 'babel-loader',
-        options: {
-          plugins: [
-            '@babel/plugin-transform-runtime',
-            [
-              "@babel/plugin-proposal-decorators",
-              {
-                "legacy": true,
-              }
-            ],
-            "@babel/plugin-proposal-class-properties",
-            ["angularjs-annotate", {
-              explicitOnly: true
-            }]
+      loader: 'strip-loader?strip[]=debug'
+    },
+    {
+      loader: 'babel-loader',
+      options: {
+        plugins: [
+          '@babel/plugin-transform-runtime',
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true,
+            }
           ],
-          presets: ['@babel/preset-env']
-        }
+          "@babel/plugin-proposal-class-properties",
+          ["angularjs-annotate", {
+            explicitOnly: true
+          }]
+        ],
+        presets: ['@babel/preset-env']
       }
+    }
     ],
     exclude: /(node_modules|bower_components)/
   });

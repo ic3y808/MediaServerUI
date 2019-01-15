@@ -1,4 +1,4 @@
-import './home.scss';
+import styles from './home.scss';
 class HomeController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -19,6 +19,46 @@ class HomeController {
       if (getRandomSongs) {
         getRandomSongs.then(function (result) {
           $scope.random = result;
+
+          var plist = [
+            {
+              "title": "luminous sky",
+              "description": "another spectacular masterpiece of nature",
+              "image": "https://luwes.github.io/js-cover-flow/media/DSC00358.jpg"
+            },
+            {
+              "title": "volcano valley",
+              "description": "",
+              "image": "https://luwes.github.io/js-cover-flow/media/IMG_0044.jpg"
+            },
+            {
+              "title": "sheep hill path",
+              "description": "",
+              "image": "https://luwes.github.io/js-cover-flow/media/DSC00435.jpg"
+            },
+            {
+              "title": "saw tooth ridge",
+              "description": "",
+              "image": "https://luwes.github.io/js-cover-flow/media/DSC00736.jpg"
+            },
+            {
+              "title": "winter long",
+              "description": "what a massive and unbelievable winter we're having!",
+              "image": "https://luwes.github.io/js-cover-flow/media/IMG_0028.jpg"
+            },
+            {
+              "title": "unreachable peak",
+              "description": "",
+              "image": "https://luwes.github.io/js-cover-flow/media/DSC01313.jpg"
+            }
+          ];
+          coverflow('player').setup({
+            //flash: 'coverflow.swf',
+            backgroundcolor: "ffffff",
+            playlist: plist,
+            width:'100%'
+     
+        });
           that.AppUtilities.apply();
         });
       }
@@ -46,6 +86,7 @@ class HomeController {
 
     if ($rootScope.isMenuCollapsed) $('.content').toggleClass('content-wide');
 
+   
     this.AppUtilities.hideLoader();
 
   }
