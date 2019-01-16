@@ -9,6 +9,7 @@ class AlbumController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artist-controller');
+    this.AppUtilities.showLoader();
     $scope.album = {};
     $scope.tracks = [];
     $scope.albumName = '';

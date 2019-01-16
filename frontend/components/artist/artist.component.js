@@ -14,6 +14,7 @@ class ArtistController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artist-controller');
+    this.AppUtilities.showLoader();
     $scope.artistName = '';
     $scope.artist = {};
     $scope.artist = {};
