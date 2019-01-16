@@ -1,10 +1,11 @@
 import './fresh.scss';
 
 class FreshController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
@@ -13,6 +14,7 @@ class FreshController {
     this.Backend.debug('fresh-controller');
     this.AppUtilities.showLoader();
 
+    $scope.refreshing = false;
     $scope.albums = [];
     $scope.tracks = [];
 
@@ -69,23 +71,14 @@ class FreshController {
         return data.id;
       },
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        //$scope.updateRows();
       },
-      onGridReady: function () {
-        setTimeout(function () {
+      onGridReady: function (params) {
+        console.log('grid ready')
+        
+        that.$timeout(function () {
           $scope.refresh();
-          $scope.gridOptions.api.sizeColumnsToFit();
-          $scope.gridOptions.api.addGlobalListener(
-            function (foo) {
-              _.debounce(function () {
-                $scope.gridOptions.api.sizeColumnsToFit();
-              }, 300);
-            }
-          );
-        }, 750);
+        });
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -130,12 +123,12 @@ class FreshController {
 
       if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
         that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
-        that.$scope.gridOptions.api.doLayout();
-        that.$scope.gridOptions.api.sizeColumnsToFit();
+
+        $scope.updateRows();
       }
     }
 
-    $scope.findNowPlaying = function() {
+    $scope.findNowPlaying = function () {
       var found = false;
       for (var i = 0; i < $scope.albums.length; i++) {
         if (found) return;
@@ -150,44 +143,70 @@ class FreshController {
       }
     };
 
+    $scope.updateRows = function () {
+      $timeout(function () {
+        if ($scope.gridOptions && $scope.gridOptions.api) {
+          $scope.gridOptions.api.redrawRows({
+            force: true
+          });
+          $scope.gridOptions.api.doLayout();
+          $scope.gridOptions.api.sizeColumnsToFit();
+        }
+      });
+    }
+
     $scope.refresh = function () {
+      if ($scope.refreshing) return;
+
+      $scope.refreshing = true;
+
       $scope.albums = [];
 
-      that.AlloyDbService.getFresh(50).then(function (newestCollection) {
+      var getFresh = that.AlloyDbService.getFresh(50);
+
+      if (!getFresh) {
+        that.$scope.refreshing = false;
+        return;
+      }
+      getFresh.then(function (newestCollection) {
         $scope.albums = newestCollection.albums;
         $scope.albums.forEach(function (album) {
           album.image = that.AlloyDbService.getCoverArt(album.cover_art);
           album.title = album.album;
         });
 
-        $scope.coverflow = coverflow('player').setup({
-          backgroundcolor: "ffffff",
-          playlist: $scope.albums,
-          width: '100%',
-          coverwidth: 200,
-          coverheight: 200,
-          fixedsize: true,
-        }).on('ready', function () {
-          this.on('focus', function (index) {
-            if ($scope.albums && $scope.albums.length > 0) {
-              $scope.getAlbum($scope.albums[index]);
-            }
-          });
-
-          this.on('click', function (index, link) {
-            if ($scope.albums && $scope.albums.length > 0) {
-              $scope.getAlbum($scope.albums[index]);
-            }
-          });
-        });
-
         that.AppUtilities.apply();
         that.AppUtilities.hideLoader();
+        $timeout(function () {
+          $scope.coverflow = coverflow('player').setup({
+            backgroundcolor: "ffffff",
+            playlist: $scope.albums,
+            width: '100%',
+            coverwidth: 200,
+            coverheight: 200,
+            fixedsize: true,
+          }).on('ready', function () {
+            this.on('focus', function (index) {
+              if ($scope.albums && $scope.albums.length > 0) {
+                $scope.getAlbum($scope.albums[index]);
+              }
+            });
 
-        if ($scope.albums && $scope.albums.length > 0) {
-          $scope.getAlbum($scope.albums[0]);
-          $scope.findNowPlaying();
-        }
+            this.on('click', function (index, link) {
+              if ($scope.albums && $scope.albums.length > 0) {
+                $scope.getAlbum($scope.albums[index]);
+              }
+            });
+          });
+
+          if ($scope.albums && $scope.albums.length > 0) {
+            $scope.getAlbum($scope.albums[0]);
+            $scope.findNowPlaying();
+          }
+
+          $scope.refreshing = false;
+          console.log('refreshed')
+        });
       });
     };
 
@@ -231,29 +250,28 @@ class FreshController {
         $scope.gridOptions.api.redrawRows({
           force: true
         });
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
+        $scope.updateRows();
       }
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Fresh reload on loginsatuschange');
-      $scope.refresh();
+      if (data.isLoggedIn) {
+        that.Backend.debug('Fresh reload on loginsatuschange');
+        $scope.refresh();
+      }
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      //$scope.updateRows();
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      $scope.updateRows();
     });
+
+    setTimeout(function(){
+      $scope.refresh()
+    }, 750);
   }
 }
 
