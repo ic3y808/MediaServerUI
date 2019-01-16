@@ -133,9 +133,6 @@ class FreshController {
         that.$scope.gridOptions.api.doLayout();
         that.$scope.gridOptions.api.sizeColumnsToFit();
       }
-
-      that.AppUtilities.apply();
-      that.AppUtilities.hideLoader();
     }
 
     $scope.findNowPlaying = function() {
@@ -185,6 +182,7 @@ class FreshController {
         });
 
         that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
 
         if ($scope.albums && $scope.albums.length > 0) {
           $scope.getAlbum($scope.albums[0]);

@@ -44,7 +44,7 @@ export default class AppUtilities {
 
   hideLoader() {
     $(".loader").css("display", "none");
-    $(".main-content").css("display", "block");
+    $(".main-content").css("display", "initial");
   }
 
   setContentBackground(img) {

@@ -9,6 +9,7 @@ class AlbumsController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('albums-controller');
+    this.AppUtilities.showLoader();
     var that = this;
 
     var columnDefs = [{

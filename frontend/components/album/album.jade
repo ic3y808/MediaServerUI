@@ -39,13 +39,17 @@ include ./../../views/pagecontainer
                         | 0%
                   div
                     detaillabel(buttontext="{{artistName}}", buttonicon="fa-level-up", href="/artist/{{album.base_id}}")
+                  div
                     detaillabel(buttontext="{{album.size}}", buttonicon="fa-hdd-o")
+                  div
                     detaillabel(buttontext="Tracks: {{tracks.length}}", buttonicon="fa-list-ul")
                     detaillabel(buttontext="Listeners: {{albumInfo.listeners}}", buttonicon="fa-bullhorn")
                     detaillabel(buttontext="All Plays: {{albumInfo.playcount}}", buttonicon="fa-play")
                     detaillabel(buttontext="My Plays: {{albumInfo.userplaycount}}", buttonicon="fa-play-circle-o")
+                  div
                     detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
-  
+                    popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artistInfo.tags.tag")
+                    detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
 
 
                     
