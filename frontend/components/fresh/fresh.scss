@@ -66,11 +66,12 @@
 .coverflow-text {
   position: absolute;
   width: 100%;
-  padding-top: 60px;
+  padding-top: 10px;
   color: $main-text-color;
   font-weight: bolder;
   font-family: $sub-font;
   font-size: $sub-font-size;
+  background-color: mix(black, white, 0.25);
 }
 
 .coverflow-text h1,
