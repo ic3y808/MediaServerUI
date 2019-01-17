@@ -51,16 +51,19 @@ var Html5 = function(api) {
 		
 		config.coverheight = config.coverheight == 'auto' ? config.height : config.coverheight;
 		
-		if (coverFlow) coverFlow.destroy();
-		coverFlow = new CoverFlow(div, playlist, config);
-		div.appendChild(coverFlow.el);
+    if (coverFlow) coverFlow.destroy();
 
-		if (textField) div.removeChild(textField);
+    if (textField) div.removeChild(textField);
 		if (config.showtext === true) {
 			textField = document.createElement('div');
 			_.addClass(textField, 'coverflow-text');
 			div.appendChild(textField);
-		}
+    }
+    
+		coverFlow = new CoverFlow(div, playlist, config);
+		div.appendChild(coverFlow.el);
+
+	
 
 		coverFlow.on('focus', coverFocus);
 		coverFlow.on('click', coverClick);
@@ -136,7 +139,7 @@ var Html5 = function(api) {
 		}
 
 		if (textField) {
-			textField.style.top = (hei - config.textoffset) + 'px';
+		//	textField.style.top = (hei - config.textoffset) + 'px';
 		}
 	};
 
