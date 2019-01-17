@@ -74,10 +74,7 @@ class ArtistController {
       },
 
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -136,10 +133,7 @@ class ArtistController {
       else $('#trackListContainer').show();
       $scope.tracks_expanded = !$scope.tracks_expanded;
 
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     }
 
     $scope.toggleAll = function () {
@@ -152,10 +146,7 @@ class ArtistController {
       if ($scope.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
 
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
 
       $scope.all_expanded = !$scope.all_expanded;
     }
@@ -192,8 +183,7 @@ class ArtistController {
 
           if ($scope.gridOptions && $scope.gridOptions.api) {
             $scope.gridOptions.api.setRowData($scope.tracks);
-            $scope.gridOptions.api.doLayout();
-            $scope.gridOptions.api.sizeColumnsToFit();
+            AppUtilities.updateGridRows($scope.gridOptions);
           }
 
           var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
@@ -359,10 +349,7 @@ class ArtistController {
       $scope.api.redrawRows({
         force: true
       });
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
@@ -371,17 +358,11 @@ class ArtistController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
    

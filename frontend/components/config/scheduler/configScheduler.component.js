@@ -85,10 +85,7 @@ class ConfigSchedulerController {
       },
 
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -144,8 +141,7 @@ class ConfigSchedulerController {
           that.Backend.debug('getSchedulerStatus');
           $scope.schedulerStatus = data;
           $scope.gridOptions.api.setRowData($scope.schedulerStatus);
-          $scope.gridOptions.api.doLayout();
-          $scope.gridOptions.api.sizeColumnsToFit();
+          AppUtilities.updateGridRows($scope.gridOptions);
           that.AppUtilities.apply();
         });
       }

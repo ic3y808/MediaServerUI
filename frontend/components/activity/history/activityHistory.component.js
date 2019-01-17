@@ -45,10 +45,7 @@ class ActivityHistoryController {
         return data.id;
       },
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -69,11 +66,7 @@ class ActivityHistoryController {
     $rootScope.$on('sabnzbdHistoryResult', function (event, data) {
       that.Backend.debug('sabnzbd history result');
       $scope.history = JSON.parse(data);
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.setRowData($scope.history);
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
       that.AppUtilities.apply();
       that.AppUtilities.hideLoader();
     });

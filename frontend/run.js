@@ -8,7 +8,7 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
   $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
     Backend.debug('routeChangeSuccess');
     AppUtilities.broadcast('windowResized');
-    AppUtilities.broadcast('menuSizeChange');
+
   });
 
   var windowResized = AppUtilities.debounce(function () {

@@ -66,10 +66,7 @@ class AlbumController {
       },
 
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -149,8 +146,7 @@ class AlbumController {
             if ($scope.tracks && $scope.tracks.length > 0) {
               if ($scope.gridOptions && $scope.gridOptions.api) {
                 $scope.gridOptions.api.setRowData($scope.tracks);
-                $scope.gridOptions.api.doLayout();
-                $scope.gridOptions.api.sizeColumnsToFit();
+                AppUtilities.updateGridRows($scope.gridOptions);
                 if ($routeParams.trackid) {
                   $scope.gridOptions.api.forEachNode(function (node) {
                     if (node.data.id === $routeParams.trackid) {
@@ -219,11 +215,7 @@ class AlbumController {
       $scope.api.redrawRows({
         force: true
       });
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
@@ -232,17 +224,11 @@ class AlbumController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $scope.refresh();
