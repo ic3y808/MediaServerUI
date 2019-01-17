@@ -60,10 +60,7 @@ class GenreController {
         return data.id;
       },
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -88,8 +85,7 @@ class GenreController {
           $scope.tracks = result;
           if ($scope.gridOptions && $scope.gridOptions.api) {
             $scope.gridOptions.api.setRowData($scope.tracks);
-            $scope.gridOptions.api.doLayout();
-            $scope.gridOptions.api.sizeColumnsToFit();
+            AppUtilities.updateGridRows($scope.gridOptions);
           }
           if (!$scope.$$phase) {
             $scope.$apply();
@@ -113,11 +109,7 @@ class GenreController {
       if ($scope.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
       $scope.tracks_expanded = !$scope.tracks_expanded;
-
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     }
 
     $scope.toggleAll = function () {
@@ -129,11 +121,8 @@ class GenreController {
 
       if ($scope.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
-
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+     
+      AppUtilities.updateGridRows($scope.gridOptions);
 
       $scope.all_expanded = !$scope.all_expanded;
     }
@@ -153,10 +142,7 @@ class GenreController {
       $scope.api.redrawRows({
         force: true
       });
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
@@ -165,17 +151,11 @@ class GenreController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $scope.getGenre();

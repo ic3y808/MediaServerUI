@@ -58,10 +58,7 @@ class PlaylistController {
         }
       },
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         if ($scope.gridOptions && $scope.gridOptions.api) {
@@ -79,8 +76,7 @@ class PlaylistController {
         $scope.api = event.api;
         if ($scope.gridOptions && $scope.gridOptions.api) {
           $scope.gridOptions.api.setRowData(MediaPlayer.tracks);
-          $scope.gridOptions.api.doLayout();
-          $scope.gridOptions.api.sizeColumnsToFit();
+          AppUtilities.updateGridRows($scope.gridOptions);
           AppUtilities.hideLoader();
           AppUtilities.apply();
         }
@@ -91,10 +87,7 @@ class PlaylistController {
       $scope.api.redrawRows({
         force: true
       });
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
@@ -102,17 +95,11 @@ class PlaylistController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
   }
 }

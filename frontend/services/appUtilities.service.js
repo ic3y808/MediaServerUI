@@ -1,10 +1,12 @@
 export default class AppUtilities {
-  constructor($rootScope) {
+  constructor($rootScope, $timeout) {
     "ngInject";
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
     this.$rootScope.goBack = this.goBack;
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
+    this.$rootScope.updateGridRows = this.updateGridRows;
 
   }
 
@@ -48,7 +50,7 @@ export default class AppUtilities {
   }
 
   setContentBackground(img) {
-    if(img){
+    if (img) {
       var bgUrl = img.replace('300x300', Math.round($('.art-backdrop').width()) + 'x' + Math.round($('.art-backdrop').height()));
       $('.art-backdrop').css('background-image', 'url(' + bgUrl + ')');
       this.apply();
@@ -57,6 +59,18 @@ export default class AppUtilities {
 
   resetContentBackground() {
     $('.art-backdrop').css('background-image', 'url("")');
+  }
+
+  updateGridRows(gridOptions) {
+    this.$timeout(function () {
+      if (gridOptions && gridOptions.api) {
+        gridOptions.api.redrawRows({
+          force: true
+        });
+        gridOptions.api.doLayout();
+        gridOptions.api.sizeColumnsToFit();
+      }
+    });
   }
 
   fallbackCopyTextToClipboard(text) {

@@ -61,10 +61,7 @@ class StarredController {
       },
       rowMultiSelectWithClick: true,
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -80,14 +77,7 @@ class StarredController {
       onGridReady: function () {
         setTimeout(function () {
           $scope.refresh();
-          $scope.gridOptions.api.sizeColumnsToFit();
-          $scope.gridOptions.api.addGlobalListener(
-            function (foo) {
-              _.debounce(function () {
-                $scope.gridOptions.api.sizeColumnsToFit();
-              }, 300);
-            }
-          );
+          AppUtilities.updateGridRows($scope.gridOptions);
         }, 750);
       },
     };
@@ -110,8 +100,7 @@ class StarredController {
 
           $scope.tracks = result.tracks;
           $scope.gridOptions.api.setRowData($scope.tracks);
-          $scope.gridOptions.api.doLayout();
-          $scope.gridOptions.api.sizeColumnsToFit();
+          AppUtilities.updateGridRows($scope.gridOptions);
           setTimeout(function () {
             $scope.flip = $("#coverflow").flipster({
               start: 0,
@@ -129,8 +118,7 @@ class StarredController {
                     });
                     if ($scope.gridOptions && $scope.gridOptions.api) {
                       $scope.gridOptions.api.setRowData($scope.tracks);
-                      $scope.gridOptions.api.doLayout();
-                      $scope.gridOptions.api.sizeColumnsToFit();
+                      AppUtilities.updateGridRows($scope.gridOptions);
                     }
                     that.AppUtilities.apply();
                   }
@@ -162,8 +150,7 @@ class StarredController {
         $scope.gridOptions.api.redrawRows({
           force: true
         });
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
+        AppUtilities.updateGridRows($scope.gridOptions);
       }
     });
 
@@ -174,15 +161,13 @@ class StarredController {
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
       if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
+        AppUtilities.updateGridRows($scope.gridOptions);
       }
     });
 
     $rootScope.$on('windowResized', function (event, data) {
       if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
+        AppUtilities.updateGridRows($scope.gridOptions);
       }
     });
 

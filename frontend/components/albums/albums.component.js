@@ -54,22 +54,11 @@ class AlbumsController {
       },
       rowMultiSelectWithClick: false,
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onGridReady: function () {
         $scope.reloadAlbums();
-        $scope.gridOptions.api.sizeColumnsToFit();
-        $scope.gridOptions.api.addGlobalListener(
-          function (foo) {
-            _.debounce(function () {
-              $scope.gridOptions.api.sizeColumnsToFit();
-            }, 300);
-
-          }
-        );
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onSelectionChanged: function (data) {
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
@@ -86,12 +75,7 @@ class AlbumsController {
       $scope.albums = [];
       AlloyDbService.getAlbums().then(function (result) {
         $scope.albums = result;
-        if ($scope.gridOptions.api) {
-          $scope.gridOptions.api.setRowData($scope.albums);
-          $scope.gridOptions.api.sizeColumnsToFit();
-          AppUtilities.apply();
-          AppUtilities.hideLoader();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       });
     };
 
@@ -101,17 +85,11 @@ class AlbumsController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
   }
 }

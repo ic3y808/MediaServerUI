@@ -70,12 +70,9 @@ class FreshController {
       getRowNodeId: function (data) {
         return data.id;
       },
-      onModelUpdated: function (data) {
-        //$scope.updateRows();
-      },
       onGridReady: function (params) {
         console.log('grid ready')
-        
+
         that.$timeout(function () {
           $scope.refresh();
         });
@@ -124,7 +121,7 @@ class FreshController {
       if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
         that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
 
-        $scope.updateRows();
+        that.AppUtilities.updateGridRows($scope.gridOptions);
       }
     }
 
@@ -143,17 +140,7 @@ class FreshController {
       }
     };
 
-    $scope.updateRows = function () {
-      $timeout(function () {
-        if ($scope.gridOptions && $scope.gridOptions.api) {
-          $scope.gridOptions.api.redrawRows({
-            force: true
-          });
-          $scope.gridOptions.api.doLayout();
-          $scope.gridOptions.api.sizeColumnsToFit();
-        }
-      });
-    }
+
 
     $scope.refresh = function () {
       if ($scope.refreshing) return;
@@ -246,12 +233,7 @@ class FreshController {
     });
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.redrawRows({
-          force: true
-        });
-        $scope.updateRows();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
@@ -262,14 +244,14 @@ class FreshController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
-      //$scope.updateRows();
+      //$scope.updateGridRows();
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-      $scope.updateRows();
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
-    setTimeout(function(){
+    setTimeout(function () {
       $scope.refresh()
     }, 750);
   }

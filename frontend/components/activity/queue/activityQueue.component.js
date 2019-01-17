@@ -57,10 +57,7 @@ class ActivityQueueController {
         return data.id;
       },
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onRowDoubleClicked: function (e) {
         var selectedRow = e.data;
@@ -90,11 +87,7 @@ class ActivityQueueController {
     $rootScope.$on('sabnzbdQueueResult', function (event, data) {
       that.Backend.debug('sabnzbd queue result');
       $scope.queue = JSON.parse(data);
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.setRowData($scope.queue);
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
       that.AppUtilities.apply();
       that.AppUtilities.hideLoader();
     });

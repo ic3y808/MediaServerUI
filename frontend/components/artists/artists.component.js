@@ -31,22 +31,11 @@ class ArtistsController {
       },
       rowMultiSelectWithClick: false,
       onModelUpdated: function (data) {
-        if (data && data.api) {
-          data.api.doLayout();
-          data.api.sizeColumnsToFit();
-        }
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onGridReady: function () {
         $scope.reloadArtists();
-        $scope.gridOptions.api.sizeColumnsToFit();
-        $scope.gridOptions.api.addGlobalListener(
-          function (foo) {
-            _.debounce(function () {
-              $scope.gridOptions.api.sizeColumnsToFit();
-            }, 300);
-
-          }
-        );
+        AppUtilities.updateGridRows($scope.gridOptions);
       },
       onSelectionChanged: function (data) {
         that.Backend.debug('onSelectionChanged');
@@ -70,7 +59,7 @@ class ArtistsController {
 
           $scope.artists = result;
           $scope.gridOptions.api.setRowData($scope.artists);
-          $scope.gridOptions.api.sizeColumnsToFit();
+          AppUtilities.updateGridRows($scope.gridOptions);
           AppUtilities.apply();
           AppUtilities.hideLoader();
         });
@@ -109,18 +98,12 @@ class ArtistsController {
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
 
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
 
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.doLayout();
-        $scope.gridOptions.api.sizeColumnsToFit();
-      }
+      AppUtilities.updateGridRows($scope.gridOptions);
 
 
     });
