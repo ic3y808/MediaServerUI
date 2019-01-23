@@ -1,18 +1,8 @@
-include ./../../views/pagecontainer
-  include ./../../views/pagetoolbar
-    .PageToolbarSection-section.PageToolbarSection-left
-      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
-      .PageToolbarSeparator-separator
-      toolbarbutton(buttontext='General', buttonclick='jumpTo("general")', buttonicon='fa-refresh')
-      toolbarbutton(buttontext='Scheduler', buttonclick='jumpTo("scheduler")', buttonicon='fa-calendar')
-      toolbarbutton(buttontext='SabNZBd', buttonclick='jumpTo("sabnzbd")', buttonicon='fa-random')
-      toolbarbutton(buttontext='AlloyDB', buttonclick='jumpTo("alloydb")', buttonicon='fa-adn')
-      
-   
-
-  .configBodyWrapper.d-flex.flex-column
-    .row.align-items-center.h-100
-      .col-6.mx-auto.config-background
-        | Configuration
-
+include ./../../../views/pagecontent
+  a.Settings-link.Link-link.Link-link.Link-to(href='/config/alloydb') Alloy DB
+  .Settings-summary Alloy Database settings and configuration
+  a.Settings-link.Link-link.Link-link.Link-to(href='/config/sabnzbd') Download Clients
+  .Settings-summary Download clients, download handling and remote path mappings
+  a.Settings-link.Link-link.Link-link.Link-to(href='/config/scheduler') Scheduler
+  .Settings-summary Manage various database scheduled tasks 
 

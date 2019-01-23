@@ -1,6 +1,6 @@
 
 
-export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer, AppUtilities) {
+export default function ApplicationRun($window, $rootScope, $timeout, Backend, MediaPlayer, AppUtilities) {
   "ngInject";
   Backend.debug('starting application');
   $rootScope.settings = [];
@@ -16,9 +16,13 @@ export default function ApplicationRun($window, $rootScope, Backend, MediaPlayer
   }, 25);
 
   $(window).on('resize', windowResized);
-  Backend.debug('loading settings');
-  Backend.emit('load_settings', 'alloydb_settings');
-  Backend.emit('load_settings', 'sabnzbd_settings');
+  
+  $timeout(function(){
+    Backend.debug('loading settings');
+    Backend.emit('load_settings', 'alloydb_settings');
+    Backend.emit('load_settings', 'sabnzbd_settings');
+  });
+ 
 
   setTimeout(() => {
     if (MediaPlayer.castStatus()) {

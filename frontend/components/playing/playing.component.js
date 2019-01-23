@@ -53,9 +53,7 @@ class PlayingController {
         });
 
       } else {
-        if ($scope.gridOptions && $scope.gridOptions.api) {
-          $scope.gridOptions.api.showNoRowsOverlay();
-        }
+        that.AppUtilities.showNoRows();
         that.AppUtilities.hideLoader();
       }
     };

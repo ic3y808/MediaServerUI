@@ -3,11 +3,13 @@ module.exports = function () {
     restrict: 'E',
     scope: {
       buttontext: '@',
+      buttonid: '@',
+      buttonrel: '@',
       buttonicon: '@',
       buttonclick: '&'
     },
     // object is passed while making the call
-    template: '<button type="button" ng-click="clickButton()" class="PageToolbarButton-toolbarButton Link-link">' +
+    template: '<button type="button" id="{{buttonid}}" ng-click="clickButton()" class="PageToolbarButton-toolbarButton Link-link" rel="{{buttonrel}}">' +
       '	<i aria-hidden="true" data-prefix="fas" class="fa {{buttonicon}} fa-w-16 Icon-default"></i>' +
       '	<div class="PageToolbarButton-labelContainer">' +
       '		<div class="PageToolbarButton-label">{{buttontext}}</div>' +

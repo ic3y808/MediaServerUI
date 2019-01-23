@@ -1,4 +1,4 @@
-@import "../variables";
+
 .PageToolbar-toolbar {
   display: -webkit-box;
   display: -webkit-flex;
@@ -49,6 +49,7 @@
   line-height: 0.25em;
   font-size: 21px;
   color: $main-text-color;
+  margin: 5px;
 }
 
 .PageToolbarButton-toolbarButton:hover {

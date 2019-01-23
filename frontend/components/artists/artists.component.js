@@ -9,11 +9,18 @@ class ArtistsController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('artists-controller');
+    this.AppUtilities.showLoader();
     var that = this;
 
     var columnDefs = [{
       headerName: "Name",
       field: "base_path"
+    },
+    {
+      headerName: "Tracks",
+      field: "track_count",
+      width: 100,
+      suppressSizeToFit: true
     }
     ];
 
@@ -52,38 +59,16 @@ class ArtistsController {
     $scope.reloadArtists = function () {
 
       $scope.artists = [];
-
+      AppUtilities.showNoRows();
       var artists = that.AlloyDbService.getMusicFolders();
       if (artists) {
         artists.then(function (result) {
-
           $scope.artists = result;
-          $scope.gridOptions.api.setRowData($scope.artists);
-          AppUtilities.updateGridRows($scope.gridOptions);
+          AppUtilities.setRowData($scope.gridOptions, $scope.artists);
           AppUtilities.apply();
           AppUtilities.hideLoader();
         });
       }
-
-
-      //AlloyDbService.getArtists().then(function (artistsCollection) {
-      //  $scope.getArtists(artistsCollection, function (result) {
-      //    $scope.artists = result;
-      //    if ($scope.gridOptions.api) {
-      //      $scope.gridOptions.api.setRowData($scope.artists);
-      //      $scope.gridOptions.api.sizeColumnsToFit();
-      //      if (!$scope.$$phase) {
-      //        $scope.$apply();
-      //      }
-      //      AppUtilities.hideLoader();
-      //    }
-      //  });
-      //});
-
-      if ($scope.gridOptions.api)
-        $scope.gridOptions.api.showNoRowsOverlay();
-      AppUtilities.hideLoader();
-
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {

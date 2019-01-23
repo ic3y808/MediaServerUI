@@ -100,7 +100,16 @@ profile.module.rules.push({
     }
   },
   {
-    loader: 'sass-loader'
+    loader: "sass-loader",
+    options: {
+      includePaths: [path.join(nodePath, 'compass-mixins','lib')]
+    }
+  },
+  {
+    loader: 'sass-resources-loader',
+    options: {
+      resources: ['./frontend/styles/_constants.scss', './frontend/styles/_functions.scss','./frontend/styles/_variables.scss']
+    }
   }
   ]
 });

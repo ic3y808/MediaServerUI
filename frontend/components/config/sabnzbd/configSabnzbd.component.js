@@ -14,81 +14,63 @@ class ConfigSabnzbdController {
     $scope.settings = {};
 
     $scope.testSettings = function () {
-      Backend.emit('test_sabnzbd_settings', $scope.settings);
-    };
-
-    $scope.saveSettings = function () {
-      that.Backend.debug('save sabnzbd settings');
-      $rootScope.settings.sabnzbd = {};
-      $rootScope.settings.sabnzbd.sabnzbd_host = $scope.settings.sabnzbd_host;
-      $rootScope.settings.sabnzbd.sabnzbd_port = $scope.settings.sabnzbd_port;
-      $rootScope.settings.sabnzbd.sabnzbd_use_ssl = $scope.settings.sabnzbd_use_ssl;
-      $rootScope.settings.sabnzbd.sabnzbd_url_base = $scope.settings.sabnzbd_url_base;
-      $rootScope.settings.sabnzbd.sabnzbd_apikey = $scope.settings.sabnzbd_apikey;
-      $rootScope.settings.sabnzbd.sabnzbd_include_port_in_url = $scope.settings.sabnzbd_include_port_in_url;
-      $rootScope.settings.sabnzbd.sabnzbd_username = $scope.settings.sabnzbd_username;
-      $rootScope.settings.sabnzbd.sabnzbd_password = CryptoJS.AES.encrypt($scope.settings.sabnzbd_password, "12345").toString();
-      Backend.emit('save_settings', { key: 'sabnzbd_settings', data: $rootScope.settings.sabnzbd });
-      setTimeout(() => {
-        Backend.emit('sabnzbd_reset_settings');
-      }, 300);
-      that.$rootScope.triggerConfigAlert("Saved!", 'success');
-      //sabnzbdService.login();
+      Backend.emit('test_sabnzbd_settings', $rootScope.settings.sabnzbd);
     };
 
 
-    $rootScope.$on('settingsReloadedEvent', function (event, settings) {
 
-      if (settings.key === 'sabnzbd_settings') {
-        Backend.debug('sabnzbd settings reloading');
-        $scope.settings.sabnzbd_host = $rootScope.settings.sabnzbd.sabnzbd_host;
-        $scope.settings.sabnzbd_port = $rootScope.settings.sabnzbd.sabnzbd_port;
-        $scope.settings.sabnzbd_url_base = $rootScope.settings.sabnzbd.sabnzbd_url_base;
-        $scope.settings.sabnzbd_apikey = $rootScope.settings.sabnzbd.sabnzbd_apikey;
-        $scope.settings.sabnzbd_use_ssl = $rootScope.settings.sabnzbd.sabnzbd_use_ssl;
-        $scope.settings.sabnzbd_include_port_in_url = $rootScope.settings.sabnzbd.sabnzbd_include_port_in_url;
-        $scope.settings.sabnzbd_username = $rootScope.settings.sabnzbd.sabnzbd_username;
-        if ($rootScope.settings.sabnzbd.sabnzbd_password) {
-          $scope.settings.sabnzbd_password = CryptoJS.AES.decrypt($rootScope.settings.sabnzbd.sabnzbd_password.toString(), "12345").toString(CryptoJS.enc.Utf8);
-        }
-        $scope.previewConnectionString();
-        AppUtilities.hideLoader();
-      }
+    var t = '<div class="popover" role="tooltip">' +
+      '<div class="arrow">' +
+      '</div>' +
+      '<h3 class="popover-header"></h3>' +
+      '<div class="popover-body"></div>' +
+      '</div>';
 
 
-    });
 
-    $rootScope.$on('sabnzbdConnectionTestResult', function (event, data) {
-      that.Backend.debug('sabnzbd connection result');
-      that.Backend.debug(data);
+    Backend.socket.on('test_sabnzbd_connection_result', function (data) {
       if (data) {
-        if (data.result === 'Success!') {
-          that.$rootScope.triggerConfigAlert(data.result, 'primary');
-        } else {
-          that.$rootScope.triggerConfigAlert(data.result, 'danger');
+        that.Backend.debug('sabnzbd connection result');
+        that.Backend.debug(data);
+
+        if (data) {
+          var pop = $('#testSabnzbdConnectionButton').popover({
+            html: true,
+            // selector: '[rel=save-settings-popover]',
+            trigger: 'manual',
+            //template: t,
+            content: data.result,
+            //container: '.PageContentBody-contentBody',
+            placement: "top",
+          });
+
+          pop.popover('show');
+          setTimeout(() => {
+            pop.popover('hide');
+          }, 3000);
+
         }
       }
     });
 
     $scope.generateConnectionString = function () {
       var url = 'http://';
-      if ($scope.settings.sabnzbd_use_ssl)
-        url = 'https://';
-      url += $scope.settings.sabnzbd_host;
-      if ($scope.settings.sabnzbd_include_port_in_url)
-        url += ':' + $scope.settings.sabnzbd_port;
-      if ($scope.settings.sabnzbd_url_base)
-        url += '/' + $scope.settings.sabnzbd_url_base;
-      url += '/api';
-
+      if ($rootScope.settings.sabnzbd) {
+        if ($rootScope.settings.sabnzbd.sabnzbd_use_ssl)
+          url = 'https://';
+        url += $rootScope.settings.sabnzbd.sabnzbd_host;
+        if ($rootScope.settings.sabnzbd.sabnzbd_include_port_in_url)
+          url += ':' + $rootScope.settings.sabnzbd.sabnzbd_port;
+        if ($rootScope.settings.sabnzbd.sabnzbd_url_base)
+          url += '/' + $rootScope.settings.sabnzbd.sabnzbd_url_base;
+        url += '/api';
+      }
       return url;
     };
 
     $scope.previewConnectionString = function () {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
-
-    Backend.emit('load_settings', 'sabnzbd_settings');
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
 
@@ -97,6 +79,11 @@ class ConfigSabnzbdController {
     $rootScope.$on('windowResized', function (event, data) {
 
     });
+
+    $rootScope.$watch('settings.sabnzbd ', function (newVal, oldVal) {
+      $scope.previewConnectionString();
+    });
+
   }
 }
 

@@ -54,7 +54,7 @@ class AlbumController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
-      domLayout:'autoHeight',
+      domLayout: 'autoHeight',
       rowClassRules: {
         'current-track': function (params) {
           if ($scope.api) $scope.api.deselectAll();
@@ -89,64 +89,67 @@ class AlbumController {
       return that.AlloyDbService.getCoverArt(id);
     }
 
+    $scope.getArtistInfo = function (data) {
+      if (data) {
+        data.forEach(function (info) {
+          if (info.artistInfo) {
+            $scope.artistInfo = info.artistInfo;
+            if ($scope.artistInfo.bio) {
+              $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+            }
+            if ($scope.artistInfo.similar) {
+              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+            }
+            if ($scope.artistInfo.image) {
+              $scope.artistInfo.image.forEach(function (image) {
+                if (image['@'].size === 'extralarge') {
+                  //that.AppUtilities.setContentBackground(image['#']);
+                }
+              });
+            }
+          }
+        });
+      }
+    };
+    $scope.getAlbumInfo = function (data) {
+      if (data) {
+        data.forEach(function (info) {
+          if (info.albumInfo) {
+            $scope.albumInfo = info.albumInfo;
+            if ($scope.albumInfo.image) {
+              $scope.artistInfo.image.forEach(function (image) {
+                if (image['@'].size === 'extralarge') {
+                  //that.AppUtilities.setContentBackground(image['#']);
+                }
+              });
+            }
+          }
+        });
+      }
+    };
+
     $scope.getAlbum = function () {
       var alb = AlloyDbService.getAlbum($routeParams.id);
       if (alb) {
         alb.then(function (album) {
-
           if (album) {
             $scope.album = album;
             $scope.albumName = album.name;
-            $scope.albumArt =  $scope.getCoverArt(album.tracks[0].cover_art);
+            $scope.albumArt = $scope.getCoverArt(album.tracks[0].cover_art);
             $scope.artistName = album.base_path;
             $scope.tracks = album.tracks;
 
             that.AppUtilities.setContentBackground($scope.albumArt);
 
             var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
-            if (artistInfo) {
-              artistInfo.then(function (info) {
-                if (info.artistInfo) {
-                  $scope.artistInfo = info.artistInfo;
-                  if ($scope.artistInfo.bio) {
-                    $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-                  }
-                  if ($scope.artistInfo.similar) {
-                    $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-                  }
-                  if ($scope.artistInfo.image) {
-                    $scope.artistInfo.image.forEach(function (image) {
-                      if (image['@'].size === 'extralarge') {
-                        //that.AppUtilities.setContentBackground(image['#']);
-                      }
-                    });
-                  }
-                  that.AppUtilities.apply();
-                }
-              });
-            }
-
             var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);
-            if (albumInfo) {
-              albumInfo.then(function (info) {
-                if (info.albumInfo) {
-                  $scope.albumInfo = info.albumInfo;
-                  if ($scope.albumInfo.image) {
-                    $scope.artistInfo.image.forEach(function (image) {
-                      if (image['@'].size === 'extralarge') {
-                        //that.AppUtilities.setContentBackground(image['#']);
-                      }
-                    });
-                  }
-                  that.AppUtilities.apply();
-                }
-              });
-            }
 
-            if ($scope.tracks && $scope.tracks.length > 0) {
-              if ($scope.gridOptions && $scope.gridOptions.api) {
-                $scope.gridOptions.api.setRowData($scope.tracks);
-                AppUtilities.updateGridRows($scope.gridOptions);
+            Promise.all([artistInfo, albumInfo]).then(function (info) {
+              $scope.getArtistInfo(info);
+              $scope.getAlbumInfo(info);
+
+              if ($scope.tracks && $scope.tracks.length > 0) {
+                AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
                 if ($routeParams.trackid) {
                   $scope.gridOptions.api.forEachNode(function (node) {
                     if (node.data.id === $routeParams.trackid) {
@@ -154,21 +157,21 @@ class AlbumController {
                     }
                   });
                 }
+              } else {
+                AppUtilities.showNoRows();
               }
-            } else {
-              if ($scope.gridOptions.api)
-                $scope.gridOptions.api.showNoRowsOverlay();
-            }
+              that.AppUtilities.hideLoader();
+              that.AppUtilities.apply();
+            });
+          } else {
+            that.AppUtilities.hideLoader();
           }
-
-          AppUtilities.apply();
-          AppUtilities.hideLoader();
         });
       }
     };
 
     $scope.goToArtist = function (id) {
-     window.location.href = '/artist/' + id;
+      window.location.href = '/artist/' + id;
 
     };
 
@@ -212,9 +215,6 @@ class AlbumController {
     };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
-      $scope.api.redrawRows({
-        force: true
-      });
       AppUtilities.updateGridRows($scope.gridOptions);
     });
 

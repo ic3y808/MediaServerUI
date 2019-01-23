@@ -1,21 +1,6 @@
-@import "../../styles/variables";
-
-:export {
-  mainBackgroundColor: $main-background-color;
-}
-
-$home-bg-color-base: rgb(66, 112, 108);
 .home-body {
   float: left;
   width: 100%;
-}
-
-.bg-section-1 {
-  background-color: mix($home-bg-color-base, white, 50%);
-}
-
-.bg-section-2 {
-  background-color: mix($home-bg-color-base, gold, 50%);
 }
 
 .col-md-3 {

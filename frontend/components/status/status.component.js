@@ -16,7 +16,6 @@ class StatusController {
       var ping = that.AlloyDbService.ping();
       if (ping) {
         ping.then(function (data) {
-          that.Backend.debug('ping');
           $scope.alloydb = data;
           that.AppUtilities.apply();
         });
@@ -38,7 +37,6 @@ class StatusController {
       var mediaPaths = that.AlloyDbService.getMediaPaths();
       if (mediaPaths) {
         mediaPaths.then(function (paths) {
-          that.Backend.debug('getMediaPaths');
           $scope.mediaPaths = paths;
           that.AppUtilities.apply();
         });

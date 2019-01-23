@@ -1,14 +1,19 @@
 //colors
-$main-background-color: rgb(255, 255, 255);
-$main-background-color-transparent: rgba(black, .35);
-$main-text-color: rgb(0, 0, 0);
-$faded-text-color: mix($main-text-color, white, 50%);
-$alt-text-color: rgb(255, 255, 255);
-$sub-background-color:rgb(255, 255, 255);
-$alt-sub-background-color: #1a1b1d;
-$now-playing-track: rgba(204, 214, 216, 0.904);
-$general-border-color:rgba(204, 214, 216, 0.904);
-$label-color:rgba(204, 214, 216, 0.904);
+$primary-color: rgb(255, 255, 255);
+$secondary-color: rgba(45,137,138, 0.726);
+$alternate-color: rgb(20, 22, 24);
+
+
+$main-background-color: $primary-color;
+$main-background-color-transparent: rgba($primary-color, .35);
+$main-text-color:choose-contrast-color($primary-color);
+$faded-text-color: choose-contrast-color($primary-color);
+$alt-text-color: choose-contrast-color($primary-color);
+$sub-background-color:$primary-color;
+$alt-sub-background-color: $secondary-color;
+$now-playing-track: rgba($secondary-color, 0.904);
+$general-border-color:rgba($alternate-color, 0.904);
+$label-color:rgba(choose-contrast-color($primary-color), 0.904);
 //page size breaks 
 $break-xxxsmall: 320px;
 $break-xxsmall: 375px;
@@ -114,3 +119,9 @@ $toolbar-height:45px;
 $scrollbar-track-color: mix($main-background-color, white, 50%);
 $scrollbar-thumb-color: mix($sub-background-color, black, 50%);
 $scrollbar-thickness: 0.5em;
+
+
+
+
+
+

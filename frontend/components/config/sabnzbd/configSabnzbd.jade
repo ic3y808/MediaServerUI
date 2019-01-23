@@ -1,42 +1,76 @@
-.generalConfigWrapper
-  .generalConfigBodyWrapper
-    .row
-      .col-lg-8.mx-auto
-        form
-          .form-group
-            label(for='sabnzbdAddress') Host
-            input#sabnzbdAddress.form-control(type='text', placeholder='Hostname for SabNZBd', ng-model='settings.sabnzbd_host', ng-change="previewConnectionString()")
-          .form-group
-            label(for='sabnzbdPort') Port
-            input#sabnzbdPort.form-control(type='number', placeholder='443', ng-model='settings.sabnzbd_port', ng-change="previewConnectionString()")
-          .form-group
-            label(for='sabnzbdUrlBase') URL Base
-            input#sabnzbdUrlBase.form-control(type='text', placeholder='URL Base', ng-model='settings.sabnzbd_url_base', ng-change="previewConnectionString()") 
-            cite(title='Source Title') Adds a prefix to the Sabnzbd url, e.g. http://[host]:[port]/[urlBase]/api
-          .form-group
-            label(for='sabnzbdApiKey') API Key
-            input#sabnzbdApiKey.form-control(type='text', placeholder='API Key', ng-model='settings.sabnzbd_apikey')  
-          .form-group
-            label(for='sabnzbdUsername') Username
-            input#sabnzbdUsername.form-control(type='text', placeholder='Enter username', ng-model='settings.sabnzbd_username')
-          .form-group
-            label(for='sabnzbdPassword') Password
-            input#sabnzbdPassword.form-control(type='password', placeholder='Password', ng-model='settings.sabnzbd_password')
-          .form-check
-            input#useSslCheck.form-check-input(type='checkbox', ng-model='settings.sabnzbd_use_ssl', ng-change="previewConnectionString()")
-            label.form-check-label(for='useSslCheck') Use SSL?
-          .form-check
-            input#includePortInUrl.form-check-input(type='checkbox', ng-model='settings.sabnzbd_include_port_in_url', ng-change="previewConnectionString()")
-            label.form-check-label(for='includePortInUrl') Include port in URL?
-          .form-group
-            p Preview of Connection string: {{connectionStringPreview}}
-          .form-group
-            button#test-settings-button.btn.btn-dark.btn-block(type='submit', ng-click='testSettings()') Test
-          
-          .form-group
-            button.btn.btn-dark.btn-block(type='submit', ng-click='saveSettings()') Save
-      
-
-
-
-
+fieldset.FieldSet-fieldSet
+  legend.FieldSet-legend SABnzbd Connection Settings
+  div
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large Host
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', placeholder='Database Host', ng-model='$root.settings.sabnzbd.sabnzbd_host', ng-change="previewConnectionString()")
+        div
+          .FormInputHelpText-helpText Host for SAB
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large Port
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='number', placeholder='4000', ng-model='$root.settings.sabnzbd.sabnzbd_port', ng-change="previewConnectionString()")
+        div
+          .FormInputHelpText-helpText Port for SAB
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large URL Base
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', placeholder='/', ng-model='$root.settings.sabnzbd.sabnzbd_url_base')
+        div
+          .FormInputHelpText-helpText Adds a prefix to the Sabnzbd url, e.g. http://[host]:[port]/[urlBase]/api
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large ApiKey
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', placeholder='Api Key', ng-model='$root.settings.sabnzbd.sabnzbd_apikey')
+        div
+          .FormInputHelpText-helpText API Key for SAB
+    div
+    .FormGroup-group.FormGroup-medium
+      label.FormLabel-label.FormLabel-large Use SSL?
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            .CheckInput-container
+              label.CheckInput-label
+                input.CheckInput-checkbox(type='checkbox', ng-model='$root.settings.sabnzbd.sabnzbd_use_ssl', ng-change="previewConnectionString()")
+                .CheckInput-input.CheckInput-primaryIsChecked(ng-show="$root.settings.sabnzbd.sabnzbd_use_ssl")
+                  svg.svg-inline--fa.fa-check.fa-w-16.Icon-default-2wl7E(aria-hidden='true', data-prefix='fas', data-icon='check', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 14px;')
+                    path(fill='currentColor', d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z')
+                .CheckInput-input.CheckInput-isNotChecked(ng-show="!$root.settings.sabnzbd.sabnzbd_use_ssl")
+                .CheckInput-helpText.FormInputHelpText-helpText HTTPS will be used as the schema
+    div
+    .FormGroup-group.FormGroup-medium
+      label.FormLabel-label.FormLabel-large Include port in URL?
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            .CheckInput-container
+              label.CheckInput-label
+                input.CheckInput-checkbox(type='checkbox', ng-model='$root.settings.sabnzbd.sabnzbd_include_port_in_url', ng-change="previewConnectionString()")
+                .CheckInput-input.CheckInput-primaryIsChecked(ng-show="$root.settings.sabnzbd.sabnzbd_include_port_in_url")
+                  svg.svg-inline--fa.fa-check.fa-w-16.Icon-default-2wl7E(aria-hidden='true', data-prefix='fas', data-icon='check', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 14px;')
+                    path(fill='currentColor', d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z')
+                .CheckInput-input.CheckInput-isNotChecked(ng-show="!$root.settings.sabnzbd.sabnzbd_include_port_in_url")
+                .CheckInput-helpText.FormInputHelpText-helpText Port will be included in the URL
+  
+    div
+      .FormGroup-group.FormGroup-large
+        label.FormLabel-label.FormLabel-large Connection URL Preview
+        .FormInputGroup-inputGroupContainer
+          .FormInputGroup-inputGroup
+            .FormInputGroup-inputContainer
+              input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', value="{{connectionStringPreview}}")
+            button#testSabnzbdConnectionButton.FormInputButton-button.Button-button.Link-link.Button-primary.Button-medium.Link-link(type='button', ng-click='testSettings()', rel='test-settings-popover') Test

@@ -25,18 +25,10 @@ class AlbumsController {
       field: "genre"
     },
     {
-      headerName: "Path",
-      field: "path"
-    },
-    {
       headerName: "Tracks",
-      field: "trackCount",
-      width: 150
-    },
-    {
-      headerName: "Plays",
-      field: "playCount",
-      width: 150
+      field: "track_count",
+      width: 100,
+      suppressSizeToFit: true
     }
     ];
 
@@ -64,19 +56,22 @@ class AlbumsController {
         var selectedRow = $scope.gridOptions.api.getSelectedRows()[0];
 
         $location.path("/album/" + selectedRow.id.toString());
-        if (!$scope.$$phase) {
-          $scope.$apply();
-        }
+        that.AppUtilities.apply();
         that.Backend.debug("/album/" + selectedRow.id.toString());
       }
     };
 
     $scope.reloadAlbums = function () {
       $scope.albums = [];
-      AlloyDbService.getAlbums().then(function (result) {
-        $scope.albums = result;
-        AppUtilities.updateGridRows($scope.gridOptions);
-      });
+      AppUtilities.showNoRows();
+      var albums = AlloyDbService.getAlbums();
+      if (albums) {
+        albums.then(function (result) {
+          $scope.albums = result;
+          AppUtilities.setRowData($scope.gridOptions, $scope.albums);
+          AppUtilities.hideLoader();
+        });
+      }
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
