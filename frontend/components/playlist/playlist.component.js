@@ -11,31 +11,31 @@ class PlaylistController {
     this.Backend.debug('playlist-controller');
     var that = this;
     var columnDefs = [{
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Artist",
-        field: "artist"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Genre",
-        field: "genre"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 75,
-        suppressSizeToFit: true
-      },
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Artist",
+      field: "artist"
+    },
+    {
+      headerName: "Album",
+      field: "album"
+    },
+    {
+      headerName: "Title",
+      field: "title"
+    },
+    {
+      headerName: "Genre",
+      field: "genre"
+    },
+    {
+      headerName: "Plays",
+      field: "playCount",
+      width: 75,
+      suppressSizeToFit: true
+    },
     ];
 
     $scope.gridOptions = {
@@ -74,24 +74,18 @@ class PlaylistController {
       },
       onGridReady: function (event) {
         $scope.api = event.api;
-        if ($scope.gridOptions && $scope.gridOptions.api) {
-          $scope.gridOptions.api.setRowData(MediaPlayer.tracks);
-          AppUtilities.updateGridRows($scope.gridOptions);
-          AppUtilities.hideLoader();
-          AppUtilities.apply();
-        }
+        AppUtilities.setRowData($scope.gridOptions, MediaPlayer.tracks);
+        AppUtilities.hideLoader();
+        AppUtilities.apply();
       },
     };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
-      $scope.api.redrawRows({
-        force: true
-      });
       AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      $scope.gridOptions.api.setRowData(MediaPlayer.tracks);
+      AppUtilities.setRowData($scope.gridOptions, MediaPlayer.tracks);
     });
 
     $rootScope.$on('menuSizeChange', function (event, data) {

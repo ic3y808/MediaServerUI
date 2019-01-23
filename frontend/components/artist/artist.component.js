@@ -167,24 +167,9 @@ class ArtistController {
             album.cover_art = $scope.getCoverArt(album.cover_art);
           })
 
-          $scope.tracks = [];
+          $scope.tracks = artist.tracks;
 
-          artist.tracks.forEach(track => {
-            $scope.tracks.push(track);
-            //if (album.coverArt) {
-            //  that.AlloyDbService.getCoverArt(album.coverArt, 100).then(function (result) {
-            //    album.artUrl = result;
-            //    $scope.albums.push(album);
-            //    that.AppUtilities.apply();
-            //    $("#coverflow").flipster();
-            //  });
-            //}
-          });
-
-          if ($scope.gridOptions && $scope.gridOptions.api) {
-            $scope.gridOptions.api.setRowData($scope.tracks);
-            AppUtilities.updateGridRows($scope.gridOptions);
-          }
+          AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
 
           var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
           if (artistInfo) {
@@ -215,97 +200,17 @@ class ArtistController {
                   });
                 }
                 that.AppUtilities.apply();
+                that.AppUtilities.hideLoader();
+              } else {
+                that.AppUtilities.hideLoader();
               }
             });
           }
 
           that.AppUtilities.apply();
-          //  $("#coverflow").flipster();
-          AppUtilities.hideLoader();
-          //var glide = new Glide('#intro', {
-          //  type: 'slider',
-          //  perView: 8,
-          //  focusAt: 'center',
-          //  800: {
-          //    perView: 8
-          //  }
-          //})
-
-          //glide.mount()
         });
-
-
-
       }
-
-
-      //AlloyDbService.getArtist($routeParams.id).then(function (artist) {
-      //  $scope.artist = artist;
-      //  $scope.artistName = artist.name;
-      //
-      //  AlloyDbService.getArtistInfo2($routeParams.id, 50).then(function (result) {
-      //    if (result) {
-      //      if (result.biography) {
-      //        $scope.artistBio = result.biography.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-      //      }
-      //      if (result.similarArtist) {
-      //        $scope.similarArtists = result.similarArtist.slice(0, 5);
-      //      }
-      //      if (result.largeImageUrl) {
-      //        that.AppUtilities.setContentBackground(result.largeImageUrl);
-      //      }
-      //      that.AppUtilities.apply();
-      //    }
-      //  });
-      //
-      //  if (artist.album && artist.album.length > 0) {
-      //    $scope.albums = [];
-      //    $scope.tracks = [];
-      //    artist.album.forEach(album => {
-      //
-      //      if (album.coverArt) {
-      //        that.AlloyDbService.getCoverArt(album.coverArt, 100).then(function (result) {
-      //          album.artUrl = result;
-      //          $scope.albums.push(album);
-      //          that.AppUtilities.apply();
-      //          $("#coverflow").flipster();
-      //        });
-      //      }
-      //
-      //
-      //      AlloyDbService.getAlbum(album.id).then(function (result) {
-      //        if (result) {
-      //          result.song.forEach(function (song) {
-      //            $scope.tracks.push(song);
-      //            that.AppUtilities.apply();
-      //          });
-      //
-      //          if ($scope.gridOptions && $scope.gridOptions.api) {
-      //            $scope.gridOptions.api.setRowData($scope.tracks);
-      //            $scope.gridOptions.api.doLayout();
-      //            $scope.gridOptions.api.sizeColumnsToFit();
-      //          }
-      //          that.AppUtilities.apply();
-      //          $("#coverflow").flipster();
-      //          AppUtilities.hideLoader();
-      //        }
-      //      });
-      //    });
-      //  } else {
-      //    if ($scope.gridOptions.api)
-      //      $scope.gridOptions.api.showNoRowsOverlay();
-      //  }
-      //
-      //  $("#coverflow").flipster();
-      //  that.AppUtilities.apply();
-      //  AppUtilities.hideLoader();
-      //});
-
-
-
     };
-
-   
 
     $scope.refresh = function () {
       that.Backend.debug('refresh artist');
@@ -368,7 +273,6 @@ class ArtistController {
    
 
     $scope.getArtist();
-    AppUtilities.hideLoader();
   }
 }
 

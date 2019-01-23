@@ -17,79 +17,60 @@ export default class Backend {
       if (data)
         $rootScope.sabnzbd_ping = data;
     });
+    $rootScope.settings = {};
+    $rootScope.settings.alloydb = {};
+    $rootScope.settings.sabnzbd = {};
 
-    $rootScope.settings = {
-      alloydb: {},
-      sabnzbd: {}
-    };
+    $rootScope.saveSettings = function () {
+      var d = JSON.stringify($rootScope.settings);
+
+      $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
+      that.emit('save_settings', { key: 'alloydb_settings', data: $rootScope.settings.alloydb });
+      $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
+
+      that.emit('save_settings', { key: 'sabnzbd_settings', data: $rootScope.settings.sabnzbd });
+      $rootScope.triggerConfigAlert("Saved!", 'success');
+
+
+
+    }
+
+    $rootScope.loadSettings = function () {
+
+    }
+
+    var setup = function () {
+
+      if (that.$rootScope.settings.alloydb.alloydb_host && that.$rootScope.settings.alloydb.alloydb_apikey) {
+        AlloyDbService.login();
+      }
+      if ($rootScope.settings.alloydb && $rootScope.settings.alloydb.alloydb_lastfm_username && $rootScope.settings.alloydb.alloydb_lastfm_password) {
+        AlloyDbService.lastFmLogin($rootScope.settings.alloydb.alloydb_lastfm_username, $rootScope.settings.alloydb.alloydb_lastfm_password);
+      }
+    }
+
+    this.socket.on('settings_saved_event', function (settings) {
+      setup();
+    });
 
     this.socket.on('settings_loaded_event', function (settings) {
       if (settings) {
         if (settings.key === 'sabnzbd_settings') {
-          $rootScope.settings.sabnzbd = {};
-          $rootScope.settings.sabnzbd.sabnzbd_host = settings.data.sabnzbd_host;
-          $rootScope.settings.sabnzbd.sabnzbd_port = settings.data.sabnzbd_port;
-          $rootScope.settings.sabnzbd.sabnzbd_use_ssl = settings.data.sabnzbd_use_ssl;
-          $rootScope.settings.sabnzbd.sabnzbd_url_base = settings.data.sabnzbd_url_base;
-          $rootScope.settings.sabnzbd.sabnzbd_apikey = settings.data.sabnzbd_apikey;
-          $rootScope.settings.sabnzbd.sabnzbd_include_port_in_url = settings.data.sabnzbd_include_port_in_url;
-          $rootScope.settings.sabnzbd.sabnzbd_username = settings.data.sabnzbd_username;
-          $rootScope.settings.sabnzbd.sabnzbd_password = settings.data.sabnzbd_password;
+          $rootScope.settings.sabnzbd = settings.data;
         }
 
 
         if (settings.key === 'alloydb_settings') {
-          $rootScope.settings.alloydb = {};
-          $rootScope.settings.alloydb.alloydb_host = settings.data.alloydb_host;
-          $rootScope.settings.alloydb.alloydb_port = settings.data.alloydb_port;
-          $rootScope.settings.alloydb.alloydb_apikey = settings.data.alloydb_apikey;
-          $rootScope.settings.alloydb.alloydb_use_ssl = settings.data.alloydb_use_ssl;
-          $rootScope.settings.alloydb.alloydb_include_port_in_url = settings.data.alloydb_include_port_in_url;
-          $rootScope.settings.alloydb.alloydb_scrobble = settings.data.alloydb_scrobble;
-          $rootScope.settings.alloydb.alloydb_love_tracks = settings.data.alloydb_love_tracks;
-          $rootScope.settings.alloydb.alloydb_lastfm_username = settings.data.alloydb_lastfm_username;
-          $rootScope.settings.alloydb.alloydb_lastfm_password = settings.data.alloydb_lastfm_password;
-          that.AlloyDbService.login();
-
-          if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
-            that.AlloyDbService.lastFmLogin(that.$rootScope.settings.alloydb.alloydb_lastfm_username, CryptoJS.AES.decrypt(that.$rootScope.settings.alloydb.alloydb_lastfm_password.toString(), "12345").toString(CryptoJS.enc.Utf8));
-          }
-
+          $rootScope.settings.alloydb = settings.data;
+          $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
+          setup();
         }
-
-        that.AppUtilities.broadcast('settingsReloadedEvent', settings);
-
         that.AppUtilities.apply();
       }
-
-
-
-
     });
 
-    this.socket.on('sabnzbd_settings_event', function (d) {
 
-      if (d) {
-        that.$rootScope.settings.sabnzbd = {};
-        that.$rootScope.settings.sabnzbd.username = d.username;
-        that.$rootScope.settings.sabnzbd.password = d.password;
-        that.$rootScope.settings.sabnzbd.host = d.host;
-        that.$rootScope.settings.sabnzbd.port = d.port;
-        that.$rootScope.settings.sabnzbd.url_base = d.url_base;
-        that.$rootScope.settings.sabnzbd.apikey = d.apikey;
-        that.$rootScope.settings.sabnzbd.use_ssl = d.use_ssl;
-        that.$rootScope.settings.sabnzbd.include_port_in_url = d.include_port_in_url;
-        that.AppUtilities.broadcast('sabnzbdSettingsReloadedEvent');
-        that.AppUtilities.apply();
-      }
-
-    });
-
-    this.socket.on('test_sabnzbd_connection_result', function (data) {
-      if (data) {
-        that.AppUtilities.broadcast('sabnzbdConnectionTestResult', data);
-      }
-    });
+  
 
     this.socket.on('sabnzbd_history_result', function (data) {
       if (data) {

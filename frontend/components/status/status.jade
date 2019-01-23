@@ -1,93 +1,117 @@
-.generalConfigWrapper
-  .generalConfigBodyWrapper
-    .row
-      .col-lg-12.mx-auto
-        .card-columns
-          .card.bg-light
-            h4.card-title Backend Status
-            .card-body.text-center
-              .list-group-item-dark
-                h4.list-group-item-heading
-                  | Connection
-                p.list-group-item-text
-                  span.label.label-success 
-                  | {{$root.backend_ping.status}}
-                h4.list-group-item-heading
-                  | Server Time
-                p.list-group-item-text
-                  span.label.label-success 
-                  | {{$root.backend_ping.server_time}}
-
-          .card.bg-light
-            h4.card-title Sabnzbd Status
-            .card-body.text-center
-              .list-group-item-dark
-                h4.list-group-item-heading
-                  | Connection
-                p.list-group-item-text
-                  span.label.label-success 
-                  | {{$root.sabnzbd_ping.status}}
-                h4.list-group-item-heading
-                  | Version
-                p.list-group-item-text
-                  span.label.label-success 
-                  | {{$root.sabnzbd_ping.version}}
-
-          .card.bg-light
-            h4.card-title AlloyDB Status 
-            .card-body.text-center
-              .list-group-item-dark
-                h4.list-group-item-heading
-                  | Connection
-                p.list-group-item-text
-                  span.label.label-success 
-                  | {{alloydb.status}}
-              .list-group-item-dark
-                h4.list-group-item-heading
-                  | Enabled Folders
-                p.list-group-item-text
-                  span.label.label-success 
-                    table.table
-                      tbody
-                        tr(ng-repeat='mediaPath in mediaPaths')
-                          td {{mediaPath.display_name}} - {{mediaPath.path}}
-                .list-group-item-dark
-                  h4.list-group-item-heading
-                    | Library Statistics
-                  p.list-group-item-text
-                    span.label.label-success
-                      table.table
+include ./../../views/pagecontent
+  .ExpanderContainer
+    .ExpanderContainer-header
+      .ExpanderContainer-left
+        div
+          span.ExpanderContainer-label Backend
+    div#albumListContainer
+      .ExpanderContainer-body
+        fieldset.FieldSet-fieldSet
+          legend.FieldSet-legend Connection
+          div
+            div
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    .Table-tableContainer.ng-isolate-scope
+                      table.Table-table
                         tbody
+                          tr.TableRow-row.ng-scope
+                            td.RelativeDateCell-cell.TableRowCell-cell Status:
+                            td.RelativeDateCell-cell.TableRowCell-cell {{$root.backend_ping.status}}
+                          tr.TableRow-row.ng-scope
+                            td.RelativeDateCell-cell.TableRowCell-cell Server Tinme:
+                            td.RelativeDateCell-cell.TableRowCell-cell {{$root.backend_ping.server_time}}
+
+  .ExpanderContainer
+    button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleAlbums()')
+      .ExpanderContainer-header
+        .ExpanderContainer-left
+          div
+            span.ExpanderContainer-label SABnzbd 
+    div#albumListContainer
+      .ExpanderContainer-body
+        fieldset.FieldSet-fieldSet
+          legend.FieldSet-legend Connection
+          div
+            div
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    .Table-tableContainer.ng-isolate-scope
+                      table.Table-table
+                        tbody
+                          tr.TableRow-row.ng-scope
+                            td.RelativeDateCell-cell.TableRowCell-cell Status:
+                            td.RelativeDateCell-cell.TableRowCell-cell {{$root.sabnzbd_ping.status}}
+                          tr.TableRow-row.ng-scope
+                            td.RelativeDateCell-cell.TableRowCell-cell Version:
+                            td.RelativeDateCell-cell.TableRowCell-cell {{$root.sabnzbd_ping.version}}
+  .ExpanderContainer
+    button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleAlbums()')
+      .ExpanderContainer-header
+        .ExpanderContainer-left
+          div
+            span.ExpanderContainer-label Alloy DB
+    div#albumListContainer
+      .ExpanderContainer-body
+        fieldset.FieldSet-fieldSet
+          legend.FieldSet-legend Connection
+          div
+            div
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    .Table-tableContainer.ng-isolate-scope
+                      table.Table-table
+                        tbody
+                          tr.TableRow-row.ng-scope
+                            td.RelativeDateCell-cell.TableRowCell-cell Status:
+                            td.RelativeDateCell-cell.TableRowCell-cell {{alloydb.status}}
+
+        fieldset.FieldSet-fieldSet
+          legend.FieldSet-legend Watched Folders
+          div
+            div
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    .Table-tableContainer.ng-isolate-scope
+                      table.Table-table
+                        thead
                           tr
-                            td Tracks
-                            td {{libraryInfo.track_count}}
-                          tr
-                            td Artists
-                            td {{libraryInfo.artist_count}}
-                          tr
-                            td Albums
-                            td {{libraryInfo.album_count}}
-                          tr
-                            td Root Folders
-                            td {{libraryInfo.folder_count}}
-                          tr
-                            td Genres
-                            td {{libraryInfo.genre_count}}
-                          tr
-                            td Total Memory
-                            td {{libraryInfo.memory_used}}
-                .list-group-item-dark
-                  h4.list-group-item-heading
-                    | Rescan Library
-                  p.list-group-item-text
-                    span.label.label-success 
-                      div(ng-show='scanStatus.result.isScanning')
-                        |  Current Progress: {{scanStatus.result.status}} 
-                        | {{scanStatus.result.currentlyScanned}} - {{scanStatus.result.totalFiles}}
-                      button(ng-click='scanFullStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
-                        i.fa.fa-refresh Start Full Rescan
-                      button(ng-click='scanQuickStart()', ng-show='!scanStatus.result.isScanning').btn.btn-block.btn-success
-                        i.fa.fa-refresh Start Quick Rescan
-                      button(ng-click='scanCancel()', ng-show='scanStatus.result.isScanning').btn.btn-block.btn-success
-                        i.fa.fa-refresh Cancel
+                            th.TableHeaderCell-headerCell.Link-link Display Name
+                            th.TableHeaderCell-headerCell.Link-link Path
+                              
+                        tbody
+                          tr.TableRow-row.ng-scope(ng-repeat='mediaPath in mediaPaths')
+                            td.RelativeDateCell-cell.TableRowCell-cell {{mediaPath.display_name}}
+                            td.RelativeDateCell-cell.TableRowCell-cell {{mediaPath.path}}
+        fieldset.FieldSet-fieldSet
+          legend.FieldSet-legend Library Statistics
+          div
+            div
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    table.Table-table                               
+                      tbody
+                        tr.TableRow-row.ng-scope(ng-repeat='(key, value) in libraryInfo')
+                          td.RelativeDateCell-cell.TableRowCell-cell {{key}}
+                          td.RelativeDateCell-cell.TableRowCell-cell {{value}}
+        div
+          .FormGroup-group.FormGroup-large
+            label.FormLabel-label.FormLabel-large Database Actions
+            .FormInputGroup-inputGroupContainer
+              .FormInputGroup-inputGroup
+                .FormInputGroup-inputContainer
+                  button#testSabnzbdConnectionButton.btn.btn-block.FormInputButton-button.Button-button.Link-link.Button-primary.Button-medium.Link-link(type='button', ng-click='scanFullStart()', ng-show='!scanStatus.result.isScanning') Full Rescan
+                  button#testSabnzbdConnectionButton.btn.btn-block.FormInputButton-button.Button-button.Link-link.Button-primary.Button-medium.Link-link(type='button', ng-click='scanQuickStart()', ng-show='!scanStatus.result.isScanning') Quick Rescan
+                  button#testSabnzbdConnectionButton.btn.btn-block.FormInputButton-button.Button-button.Link-link.Button-warning.Button-medium.Link-link(type='button', ng-click='scanCancel()', ng-show='scanStatus.result.isScanning') Cancel
+
 

@@ -11,6 +11,7 @@ class ConfigController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.Backend.debug('config-controller');
+    this.AppUtilities.showLoader();
     var that = this;
 
 
@@ -24,11 +25,37 @@ class ConfigController {
     };
 
     this.$rootScope.triggerConfigAlert = function (message, type) {
-      $('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
+      //$('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
       setTimeout(() => {
-        $('.config-alert').hide(500);
+        // $('.config-alert').hide(500);
+        $('#saveSettingsButton').popover('hide');
       }, 3000);
+
+      // $('#saveSettingsButton').popover('show');
     };
+
+
+    var t = '<div class="popover" role="tooltip">' +
+      '<div class="arrow">' +
+      '</div>' +
+      '<h3 class="popover-header"></h3>' +
+      '<div class="popover-body"></div>' +
+      '</div>';
+
+
+    $('body').popover({
+      html: true,
+      selector: '[rel=save-settings-popover]',
+      trigger: 'click',
+      template: t,
+      content: "Success!",
+      //container: '.PageContentBody-contentBody',
+      placement: "bottom",
+    });
+
+
+    
+
 
     AppUtilities.apply();
     AppUtilities.hideLoader();

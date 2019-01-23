@@ -99,8 +99,7 @@ class StarredController {
           }
 
           $scope.tracks = result.tracks;
-          $scope.gridOptions.api.setRowData($scope.tracks);
-          AppUtilities.updateGridRows($scope.gridOptions);
+          AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
           setTimeout(function () {
             $scope.flip = $("#coverflow").flipster({
               start: 0,
@@ -116,10 +115,7 @@ class StarredController {
                     result.song.forEach(function (song) {
                       $scope.tracks.push(song);
                     });
-                    if ($scope.gridOptions && $scope.gridOptions.api) {
-                      $scope.gridOptions.api.setRowData($scope.tracks);
-                      AppUtilities.updateGridRows($scope.gridOptions);
-                    }
+                    that.AppUtilities.setRowData(that.$scope.gridOptions, that.$scope.tracks);
                     that.AppUtilities.apply();
                   }
                 });

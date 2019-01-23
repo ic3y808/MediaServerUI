@@ -67,6 +67,7 @@ module.exports.socketConnect = function (socket) {
       });
     }
   });
+  
   socket.on('get_sabnzbd_queue', function () {
     log.debug('get_sabnzbd_queue');
     module.exports.login();

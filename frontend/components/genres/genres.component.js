@@ -54,18 +54,17 @@ class GenresController {
     };
 
     $scope.reloadGenres = function () {
-      if (AlloyDbService.isLoggedIn) {
+      var genres = AlloyDbService.getGenres();
+      if (genres) {
         $scope.genres = [];
-        AlloyDbService.getGenres().then(function (result) {
+        genres.then(function (result) {
           $scope.genres = result;
-          $scope.gridOptions.api.setRowData($scope.genres);
-          AppUtilities.updateGridRows($scope.gridOptions);
+          AppUtilities.setRowData($scope.gridOptions, $scope.genres);
           AppUtilities.apply();
           AppUtilities.hideLoader();
         });
       } else {
-        if ($scope.gridOptions.api)
-          $scope.gridOptions.api.showNoRowsOverlay();
+        AppUtilities.showNoRows();
         AppUtilities.hideLoader();
       }
     };

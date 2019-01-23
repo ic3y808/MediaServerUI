@@ -83,18 +83,14 @@ class GenreController {
       if (AlloyDbService.isLoggedIn) {
         that.AlloyDbService.getSongsByGenre(that.$routeParams.id, 500, 0).then(function (result) {
           $scope.tracks = result;
-          if ($scope.gridOptions && $scope.gridOptions.api) {
-            $scope.gridOptions.api.setRowData($scope.tracks);
-            AppUtilities.updateGridRows($scope.gridOptions);
-          }
+          AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
           if (!$scope.$$phase) {
             $scope.$apply();
           }
           that.AppUtilities.hideLoader();
         });
       } else {
-        if ($scope.gridOptions.api)
-          $scope.gridOptions.api.showNoRowsOverlay();
+        AppUtilities.showNoRows();
         AppUtilities.hideLoader();
       }
     };

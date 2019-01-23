@@ -1,3 +1,5 @@
+import CryptoJS from 'crypto-js';
+
 export default class AppUtilities {
   constructor($rootScope, $timeout) {
     "ngInject";
@@ -7,7 +9,8 @@ export default class AppUtilities {
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
     this.$rootScope.updateGridRows = this.updateGridRows;
-
+    this.$rootScope.showNoRows = this.showNoRows;
+    this.$rootScope.decryptPassword = this.decryptPassword;
   }
 
   broadcast(e, d) {
@@ -73,6 +76,19 @@ export default class AppUtilities {
     });
   }
 
+  showNoRows(gridOptions) {
+    if (gridOptions && gridOptions.api) {
+      gridOptions.api.showNoRowsOverlay();
+    }
+  }
+
+  setRowData(gridOptions, data) {
+    if (gridOptions && gridOptions.api) {
+      gridOptions.api.setRowData(data);
+      this.updateGridRows(gridOptions);
+    }
+  }
+
   fallbackCopyTextToClipboard(text) {
     var textArea = document.createElement("textarea");
     textArea.value = text;
@@ -125,6 +141,15 @@ export default class AppUtilities {
       timeout = setTimeout(later, wait);
       if (callNow) func.apply(context, args);
     };
+  }
+
+  encryptPassword(pass){
+    return CryptoJS.AES.encrypt(pass, "12345").toString();
+
+  }
+
+  decryptPassword(pass){
+    return CryptoJS.AES.decrypt(pass, "12345").toString(CryptoJS.enc.Utf8);
   }
 
   //shuffle(array) {

@@ -118,11 +118,7 @@ class FreshController {
         $scope.play_next_album = false;
       }
 
-      if (that.$scope.gridOptions && that.$scope.gridOptions.api) {
-        that.$scope.gridOptions.api.setRowData(that.$scope.tracks);
-
-        that.AppUtilities.updateGridRows($scope.gridOptions);
-      }
+      that.AppUtilities.setRowData(that.$scope.gridOptions, that.$scope.tracks);
     }
 
     $scope.findNowPlaying = function () {
@@ -166,7 +162,7 @@ class FreshController {
         that.AppUtilities.hideLoader();
         $timeout(function () {
           $scope.coverflow = coverflow('player').setup({
-            backgroundcolor: "ffffff",
+         
             playlist: $scope.albums,
             width: '100%',
             coverwidth: 200,
