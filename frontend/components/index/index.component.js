@@ -9,8 +9,13 @@ class IndexController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('index-controller');
+    this.AppUtilities.showLoader();
     $scope.artists = [];
     var that = this;
+
+    $scope.refresh = function () {
+      AlloyDbService.refreshIndex();
+    };
 
     $scope.reloadArtists = function () {
       $scope.artists = [];
@@ -26,10 +31,15 @@ class IndexController {
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Index reload on loginsatuschange');
-      $scope.reloadArtists();
+
     });
 
-    $scope.reloadArtists();
+    $rootScope.$watch('music_index', function (newVal, oldVal) {
+      if ($rootScope.music_index) {
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
+      }
+    });
   }
 }
 

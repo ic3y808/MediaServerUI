@@ -29,8 +29,8 @@ module.exports = function () {
       '	</thead>' +
       '	<tbody>' +
       '	<tr ng-repeat="album in data.albums" class="TableRow-row">' +
-      '		<td class="AlbumRow-title TableRowCell-cell"><a href="/album/{{album.album_id}}" class="Link-link Link-to ng-binding">{{album.album}}</a></td>' +
-      '		<td title="Monday, September 23 2013 6:00pm" class="RelativeDateCell-cell TableRowCell-cell">Sep 23 2013</td>' +
+      '		<td class="AlbumRow-title TableRowCell-cell"><a href="/album/{{album.id}}" class="Link-link ng-binding">{{album.name}}</a></td>' +
+      '		<td title="{{album.created}}" class="RelativeDateCell-cell TableRowCell-cell">{{album.created}}</td>' +
       '		<td class="TableRowCell-cell"><span title="0 (0 Votes)" class="StarRating-starRating">' +
       '			<div class="StarRating-backStar">' +
       '			  <svg aria-hidden="true" data-prefix="fas" data-icon="star" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" style="font-size: 14px;" class="svg-inline--fa fa-star fa-w-18 Icon-default">' +

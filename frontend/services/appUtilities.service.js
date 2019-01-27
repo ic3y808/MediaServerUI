@@ -43,13 +43,13 @@ export default class AppUtilities {
   }
 
   showLoader() {
-    $(".main-content").css("display", "none");
+    $("#root.root").css("display", "none");
     $(".loader").css("display", "block");
   }
 
   hideLoader() {
     $(".loader").css("display", "none");
-    $(".main-content").css("display", "initial");
+    $("#root.root").css("display", "initial");
   }
 
   setContentBackground(img) {

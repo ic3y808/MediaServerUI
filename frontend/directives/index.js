@@ -7,6 +7,7 @@ import AlbumList from './ui/albumlist';
 import DetailLabel from './ui/detaillabel';
 import ExpandButton from './ui/expandbutton';
 import PopoverButton from './ui/popoverbutton';
+import CoverFlow from './ui/coverflow';
 
 export default angular
   .module('app.directives', [])
@@ -17,4 +18,5 @@ export default angular
   .directive('detaillabel', DetailLabel)
   .directive('expandbutton', ExpandButton)
   .directive('popoverbutton', PopoverButton)
+  .directive('coverflow', CoverFlow)
 ;

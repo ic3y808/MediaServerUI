@@ -32,7 +32,7 @@ class PlaylistController {
     },
     {
       headerName: "Plays",
-      field: "playCount",
+      field: "play_count",
       width: 75,
       suppressSizeToFit: true
     },

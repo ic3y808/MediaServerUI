@@ -1,11 +1,11 @@
 .Settings-link {
   border-bottom: 1px solid #e5e5e5;
-  color: #3a3f51;
+  color: $main-text-color;
   font-size: 21px;
 }
 
 .Settings-link:hover {
-  color: #616573;
+  color: $faded-text-color;
   text-decoration: none;
 }
 
@@ -46,6 +46,7 @@
   margin-right: 20px;
   font-weight: bold;
   line-height: 35px;
+  color: $main-text-color;
 }
 
 .FormLabel-large {
@@ -73,15 +74,14 @@
 }
 
 .Button-primary {
-  border-color: #1d563d;
-  background-color: #0b8750;
+  border-color: $general-border-color;
+  background-color: $main-background-color;
   color: #fff;
 }
 
 .Button-primary:hover {
-  border-color: #1D563D;
-  ;
-  background-color: #097948;
+  border-color: $secondary-color;
+  background-color: $main-background-color;
   color: #fff;
 }
 
@@ -187,23 +187,23 @@
   margin-right: 5px;
   width: 20px;
   height: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid $general-border-color;
   border-radius: 2px;
-  background-color: #fff;
-  color: #fff;
+  background-color: $main-background-color;
+  color: $main-text-color;
   text-align: center;
   line-height: 20px;
 }
 
 .CheckInput-checkbox:focus+.CheckInput-input {
   outline: 0;
-  border-color: #66afe9;
+  border-color: $general-border-color;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
 }
 
 .CheckInput-primaryIsChecked{
-  border-color: #0b8750;
-  background-color: #0b8750;
+  border-color: $general-border-color;
+  background-color: $secondary-color;
 }
 
 .CheckInput-helpText {
@@ -253,11 +253,10 @@
   display: block;
   margin-bottom: 21px;
   padding-left: 21px;
-
+  color: $main-text-color;
   width: 100%;
   border: 0;
-  border-bottom: 1px solid #e5e5e5;
-  color: #3a3f51;
+  border-bottom: 1px solid $general-border-color;
   font-size: 21px;
   line-height: inherit;
 }

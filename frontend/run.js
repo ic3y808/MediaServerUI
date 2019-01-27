@@ -16,13 +16,13 @@ export default function ApplicationRun($window, $rootScope, $timeout, Backend, M
   }, 25);
 
   $(window).on('resize', windowResized);
-  
-  $timeout(function(){
+
+  $timeout(function () {
     Backend.debug('loading settings');
     Backend.emit('load_settings', 'alloydb_settings');
     Backend.emit('load_settings', 'sabnzbd_settings');
   });
- 
+
 
   setTimeout(() => {
     if (MediaPlayer.castStatus()) {
@@ -49,4 +49,6 @@ export default function ApplicationRun($window, $rootScope, $timeout, Backend, M
   //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";
   //}
+
+  
 }

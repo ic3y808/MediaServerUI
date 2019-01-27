@@ -294,6 +294,22 @@ svg:not(:root).svg-inline--fa {
 
 .ag-header-row {
   background-color: $main-background-color !important;
+  border-color: $general-border-color;
+}
+
+.ag-theme-dark .ag-root{
+  background-color: $main-background-color !important;
+  border-color: $general-border-color;
+}
+
+.ag-theme-dark .ag-header {
+  background-color: $main-background-color !important;
+  border-color: $general-border-color;
+}
+
+.ag-theme-dark .ag-header-cell {
+  background-color: $main-background-color !important;
+  border-color: $general-border-color;
 }
 
 .ag-row-even {
@@ -310,6 +326,10 @@ svg:not(:root).svg-inline--fa {
 
 .ag-cell-value {
   color: $main-text-color !important;
+}
+
+.ag-floating-bottom {
+ display: none;
 }
 
 .similar-artist-link {
@@ -342,14 +362,31 @@ svg:not(:root).svg-inline--fa {
   box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
+.list-group{
+  background-color: $main-background-color !important;
+}
+
+.list-group-item{
+  background-color: $main-background-color !important;
+  border: 1px solid $general-border-color;
+}
+
 .notification {
   position: fixed;
   top: 10em;
   right: 10em;
 }
 
+@mixin selected-gradient() {
+  background: -webkit-linear-gradient(336deg, $primary-color, $secondary-color) !important;
+  background: -moz-linear-gradient(336deg, $primary-color, $secondary-color) !important;
+  background: -ms-linear-gradient(336deg, $primary-color, $secondary-color) !important;
+  background: -o-linear-gradient(336deg, $primary-color, $secondary-color) !important;
+  background: linear-gradient(336deg, $primary-color, $secondary-color) !important;
+}
+
 .ag-theme-dark .current-track {
-  background-color: $now-playing-track !important;
+  @include selected-gradient();
 }
 
 .ag-row-selected {
@@ -368,10 +405,14 @@ svg:not(:root).svg-inline--fa {
   outline: none;
   border: 0;
   background: none;
-  color: inherit;
+  color: $main-text-color;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+}
+
+.Link-link:hover {
+  color: $main-text-color;
 }
 
 .HeartRating-heart {

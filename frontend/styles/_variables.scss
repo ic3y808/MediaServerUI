@@ -1,8 +1,8 @@
 //colors
-$primary-color: rgb(255, 255, 255);
-$secondary-color: rgba(45,137,138, 0.726);
+$primary-color: rgb(36, 36, 36);
+$secondary-color: rgba(22, 191, 233, 0.602);
 $alternate-color: rgb(20, 22, 24);
-
+$border-color: #ff6600;
 
 $main-background-color: $primary-color;
 $main-background-color-transparent: rgba($primary-color, .35);
@@ -13,7 +13,9 @@ $sub-background-color:$primary-color;
 $alt-sub-background-color: $secondary-color;
 $now-playing-track: rgba($secondary-color, 0.904);
 $general-border-color:rgba($alternate-color, 0.904);
+$grid-selection-color:rgba($secondary-color, 0.5);
 $label-color:rgba(choose-contrast-color($primary-color), 0.904);
+$sub-label-color:#8895aa;
 //page size breaks 
 $break-xxxsmall: 320px;
 $break-xxsmall: 375px;
@@ -74,8 +76,7 @@ $main-btn-background-color:rgba($main-background-color, .45);
 $main-btn-hover-color:$now-playing-track;
 //navbar
 $navbar-height:40px;
-//grid 
-$grid-selection-color: rgba(131, 191, 233, 0.728);
+
 //range
 $track-color: $alt-sub-background-color !default;
 $thumb-color: $sub-background-color !default;
@@ -93,15 +94,15 @@ $track-shadow-size: 1px !default;
 $track-shadow-blur: 1px !default;
 $track-shadow-color: rgba(0, 0, 0, .2) !default;
 $track-border-width: 2px !default;
-$track-border-color: #cfd8dc !default;
+$track-border-color: $alt-sub-background-color !default;
 $track-radius: 5px !default;
 $contrast: 5% !default;
 $ie-bottom-track-color: darken($track-color, $contrast) !default;
 //footer
 $footer-height:60px;
-$buffer-color: rgb(190, 207, 211);
-$progress-color: rgba(131, 191, 233, 0.728);
-$progress-container-color: rgb(160, 164, 165);
+$buffer-color: rgba($primary-color, 0.25);
+$progress-color: rgba($secondary-color, 0.728);
+$progress-container-color: rgba($primary-color, 0.25);
 //sidebar
 $sidebar-width: 160px;
 $sidebar-collapsed-width: 50px;
