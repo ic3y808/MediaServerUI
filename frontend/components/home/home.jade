@@ -9,128 +9,26 @@ include ./../../views/pagecontainer
   include ./../../views/pagebody
     include ./../../views/pageheader
       .PageContent-backdrop
-        .PageContent-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="$root.getBackgroundStyle(artistImage)")
-        .PageContent-backdropOverlay 
-          .PageContent-headerContent
 
-            .PageContent-HeaderDetails-info
-              .PageContent-HeaderDetails-titleContainer
-              div
-                detaillabel(buttontext="Newest Albums", buttonicon="fa-hdd-o")
-                detaillabel(buttontext="Newest Tracks", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
-                popoverbutton(buttontext="Newest Artists", buttonicon="fa-tags", data="artistInfo.tags.tag")
-                detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-              div
-                detaillabel(buttontext="1D", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-                detaillabel(buttontext="1W", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-                detaillabel(buttontext="1M", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-                detaillabel(buttontext="1Y", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-                detaillabel(buttontext="All Time", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+        .PageContent-headerContent
 
-              .PageContent-HeaderDetails-overview 
-                div#player(style='overflow: hidden;')
-                  .nbs-flexisel-container
-                    .nbs-flexisel-inner
-                      ul#flexiselDemo1.nbs-flexisel-ul(style=' display: block;')
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Adele21
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Shomlock
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Stuck on a feeling
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Ricky Martine 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Ellie Goluding 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Fifty Shades 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Adele21 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Adele21
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Shomlock
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Stuck on a feeling
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Ricky Martine 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Ellie Goluding 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Fifty Shades 
-                            
-                              
-                        li.nbs-flexisel-item(style='width: 362.8px;')
-                          a(href='single.html')
-                            img(src='https://via.placeholder.com/150', alt='')
-                          .slide-title
-                            h4 Adele21 
-                            
-                              
-                      .nbs-flexisel-nav-left(style='top: 179.5px;')
-                      .nbs-flexisel-nav-right(style='top: 179.5px;')  
+          .PageContent-HeaderDetails-info
+            .PageContent-HeaderDetails-titleContainer
+            div
+              detaillabel(buttontext="Random", buttonicon="fa-hdd-o")
+              detaillabel(buttontext="Newest Albums", buttonicon="fa-hdd-o")
+              detaillabel(buttontext="Newest Tracks", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
+              popoverbutton(buttontext="Newest Artists", buttonicon="fa-tags", data="artistInfo.tags.tag")
+              detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+            div
+              detaillabel(buttontext="1D", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+              detaillabel(buttontext="1W", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+              detaillabel(buttontext="1M", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+              detaillabel(buttontext="1Y", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+              detaillabel(buttontext="All Time", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
+
+            .PageContent-HeaderDetails-overview 
+              div#player(style='overflow: hidden;')
                 
      include ./../../views/pagecontent
       .ExpanderContainer
@@ -146,54 +44,13 @@ include ./../../views/pagecontainer
             span  
         div#albumListContainer
           .ExpanderContainer-body
-            .col-md-3.content-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
+            .col-md-3.content-grid(ng-repeat="track in $root.random")
+              a(href='/artist/{{track.base_id}}')
+                img(ng-src='{{track.image}}', title='allbum-name')
               .inner-info
                 a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid.last-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
-            .col-md-3.content-grid.last-grid
-              a(href='single.html')
-                img(src='https://via.placeholder.com/150', title='allbum-name')
-              .inner-info
-                a(href='single.html')
-                  h5 Pop
+                  h5 {{track.genre}}
+            
             .clearfix  
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleAlbums()')

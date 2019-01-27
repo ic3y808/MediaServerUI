@@ -214,6 +214,25 @@ class AlbumController {
       });
     };
 
+    $scope.starAlbum = function(){
+        that.Backend.info('liking album: ' + that.$scope.album.name);
+        if ($scope.album.starred === 'true') {
+          that.AlloyDbService.unstar({ album: that.$scope.album.id }).then(function (result) {
+            that.Backend.info('UnStarred');
+            that.Backend.info(result);
+            that.$scope.album.starred = 'false';
+            that.AppUtilities.apply();
+          });
+        } else {
+          that.AlloyDbService.star({ album: that.$scope.album.id }).then(function (result) {
+            that.Backend.info('starred');
+            that.Backend.info(result);
+            that.$scope.album.starred = 'true';
+            that.AppUtilities.apply();
+          });
+        }
+    };
+
     $rootScope.$on('trackChangedEvent', function (event, data) {
       AppUtilities.updateGridRows($scope.gridOptions);
     });

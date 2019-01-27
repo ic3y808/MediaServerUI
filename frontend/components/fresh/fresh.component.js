@@ -15,7 +15,7 @@ class FreshController {
     this.AppUtilities.showLoader();
 
     $scope.refreshing = false;
-    $scope.albums = [];
+
     $scope.tracks = [];
 
     $scope.continousPlay = true;
@@ -98,7 +98,7 @@ class FreshController {
     }
 
     $scope.findNowPlaying = function (id) {
-      $scope.albums.forEach(function (album) {
+      $rootScope.fresh_albums.forEach(function (album) {
 
       });
     }
@@ -123,9 +123,9 @@ class FreshController {
 
     $scope.findNowPlaying = function () {
       var found = false;
-      for (var i = 0; i < $scope.albums.length; i++) {
+      for (var i = 0; i < $rootScope.fresh_albums.length; i++) {
         if (found) return;
-        var album = $scope.albums[i];
+        var album = $rootScope.fresh_albums[i];
         album.tracks.forEach(function (track) {
           if (found) return;
           if (MediaPlayer.checkIfNowPlaying(track)) {
@@ -143,54 +143,14 @@ class FreshController {
 
       $scope.refreshing = true;
 
-      $scope.albums = [];
+      //var getFresh = that.AlloyDbService.getFresh(50);
 
-      var getFresh = that.AlloyDbService.getFresh(50);
-
-      if (!getFresh) {
-        that.$scope.refreshing = false;
-        return;
-      }
-      getFresh.then(function (newestCollection) {
-        $scope.albums = newestCollection.albums;
-        $scope.albums.forEach(function (album) {
-          album.image = that.AlloyDbService.getCoverArt(album.cover_art);
-          album.title = album.album;
-        });
-
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
-        $timeout(function () {
-          $scope.coverflow = coverflow('player').setup({
-         
-            playlist: $scope.albums,
-            width: '100%',
-            coverwidth: 200,
-            coverheight: 200,
-            fixedsize: true,
-          }).on('ready', function () {
-            this.on('focus', function (index) {
-              if ($scope.albums && $scope.albums.length > 0) {
-                $scope.getAlbum($scope.albums[index]);
-              }
-            });
-
-            this.on('click', function (index, link) {
-              if ($scope.albums && $scope.albums.length > 0) {
-                $scope.getAlbum($scope.albums[index]);
-              }
-            });
-          });
-
-          if ($scope.albums && $scope.albums.length > 0) {
-            $scope.getAlbum($scope.albums[0]);
-            $scope.findNowPlaying();
-          }
-
-          $scope.refreshing = false;
-          console.log('refreshed')
-        });
-      });
+      //if (!getFresh) {
+      //  that.$scope.refreshing = false;
+      //   return;
+      //}
+      // getFresh.then(function (newestCollection) {
+      
     };
 
     $scope.startRadio = function () {
@@ -247,9 +207,44 @@ class FreshController {
       AppUtilities.updateGridRows($scope.gridOptions);
     });
 
-    setTimeout(function () {
-      $scope.refresh()
-    }, 750);
+    $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
+      if ($rootScope.fresh_albums) {
+
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
+        $timeout(function () {
+          $scope.coverflow = coverflow('player').setup({
+
+            playlist: $rootScope.fresh_albums,
+            width: '100%',
+            coverwidth: 200,
+            coverheight: 200,
+            fixedsize: true,
+          }).on('ready', function () {
+            this.on('focus', function (index) {
+              if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
+                $scope.getAlbum($rootScope.fresh_albums[index]);
+              }
+            });
+
+            this.on('click', function (index, link) {
+              if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
+                $scope.getAlbum($rootScope.fresh_albums[index]);
+              }
+            });
+          });
+
+          if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
+            $scope.getAlbum($rootScope.fresh_albums[0]);
+            $scope.findNowPlaying();
+          }
+
+          $scope.refreshing = false;
+          console.log('refreshed')
+        });
+      }
+
+    });
   }
 }
 

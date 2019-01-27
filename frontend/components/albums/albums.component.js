@@ -9,6 +9,7 @@ class AlbumsController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('albums-controller');
+    this.AppUtilities.showNoRows();
     this.AppUtilities.showLoader();
     var that = this;
 
@@ -41,6 +42,7 @@ class AlbumsController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      domLayout: 'autoHeight',
       getRowNodeId: function (data) {
         return data.id;
       },
@@ -49,7 +51,6 @@ class AlbumsController {
         AppUtilities.updateGridRows($scope.gridOptions);
       },
       onGridReady: function () {
-        $scope.reloadAlbums();
         AppUtilities.updateGridRows($scope.gridOptions);
       },
       onSelectionChanged: function (data) {
@@ -61,23 +62,9 @@ class AlbumsController {
       }
     };
 
-    $scope.reloadAlbums = function () {
-      $scope.albums = [];
-      AppUtilities.showNoRows();
-      var albums = AlloyDbService.getAlbums();
-      if (albums) {
-        albums.then(function (result) {
-          $scope.albums = result;
-          AppUtilities.setRowData($scope.gridOptions, $scope.albums);
-          AppUtilities.hideLoader();
-        });
-      }
+    $scope.refresh = function () {
+      AlloyDbService.refreshAlbums();
     };
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Albums reload on loginsatuschange');
-      $scope.reloadAlbums();
-    });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
       AppUtilities.updateGridRows($scope.gridOptions);
@@ -85,6 +72,14 @@ class AlbumsController {
 
     $rootScope.$on('windowResized', function (event, data) {
       AppUtilities.updateGridRows($scope.gridOptions);
+    });
+
+    $rootScope.$watch('albums', function (newVal, oldVal) {
+      if ($rootScope.albums) {
+        AppUtilities.setRowData($scope.gridOptions, $rootScope.albums);
+        AppUtilities.apply();
+        AppUtilities.hideLoader();
+      }
     });
   }
 }

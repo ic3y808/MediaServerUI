@@ -33,6 +33,7 @@ class ArtistsController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      domLayout: 'autoHeight',
       getRowNodeId: function (data) {
         return data.base_id;
       },
@@ -41,7 +42,6 @@ class ArtistsController {
         AppUtilities.updateGridRows($scope.gridOptions);
       },
       onGridReady: function () {
-        $scope.reloadArtists();
         AppUtilities.updateGridRows($scope.gridOptions);
       },
       onSelectionChanged: function (data) {
@@ -56,25 +56,9 @@ class ArtistsController {
       }
     };
 
-    $scope.reloadArtists = function () {
-
-      $scope.artists = [];
-      AppUtilities.showNoRows();
-      var artists = that.AlloyDbService.getMusicFolders();
-      if (artists) {
-        artists.then(function (result) {
-          $scope.artists = result;
-          AppUtilities.setRowData($scope.gridOptions, $scope.artists);
-          AppUtilities.apply();
-          AppUtilities.hideLoader();
-        });
-      }
-    };
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Artists reload on loginsatuschange');
-      $scope.reloadArtists();
-    });
+    $scope.refresh = function () {
+      AlloyDbService.refreshArtists();
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
       var eGridDiv = document.querySelector('#artistsGrid');
@@ -82,14 +66,21 @@ class ArtistsController {
     });
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
-
       AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$on('windowResized', function (event, data) {
-
       AppUtilities.updateGridRows($scope.gridOptions);
+    });
 
+    AppUtilities.showNoRows();
+
+    $rootScope.$watch('artists', function (newVal, oldVal) {
+      if ($rootScope.artists) {
+        AppUtilities.setRowData($scope.gridOptions, $rootScope.artists);
+        AppUtilities.apply();
+        AppUtilities.hideLoader();
+      }
 
     });
   }

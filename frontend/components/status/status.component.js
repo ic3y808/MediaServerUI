@@ -1,9 +1,10 @@
 import './status.scss';
 class StatusController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$timeout = $timeout;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
@@ -69,14 +70,10 @@ class StatusController {
         scanner.then(function (result) {
           $scope.scanStatus = result;
           that.AppUtilities.apply();
-          if (!$scope.scanStatus.result.isScanning) {
-            clearInterval($scope.rescanInterval);
-          } else {
-            if (!$scope.rescanInterval) {
-              $scope.rescanInterval = setInterval(function () {
-                $scope.getScanStatus();
-              }, 500);
-            }
+          if (!$scope.rescanInterval) {
+            $scope.rescanInterval = setInterval(function () {
+              $scope.getScanStatus();
+            }, 500);
           }
         });
       }
@@ -116,10 +113,13 @@ class StatusController {
       clearInterval($scope.uiRefreshIntereval);
       clearInterval($scope.rescanInterval);
     });
-    $scope.ping();
-    $scope.getLibraryInfo();
-    $scope.getMediaPaths();
-    setTimeout(() => {
+
+
+
+    $timeout(() => {
+      $scope.ping();
+      $scope.getLibraryInfo();
+      $scope.getMediaPaths();
       $scope.getScanStatus();
     }, 500);
     AppUtilities.hideLoader();

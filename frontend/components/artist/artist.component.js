@@ -234,14 +234,14 @@ class ArtistController {
     $scope.starArtist = function () {
       that.Backend.info('starring artist: ' + $scope.artist);
       if ($scope.artist.starred === 'true') {
-        that.AlloyDbService.unstar({ artist: that.$scope.artist.id }).then(function (result) {
+        that.AlloyDbService.unstar({ artist: that.$routeParams.id }).then(function (result) {
           that.Backend.info('UnStarred');
           that.Backend.info(result);
           that.$scope.artist.starred = 'false'
           that.AppUtilities.apply();
         });
       } else {
-        that.AlloyDbService.star({ artist: that.$scope.artist.id }).then(function (result) {
+        that.AlloyDbService.star({ artist: that.$routeParams.id }).then(function (result) {
           that.Backend.info('starred');
           that.Backend.info(result);
           that.$scope.artist.starred = 'true'

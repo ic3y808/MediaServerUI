@@ -25,14 +25,16 @@
 }
 
 .TableRow-row:hover {
-  background-color: #fafbfc;
+  background-color: $main-background-color;
+  color: $main-text-color;
 }
 
 .TableRowCell-cell {
   padding-left: 8px;
   padding: 4px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid $general-border-color;
   line-height: 1.52857143;
+  color: $main-text-color;
 }
 
 .RelativeDateCell-cell {
@@ -108,7 +110,7 @@
   .TableHeaderCell-headerCell {
     white-space: nowrap;
   }
-  .TableRowCell-cell-3hR4a {
+  .TableRowCell-cell {
     white-space: nowrap;
   }
 } //768px;

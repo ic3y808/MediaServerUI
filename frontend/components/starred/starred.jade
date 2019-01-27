@@ -1,26 +1,12 @@
-.starredWrapper
-  .pageToolbar-toolbar.bg-secondary.card-5
-    .PageToolbarSection-sectionContainer(style='flex-grow: 8;')
-      .PageToolbarSection-section.PageToolbarSection-left
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='$root.goBack()')
-          i.fa.fa-arrow-circle-left.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Back
-        .PageToolbarSeparator-separator
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='refresh()')
-          i.fa.fa-refresh.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Refresh
-        button.PageToolbarButton-toolbarButton.Link-link(type='button', ng-click='shuffle()')
-          i.fa.fa-random.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='sync', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 21px;')
-          .PageToolbarButton-labelContainer
-            .PageToolbarButton-label Shuffle
+include ./../../views/pagecontainer
+  include ./../../views/pagetoolbar
+    .PageToolbarSection-section.PageToolbarSection-left
+      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
+      toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
+      toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
 
-  .starredBodyWrapper.d-flex.flex-column
-    #starredAlbums(style='display:none;') 
-      #coverflow
-        ul.flip-items
-          li(data-flip-title='{{album.id}}', ng-repeat='album in albums')
-            img.coverflowImage(ng-src='{{album.artUrl}}')
-
-    #starredTracksGrid.ag-theme-dark(ag-grid='gridOptions')
+  include ./../../views/pagebody
+    include ./../../views/pageheader
+      div#player(style='overflow: hidden;')
+    include ./../../views/pagecontent
+      #starredTracksGrid.ag-theme-dark(ag-grid='gridOptions',context-menu="menuOptions")

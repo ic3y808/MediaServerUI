@@ -11,11 +11,13 @@ class GenresController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('genres-controller');
+    this.AppUtilities.showNoRows();
+    this.AppUtilities.showLoader();
     $scope.genres = [];
     var that = this;
     var columnDefs = [{
       headerName: "Genre",
-      field: "genre"
+      field: "name"
     },
     {
       headerName: "Tracks",
@@ -34,6 +36,7 @@ class GenresController {
       enableFilter: true,
       rowDeselection: true,
       animateRows: true,
+      domLayout: 'autoHeight',
       getRowNodeId: function (data) {
         return data.id;
       },
@@ -53,30 +56,9 @@ class GenresController {
       }
     };
 
-    $scope.reloadGenres = function () {
-      var genres = AlloyDbService.getGenres();
-      if (genres) {
-        $scope.genres = [];
-        genres.then(function (result) {
-          $scope.genres = result;
-          AppUtilities.setRowData($scope.gridOptions, $scope.genres);
-          AppUtilities.apply();
-          AppUtilities.hideLoader();
-        });
-      } else {
-        AppUtilities.showNoRows();
-        AppUtilities.hideLoader();
-      }
+    $scope.refresh = function () {
+      AlloyDbService.refreshGenres();
     };
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Genres reload on loginsatuschange');
-      $scope.reloadGenres();
-    });
-
-
-
-    $scope.reloadGenres();
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
       AppUtilities.updateGridRows($scope.gridOptions);
@@ -84,6 +66,14 @@ class GenresController {
 
     $rootScope.$on('windowResized', function (event, data) {
       AppUtilities.updateGridRows($scope.gridOptions);
+    });
+
+    $rootScope.$watch('genres', function (newVal, oldVal) {
+      if ($rootScope.genres) {
+        AppUtilities.setRowData($scope.gridOptions, $rootScope.genres);
+        AppUtilities.apply();
+        AppUtilities.hideLoader();
+      }
     });
   }
 }

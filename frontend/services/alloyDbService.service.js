@@ -23,6 +23,7 @@ export default class AlloyDbService {
             if (result.status == 'success') {
               that.isLoggedIn = true;
               that.isLoggingIn = false;
+              that.preload();
             } else {
               that.isLoggingIn = false;
               that.isLoggedIn = false;
@@ -271,5 +272,193 @@ export default class AlloyDbService {
     if (this.isLoggedIn)
       return this.alloydb.scrobbleNowPlaying(id);
     else return false;
+  }
+
+  loadArtists(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.artists) {
+          that.$rootScope.artists = info.artists;
+        }
+      });
+    }
+  }
+
+  loadFresh(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.fresh && info.fresh.albums) {
+          that.$rootScope.fresh_albums = info.fresh.albums;
+          that.$rootScope.fresh_albums.forEach(function (album) {
+            album.image = that.getCoverArt(album.cover_art);
+            album.title = album.album;
+          });
+        }
+      });
+    }
+  }
+
+  loadAlbums(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.albums) {
+          that.$rootScope.albums = info.albums;
+          that.$rootScope.albums.forEach(function (album) {
+            album.image = that.getCoverArt(album.cover_art);
+            album.title = album.album;
+          });
+        }
+      });
+    }
+  }
+
+  loadGenres(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.genres) {
+          that.$rootScope.genres = info.genres;
+
+        }
+      });
+    }
+  }
+
+  loadStarred(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.starred) {
+          that.$rootScope.starred_tracks = info.starred.tracks;
+          that.$rootScope.starred_albums = info.starred.albums;
+          that.$rootScope.starred_albums.forEach(function (album) {
+            album.image = that.getCoverArt(album.cover_art);
+            album.title = album.album;
+          });
+        }
+      });
+    }
+  }
+
+  loadIndex(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.index) {
+          that.$rootScope.music_index = info.index;
+
+        }
+      });
+    }
+  }
+
+  loadRandom(data) {
+    var that = this;
+    if (data) {
+      data.forEach(function (info) {
+        if (info.random) {
+          that.$rootScope.random = info.random;
+          that.$rootScope.random.forEach(function (track) {
+            track.image = that.getCoverArt(track.cover_art);
+          });
+        }
+      });
+    }
+  }
+
+  refreshArtists(){
+    var that = this;
+    var artists = this.getMusicFolders();
+    if(artists){
+      artists.then(function(info){
+        that.loadArtists([info]);
+      })
+    }
+  };
+  
+  refreshFresh(){
+    var that = this;
+    var fresh = this.getFresh(50);
+    if(fresh){
+      fresh.then(function(info){
+        that.loadFresh([info]);
+      })
+    }
+  }
+
+  refreshAlbums(){
+    var that = this;
+    var albums = this.getAlbums();
+    if(albums){
+      albums.then(function(info){
+        that.loadAlbums([info]);
+      })
+    }
+  }
+
+  refreshGenres(){
+    var that = this;
+    var genres = this.getGenres();
+    if(genres){
+      genres.then(function(info){
+        that.loadGenres([info]);
+      })
+    }
+  }
+
+  refreshStarred(){
+    var that = this;
+    var starred = this.getStarred();
+    if(starred){
+      starred.then(function(info){
+        that.loadStarred([info]);
+      })
+    }
+  }
+
+  refreshIndex(){
+    var that = this;
+    var index = this.getMusicFoldersIndex();
+    if(index){
+      index.then(function(info){
+        that.loadIndex([info]);
+      })
+    }
+  }
+
+  refreshRandom(){
+    var that = this;
+    var random = this.getRandomSongs();
+    if(random){
+      random.then(function(info){
+        that.loadRandom([info]);
+      })
+    }
+  }
+
+  preload() {
+    console.log('preloaing')
+    var that = this;
+    var artists = this.getMusicFolders();
+    var fresh = this.getFresh(50);
+    var albums = this.getAlbums();
+    var genres = this.getGenres();
+    var starred = this.getStarred();
+    var index = this.getMusicFoldersIndex();
+    var random = this.getRandomSongs();
+
+    Promise.all([artists, fresh, albums, genres, starred, index, random]).then(function (info) {
+      that.loadArtists(info);
+      that.loadFresh(info);
+      that.loadAlbums(info);
+      that.loadGenres(info);
+      that.loadStarred(info);
+      that.loadIndex(info);
+      that.loadRandom(info);
+      that.AppUtilities.apply();
+    });
   }
 }
