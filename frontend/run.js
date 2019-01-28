@@ -1,15 +1,18 @@
 
 
-export default function ApplicationRun($window, $rootScope, $timeout, Backend, MediaPlayer, AppUtilities) {
+export default function ApplicationRun($window, $rootScope, $location, $routeParams, $anchorScroll, $timeout, Backend, MediaPlayer, AppUtilities) {
   "ngInject";
   Backend.debug('starting application');
   $rootScope.settings = [];
 
   $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
     Backend.debug('routeChangeSuccess');
+    $location.hash($routeParams.scrollTo);
+    $anchorScroll();
     AppUtilities.broadcast('windowResized');
 
   });
+
 
   var windowResized = AppUtilities.debounce(function () {
     AppUtilities.broadcast('windowResized');
@@ -50,5 +53,5 @@ export default function ApplicationRun($window, $rootScope, $timeout, Backend, M
   //  return "Are you sure to leave this page?";
   //}
 
-  
+
 }
