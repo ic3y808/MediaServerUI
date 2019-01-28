@@ -42,9 +42,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<album/>',
   }).when('/album/:id/:trackid', {
     template: '<album/>',
-  }).otherwise({
-    redirectTo: '/'
-  });
+  })
   $locationProvider.html5Mode({
     enabled: true,
     requireBase: false

@@ -4,6 +4,11 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
       toolbarseperator
       toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
-  include ./../../views/pagebody                
+  jumpbar(data="$root.music_index", buttonclick='jumpBarClick()')
+  include ./../../views/pagebody   
+                 
     include ./../../views/pagecontent
-      #artistsGrid.ag-theme-dark(ag-grid='gridOptions')
+      //#artistsGrid.ag-theme-dark(ag-grid='gridOptions')
+        
+      artistlist.col(data="$root.artists")
+      
