@@ -7,8 +7,9 @@ window.__onGCastApiAvailable = function (isAvailable) {
 };
 
 export default class MediaPlayer {
-  constructor(MediaElement, AppUtilities, Backend, AlloyDbService) {
+  constructor($rootScope, MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
+    this.$rootScope = $rootScope;
     this.MediaElement = MediaElement;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
@@ -19,6 +20,7 @@ export default class MediaPlayer {
     this.currentVolume = this.MediaElement.volume;
     this.selectedIndex = 0;
     this.repeatEnabled = false;
+    this.$rootScope.checkIfNowPlaying = this.checkIfNowPlaying;
     this.tracks = [];
     var that = this;
     this.MediaElement.addEventListener('play', function () {

@@ -60,7 +60,8 @@ include ./../../views/pagecontainer
             span  
         div#trackListContainer
           .ExpanderContainer-body
-            #playlistTrackGrid.ag-theme-dark(ag-grid='gridOptions', style="width: 100%; height: 100%;")
+            //#playlistTrackGrid.ag-theme-dark(ag-grid='gridOptions', style="width: 100%; height: 100%;")
+            tracklist(data="$root.tracks")
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
                 expandbutton(ng-show="albums_expanded", mini)

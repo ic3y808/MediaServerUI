@@ -8,7 +8,7 @@
         th.TableHeaderCell-headerCell.Link-link(label='Release') Release
         th.TableHeaderCell-headerCell.Link-link(label='Rating') Tracks
     tbody
-      tr.TableRow-row(ng-repeat='album in data')
+      tr.TableRow-row(ng-repeat='album in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
         td.TableRowCell-star.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button')
             i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')

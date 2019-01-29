@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
@@ -11,8 +11,13 @@ module.exports = function () {
       scope.clickButton = function () {
         scope.buttonclick();
       }
-      scope.text = scope.buttontext;
-      console.log("scope.show_artist  " + scope.showartist)
+      scope.checkIfNowPlaying = function (id) {
+        var selected = MediaPlayer.selectedTrack();
+        if (selected) {
+          return id === selected.album_id;
+        }
+        return false;
+      }
     }
   }
 };
