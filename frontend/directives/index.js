@@ -6,6 +6,7 @@ import NavButton from './ui/navbutton';
 import AlbumsList from './ui/albumslist';
 import ArtistList from './ui/artistlist';
 import GenreList from './ui/genrelist';
+import TrackList from './ui/tracklist';
 import JumpBar from './ui/jumpbar';
 import DetailLabel from './ui/detaillabel';
 import ExpandButton from './ui/expandbutton';
@@ -20,6 +21,7 @@ export default angular
   .directive('albumslist', AlbumsList)
   .directive('artistlist', ArtistList)
   .directive('genrelist', GenreList)
+  .directive('tracklist', TrackList)
   .directive('jumpbar', JumpBar)
   .directive('detaillabel', DetailLabel)
   .directive('expandbutton', ExpandButton)

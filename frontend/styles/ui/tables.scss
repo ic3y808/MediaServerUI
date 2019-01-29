@@ -24,6 +24,12 @@
   transition: background-color 500ms;
 }
 
+.TableRow-row-now-playing {
+  -webkit-transition: background-color 500ms;
+  transition: background-color 500ms;
+  background-color: $now-playing-track;
+}
+
 .TableRow-row:hover {
   background-color: $main-background-color;
   color: $main-text-color;
@@ -49,7 +55,17 @@
   padding: 8px;
   width: 50px;
   border: none !important;
-  text-align: left;
+  vertical-align: middle;
+  align-content: center;
+  text-align: center; 
+}
+
+.TableRowHeaderCell-TrackCount-Center {
+  padding: 8px;
+  width: 50px;
+  border: none !important;
+  text-align: center;
+  text-align: center;
   font-weight: bold;
 }
 
@@ -89,6 +105,20 @@
   vertical-align: middle;
   align-content: center;
   text-align: right; 
+}
+
+.TableRowCell-count-center {
+  width: 30px;
+  vertical-align: middle;
+  align-content: center;
+  text-align: center; 
+}
+
+.TableRowCell-duration {
+  width: 30px;
+  vertical-align: middle;
+  align-content: center;
+  text-align: center; 
 }
 
 .StarRating-starRating {

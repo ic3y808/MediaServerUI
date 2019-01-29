@@ -11,6 +11,7 @@ export default class AppUtilities {
     this.$rootScope.updateGridRows = this.updateGridRows;
     this.$rootScope.showNoRows = this.showNoRows;
     this.$rootScope.decryptPassword = this.decryptPassword;
+    this.$rootScope.formatTime = this.formatTime;
   }
 
   broadcast(e, d) {
@@ -127,6 +128,19 @@ export default class AppUtilities {
     return minutes + ":" + seconds;
   }
 
+  msToTime(duration) {
+    var milliseconds = parseInt((duration % 1000) / 100),
+      seconds = parseInt((duration / 1000) % 60),
+      minutes = parseInt((duration / (1000 * 60)) % 60),
+      hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+  }
+
   debounce(func, wait, immediate) {
     var timeout;
     return function () {
@@ -143,12 +157,12 @@ export default class AppUtilities {
     };
   }
 
-  encryptPassword(pass){
+  encryptPassword(pass) {
     return CryptoJS.AES.encrypt(pass, "12345").toString();
 
   }
 
-  decryptPassword(pass){
+  decryptPassword(pass) {
     return CryptoJS.AES.decrypt(pass, "12345").toString(CryptoJS.enc.Utf8);
   }
 

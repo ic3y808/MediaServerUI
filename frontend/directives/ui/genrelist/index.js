@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
@@ -8,7 +8,13 @@ module.exports = function () {
      
     replace: true,
     link: function (scope, elm, attrs) {
-   
+      scope.checkIfNowPlaying = function (id) {
+        var selected = MediaPlayer.selectedTrack();
+        if (selected) {
+          return id === selected.genre_id;
+        }
+        return false;
+      }
     }
   }
 };

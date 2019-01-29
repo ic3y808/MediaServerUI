@@ -1,4 +1,4 @@
-module.exports = function () {
+module.exports = function (MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
@@ -23,6 +23,14 @@ module.exports = function () {
 
         if (!testForLetter(name.charAt(0).toUpperCase())) return 'symbol';
         return name.charAt(0).toUpperCase()
+      }
+
+      scope.checkIfNowPlaying = function (id) {
+        var selected = MediaPlayer.selectedTrack();
+        if (selected) {
+          return id === selected.base_id;
+        }
+        return false;
       }
 
     }

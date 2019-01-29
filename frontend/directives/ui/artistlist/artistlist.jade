@@ -6,7 +6,7 @@
         th.TableHeaderCell-headerCell.Link-link(label='Artist Name') Artist Name
         th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Tracks') Tracks
     tbody
-      tr.TableRow-row(ng-repeat='artist in data')
+      tr.TableRow-row(ng-repeat='artist in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(artist.base_id) == true}")
         td.TableRowCell-star.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button')
             i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')

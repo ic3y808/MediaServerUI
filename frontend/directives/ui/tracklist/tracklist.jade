@@ -1,0 +1,31 @@
+.Table-tableContainer
+  table.Table-table
+    thead
+      tr
+        th.TableHeaderCell-headerCell
+        th.TableHeaderCell-headerCell.Link-link(label='Track') #
+        th.TableHeaderCell-headerCell.Link-link(label='Title') Title
+        th.TableHeaderCell-headerCell.Link-link(label='Album') Album
+        th.TableHeaderCell-headerCell.Link-link(label='Genre') Genre
+        th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Plays') Plays
+        th.TableHeaderCell-headerCell.Link-link(label='Duration') Duration
+    tbody
+      tr.TableRow-row(ng-repeat='track in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true}")
+        td.TableRowCell-star.TableRowCell-cell
+          button.IconButton-button.Link-link.Link-link(type='button')
+            i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+        td.TableRowCell-count.TableRowCell-cell
+          span.Label-label.Label-medium(title='{{track.no}} / {{track.of}}')
+            span(ng-if="!track.of")  {{track.no}} 
+            span(ng-if="track.of") {{track.no}} / {{track.of}}
+        td.TableRowCell-title.TableRowCell-cell
+          a.Link-link.ng-binding(ng-click="requestPlay(track.id)") {{track.title}}
+        td.TableRowCell-artist.TableRowCell-cell
+          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{track.album}}
+        td.TableRowCell-artist.TableRowCell-cell
+          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{track.genre}}
+        td.TableRowCell-cell.TableRowCell-count-center
+          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.')
+            span {{track.play_count}}
+        td.TableRowCell-duration.TableRowCell-cell
+          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{$root.formatTime(track.duration)}}
