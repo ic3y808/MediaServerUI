@@ -20,14 +20,14 @@ fieldset.FieldSet-fieldSet
                 tbody
                   // ngRepeat: album in data.albums
                   tr.TableRow-row.ng-scope(ng-repeat='task in schedulerStatus')
-                    td.AlbumRow-title.TableRowCell-cell
+                    td.TableRowCell-title.TableRowCell-cell
                       a.Link-link.ng-binding(href='/album/album_748da5c6') {{task.name}}
                     td.RelativeDateCell-cell.TableRowCell-cell {{task.lastExecution}}
                     td.RelativeDateCell-cell.TableRowCell-cell {{task.nextExecution}}
                     td.RelativeDateCell-cell.TableRowCell-cell {{task.timezone}}
                     td.RelativeDateCell-cell.TableRowCell-cell {{task.source}}
 
-                    td.AlbumSearchCell-AlbumSearchCell.TableRowCell-cell
+                    td.TableRowCell-cell
                       button.IconButton-button.Link-link.Link-link(type='button')
                         i.fa.fa-play-circle.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
 

@@ -2,19 +2,17 @@ module.exports = function () {
   return {
     restrict: 'E',
     scope: {
-      buttontext: '@',
-      buttonicon: '@',
-      buttonclick: '&',
-      href: "@"
+      data: '=',
+      showartist: '@'
     },
-    // object is passed while making the call
-    templateUrl:'/template/detaillabel.jade',
+    templateUrl:'/template/albumslist.jade',
     replace: true,
     link: function (scope, elm, attrs) {
       scope.clickButton = function () {
         scope.buttonclick();
       }
+      scope.text = scope.buttontext;
+      console.log("scope.show_artist  " + scope.showartist)
     }
   }
 };
-

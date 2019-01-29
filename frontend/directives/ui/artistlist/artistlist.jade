@@ -1,0 +1,17 @@
+.Table-tableContainer
+  table.Table-table
+    thead
+      tr
+        th.TableRowHeaderCell-Starred.TableHeaderCell-headerCell
+        th.TableHeaderCell-headerCell.Link-link(label='Artist Name') Artist Name
+        th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Tracks') Tracks
+    tbody
+      tr.TableRow-row(ng-repeat='artist in data')
+        td.TableRowCell-star.TableRowCell-cell
+          button.IconButton-button.Link-link.Link-link(type='button')
+            i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+        td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.base_path)}}')
+          a.TableRowCell-artist-text.Link-link.ng-binding(href='/artist/{{artist.base_id}}') {{artist.base_path}}
+        td.TableRowCell-count.TableRowCell-cell
+          span.Label-label.Label-medium(title='')
+            span {{artist.track_count}}

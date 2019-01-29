@@ -59,7 +59,7 @@ include ./../../views/pagecontainer
             span  
         div#albumListContainer
           .ExpanderContainer-body
-            albumlist(data="artist")
+            albumslist(data="artist.albums")
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleAlbums()')
                 expandbutton(ng-show="albums_expanded", mini)

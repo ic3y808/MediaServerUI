@@ -1,0 +1,22 @@
+.Table-tableContainer
+  table.Table-table
+    thead
+      tr
+        th.TableHeaderCell-headerCell
+        th.TableHeaderCell-headerCell.Link-link(label='Album') Album
+        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="showartist") Artist
+        th.TableHeaderCell-headerCell.Link-link(label='Release') Release
+        th.TableHeaderCell-headerCell.Link-link(label='Rating') Tracks
+    tbody
+      tr.TableRow-row(ng-repeat='album in data')
+        td.TableRowCell-star.TableRowCell-cell
+          button.IconButton-button.Link-link.Link-link(type='button')
+            i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+        td.TableRowCell-title.TableRowCell-cell
+          a.Link-link.ng-binding(href='/album/{{album.id}}') {{album.name}}
+        td.TableRowCell-artist.TableRowCell-cell(ng-show="showartist")
+          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{album.artist}}
+        td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}') {{album.created}}
+        td.TableRowCell-count.TableRowCell-cell
+          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.')
+            span {{album.track_count}}
