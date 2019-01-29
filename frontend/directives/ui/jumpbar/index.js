@@ -1,11 +1,10 @@
-module.exports = function ($location, $anchorScroll) {
+module.exports = function () {
   return {
     restrict: 'E',
     scope: {
       data: '=',
       buttonclick: '&'
     },
-    // object is passed while making the call 
     template:
       '<div class="PageJumpBar-jumpBar">' +
       '   <div class="PageJumpBar-jumpBarItems">' +
@@ -15,11 +14,17 @@ module.exports = function ($location, $anchorScroll) {
     replace: true,
     link: function (scope, elm, attrs) {
       scope.clickButton = function (x) {
-        var newHash = x;
-        $("#" + x)[0].scrollIntoView({
-          behavior: "smooth", // or "auto" or "instant"
-          block: "start" // or "end"
-        });
+        if (x === '#') {
+          $("#symbol")[0].scrollIntoView({
+            behavior: "smooth", // or "auto" or "instant"
+            block: "start" // or "end"
+          });
+        } else {
+          $("#" + x)[0].scrollIntoView({
+            behavior: "smooth", // or "auto" or "instant"
+            block: "start" // or "end"
+          });
+        }
       }
     }
   }

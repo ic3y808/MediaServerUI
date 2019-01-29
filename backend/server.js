@@ -99,10 +99,12 @@ db.init().then(function () {
   function flatten(lists) { return lists.reduce((a, b) => a.concat(b), []); }
   function getDirectories(srcpath) { return fs.readdirSync(srcpath).map(file => path.join(srcpath, file)).filter(path => fs.statSync(path).isDirectory()); }
   function getDirectoriesRecursive(srcpath) { return [srcpath, ...flatten(getDirectories(srcpath).map(getDirectoriesRecursive))]; }
-  var componentdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'components'))
   var viewdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'views'))
+  var componentdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'components'))
+  var directivedirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'directives'))
 
-  app.set('views', componentdirs.concat(viewdirs));
+
+  app.set('views', viewdirs.concat(componentdirs, directivedirs));
   app.set('view engine', 'jade');
   app.use(function (req, res, next) {
     res.io = io;

@@ -37,6 +37,22 @@
   color: $main-text-color;
 }
 
+.TableRowHeaderCell-Starred {
+  padding: 8px;
+  width: 30px;
+  border: none !important;
+  text-align: left;
+  font-weight: bold;
+}
+
+.TableRowHeaderCell-TrackCount {
+  padding: 8px;
+  width: 50px;
+  border: none !important;
+  text-align: left;
+  font-weight: bold;
+}
+
 .RelativeDateCell-cell {
   width: 180px;
 }
@@ -46,16 +62,33 @@
   white-space: nowrap;
 }
 
-.AlbumRow-monitored {
+.TableRowCell-monitored {
   width: 42px;
 }
 
-.AlbumRow-title {
-  white-space: nowrap;
+.TableRowCell-title {
+
 }
 
-.AlbumRow-status {
-  width: 100px;
+.TableRowCell-artist {
+
+}
+
+.TableRowCell-status {
+  width: 75px;
+  text-align: center; 
+  vertical-align: middle;
+}
+
+.TableRowCell-star {
+  width: 30px;
+}
+
+.TableRowCell-count {
+  width: 30px;
+  vertical-align: middle;
+  align-content: center;
+  text-align: right; 
 }
 
 .StarRating-starRating {
@@ -92,6 +125,7 @@
   padding: 0;
   font-size: inherit;
 }
+
 
 //@media screen and (max-width:$break-xxxsmall) { } //320px;
 //@media screen and (max-width:$break-xxsmall) { } //375px;
