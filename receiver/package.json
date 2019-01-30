@@ -9,9 +9,9 @@
     "url": "https://github.com/ic3y808/Alloy.git"
   },
   "scripts": {
-    "start": "cross-env DEV=production PORT=1226 node server.js",
-    "dev": "cross-env DEV=true PORT=1226 node server.js",
-    "build": "cross-env NODE_ENV=production PORT=1226 webpack"
+    "start": "cross-env MODE=prod PORT=1226 node server.js",
+    "dev": "cross-env MODE=dev PORT=1226 node server.js",
+    "build": "cross-env MODE=prod PORT=1226 webpack"
   },
   "keywords": [],
   "license": "MIT",

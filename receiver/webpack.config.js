@@ -8,7 +8,7 @@ profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
 
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
   profile.entry = {
     app: ['./frontend/app.js', 'webpack-hot-middleware/client']
   };
@@ -43,7 +43,7 @@ profile.plugins.push(new webpack.ProvidePlugin({
 }));
 
 profile.plugins.push(new webpack.DefinePlugin({
-  "DEV_MODE": process.env.DEV,
+  "DEV_MODE": process.env.MODE === 'dev',
   "SERVER_PORT": process.env.PORT
 }));
 
@@ -106,7 +106,7 @@ profile.output = {
 
 // Dev - Production specific
 
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
   const CleanWebpackPlugin = require('clean-webpack-plugin');
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 

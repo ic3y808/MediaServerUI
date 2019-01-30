@@ -50,14 +50,14 @@ function onListening() {
 app.get('/', function (req, res) {
   res.render('index', {
     title: 'Unity',
-	dev_mode: process.env.DEV === 'true'
+	dev_mode: process.env.MODE === 'dev'
   });
 });
 
 app.set('views', path.join(__dirname, "frontend", "views"));
 app.set('view engine', 'jade');
 app.use("/", express.static(path.join(__dirname, 'frontend', 'images')));
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
   const webpackCompiler = webpack(webpackconfig);
   const wpmw = webpackMiddleware(webpackCompiler, {});
   app.use(wpmw);
@@ -73,7 +73,7 @@ server.listen(normalizePort(process.env.PORT || '1226'));
 server.on('error', onError);
 server.on('listening', onListening);  
 
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
 
   process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || '35729');
   var livereload = require('livereload').createServer({

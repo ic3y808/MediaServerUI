@@ -11,7 +11,7 @@ const webpackconfig = require('../webpack.config');
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
   process.env.DATA_DIR = path.join(__dirname, '..', "data");
 } else {
   process.env.DATA_DIR = path.join(__dirname, '..', 'dist', "data");
@@ -61,11 +61,11 @@ db.init().then(function () {
 
     switch (error.code) {
       case 'EACCES':
-        log.error(bind + ' requires elevated privileges');
+        log.error('requires elevated privileges');
         process.exit(1);
         break;
       case 'EADDRINUSE':
-        log.error(bind + ' is already in use');
+        log.error('is already in use');
         process.exit(1);
         break;
       default:
@@ -83,7 +83,7 @@ db.init().then(function () {
 
   app.use('/content', express.static(path.join(__dirname, '..', 'frontend', 'content')));
 
-  if (process.env.DEV === 'true') {
+  if (process.env.MODE === 'dev') {
     const webpackCompiler = webpack(webpackconfig);
     const wpmw = webpackMiddleware(webpackCompiler, {});
     app.use(wpmw);
@@ -131,7 +131,7 @@ db.init().then(function () {
     next(err);
   });
 
-  if (process.env.DEV === 'true') {
+  if (process.env.MODE === 'dev') {
     app.locals.pretty = true;
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
@@ -171,7 +171,7 @@ db.init().then(function () {
   server.on('error', onError);
   server.on('listening', onListening);
 
-  if (process.env.DEV === 'true') {
+  if (process.env.MODE === 'dev') {
 
     process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || '4567');
     var livereload = require('livereload').createServer({
