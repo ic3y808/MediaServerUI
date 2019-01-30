@@ -27,7 +27,8 @@
 .TableRow-row-now-playing {
   -webkit-transition: background-color 500ms;
   transition: background-color 500ms;
-  background-color: $now-playing-track;
+  background-color: $now-playing-track !important;
+  color: $now-playing-track-text !important;
 }
 
 .TableRow-row:hover {
@@ -57,7 +58,7 @@
   border: none !important;
   vertical-align: middle;
   align-content: center;
-  text-align: center; 
+  text-align: center;
 }
 
 .TableRowHeaderCell-TrackCount-Center {
@@ -82,17 +83,13 @@
   width: 42px;
 }
 
-.TableRowCell-title {
-
-}
-
-.TableRowCell-artist {
-
+.TableRowCell-now-playing {
+  font-weight: bold;
 }
 
 .TableRowCell-status {
   width: 75px;
-  text-align: center; 
+  text-align: center;
   vertical-align: middle;
 }
 
@@ -104,21 +101,21 @@
   width: 30px;
   vertical-align: middle;
   align-content: center;
-  text-align: right; 
+  text-align: right;
 }
 
 .TableRowCell-count-center {
   width: 30px;
   vertical-align: middle;
   align-content: center;
-  text-align: center; 
+  text-align: center;
 }
 
 .TableRowCell-duration {
   width: 30px;
   vertical-align: middle;
   align-content: center;
-  text-align: center; 
+  text-align: center;
 }
 
 .StarRating-starRating {
@@ -155,7 +152,6 @@
   padding: 0;
   font-size: inherit;
 }
-
 
 //@media screen and (max-width:$break-xxxsmall) { } //320px;
 //@media screen and (max-width:$break-xxsmall) { } //375px;

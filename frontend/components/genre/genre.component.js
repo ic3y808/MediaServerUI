@@ -11,87 +11,41 @@ class GenreController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('genre-controller');
+    this.AppUtilities.showLoader();
     $scope.artist = {};
     $scope.albums = [];
-    $scope.tracks = [];
+    $scope.genre = { tracks: [] }
     $scope.artistName = '';
     $scope.all_expanded = false;
     $scope.albums_expanded = true;
-    $scope.tracks_expanded = false;
+    $scope.genre.tracks_expanded = false;
     $scope.genre = this.$routeParams.id;
     var that = this;
-    var columnDefs = [{
-        headerName: "Artist",
-        field: "artist"
-      },
-      {
-        headerName: "Title",
-        field: "title"
-      },
-      {
-        headerName: "Album",
-        field: "album"
-      },
-      {
-        headerName: "Plays",
-        field: "playCount",
-        width: 60,
-        suppressSizeToFit: true
-      },
-    ];
 
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'multiple',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      domLayout: 'autoHeight',
-      rowClassRules: {
-        'current-track': function (params) {
-          if ($scope.api) $scope.api.deselectAll();
-          return MediaPlayer.checkIfNowPlaying(params.data);
-        }
-      },
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-      onModelUpdated: function (data) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-          MediaPlayer.tracks = $scope.tracks;
-
-          var index = _.findIndex(MediaPlayer.tracks, function (track) {
-            return track.id === selectedRow.id;
-          });
-          MediaPlayer.loadTrack(index);
-        }
-      },
-      onGridReady: function (e) {
-        $scope.api = e.api;
-        $scope.columnApi = e.columnApi;
-      },
-    };
+    $scope.getCoverArt = function (id) {
+      return that.AlloyDbService.getCoverArt(id);
+    }
 
     $scope.getGenre = function () {
       if (AlloyDbService.isLoggedIn) {
-        that.AlloyDbService.getSongsByGenre(that.$routeParams.id, 500, 0).then(function (result) {
-          $scope.tracks = result;
-          AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
-          if (!$scope.$$phase) {
-            $scope.$apply();
+        that.AlloyDbService.getGenre(that.$routeParams.id).then(function (result) {
+          $scope.genre = result;
+
+          var randomTrack = $scope.genre.tracks[Math.floor(Math.random()*$scope.genre.tracks.length)];
+          $scope.genreImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
+          var genreInfo = that.AlloyDbService.getGenreInfo($scope.genre.name);
+          if (genreInfo) {
+            genreInfo.then(function (result) {
+              $scope.genreInfo = result.genreInfo;
+              $scope.genreInfo.wiki.summary = $scope.genreInfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+              that.AppUtilities.apply();
+            });
           }
+
+
+          that.AppUtilities.apply();
           that.AppUtilities.hideLoader();
         });
-      } else {
-        AppUtilities.showNoRows();
-        AppUtilities.hideLoader();
       }
     };
 
@@ -102,23 +56,20 @@ class GenreController {
     }
 
     $scope.toggleTracks = function () {
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
-      $scope.tracks_expanded = !$scope.tracks_expanded;
-      AppUtilities.updateGridRows($scope.gridOptions);
+      $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
     }
 
     $scope.toggleAll = function () {
-      $scope.tracks_expanded = $scope.all_expanded;
+      $scope.genre.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
       if ($scope.albums_expanded) $('#albumListContainer').hide();
       else $('#albumListContainer').show();
 
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
-     
-      AppUtilities.updateGridRows($scope.gridOptions);
 
       $scope.all_expanded = !$scope.all_expanded;
     }
@@ -130,28 +81,13 @@ class GenreController {
 
     $scope.shuffle = function () {
       that.Backend.debug('shuffle play');
-      MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
       MediaPlayer.loadTrack(0);
     };
-
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      $scope.api.redrawRows({
-        force: true
-      });
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Genre reload on loginsatuschange');
       $scope.getGenre();
-    });
-
-    $rootScope.$on('menuSizeChange', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
-
-    $rootScope.$on('windowResized', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $scope.getGenre();

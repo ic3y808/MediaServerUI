@@ -1,6 +1,6 @@
 //colors
 $primary-color: rgb(36, 36, 36);
-$secondary-color: rgba(22, 191, 233, 0.602);
+$secondary-color: rgba(2, 158, 197, 0.719);
 $alternate-color: rgb(20, 22, 24);
 $border-color: #ff6600;
 
@@ -12,6 +12,7 @@ $alt-text-color: choose-contrast-color($primary-color);
 $sub-background-color:$primary-color;
 $alt-sub-background-color: $secondary-color;
 $now-playing-track: rgba($secondary-color, 0.904);
+$now-playing-track-text: rgba(choose-contrast-color($secondary-color), 0.904);
 $general-border-color:rgba($alternate-color, 0.904);
 $grid-selection-color:rgba($secondary-color, 0.5);
 $label-color:rgba(choose-contrast-color($primary-color), 0.904);

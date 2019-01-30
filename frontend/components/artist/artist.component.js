@@ -27,97 +27,7 @@ class ArtistController {
 
 
     var that = this;
-    var columnDefs = [{
-      headerName: "#",
-      field: "no",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "play_count",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    ];
-
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'single',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      domLayout: 'autoHeight',
-      rowClassRules: {
-        'current-track': function (params) {
-          if ($scope.api) $scope.api.deselectAll();
-          return MediaPlayer.checkIfNowPlaying(params.data);
-        }
-      },
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-
-      onModelUpdated: function (data) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-          MediaPlayer.tracks = $scope.tracks;
-
-          var index = _.findIndex(MediaPlayer.tracks, function (track) {
-            return track.id === selectedRow.id;
-          });
-          MediaPlayer.loadTrack(index);
-        }
-      },
-      onGridReady: function (e) {
-        $scope.api = e.api;
-        $scope.columnApi = e.columnApi;
-        // $scope.api.showLoadingOverlay();
-      }
-    };
-
-    $scope.menuOptions = [
-      // NEW IMPLEMENTATION
-      {
-        text: 'Object-Select',
-        click: function ($itemScope, $event, modelValue, text, $li) {
-          $scope.selected = $itemScope.item.name;
-        }
-      },
-      {
-        text: 'Object-Remove',
-        click: function ($itemScope, $event, modelValue, text, $li) {
-          $scope.items.splice($itemScope.$index, 1);
-        }
-      },
-      // LEGACY IMPLEMENTATION
-      ['Select', function ($itemScope, $event, modelValue, text, $li) {
-        $scope.selected = $itemScope.item.name;
-      }],
-      null, // Dividier
-      ['Remove', function ($itemScope, $event, modelValue, text, $li) {
-        $scope.items.splice($itemScope.$index, 1);
-      }]
-    ];
-
+   
     $scope.getCoverArt = function (id) {
       return that.AlloyDbService.getCoverArt(id);
     }
@@ -132,8 +42,6 @@ class ArtistController {
       if ($scope.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
       $scope.tracks_expanded = !$scope.tracks_expanded;
-
-      AppUtilities.updateGridRows($scope.gridOptions);
     }
 
     $scope.toggleAll = function () {
@@ -145,8 +53,6 @@ class ArtistController {
 
       if ($scope.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
-
-      AppUtilities.updateGridRows($scope.gridOptions);
 
       $scope.all_expanded = !$scope.all_expanded;
     }
@@ -169,7 +75,7 @@ class ArtistController {
 
           $scope.tracks = artist.tracks;
 
-          AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
+
 
           var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
           if (artistInfo) {
@@ -195,7 +101,6 @@ class ArtistController {
                     }
                     if (image['@'].size === 'extralarge') {
                       $scope.artistImage = image['#'];
-                      //that.AppUtilities.setContentBackground(image['#']);
                     }
                   });
                 }
@@ -220,14 +125,14 @@ class ArtistController {
     $scope.startRadio = function () {
       AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
         that.Backend.debug('starting radio');
-        MediaPlayer.tracks = similarSongs.song;
+        $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
       });
     };
 
     $scope.shuffle = function () {
       that.Backend.debug('shuffle play');
-      that.MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
       that.MediaPlayer.loadTrack(0);
     };
 
@@ -250,27 +155,12 @@ class ArtistController {
       }
     };
 
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      $scope.api.redrawRows({
-        force: true
-      });
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
+   
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Artist reload on loginsatuschange');
       $scope.getArtist();
     });
-
-    $rootScope.$on('menuSizeChange', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
-
-    $rootScope.$on('windowResized', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
-
-   
 
     $scope.getArtist();
   }

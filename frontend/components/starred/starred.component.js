@@ -13,71 +13,6 @@ class StarredController {
     this.Backend.debug('starred-controller');
     this.AppUtilities.showLoader();
     var that = this;
-    var columnDefs = [{
-      headerName: "#",
-      field: "track",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Artist",
-      field: "artist"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "playCount",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    ];
-
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'single',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      domLayout: 'autoHeight',
-      rowClassRules: {
-        'current-track': function (params) {
-          if ($scope.gridOptions.api) $scope.gridOptions.api.deselectAll();
-          return MediaPlayer.checkIfNowPlaying(params.data);
-        }
-      },
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-      rowMultiSelectWithClick: true,
-      onModelUpdated: function (data) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-          that.MediaPlayer.tracks = $rootScope.starred_tracks;
-
-          var index = _.findIndex(that.MediaPlayer.tracks, function (track) {
-            return track.id === selectedRow.id;
-          });
-          that.MediaPlayer.loadTrack(index);
-        }
-      }
-    };
 
     $scope.toggleContinousPlay = function () {
       $scope.continousPlay = !$scope.continousPlay;
@@ -97,18 +32,18 @@ class StarredController {
       that.$scope.tracks = album.tracks;
 
       if ($scope.play_prev_album) {
-        MediaPlayer.tracks = $scope.tracks;
+        $rootScope.tracks = $scope.tracks;
         MediaPlayer.loadTrack($scope.tracks.length - 1);
         $scope.play_prev_album = false;
       }
 
       if ($scope.play_next_album) {
-        MediaPlayer.tracks = $scope.tracks;
+        $rootScope.tracks = $scope.tracks;
         MediaPlayer.loadTrack(0);
         $scope.play_next_album = false;
       }
 
-      that.AppUtilities.setRowData(that.$scope.gridOptions, that.$scope.tracks);
+      
     }
 
     $scope.refresh = function () {
@@ -117,39 +52,13 @@ class StarredController {
 
     $scope.shuffle = function () {
       that.Backend.debug('shuffle play');
-      MediaPlayer.tracks = AppUtilities.shuffle($rootScope.starred_tracks);
+      $rootScope.tracks = AppUtilities.shuffle($rootScope.starred_tracks);
       MediaPlayer.loadTrack(0);
     };
 
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        $scope.gridOptions.api.redrawRows({
-          force: true
-        });
-        AppUtilities.updateGridRows($scope.gridOptions);
-      }
-    });
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Starred reload on loginsatuschange');
-
-    });
-
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      }
-    });
-
-    $rootScope.$on('windowResized', function (event, data) {
-      if ($scope.gridOptions && $scope.gridOptions.api) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      }
-    });
-
     $rootScope.$watch('starred_tracks', function (newVal, oldVal) {
       if ($rootScope.starred_tracks) {
-        AppUtilities.setRowData($scope.gridOptions, $rootScope.starred_tracks);
+
         that.AppUtilities.apply();
         that.AppUtilities.hideLoader();
       }

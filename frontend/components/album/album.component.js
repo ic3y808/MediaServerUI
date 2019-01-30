@@ -15,76 +15,7 @@ class AlbumController {
     $scope.albumName = '';
     $scope.artistName = '';
     var that = this;
-    var columnDefs = [{
-      headerName: "#",
-      field: "no",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Artist",
-      field: "artist"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "play_count",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    ];
-
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'multiple',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      domLayout: 'autoHeight',
-      rowClassRules: {
-        'current-track': function (params) {
-          if ($scope.api) $scope.api.deselectAll();
-          return MediaPlayer.checkIfNowPlaying(params.data);
-        }
-      },
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-
-      onModelUpdated: function (data) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-          that.MediaPlayer.tracks = $scope.tracks;
-
-          var index = _.findIndex(that.MediaPlayer.tracks, function (track) {
-            return track.id === selectedRow.id;
-          });
-          that.MediaPlayer.loadTrack(index);
-        }
-      },
-      onGridReady: function (e) {
-        $scope.api = e.api;
-        $scope.columnApi = e.columnApi;
-      }
-    };
-
+    
     $scope.getCoverArt = function (id) {
       return that.AlloyDbService.getCoverArt(id);
     }
@@ -149,7 +80,7 @@ class AlbumController {
               $scope.getAlbumInfo(info);
 
               if ($scope.tracks && $scope.tracks.length > 0) {
-                AppUtilities.setRowData($scope.gridOptions, $scope.tracks);
+ 
                 if ($routeParams.trackid) {
                   $scope.gridOptions.api.forEachNode(function (node) {
                     if (node.data.id === $routeParams.trackid) {
@@ -157,9 +88,8 @@ class AlbumController {
                     }
                   });
                 }
-              } else {
-                AppUtilities.showNoRows();
               }
+
               that.AppUtilities.hideLoader();
               that.AppUtilities.apply();
             });
@@ -183,14 +113,14 @@ class AlbumController {
     $scope.startRadio = function () {
       AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
         that.Backend.debug('starting radio');
-        MediaPlayer.tracks = similarSongs.song;
+        $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
       });
     };
 
     $scope.shuffle = function () {
       that.Backend.debug('shuffle play');
-      that.MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
       that.MediaPlayer.loadTrack(0);
     };
 
@@ -233,21 +163,9 @@ class AlbumController {
         }
     };
 
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
-
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Album reload on loginsatuschange');
       $scope.refresh();
-    });
-
-    $rootScope.$on('menuSizeChange', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
-
-    $rootScope.$on('windowResized', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $scope.refresh();

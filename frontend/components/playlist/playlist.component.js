@@ -11,8 +11,11 @@ class PlaylistController {
     this.Backend.debug('playlist-controller');
     var that = this;
 
+    $rootScope.$watch('tracks', function (newVal, oldVal) {
+      AppUtilities.apply();
+      AppUtilities.hideLoader();
+    });
 
-   
 
   }
 }

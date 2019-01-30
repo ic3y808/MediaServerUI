@@ -9,7 +9,6 @@ class AlbumsController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('albums-controller');
-    this.AppUtilities.showNoRows();
     this.AppUtilities.showLoader();
 
     $scope.refresh = function () {

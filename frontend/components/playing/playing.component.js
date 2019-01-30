@@ -53,7 +53,6 @@ class PlayingController {
         });
 
       } else {
-        that.AppUtilities.showNoRows();
         that.AppUtilities.hideLoader();
       }
     };
