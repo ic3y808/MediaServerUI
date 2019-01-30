@@ -1,9 +1,10 @@
-module.exports = function ($location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
+module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   return {
     restrict: 'E',
     scope: {
       data: '=',
       showartist: '@',
+      hasjumpbar: '@'
     },
     templateUrl: '/template/albumslist.jade',
     replace: true,
@@ -36,6 +37,17 @@ module.exports = function ($location, Backend, AppUtilities, MediaPlayer, AlloyD
             Backend.info(result);
             album.starred = 'true';
             AppUtilities.apply();
+          });
+        }
+      }
+      scope.playAlbum = function (album) {
+        console.log(album);
+        var album = AlloyDbService.getAlbum(album.id);
+        if (album) {
+          album.then(function (data) {
+            Backend.debug('selection changed');
+            $rootScope.tracks = data.tracks;
+            MediaPlayer.loadTrack(0);
           });
         }
       }

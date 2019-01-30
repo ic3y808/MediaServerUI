@@ -1,8 +1,9 @@
-.Table-tableContainer
+.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
   table.Table-table
     thead
       tr
         th.TableHeaderCell-headerCell
+        th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
         th.TableHeaderCell-headerCell.Link-link(label='Album') Album
         th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="showartist") Artist
         th.TableHeaderCell-headerCell.Link-link(label='Release') Release
@@ -12,6 +13,9 @@
         td.TableRowCell-star.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button', ng-click="starAlbum(album)")
             i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="album.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+        td.TableRowCell-play.TableRowCell-cell
+          button.IconButton-button.Link-link.Link-link(type='button', ng-click="playAlbum(album)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
+            i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
         td.TableRowCell-cell
           span.Link-link.ng-binding(ng-click="navToAlbum(album.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.name}}
         td.TableRowCell-cell(ng-show="showartist")

@@ -1,8 +1,9 @@
-.Table-tableContainer
+.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
   table.Table-table
     thead
       tr
         th.TableRowHeaderCell-Starred.TableHeaderCell-headerCell
+        th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
         th.TableHeaderCell-headerCell.Link-link(label='Artist Name') Artist Name
         th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Tracks') Tracks
     tbody
@@ -10,6 +11,9 @@
         td.TableRowCell-star.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button', ng-click="starArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.base_id) == true}")
             i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="artist.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+        td.TableRowCell-play.TableRowCell-cell
+          button.IconButton-button.Link-link.Link-link(type='button', ng-click="playArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.base_id) == true}")
+            i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
         td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.base_path)}}')
           span.TableRowCell-artist-text.Link-link.ng-binding(ng-click="navToArtist(artist.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.base_id) == true}") {{artist.base_path}}
         td.TableRowCell-count.TableRowCell-cell

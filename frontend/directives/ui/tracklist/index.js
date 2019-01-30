@@ -5,6 +5,7 @@ module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend
       data: '=',
       showartist:'@',
       showalbum:'@',
+      hasjumpbar: '@'
     },
     templateUrl: '/template/tracklist.jade',
 

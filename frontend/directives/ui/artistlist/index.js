@@ -1,8 +1,9 @@
-module.exports = function ($location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
+module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
-      data: '='
+      data: '=',
+      hasjumpbar: '@'
     },
     templateUrl: 'template/artistlist.jade',
     replace: true,
@@ -55,6 +56,17 @@ module.exports = function ($location, Backend, AppUtilities, AlloyDbService, Med
         }
       }
 
+      scope.playArtist = function (artist) {
+        console.log(artist);
+        var artist = AlloyDbService.getArtist(artist.base_id);
+        if (artist) {
+          artist.then(function (artist) {
+            Backend.debug('selection changed');
+            $rootScope.tracks = artist.tracks;
+            MediaPlayer.loadTrack(0);
+          });
+        }
+      }
     }
   }
 };
