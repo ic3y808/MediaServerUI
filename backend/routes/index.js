@@ -3,7 +3,7 @@ var router = express.Router();
 var options = {
   title: 'Alloy (Preview)',
   jade_port: process.env.JADE_PORT,
-  dev_mode: process.env.DEV === 'true'
+  dev_mode: process.env.MODE === 'dev'
 };
 
 //template renderer

@@ -8,7 +8,7 @@ profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
 
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
   profile.entry = {
     app: ['./frontend/app.js', 'webpack-hot-middleware/client']
   };
@@ -47,7 +47,7 @@ profile.plugins.push(new webpack.ProvidePlugin({
 profile.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
 profile.plugins.push(new webpack.DefinePlugin({
-  "DEV_MODE": process.env.DEV,
+  "DEV_MODE": process.env.MODE === 'dev',
   "SERVER_HOST": process.env.SERVER_HOST,
   "SERVER_PORT": process.env.PORT,
   "JADE_PORT": process.env.JADE_PORT
@@ -134,7 +134,7 @@ profile.output = {
 
 // Dev - Production specific
 
-if (process.env.DEV === 'true') {
+if (process.env.MODE === 'dev') {
 
   if (process.env.USE_ANALYZER === 'true') {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -173,33 +173,33 @@ if (process.env.DEV === 'true') {
   const CleanWebpackPlugin = require('clean-webpack-plugin');
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 
-  profile.module.rules.push({
-    test: /\.js$/,
-    use: [{
-      loader: 'strip-loader?strip[]=debug'
-    },
-    {
-      loader: 'babel-loader',
-      options: {
-        plugins: [
-          '@babel/plugin-transform-runtime',
-          [
-            "@babel/plugin-proposal-decorators",
-            {
-              "legacy": true,
-            }
-          ],
-          "@babel/plugin-proposal-class-properties",
-          ["angularjs-annotate", {
-            explicitOnly: true
-          }]
-        ],
-        presets: ['@babel/preset-env']
-      }
-    }
-    ],
-    exclude: /(node_modules|bower_components)/
-  });
+  //profile.module.rules.push({
+  //  test: /\.js$/,
+  //  use: [{
+  //    loader: 'strip-loader?strip[]=debug'
+  //  },
+  //  {
+  //    loader: 'babel-loader',
+  //    options: {
+  //      plugins: [
+  //        '@babel/plugin-transform-runtime',
+  //        [
+  //          "@babel/plugin-proposal-decorators",
+  //          {
+  //            "legacy": true,
+  //          }
+  //        ],
+  //        "@babel/plugin-proposal-class-properties",
+  //        ["angularjs-annotate", {
+  //          explicitOnly: true
+  //        }]
+  //      ],
+  //      presets: ['@babel/preset-env']
+  //    }
+  //  }
+  //  ],
+  //  exclude: /(node_modules|bower_components|modernizr.js)/
+  //});
 
   profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
@@ -208,20 +208,20 @@ if (process.env.DEV === 'true') {
     }) => /node_modules/.test(resource),
   }));
 
-  profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    mangle: true,
-    compress: {
-      warnings: false, // Suppress uglification warnings
-      pure_getters: true,
-      unsafe: true,
-      unsafe_comps: true,
-      screw_ie8: true
-    },
-    output: {
-      comments: false,
-    },
-    exclude: [/\.min\.js$/gi] // skip pre-minified libs
-  }));
+  //profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
+  //  mangle: true,
+  //  compress: {
+  //    warnings: false, // Suppress uglification warnings
+  //    pure_getters: true,
+  //    unsafe: true,
+  //    unsafe_comps: true,
+  //    screw_ie8: true
+  //  },
+  //  output: {
+  //    comments: false,
+  //  },
+  //  exclude: [/\.min\.js$/gi] // skip pre-minified libs
+  //}));
 
 }
 

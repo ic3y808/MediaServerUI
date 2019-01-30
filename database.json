@@ -1,4 +1,5 @@
 {
+  "defaultEnv": {"ENV": "MODE"},
   "dev": {
     "driver": "sqlite3",
     "filename": "./data/database.db"
@@ -11,6 +12,6 @@
 
   "prod": {
     "driver": "sqlite3",
-    "filename": "./data/database.db"
+    "filename": "./dist/data/database.db"
   }
 }

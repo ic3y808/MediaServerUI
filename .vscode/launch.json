@@ -6,7 +6,7 @@
       "name": "ServerDebug",
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
-        "DEV": "true",
+        "MODE": "dev",
         "PORT": "3000",
         "JADE_PORT": "34568",
         "USE_ANALYZER": "false"
@@ -19,8 +19,8 @@
       "name": "ServerRelease",
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
-        "DEV": "false",
-        "PORT": "4000"
+        "MODE": "prod",
+        "PORT": "3000"
       }
     },
     {
