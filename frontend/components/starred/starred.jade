@@ -9,4 +9,4 @@ include ./../../views/pagecontainer
     include ./../../views/pageheader
       div#player(style='overflow: hidden;')
     include ./../../views/pagecontent
-      #starredTracksGrid.ag-theme-dark(ag-grid='gridOptions',context-menu="menuOptions")
+      tracklist(data="$root.starred_tracks")

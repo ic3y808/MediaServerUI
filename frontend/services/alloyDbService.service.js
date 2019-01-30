@@ -113,6 +113,13 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getGenre(id) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getGenre(id);
+    else return false;
+  }
+
   getGenres() {
     this.doLogin();
     if (this.isLoggedIn)
@@ -152,6 +159,13 @@ export default class AlloyDbService {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.getTrackInfo(id);
+    else return false;
+  }
+
+  getGenreInfo(genre) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getGenreInfo(genre);
     else return false;
   }
 

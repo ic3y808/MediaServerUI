@@ -1,9 +1,10 @@
 import './footer.scss';
 class FooterController {
-  constructor($scope, $rootScope, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $location, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$location = $location;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
@@ -158,8 +159,7 @@ class FooterController {
     });
 
     $("#nowPlayingImageHolder").click(function () {
-      var dlUrl = that.AlloyDbService.download(that.MediaPlayer.selectedTrack().id);
-      window.open(dlUrl, '_blank');
+      that.$location.path('/playing');
     });
 
     $("#likeButton").click(function () {

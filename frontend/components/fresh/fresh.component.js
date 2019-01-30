@@ -13,81 +13,13 @@ class FreshController {
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('fresh-controller');
     this.AppUtilities.showLoader();
+    var that = this;
 
     $scope.refreshing = false;
 
     $scope.tracks = [];
 
     $scope.continousPlay = true;
-
-    var that = this;
-    var columnDefs = [{
-      headerName: "#",
-      field: "no",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Title",
-      field: "title"
-    },
-    {
-      headerName: "Artist",
-      field: "artist"
-    },
-    {
-      headerName: "Album",
-      field: "album"
-    },
-    {
-      headerName: "Genre",
-      field: "genre"
-    },
-    {
-      headerName: "Plays",
-      field: "play_count",
-      width: 75,
-      suppressSizeToFit: true
-    },
-    ];
-
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'single',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      domLayout: 'autoHeight',
-      rowClassRules: {
-        'current-track': function (params) {
-          if ($scope.gridOptions.api) $scope.gridOptions.api.deselectAll();
-          return MediaPlayer.checkIfNowPlaying(params.data);
-        }
-      },
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-      onGridReady: function (params) {
-        console.log('grid ready')
-
-        that.$timeout(function () {
-          $scope.refresh();
-        });
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-          MediaPlayer.tracks = $scope.tracks;
-          var index = _.findIndex(MediaPlayer.tracks, function (track) {
-            return track.id === selectedRow.id;
-          });
-          MediaPlayer.loadTrack(index);
-        }
-      },
-    };
 
     $scope.toggleContinousPlay = function () {
       $scope.continousPlay = !$scope.continousPlay;
@@ -107,18 +39,18 @@ class FreshController {
       that.$scope.tracks = album.tracks;
 
       if ($scope.play_prev_album) {
-        MediaPlayer.tracks = $scope.tracks;
+        $rootScope.tracks = $scope.tracks;
         MediaPlayer.loadTrack($scope.tracks.length - 1);
         $scope.play_prev_album = false;
       }
 
       if ($scope.play_next_album) {
-        MediaPlayer.tracks = $scope.tracks;
+        $rootScope.tracks = $scope.tracks;
         MediaPlayer.loadTrack(0);
         $scope.play_next_album = false;
       }
 
-      that.AppUtilities.setRowData(that.$scope.gridOptions, that.$scope.tracks);
+      that.AppUtilities.apply();
     }
 
     $scope.findNowPlaying = function () {
@@ -139,18 +71,7 @@ class FreshController {
 
 
     $scope.refresh = function () {
-      if ($scope.refreshing) return;
-
-      $scope.refreshing = true;
-
-      //var getFresh = that.AlloyDbService.getFresh(50);
-
-      //if (!getFresh) {
-      //  that.$scope.refreshing = false;
-      //   return;
-      //}
-      // getFresh.then(function (newestCollection) {
-      
+      AlloyDbService.refreshFresh();
     };
 
     $scope.startRadio = function () {
@@ -162,7 +83,7 @@ class FreshController {
       AlloyDbService.getSimilarSongs2(track.artistId).then(function (similarSongs) {
         that.Backend.debug('starting radio');
         if (similarSongs && similarSongs.song) {
-          MediaPlayer.tracks = similarSongs.song;
+          $rootScope.tracks = similarSongs.song;
           MediaPlayer.loadTrack(0);
         }
       });
@@ -170,7 +91,7 @@ class FreshController {
 
     $scope.shuffle = function () {
       that.Backend.debug('shuffle play');
-      MediaPlayer.tracks = AppUtilities.shuffle($scope.tracks);
+      $rootScope.tracks = AppUtilities.shuffle($scope.tracks);
       MediaPlayer.loadTrack(0);
     };
 
@@ -186,25 +107,6 @@ class FreshController {
         $scope.play_next_album = true;
         $scope.coverflow.next();
       }
-    });
-
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
-    });
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      if (data.isLoggedIn) {
-        that.Backend.debug('Fresh reload on loginsatuschange');
-        $scope.refresh();
-      }
-    });
-
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
-      //$scope.updateGridRows();
-    });
-
-    $rootScope.$on('windowResized', function (event, data) {
-      AppUtilities.updateGridRows($scope.gridOptions);
     });
 
     $rootScope.$watch('fresh_albums', function (newVal, oldVal) {

@@ -243,6 +243,12 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: 'getGenre',
+      value: function getGenre(id) {
+        return this._get('browse/genre', { id: id });
+      }
+    },
+    {
       key: 'getGenres',
       value: function getGenres() {
         return this._get('browse/genres');
@@ -276,6 +282,12 @@ window.AlloyApi = function () {
       key: 'getTrackInfo',
       value: function getTrackInfo(id) {
         return this._get('lastfm/track_info', { id: id });
+      }
+    },
+    {
+      key: 'getGenreInfo',
+      value: function getGenreInfo(genre) {
+        return this._get('lastfm/genre_info', { genre: genre });
       }
     },
     {

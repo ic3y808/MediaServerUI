@@ -1,4 +1,4 @@
-module.exports = function (MediaPlayer) {
+module.exports = function ($location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
@@ -7,6 +7,9 @@ module.exports = function (MediaPlayer) {
     templateUrl: 'template/artistlist.jade',
     replace: true,
     link: function (scope, elm, attrs) {
+      scope.navToArtist = function (id) {
+        $location.path('/artist/' + id);
+      }
       var testForLetter = function (character) {
         try {
           //Variable declarations can't start with digits or operators
@@ -31,6 +34,25 @@ module.exports = function (MediaPlayer) {
           return id === selected.base_id;
         }
         return false;
+      }
+
+      scope.starArtist = function (artist) {
+        Backend.info('starring artist: ' + artist.base_path);
+        if (artist.starred === 'true') {
+          AlloyDbService.unstar({ artist: artist.base_id }).then(function (result) {
+            Backend.info('UnStarred');
+            Backend.info(result);
+            artist.starred = 'false';
+            AppUtilities.apply();
+          });
+        } else {
+          AlloyDbService.star({ artist: artist.base_id }).then(function (result) {
+            Backend.info('starred');
+            Backend.info(result);
+            artist.starred = 'true';
+            AppUtilities.apply();
+          });
+        }
       }
 
     }

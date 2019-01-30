@@ -59,4 +59,4 @@ include ./../../views/pagecontainer
                       | {{albumNotes}}
         .AlbumDetails-contentContainer
           div(style="width: 100%; height: 100%;")
-            #albumTracksGrid.ag-theme-dark(ag-grid='gridOptions', style="width: 100%; height: 100%;")
+            tracklist(data="tracks")

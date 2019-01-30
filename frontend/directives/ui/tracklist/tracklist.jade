@@ -5,27 +5,30 @@
         th.TableHeaderCell-headerCell
         th.TableHeaderCell-headerCell.Link-link(label='Track') #
         th.TableHeaderCell-headerCell.Link-link(label='Title') Title
-        th.TableHeaderCell-headerCell.Link-link(label='Album') Album
+        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}") Artist
+        th.TableHeaderCell-headerCell.Link-link(label='Album', ng-show="{{showalbum == 'true'}}") Album
         th.TableHeaderCell-headerCell.Link-link(label='Genre') Genre
         th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Plays') Plays
         th.TableHeaderCell-headerCell.Link-link(label='Duration') Duration
     tbody
-      tr.TableRow-row(ng-repeat='track in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true}")
+      tr.TableRow-row(ng-repeat='track in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true}", ng-dblclick="requestPlay(track.id)")
         td.TableRowCell-star.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button')
-            i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starTrack(track)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}")
+            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="track.starred == 'true' ? 'fa-star' : 'fa-star-o'")
         td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium(title='{{track.no}} / {{track.of}}')
-            span(ng-if="!track.of")  {{track.no}} 
-            span(ng-if="track.of") {{track.no}} / {{track.of}}
-        td.TableRowCell-title.TableRowCell-cell
-          a.Link-link.ng-binding(ng-click="requestPlay(track.id)") {{track.title}}
-        td.TableRowCell-artist.TableRowCell-cell
-          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{track.album}}
-        td.TableRowCell-artist.TableRowCell-cell
-          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{track.genre}}
+          span.Label-label.Label-medium(title='{{track.no}} / {{track.of}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}")
+            span(ng-if="!track.of", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}")  {{track.no}} 
+            span(ng-if="track.of", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}") {{track.no}} / {{track.of}}
+        td.TableRowCell-cell
+          span.Link-link(ng-click="requestPlay(track.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}") {{track.title}}
+        td.TableRowCell-cell
+          span.Link-link(ng-click="navToArtist(track.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}", ng-show="{{showartist == 'true'}}") {{track.artist}}
+        td.TableRowCell-cell
+          span.Link-link(ng-click="navToAlbum(track.album_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}", ng-show="{{showalbum == 'true'}}") {{track.album}}
+        td.TableRowCell-cell
+          span.Link-link(ng-click="navToGenre(track.genre_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}") {{track.genre}}
         td.TableRowCell-cell.TableRowCell-count-center
-          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.')
-            span {{track.play_count}}
+          span.Label-label.Label-medium(title='{{track.play_count}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}")
+            span(ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}") {{track.play_count}}
         td.TableRowCell-duration.TableRowCell-cell
-          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{$root.formatTime(track.duration)}}
+          span.Link-link(ng-click="navToAlbum(album.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}") {{$root.formatTime(track.duration)}}

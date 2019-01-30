@@ -21,7 +21,7 @@ export default class MediaPlayer {
     this.selectedIndex = 0;
     this.repeatEnabled = false;
     this.$rootScope.checkIfNowPlaying = this.checkIfNowPlaying;
-    this.tracks = [];
+    this.$rootScope.tracks = [];
     var that = this;
     this.MediaElement.addEventListener('play', function () {
       that.playing = true;
@@ -34,7 +34,7 @@ export default class MediaPlayer {
     });
 
     this.MediaElement.addEventListener('ended', function () {
-      if ((that.selectedIndex + 1) === that.tracks.length) {
+      if ((that.selectedIndex + 1) === that.$rootScope.tracks.length) {
         that.playing = false;
         that.selectedIndex = 0;
         that.togglePlayPause();
@@ -119,15 +119,15 @@ export default class MediaPlayer {
   }
 
   trackCount() {
-    return this.tracks.length;
+    return this.$rootScope.tracks.length;
   }
 
   showTrackCount() {
-    return this.tracks.length > 0;
+    return this.$rootScope.tracks.length > 0;
   }
 
   selectedTrack() {
-    return this.tracks[this.selectedIndex];
+    return this.$rootScope.tracks[this.selectedIndex];
   }
 
   remotePlayerConnected() {
@@ -158,7 +158,7 @@ export default class MediaPlayer {
   }
 
   checkPlaylistEnding(newIndex) {
-    if (newIndex >= this.tracks.length) {
+    if (newIndex >= this.$rootScope.tracks.length) {
       this.playing = false;
       this.selectedIndex = 0;
       this.togglePlayPause();
@@ -252,6 +252,7 @@ export default class MediaPlayer {
         instance.Backend.info('addPlay success: ' + result.result + " : " + source.artist + " - " + source.title);
         source.play_count++;
         instance.AppUtilities.broadcast('trackChangedEvent', source);
+        instance.AppUtilities.apply();
       }
     });
   }
@@ -453,10 +454,10 @@ export default class MediaPlayer {
           if (that.remotePlayer && that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
             var customData = that.remotePlayer.mediaInfo.metadata.customData;
             if (customData) {
-              if (that.tracks.length > 0) {
+              if (that.$rootScope.tracks.length > 0) {
 
               } else {
-                that.tracks[0] = JSON.parse(customData);
+                that.$rootScope.tracks[0] = JSON.parse(customData);
                 that.selectedIndex = 0;
               }
             }

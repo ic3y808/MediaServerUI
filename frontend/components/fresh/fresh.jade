@@ -18,4 +18,4 @@ include ./../../views/pagecontainer
     include ./../../views/pageheader
       div#player(style='overflow: hidden;')
     include ./../../views/pagecontent
-      #freshTracksGrid.ag-theme-dark(ag-grid='gridOptions',context-menu="menuOptions")
+      tracklist(data="tracks")

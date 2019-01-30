@@ -11,7 +11,6 @@ class GenresController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('genres-controller');
-    this.AppUtilities.showNoRows();
     this.AppUtilities.showLoader();
     
     $scope.refresh = function () {

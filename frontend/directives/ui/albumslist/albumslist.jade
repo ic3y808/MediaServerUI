@@ -10,13 +10,13 @@
     tbody
       tr.TableRow-row(ng-repeat='album in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
         td.TableRowCell-star.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button')
-            i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
-        td.TableRowCell-title.TableRowCell-cell
-          a.Link-link.ng-binding(href='/album/{{album.id}}') {{album.name}}
-        td.TableRowCell-artist.TableRowCell-cell(ng-show="showartist")
-          a.Link-link.ng-binding(href='/artist/{{album.base_id}}') {{album.artist}}
-        td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}') {{album.created}}
+          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starAlbum(album)")
+            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="album.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+        td.TableRowCell-cell
+          span.Link-link.ng-binding(ng-click="navToAlbum(album.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.name}}
+        td.TableRowCell-cell(ng-show="showartist")
+          span.Link-link.ng-binding(ng-click="navToArtist(album.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.artist}}
+        td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.created}}
         td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.')
+          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
             span {{album.track_count}}

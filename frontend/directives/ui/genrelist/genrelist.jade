@@ -8,10 +8,10 @@
     tbody
       tr.TableRow-row(ng-repeat='genre in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(genre.id) == true}")
         td.TableRowCell-star.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button')
-            i.fa.fa-star-o.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starGenre(genre)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
+            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="genre.starred == 'true' ? 'fa-star' : 'fa-star-o'")
         td.TableRowCell-title.TableRowCell-cell(id='{{genre.id}}')
-          a.Link-link.ng-binding(href='/genre/{{genre.id}}') {{genre.name}}
+          span.Link-link.ng-binding(ng-click="navToGenre(genre.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}") {{genre.name}}
         td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium(title='')
+          span.Label-label.Label-medium(title='', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
             span {{genre.track_count}}

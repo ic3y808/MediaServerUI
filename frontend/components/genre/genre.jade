@@ -12,27 +12,23 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")
       toolbarbutton(buttontext='Hide All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-up', ng-show="all_expanded")
   
-  include ./../../views/pagebody
+  include ./../../views/pagebody                
+
     include ./../../views/pageheader
       .PageContent-backdrop
-        .PageContent-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="$root.getBackgroundStyle(artistImage)")
+        .PageContent-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="$root.getBackgroundStyle(genreImage)")
         .PageContent-backdropOverlay 
           .PageContent-headerContent
+
             .PageContent-HeaderDetails-info
               .PageContent-HeaderDetails-titleContainer
-                .PageContent-HeaderDetails-title {{artistName}}
+                .PageContent-HeaderDetails-title {{genre.name}}
                 .PageContent-HeaderDetails-navigation-buttons
                   navbutton(buttontext="Go to {{artist.previous_artist.base_path}}", href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path", direction="left")
                   navbutton(buttontext="Go to {{artist.next_artist.base_path}}", href='/artist/{{artist.next_artist.base_id}}', ng-show="artist.next_artist.base_path", direction="right")
-                  
+
               div
-                div
-                  span
-                    svg.svg-inline--fa.fa-heart.fa-w-16.HeartRating-heart.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='heart', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 20px;')
-                      path(fill='currentColor', d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z')
-                    | 0%
-              div
-                detaillabel(buttontext="{{artist.size}}", buttonicon="fa-hdd-o")
+                detaillabel(buttontext="{{genre.size}}", buttonicon="fa-hdd-o")
               div
                 detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
                 popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artistInfo.tags.tag")
@@ -41,8 +37,7 @@ include ./../../views/pagecontainer
               .PageContent-HeaderDetails-overview 
                 div(style='overflow: hidden;')
                   span
-                  | {{artistBio}}
-                
+                  | {{genreInfo.wiki.summary}}
     include ./../../views/pagecontent
       .ExpanderContainer
         button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleTracks()')
@@ -50,7 +45,7 @@ include ./../../views/pagecontainer
             .ExpanderContainer-left
               div
                 span.ExpanderContainer-label All Tracks
-                span.ExpanderContainer-sublabel {{artist.tracks.length}} {{artist.tracks.length > 1 ? 'Tracks' : 'Track'}}
+                span.ExpanderContainer-sublabel {{genre.tracks.length}} {{genre.tracks.length > 1 ? 'Tracks' : 'Track'}}
             span(title='Hide albums')
               expandbutton(direction="up", ng-show="tracks_expanded")
               expandbutton(direction="down", ng-show="!tracks_expanded")
@@ -58,7 +53,7 @@ include ./../../views/pagecontainer
             span  
         div#trackListContainer
           .ExpanderContainer-body
-            #genreTracksGrid.ag-theme-dark(ag-grid='gridOptions', style="width: 100%; height: 100%;")
+            tracklist(data="genre.tracks", showartist='true')
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
                 expandbutton(ng-show="albums_expanded", mini)
