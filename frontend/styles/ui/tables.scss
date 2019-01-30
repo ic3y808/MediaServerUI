@@ -38,15 +38,25 @@
 
 .TableRowCell-cell {
   padding-left: 8px;
-  padding: 4px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   border-top: 1px solid $general-border-color;
   line-height: 1.52857143;
   color: $main-text-color;
 }
 
 .TableRowHeaderCell-Starred {
-  padding: 8px;
-  width: 30px;
+
+  width: 15px;
+  border: none !important;
+  text-align: left;
+  font-weight: bold;
+}
+
+.TableRowHeaderCell-Play {
+
+  width: 15px;
   border: none !important;
   text-align: left;
   font-weight: bold;
@@ -94,7 +104,11 @@
 }
 
 .TableRowCell-star {
-  width: 30px;
+  width: 15px;
+}
+
+.TableRowCell-play {
+  width: 15px;
 }
 
 .TableRowCell-count {

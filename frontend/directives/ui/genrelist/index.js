@@ -1,8 +1,9 @@
-module.exports = function ($location, MediaPlayer) {
+module.exports = function ($rootScope, $location, Backend, MediaPlayer, AlloyDbService) {
   return {
     restrict: 'E',
     scope: {
-      data: '='
+      data: '=',
+      hasjumpbar: '@'
     },
     templateUrl: 'template/genrelist.jade',
 
@@ -17,6 +18,17 @@ module.exports = function ($location, MediaPlayer) {
           return id === selected.genre_id;
         }
         return false;
+      }
+      scope.playGenre = function (genre) {
+        console.log(genre);
+        var genre = AlloyDbService.getGenre(genre.id);
+        if (genre) {
+          genre.then(function (data) {
+            Backend.debug('selection changed');
+            $rootScope.tracks = data.tracks;
+            MediaPlayer.loadTrack(0);
+          });
+        }
       }
     }
   }
