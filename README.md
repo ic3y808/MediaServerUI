@@ -3,11 +3,9 @@
 ## Major Features Include:
 ###Please use Issues page for any new feature requests
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
-* Convert existing JS to ES6-JS
-* ~~Full subsonic API control - ~~
-* AlloyDB replaces subsonic
-* Full Emby API Control - Future
-* SabNZBD API connection - Future
+* Convert existing JS to ES6-JS - WIP
+* Full Rest API with AlloyDB
+* SabNZBD API connection - WIP
 * Radarr / Lidarr / Sonarr API - Future
 * Transmission API - Future
 
