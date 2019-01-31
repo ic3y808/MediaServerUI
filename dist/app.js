@@ -1245,14 +1245,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__API_coverflow_index__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__API_coverflow_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__API_coverflow_index__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__directives__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components__ = __webpack_require__(158);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services__ = __webpack_require__(254);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__factories__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__config_js__ = __webpack_require__(287);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__run_js__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components__ = __webpack_require__(161);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__factories__ = __webpack_require__(282);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__config_js__ = __webpack_require__(283);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__run_js__ = __webpack_require__(284);
 
 
-__webpack_require__.p = "http://localhost:" + undefined + "/";
+__webpack_require__.p = "http://localhost:" + 3000 + "/";
 
 
 
@@ -1673,7 +1673,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px lime; }\n\n.row {\n  border: 0px pink; }\n\n.col {\n  border: 0px red; }\n\n.main-container {\n  border: 0px yellow; }\n\n.sidebar {\n  border: 0px blue; }\n\n* {\n  border: 0px pink; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px red; }\n\n.row {\n  border: 0px orange; }\n\n.col {\n  border: 0px red; }\n\n.main-container {\n  border: 0px yellow; }\n\n.sidebar {\n  border: 0px orange; }\n\n* {\n  border: 0px lime; }\n", ""]);
 
 // exports
 
@@ -1898,7 +1898,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.Table-tableContainer {\n  overflow-x: auto; }\n\n.Table-table {\n  max-width: 100%;\n  width: 100%;\n  border-collapse: collapse; }\n\n.TableHeaderCell-headerCell {\n  padding: 8px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableHeaderCell-sortIcon {\n  margin-left: 10px; }\n\n.TableRow-row {\n  transition: background-color 500ms; }\n\n.TableRow-row-now-playing {\n  transition: background-color 500ms;\n  background-color: rgba(2, 158, 197, 0.904) !important;\n  color: rgba(0, 0, 0, 0.904) !important; }\n\n.TableRow-row:hover {\n  background-color: #242424;\n  color: white; }\n\n.TableRowCell-cell {\n  padding-left: 8px;\n  padding: 4px;\n  border-top: 1px solid rgba(20, 22, 24, 0.904);\n  line-height: 1.52857143;\n  color: white; }\n\n.TableRowHeaderCell-Starred {\n  padding: 8px;\n  width: 30px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-TrackCount {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowHeaderCell-TrackCount-Center {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  text-align: center;\n  text-align: center;\n  font-weight: bold; }\n\n.RelativeDateCell-cell {\n  width: 180px; }\n\n.AlbumSearchCell-AlbumSearchCell {\n  width: 70px;\n  white-space: nowrap; }\n\n.TableRowCell-monitored {\n  width: 42px; }\n\n.TableRowCell-now-playing {\n  font-weight: bold; }\n\n.TableRowCell-status {\n  width: 75px;\n  text-align: center;\n  vertical-align: middle; }\n\n.TableRowCell-star {\n  width: 30px; }\n\n.TableRowCell-count {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: right; }\n\n.TableRowCell-count-center {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowCell-duration {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.StarRating-starRating {\n  display: flex;\n  align-items: left;\n  justify-content: left; }\n\n.StarRating-backStar {\n  position: relative;\n  display: flex;\n  color: #515253; }\n\n.StarRating-frontStar {\n  position: absolute;\n  top: 0;\n  display: flex;\n  overflow: hidden;\n  color: #ffbc0b; }\n\n.MonitorToggleButton-toggleButton {\n  padding: 0;\n  font-size: inherit; }\n\n@media screen and (max-width: 768px) {\n  .Table-tableContainer {\n    overflow-y: hidden;\n    width: 100%; }\n  .TableHeaderCell-headerCell {\n    white-space: nowrap; }\n  .TableRowCell-cell {\n    white-space: nowrap; } }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.Table-tableContainer {\n  overflow-x: auto; }\n\n.Table-table {\n  max-width: 100%;\n  width: 100%;\n  border-collapse: collapse; }\n\n.TableHeaderCell-headerCell {\n  padding: 8px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableHeaderCell-sortIcon {\n  margin-left: 10px; }\n\n.TableRow-row {\n  transition: background-color 500ms; }\n\n.TableRow-row-now-playing {\n  transition: background-color 500ms;\n  background-color: rgba(2, 158, 197, 0.904) !important;\n  color: rgba(0, 0, 0, 0.904) !important; }\n\n.TableRow-row:hover {\n  background-color: #242424;\n  color: white; }\n\n.TableRowCell-cell {\n  padding-left: 8px;\n  padding-right: 4px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n  border-top: 1px solid rgba(20, 22, 24, 0.904);\n  line-height: 1.52857143;\n  color: white; }\n\n.TableRowHeaderCell-Starred {\n  width: 15px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-Play {\n  width: 15px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-TrackCount {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowHeaderCell-TrackCount-Center {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  text-align: center;\n  text-align: center;\n  font-weight: bold; }\n\n.RelativeDateCell-cell {\n  width: 180px; }\n\n.AlbumSearchCell-AlbumSearchCell {\n  width: 70px;\n  white-space: nowrap; }\n\n.TableRowCell-monitored {\n  width: 42px; }\n\n.TableRowCell-now-playing {\n  font-weight: bold; }\n\n.TableRowCell-status {\n  width: 75px;\n  text-align: center;\n  vertical-align: middle; }\n\n.TableRowCell-star {\n  width: 15px; }\n\n.TableRowCell-play {\n  width: 15px; }\n\n.TableRowCell-count {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: right; }\n\n.TableRowCell-count-center {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowCell-duration {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.StarRating-starRating {\n  display: flex;\n  align-items: left;\n  justify-content: left; }\n\n.StarRating-backStar {\n  position: relative;\n  display: flex;\n  color: #515253; }\n\n.StarRating-frontStar {\n  position: absolute;\n  top: 0;\n  display: flex;\n  overflow: hidden;\n  color: #ffbc0b; }\n\n.MonitorToggleButton-toggleButton {\n  padding: 0;\n  font-size: inherit; }\n\n@media screen and (max-width: 768px) {\n  .Table-tableContainer {\n    overflow-y: hidden;\n    width: 100%; }\n  .TableHeaderCell-headerCell {\n    white-space: nowrap; }\n  .TableRowCell-cell {\n    white-space: nowrap; } }\n", ""]);
 
 // exports
 
@@ -4092,16 +4092,25 @@ if (typeof jQuery !== 'undefined') {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ui_genrelist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__ui_genrelist__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ui_tracklist__ = __webpack_require__(152);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ui_tracklist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__ui_tracklist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_jumpbar__ = __webpack_require__(153);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_jumpbar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__ui_jumpbar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_detaillabel__ = __webpack_require__(154);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_detaillabel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__ui_detaillabel__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_expandbutton__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_expandbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ui_expandbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_popoverbutton__ = __webpack_require__(156);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_popoverbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ui_popoverbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_coverflow__ = __webpack_require__(157);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_coverflow___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__ui_coverflow__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ui_jumpbar__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__ui_detaillabel__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__ui_expandbutton__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_coverflow__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_coverflow___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__ui_coverflow__);
+
+
+
 
 
 
@@ -4126,11 +4135,14 @@ if (typeof jQuery !== 'undefined') {
   .directive('artistlist', __WEBPACK_IMPORTED_MODULE_5__ui_artistlist___default.a)
   .directive('genrelist', __WEBPACK_IMPORTED_MODULE_6__ui_genrelist___default.a)
   .directive('tracklist', __WEBPACK_IMPORTED_MODULE_7__ui_tracklist___default.a)
-  .directive('jumpbar', __WEBPACK_IMPORTED_MODULE_8__ui_jumpbar___default.a)
-  .directive('detaillabel', __WEBPACK_IMPORTED_MODULE_9__ui_detaillabel___default.a)
-  .directive('expandbutton', __WEBPACK_IMPORTED_MODULE_10__ui_expandbutton___default.a)
-  .directive('popoverbutton', __WEBPACK_IMPORTED_MODULE_11__ui_popoverbutton___default.a)
-  .directive('coverflow', __WEBPACK_IMPORTED_MODULE_12__ui_coverflow___default.a));
+  .directive('queuelist', __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist___default.a)
+  .directive('historylist', __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist___default.a)
+  .directive('blacklist', __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist___default.a)
+  .directive('jumpbar', __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar___default.a)
+  .directive('detaillabel', __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel___default.a)
+  .directive('expandbutton', __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton___default.a)
+  .directive('popoverbutton', __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton___default.a)
+  .directive('coverflow', __WEBPACK_IMPORTED_MODULE_15__ui_coverflow___default.a));
 
 
 /***/ }),
@@ -4217,12 +4229,13 @@ module.exports = function () {
 /* 149 */
 /***/ (function(module, exports) {
 
-module.exports = function ($location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
+module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   return {
     restrict: 'E',
     scope: {
       data: '=',
       showartist: '@',
+      hasjumpbar: '@'
     },
     templateUrl: '/template/albumslist.jade',
     replace: true,
@@ -4258,6 +4271,17 @@ module.exports = function ($location, Backend, AppUtilities, MediaPlayer, AlloyD
           });
         }
       }
+      scope.playAlbum = function (album) {
+        console.log(album);
+        var album = AlloyDbService.getAlbum(album.id);
+        if (album) {
+          album.then(function (data) {
+            Backend.debug('selection changed');
+            $rootScope.tracks = data.tracks;
+            MediaPlayer.loadTrack(0);
+          });
+        }
+      }
     }
   }
 };
@@ -4266,11 +4290,12 @@ module.exports = function ($location, Backend, AppUtilities, MediaPlayer, AlloyD
 /* 150 */
 /***/ (function(module, exports) {
 
-module.exports = function ($location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
+module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
-      data: '='
+      data: '=',
+      hasjumpbar: '@'
     },
     templateUrl: 'template/artistlist.jade',
     replace: true,
@@ -4323,6 +4348,17 @@ module.exports = function ($location, Backend, AppUtilities, AlloyDbService, Med
         }
       }
 
+      scope.playArtist = function (artist) {
+        console.log(artist);
+        var artist = AlloyDbService.getArtist(artist.base_id);
+        if (artist) {
+          artist.then(function (artist) {
+            Backend.debug('selection changed');
+            $rootScope.tracks = artist.tracks;
+            MediaPlayer.loadTrack(0);
+          });
+        }
+      }
     }
   }
 };
@@ -4332,11 +4368,12 @@ module.exports = function ($location, Backend, AppUtilities, AlloyDbService, Med
 /* 151 */
 /***/ (function(module, exports) {
 
-module.exports = function ($location, MediaPlayer) {
+module.exports = function ($rootScope, $location, Backend, MediaPlayer, AlloyDbService) {
   return {
     restrict: 'E',
     scope: {
-      data: '='
+      data: '=',
+      hasjumpbar: '@'
     },
     templateUrl: 'template/genrelist.jade',
 
@@ -4351,6 +4388,17 @@ module.exports = function ($location, MediaPlayer) {
           return id === selected.genre_id;
         }
         return false;
+      }
+      scope.playGenre = function (genre) {
+        console.log(genre);
+        var genre = AlloyDbService.getGenre(genre.id);
+        if (genre) {
+          genre.then(function (data) {
+            Backend.debug('selection changed');
+            $rootScope.tracks = data.tracks;
+            MediaPlayer.loadTrack(0);
+          });
+        }
       }
     }
   }
@@ -4367,6 +4415,7 @@ module.exports = function ($location, MediaPlayer) {
       data: '=',
       showartist:'@',
       showalbum:'@',
+      hasjumpbar: '@'
     },
     templateUrl: '/template/tracklist.jade',
 
@@ -4444,6 +4493,72 @@ module.exports = function ($location, MediaPlayer) {
 
 /***/ }),
 /* 153 */
+/***/ (function(module, exports) {
+
+module.exports = function(Backend, AppUtilities, AlloyDbService) {
+  return {
+    restrict: "E",
+    scope: {
+      data: "="
+    },
+    templateUrl: "/template/queuelist.jade",
+    replace: true,
+    link: function(scope, elm, attrs) {
+      scope.makePercent = function(percent) {
+        return percent.value + "%";
+      };
+
+      scope.humanFileSize = function(size) {
+        var i = Math.floor(Math.log(size.value) / Math.log(1024));
+        return (
+          (size.value / Math.pow(1024, i)).toFixed(2) * 1 +
+          " " +
+          ["B", "kB", "MB", "GB", "TB"][i]
+        );
+      };
+    }
+  };
+};
+
+
+/***/ }),
+/* 154 */
+/***/ (function(module, exports) {
+
+module.exports = function (Backend, AppUtilities, AlloyDbService) {
+  return {
+    restrict: 'E',
+    scope: {
+      data: '='
+    },
+    templateUrl: '/template/blacklist.jade',
+    replace: true,
+    link: function (scope, elm, attrs) {
+      
+    }
+  }
+};
+
+/***/ }),
+/* 155 */
+/***/ (function(module, exports) {
+
+module.exports = function (Backend, AppUtilities, AlloyDbService) {
+  return {
+    restrict: 'E',
+    scope: {
+      data: '='
+    },
+    templateUrl: '/template/historylist.jade',
+    replace: true,
+    link: function (scope, elm, attrs) {
+      
+    }
+  }
+};
+
+/***/ }),
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = function () {
@@ -4480,7 +4595,7 @@ module.exports = function ($location, MediaPlayer) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 154 */
+/* 157 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -4506,7 +4621,7 @@ module.exports = function () {
 
 
 /***/ }),
-/* 155 */
+/* 158 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -4550,7 +4665,7 @@ module.exports = function () {
 };
 
 /***/ }),
-/* 156 */
+/* 159 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = function () {
@@ -4598,7 +4713,7 @@ module.exports = function () {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }),
-/* 157 */
+/* 160 */
 /***/ (function(module, exports) {
 
 module.exports = function ($timeout) {
@@ -4641,42 +4756,44 @@ module.exports = function ($timeout) {
 };
 
 /***/ }),
-/* 158 */
+/* 161 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_artist_component__ = __webpack_require__(159);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__artists_artists_component__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__album_album_component__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__albums_albums_component__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__fresh_fresh_component__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__genre_genre_component__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__genres_genres_component__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__home_home_component__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__index_index_component__ = __webpack_require__(187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__navbar_navbar_component__ = __webpack_require__(188);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__playing_playing_component__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__playlist_playlist_component__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__playlists_playlists_component__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__podcasts_podcasts_component__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__sidenav_sidenav_component__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__config_config_component__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__config_general_configGeneral_component__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__config_alloydb_configAlloyDb_Component__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__config_sabnzbd_configSabnzbd_component__ = __webpack_require__(211);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__config_scheduler_configScheduler_component__ = __webpack_require__(235);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__activity_activity_component__ = __webpack_require__(236);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__activity_queue_activityQueue_component__ = __webpack_require__(239);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__activity_history_activityHistory_component__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__activity_blacklist_activityBlacklist_component__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__starred_starred_component__ = __webpack_require__(248);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__status_status_component__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_artist_component__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__artists_artists_component__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__album_album_component__ = __webpack_require__(169);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__albums_albums_component__ = __webpack_require__(172);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__fresh_fresh_component__ = __webpack_require__(175);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__ = __webpack_require__(178);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__genre_genre_component__ = __webpack_require__(181);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__genres_genres_component__ = __webpack_require__(184);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__home_home_component__ = __webpack_require__(187);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__index_index_component__ = __webpack_require__(190);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__navbar_navbar_component__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__playing_playing_component__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__playlist_playlist_component__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__playlists_playlists_component__ = __webpack_require__(200);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__podcasts_podcasts_component__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__sidenav_sidenav_component__ = __webpack_require__(206);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__config_config_component__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__config_general_configGeneral_component__ = __webpack_require__(212);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__config_alloydb_configAlloyDb_Component__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__config_sabnzbd_configSabnzbd_component__ = __webpack_require__(214);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__config_scheduler_configScheduler_component__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__activity_activity_component__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__activity_general_activityGeneral_component__ = __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__activity_queue_activityQueue_component__ = __webpack_require__(241);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__activity_history_activityHistory_component__ = __webpack_require__(242);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__activity_blacklist_activityBlacklist_component__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__starred_starred_component__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__status_status_component__ = __webpack_require__(247);
 
 
 //Page Components
+
 
 
 
@@ -4729,21 +4846,22 @@ module.exports = function ($timeout) {
   .component('configsabnzbd', __WEBPACK_IMPORTED_MODULE_20__config_sabnzbd_configSabnzbd_component__["a" /* default */])
   .component('configscheduler', __WEBPACK_IMPORTED_MODULE_21__config_scheduler_configScheduler_component__["a" /* default */])
   .component('activity', __WEBPACK_IMPORTED_MODULE_22__activity_activity_component__["a" /* default */])
-  .component('activityqueue', __WEBPACK_IMPORTED_MODULE_23__activity_queue_activityQueue_component__["a" /* default */])
-  .component('activityhistory', __WEBPACK_IMPORTED_MODULE_24__activity_history_activityHistory_component__["a" /* default */])
-  .component('activityblacklist', __WEBPACK_IMPORTED_MODULE_25__activity_blacklist_activityBlacklist_component__["a" /* default */])
-  .component('starred', __WEBPACK_IMPORTED_MODULE_26__starred_starred_component__["a" /* default */])
-  .component('status', __WEBPACK_IMPORTED_MODULE_27__status_status_component__["a" /* default */]));
+  .component('activitygeneral', __WEBPACK_IMPORTED_MODULE_23__activity_general_activityGeneral_component__["a" /* default */])
+  .component('activityqueue', __WEBPACK_IMPORTED_MODULE_24__activity_queue_activityQueue_component__["a" /* default */])
+  .component('activityhistory', __WEBPACK_IMPORTED_MODULE_25__activity_history_activityHistory_component__["a" /* default */])
+  .component('activityblacklist', __WEBPACK_IMPORTED_MODULE_26__activity_blacklist_activityBlacklist_component__["a" /* default */])
+  .component('starred', __WEBPACK_IMPORTED_MODULE_27__starred_starred_component__["a" /* default */])
+  .component('status', __WEBPACK_IMPORTED_MODULE_28__status_status_component__["a" /* default */]));
 
 
 /***/ }),
-/* 159 */
+/* 162 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artist_scss__ = __webpack_require__(160);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artist_scss__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__artist_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__glidejs_glide__ = __webpack_require__(162);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__glidejs_glide__ = __webpack_require__(165);
 
 
 
@@ -4920,13 +5038,13 @@ class ArtistController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 160 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(161);
+var content = __webpack_require__(164);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -4951,7 +5069,7 @@ if(false) {
 }
 
 /***/ }),
-/* 161 */
+/* 164 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -4965,12 +5083,12 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 162 */,
-/* 163 */
+/* 165 */,
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artists_scss__ = __webpack_require__(164);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artists_scss__ = __webpack_require__(167);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artists_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__artists_scss__);
 
 class ArtistsController {
@@ -5012,13 +5130,13 @@ class ArtistsController {
 });
 
 /***/ }),
-/* 164 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(165);
+var content = __webpack_require__(168);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5043,7 +5161,7 @@ if(false) {
 }
 
 /***/ }),
-/* 165 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5057,11 +5175,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 166 */
+/* 169 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__album_scss__ = __webpack_require__(167);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__album_scss__ = __webpack_require__(170);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__album_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__album_scss__);
 
 class AlbumController {
@@ -5245,13 +5363,13 @@ class AlbumController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 167 */
+/* 170 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(168);
+var content = __webpack_require__(171);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5276,7 +5394,7 @@ if(false) {
 }
 
 /***/ }),
-/* 168 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5290,11 +5408,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 169 */
+/* 172 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__albums_scss__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__albums_scss__ = __webpack_require__(173);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__albums_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__albums_scss__);
 
 class AlbumsController {
@@ -5329,13 +5447,13 @@ class AlbumsController {
 });
 
 /***/ }),
-/* 170 */
+/* 173 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(171);
+var content = __webpack_require__(174);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5360,7 +5478,7 @@ if(false) {
 }
 
 /***/ }),
-/* 171 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5374,11 +5492,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 172 */
+/* 175 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fresh_scss__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fresh_scss__ = __webpack_require__(176);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fresh_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__fresh_scss__);
 
 
@@ -5539,13 +5657,13 @@ class FreshController {
 });
 
 /***/ }),
-/* 173 */
+/* 176 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(174);
+var content = __webpack_require__(177);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5570,7 +5688,7 @@ if(false) {
 }
 
 /***/ }),
-/* 174 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5584,11 +5702,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 175 */
+/* 178 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__footer_scss__ = __webpack_require__(176);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__footer_scss__ = __webpack_require__(179);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__footer_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__footer_scss__);
 
 class FooterController {
@@ -5795,13 +5913,13 @@ class FooterController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 176 */
+/* 179 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(177);
+var content = __webpack_require__(180);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5826,7 +5944,7 @@ if(false) {
 }
 
 /***/ }),
-/* 177 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5840,11 +5958,11 @@ exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: \"Lat
 
 
 /***/ }),
-/* 178 */
+/* 181 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genre_scss__ = __webpack_require__(179);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genre_scss__ = __webpack_require__(182);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genre_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__genre_scss__);
 
 class GenreController {
@@ -5950,13 +6068,13 @@ class GenreController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 179 */
+/* 182 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(180);
+var content = __webpack_require__(183);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5981,7 +6099,7 @@ if(false) {
 }
 
 /***/ }),
-/* 180 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5995,11 +6113,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 181 */
+/* 184 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genres_scss__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genres_scss__ = __webpack_require__(185);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genres_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__genres_scss__);
 
 class GenresController {
@@ -6036,13 +6154,13 @@ class GenresController {
 });
 
 /***/ }),
-/* 182 */
+/* 185 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(183);
+var content = __webpack_require__(186);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6067,7 +6185,7 @@ if(false) {
 }
 
 /***/ }),
-/* 183 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6081,11 +6199,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 184 */
+/* 187 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_scss__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_scss__ = __webpack_require__(188);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__home_scss__);
 
 class HomeController {
@@ -6150,13 +6268,13 @@ class HomeController {
 });
 
 /***/ }),
-/* 185 */
+/* 188 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(186);
+var content = __webpack_require__(189);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6181,7 +6299,7 @@ if(false) {
 }
 
 /***/ }),
-/* 186 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6195,7 +6313,7 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 187 */
+/* 190 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -6251,11 +6369,11 @@ class IndexController {
 });
 
 /***/ }),
-/* 188 */
+/* 191 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar_scss__ = __webpack_require__(189);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar_scss__ = __webpack_require__(192);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__navbar_scss__);
 
 class NavbarController {
@@ -6372,13 +6490,13 @@ class NavbarController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 189 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(190);
+var content = __webpack_require__(193);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6403,7 +6521,7 @@ if(false) {
 }
 
 /***/ }),
-/* 190 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6417,11 +6535,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 191 */
+/* 194 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_scss__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_scss__ = __webpack_require__(195);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__playing_scss__);
 
 class PlayingController {
@@ -6503,13 +6621,13 @@ class PlayingController {
 });
 
 /***/ }),
-/* 192 */
+/* 195 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(193);
+var content = __webpack_require__(196);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6534,7 +6652,7 @@ if(false) {
 }
 
 /***/ }),
-/* 193 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6548,11 +6666,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 194 */
+/* 197 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlist_scss__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlist_scss__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__playlist_scss__);
 
 class PlaylistController {
@@ -6583,13 +6701,13 @@ class PlaylistController {
 });
 
 /***/ }),
-/* 195 */
+/* 198 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(196);
+var content = __webpack_require__(199);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6614,7 +6732,7 @@ if(false) {
 }
 
 /***/ }),
-/* 196 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6628,11 +6746,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 197 */
+/* 200 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlists_scss__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlists_scss__ = __webpack_require__(201);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlists_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__playlists_scss__);
 
 class PlaylistsController {
@@ -6656,79 +6774,6 @@ class PlaylistsController {
 });
 
 /***/ }),
-/* 198 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(199);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./playlists.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./playlists.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 199 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 200 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__podcasts_scss__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__podcasts_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__podcasts_scss__);
-
-class PodcastsController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.Backend.debug('podcasts-controller');
-    AppUtilities.hideLoader();
-  }
-}
-
-/* harmony default export */ __webpack_exports__["a"] = ({
-  bindings: {},
-  controller: PodcastsController,
-  templateUrl: '/template/podcasts.jade'
-});
-
-/***/ }),
 /* 201 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6749,8 +6794,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./podcasts.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./podcasts.scss");
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./playlists.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./playlists.scss");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -6778,7 +6823,80 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($, jQuery) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidenav_scss__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__podcasts_scss__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__podcasts_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__podcasts_scss__);
+
+class PodcastsController {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+    "ngInject";
+    this.$scope = $scope;
+    this.$rootScope = $rootScope;
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    this.Backend.debug('podcasts-controller');
+    AppUtilities.hideLoader();
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  bindings: {},
+  controller: PodcastsController,
+  templateUrl: '/template/podcasts.jade'
+});
+
+/***/ }),
+/* 204 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(205);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {"hmr":true}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(1)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./podcasts.scss", function() {
+			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./podcasts.scss");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 205 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 206 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($, jQuery) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidenav_scss__ = __webpack_require__(207);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidenav_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__sidenav_scss__);
 
 class SidenavController {
@@ -6857,13 +6975,13 @@ class SidenavController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3), __webpack_require__(3)))
 
 /***/ }),
-/* 204 */
+/* 207 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(208);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6888,7 +7006,7 @@ if(false) {
 }
 
 /***/ }),
-/* 205 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6902,11 +7020,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 206 */
+/* 209 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_scss__ = __webpack_require__(207);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_scss__ = __webpack_require__(210);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__config_scss__);
 
 class ConfigController {
@@ -6987,13 +7105,13 @@ class ConfigController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 207 */
+/* 210 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(211);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7018,7 +7136,7 @@ if(false) {
 }
 
 /***/ }),
-/* 208 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -7032,7 +7150,7 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 209 */
+/* 212 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7061,7 +7179,7 @@ class ConfigGeneralController {
 });
 
 /***/ }),
-/* 210 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7123,7 +7241,7 @@ class ConfigAlloyDbController {
 });
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7227,9 +7345,6 @@ class ConfigSabnzbdController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 212 */,
-/* 213 */,
-/* 214 */,
 /* 215 */,
 /* 216 */,
 /* 217 */,
@@ -7250,7 +7365,10 @@ class ConfigSabnzbdController {
 /* 232 */,
 /* 233 */,
 /* 234 */,
-/* 235 */
+/* 235 */,
+/* 236 */,
+/* 237 */,
+/* 238 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -7322,14 +7440,11 @@ class ConfigSchedulerController {
 });
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activity_scss__ = __webpack_require__(237);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activity_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__activity_scss__);
-
-class ActivityController {
+/* WEBPACK VAR INJECTION */(function($) {class ActivityController {
   constructor($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
     this.$scope = $scope;
@@ -7368,15 +7483,9 @@ class ActivityController {
       that.$scope.navigate('blacklist');
     };
 
-    this.$rootScope.triggerConfigAlert = function (message, type) {
-      $('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
-      setTimeout(() => {
-        $('.config-alert').hide(500);
-      }, 3000);
-    };
-
     AppUtilities.apply();
     AppUtilities.hideLoader();
+
   }
 
   $onInit() {
@@ -7395,58 +7504,39 @@ class ActivityController {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 237 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(238);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activity.scss", function() {
-			var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activity.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 238 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.activityWrapper {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  padding: 0;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 100%;\n  margin: 0; }\n\n.activityBodyWrapper {\n  position: absolute;\n  padding: 0;\n  top: 45px;\n  left: 0;\n  right: 0;\n  bottom: 0;\n  margin: 0;\n  overflow: hidden; }\n\n.activity-background {\n  font-size: 2em;\n  font-weight: bolder;\n  color: rgba(255, 255, 255, 0.15);\n  vertical-align: middle;\n  text-align: center;\n  overflow: hidden; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 239 */
+/* 240 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activityQueue_scss__ = __webpack_require__(240);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activityQueue_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__activityQueue_scss__);
 
+class ActivityGeneralController {
+  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+    "ngInject";
+    this.$scope = $scope;
+    this.$rootScope = $rootScope;
+    this.MediaElement = MediaElement;
+    this.MediaPlayer = MediaPlayer;
+    this.AppUtilities = AppUtilities;
+    this.Backend = Backend;
+    //this.sabnzbdService = sabnzbdService;
+    this.Backend.debug('general-activity-controller');
+    var that = this;
+   
+  }
+}
+
+/* harmony default export */ __webpack_exports__["a"] = ({
+  bindings: {},
+  controller: ActivityGeneralController,
+  templateUrl: '/template/activityGeneral.jade',
+
+});
+
+/***/ }),
+/* 241 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 class ActivityQueueController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -7457,77 +7547,10 @@ class ActivityQueueController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.Backend.debug('activity-queue-controller');
+    this.AppUtilities.showLoader();
     var that = this;
-    this.$scope.history = [];
-    var columnDefs = [{
-      headerName: "Name",
-      field: "name"
-    },
-    {
-      headerName: "ETA",
-      field: "eta"
-    },
-    {
-      headerName: "Category",
-      field: "category"
-    },
-    {
-      headerName: "Percentage",
-      field: "percentage",
-      valueFormatter: makePercent
-    },
-    {
-      headerName: "Priority",
-      field: "priority"
-    },
-    {
-      headerName: "Size",
-      field: "size",
-      valueFormatter: humanFileSize
-    },
-    {
-      headerName: "Status",
-      field: "status"
-    }
-    ];
-
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'single',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      rowMultiSelectWithClick: true,
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-      onModelUpdated: function (data) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-
-        }
-      },
-      onGridReady: function (e) {
-        $scope.api = e.api;
-        $scope.columnApi = e.columnApi;
-      },
-    };
-
-    function makePercent(percent) {
-      return percent.value + "%";
-    };
-
-    function humanFileSize(size) {
-      var i = Math.floor(Math.log(size.value) / Math.log(1024));
-      return (size.value / Math.pow(1024, i)).toFixed(2) * 1 + ' ' + ['B', 'kB', 'MB', 'GB', 'TB'][i];
-    };
-
+    this.$scope.queue = [];
+    
     $scope.$on('$destroy', function () {
       clearInterval($scope.refreshIntereval);
     });
@@ -7551,63 +7574,14 @@ class ActivityQueueController {
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityQueueController,
-  templateUrl: '/template/activityQueue.jade',
-
+  templateUrl: '/template/activityQueue.jade'
 });
-
-/***/ }),
-/* 240 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(241);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activityQueue.scss", function() {
-			var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activityQueue.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 241 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.activityQueueWrapper {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  padding: 0;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 100%;\n  margin: 0; }\n\n#sabnzbdQueueGrid {\n  position: absolute;\n  padding: 0;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0; }\n", ""]);
-
-// exports
-
 
 /***/ }),
 /* 242 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activityHistory_scss__ = __webpack_require__(243);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activityHistory_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__activityHistory_scss__);
-
 class ActivityHistoryController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -7619,55 +7593,10 @@ class ActivityHistoryController {
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
     this.Backend.debug('activity-history-controller');
+    this.AppUtilities.showLoader();
     var that = this;
     this.$scope.history = [];
-    var columnDefs = [{
-      headerName: "Name",
-      field: "name"
-    },
-    {
-      headerName: "Category",
-      field: "category",
-      width: 100,
-      suppressSizeToFit: true
-    },
-    {
-      headerName: "Status",
-      field: "status",
-      width: 100,
-      suppressSizeToFit: true,
-      cellClass: function (params) { return (params.value === 'Failed' ? 'bg-danger' : 'bg-success'); }
-    }
-    ];
-
-    $scope.gridOptions = {
-      columnDefs: columnDefs,
-      rowData: null,
-      rowSelection: 'single',
-      enableColResize: true,
-      enableSorting: true,
-      enableFilter: true,
-      rowDeselection: true,
-      animateRows: true,
-      rowMultiSelectWithClick: true,
-      getRowNodeId: function (data) {
-        return data.id;
-      },
-      onModelUpdated: function (data) {
-        AppUtilities.updateGridRows($scope.gridOptions);
-      },
-      onRowDoubleClicked: function (e) {
-        var selectedRow = e.data;
-        if (selectedRow) {
-
-        }
-      },
-      onGridReady: function (e) {
-        $scope.api = e.api;
-        $scope.columnApi = e.columnApi;
-      },
-    };
-
+   
     $scope.$on('$destroy', function () {
       clearInterval($scope.refreshIntereval);
     });
@@ -7675,7 +7604,6 @@ class ActivityHistoryController {
     $rootScope.$on('sabnzbdHistoryResult', function (event, data) {
       that.Backend.debug('sabnzbd history result');
       $scope.history = JSON.parse(data);
-      AppUtilities.updateGridRows($scope.gridOptions);
       that.AppUtilities.apply();
       that.AppUtilities.hideLoader();
     });
@@ -7689,63 +7617,14 @@ class ActivityHistoryController {
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityHistoryController,
-  templateUrl: '/template/activityHistory.jade',
-
+  templateUrl: '/template/activityHistory.jade'
 });
 
 /***/ }),
 /* 243 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(244);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activityHistory.scss", function() {
-			var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activityHistory.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 244 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.activityHistoryWrapper {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  padding: 0;\n  top: 0;\n  left: 0;\n  right: 0;\n  height: 100%;\n  margin: 0; }\n\n#sabnzbdHistoryGrid {\n  position: absolute;\n  padding: 0;\n  top: 0;\n  left: 0;\n  right: 0;\n  bottom: 0; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 245 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activityBlacklist_scss__ = __webpack_require__(246);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__activityBlacklist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__activityBlacklist_scss__);
-
 class ActivityBlacklistController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -7765,61 +7644,15 @@ class ActivityBlacklistController {
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityBlacklistController,
-  templateUrl: '/template/activityBlacklist.jade',
-
+  templateUrl: '/template/activityBlacklist.jade'
 });
 
 /***/ }),
-/* 246 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(247);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {"hmr":true}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(1)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activityBlacklist.scss", function() {
-			var newContent = require("!!../../../../node_modules/css-loader/index.js!../../../../node_modules/postcss-loader/src/index.js??ref--4-2!../../../../node_modules/sass-loader/lib/loader.js??ref--4-3!../../../../node_modules/sass-resources-loader/lib/loader.js??ref--4-4!./activityBlacklist.scss");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 247 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(0)(false);
-// imports
-
-
-// module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 248 */
+/* 244 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starred_scss__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starred_scss__ = __webpack_require__(245);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starred_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__starred_scss__);
 
 class StarredController {
@@ -7928,13 +7761,13 @@ class StarredController {
 });
 
 /***/ }),
-/* 249 */
+/* 245 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(250);
+var content = __webpack_require__(246);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7959,7 +7792,7 @@ if(false) {
 }
 
 /***/ }),
-/* 250 */
+/* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -7973,11 +7806,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 251 */
+/* 247 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__status_scss__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__status_scss__ = __webpack_require__(248);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__status_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__status_scss__);
 
 class StatusController {
@@ -8114,13 +7947,13 @@ class StatusController {
 });
 
 /***/ }),
-/* 252 */
+/* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(253);
+var content = __webpack_require__(249);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -8145,7 +7978,7 @@ if(false) {
 }
 
 /***/ }),
-/* 253 */
+/* 249 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -8159,17 +7992,17 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 254 */
+/* 250 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__appUtilities_service__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_service__ = __webpack_require__(255);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__alloyDbService_service__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mediaElement_service__ = __webpack_require__(284);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_service__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__alloyDbService_service__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mediaElement_service__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__ = __webpack_require__(281);
 
 
 
@@ -8187,11 +8020,11 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
   .service('MediaPlayer', __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__["a" /* default */]));
 
 /***/ }),
-/* 255 */
+/* 251 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_socket_io_client__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_socket_io_client__ = __webpack_require__(252);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_socket_io_client__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_crypto_js__);
@@ -8313,6 +8146,10 @@ class Backend {
 
 
 /***/ }),
+/* 252 */,
+/* 253 */,
+/* 254 */,
+/* 255 */,
 /* 256 */,
 /* 257 */,
 /* 258 */,
@@ -8333,19 +8170,15 @@ class Backend {
 /* 273 */,
 /* 274 */,
 /* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */,
-/* 279 */,
-/* 280 */
+/* 276 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 281 */,
-/* 282 */,
-/* 283 */
+/* 277 */,
+/* 278 */,
+/* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8833,7 +8666,7 @@ class AlloyDbService {
 
 
 /***/ }),
-/* 284 */
+/* 280 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -8879,7 +8712,7 @@ Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 285 */
+/* 281 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9467,7 +9300,7 @@ class MediaPlayer {
 /* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
 
 /***/ }),
-/* 286 */
+/* 282 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9480,7 +9313,7 @@ class MediaPlayer {
   .module('app.factories', []));
 
 /***/ }),
-/* 287 */
+/* 283 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -9537,7 +9370,7 @@ function ApplicationConfig($routeProvider, $locationProvider) {
 }
 
 /***/ }),
-/* 288 */
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
