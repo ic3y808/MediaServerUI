@@ -1,4 +1,3 @@
-import './activityBlacklist.scss';
 class ActivityBlacklistController {
   constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -18,6 +17,5 @@ class ActivityBlacklistController {
 export default {
   bindings: {},
   controller: ActivityBlacklistController,
-  templateUrl: '/template/activityBlacklist.jade',
-
+  templateUrl: '/template/activityBlacklist.jade'
 };

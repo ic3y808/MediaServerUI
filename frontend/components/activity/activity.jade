@@ -1,12 +1,8 @@
 include ./../../views/pagecontainer
   include ./../../views/pagetoolbar
-    .PageToolbarSection-section.PageToolbarSection-left
+    include ./../../views/toolbarsection-left
       toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
-      toolbarseperator
-      toolbarbutton(buttontext='Queue', buttonclick='jumpTo("queue")', buttonicon='fa-refresh')
-      toolbarbutton(buttontext='History', buttonclick='jumpTo("history")', buttonicon='fa-calendar')
-      toolbarbutton(buttontext='Blacklist', buttonclick='jumpTo("blacklist")', buttonicon='fa-random')
 
-
-  div(style='position: relative; overflow: hidden; width: 100%; height: 100%;')
-    .PageContentBody-contentBody(style='position: absolute; top: 0px; left: 0px; right: 0px; bottom: 0px; overflow: scroll; margin-right: -15px; margin-bottom: -15px;')
+  
+  include ./../../views/pagebody
+  

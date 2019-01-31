@@ -1,0 +1,17 @@
+.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
+  table.Table-table
+    thead
+      tr
+        th.TableHeaderCell-headerCell.Link-link(label='File') File
+        th.TableHeaderCell-headerCell.Link-link(label='Category') Category
+        th.TableHeaderCell-headerCell.Link-link(label='Status') Status
+    tbody
+      tr.TableRow-row(ng-repeat='history in data')
+        td.TableRowCell-cell
+          span.Link-link.ng-binding {{history.name}}
+        td.TableRowCell-cell
+          span.Link-link.ng-binding {{history.category}}
+
+        td.TableRowCell-count.TableRowCell-cell
+          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
+            span {{history.status}}
