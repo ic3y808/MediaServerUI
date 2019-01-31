@@ -1,39 +1,33 @@
-const _ = require('underscore');
+const _ = require("underscore");
 const fs = require("fs");
-const path = require('path');
-const shell = require('shelljs');
-const moment = require('moment');
-const express = require('express');
-const webpack = require('webpack');
-const favicon = require('serve-favicon');
-const bodyParser = require('body-parser');
-const webpackconfig = require('../webpack.config');
+const path = require("path");
+const shell = require("shelljs");
+const moment = require("moment");
+const express = require("express");
+const webpack = require("webpack");
+const favicon = require("serve-favicon");
+const bodyParser = require("body-parser");
+const webpackconfig = require("../webpack.config");
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-if (process.env.MODE === 'dev') {
-  process.env.DATA_DIR = path.join(__dirname, '..', "data");
-} else {
-  process.env.DATA_DIR = path.join(__dirname, '..', 'dist', "data");
-}
+process.env.DATA_DIR = path.join(__dirname, "..", "data");
 
-if (!fs.existsSync(process.env.DATA_DIR)) shell.mkdir('-p', process.env.DATA_DIR);
+if (!fs.existsSync(process.env.DATA_DIR))
+  shell.mkdir("-p", process.env.DATA_DIR);
 
-var log = require('./core/logger');
-var index = require('./routes/index');
+var log = require("./core/logger");
+var index = require("./routes/index");
 
-var db = require('./core/database');
-db.init().then(function () {
-
-
-
-  log.info('Starting up server');
-  log.info('Loading Plugins');
-  var sabnzbd = require('./core/plugins/sabnzbd');
+var db = require("./core/database");
+db.init().then(function() {
+  log.info("Starting up server");
+  log.info("Loading Plugins");
+  var sabnzbd = require("./core/plugins/sabnzbd");
 
   const app = express();
-  var server = require('http').Server(app);
-  var io = require('socket.io')(server);
+  var server = require("http").Server(app);
+  var io = require("socket.io")(server);
   db.io = io;
   sabnzbd.io = io;
 
@@ -52,20 +46,20 @@ db.init().then(function () {
   }
 
   function onError(error) {
-    if (error.syscall !== 'listen') {
+    if (error.syscall !== "listen") {
       throw error;
     }
 
     var addr = server.address();
-    var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
 
     switch (error.code) {
-      case 'EACCES':
-        log.error('requires elevated privileges');
+      case "EACCES":
+        log.error("requires elevated privileges");
         process.exit(1);
         break;
-      case 'EADDRINUSE':
-        log.error('is already in use');
+      case "EADDRINUSE":
+        log.error("is already in use");
         process.exit(1);
         break;
       default:
@@ -75,110 +69,147 @@ db.init().then(function () {
 
   function onListening() {
     var addr = server.address();
-    var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     sabnzbd.login();
-    log.info('Listening on ' + bind);
+    log.info("Listening on " + bind);
   }
 
+  app.use(
+    "/content",
+    express.static(path.join(__dirname, "..", "frontend", "content"))
+  );
 
-  app.use('/content', express.static(path.join(__dirname, '..', 'frontend', 'content')));
-
-  if (process.env.MODE === 'dev') {
+  if (process.env.MODE === "dev") {
     const webpackCompiler = webpack(webpackconfig);
     const wpmw = webpackMiddleware(webpackCompiler, {});
     app.use(wpmw);
     const wphmw = webpackHotMiddleware(webpackCompiler);
     app.use(wphmw);
   } else {
-    app.use(express.static('dist'));
+    app.use(express.static("dist"));
   }
 
-  app.use(favicon(path.join(__dirname, '..', 'frontend', 'content', 'favicon.ico')));
+  app.use(
+    favicon(path.join(__dirname, "..", "frontend", "content", "favicon.ico"))
+  );
 
   // view engine setup
-  function flatten(lists) { return lists.reduce((a, b) => a.concat(b), []); }
-  function getDirectories(srcpath) { return fs.readdirSync(srcpath).map(file => path.join(srcpath, file)).filter(path => fs.statSync(path).isDirectory()); }
-  function getDirectoriesRecursive(srcpath) { return [srcpath, ...flatten(getDirectories(srcpath).map(getDirectoriesRecursive))]; }
-  var viewdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'views'))
-  var componentdirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'components'))
-  var directivedirs = getDirectoriesRecursive(path.join(__dirname, '..', 'frontend', 'directives'))
+  function flatten(lists) {
+    return lists.reduce((a, b) => a.concat(b), []);
+  }
+  function getDirectories(srcpath) {
+    return fs
+      .readdirSync(srcpath)
+      .map(file => path.join(srcpath, file))
+      .filter(path => fs.statSync(path).isDirectory());
+  }
+  function getDirectoriesRecursive(srcpath) {
+    return [
+      srcpath,
+      ...flatten(getDirectories(srcpath).map(getDirectoriesRecursive))
+    ];
+  }
+  var viewdirs = getDirectoriesRecursive(
+    path.join(__dirname, "..", "frontend", "views")
+  );
+  var componentdirs = getDirectoriesRecursive(
+    path.join(__dirname, "..", "frontend", "components")
+  );
+  var directivedirs = getDirectoriesRecursive(
+    path.join(__dirname, "..", "frontend", "directives")
+  );
 
-
-  app.set('views', viewdirs.concat(componentdirs, directivedirs));
-  app.set('view engine', 'jade');
-  app.use(function (req, res, next) {
+  app.set("views", viewdirs.concat(componentdirs, directivedirs));
+  app.set("view engine", "jade");
+  app.use(function(req, res, next) {
     res.io = io;
     next();
   });
   app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({
-    extended: false
-  }));
+  app.use(
+    bodyParser.urlencoded({
+      extended: false
+    })
+  );
 
   /* Configure Routes. */
-  app.use('/', index);
-  app.use("/", express.static(path.join(__dirname, '..', 'frontend')));
-  app.use("/node_modules/", express.static(path.join(__dirname, '..', 'node_modules')));
-  app.use("/bower_components/", express.static(path.join(__dirname, '..', 'bower_components')));
-  app.use("/controllers/", express.static(path.join(__dirname, '..', 'frontend', 'controllers')));
-  app.use("/factories/", express.static(path.join(__dirname, '..', 'frontend', 'factories')));
-  app.use("/directives/", express.static(path.join(__dirname, '..', 'frontend', 'directives')));
+  app.use("/", index);
+  app.use("/", express.static(path.join(__dirname, "..", "frontend")));
+  app.use(
+    "/node_modules/",
+    express.static(path.join(__dirname, "..", "node_modules"))
+  );
+  app.use(
+    "/bower_components/",
+    express.static(path.join(__dirname, "..", "bower_components"))
+  );
+  app.use(
+    "/controllers/",
+    express.static(path.join(__dirname, "..", "frontend", "controllers"))
+  );
+  app.use(
+    "/factories/",
+    express.static(path.join(__dirname, "..", "frontend", "factories"))
+  );
+  app.use(
+    "/directives/",
+    express.static(path.join(__dirname, "..", "frontend", "directives"))
+  );
 
   // catch 404 and forward to error handler
-  app.use(function (req, res, next) {
-    var err = new Error('Not Found');
+  app.use(function(req, res, next) {
+    var err = new Error("Not Found");
     err.status = 404;
     next(err);
   });
 
-  if (process.env.MODE === 'dev') {
+  if (process.env.MODE === "dev") {
     app.locals.pretty = true;
-    app.use(function (err, req, res, next) {
+    app.use(function(err, req, res, next) {
       res.status(err.status || 500);
-      res.render('error', {
+      res.render("error", {
         message: err.message,
         error: err
       });
     });
   } else {
-    app.use(function (err, req, res, next) {
+    app.use(function(err, req, res, next) {
       res.status(err.status || 500);
-      res.render('error', {
+      res.render("error", {
         message: err.message,
         error: {}
       });
     });
   }
 
-  io.on('connection', function (socket) {
+  io.on("connection", function(socket) {
     db.socketConnect(socket);
     sabnzbd.socketConnect(socket);
-    log.debug('Client connected');
-    socket.on('log', function (data) {
+    log.debug("Client connected");
+    socket.on("log", function(data) {
       log.log(data.method, data.message);
     });
   });
 
-  setInterval(function () {
+  setInterval(function() {
     var dt = {
       date: moment().format("hh:mm:ss a")
     };
-    io.emit("ping", { status: 'success', server_time: dt.date });
+    io.emit("ping", { status: "success", server_time: dt.date });
   }, 1000);
 
-  server.listen(normalizePort(process.env.PORT || '3000'));
+  server.listen(normalizePort(process.env.PORT || "3000"));
 
-  server.on('error', onError);
-  server.on('listening', onListening);
+  server.on("error", onError);
+  server.on("listening", onListening);
 
-  if (process.env.MODE === 'dev') {
-
-    process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || '4567');
-    var livereload = require('livereload').createServer({
-      exts: ['jade'],
+  if (process.env.MODE === "dev") {
+    process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || "4567");
+    var livereload = require("livereload").createServer({
+      exts: ["jade"],
       port: process.env.JADE_PORT
     });
 
-    livereload.watch(path.join(__dirname, '..', 'frontend'));
+    livereload.watch(path.join(__dirname, "..", "frontend"));
   }
 });

@@ -16,8 +16,8 @@
 
 ## To run: 
 * npm install
-* npm run build
-* npm start
+* Build.bat
+* Start_{os_type}.bat|sh
 * navigate to http://localhost:3000
 
 ### Now Playing Preview

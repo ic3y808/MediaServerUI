@@ -3,7 +3,7 @@
   "configurations": [{
       "type": "node",
       "request": "launch",
-      "name": "ServerDebug",
+      "name": "UI-ServerDebug",
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "MODE": "dev",
@@ -16,11 +16,33 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "ServerRelease",
+      "name": "UI-ServerRelease",
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "MODE": "prod",
         "PORT": "3000"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Backend-ServerDebug",
+      "program": "${workspaceFolder}/api/server.js",
+      "env": {
+        "MODE": "dev",
+        "API_PORT": "4000"
+        //error, warn, info, verbose, debug, silly.
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Backend-ServerRelease",
+      "program": "${workspaceFolder}/api/server.js",
+      "env": {
+        "MODE": "prod",
+        "API_PORT": "4000"
+        //error, warn, info, verbose, debug, silly.
       }
     },
     {
@@ -38,12 +60,21 @@
       "port": 9222,
       "url": "*",
       "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Chrome Api-Docs",
+      "type": "chrome",
+      "request": "launch",
+      "port": 9222,
+      "url": "http://localhost:4000/api-docs",
+      "webRoot": "${workspaceFolder}"
     }
   ],
   "compounds": [{
-    "name": "All",
+    "name": "Debug All",
     "configurations": [
-      "ServerDebug",
+      "UI-ServerDebug",
+      "Backend-ServerDebug",
       "LaunchChrome"
     ]
   }]
