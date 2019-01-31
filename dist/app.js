@@ -1673,7 +1673,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px red; }\n\n.row {\n  border: 0px orange; }\n\n.col {\n  border: 0px red; }\n\n.main-container {\n  border: 0px yellow; }\n\n.sidebar {\n  border: 0px orange; }\n\n* {\n  border: 0px lime; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px lime; }\n\n.row {\n  border: 0px orange; }\n\n.col {\n  border: 0px yellow; }\n\n.main-container {\n  border: 0px red; }\n\n.sidebar {\n  border: 0px lime; }\n\n* {\n  border: 0px red; }\n", ""]);
 
 // exports
 
