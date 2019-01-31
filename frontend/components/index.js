@@ -23,6 +23,7 @@ import ConfigAlloyDbComponent from './config/alloydb/configAlloyDb.Component';
 import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
 import ConfigSchedulerComponent from './config/scheduler/configScheduler.component';
 import ActivityComponent from './activity/activity.component';
+import ActivityGeneralComponent from './activity/general/activityGeneral.component';
 import ActivityQueueComponent from './activity/queue/activityQueue.component';
 import ActivityHistoryComponent from './activity/history/activityHistory.component';
 import ActivityBlacklistComponent from './activity/blacklist/activityBlacklist.component';
@@ -53,6 +54,7 @@ export default angular
   .component('configsabnzbd', ConfigSabnzbdComponent)
   .component('configscheduler', ConfigSchedulerComponent)
   .component('activity', ActivityComponent)
+  .component('activitygeneral', ActivityGeneralComponent)
   .component('activityqueue', ActivityQueueComponent)
   .component('activityhistory', ActivityHistoryComponent)
   .component('activityblacklist', ActivityBlacklistComponent)

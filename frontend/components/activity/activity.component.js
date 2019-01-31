@@ -1,4 +1,3 @@
-import './activity.scss';
 class ActivityController {
   constructor($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
@@ -38,15 +37,9 @@ class ActivityController {
       that.$scope.navigate('blacklist');
     };
 
-    this.$rootScope.triggerConfigAlert = function (message, type) {
-      $('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
-      setTimeout(() => {
-        $('.config-alert').hide(500);
-      }, 3000);
-    };
-
     AppUtilities.apply();
     AppUtilities.hideLoader();
+
   }
 
   $onInit() {

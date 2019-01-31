@@ -7,6 +7,9 @@ import AlbumsList from './ui/albumslist';
 import ArtistList from './ui/artistlist';
 import GenreList from './ui/genrelist';
 import TrackList from './ui/tracklist';
+import QueueList from './ui/sabnzbd/queuelist';
+import BlackList from './ui/sabnzbd/blacklist';
+import HistoryList from './ui/sabnzbd/historylist';
 import JumpBar from './ui/jumpbar';
 import DetailLabel from './ui/detaillabel';
 import ExpandButton from './ui/expandbutton';
@@ -22,6 +25,9 @@ export default angular
   .directive('artistlist', ArtistList)
   .directive('genrelist', GenreList)
   .directive('tracklist', TrackList)
+  .directive('queuelist', QueueList)
+  .directive('historylist', HistoryList)
+  .directive('blacklist', BlackList)
   .directive('jumpbar', JumpBar)
   .directive('detaillabel', DetailLabel)
   .directive('expandbutton', ExpandButton)
