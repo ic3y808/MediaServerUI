@@ -15,7 +15,7 @@
 * Post am issue
 
 ## To run: 
-* npm install
+* Deps.bat as Admin
 * Build.bat
 * Start_{os_type}.bat|sh
 * navigate to http://localhost:3000
