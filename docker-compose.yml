@@ -3,11 +3,13 @@ services:
   node:
     build: ./
     container_name: docker-alloy
-    user: "${UID}:${GID}"
     working_dir: /home/node/app
     environment:
-      - NODE_ENV=production
+      - MODE=prod
+      - PORT=3000
+      - API_PORT=4000
     volumes:
       - ./data/:/home/nodeuser/app/data/
     ports:
      - "3000:3000"
+     - "4000:4000"
