@@ -1,0 +1,116 @@
+fieldset.FieldSet-fieldSet
+  legend.FieldSet-legend Path Settings
+  div
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large Host
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', placeholder='Database Host', ng-model='$root.settings.alloydb.alloydb_host', ng-change="previewConnectionString()")
+        div
+          .FormInputHelpText-helpText Host for the database server
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large Port
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='number', placeholder='4000', ng-model='$root.settings.alloydb.alloydb_port', ng-change="previewConnectionString()")
+        div
+          .FormInputHelpText-helpText Port for the database server
+    div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large ApiKey
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', placeholder='Api Key', ng-model='$root.settings.alloydb.alloydb_apikey')
+        div
+          .FormInputHelpText-helpText API key for the database server
+    div
+    .FormGroup-group.FormGroup-medium
+      label.FormLabel-label.FormLabel-large Use SSL?
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            .CheckInput-container
+              label.CheckInput-label
+                input.CheckInput-checkbox(type='checkbox', ng-model='$root.settings.alloydb.alloydb_use_ssl', ng-change="previewConnectionString()")
+                .CheckInput-input.CheckInput-primaryIsChecked(ng-show="$root.settings.alloydb.alloydb_use_ssl")
+                  svg.svg-inline--fa.fa-check.fa-w-16.Icon-default-2wl7E(aria-hidden='true', data-prefix='fas', data-icon='check', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 14px;')
+                    path(fill='currentColor', d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z')
+                .CheckInput-input.CheckInput-isNotChecked(ng-show="!$root.settings.alloydb.alloydb_use_ssl")
+                .CheckInput-helpText.FormInputHelpText-helpText HTTPS will be used as the schema
+    div
+    .FormGroup-group.FormGroup-medium
+      label.FormLabel-label.FormLabel-large Include port in URL?
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            .CheckInput-container
+              label.CheckInput-label
+                input.CheckInput-checkbox(type='checkbox', ng-model='$root.settings.alloydb.alloydb_include_port_in_url', ng-change="previewConnectionString()")
+                .CheckInput-input.CheckInput-primaryIsChecked(ng-show="$root.settings.alloydb.alloydb_include_port_in_url")
+                  svg.svg-inline--fa.fa-check.fa-w-16.Icon-default-2wl7E(aria-hidden='true', data-prefix='fas', data-icon='check', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 14px;')
+                    path(fill='currentColor', d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z')
+                .CheckInput-input.CheckInput-isNotChecked(ng-show="!$root.settings.alloydb.alloydb_include_port_in_url")
+                .CheckInput-helpText.FormInputHelpText-helpText Port will be included in the URL
+  
+    div
+      .FormGroup-group.FormGroup-large
+        label.FormLabel-label.FormLabel-large Connection URL Preview
+        .FormInputGroup-inputGroupContainer
+          .FormInputGroup-inputGroup
+            .FormInputGroup-inputContainer
+              input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', value="{{connectionStringPreview}}")
+            button.FormInputButton-button.Button-button.Link-link.Button-primary.Button-medium.Link-link(type='button', ng-click='testSettings()') Test
+  
+fieldset.FieldSet-fieldSet
+  legend.FieldSet-legend Last.FM
+  div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large Username
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='text', placeholder='Enter username', ng-model='$root.settings.alloydb.alloydb_lastfm_username')
+        div
+          .FormInputHelpText-helpText Username for Last.FM
+  div
+    .FormGroup-group.FormGroup-large
+      label.FormLabel-label.FormLabel-large Password
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            input.Naming-namingInput.TextInput-input.Input-input.TextInput-hasButton.Input-hasButton(type='password', placeholder='Password', ng-model='$root.settings.alloydb.alloydb_lastfm_password')
+        div
+          .FormInputHelpText-helpText Password for Last.FM
+    div
+    .FormGroup-group.FormGroup-medium
+      label.FormLabel-label.FormLabel-large Scrobble Tracks?
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            .CheckInput-container
+              label.CheckInput-label
+                input.CheckInput-checkbox(type='checkbox', ng-model='$root.settings.alloydb.alloydb_scrobble')
+                .CheckInput-input.CheckInput-primaryIsChecked(ng-show="$root.settings.alloydb.alloydb_scrobble")
+                  svg.svg-inline--fa.fa-check.fa-w-16.Icon-default-2wl7E(aria-hidden='true', data-prefix='fas', data-icon='check', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 14px;')
+                    path(fill='currentColor', d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z')
+                .CheckInput-input.CheckInput-isNotChecked(ng-show="!$root.settings.alloydb.alloydb_scrobble")
+                .CheckInput-helpText.FormInputHelpText-helpText Tracks will be scrobbled when played
+    div
+    .FormGroup-group.FormGroup-medium
+      label.FormLabel-label.FormLabel-large Love starred?
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            .CheckInput-container
+              label.CheckInput-label
+                input.CheckInput-checkbox(type='checkbox', ng-model='$root.settings.alloydb.alloydb_love_tracks')
+                .CheckInput-input.CheckInput-primaryIsChecked(ng-show="$root.settings.alloydb.alloydb_love_tracks")
+                  svg.svg-inline--fa.fa-check.fa-w-16.Icon-default-2wl7E(aria-hidden='true', data-prefix='fas', data-icon='check', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 14px;')
+                    path(fill='currentColor', d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z')
+                .CheckInput-input.CheckInput-isNotChecked(ng-show="!$root.settings.alloydb.alloydb_love_tracks")
+                .CheckInput-helpText.FormInputHelpText-helpText Tracks that are starred will be loved

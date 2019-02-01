@@ -11,7 +11,7 @@
         th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Plays') Plays
         th.TableHeaderCell-headerCell.Link-link(label='Duration') Duration
     tbody
-      tr.TableRow-row(ng-repeat='track in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true}", ng-dblclick="requestPlay(track.id)")
+      tr.TableRow-row(ng-repeat='track in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true, 'TableRow-row-selected': track.selected}", ng-dblclick="requestPlay(track.id)")
         td.TableRowCell-star.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button', ng-click="starTrack(track)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(track.id) == true}")
             i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="track.starred == 'true' ? 'fa-star' : 'fa-star-o'")

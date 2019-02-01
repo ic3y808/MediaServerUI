@@ -1,6 +1,14 @@
-import './album.scss';
+import "./album.scss";
 class AlbumController {
-  constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor(
+    $scope,
+    $rootScope,
+    $routeParams,
+    AppUtilities,
+    Backend,
+    MediaPlayer,
+    AlloyDbService
+  ) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -8,32 +16,38 @@ class AlbumController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('artist-controller');
+    this.Backend.debug("artist-controller");
     this.AppUtilities.showLoader();
     $scope.album = {};
     $scope.tracks = [];
-    $scope.albumName = '';
-    $scope.artistName = '';
+    $scope.albumName = "";
+    $scope.artistName = "";
     var that = this;
-    
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
-    }
 
-    $scope.getArtistInfo = function (data) {
+    $scope.getCoverArt = function(id) {
+      return that.AlloyDbService.getCoverArt(id);
+    };
+
+    $scope.getArtistInfo = function(data) {
       if (data) {
-        data.forEach(function (info) {
+        data.forEach(function(info) {
           if (info.artistInfo) {
             $scope.artistInfo = info.artistInfo;
             if ($scope.artistInfo.bio) {
-              $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+              $scope.artistBio = $scope.artistInfo.bio.summary.replace(
+                /<a\b[^>]*>(.*?)<\/a>/i,
+                ""
+              );
             }
             if ($scope.artistInfo.similar) {
-              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(
+                0,
+                5
+              );
             }
             if ($scope.artistInfo.image) {
-              $scope.artistInfo.image.forEach(function (image) {
-                if (image['@'].size === 'extralarge') {
+              $scope.artistInfo.image.forEach(function(image) {
+                if (image["@"].size === "extralarge") {
                   //that.AppUtilities.setContentBackground(image['#']);
                 }
               });
@@ -42,14 +56,14 @@ class AlbumController {
         });
       }
     };
-    $scope.getAlbumInfo = function (data) {
+    $scope.getAlbumInfo = function(data) {
       if (data) {
-        data.forEach(function (info) {
+        data.forEach(function(info) {
           if (info.albumInfo) {
             $scope.albumInfo = info.albumInfo;
             if ($scope.albumInfo.image) {
-              $scope.artistInfo.image.forEach(function (image) {
-                if (image['@'].size === 'extralarge') {
+              $scope.artistInfo.image.forEach(function(image) {
+                if (image["@"].size === "extralarge") {
                   //that.AppUtilities.setContentBackground(image['#']);
                 }
               });
@@ -59,10 +73,10 @@ class AlbumController {
       }
     };
 
-    $scope.getAlbum = function () {
+    $scope.getAlbum = function() {
       var alb = AlloyDbService.getAlbum($routeParams.id);
       if (alb) {
-        alb.then(function (album) {
+        alb.then(function(album) {
           if (album) {
             $scope.album = album;
             $scope.albumName = album.name;
@@ -72,19 +86,23 @@ class AlbumController {
 
             that.AppUtilities.setContentBackground($scope.albumArt);
 
-            var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
-            var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);
+            var artistInfo = that.AlloyDbService.getArtistInfo(
+              $scope.artistName
+            );
+            var albumInfo = that.AlloyDbService.getAlbumInfo(
+              $scope.artistName,
+              $scope.albumName
+            );
 
-            Promise.all([artistInfo, albumInfo]).then(function (info) {
+            Promise.all([artistInfo, albumInfo]).then(function(info) {
               $scope.getArtistInfo(info);
               $scope.getAlbumInfo(info);
 
               if ($scope.tracks && $scope.tracks.length > 0) {
- 
                 if ($routeParams.trackid) {
-                  $scope.gridOptions.api.forEachNode(function (node) {
-                    if (node.data.id === $routeParams.trackid) {
-                      $scope.gridOptions.api.selectNode(node, true);
+                  $scope.tracks.forEach(function(track) {
+                    if (track.id === $routeParams.trackid) {
+                      track.selected = true;
                     }
                   });
                 }
@@ -100,71 +118,81 @@ class AlbumController {
       }
     };
 
-    $scope.goToArtist = function (id) {
-      window.location.href = '/artist/' + id;
-
+    $scope.goToArtist = function(id) {
+      window.location.href = "/artist/" + id;
     };
 
-    $scope.refresh = function () {
-      that.Backend.debug('refresh album');
+    $scope.refresh = function() {
+      that.Backend.debug("refresh album");
       $scope.getAlbum();
     };
 
-    $scope.startRadio = function () {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
-        that.Backend.debug('starting radio');
+    $scope.startRadio = function() {
+      AlloyDbService.getSimilarSongs2($routeParams.id).then(function(
+        similarSongs
+      ) {
+        that.Backend.debug("starting radio");
         $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
       });
     };
 
-    $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
+    $scope.shuffle = function() {
+      that.Backend.debug("shuffle play");
       that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
       that.MediaPlayer.loadTrack(0);
     };
 
-    $scope.shareAlbum = function () {
-      that.Backend.debug('shareButton');
-      that.AlloyDbService.createShare($scope.album.id, 'Shared from Alloy').then(function (result) {
-        $('#shareAlbumButton').popover({
-          animation: true,
-          content: 'Success! Url Copied to Clipboard.',
-          delay: {
-            "show": 0,
-            "hide": 5000
-          },
-          placement: 'top'
-        }).popover('show');
+    $scope.shareAlbum = function() {
+      that.Backend.debug("shareButton");
+      that.AlloyDbService.createShare(
+        $scope.album.id,
+        "Shared from Alloy"
+      ).then(function(result) {
+        $("#shareAlbumButton")
+          .popover({
+            animation: true,
+            content: "Success! Url Copied to Clipboard.",
+            delay: {
+              show: 0,
+              hide: 5000
+            },
+            placement: "top"
+          })
+          .popover("show");
         var url = result.url.toString();
         that.AppUtilities.copyTextToClipboard(url);
         setTimeout(() => {
-          $('#shareAlbumButton').popover('hide');
+          $("#shareAlbumButton").popover("hide");
         }, 5000);
       });
     };
 
-    $scope.starAlbum = function(){
-        that.Backend.info('liking album: ' + that.$scope.album.name);
-        if ($scope.album.starred === 'true') {
-          that.AlloyDbService.unstar({ album: that.$scope.album.id }).then(function (result) {
-            that.Backend.info('UnStarred');
+    $scope.starAlbum = function() {
+      that.Backend.info("liking album: " + that.$scope.album.name);
+      if ($scope.album.starred === "true") {
+        that.AlloyDbService.unstar({ album: that.$scope.album.id }).then(
+          function(result) {
+            that.Backend.info("UnStarred");
             that.Backend.info(result);
-            that.$scope.album.starred = 'false';
+            that.$scope.album.starred = "false";
             that.AppUtilities.apply();
-          });
-        } else {
-          that.AlloyDbService.star({ album: that.$scope.album.id }).then(function (result) {
-            that.Backend.info('starred');
-            that.Backend.info(result);
-            that.$scope.album.starred = 'true';
-            that.AppUtilities.apply();
-          });
-        }
+          }
+        );
+      } else {
+        that.AlloyDbService.star({ album: that.$scope.album.id }).then(function(
+          result
+        ) {
+          that.Backend.info("starred");
+          that.Backend.info(result);
+          that.$scope.album.starred = "true";
+          that.AppUtilities.apply();
+        });
+      }
     };
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Album reload on loginsatuschange');
+    $rootScope.$on("loginStatusChange", function(event, data) {
+      that.Backend.debug("Album reload on loginsatuschange");
       $scope.refresh();
     });
 
@@ -175,5 +203,5 @@ class AlbumController {
 export default {
   bindings: {},
   controller: AlbumController,
-  templateUrl: '/template/album.jade'
+  templateUrl: "/template/album.jade"
 };

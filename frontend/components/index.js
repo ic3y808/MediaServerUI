@@ -20,6 +20,7 @@ import SideNavComponent from './sidenav/sidenav.component';
 import ConfigComponent from './config/config.component';
 import ConfigGeneralComponent from './config/general/configGeneral.component';
 import ConfigAlloyDbComponent from './config/alloydb/configAlloyDb.Component';
+import ConfigMediaPathsComponent from './config/mediapaths/configMediaPaths.component';
 import ConfigSabnzbdComponent from './config/sabnzbd/configSabnzbd.component';
 import ConfigSchedulerComponent from './config/scheduler/configScheduler.component';
 import ActivityComponent from './activity/activity.component';
@@ -51,6 +52,7 @@ export default angular
   .component('config', ConfigComponent)
   .component('configgeneral', ConfigGeneralComponent)
   .component('configalloydb', ConfigAlloyDbComponent)
+  .component('configmediapaths', ConfigMediaPathsComponent)
   .component('configsabnzbd', ConfigSabnzbdComponent)
   .component('configscheduler', ConfigSchedulerComponent)
   .component('activity', ActivityComponent)

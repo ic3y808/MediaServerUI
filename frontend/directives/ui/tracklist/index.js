@@ -23,6 +23,7 @@ module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend
 
       scope.requestPlay = function (id) {
         Backend.debug('selection changed');
+        scope.data.forEach(function(track){track.selected = null})
         $rootScope.tracks = scope.data;
         var index = _.findIndex($rootScope.tracks, function (track) {
           return track.id === id;

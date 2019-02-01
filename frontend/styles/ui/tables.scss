@@ -31,6 +31,15 @@
   color: $now-playing-track-text !important;
 }
 
+.TableRow-row-selected {
+  -webkit-transition: background-color 500ms;
+  transition: background-color 500ms;
+  //background-color: $now-playing-track !important;
+  border: 2px solid $now-playing-track;
+  box-sizing: border-box;
+  color: $now-playing-track-text !important;
+}
+
 .TableRow-row:hover {
   background-color: $main-background-color;
   color: $main-text-color;
@@ -47,7 +56,6 @@
 }
 
 .TableRowHeaderCell-Starred {
-
   width: 15px;
   border: none !important;
   text-align: left;
@@ -55,7 +63,6 @@
 }
 
 .TableRowHeaderCell-Play {
-
   width: 15px;
   border: none !important;
   text-align: left;
