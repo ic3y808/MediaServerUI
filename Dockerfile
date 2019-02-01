@@ -1,4 +1,4 @@
-FROM node:11.9
+FROM node:11.3.0-slim
 WORKDIR /home/node/app
 ADD package.json /home/node/app/package.json
 RUN npm install
