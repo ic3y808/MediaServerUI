@@ -4,6 +4,11 @@ const db = require('better-sqlite3')(path.join(process.env.DATA_DIR, "database.d
 var dbmigrate = require('db-migrate');
 var dbm = dbmigrate.getInstance(true);
 
+process.on('exit', () => db.close());
+process.on('SIGHUP', () => process.exit(128 + 1));
+process.on('SIGINT', () => process.exit(128 + 2));
+process.on('SIGTERM', () => process.exit(128 + 15));
+
 module.exports.io = {};
 
 module.exports.init = function () {

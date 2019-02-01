@@ -1,15 +1,21 @@
-version: "2"
+version: '3'
 services:
   node:
     build: ./
     container_name: docker-alloy
-    working_dir: /home/node/app
+    working_dir: /home/alloy/app
     environment:
       - MODE=prod
       - PORT=3000
       - API_PORT=4000
+      - API_KEY=123456
     volumes:
-      - ./data/:/home/nodeuser/app/data/
+     - alloydata:/home/alloy/app/data
+    
     ports:
      - "3000:3000"
      - "4000:4000"
+volumes:
+  alloydata:
+    external:
+      name: alloydata

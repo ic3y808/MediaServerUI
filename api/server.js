@@ -3,7 +3,6 @@ const fs = require("fs");
 const path = require("path");
 const shell = require("shelljs");
 const express = require("express");
-const WindowsTrayicon = require("windows-trayicon");
 
 process.env.DATA_DIR = path.join(__dirname, "..", "data");
 
@@ -17,8 +16,14 @@ process.env.COVER_ART = path.join(__dirname, "images");
 process.env.LASTFM_API_KEY = "ed6f8571e2be230fce3b0cc0203c5a27";
 process.env.LASTFM_API_SECRET = "f0fb2b471befe70b265dd72e3e42b545";
 
+
 const db = require("better-sqlite3")(process.env.DATABASE);
 db.prepare("PRAGMA journal_mode = WAL;").run();
+
+process.on('exit', () => db.close());
+process.on('SIGHUP', () => process.exit(128 + 1));
+process.on('SIGINT', () => process.exit(128 + 2));
+process.on('SIGTERM', () => process.exit(128 + 15));
 
 var bodyParser = require("body-parser");
 var routes = require("./routes/index");
@@ -172,97 +177,100 @@ dbm.up().then(function() {
       console.log("Doing LastFM Scan");
       lastFMScanner.incrementalScan();
     });
+	
+	if(process.platform === "win32"){
+		const WindowsTrayicon = require("windows-trayicon");
+		const myTrayApp = new WindowsTrayicon({
+		  title: "Alloy",
+		  icon: path.resolve(__dirname, "icon.ico"),
+		  menu: [
+			{
+			  id: "item-1-id",
+			  caption: "Rescan Libraries"
+			},
+			{
+			  id: "item-2-id",
+			  caption: "Quick Rescan Libraries"
+			},
+			{
+			  id: "get_status",
+			  caption: "Get Status"
+			},
+			{
+			  id: "cancel_scan",
+			  caption: "Cancel Scan"
+			},
+			{
+			  id: "item-3-id",
+			  caption: "Rescan Last.fm"
+			},
+			{
+			  id: "rescanMusicbrainz",
+			  caption: "Rescan MusicBrainz"
+			},
+			{
+			  id: "item-4-id-exit",
+			  caption: "Exit"
+			}
+		  ]
+		});
 
-    const myTrayApp = new WindowsTrayicon({
-      title: "Alloy",
-      icon: path.resolve(__dirname, "icon.ico"),
-      menu: [
-        {
-          id: "item-1-id",
-          caption: "Rescan Libraries"
-        },
-        {
-          id: "item-2-id",
-          caption: "Quick Rescan Libraries"
-        },
-        {
-          id: "get_status",
-          caption: "Get Status"
-        },
-        {
-          id: "cancel_scan",
-          caption: "Cancel Scan"
-        },
-        {
-          id: "item-3-id",
-          caption: "Rescan Last.fm"
-        },
-        {
-          id: "rescanMusicbrainz",
-          caption: "Rescan MusicBrainz"
-        },
-        {
-          id: "item-4-id-exit",
-          caption: "Exit"
-        }
-      ]
-    });
+		myTrayApp.item(id => {
+		  switch (id) {
+			case "item-1-id": {
+			  mediaScanner.startFullScan();
+			  myTrayApp
+				.balloon("Starting Scan", "The library rescan has been started")
+				.then(() => {});
+			  break;
+			}
+			case "item-2-id": {
+			  mediaScanner.startQuickScan();
+			  myTrayApp
+				.balloon("Starting Scan", "The library rescan has been started")
+				.then(() => {});
+			  break;
+			}
+			case "get_status": {
+			  mediaScanner.incrementalCleanup();
 
-    myTrayApp.item(id => {
-      switch (id) {
-        case "item-1-id": {
-          mediaScanner.startFullScan();
-          myTrayApp
-            .balloon("Starting Scan", "The library rescan has been started")
-            .then(() => {});
-          break;
-        }
-        case "item-2-id": {
-          mediaScanner.startQuickScan();
-          myTrayApp
-            .balloon("Starting Scan", "The library rescan has been started")
-            .then(() => {});
-          break;
-        }
-        case "get_status": {
-          mediaScanner.incrementalCleanup();
-
-          break;
-        }
-        case "cancel_scan": {
-          mediaScanner.cancelScan();
-          myTrayApp
-            .balloon("Cancelling Scan", "The library rescan has been cancelled")
-            .then(() => {});
-          break;
-        }
-        case "item-3-id": {
-          lastFMScanner.startScan();
-          myTrayApp
-            .balloon(
-              "Starting Scan",
-              "The Last.FM info rescan has been started"
-            )
-            .then(() => {});
-          break;
-        }
-        case "rescanMusicbrainz": {
-          musicbrainzScanner.startScan();
-          myTrayApp
-            .balloon(
-              "Starting Scan",
-              "The MusicBrainz info rescan has been started"
-            )
-            .then(() => {});
-          break;
-        }
-        case "item-4-id-exit": {
-          myTrayApp.exit();
-          process.exit(0);
-          break;
-        }
-      }
-    });
+			  break;
+			}
+			case "cancel_scan": {
+			  mediaScanner.cancelScan();
+			  myTrayApp
+				.balloon("Cancelling Scan", "The library rescan has been cancelled")
+				.then(() => {});
+			  break;
+			}
+			case "item-3-id": {
+			  lastFMScanner.startScan();
+			  myTrayApp
+				.balloon(
+				  "Starting Scan",
+				  "The Last.FM info rescan has been started"
+				)
+				.then(() => {});
+			  break;
+			}
+			case "rescanMusicbrainz": {
+			  musicbrainzScanner.startScan();
+			  myTrayApp
+				.balloon(
+				  "Starting Scan",
+				  "The MusicBrainz info rescan has been started"
+				)
+				.then(() => {});
+			  break;
+			}
+			case "item-4-id-exit": {
+			  myTrayApp.exit();
+			  process.exit(0);
+			  break;
+			}
+		  }
+		});
+	}
 
     console.log("Express server listening on port " + server.address().port);
   });
