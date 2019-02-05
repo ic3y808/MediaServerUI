@@ -14,30 +14,33 @@ include ./../../views/pagecontainer
   
   include ./../../views/pagebody                
 
-    include ./../../views/pageheader
+    include ./../../views/pageheadersmall
       .PageContent-backdrop
         .PageContent-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="$root.getBackgroundStyle(genreImage)")
         .PageContent-backdropOverlay 
           .PageContent-headerContent
 
-            .PageContent-HeaderDetails-info
+            .PageContent-HeaderDetails-info(style='overflow: auto;')
               .PageContent-HeaderDetails-titleContainer
+
+
+              .PageContent-HeaderDetails-overview 
                 .PageContent-HeaderDetails-title {{genre.name}}
                 .PageContent-HeaderDetails-navigation-buttons
                   navbutton(buttontext="Go to {{artist.previous_artist.base_path}}", href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path", direction="left")
                   navbutton(buttontext="Go to {{artist.next_artist.base_path}}", href='/artist/{{artist.next_artist.base_id}}', ng-show="artist.next_artist.base_path", direction="right")
-
-              div
-                detaillabel(buttontext="{{genre.size}}", buttonicon="fa-hdd-o")
-              div
-                detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
-                popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artistInfo.tags.tag")
-                detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-
-              .PageContent-HeaderDetails-overview 
+                div
+                  detaillabel(buttontext="{{genre.size}}", buttonicon="fa-hdd-o")
+                div
+                  detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
+                  popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artistInfo.tags.tag")
+                  detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
                 div(style='overflow: hidden;')
                   span
                   | {{genreInfo.wiki.summary}}
+
+
+
     include ./../../views/pagecontent
       .ExpanderContainer
         button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleTracks()')
