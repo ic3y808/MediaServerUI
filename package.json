@@ -27,6 +27,7 @@
     "angular-sanitize": "^1.7.5",
     "async": "^2.6.1",
     "autocomplete.js": "^0.34.0",
+    "better-queue": "^3.8.10",
     "better-sqlite3": "^5.2.0",
     "bluebird": "^3.5.3",
     "body-parser": "^1.15.0",

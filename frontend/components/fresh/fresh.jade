@@ -15,7 +15,7 @@ include ./../../views/pagecontainer
         toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
 
   include ./../../views/pagebody
-    include ./../../views/pageheader
+    include ./../../views/pageheaderdynamic
       div#player(style='overflow: hidden;')
     include ./../../views/pagecontent
       tracklist(data="tracks", showartist='true', showalbum='true')
