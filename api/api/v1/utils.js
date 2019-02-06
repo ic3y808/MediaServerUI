@@ -1,3 +1,5 @@
+'use strict';
+
 const supportedExtensions = [".mp3", ".wav", ".flac", ".ogg", ".aiff", ".aac"];
 
 module.exports.toHumanReadable = function toHumanReadable(val) {

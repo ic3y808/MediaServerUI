@@ -36,17 +36,24 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   $window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    if (key === 32) {
-      e.preventDefault();
+    var focus = $("#search-box").val();
+    if(!focus){
+      if (key === 32) {
+        e.preventDefault();
+      }
     }
   }
 
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    if (key === 32) {
-      e.preventDefault();
-      MediaPlayer.toggleCurrentStatus();
+    var focus = $("#search-box").val();
+    if(!focus){
+      if (key === 32) {
+        e.preventDefault();
+        MediaPlayer.toggleCurrentStatus();
+      }
     }
+    
   }
 
   //$window.onbeforeunload = function () {

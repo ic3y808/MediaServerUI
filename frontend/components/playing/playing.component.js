@@ -12,49 +12,85 @@ class PlayingController {
     this.Backend.debug('playing-controller');
     var that = this;
     $scope.getSong = function () {
-      var track = that.MediaPlayer.selectedTrack();
-      if (track) {
-        $scope.trackTitle = track.title;
-        $scope.artistName = track.artist;
-        $scope.year = track.year;
-        $scope.contentType = track.content_type;
-        $scope.bitrate = track.bitrate;
+    
+      var current = that.MediaPlayer.selectedTrack();
 
-        that.AlloyDbService.getTrackInfo(track.id).then(function (song) {
-          if (song.trackInfo) {
-            $scope.song = song.trackInfo;
-            $scope.artistName = $scope.song.artist.name;
-            $scope.trackTitle = $scope.song.name;
-          
-            $scope.playCount = $scope.song.playcount;
-          }
-          that.AppUtilities.hideLoader();
-        });
+      if (current) {
+        var currentPromise = AlloyDbService.getTrackInfo(current.id)
+        var currentArtistPromise = AlloyDbService.getArtistInfo(current.artist)
 
-        that.AlloyDbService.getArtistInfo(track.artist).then(function (info) {
-          if (info) {
+        $scope.trackTitle = current.title;
+        $scope.artistName = current.artist;
+        $scope.albumName = current.album;
+        $scope.year = current.year;
+        $scope.contentType = current.content_type;
+        $scope.bitrate = current.bitrate;
+        if (currentPromise) {
+          currentPromise.then(function (song) {
+            if (song.trackInfo) {
+              $scope.song = song.trackInfo;
+              $scope.artistName = $scope.song.artist.name;
+              $scope.trackTitle = $scope.song.name;
 
-            $scope.artistInfo = info.artistInfo;
-            if ($scope.artistInfo.bio) {
-              $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+              $scope.playCount = $scope.song.playcount;
             }
-            if ($scope.artistInfo.similar) {
-              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-            }
-            if ($scope.artistInfo.image) {
-              $scope.artistInfo.image.forEach(function (image) {
-                if (image['@'].size === 'extralarge') {
-                  that.AppUtilities.setContentBackground(image['#']);
-                }
-              });
-            }
-            that.AppUtilities.apply();          
-          }
-        });
 
+          });
+        }
+        if (currentArtistPromise) {
+          currentArtistPromise.then(function (info) {
+            if (info) {
+
+              $scope.artistInfo = info.artistInfo;
+              if ($scope.artistInfo.bio) {
+                $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+              }
+              if ($scope.artistInfo.similar) {
+                $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+              }
+              if ($scope.artistInfo.image) {
+                $scope.artistInfo.image.forEach(function (image) {
+                  if (image['@'].size === 'large') {
+                    $scope.artistImage = image['#'];
+                  }
+                  if (image['@'].size === 'extralarge') {
+                    $scope.artistImage = image['#'];
+                  }
+                });
+              }
+              that.AppUtilities.apply();
+            }
+          });
+
+        }
+
+        that.AppUtilities.hideLoader();
       } else {
         that.AppUtilities.hideLoader();
+        return;
       }
+
+      var previous = that.MediaPlayer.previousTrack();
+      var next = that.MediaPlayer.nextTrack();
+
+      
+     
+
+      if(previous){
+        var previousPromise = AlloyDbService.getTrackInfo(previous.id)      
+        if (previousPromise) {
+          previousPromise.then(function (info) { });
+        }
+      }
+      if(next){
+        var nextPromise = AlloyDbService.getTrackInfo(next.id)
+        if (nextPromise) {
+          nextPromise.then(function (info) { });
+        }
+      }
+
+
+
     };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {

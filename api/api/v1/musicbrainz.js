@@ -1,5 +1,3 @@
-// vim: ts=4:sw=4:noexpandtab
-
 'use strict';
 
 var request = require('request'),

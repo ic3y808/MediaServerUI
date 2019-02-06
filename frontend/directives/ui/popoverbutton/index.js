@@ -11,7 +11,6 @@ module.exports = function () {
     replace: true,
 
     link: function (scope, elm, attrs) {
-      console.log('linking')
       scope.$watch('data', function (newVal, oldVal) {
         if (scope.data) {
           var t = '<div class="popover" role="tooltip">' +

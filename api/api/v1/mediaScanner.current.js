@@ -1,3 +1,4 @@
+'use strict';
 var cp = require('child_process');
 var scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
 

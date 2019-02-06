@@ -6,7 +6,7 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
 
   include ./../../views/pagebody
-    include ./../../views/pageheader
+    include ./../../views/pageheaderdynamic
       div#player(style='overflow: hidden;')
     include ./../../views/pagecontent
-      tracklist(data="$root.starred_tracks")
+      tracklist(data="$root.starred_tracks", showartist='true', showalbum='true')

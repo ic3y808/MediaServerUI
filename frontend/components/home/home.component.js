@@ -22,17 +22,18 @@ class HomeController {
 
     $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
       if ($rootScope.fresh_albums) {
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+       
 
         $timeout(function () {
           $scope.coverflow = coverflow('player').setup({
 
             playlist: $rootScope.fresh_albums,
             width: '100%',
-            coverwidth: 200,
-            coverheight: 200,
-            fixedsize: true,
+            height: '100px',
+            coverwidth: 100,
+            coverheight: 100,
+            //reflectionoffset: -10,
+            //fixedsize: true,
           }).on('ready', function () {
             this.on('focus', function (index) {
 
@@ -42,13 +43,18 @@ class HomeController {
 
             });
           });
+          that.AppUtilities.apply();
+          that.AppUtilities.hideLoader();
         });
       }
     });
 
     $rootScope.$watch('random', function (newVal, oldVal) {
       if ($rootScope.random) {
-
+        var randomTrack = $rootScope.random[Math.floor(Math.random()*$rootScope.random.length)];
+        $scope.artistImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
       }
     });
   }

@@ -168,7 +168,7 @@ dbm.up().then(function() {
   app.set("port", process.env.API_PORT || 4000);
 
   var server = app.listen(app.get("port"), function() {
-    scheduler.createJob("Clean Database", "0 * * * *", function() {
+    scheduler.createJob("Clean Database", "0 0 * * *", function() {
       console.log("Doing db cleanup");
       mediaScanner.incrementalCleanup();
     });

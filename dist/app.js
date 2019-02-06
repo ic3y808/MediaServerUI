@@ -7,200 +7,210 @@ webpackJsonp([0],[
 /* 5 */,
 /* 6 */,
 /* 7 */,
-/* 8 */
-/***/ (function(module, exports) {
-
-
-var idCounter = 0;
-
-var _ = {
-
-	hasFlash: ((typeof navigator.plugins != 'undefined' &&
-		typeof navigator.plugins['Shockwave Flash'] == 'object') ||
-		(window.ActiveXObject && (new ActiveXObject('ShockwaveFlash.ShockwaveFlash')) !== false)),
-
-	isIE: !!navigator.userAgent.match(/msie/i) ||
-		!!navigator.userAgent.match(/Trident\/7\./),
-
-	uniqueId: function(prefix) {
-		var id = idCounter++;
-		return prefix ? prefix + id : id;
-	},
-
-	bind: function(fn, context) {
-		return function() { fn.apply(context); };
-	},
-
-	on: function(el, type, fn) {
-		if (!el) return;
-		var arr = type.split(' ');
-		for (var i = 0; i < arr.length; i++) {
-			if (el.attachEvent) {
-				el.attachEvent('on' + arr[i], fn);
-			} else {
-				el.addEventListener(arr[i], fn, false);
-			}
-		}
-	},
-
-	off: function(el, type, fn) {
-		if (!el) return;
-		var arr = type.split(' ');
-		for (var i = 0; i < arr.length; i++) {
-			if (el.detachEvent) {
-				el.detachEvent('on' + arr[i], fn);
-			} else {
-				el.removeEventListener(arr[i], fn, false);
-			}
-		}
-	},
-
-	extend: function(src, dest) {
-		for (var key in dest) {
-			src[key] = dest[key];
-		}
-		return src;
-	},
-
-	addClass: function(el, classname) {
-		if (el.className.indexOf(classname) === -1) {
-			el.className += ' ' + classname;
-		}
-	},
-
-	css: function(el, props) {
-		if (el) {
-			for (var key in props) {
-				if (typeof props[key] === 'undefined') {
-					continue;
-				} else if (typeof props[key] == 'number' && !(key == 'zIndex' || key == 'opacity')) {
-					if (isNaN(props[key])) {
-						continue;
-					}
-					props[key] = Math.ceil(props[key]) + 'px';
-				}
-				try {
-					el.style[key] = props[key];
-				} catch (e) {}
-			}
-		}
-	},
-
-	hexToRgb: function(hex) {
-		// Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
-		var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-		hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-			return r + r + g + g + b + b;
-		});
-
-		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result ? {
-			r: parseInt(result[1], 16),
-			g: parseInt(result[2], 16),
-			b: parseInt(result[3], 16)
-		} : null;
-	},
-
-	ajax: function(xmldocpath, completecallback, errorcallback) {
-		var xmlhttp;
-		if (window.XMLHttpRequest) {
-			// IE>7, Firefox, Chrome, Opera, Safari
-			xmlhttp = new XMLHttpRequest();
-		} else {
-			// IE6
-			xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
-		}
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState === 4) {
-				if (xmlhttp.status === 200) {
-					if (completecallback) {
-						completecallback(xmlhttp);
-					}
-				} else {
-					if (errorcallback) {
-						errorcallback(xmldocpath);
-					}
-				}
-			}
-		};
-		try {
-			xmlhttp.open('GET', xmldocpath, true);
-			xmlhttp.send(null);
-		} catch (error) {
-			if (errorcallback) {
-				errorcallback(xmldocpath);
-			}
-		}
-		return xmlhttp;
-	},
-
-	jsonp: function(url, callback, params) {
-		
-		var query = url.indexOf('?') === -1 ? '?' : '&';
-		params = params || {};
-		for (var key in params) {
-			if (params.hasOwnProperty(key)) {
-				query += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]) + '&';
-			}
-		}
-		
-		var jsonp = _.uniqueId('json_call');
-		window[jsonp] = function(data) {
-			callback(data);
-			window[jsonp] = null;
-		};
- 
-		var script = document.createElement('script');
-		if (url.indexOf('callback=?') !== -1) {
-			script.src = url.replace('callback=?', 'callback='+jsonp) + query.slice(0, -1);
-		} else {
-			script.src = url + query + 'callback=' + jsonp;
-		}
-		script.async = true;
-		script.onload = script.onreadystatechange = function() {
-			if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-				script.onload = script.onreadystatechange = null;
-				if (script && script.parentNode) {
-					script.parentNode.removeChild(script);
-				}
-			}
-		};
-		
-		var head = document.head || document.getElementsByTagName('head')[0] || document.documentElement;
-		// Use insertBefore instead of appendChild  to circumvent an IE6 bug.
-		// This arises when a base node is used (#2709 and #4378).
-		head.insertBefore(script, head.firstChild);
-	},
-
-	getResizeDimensions: function(wid, hei, maxWid, maxHei) {
-
-		var ratio = Math.min(maxWid / wid, maxHei / hei);
-		return { width: wid*ratio, height: hei*ratio, ratio: ratio };
-	},
-
-	getCropOffsets: function(wid, hei, newWid, newHei) {
-
-		var ratio = [newWid / wid, newHei / hei];
-		return ratio[0] < ratio[1] ?
-			{ left: (wid - newWid / ratio[1]) * 0.5, top: 0, ratio: ratio[1] } :
-			{ top: (hei - newHei / ratio[0]) * 0.5, left: 0, ratio: ratio[0] } ;
-	},
-
-	getChildIndex: function(node) {
-		var i = 0;
-		while ((node = node.previousSibling) !== null) {
-			if (node.nodeType === 1) ++i;
-		}
-		return i;
-	}
-};
-
-module.exports = _;
-
-/***/ }),
+/* 8 */,
 /* 9 */,
 /* 10 */,
-/* 11 */,
+/* 11 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
+
+var idCounter = 0;
+var _ = {
+  hasFlash: typeof navigator.plugins != 'undefined' && __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(navigator.plugins['Shockwave Flash']) == 'object' || window.ActiveXObject && new ActiveXObject('ShockwaveFlash.ShockwaveFlash') !== false,
+  isIE: !!navigator.userAgent.match(/msie/i) || !!navigator.userAgent.match(/Trident\/7\./),
+  uniqueId: function uniqueId(prefix) {
+    var id = idCounter++;
+    return prefix ? prefix + id : id;
+  },
+  bind: function bind(fn, context) {
+    return function () {
+      fn.apply(context);
+    };
+  },
+  on: function on(el, type, fn) {
+    if (!el) return;
+    var arr = type.split(' ');
+
+    for (var i = 0; i < arr.length; i++) {
+      if (el.attachEvent) {
+        el.attachEvent('on' + arr[i], fn);
+      } else {
+        el.addEventListener(arr[i], fn, false);
+      }
+    }
+  },
+  off: function off(el, type, fn) {
+    if (!el) return;
+    var arr = type.split(' ');
+
+    for (var i = 0; i < arr.length; i++) {
+      if (el.detachEvent) {
+        el.detachEvent('on' + arr[i], fn);
+      } else {
+        el.removeEventListener(arr[i], fn, false);
+      }
+    }
+  },
+  extend: function extend(src, dest) {
+    for (var key in dest) {
+      src[key] = dest[key];
+    }
+
+    return src;
+  },
+  addClass: function addClass(el, classname) {
+    if (el.className.indexOf(classname) === -1) {
+      el.className += ' ' + classname;
+    }
+  },
+  css: function css(el, props) {
+    if (el) {
+      for (var key in props) {
+        if (typeof props[key] === 'undefined') {
+          continue;
+        } else if (typeof props[key] == 'number' && !(key == 'zIndex' || key == 'opacity')) {
+          if (isNaN(props[key])) {
+            continue;
+          }
+
+          props[key] = Math.ceil(props[key]) + 'px';
+        }
+
+        try {
+          el.style[key] = props[key];
+        } catch (e) {}
+      }
+    }
+  },
+  hexToRgb: function hexToRgb(hex) {
+    // Expand shorthand form (e.g. '03F') to full form (e.g. '0033FF')
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function (m, r, g, b) {
+      return r + r + g + g + b + b;
+    });
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+    } : null;
+  },
+  ajax: function ajax(xmldocpath, completecallback, errorcallback) {
+    var xmlhttp;
+
+    if (window.XMLHttpRequest) {
+      // IE>7, Firefox, Chrome, Opera, Safari
+      xmlhttp = new XMLHttpRequest();
+    } else {
+      // IE6
+      xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+
+    xmlhttp.onreadystatechange = function () {
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          if (completecallback) {
+            completecallback(xmlhttp);
+          }
+        } else {
+          if (errorcallback) {
+            errorcallback(xmldocpath);
+          }
+        }
+      }
+    };
+
+    try {
+      xmlhttp.open('GET', xmldocpath, true);
+      xmlhttp.send(null);
+    } catch (error) {
+      if (errorcallback) {
+        errorcallback(xmldocpath);
+      }
+    }
+
+    return xmlhttp;
+  },
+  jsonp: function jsonp(url, callback, params) {
+    var query = url.indexOf('?') === -1 ? '?' : '&';
+    params = params || {};
+
+    for (var key in params) {
+      if (params.hasOwnProperty(key)) {
+        query += encodeURIComponent(key) + '=' + encodeURIComponent(params[key]) + '&';
+      }
+    }
+
+    var jsonp = _.uniqueId('json_call');
+
+    window[jsonp] = function (data) {
+      callback(data);
+      window[jsonp] = null;
+    };
+
+    var script = document.createElement('script');
+
+    if (url.indexOf('callback=?') !== -1) {
+      script.src = url.replace('callback=?', 'callback=' + jsonp) + query.slice(0, -1);
+    } else {
+      script.src = url + query + 'callback=' + jsonp;
+    }
+
+    script.async = true;
+
+    script.onload = script.onreadystatechange = function () {
+      if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
+        script.onload = script.onreadystatechange = null;
+
+        if (script && script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+      }
+    };
+
+    var head = document.head || document.getElementsByTagName('head')[0] || document.documentElement; // Use insertBefore instead of appendChild  to circumvent an IE6 bug.
+    // This arises when a base node is used (#2709 and #4378).
+
+    head.insertBefore(script, head.firstChild);
+  },
+  getResizeDimensions: function getResizeDimensions(wid, hei, maxWid, maxHei) {
+    var ratio = Math.min(maxWid / wid, maxHei / hei);
+    return {
+      width: wid * ratio,
+      height: hei * ratio,
+      ratio: ratio
+    };
+  },
+  getCropOffsets: function getCropOffsets(wid, hei, newWid, newHei) {
+    var ratio = [newWid / wid, newHei / hei];
+    return ratio[0] < ratio[1] ? {
+      left: (wid - newWid / ratio[1]) * 0.5,
+      top: 0,
+      ratio: ratio[1]
+    } : {
+      top: (hei - newHei / ratio[0]) * 0.5,
+      left: 0,
+      ratio: ratio[0]
+    };
+  },
+  getChildIndex: function getChildIndex(node) {
+    var i = 0;
+
+    while ((node = node.previousSibling) !== null) {
+      if (node.nodeType === 1) ++i;
+    }
+
+    return i;
+  }
+};
+module.exports = _;
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(19)(module)))
+
+/***/ }),
 /* 12 */,
 /* 13 */,
 /* 14 */,
@@ -211,30 +221,32 @@ module.exports = _;
 /* 19 */,
 /* 20 */,
 /* 21 */,
-/* 22 */
+/* 22 */,
+/* 23 */,
+/* 24 */,
+/* 25 */,
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Signal = __webpack_require__(27);
 
-var Signal = __webpack_require__(23);
-var _ = __webpack_require__(8);
-var Html5 = __webpack_require__(36);
-var Modernizr = __webpack_require__(41);
+var _ = __webpack_require__(11);
 
-var Api = function (id) {
+var Html5 = __webpack_require__(40); //var Modernizr = require('./modernizr');
 
+
+var Api = function Api(id) {
   var _this = this;
+
   var player;
   var readyFlag;
-
   this.id = id;
   this.el = document.getElementById(id);
   this.config = null;
 
   this.setup = function (options) {
-
     player = null;
     readyFlag = false;
-
     var defaultConfig = {
       mode: 'html5',
       flash: 'coverflow.swf',
@@ -252,7 +264,8 @@ var Api = function (id) {
       coverdepth: 170,
       coveroffset: 130,
       fixedsize: false,
-      opacitydecrease: 0.1,	//is not enabled in HTML5, too slow on iOS
+      opacitydecrease: 0.1,
+      //is not enabled in HTML5, too slow on iOS
       reflectionopacity: 0.3,
       reflectionratio: 155,
       reflectionoffset: 0,
@@ -267,24 +280,23 @@ var Api = function (id) {
       x: 0,
       y: 0
     };
-
     this.events = {
       ready: new Signal(),
       playlist: new Signal(),
       focus: new Signal(),
       click: new Signal()
     };
-
     this.config = _.extend(defaultConfig, options);
     this.config.id = this.id;
-
     this.el = document.getElementById(id);
     this.el.innerHTML = '';
     this.el.tabIndex = 0;
+
     _.addClass(this.el, 'coverflow');
 
     if (String(this.config.width).indexOf('%') !== -1) {
       _.off(window, 'resize', resizeHandler);
+
       _.on(window, 'resize', resizeHandler);
     }
 
@@ -301,7 +313,6 @@ var Api = function (id) {
     this.prev = player.prev;
     this.next = player.next;
     this.to = player.to;
-
     return this;
   };
 
@@ -312,8 +323,8 @@ var Api = function (id) {
     this.el = replacement;
 
     _.off(window, 'resize', resizeHandler);
-    if (player) player.destroy();
 
+    if (player) player.destroy();
     delete players[this.id];
   };
 
@@ -322,7 +333,6 @@ var Api = function (id) {
   }
 
   this.resize = function (wid, hei) {
-
     _.css(this.el, {
       width: wid,
       height: hei
@@ -339,18 +349,21 @@ var Api = function (id) {
   this.getMode = function () {
     if (_.hasFlash && this.config.mode === 'flash') {
       return 'flash';
-    }
-    if (!_.isIE && Modernizr.csstransforms3d && Modernizr.csstransitions && Modernizr.canvas) {
-      return 'html5';
-    }
+    } // if (!_.isIE && Modernizr.csstransforms3d && Modernizr.csstransitions && Modernizr.canvas) {
+
+
+    return 'html5'; // }
+
     return 'flash';
   };
 
   this.on = function (event, func) {
     this.events[event].on(func);
+
     if (readyFlag && event === 'ready') {
       this.events.ready.trigger.apply(this);
     }
+
     return this;
   };
 
@@ -370,820 +383,2856 @@ var Api = function (id) {
 module.exports = Api;
 
 /***/ }),
-/* 23 */
+/* 27 */
 /***/ (function(module, exports) {
 
+var Signal = function Signal() {
+  var callbacks = [];
 
-var Signal = function() {
-	var callbacks = [];
+  this.on = function (func) {
+    callbacks.push(func);
+    return this;
+  };
 
-	this.on = function(func) {
-		callbacks.push(func);
-		return this;
-	};
+  this.trigger = function () {
+    var args = Array.prototype.slice.call(arguments);
 
-	this.trigger = function() {
-		var args = Array.prototype.slice.call(arguments);
-		for (var i = 0; i < callbacks.length; i++) {
-			if (typeof callbacks[i] === 'function') {
-				callbacks[i].apply(this, args);
-			}
-		}
-		return this;
-	};
+    for (var i = 0; i < callbacks.length; i++) {
+      if (typeof callbacks[i] === 'function') {
+        callbacks[i].apply(this, args);
+      }
+    }
 
-	this.off = function(func) {
-		if (func) {
-			for (var i = 0; i < callbacks.length; i++) {
-				if (callbacks[i] === func) {
-					callbacks.splice(i, 1);
-					i--;
-				}
-			}
-		} else {
-			callbacks = [];
-		}
-		return this;
-	};
+    return this;
+  };
+
+  this.off = function (func) {
+    if (func) {
+      for (var i = 0; i < callbacks.length; i++) {
+        if (callbacks[i] === func) {
+          callbacks.splice(i, 1);
+          i--;
+        }
+      }
+    } else {
+      callbacks = [];
+    }
+
+    return this;
+  };
 };
+
 module.exports = Signal;
 
 /***/ }),
-/* 24 */,
-/* 25 */,
-/* 26 */,
-/* 27 */,
 /* 28 */,
 /* 29 */,
 /* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(global) {// Copyright Google Inc. All Rights Reserved.
-(function() { 'use strict';var f,aa="function"==typeof Object.create?Object.create:function(a){var b=function(){};b.prototype=a;return new b},ba;if("function"==typeof Object.setPrototypeOf)ba=Object.setPrototypeOf;else{var ca;a:{var da={Za:!0},ea={};try{ea.__proto__=da;ca=ea.Za;break a}catch(a){}ca=!1}ba=ca?function(a,b){a.__proto__=b;if(a.__proto__!==b)throw new TypeError(a+" is not extensible");return a}:null}
-var fa=ba,g=function(a,b){a.prototype=aa(b.prototype);a.prototype.constructor=a;if(fa)fa(a,b);else for(var c in b)if("prototype"!=c)if(Object.defineProperties){var d=Object.getOwnPropertyDescriptor(b,c);d&&Object.defineProperty(a,c,d)}else a[c]=b[c];a.Xa=b.prototype},ha="function"==typeof Object.defineProperties?Object.defineProperty:function(a,b,c){a!=Array.prototype&&a!=Object.prototype&&(a[b]=c.value)},h="undefined"!=typeof window&&window===this?this:"undefined"!=typeof global&&null!=global?global:
-this,ia=function(){ia=function(){};h.Symbol||(h.Symbol=ja)},ja=function(){var a=0;return function(b){return"jscomp_symbol_"+(b||"")+a++}}(),la=function(){ia();var a=h.Symbol.iterator;a||(a=h.Symbol.iterator=h.Symbol("iterator"));"function"!=typeof Array.prototype[a]&&ha(Array.prototype,a,{configurable:!0,writable:!0,value:function(){return ka(this)}});la=function(){}},ka=function(a){var b=0;return ma(function(){return b<a.length?{done:!1,value:a[b++]}:{done:!0}})},ma=function(a){la();a={next:a};a[h.Symbol.iterator]=
-function(){return this};return a},na=function(a){la();var b=a[Symbol.iterator];return b?b.call(a):ka(a)},k=this,l=function(){},oa=function(a){var b=typeof a;if("object"==b)if(a){if(a instanceof Array)return"array";if(a instanceof Object)return b;var c=Object.prototype.toString.call(a);if("[object Window]"==c)return"object";if("[object Array]"==c||"number"==typeof a.length&&"undefined"!=typeof a.splice&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("splice"))return"array";if("[object Function]"==
-c||"undefined"!=typeof a.call&&"undefined"!=typeof a.propertyIsEnumerable&&!a.propertyIsEnumerable("call"))return"function"}else return"null";else if("function"==b&&"undefined"==typeof a.call)return"object";return b},pa=function(a){var b=oa(a);return"array"==b||"object"==b&&"number"==typeof a.length},p=function(a){return"function"==oa(a)},qa=function(a){var b=typeof a;return"object"==b&&null!=a||"function"==b},ra=function(a,b,c){return a.call.apply(a.bind,arguments)},sa=function(a,b,c){if(!a)throw Error();
-if(2<arguments.length){var d=Array.prototype.slice.call(arguments,2);return function(){var c=Array.prototype.slice.call(arguments);Array.prototype.unshift.apply(c,d);return a.apply(b,c)}}return function(){return a.apply(b,arguments)}},q=function(a,b,c){q=Function.prototype.bind&&-1!=Function.prototype.bind.toString().indexOf("native code")?ra:sa;return q.apply(null,arguments)},ta=Date.now||function(){return+new Date},r=function(a,b){a=a.split(".");var c=k;a[0]in c||"undefined"==typeof c.execScript||
-c.execScript("var "+a[0]);for(var d;a.length&&(d=a.shift());)a.length||void 0===b?c=c[d]&&c[d]!==Object.prototype[d]?c[d]:c[d]={}:c[d]=b},t=function(a,b){function c(){}c.prototype=b.prototype;a.Xa=b.prototype;a.prototype=new c;a.prototype.constructor=a;a.Vb=function(a,c,m){for(var d=Array(arguments.length-2),e=2;e<arguments.length;e++)d[e-2]=arguments[e];return b.prototype[c].apply(a,d)}};var u=function(a){if(Error.captureStackTrace)Error.captureStackTrace(this,u);else{var b=Error().stack;b&&(this.stack=b)}a&&(this.message=String(a))};t(u,Error);u.prototype.name="CustomError";var ua=function(a,b){a=a.split("%s");for(var c="",d=a.length-1,e=0;e<d;e++)c+=a[e]+(e<b.length?b[e]:"%s");u.call(this,c+a[d])};t(ua,u);ua.prototype.name="AssertionError";var va=function(a,b){throw new ua("Failure"+(a?": "+a:""),Array.prototype.slice.call(arguments,1));};var Da=function(a){if(!wa.test(a))return a;-1!=a.indexOf("&")&&(a=a.replace(xa,"&amp;"));-1!=a.indexOf("<")&&(a=a.replace(ya,"&lt;"));-1!=a.indexOf(">")&&(a=a.replace(za,"&gt;"));-1!=a.indexOf('"')&&(a=a.replace(Aa,"&quot;"));-1!=a.indexOf("'")&&(a=a.replace(Ba,"&#39;"));-1!=a.indexOf("\x00")&&(a=a.replace(Ca,"&#0;"));return a},xa=/&/g,ya=/</g,za=/>/g,Aa=/"/g,Ba=/'/g,Ca=/\x00/g,wa=/[\x00&<>"']/;var v;a:{var Ea=k.navigator;if(Ea){var Fa=Ea.userAgent;if(Fa){v=Fa;break a}}v=""};var w=function(a,b,c){this.reset(a,b,c,void 0,void 0)};w.prototype.na=null;var Ga=0;w.prototype.reset=function(a,b,c,d,e){"number"==typeof e||Ga++;this.Ya=d||ta();this.B=a;this.Ab=b;this.La=c;delete this.na};w.prototype.Da=function(a){this.B=a};var x=function(a){this.Na=a;this.P=this.ia=this.B=this.j=null},y=function(a,b){this.name=a;this.value=b};y.prototype.toString=function(){return this.name};
-var Ha=new y("SHOUT",1200),Ia=new y("SEVERE",1E3),Ja=new y("WARNING",900),Ka=new y("INFO",800),La=new y("CONFIG",700),Ma=[new y("OFF",Infinity),Ha,Ia,Ja,Ka,La,new y("FINE",500),new y("FINER",400),new y("FINEST",300),new y("ALL",0)],z=null,Na=function(a){if(!z){z={};for(var b=0,c;c=Ma[b];b++)z[c.value]=c,z[c.name]=c}if(a in z)return z[a];for(b=0;b<Ma.length;++b)if(c=Ma[b],c.value<=a)return c;return null};x.prototype.getName=function(){return this.Na};x.prototype.getParent=function(){return this.j};
-x.prototype.Da=function(a){this.B=a};var Oa=function(a){if(a.B)return a.B;if(a.j)return Oa(a.j);va("Root logger has no level set.");return null};x.prototype.log=function(a,b,c){if(a.value>=Oa(this).value)for(p(b)&&(b=b()),a=new w(a,String(b),this.Na),c&&(a.na=c),c=this;c;){var d=c,e=a;if(d.P)for(var m=0;b=d.P[m];m++)b(e);c=c.getParent()}};x.prototype.info=function(a,b){this.log(Ka,a,b)};
-var Pa={},A=null,Qa=function(){A||(A=new x(""),Pa[""]=A,A.Da(La))},Ra=function(){Qa();return A},Sa=function(a){Qa();var b;if(!(b=Pa[a])){b=new x(a);var c=a.lastIndexOf("."),d=a.substr(c+1);c=Sa(a.substr(0,c));c.ia||(c.ia={});c.ia[d]=b;b.j=c;Pa[a]=b}return b};var B=function(a){var b=Ta;b&&b.log(Ja,a,void 0)};var C=function(){this.Ra=ta()},Ua=null;C.prototype.set=function(a){this.Ra=a};C.prototype.reset=function(){this.set(ta())};C.prototype.get=function(){return this.Ra};var Va=function(a){this.Gb=a||"";Ua||(Ua=new C);this.Rb=Ua};f=Va.prototype;f.Fa=!0;f.Va=!0;f.Pb=!0;f.Ob=!0;f.Wa=!1;f.Qb=!1;var E=function(a){return 10>a?"0"+a:String(a)},Wa=function(a,b){a=(a.Ya-b)/1E3;b=a.toFixed(3);var c=0;if(1>a)c=2;else for(;100>a;)c++,a*=10;for(;0<c--;)b=" "+b;return b},Xa=function(a){Va.call(this,a)};t(Xa,Va);var Ya=function(){this.Hb=q(this.$a,this);this.Y=new Xa;this.Y.Va=!1;this.Y.Wa=!1;this.Ka=this.Y.Fa=!1;this.lb={}};
-Ya.prototype.$a=function(a){if(!this.lb[a.La]){var b=this.Y;var c=[];c.push(b.Gb," ");if(b.Va){var d=new Date(a.Ya);c.push("[",E(d.getFullYear()-2E3)+E(d.getMonth()+1)+E(d.getDate())+" "+E(d.getHours())+":"+E(d.getMinutes())+":"+E(d.getSeconds())+"."+E(Math.floor(d.getMilliseconds()/10)),"] ")}b.Pb&&c.push("[",Wa(a,b.Rb.get()),"s] ");b.Ob&&c.push("[",a.La,"] ");b.Qb&&c.push("[",a.B.name,"] ");c.push(a.Ab);b.Wa&&(d=a.na)&&c.push("\n",d instanceof Error?d.message:d.toString());b.Fa&&c.push("\n");b=
-c.join("");if(c=Za)switch(a.B){case Ha:F(c,"info",b);break;case Ia:F(c,"error",b);break;case Ja:F(c,"warn",b);break;default:F(c,"log",b)}}};var G=null,Za=k.console,F=function(a,b,c){if(a[b])a[b](c);else a.log(c)};var $a={Wb:!0},ab={Xb:!0},H=function(){throw Error("Do not instantiate directly");};H.prototype.eb=null;H.prototype.toString=function(){return this.content};var bb=function(){H.call(this)};t(bb,H);bb.prototype.ja=$a;var db=function(){var a=cb(void 0,void 0);if(!qa(a))return String(a);if(a instanceof H){if(a.ja===$a)return a.content;if(a.ja===ab)return Da(a.content)}va("Soy template output is unsafe for use as HTML: "+a);return"zSoyz"};var I=function(a,b){this.xb=100;this.fb=a;this.Kb=b;this.ca=0;this.$=null};I.prototype.get=function(){if(0<this.ca){this.ca--;var a=this.$;this.$=a.next;a.next=null}else a=this.fb();return a};I.prototype.put=function(a){this.Kb(a);this.ca<this.xb&&(this.ca++,a.next=this.$,this.$=a)};var eb=function(a){k.setTimeout(function(){throw a;},0)},fb,gb=function(){var a=k.MessageChannel;"undefined"===typeof a&&"undefined"!==typeof window&&window.postMessage&&window.addEventListener&&-1==v.indexOf("Presto")&&(a=function(){var a=document.createElement("IFRAME");a.style.display="none";a.src="";document.documentElement.appendChild(a);var b=a.contentWindow;a=b.document;a.open();a.write("");a.close();var c="callImmediate"+Math.random(),d="file:"==b.location.protocol?"*":b.location.protocol+
-"//"+b.location.host;a=q(function(a){if(("*"==d||a.origin==d)&&a.data==c)this.port1.onmessage()},this);b.addEventListener("message",a,!1);this.port1={};this.port2={postMessage:function(){b.postMessage(c,d)}}});if("undefined"!==typeof a&&-1==v.indexOf("Trident")&&-1==v.indexOf("MSIE")){var b=new a,c={},d=c;b.port1.onmessage=function(){if(void 0!==c.next){c=c.next;var a=c.Ga;c.Ga=null;a()}};return function(a){d.next={Ga:a};d=d.next;b.port2.postMessage(0)}}return"undefined"!==typeof document&&"onreadystatechange"in
-document.createElement("SCRIPT")?function(a){var b=document.createElement("SCRIPT");b.onreadystatechange=function(){b.onreadystatechange=null;b.parentNode.removeChild(b);b=null;a();a=null};document.documentElement.appendChild(b)}:function(a){k.setTimeout(a,0)}};var hb=function(){this.fa=this.M=null},jb=new I(function(){return new ib},function(a){a.reset()});hb.prototype.add=function(a,b){var c=jb.get();c.set(a,b);this.fa?this.fa.next=c:this.M=c;this.fa=c};hb.prototype.remove=function(){var a=null;this.M&&(a=this.M,this.M=this.M.next,this.M||(this.fa=null),a.next=null);return a};var ib=function(){this.next=this.scope=this.pa=null};ib.prototype.set=function(a,b){this.pa=a;this.scope=b;this.next=null};
-ib.prototype.reset=function(){this.next=this.scope=this.pa=null};var ob=function(a,b){kb||lb();mb||(kb(),mb=!0);nb.add(a,b)},kb,lb=function(){if(k.Promise&&k.Promise.resolve){var a=k.Promise.resolve(void 0);kb=function(){a.then(pb)}}else kb=function(){var a=pb;!p(k.setImmediate)||k.Window&&k.Window.prototype&&-1==v.indexOf("Edge")&&k.Window.prototype.setImmediate==k.setImmediate?(fb||(fb=gb()),fb(a)):k.setImmediate(a)}},mb=!1,nb=new hb,pb=function(){for(var a;a=nb.remove();){try{a.pa.call(a.scope)}catch(b){eb(b)}jb.put(a)}mb=!1};var M=function(a){this.g=0;this.Sa=void 0;this.D=this.o=this.j=null;this.Z=this.oa=!1;if(a!=l)try{var b=this;a.call(void 0,function(a){K(b,2,a)},function(a){if(!(a instanceof L))try{if(a instanceof Error)throw a;throw Error("Promise rejected.");}catch(d){}K(b,3,a)})}catch(c){K(this,3,c)}},qb=function(){this.next=this.context=this.I=this.S=this.A=null;this.W=!1};qb.prototype.reset=function(){this.context=this.I=this.S=this.A=null;this.W=!1};
-var rb=new I(function(){return new qb},function(a){a.reset()}),sb=function(a,b,c){var d=rb.get();d.S=a;d.I=b;d.context=c;return d},N=function(){var a,b,c=new M(function(c,e){a=c;b=e});return new tb(c,a,b)};M.prototype.then=function(a,b,c){return ub(this,p(a)?a:null,p(b)?b:null,c)};M.prototype.then=M.prototype.then;M.prototype.$goog_Thenable=!0;M.prototype.cancel=function(a){0==this.g&&ob(function(){var b=new L(a);vb(this,b)},this)};
-var vb=function(a,b){if(0==a.g)if(a.j){var c=a.j;if(c.o){for(var d=0,e=null,m=null,n=c.o;n&&(n.W||(d++,n.A==a&&(e=n),!(e&&1<d)));n=n.next)e||(m=n);e&&(0==c.g&&1==d?vb(c,b):(m?(d=m,d.next==c.D&&(c.D=d),d.next=d.next.next):wb(c),xb(c,e,3,b)))}a.j=null}else K(a,3,b)},zb=function(a,b){a.o||2!=a.g&&3!=a.g||yb(a);a.D?a.D.next=b:a.o=b;a.D=b},ub=function(a,b,c,d){var e=sb(null,null,null);e.A=new M(function(a,n){e.S=b?function(c){try{var e=b.call(d,c);a(e)}catch(J){n(J)}}:a;e.I=c?function(b){try{var e=c.call(d,
-b);void 0===e&&b instanceof L?n(b):a(e)}catch(J){n(J)}}:n});e.A.j=a;zb(a,e);return e.A};M.prototype.Sb=function(a){this.g=0;K(this,2,a)};M.prototype.Tb=function(a){this.g=0;K(this,3,a)};
-var K=function(a,b,c){if(0==a.g){a===c&&(b=3,c=new TypeError("Promise cannot resolve to itself"));a.g=1;a:{var d=c,e=a.Sb,m=a.Tb;if(d instanceof M){zb(d,sb(e||l,m||null,a));var n=!0}else{if(d)try{var D=!!d.$goog_Thenable}catch(J){D=!1}else D=!1;if(D)d.then(e,m,a),n=!0;else{if(qa(d))try{var Z=d.then;if(p(Z)){Ab(d,Z,e,m,a);n=!0;break a}}catch(J){m.call(a,J);n=!0;break a}n=!1}}}n||(a.Sa=c,a.g=b,a.j=null,yb(a),3!=b||c instanceof L||Bb(a,c))}},Ab=function(a,b,c,d,e){var m=!1,n=function(a){m||(m=!0,c.call(e,
-a))},D=function(a){m||(m=!0,d.call(e,a))};try{b.call(a,n,D)}catch(Z){D(Z)}},yb=function(a){a.oa||(a.oa=!0,ob(a.jb,a))},wb=function(a){var b=null;a.o&&(b=a.o,a.o=b.next,b.next=null);a.o||(a.D=null);return b};M.prototype.jb=function(){for(var a;a=wb(this);)xb(this,a,this.g,this.Sa);this.oa=!1};
-var xb=function(a,b,c,d){if(3==c&&b.I&&!b.W)for(;a&&a.Z;a=a.j)a.Z=!1;if(b.A)b.A.j=null,Cb(b,c,d);else try{b.W?b.S.call(b.context):Cb(b,c,d)}catch(e){Db.call(null,e)}rb.put(b)},Cb=function(a,b,c){2==b?a.S.call(a.context,c):a.I&&a.I.call(a.context,c)},Bb=function(a,b){a.Z=!0;ob(function(){a.Z&&Db.call(null,b)})},Db=eb,L=function(a){u.call(this,a)};t(L,u);L.prototype.name="cancel";var tb=function(a,b,c){this.K=a;this.resolve=b;this.reject=c};var O=function(){this.X=this.X;this.da=this.da};O.prototype.X=!1;O.prototype.la=function(){this.X||(this.X=!0,this.ma())};O.prototype.ma=function(){if(this.da)for(;this.da.length;)this.da.shift()()};var Eb=function(a,b,c){O.call(this);this.yb=null!=c?q(a,c):a;this.wb=b;this.cb=q(this.Fb,this);this.ha=[]};t(Eb,O);f=Eb.prototype;f.L=!1;f.T=0;f.C=null;f.mb=function(a){this.ha=arguments;this.C||this.T?this.L=!0:Fb(this)};f.stop=function(){this.C&&(k.clearTimeout(this.C),this.C=null,this.L=!1,this.ha=[])};f.pause=function(){this.T++};f.resume=function(){this.T--;this.T||!this.L||this.C||(this.L=!1,Fb(this))};f.ma=function(){Eb.Xa.ma.call(this);this.stop()};
-f.Fb=function(){this.C=null;this.L&&!this.T&&(this.L=!1,Fb(this))};var Fb=function(a){var b=a.cb;var c=a.wb;if(!p(b))if(b&&"function"==typeof b.handleEvent)b=q(b.handleEvent,b);else throw Error("Invalid listener argument");b=2147483647<Number(c)?-1:k.setTimeout(b,c||0);a.C=b;a.yb.apply(null,a.ha)};var P=function(a){a.controller=this;this.a=a;this.v=this.f=this.b=null;this.Pa=this.Eb.bind(this);this.G=this.Bb.bind(this);this.H=this.Cb.bind(this);this.m=0;this.Ub=new Eb(this.kb,200,this)};f=P.prototype;f.za=function(){this.f&&(this.m++,this.a.isPaused=!this.a.isPaused,this.a.isPaused?this.f.pause(null,this.H,this.G):this.f.play(null,this.H,this.G))};f.stop=function(){this.f&&(this.m++,this.f.stop(null,this.H,this.G))};
-f.seek=function(){if(this.f){this.v&&(clearTimeout(this.v),this.v=null);this.m++;var a=new chrome.cast.media.SeekRequest;a.currentTime=this.a.currentTime;this.f.seek(a,this.H,this.G)}};f.xa=function(){this.b&&(this.m++,this.a.isMuted=!this.a.isMuted,this.b.setReceiverMuted(this.a.isMuted,this.H,this.G))};f.Ea=function(){this.Ub.mb()};f.kb=function(){this.b&&(this.m++,this.b.setReceiverVolumeLevel(this.a.volumeLevel,this.H,this.G))};f.Cb=function(){this.m--;this.w()};
-f.Bb=function(){this.m--;this.f&&this.f.getStatus(null,l,l)};f.Eb=function(){this.f&&(this.a.currentTime=this.f.getEstimatedTime(),this.v=setTimeout(this.Pa,1E3))};
-f.w=function(a){if(!(0<this.m))if(this.b){this.a.displayName=this.b.displayName||"";var b=this.b.statusText||"";this.a.displayStatus=b!=this.a.displayName?b:"";!a&&this.b.receiver&&(a=this.b.receiver.volume)&&(null!=a.muted&&(this.a.isMuted=a.muted),null!=a.level&&(this.a.volumeLevel=a.level),this.a.canControlVolume="fixed"!=a.controlType);this.f?(this.a.isMediaLoaded=this.f.playerState!=chrome.cast.media.PlayerState.IDLE,this.a.isPaused=this.f.playerState==chrome.cast.media.PlayerState.PAUSED,this.a.canPause=
-0<=this.f.supportedMediaCommands.indexOf(chrome.cast.media.MediaCommand.PAUSE),this.V(this.f.media),this.a.canSeek=0<=this.f.supportedMediaCommands.indexOf(chrome.cast.media.MediaCommand.SEEK)&&0!=this.a.duration,this.a.currentTime=this.f.getEstimatedTime(),this.v&&(clearTimeout(this.v),this.v=null),this.f.playerState==chrome.cast.media.PlayerState.PLAYING&&(this.v=setTimeout(this.Pa,1E3))):this.V(null)}else this.a.displayName="",this.a.displayStatus="",this.V(null)};
-f.V=function(a){a?(this.a.duration=a.duration||0,a.metadata&&a.metadata.title&&(this.a.displayStatus=a.metadata.title)):(this.a.isMediaLoaded=!1,this.a.canPause=!1,this.a.canSeek=!1,this.a.currentTime=0,this.a.duration=0)};var Gb=function(a){if(!a.f)for(var b=0,c=a.b.media;b<c.length;b++)if(!c[b].idleReason){a.f=c[b];a.f.addUpdateListener(a.zb.bind(a));break}},Hb=function(a,b){a.b=b;b.addMediaListener(a.Ma.bind(a));b.addUpdateListener(a.Ca.bind(a));Gb(a);a.w()};f=P.prototype;
-f.Ca=function(a){a||(this.f=this.b=null);this.w()};f.Ma=function(){Gb(this);this.w(!0)};f.zb=function(a){a||(this.f=null);this.w(!0)};f.ra=function(a,b){return b?100*a/b:0};f.sa=function(a,b){return b?a*b/100:0};f.qa=function(a){return 0>a?"":[("0"+Math.floor(a/3600)).substr(-2),("0"+Math.floor(a/60)%60).substr(-2),("0"+Math.floor(a)%60).substr(-2)].join(":")};var Ib=function(a){function b(a){this.content=a}b.prototype=a.prototype;return function(a,d){a=new b(String(a));void 0!==d&&(a.eb=d);return a}}(bb),Jb={"\x00":"&#0;","\t":"&#9;","\n":"&#10;","\x0B":"&#11;","\f":"&#12;","\r":"&#13;"," ":"&#32;",'"':"&quot;","&":"&amp;","'":"&#39;","-":"&#45;","/":"&#47;","<":"&lt;","=":"&#61;",">":"&gt;","`":"&#96;","\u0085":"&#133;","\u00a0":"&#160;","\u2028":"&#8232;","\u2029":"&#8233;"},Kb=function(a){return Jb[a]},Lb=/[\x00\x22\x27\x3c\x3e]/g,Mb=/<(?:!|\/?([a-zA-Z][a-zA-Z0-9:\-]*))(?:[^>'"]|"[^"]*"|'[^']*')*>/g,
-Nb=/</g;var cb=function(a,b){(a=b||a)&&a.gb?(a=a&&a.gb,null!=a&&a.ja===$a?(a=String(a.content).replace(Mb,"").replace(Nb,"&lt;"),a=String(a).replace(Lb,Kb)):a=Da(String(a)),a=' nonce="'+a+'"'):a="";return Ib("<style"+a+'>.cast_caf_state_c {fill: var(--connected-color, #4285f4);}.cast_caf_state_d {fill: var(--disconnected-color, #7d7d7d);}.cast_caf_state_h {opacity: 0;}</style><svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 24 24"><g><path id="cast_caf_icon_arch0" class="cast_caf_status_d" d="M1,18 L1,21 L4,21 C4,19.3 2.66,18 1,18 L1,18 Z"/><path id="cast_caf_icon_arch1" class="cast_caf_status_d" d="M1,14 L1,16 C3.76,16 6,18.2 6,21 L8,21 C8,17.13 4.87,14 1,14 L1,14 Z"/><path id="cast_caf_icon_arch2" class="cast_caf_status_d" d="M1,10 L1,12 C5.97,12 10,16.0 10,21 L12,21 C12,14.92 7.07,10 1,10 L1,10 Z"/><path id="cast_caf_icon_box" class="cast_caf_status_d" d="M21,3 L3,3 C1.9,3 1,3.9 1,5 L1,8 L3,8 L3,5 L21,5 L21,19 L14,19 L14,21 L21,21 C22.1,21 23,20.1 23,19 L23,5 C23,3.9 22.1,3 21,3 L21,3 Z"/><path id="cast_caf_icon_boxfill" class="cast_caf_state_h" d="M5,7 L5,8.63 C8,8.6 13.37,14 13.37,17 L19,17 L19,7 Z"/></g></svg>')};
-cb.Yb="cast.framework.CastButtonTemplate.icon";r("cast.framework.VERSION","1.0.07");r("cast.framework.LoggerLevel",{DEBUG:0,INFO:800,WARNING:900,ERROR:1E3,NONE:1500});r("cast.framework.CastState",{NO_DEVICES_AVAILABLE:"NO_DEVICES_AVAILABLE",NOT_CONNECTED:"NOT_CONNECTED",CONNECTING:"CONNECTING",CONNECTED:"CONNECTED"});
-r("cast.framework.SessionState",{NO_SESSION:"NO_SESSION",SESSION_STARTING:"SESSION_STARTING",SESSION_STARTED:"SESSION_STARTED",SESSION_START_FAILED:"SESSION_START_FAILED",SESSION_ENDING:"SESSION_ENDING",SESSION_ENDED:"SESSION_ENDED",SESSION_RESUMED:"SESSION_RESUMED"});r("cast.framework.CastContextEventType",{CAST_STATE_CHANGED:"caststatechanged",SESSION_STATE_CHANGED:"sessionstatechanged"});
-r("cast.framework.SessionEventType",{APPLICATION_STATUS_CHANGED:"applicationstatuschanged",APPLICATION_METADATA_CHANGED:"applicationmetadatachanged",ACTIVE_INPUT_STATE_CHANGED:"activeinputstatechanged",VOLUME_CHANGED:"volumechanged",MEDIA_SESSION:"mediasession"});
-r("cast.framework.RemotePlayerEventType",{ANY_CHANGE:"anyChanged",IS_CONNECTED_CHANGED:"isConnectedChanged",IS_MEDIA_LOADED_CHANGED:"isMediaLoadedChanged",DURATION_CHANGED:"durationChanged",CURRENT_TIME_CHANGED:"currentTimeChanged",IS_PAUSED_CHANGED:"isPausedChanged",VOLUME_LEVEL_CHANGED:"volumeLevelChanged",CAN_CONTROL_VOLUME_CHANGED:"canControlVolumeChanged",IS_MUTED_CHANGED:"isMutedChanged",CAN_PAUSE_CHANGED:"canPauseChanged",CAN_SEEK_CHANGED:"canSeekChanged",DISPLAY_NAME_CHANGED:"displayNameChanged",
-STATUS_TEXT_CHANGED:"statusTextChanged",TITLE_CHANGED:"titleChanged",DISPLAY_STATUS_CHANGED:"displayStatusChanged",MEDIA_INFO_CHANGED:"mediaInfoChanged",IMAGE_URL_CHANGED:"imageUrlChanged",PLAYER_STATE_CHANGED:"playerStateChanged"});r("cast.framework.ActiveInputState",{ACTIVE_INPUT_STATE_UNKNOWN:-1,ACTIVE_INPUT_STATE_NO:0,ACTIVE_INPUT_STATE_YES:1});var Ob=function(a){Ra().Da(Na(a))};r("cast.framework.setLoggerLevel",Ob);G||(G=new Ya);
-if(G){var Pb=G;if(1!=Pb.Ka){var Qb=Ra(),Rb=Pb.Hb;Qb.P||(Qb.P=[]);Qb.P.push(Rb);Pb.Ka=!0}}Ob(1E3);var Q=function(a){this.type=a};r("cast.framework.EventData",Q);var Sb=function(a){this.type="activeinputstatechanged";this.activeInputState=a};g(Sb,Q);r("cast.framework.ActiveInputStateEventData",Sb);var Tb=function(a){this.applicationId=a.appId;this.name=a.displayName;this.images=a.appImages;this.namespaces=this.ya(a.namespaces||[])};r("cast.framework.ApplicationMetadata",Tb);Tb.prototype.ya=function(a){return a.map(function(a){return a.name})};var Ub=function(a){this.type="applicationmetadatachanged";this.metadata=a};g(Ub,Q);r("cast.framework.ApplicationMetadataEventData",Ub);var Vb=function(a){this.type="applicationstatuschanged";this.status=a};g(Vb,Q);r("cast.framework.ApplicationStatusEventData",Vb);var Wb=Sa("cast.framework.EventTarget"),R=function(){this.R={}};R.prototype.addEventListener=function(a,b){a in this.R||(this.R[a]=[]);a=this.R[a];a.includes(b)||a.push(b)};R.prototype.removeEventListener=function(a,b){a=this.R[a]||[];b=a.indexOf(b);0<=b&&a.splice(b,1)};R.prototype.dispatchEvent=function(a){a&&a.type&&(this.R[a.type]||[]).slice().forEach(function(b){try{b(a)}catch(c){Wb&&Wb.log(Ia,"Handler for "+a.type+" event failed: "+c,c)}})};var Xb=function(a){a=a||{};this.receiverApplicationId=a.receiverApplicationId||null;this.resumeSavedSession=void 0!==a.resumeSavedSession?a.resumeSavedSession:!0;this.autoJoinPolicy=void 0!==a.autoJoinPolicy?a.autoJoinPolicy:chrome.cast.AutoJoinPolicy.TAB_AND_ORIGIN_SCOPED;this.language=a.language||null};r("cast.framework.CastOptions",Xb);var Yb=function(a){this.type="mediasession";this.mediaSession=a};g(Yb,Q);r("cast.framework.MediaSessionEventData",Yb);var Zb=function(a,b){this.type="volumechanged";this.volume=a;this.isMute=b};g(Zb,Q);r("cast.framework.VolumeEventData",Zb);var S=function(a,b){this.h=new R;this.g=b;this.c=a;this.Ta=a.sessionId;this.U=a.statusText;this.Qa=a.receiver;this.i=a.receiver.volume;this.ba=new Tb(a);this.aa=a.receiver.isActiveInput;this.c.addMediaListener(this.wa.bind(this));$b(this)};r("cast.framework.CastSession",S);var $b=function(a){var b=a.c.loadMedia.bind(a.c);a.c.loadMedia=function(c,e,m){b(c,function(b){e&&e(b);a.wa(b)},m)};var c=a.c.queueLoad.bind(a.c);a.c.queueLoad=function(b,e,m){c(b,function(b){e&&e(b);a.wa(b)},m)}};
-S.prototype.addEventListener=function(a,b){this.h.addEventListener(a,b)};S.prototype.addEventListener=S.prototype.addEventListener;S.prototype.removeEventListener=function(a,b){this.h.removeEventListener(a,b)};S.prototype.removeEventListener=S.prototype.removeEventListener;
-var ac=function(a,b){a.Qa=b;!b.volume||a.i&&a.i.muted==b.volume.muted&&a.i.level==b.volume.level||(a.i=b.volume,a.h.dispatchEvent(new Zb(a.i.level,a.i.muted)));a.aa!=b.isActiveInput&&(a.aa=b.isActiveInput,b=a.aa,a.h.dispatchEvent(new Sb(null==b?-1:b?1:0)))};S.prototype.ub=function(){return this.c};S.prototype.getSessionObj=S.prototype.ub;S.prototype.tb=function(){return this.Ta};S.prototype.getSessionId=S.prototype.tb;S.prototype.ta=function(){return this.g};S.prototype.getSessionState=S.prototype.ta;
-S.prototype.qb=function(){return this.Qa};S.prototype.getCastDevice=S.prototype.qb;S.prototype.ob=function(){return this.ba};S.prototype.getApplicationMetadata=S.prototype.ob;S.prototype.pb=function(){return this.U};S.prototype.getApplicationStatus=S.prototype.pb;S.prototype.nb=function(){var a=this.aa;return null==a?-1:a?1:0};S.prototype.getActiveInputState=S.prototype.nb;S.prototype.Ia=function(a){"SESSION_ENDED"!=this.g&&(a?this.c.stop(l,l):this.c.leave(l,l))};S.prototype.endSession=S.prototype.Ia;
-S.prototype.setVolume=function(a){var b=N(),c=Promise.resolve(b.K);this.i&&(this.i.level=a,this.i.muted=!1);this.c.setReceiverVolumeLevel(a,function(){return b.resolve()},function(a){return b.reject(a.code)});return c};S.prototype.setVolume=S.prototype.setVolume;S.prototype.vb=function(){return this.i?this.i.level:null};S.prototype.getVolume=S.prototype.vb;
-S.prototype.Mb=function(a){var b=N(),c=Promise.resolve(b.K);this.i&&(this.i.muted=a);this.c.setReceiverMuted(a,function(){return b.resolve()},function(a){return b.reject(a.code)});return c};S.prototype.setMute=S.prototype.Mb;S.prototype.isMute=function(){return this.i?this.i.muted:null};S.prototype.isMute=S.prototype.isMute;S.prototype.sendMessage=function(a,b){var c=N(),d=Promise.resolve(c.K);this.c.sendMessage(a,b,function(){return c.resolve()},function(a){return c.reject(a.code)});return d};
-S.prototype.sendMessage=S.prototype.sendMessage;S.prototype.addMessageListener=function(a,b){this.c.addMessageListener(a,b)};S.prototype.addMessageListener=S.prototype.addMessageListener;S.prototype.removeMessageListener=function(a,b){this.c.removeMessageListener(a,b)};S.prototype.removeMessageListener=S.prototype.removeMessageListener;S.prototype.loadMedia=function(a){var b=N(),c=Promise.resolve(b.K);this.c.loadMedia(a,function(){b.resolve()},function(a){b.reject(a.code)});return c};
-S.prototype.loadMedia=S.prototype.loadMedia;S.prototype.Ja=function(){a:{var a=this.c;if(a.media){a=na(a.media);for(var b=a.next();!b.done;b=a.next())if(b=b.value,!b.idleReason){a=b;break a}}a=null}return a};S.prototype.getMediaSession=S.prototype.Ja;S.prototype.wa=function(a){a.media&&this.h.dispatchEvent(new Yb(a))};S.prototype.ya=function(a){return a.map(function(a,c){return c.name})};var bc=function(a){this.type="caststatechanged";this.castState=a};g(bc,Q);r("cast.framework.CastStateEventData",bc);var cc=function(a,b,c){this.type="sessionstatechanged";this.session=a;this.sessionState=b;this.errorCode=void 0!==c?c:null};g(cc,Q);r("cast.framework.SessionStateEventData",cc);var Ta=Sa("cast.framework.CastContext"),T=function(){this.h=new R;this.va=!1;this.u=null;this.Ba=!1;this.N="NO_DEVICES_AVAILABLE";this.l="NO_SESSION";this.ea=this.b=null};r("cast.framework.CastContext",T);T.prototype.addEventListener=function(a,b){this.h.addEventListener(a,b)};T.prototype.addEventListener=T.prototype.addEventListener;T.prototype.removeEventListener=function(a,b){this.h.removeEventListener(a,b)};T.prototype.removeEventListener=T.prototype.removeEventListener;
-T.prototype.Nb=function(a){if(this.va)B("CastContext already initialized, new options are ignored");else{this.u=new Xb(a);if(!this.u||!this.u.receiverApplicationId)throw Error("Missing application id in cast options");a=new chrome.cast.SessionRequest(this.u.receiverApplicationId);this.u.language&&(a.language=this.u.language);a=new chrome.cast.ApiConfig(a,this.Ua.bind(this),this.Jb.bind(this),this.u.autoJoinPolicy);chrome.cast.initialize(a,l,l);chrome.cast.addReceiverActionListener(this.Ib.bind(this));
-this.va=!0}};T.prototype.setOptions=T.prototype.Nb;T.prototype.rb=function(){return this.N};T.prototype.getCastState=T.prototype.rb;T.prototype.ta=function(){return this.l};T.prototype.getSessionState=T.prototype.ta;
-T.prototype.requestSession=function(){var a=this;if(!this.va)throw Error("Cannot start session before cast options are provided");var b=N(),c=Promise.resolve(b.K);ub(b.K,null,l,void 0);c.catch(l);var d="NOT_CONNECTED"==this.N;chrome.cast.requestSession(function(c){a.Ua(c);b.resolve(null)},function(c){d&&U(a,"SESSION_START_FAILED",c?c.code:void 0);b.reject(c.code)});return c};T.prototype.requestSession=T.prototype.requestSession;T.prototype.sb=function(){return this.b};
-T.prototype.getCurrentSession=T.prototype.sb;T.prototype.ib=function(a){this.b&&this.b.Ia(a)};T.prototype.endCurrentSession=T.prototype.ib;T.prototype.Jb=function(a){(this.Ba=a==chrome.cast.ReceiverAvailability.AVAILABLE)&&!this.b&&this.ea&&this.u.resumeSavedSession&&chrome.cast.requestSessionById(this.ea);dc(this)};T.prototype.Ib=function(a,b){this.b||b!=chrome.cast.ReceiverAction.CAST?this.b&&b==chrome.cast.ReceiverAction.STOP?U(this,"SESSION_ENDING"):a&&ac(this.b,a):U(this,"SESSION_STARTING")};
-T.prototype.Ua=function(a){var b="SESSION_STARTING"==this.l?"SESSION_STARTED":"SESSION_RESUMED";this.ea=null;this.b=new S(a,b);a.addUpdateListener(this.Ca.bind(this));U(this,b)};
-T.prototype.Ca=function(){if(this.b)switch(this.b.c.status){case chrome.cast.SessionStatus.DISCONNECTED:case chrome.cast.SessionStatus.STOPPED:U(this,"SESSION_ENDED");this.ea=this.b.Ta;this.b=null;break;case chrome.cast.SessionStatus.CONNECTED:var a=this.b,b=a.ba,c=a.c,d;if(d=b.applicationId==c.appId&&b.name==c.displayName)a:if(d=b.namespaces,b=b.ya(c.namespaces||[]),pa(d)&&pa(b)&&d.length==b.length){c=d.length;for(var e=0;e<c;e++)if(d[e]!==b[e]){d=!1;break a}d=!0}else d=!1;d||(a.ba=new Tb(a.c),a.h.dispatchEvent(new Ub(a.ba)));
-ac(a,a.c.receiver);a.U!=a.c.statusText&&(a.U=a.c.statusText,a.h.dispatchEvent(new Vb(a.U)));break;default:B("Unknown session status "+this.b.c.status)}else B("Received session update event without known session")};
-var U=function(a,b,c){b==a.l?"SESSION_START_FAILED"==b&&a.h.dispatchEvent(new cc(a.b,a.l,c)):(a.l=b,a.b&&(a.b.g=a.l),a.h.dispatchEvent(new cc(a.b,a.l,c)),dc(a))},dc=function(a){var b="NO_DEVICES_AVAILABLE";switch(a.l){case "SESSION_STARTING":case "SESSION_ENDING":b="CONNECTING";break;case "SESSION_STARTED":case "SESSION_RESUMED":b="CONNECTED";break;case "NO_SESSION":case "SESSION_ENDED":case "SESSION_START_FAILED":b=a.Ba?"NOT_CONNECTED":"NO_DEVICES_AVAILABLE";break;default:B("Unexpected session state: "+
-a.l)}b!==a.N&&(a.N=b,a.h.dispatchEvent(new bc(b)))};T.ua=void 0;T.O=function(){return T.ua?T.ua:T.ua=new T};T.getInstance=T.O;var V=function(a){this.F=a;try{this.F.createShadowRoot().innerHTML=cb().content}catch(b){this.F.innerHTML=db()}},gc=function(a,b){a.ka=T.O();a.Oa=a.Db.bind(a);a.ga=[];for(var c=0;3>c;c++)a.ga.push(b.querySelector("#cast_caf_icon_arch"+c));a.ab=b.querySelector("#cast_caf_icon_box");a.bb=b.querySelector("#cast_caf_icon_boxfill");a.Aa=0;a.J=null;a.hb=window.getComputedStyle(a.F,null).display;a.g=a.ka.N;ec(a);a.F.addEventListener("click",fc);a.ka.addEventListener("caststatechanged",a.Oa)},hc=function(a){a.ka.removeEventListener("caststatechanged",
-a.Oa);null!==a.J&&(window.clearTimeout(a.J),a.J=null)},fc=function(){T.O().requestSession()};V.prototype.Db=function(a){this.g=a.castState;ec(this)};var ec=function(a){if("NO_DEVICES_AVAILABLE"==a.g)a.F.style.display="none";else switch(a.F.style.display=a.hb,a.g){case "NOT_CONNECTED":ic(a,!1,"cast_caf_state_h");break;case "CONNECTING":ic(a,!1,"cast_caf_state_h");a.J||a.Ha();break;case "CONNECTED":ic(a,!0,"cast_caf_state_c")}};
-V.prototype.Ha=function(){this.J=null;if("CONNECTING"==this.g){for(var a=0;3>a;a++)jc(this.ga[a],a==this.Aa);this.Aa=(this.Aa+1)%3;this.J=window.setTimeout(this.Ha.bind(this),300)}};var ic=function(a,b,c){for(var d=na(a.ga),e=d.next();!e.done;e=d.next())jc(e.value,b);jc(a.ab,b);a.bb.setAttribute("class",c)},jc=function(a,b){a.setAttribute("class",b?"cast_caf_state_c":"cast_caf_state_d")},W=function(){return HTMLElement.call(this)||this};g(W,HTMLElement);
-W.prototype.createdCallback=function(){this.s=new V(this)};W.prototype.attachedCallback=function(){gc(this.s,this.shadowRoot||this)};W.prototype.detachedCallback=function(){hc(this.s)};W.prototype.la=function(){};var X=function(){return HTMLButtonElement.call(this)||this};g(X,HTMLButtonElement);X.prototype.createdCallback=function(){this.s=new V(this)};X.prototype.attachedCallback=function(){gc(this.s,this.shadowRoot||this)};X.prototype.detachedCallback=function(){hc(this.s)};X.prototype.la=function(){};
-var lc=function(){var a=document.createElement.bind(document);document.createElement=function(b,c){if("google-cast-launcher"===b||"button"===b&&c&&("google-cast-button"===c||"google-cast-button"===c.is)){var d=a(b,c);kc(d);return d}return a.apply(null,arguments)}},mc=function(){document.querySelectorAll("button[is=google-cast-button], google-cast-launcher").forEach(function(a){return kc(a)})},kc=function(a){a.s=new V(a);gc(a.s,a.shadowRoot||a);a.la=function(){hc(a.s)}};
-document.registerElement?(document.registerElement("google-cast-button",{prototype:X.prototype,extends:"button"}),document.registerElement("google-cast-launcher",{prototype:W.prototype})):("complete"!==document.readyState?window.addEventListener("load",mc):mc(),lc());r("cast.framework.RemotePlayer",function(){this.isMediaLoaded=this.isConnected=!1;this.currentTime=this.duration=0;this.volumeLevel=1;this.canControlVolume=!0;this.canSeek=this.canPause=this.isMuted=this.isPaused=!1;this.displayStatus=this.title=this.statusText=this.displayName="";this.controller=this.savedPlayerState=this.playerState=this.imageUrl=this.mediaInfo=null});var nc=function(a,b,c){this.type=a;this.field=b;this.value=c};g(nc,Q);r("cast.framework.RemotePlayerChangedEvent",nc);var Y=function(a){var b=new R;P.call(this,oc(a,b));this.h=b;a=T.O();a.addEventListener("sessionstatechanged",this.Lb.bind(this));(a=a.b)?Hb(this,a.c):this.w()};g(Y,P);r("cast.framework.RemotePlayerController",Y);var oc=function(a,b){return new window.Proxy(a,{set:function(a,d,e){if(e===a[d])return!0;a[d]=e;b.dispatchEvent(new nc(d+"Changed",d,e));b.dispatchEvent(new nc("anyChanged",d,e));return!0}})};Y.prototype.addEventListener=function(a,b){this.h.addEventListener(a,b)};
-Y.prototype.addEventListener=Y.prototype.addEventListener;Y.prototype.removeEventListener=function(a,b){this.h.removeEventListener(a,b)};Y.prototype.removeEventListener=Y.prototype.removeEventListener;Y.prototype.Lb=function(a){switch(a.sessionState){case "SESSION_STARTED":case "SESSION_RESUMED":this.a.isConnected=!0;var b=a.session&&a.session.c;b&&(Hb(this,b),a.session.addEventListener("mediasession",this.Ma.bind(this)))}};
-Y.prototype.w=function(a){var b=T.O().b;b?this.a.savedPlayerState=null:this.a.isConnected&&(this.a.savedPlayerState={mediaInfo:this.a.mediaInfo,currentTime:this.a.currentTime,isPaused:this.a.isPaused});P.prototype.w.call(this,a);this.a.isConnected=!!b;this.a.statusText=b&&b.U||"";a=b&&b.Ja();this.a.playerState=a&&a.playerState||null};
-Y.prototype.V=function(a){P.prototype.V.call(this,a);var b=(this.a.mediaInfo=a)&&a.metadata;a=null;var c="";b&&(c=b.title||"",(b=b.images)&&0<b.length&&(a=b[0].url));this.a.title=c;this.a.imageUrl=a};Y.prototype.za=function(){P.prototype.za.call(this)};Y.prototype.playOrPause=Y.prototype.za;Y.prototype.stop=function(){P.prototype.stop.call(this)};Y.prototype.stop=Y.prototype.stop;Y.prototype.seek=function(){P.prototype.seek.call(this)};Y.prototype.seek=Y.prototype.seek;Y.prototype.xa=function(){P.prototype.xa.call(this)};
-Y.prototype.muteOrUnmute=Y.prototype.xa;Y.prototype.Ea=function(){P.prototype.Ea.call(this)};Y.prototype.setVolumeLevel=Y.prototype.Ea;Y.prototype.qa=function(a){return P.prototype.qa.call(this,a)};Y.prototype.getFormattedTime=Y.prototype.qa;Y.prototype.ra=function(a,b){return P.prototype.ra.call(this,a,b)};Y.prototype.getSeekPosition=Y.prototype.ra;Y.prototype.sa=function(a,b){return P.prototype.sa.call(this,a,b)};Y.prototype.getSeekTime=Y.prototype.sa; }).call(window);
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-(function() {var e=function(a){return!!document.currentScript&&(-1!=document.currentScript.src.indexOf("?"+a)||-1!=document.currentScript.src.indexOf("&"+a))},f=e("loadGamesSDK")?"/cast_game_sender.js":"/cast_sender.js",g=e("loadCastFramework")||e("loadCastApplicationFramework"),h=function(){return"function"==typeof window.__onGCastApiAvailable?window.__onGCastApiAvailable:null},k=["pkedcjkdefgpdelpbcmbmeomcjbeemfm","enhhojjnijigcajfphajepfemndkmdlo"],m=function(a){a.length?l(a.shift(),function(){m(a)}):n()},
-p=function(a){return"chrome-extension://"+a+f},l=function(a,c,b){var d=document.createElement("script");d.onerror=c;b&&(d.onload=b);d.src=a;(document.head||document.documentElement).appendChild(d)},q=function(a){return 0<=window.navigator.userAgent.indexOf(a)},n=function(){var a=h();a&&a(!1,"No cast extension found")},r=function(){if(g){var a=2,c=h(),b=function(){a--;0==a&&c&&c(!0)};window.__onGCastApiAvailable=b;l("//www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js",n,b)}};if(q("CriOS")){var t=window.__gCrWeb&&window.__gCrWeb.message&&window.__gCrWeb.message.invokeOnHost;t&&(r(),t({command:"cast.sender.init"}))}else if(q("Android")&&q("Chrome/")&&window.navigator.presentation){r();var u=window.navigator.userAgent.match(/Chrome\/([0-9]+)/);m(["//www.gstatic.com/eureka/clank/"+(u?parseInt(u[1],10):0)+f,"//www.gstatic.com/eureka/clank"+f])}else window.chrome&&window.navigator.presentation&&!q("Edge")?(r(),m(k.map(p))):n();})();
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-
-var _ = __webpack_require__(8);
-var PlaylistLoader = __webpack_require__(37);
-var CoverFlow = __webpack_require__(142);
-
-var Html5 = function(api) {
-
-	var _this = this;
-
-	var div = api.el;
-	var config = api.config;
-	var playlist;
-	var coverFlow;
-	var textField;
-
-	var rotateInterval;
-
-	function setup() {
-		
-		var styleElement = document.createElement('style');
-		styleElement.type = 'text/css';
-		document.getElementsByTagName('head')[0].appendChild(styleElement);
-		styleElement.appendChild(document.createTextNode(config.textstyle));
-
-		var rgb = _.hexToRgb(config.backgroundcolor);
-		config.backgroundcolor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + config.backgroundopacity + ')';
-		div.style.backgroundColor = config.backgroundcolor;
-
-		if (config.gradientcolor !== undefined) {
-			rgb = _.hexToRgb(config.gradientcolor);
-			config.gradientcolor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + config.backgroundopacity + ')';
-			div.style.background = '-webkit-gradient(linear, left top, left bottom, from(' + config.gradientcolor + '), to(' + config.backgroundcolor + '))';
-		}
-
-		api.trigger('ready');
-		
-		api.events.playlist.on(playlistLoaded);
-		var loader = new PlaylistLoader(api);
-		loader.load(api.config.playlist);
-	}
-
-	function playlistLoaded(p) {
-		playlist = p;
-
-		if (config.rotatedelay > 0) {
-			//must be before coverFlow is created, event order
-			div.addEventListener('touchstart', _this.stopRotation, true);
-			div.addEventListener('mousedown', _this.stopRotation, true);
-			div.addEventListener('keydown', _this.stopRotation, true);
-		}
-		
-		config.coverheight = config.coverheight == 'auto' ? config.height : config.coverheight;
-		
-    if (coverFlow) coverFlow.destroy();
-
-    if (textField) div.removeChild(textField);
-		if (config.showtext === true) {
-			textField = document.createElement('div');
-			_.addClass(textField, 'coverflow-text');
-			div.appendChild(textField);
-    }
-    
-		coverFlow = new CoverFlow(div, playlist, config);
-		div.appendChild(coverFlow.el);
-
-	
-
-		coverFlow.on('focus', coverFocus);
-		coverFlow.on('click', coverClick);
-		coverFlow.to(config.item);
-
-		_this.resize(config.width, config.height);
-
-		if (config.rotatedelay > 0) {
-			_this.stopRotation();
-			rotateInterval = setInterval(rotateHandler, config.rotatedelay);
-		}
-
-		if (config.mousewheel) {
-			div.addEventListener('mousewheel', scrollOnMousewheel);
-			div.addEventListener('DOMMouseScroll', scrollOnMousewheel);
-		}
-	}
-
-	function scrollOnMousewheel(e) {
-		e.preventDefault();
-
-		_this.stopRotation();
-		
-		var delta = e.detail ? e.detail * (-120) : e.wheelDelta;
-		var count = Math.ceil(Math.abs(delta) / 120);
-		if (count > 0) {
-			var sign = Math.abs(delta) / delta;
-			var func = null;
-			if (sign > 0) func = _this.left;
-			else if (sign < 0) func = _this.right;
-			if (typeof func === 'function') {
-				for (var i = 0; i < count; i++) func();
-			}
-		}
-	}
-
-	function coverFocus(index) {
-		if (config.showtext === true) {
-			var d = playlist[index];
-			if (d) {
-				textField.innerHTML = '<h1>' + (d.title === undefined ? '' : d.title) + 
-				'</h1><h2>' + (d.description === undefined ? '' : d.description) + '</h2>';
-			}
-		}
-
-		api.trigger('focus', index, playlist[index] ? playlist[index].link : undefined);
-	}
-
-	function coverClick(index) {
-		_this.stopRotation();
-		
-		api.trigger('click', index, playlist[index] ? playlist[index].link : undefined);
-	}
-
-	this.stopRotation = function() {
-		if (rotateInterval) {
-			div.removeEventListener('touchstart', _this.stopRotation, true);
-			div.removeEventListener('mousedown', _this.stopRotation, true);
-			div.removeEventListener('keydown', _this.stopRotation, true);
-			clearInterval(rotateInterval);
-			rotateInterval = false;
-		}
-	};
-		
-	function rotateHandler() {
-		coverFlow.next();
-	}
-
-	this.resize = function(wid, hei) {
-
-		if (coverFlow) {
-			coverFlow.resize(wid, hei);
-		}
-
-		if (textField) {
-		//	textField.style.top = (hei - config.textoffset) + 'px';
-		}
-	};
-
-	this.left = function() {
-		_this.stopRotation();
-		coverFlow.left();
-	};
-	this.right = function() {
-		_this.stopRotation();
-		coverFlow.right();
-	};
-	this.prev = function() {
-		_this.stopRotation();
-		coverFlow.prev();
-	};
-	this.next = function() {
-		_this.stopRotation();
-		coverFlow.next();
-	};
-	this.to = function(index) {
-		_this.stopRotation();
-		coverFlow.to(index);
-	};
-	this.destroy = function() {
-		if (coverFlow) coverFlow.destroy();
-	};
-
-	setup();
-};
-
-module.exports = Html5;
-
-
-/***/ }),
-/* 37 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(_) {
-
-var PlaylistLoader = function(api) {
-
-	var config = api.config;
-
-	this.load = function(p) {
-		if (typeof p === 'string') {
-			if (p.indexOf('callback=?') !== -1) {
-				_.jsonp(p, jsonpLoaded);
-			} else {
-				_.ajax(p, ajaxLoaded);
-			}
-		} else if (typeof p === 'object') {
-			api.events.playlist.trigger(p);
-			api.events.playlist.off();
-		}
-	};
-
-	function jsonpLoaded(json) {
-
-		var playlist = [];
-		if (config.hasOwnProperty('route')) {
-			if (config.route.hasOwnProperty('playlist')) {
-				json = json[config.route.playlist];
-			}
-
-			for (var i = 0; i < json.length; i++) {
-				playlist[i] = {
-					image: findJsonValue(json[i], 'image'),
-					title: findJsonValue(json[i], 'title'),
-					description: findJsonValue(json[i], 'description'),
-					link: findJsonValue(json[i], 'link'),
-					duration: findJsonValue(json[i], 'duration')
-				};
-			}
-		}
-
-		api.events.playlist.trigger(playlist);
-		api.events.playlist.off();
-	}
-
-	function findJsonValue(obj, type) {
-		if (config.route.hasOwnProperty(type)) {
-			var value = obj;
-			var keys = config.route[type].split('.');
-			for (var i = 0; i < keys.length; i++) {
-				value = value[keys[i]];
-			}
-			return value;
-		} else {
-			return obj[type];
-		}
-	}
-	
-	function ajaxLoaded(xmlhttp) {
-		var playlist = JSON.parse(xmlhttp.responseText);
-		api.events.playlist.trigger(playlist);
-		api.events.playlist.off();
-	}
-};
-
-module.exports = PlaylistLoader;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
-
-/***/ }),
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
 /* 38 */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
+"use strict";
+/* WEBPACK VAR INJECTION */(function(global) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
 
-var Controller = function(flow, elem, config) {
-	this.flow = flow;
-	this.elem = elem;
-	this.config = config;
-	
-	this.currentX = 0;
-	this.currentY = 0;
-	//this.transformProp = Modernizr.prefixed('transitionDuration');
-};
+// Copyright Google Inc. All Rights Reserved.
+(function () {
+  'use strict';
 
-Controller.prototype.handleEvent = function(e) {
-	this[e.type](e);
-};
+  var f,
+      aa = "function" == typeof Object.create ? Object.create : function (a) {
+    var b = function b() {};
 
-Controller.prototype.touchstart = function(e) {
-	e.stopImmediatePropagation();
-	this.startX = e.touches[0].pageX - this.currentX;
-	this.startY = e.touches[0].pageY - this.currentY;
-	this.pageY = e.touches[0].pageY;
-	this.moved = false;
-	window.addEventListener('touchmove', this, true);
-	window.addEventListener('touchend', this, true);
-	this.elem.style[this.transformProp] = '0s';
-};
+    b.prototype = a;
+    return new b();
+  },
+      ba;
+  if ("function" == typeof Object.setPrototypeOf) ba = Object.setPrototypeOf;else {
+    var ca;
 
-Controller.prototype.touchmove = function(e) {
-	e.stopImmediatePropagation();
+    a: {
+      var da = {
+        Za: !0
+      },
+          ea = {};
 
-	this.lastX = this.currentX;
-	this.lastY = this.currentY;
-	this.currentX = e.touches[0].pageX - this.startX;
-	this.currentY = e.touches[0].pageY - this.startY;
+      try {
+        ea.__proto__ = da;
+        ca = ea.Za;
+        break a;
+      } catch (a) {}
 
-	if (Math.abs(this.currentX - this.lastX) > Math.abs(this.currentY - this.lastY)) {
-		e.preventDefault();
-		this.moved = true;
+      ca = !1;
+    }
 
-		this.lastMoveTime = new Date().getTime();
-		this.flow.update(this.currentX);
-	} else {
-		window.removeEventListener('touchmove', this, true);
-		window.removeEventListener('touchend', this, true);	
-	}
-};
+    ba = ca ? function (a, b) {
+      a.__proto__ = b;
+      if (a.__proto__ !== b) throw new TypeError(a + " is not extensible");
+      return a;
+    } : null;
+  }
 
-Controller.prototype.touchend = function(e) {
-	e.stopImmediatePropagation();
-	e.preventDefault();
+  var fa = ba,
+      g = function g(a, b) {
+    a.prototype = aa(b.prototype);
+    a.prototype.constructor = a;
+    if (fa) fa(a, b);else for (var c in b) {
+      if ("prototype" != c) if (Object.defineProperties) {
+        var d = Object.getOwnPropertyDescriptor(b, c);
+        d && Object.defineProperty(a, c, d);
+      } else a[c] = b[c];
+    }
+    a.Xa = b.prototype;
+  },
+      ha = "function" == typeof Object.defineProperties ? Object.defineProperty : function (a, b, c) {
+    a != Array.prototype && a != Object.prototype && (a[b] = c.value);
+  },
+      h = "undefined" != typeof window && window === this ? this : "undefined" != typeof global && null != global ? global : this,
+      _ia = function ia() {
+    _ia = function ia() {};
 
-	window.removeEventListener('touchmove', this, true);
-	window.removeEventListener('touchend', this, true);
+    h.Symbol || (h.Symbol = ja);
+  },
+      ja = function () {
+    var a = 0;
+    return function (b) {
+      return "jscomp_symbol_" + (b || "") + a++;
+    };
+  }(),
+      _la = function la() {
+    _ia();
 
-	this.elem.style[this.transformProp] = this.config.tweentime + 's';
+    var a = h.Symbol.iterator;
+    a || (a = h.Symbol.iterator = h.Symbol("iterator"));
+    "function" != typeof Array.prototype[a] && ha(Array.prototype, a, {
+      configurable: !0,
+      writable: !0,
+      value: function value() {
+        return ka(this);
+      }
+    });
 
-	if (this.moved) {
-		var delta = this.currentX - this.lastX;
-		var dt = new Date().getTime() - this.lastMoveTime + 1;
-		
-		this.currentX = this.currentX + delta * 50 / dt;
-		this.flow.updateTouchEnd(this);
-	} else {
-		this.flow.tap(e, this.currentX);
-	}
-};
+    _la = function la() {};
+  },
+      ka = function ka(a) {
+    var b = 0;
+    return ma(function () {
+      return b < a.length ? {
+        done: !1,
+        value: a[b++]
+      } : {
+        done: !0
+      };
+    });
+  },
+      ma = function ma(a) {
+    _la();
 
-Controller.prototype.to = function(index) {
-	this.currentX = -index * this.config.covergap;
-	this.flow.update(this.currentX);
-};
+    a = {
+      next: a
+    };
 
-module.exports = Controller;
+    a[h.Symbol.iterator] = function () {
+      return this;
+    };
 
+    return a;
+  },
+      na = function na(a) {
+    _la();
+
+    var b = a[Symbol.iterator];
+    return b ? b.call(a) : ka(a);
+  },
+      k = this,
+      l = function l() {},
+      oa = function oa(a) {
+    var b = __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(a);
+
+    if ("object" == b) {
+      if (a) {
+        if (a instanceof Array) return "array";
+        if (a instanceof Object) return b;
+        var c = Object.prototype.toString.call(a);
+        if ("[object Window]" == c) return "object";
+        if ("[object Array]" == c || "number" == typeof a.length && "undefined" != typeof a.splice && "undefined" != typeof a.propertyIsEnumerable && !a.propertyIsEnumerable("splice")) return "array";
+        if ("[object Function]" == c || "undefined" != typeof a.call && "undefined" != typeof a.propertyIsEnumerable && !a.propertyIsEnumerable("call")) return "function";
+      } else return "null";
+    } else if ("function" == b && "undefined" == typeof a.call) return "object";
+    return b;
+  },
+      pa = function pa(a) {
+    var b = oa(a);
+    return "array" == b || "object" == b && "number" == typeof a.length;
+  },
+      p = function p(a) {
+    return "function" == oa(a);
+  },
+      qa = function qa(a) {
+    var b = __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(a);
+
+    return "object" == b && null != a || "function" == b;
+  },
+      ra = function ra(a, b, c) {
+    return a.call.apply(a.bind, arguments);
+  },
+      sa = function sa(a, b, c) {
+    if (!a) throw Error();
+
+    if (2 < arguments.length) {
+      var d = Array.prototype.slice.call(arguments, 2);
+      return function () {
+        var c = Array.prototype.slice.call(arguments);
+        Array.prototype.unshift.apply(c, d);
+        return a.apply(b, c);
+      };
+    }
+
+    return function () {
+      return a.apply(b, arguments);
+    };
+  },
+      _q = function q(a, b, c) {
+    _q = Function.prototype.bind && -1 != Function.prototype.bind.toString().indexOf("native code") ? ra : sa;
+    return _q.apply(null, arguments);
+  },
+      ta = Date.now || function () {
+    return +new Date();
+  },
+      r = function r(a, b) {
+    a = a.split(".");
+    var c = k;
+    a[0] in c || "undefined" == typeof c.execScript || c.execScript("var " + a[0]);
+
+    for (var d; a.length && (d = a.shift());) {
+      a.length || void 0 === b ? c = c[d] && c[d] !== Object.prototype[d] ? c[d] : c[d] = {} : c[d] = b;
+    }
+  },
+      t = function t(a, b) {
+    function c() {}
+
+    c.prototype = b.prototype;
+    a.Xa = b.prototype;
+    a.prototype = new c();
+    a.prototype.constructor = a;
+
+    a.Vb = function (a, c, m) {
+      for (var d = Array(arguments.length - 2), e = 2; e < arguments.length; e++) {
+        d[e - 2] = arguments[e];
+      }
+
+      return b.prototype[c].apply(a, d);
+    };
+  };
+
+  var u = function u(a) {
+    if (Error.captureStackTrace) Error.captureStackTrace(this, u);else {
+      var b = Error().stack;
+      b && (this.stack = b);
+    }
+    a && (this.message = String(a));
+  };
+
+  t(u, Error);
+  u.prototype.name = "CustomError";
+
+  var ua = function ua(a, b) {
+    a = a.split("%s");
+
+    for (var c = "", d = a.length - 1, e = 0; e < d; e++) {
+      c += a[e] + (e < b.length ? b[e] : "%s");
+    }
+
+    u.call(this, c + a[d]);
+  };
+
+  t(ua, u);
+  ua.prototype.name = "AssertionError";
+
+  var va = function va(a, b) {
+    throw new ua("Failure" + (a ? ": " + a : ""), Array.prototype.slice.call(arguments, 1));
+  };
+
+  var Da = function Da(a) {
+    if (!wa.test(a)) return a;
+    -1 != a.indexOf("&") && (a = a.replace(xa, "&amp;"));
+    -1 != a.indexOf("<") && (a = a.replace(ya, "&lt;"));
+    -1 != a.indexOf(">") && (a = a.replace(za, "&gt;"));
+    -1 != a.indexOf('"') && (a = a.replace(Aa, "&quot;"));
+    -1 != a.indexOf("'") && (a = a.replace(Ba, "&#39;"));
+    -1 != a.indexOf("\x00") && (a = a.replace(Ca, "&#0;"));
+    return a;
+  },
+      xa = /&/g,
+      ya = /</g,
+      za = />/g,
+      Aa = /"/g,
+      Ba = /'/g,
+      Ca = /\x00/g,
+      wa = /[\x00&<>"']/;
+
+  var v;
+
+  a: {
+    var Ea = k.navigator;
+
+    if (Ea) {
+      var Fa = Ea.userAgent;
+
+      if (Fa) {
+        v = Fa;
+        break a;
+      }
+    }
+
+    v = "";
+  }
+
+  ;
+
+  var w = function w(a, b, c) {
+    this.reset(a, b, c, void 0, void 0);
+  };
+
+  w.prototype.na = null;
+  var Ga = 0;
+
+  w.prototype.reset = function (a, b, c, d, e) {
+    "number" == typeof e || Ga++;
+    this.Ya = d || ta();
+    this.B = a;
+    this.Ab = b;
+    this.La = c;
+    delete this.na;
+  };
+
+  w.prototype.Da = function (a) {
+    this.B = a;
+  };
+
+  var x = function x(a) {
+    this.Na = a;
+    this.P = this.ia = this.B = this.j = null;
+  },
+      y = function y(a, b) {
+    this.name = a;
+    this.value = b;
+  };
+
+  y.prototype.toString = function () {
+    return this.name;
+  };
+
+  var Ha = new y("SHOUT", 1200),
+      Ia = new y("SEVERE", 1E3),
+      Ja = new y("WARNING", 900),
+      Ka = new y("INFO", 800),
+      La = new y("CONFIG", 700),
+      Ma = [new y("OFF", Infinity), Ha, Ia, Ja, Ka, La, new y("FINE", 500), new y("FINER", 400), new y("FINEST", 300), new y("ALL", 0)],
+      z = null,
+      Na = function Na(a) {
+    if (!z) {
+      z = {};
+
+      for (var b = 0, c; c = Ma[b]; b++) {
+        z[c.value] = c, z[c.name] = c;
+      }
+    }
+
+    if (a in z) return z[a];
+
+    for (b = 0; b < Ma.length; ++b) {
+      if (c = Ma[b], c.value <= a) return c;
+    }
+
+    return null;
+  };
+
+  x.prototype.getName = function () {
+    return this.Na;
+  };
+
+  x.prototype.getParent = function () {
+    return this.j;
+  };
+
+  x.prototype.Da = function (a) {
+    this.B = a;
+  };
+
+  var Oa = function Oa(a) {
+    if (a.B) return a.B;
+    if (a.j) return Oa(a.j);
+    va("Root logger has no level set.");
+    return null;
+  };
+
+  x.prototype.log = function (a, b, c) {
+    if (a.value >= Oa(this).value) for (p(b) && (b = b()), a = new w(a, String(b), this.Na), c && (a.na = c), c = this; c;) {
+      var d = c,
+          e = a;
+      if (d.P) for (var m = 0; b = d.P[m]; m++) {
+        b(e);
+      }
+      c = c.getParent();
+    }
+  };
+
+  x.prototype.info = function (a, b) {
+    this.log(Ka, a, b);
+  };
+
+  var Pa = {},
+      A = null,
+      Qa = function Qa() {
+    A || (A = new x(""), Pa[""] = A, A.Da(La));
+  },
+      Ra = function Ra() {
+    Qa();
+    return A;
+  },
+      Sa = function Sa(a) {
+    Qa();
+    var b;
+
+    if (!(b = Pa[a])) {
+      b = new x(a);
+      var c = a.lastIndexOf("."),
+          d = a.substr(c + 1);
+      c = Sa(a.substr(0, c));
+      c.ia || (c.ia = {});
+      c.ia[d] = b;
+      b.j = c;
+      Pa[a] = b;
+    }
+
+    return b;
+  };
+
+  var B = function B(a) {
+    var b = Ta;
+    b && b.log(Ja, a, void 0);
+  };
+
+  var C = function C() {
+    this.Ra = ta();
+  },
+      Ua = null;
+
+  C.prototype.set = function (a) {
+    this.Ra = a;
+  };
+
+  C.prototype.reset = function () {
+    this.set(ta());
+  };
+
+  C.prototype.get = function () {
+    return this.Ra;
+  };
+
+  var Va = function Va(a) {
+    this.Gb = a || "";
+    Ua || (Ua = new C());
+    this.Rb = Ua;
+  };
+
+  f = Va.prototype;
+  f.Fa = !0;
+  f.Va = !0;
+  f.Pb = !0;
+  f.Ob = !0;
+  f.Wa = !1;
+  f.Qb = !1;
+
+  var E = function E(a) {
+    return 10 > a ? "0" + a : String(a);
+  },
+      Wa = function Wa(a, b) {
+    a = (a.Ya - b) / 1E3;
+    b = a.toFixed(3);
+    var c = 0;
+    if (1 > a) c = 2;else for (; 100 > a;) {
+      c++, a *= 10;
+    }
+
+    for (; 0 < c--;) {
+      b = " " + b;
+    }
+
+    return b;
+  },
+      Xa = function Xa(a) {
+    Va.call(this, a);
+  };
+
+  t(Xa, Va);
+
+  var Ya = function Ya() {
+    this.Hb = _q(this.$a, this);
+    this.Y = new Xa();
+    this.Y.Va = !1;
+    this.Y.Wa = !1;
+    this.Ka = this.Y.Fa = !1;
+    this.lb = {};
+  };
+
+  Ya.prototype.$a = function (a) {
+    if (!this.lb[a.La]) {
+      var b = this.Y;
+      var c = [];
+      c.push(b.Gb, " ");
+
+      if (b.Va) {
+        var d = new Date(a.Ya);
+        c.push("[", E(d.getFullYear() - 2E3) + E(d.getMonth() + 1) + E(d.getDate()) + " " + E(d.getHours()) + ":" + E(d.getMinutes()) + ":" + E(d.getSeconds()) + "." + E(Math.floor(d.getMilliseconds() / 10)), "] ");
+      }
+
+      b.Pb && c.push("[", Wa(a, b.Rb.get()), "s] ");
+      b.Ob && c.push("[", a.La, "] ");
+      b.Qb && c.push("[", a.B.name, "] ");
+      c.push(a.Ab);
+      b.Wa && (d = a.na) && c.push("\n", d instanceof Error ? d.message : d.toString());
+      b.Fa && c.push("\n");
+      b = c.join("");
+      if (c = Za) switch (a.B) {
+        case Ha:
+          F(c, "info", b);
+          break;
+
+        case Ia:
+          F(c, "error", b);
+          break;
+
+        case Ja:
+          F(c, "warn", b);
+          break;
+
+        default:
+          F(c, "log", b);
+      }
+    }
+  };
+
+  var G = null,
+      Za = k.console,
+      F = function F(a, b, c) {
+    if (a[b]) a[b](c);else a.log(c);
+  };
+
+  var $a = {
+    Wb: !0
+  },
+      ab = {
+    Xb: !0
+  },
+      H = function H() {
+    throw Error("Do not instantiate directly");
+  };
+
+  H.prototype.eb = null;
+
+  H.prototype.toString = function () {
+    return this.content;
+  };
+
+  var bb = function bb() {
+    H.call(this);
+  };
+
+  t(bb, H);
+  bb.prototype.ja = $a;
+
+  var db = function db() {
+    var a = cb(void 0, void 0);
+    if (!qa(a)) return String(a);
+
+    if (a instanceof H) {
+      if (a.ja === $a) return a.content;
+      if (a.ja === ab) return Da(a.content);
+    }
+
+    va("Soy template output is unsafe for use as HTML: " + a);
+    return "zSoyz";
+  };
+
+  var I = function I(a, b) {
+    this.xb = 100;
+    this.fb = a;
+    this.Kb = b;
+    this.ca = 0;
+    this.$ = null;
+  };
+
+  I.prototype.get = function () {
+    if (0 < this.ca) {
+      this.ca--;
+      var a = this.$;
+      this.$ = a.next;
+      a.next = null;
+    } else a = this.fb();
+
+    return a;
+  };
+
+  I.prototype.put = function (a) {
+    this.Kb(a);
+    this.ca < this.xb && (this.ca++, a.next = this.$, this.$ = a);
+  };
+
+  var eb = function eb(a) {
+    k.setTimeout(function () {
+      throw a;
+    }, 0);
+  },
+      fb,
+      gb = function gb() {
+    var a = k.MessageChannel;
+    "undefined" === typeof a && "undefined" !== typeof window && window.postMessage && window.addEventListener && -1 == v.indexOf("Presto") && (a = function a() {
+      var a = document.createElement("IFRAME");
+      a.style.display = "none";
+      a.src = "";
+      document.documentElement.appendChild(a);
+      var b = a.contentWindow;
+      a = b.document;
+      a.open();
+      a.write("");
+      a.close();
+      var c = "callImmediate" + Math.random(),
+          d = "file:" == b.location.protocol ? "*" : b.location.protocol + "//" + b.location.host;
+      a = _q(function (a) {
+        if (("*" == d || a.origin == d) && a.data == c) this.port1.onmessage();
+      }, this);
+      b.addEventListener("message", a, !1);
+      this.port1 = {};
+      this.port2 = {
+        postMessage: function postMessage() {
+          b.postMessage(c, d);
+        }
+      };
+    });
+
+    if ("undefined" !== typeof a && -1 == v.indexOf("Trident") && -1 == v.indexOf("MSIE")) {
+      var b = new a(),
+          c = {},
+          d = c;
+
+      b.port1.onmessage = function () {
+        if (void 0 !== c.next) {
+          c = c.next;
+          var a = c.Ga;
+          c.Ga = null;
+          a();
+        }
+      };
+
+      return function (a) {
+        d.next = {
+          Ga: a
+        };
+        d = d.next;
+        b.port2.postMessage(0);
+      };
+    }
+
+    return "undefined" !== typeof document && "onreadystatechange" in document.createElement("SCRIPT") ? function (a) {
+      var b = document.createElement("SCRIPT");
+
+      b.onreadystatechange = function () {
+        b.onreadystatechange = null;
+        b.parentNode.removeChild(b);
+        b = null;
+        a();
+        a = null;
+      };
+
+      document.documentElement.appendChild(b);
+    } : function (a) {
+      k.setTimeout(a, 0);
+    };
+  };
+
+  var hb = function hb() {
+    this.fa = this.M = null;
+  },
+      jb = new I(function () {
+    return new ib();
+  }, function (a) {
+    a.reset();
+  });
+
+  hb.prototype.add = function (a, b) {
+    var c = jb.get();
+    c.set(a, b);
+    this.fa ? this.fa.next = c : this.M = c;
+    this.fa = c;
+  };
+
+  hb.prototype.remove = function () {
+    var a = null;
+    this.M && (a = this.M, this.M = this.M.next, this.M || (this.fa = null), a.next = null);
+    return a;
+  };
+
+  var ib = function ib() {
+    this.next = this.scope = this.pa = null;
+  };
+
+  ib.prototype.set = function (a, b) {
+    this.pa = a;
+    this.scope = b;
+    this.next = null;
+  };
+
+  ib.prototype.reset = function () {
+    this.next = this.scope = this.pa = null;
+  };
+
+  var ob = function ob(a, b) {
+    kb || lb();
+    mb || (kb(), mb = !0);
+    nb.add(a, b);
+  },
+      kb,
+      lb = function lb() {
+    if (k.Promise && k.Promise.resolve) {
+      var a = k.Promise.resolve(void 0);
+
+      kb = function kb() {
+        a.then(pb);
+      };
+    } else kb = function kb() {
+      var a = pb;
+      !p(k.setImmediate) || k.Window && k.Window.prototype && -1 == v.indexOf("Edge") && k.Window.prototype.setImmediate == k.setImmediate ? (fb || (fb = gb()), fb(a)) : k.setImmediate(a);
+    };
+  },
+      mb = !1,
+      nb = new hb(),
+      pb = function pb() {
+    for (var a; a = nb.remove();) {
+      try {
+        a.pa.call(a.scope);
+      } catch (b) {
+        eb(b);
+      }
+
+      jb.put(a);
+    }
+
+    mb = !1;
+  };
+
+  var M = function M(a) {
+    this.g = 0;
+    this.Sa = void 0;
+    this.D = this.o = this.j = null;
+    this.Z = this.oa = !1;
+    if (a != l) try {
+      var b = this;
+      a.call(void 0, function (a) {
+        K(b, 2, a);
+      }, function (a) {
+        if (!(a instanceof L)) try {
+          if (a instanceof Error) throw a;
+          throw Error("Promise rejected.");
+        } catch (d) {}
+        K(b, 3, a);
+      });
+    } catch (c) {
+      K(this, 3, c);
+    }
+  },
+      qb = function qb() {
+    this.next = this.context = this.I = this.S = this.A = null;
+    this.W = !1;
+  };
+
+  qb.prototype.reset = function () {
+    this.context = this.I = this.S = this.A = null;
+    this.W = !1;
+  };
+
+  var rb = new I(function () {
+    return new qb();
+  }, function (a) {
+    a.reset();
+  }),
+      sb = function sb(a, b, c) {
+    var d = rb.get();
+    d.S = a;
+    d.I = b;
+    d.context = c;
+    return d;
+  },
+      N = function N() {
+    var a,
+        b,
+        c = new M(function (c, e) {
+      a = c;
+      b = e;
+    });
+    return new tb(c, a, b);
+  };
+
+  M.prototype.then = function (a, b, c) {
+    return ub(this, p(a) ? a : null, p(b) ? b : null, c);
+  };
+
+  M.prototype.then = M.prototype.then;
+  M.prototype.$goog_Thenable = !0;
+
+  M.prototype.cancel = function (a) {
+    0 == this.g && ob(function () {
+      var b = new L(a);
+      vb(this, b);
+    }, this);
+  };
+
+  var vb = function vb(a, b) {
+    if (0 == a.g) if (a.j) {
+      var c = a.j;
+
+      if (c.o) {
+        for (var d = 0, e = null, m = null, n = c.o; n && (n.W || (d++, n.A == a && (e = n), !(e && 1 < d))); n = n.next) {
+          e || (m = n);
+        }
+
+        e && (0 == c.g && 1 == d ? vb(c, b) : (m ? (d = m, d.next == c.D && (c.D = d), d.next = d.next.next) : wb(c), xb(c, e, 3, b)));
+      }
+
+      a.j = null;
+    } else K(a, 3, b);
+  },
+      zb = function zb(a, b) {
+    a.o || 2 != a.g && 3 != a.g || yb(a);
+    a.D ? a.D.next = b : a.o = b;
+    a.D = b;
+  },
+      ub = function ub(a, b, c, d) {
+    var e = sb(null, null, null);
+    e.A = new M(function (a, n) {
+      e.S = b ? function (c) {
+        try {
+          var e = b.call(d, c);
+          a(e);
+        } catch (J) {
+          n(J);
+        }
+      } : a;
+      e.I = c ? function (b) {
+        try {
+          var e = c.call(d, b);
+          void 0 === e && b instanceof L ? n(b) : a(e);
+        } catch (J) {
+          n(J);
+        }
+      } : n;
+    });
+    e.A.j = a;
+    zb(a, e);
+    return e.A;
+  };
+
+  M.prototype.Sb = function (a) {
+    this.g = 0;
+    K(this, 2, a);
+  };
+
+  M.prototype.Tb = function (a) {
+    this.g = 0;
+    K(this, 3, a);
+  };
+
+  var K = function K(a, b, c) {
+    if (0 == a.g) {
+      a === c && (b = 3, c = new TypeError("Promise cannot resolve to itself"));
+      a.g = 1;
+
+      a: {
+        var d = c,
+            e = a.Sb,
+            m = a.Tb;
+
+        if (d instanceof M) {
+          zb(d, sb(e || l, m || null, a));
+          var n = !0;
+        } else {
+          if (d) try {
+            var D = !!d.$goog_Thenable;
+          } catch (J) {
+            D = !1;
+          } else D = !1;
+          if (D) d.then(e, m, a), n = !0;else {
+            if (qa(d)) try {
+              var Z = d.then;
+
+              if (p(Z)) {
+                Ab(d, Z, e, m, a);
+                n = !0;
+                break a;
+              }
+            } catch (J) {
+              m.call(a, J);
+              n = !0;
+              break a;
+            }
+            n = !1;
+          }
+        }
+      }
+
+      n || (a.Sa = c, a.g = b, a.j = null, yb(a), 3 != b || c instanceof L || Bb(a, c));
+    }
+  },
+      Ab = function Ab(a, b, c, d, e) {
+    var m = !1,
+        n = function n(a) {
+      m || (m = !0, c.call(e, a));
+    },
+        D = function D(a) {
+      m || (m = !0, d.call(e, a));
+    };
+
+    try {
+      b.call(a, n, D);
+    } catch (Z) {
+      D(Z);
+    }
+  },
+      yb = function yb(a) {
+    a.oa || (a.oa = !0, ob(a.jb, a));
+  },
+      wb = function wb(a) {
+    var b = null;
+    a.o && (b = a.o, a.o = b.next, b.next = null);
+    a.o || (a.D = null);
+    return b;
+  };
+
+  M.prototype.jb = function () {
+    for (var a; a = wb(this);) {
+      xb(this, a, this.g, this.Sa);
+    }
+
+    this.oa = !1;
+  };
+
+  var xb = function xb(a, b, c, d) {
+    if (3 == c && b.I && !b.W) for (; a && a.Z; a = a.j) {
+      a.Z = !1;
+    }
+    if (b.A) b.A.j = null, Cb(b, c, d);else try {
+      b.W ? b.S.call(b.context) : Cb(b, c, d);
+    } catch (e) {
+      Db.call(null, e);
+    }
+    rb.put(b);
+  },
+      Cb = function Cb(a, b, c) {
+    2 == b ? a.S.call(a.context, c) : a.I && a.I.call(a.context, c);
+  },
+      Bb = function Bb(a, b) {
+    a.Z = !0;
+    ob(function () {
+      a.Z && Db.call(null, b);
+    });
+  },
+      Db = eb,
+      L = function L(a) {
+    u.call(this, a);
+  };
+
+  t(L, u);
+  L.prototype.name = "cancel";
+
+  var tb = function tb(a, b, c) {
+    this.K = a;
+    this.resolve = b;
+    this.reject = c;
+  };
+
+  var O = function O() {
+    this.X = this.X;
+    this.da = this.da;
+  };
+
+  O.prototype.X = !1;
+
+  O.prototype.la = function () {
+    this.X || (this.X = !0, this.ma());
+  };
+
+  O.prototype.ma = function () {
+    if (this.da) for (; this.da.length;) {
+      this.da.shift()();
+    }
+  };
+
+  var Eb = function Eb(a, b, c) {
+    O.call(this);
+    this.yb = null != c ? _q(a, c) : a;
+    this.wb = b;
+    this.cb = _q(this.Fb, this);
+    this.ha = [];
+  };
+
+  t(Eb, O);
+  f = Eb.prototype;
+  f.L = !1;
+  f.T = 0;
+  f.C = null;
+
+  f.mb = function (a) {
+    this.ha = arguments;
+    this.C || this.T ? this.L = !0 : Fb(this);
+  };
+
+  f.stop = function () {
+    this.C && (k.clearTimeout(this.C), this.C = null, this.L = !1, this.ha = []);
+  };
+
+  f.pause = function () {
+    this.T++;
+  };
+
+  f.resume = function () {
+    this.T--;
+    this.T || !this.L || this.C || (this.L = !1, Fb(this));
+  };
+
+  f.ma = function () {
+    Eb.Xa.ma.call(this);
+    this.stop();
+  };
+
+  f.Fb = function () {
+    this.C = null;
+    this.L && !this.T && (this.L = !1, Fb(this));
+  };
+
+  var Fb = function Fb(a) {
+    var b = a.cb;
+    var c = a.wb;
+    if (!p(b)) if (b && "function" == typeof b.handleEvent) b = _q(b.handleEvent, b);else throw Error("Invalid listener argument");
+    b = 2147483647 < Number(c) ? -1 : k.setTimeout(b, c || 0);
+    a.C = b;
+    a.yb.apply(null, a.ha);
+  };
+
+  var P = function P(a) {
+    a.controller = this;
+    this.a = a;
+    this.v = this.f = this.b = null;
+    this.Pa = this.Eb.bind(this);
+    this.G = this.Bb.bind(this);
+    this.H = this.Cb.bind(this);
+    this.m = 0;
+    this.Ub = new Eb(this.kb, 200, this);
+  };
+
+  f = P.prototype;
+
+  f.za = function () {
+    this.f && (this.m++, this.a.isPaused = !this.a.isPaused, this.a.isPaused ? this.f.pause(null, this.H, this.G) : this.f.play(null, this.H, this.G));
+  };
+
+  f.stop = function () {
+    this.f && (this.m++, this.f.stop(null, this.H, this.G));
+  };
+
+  f.seek = function () {
+    if (this.f) {
+      this.v && (clearTimeout(this.v), this.v = null);
+      this.m++;
+      var a = new chrome.cast.media.SeekRequest();
+      a.currentTime = this.a.currentTime;
+      this.f.seek(a, this.H, this.G);
+    }
+  };
+
+  f.xa = function () {
+    this.b && (this.m++, this.a.isMuted = !this.a.isMuted, this.b.setReceiverMuted(this.a.isMuted, this.H, this.G));
+  };
+
+  f.Ea = function () {
+    this.Ub.mb();
+  };
+
+  f.kb = function () {
+    this.b && (this.m++, this.b.setReceiverVolumeLevel(this.a.volumeLevel, this.H, this.G));
+  };
+
+  f.Cb = function () {
+    this.m--;
+    this.w();
+  };
+
+  f.Bb = function () {
+    this.m--;
+    this.f && this.f.getStatus(null, l, l);
+  };
+
+  f.Eb = function () {
+    this.f && (this.a.currentTime = this.f.getEstimatedTime(), this.v = setTimeout(this.Pa, 1E3));
+  };
+
+  f.w = function (a) {
+    if (!(0 < this.m)) if (this.b) {
+      this.a.displayName = this.b.displayName || "";
+      var b = this.b.statusText || "";
+      this.a.displayStatus = b != this.a.displayName ? b : "";
+      !a && this.b.receiver && (a = this.b.receiver.volume) && (null != a.muted && (this.a.isMuted = a.muted), null != a.level && (this.a.volumeLevel = a.level), this.a.canControlVolume = "fixed" != a.controlType);
+      this.f ? (this.a.isMediaLoaded = this.f.playerState != chrome.cast.media.PlayerState.IDLE, this.a.isPaused = this.f.playerState == chrome.cast.media.PlayerState.PAUSED, this.a.canPause = 0 <= this.f.supportedMediaCommands.indexOf(chrome.cast.media.MediaCommand.PAUSE), this.V(this.f.media), this.a.canSeek = 0 <= this.f.supportedMediaCommands.indexOf(chrome.cast.media.MediaCommand.SEEK) && 0 != this.a.duration, this.a.currentTime = this.f.getEstimatedTime(), this.v && (clearTimeout(this.v), this.v = null), this.f.playerState == chrome.cast.media.PlayerState.PLAYING && (this.v = setTimeout(this.Pa, 1E3))) : this.V(null);
+    } else this.a.displayName = "", this.a.displayStatus = "", this.V(null);
+  };
+
+  f.V = function (a) {
+    a ? (this.a.duration = a.duration || 0, a.metadata && a.metadata.title && (this.a.displayStatus = a.metadata.title)) : (this.a.isMediaLoaded = !1, this.a.canPause = !1, this.a.canSeek = !1, this.a.currentTime = 0, this.a.duration = 0);
+  };
+
+  var Gb = function Gb(a) {
+    if (!a.f) for (var b = 0, c = a.b.media; b < c.length; b++) {
+      if (!c[b].idleReason) {
+        a.f = c[b];
+        a.f.addUpdateListener(a.zb.bind(a));
+        break;
+      }
+    }
+  },
+      Hb = function Hb(a, b) {
+    a.b = b;
+    b.addMediaListener(a.Ma.bind(a));
+    b.addUpdateListener(a.Ca.bind(a));
+    Gb(a);
+    a.w();
+  };
+
+  f = P.prototype;
+
+  f.Ca = function (a) {
+    a || (this.f = this.b = null);
+    this.w();
+  };
+
+  f.Ma = function () {
+    Gb(this);
+    this.w(!0);
+  };
+
+  f.zb = function (a) {
+    a || (this.f = null);
+    this.w(!0);
+  };
+
+  f.ra = function (a, b) {
+    return b ? 100 * a / b : 0;
+  };
+
+  f.sa = function (a, b) {
+    return b ? a * b / 100 : 0;
+  };
+
+  f.qa = function (a) {
+    return 0 > a ? "" : [("0" + Math.floor(a / 3600)).substr(-2), ("0" + Math.floor(a / 60) % 60).substr(-2), ("0" + Math.floor(a) % 60).substr(-2)].join(":");
+  };
+
+  var Ib = function (a) {
+    function b(a) {
+      this.content = a;
+    }
+
+    b.prototype = a.prototype;
+    return function (a, d) {
+      a = new b(String(a));
+      void 0 !== d && (a.eb = d);
+      return a;
+    };
+  }(bb),
+      Jb = {
+    "\x00": "&#0;",
+    "\t": "&#9;",
+    "\n": "&#10;",
+    "\x0B": "&#11;",
+    "\f": "&#12;",
+    "\r": "&#13;",
+    " ": "&#32;",
+    '"': "&quot;",
+    "&": "&amp;",
+    "'": "&#39;",
+    "-": "&#45;",
+    "/": "&#47;",
+    "<": "&lt;",
+    "=": "&#61;",
+    ">": "&gt;",
+    "`": "&#96;",
+    "\x85": "&#133;",
+    "\xA0": "&#160;",
+    "\u2028": "&#8232;",
+    "\u2029": "&#8233;"
+  },
+      Kb = function Kb(a) {
+    return Jb[a];
+  },
+      Lb = /[\x00\x22\x27\x3c\x3e]/g,
+      Mb = /<(?:!|\/?([a-zA-Z][a-zA-Z0-9:\-]*))(?:[^>'"]|"[^"]*"|'[^']*')*>/g,
+      Nb = /</g;
+
+  var cb = function cb(a, b) {
+    (a = b || a) && a.gb ? (a = a && a.gb, null != a && a.ja === $a ? (a = String(a.content).replace(Mb, "").replace(Nb, "&lt;"), a = String(a).replace(Lb, Kb)) : a = Da(String(a)), a = ' nonce="' + a + '"') : a = "";
+    return Ib("<style" + a + '>.cast_caf_state_c {fill: var(--connected-color, #4285f4);}.cast_caf_state_d {fill: var(--disconnected-color, #7d7d7d);}.cast_caf_state_h {opacity: 0;}</style><svg x="0px" y="0px" width="100%" height="100%" viewBox="0 0 24 24"><g><path id="cast_caf_icon_arch0" class="cast_caf_status_d" d="M1,18 L1,21 L4,21 C4,19.3 2.66,18 1,18 L1,18 Z"/><path id="cast_caf_icon_arch1" class="cast_caf_status_d" d="M1,14 L1,16 C3.76,16 6,18.2 6,21 L8,21 C8,17.13 4.87,14 1,14 L1,14 Z"/><path id="cast_caf_icon_arch2" class="cast_caf_status_d" d="M1,10 L1,12 C5.97,12 10,16.0 10,21 L12,21 C12,14.92 7.07,10 1,10 L1,10 Z"/><path id="cast_caf_icon_box" class="cast_caf_status_d" d="M21,3 L3,3 C1.9,3 1,3.9 1,5 L1,8 L3,8 L3,5 L21,5 L21,19 L14,19 L14,21 L21,21 C22.1,21 23,20.1 23,19 L23,5 C23,3.9 22.1,3 21,3 L21,3 Z"/><path id="cast_caf_icon_boxfill" class="cast_caf_state_h" d="M5,7 L5,8.63 C8,8.6 13.37,14 13.37,17 L19,17 L19,7 Z"/></g></svg>');
+  };
+
+  cb.Yb = "cast.framework.CastButtonTemplate.icon";
+  r("cast.framework.VERSION", "1.0.07");
+  r("cast.framework.LoggerLevel", {
+    DEBUG: 0,
+    INFO: 800,
+    WARNING: 900,
+    ERROR: 1E3,
+    NONE: 1500
+  });
+  r("cast.framework.CastState", {
+    NO_DEVICES_AVAILABLE: "NO_DEVICES_AVAILABLE",
+    NOT_CONNECTED: "NOT_CONNECTED",
+    CONNECTING: "CONNECTING",
+    CONNECTED: "CONNECTED"
+  });
+  r("cast.framework.SessionState", {
+    NO_SESSION: "NO_SESSION",
+    SESSION_STARTING: "SESSION_STARTING",
+    SESSION_STARTED: "SESSION_STARTED",
+    SESSION_START_FAILED: "SESSION_START_FAILED",
+    SESSION_ENDING: "SESSION_ENDING",
+    SESSION_ENDED: "SESSION_ENDED",
+    SESSION_RESUMED: "SESSION_RESUMED"
+  });
+  r("cast.framework.CastContextEventType", {
+    CAST_STATE_CHANGED: "caststatechanged",
+    SESSION_STATE_CHANGED: "sessionstatechanged"
+  });
+  r("cast.framework.SessionEventType", {
+    APPLICATION_STATUS_CHANGED: "applicationstatuschanged",
+    APPLICATION_METADATA_CHANGED: "applicationmetadatachanged",
+    ACTIVE_INPUT_STATE_CHANGED: "activeinputstatechanged",
+    VOLUME_CHANGED: "volumechanged",
+    MEDIA_SESSION: "mediasession"
+  });
+  r("cast.framework.RemotePlayerEventType", {
+    ANY_CHANGE: "anyChanged",
+    IS_CONNECTED_CHANGED: "isConnectedChanged",
+    IS_MEDIA_LOADED_CHANGED: "isMediaLoadedChanged",
+    DURATION_CHANGED: "durationChanged",
+    CURRENT_TIME_CHANGED: "currentTimeChanged",
+    IS_PAUSED_CHANGED: "isPausedChanged",
+    VOLUME_LEVEL_CHANGED: "volumeLevelChanged",
+    CAN_CONTROL_VOLUME_CHANGED: "canControlVolumeChanged",
+    IS_MUTED_CHANGED: "isMutedChanged",
+    CAN_PAUSE_CHANGED: "canPauseChanged",
+    CAN_SEEK_CHANGED: "canSeekChanged",
+    DISPLAY_NAME_CHANGED: "displayNameChanged",
+    STATUS_TEXT_CHANGED: "statusTextChanged",
+    TITLE_CHANGED: "titleChanged",
+    DISPLAY_STATUS_CHANGED: "displayStatusChanged",
+    MEDIA_INFO_CHANGED: "mediaInfoChanged",
+    IMAGE_URL_CHANGED: "imageUrlChanged",
+    PLAYER_STATE_CHANGED: "playerStateChanged"
+  });
+  r("cast.framework.ActiveInputState", {
+    ACTIVE_INPUT_STATE_UNKNOWN: -1,
+    ACTIVE_INPUT_STATE_NO: 0,
+    ACTIVE_INPUT_STATE_YES: 1
+  });
+
+  var Ob = function Ob(a) {
+    Ra().Da(Na(a));
+  };
+
+  r("cast.framework.setLoggerLevel", Ob);
+  G || (G = new Ya());
+
+  if (G) {
+    var Pb = G;
+
+    if (1 != Pb.Ka) {
+      var Qb = Ra(),
+          Rb = Pb.Hb;
+      Qb.P || (Qb.P = []);
+      Qb.P.push(Rb);
+      Pb.Ka = !0;
+    }
+  }
+
+  Ob(1E3);
+
+  var Q = function Q(a) {
+    this.type = a;
+  };
+
+  r("cast.framework.EventData", Q);
+
+  var Sb = function Sb(a) {
+    this.type = "activeinputstatechanged";
+    this.activeInputState = a;
+  };
+
+  g(Sb, Q);
+  r("cast.framework.ActiveInputStateEventData", Sb);
+
+  var Tb = function Tb(a) {
+    this.applicationId = a.appId;
+    this.name = a.displayName;
+    this.images = a.appImages;
+    this.namespaces = this.ya(a.namespaces || []);
+  };
+
+  r("cast.framework.ApplicationMetadata", Tb);
+
+  Tb.prototype.ya = function (a) {
+    return a.map(function (a) {
+      return a.name;
+    });
+  };
+
+  var Ub = function Ub(a) {
+    this.type = "applicationmetadatachanged";
+    this.metadata = a;
+  };
+
+  g(Ub, Q);
+  r("cast.framework.ApplicationMetadataEventData", Ub);
+
+  var Vb = function Vb(a) {
+    this.type = "applicationstatuschanged";
+    this.status = a;
+  };
+
+  g(Vb, Q);
+  r("cast.framework.ApplicationStatusEventData", Vb);
+
+  var Wb = Sa("cast.framework.EventTarget"),
+      R = function R() {
+    this.R = {};
+  };
+
+  R.prototype.addEventListener = function (a, b) {
+    a in this.R || (this.R[a] = []);
+    a = this.R[a];
+    a.includes(b) || a.push(b);
+  };
+
+  R.prototype.removeEventListener = function (a, b) {
+    a = this.R[a] || [];
+    b = a.indexOf(b);
+    0 <= b && a.splice(b, 1);
+  };
+
+  R.prototype.dispatchEvent = function (a) {
+    a && a.type && (this.R[a.type] || []).slice().forEach(function (b) {
+      try {
+        b(a);
+      } catch (c) {
+        Wb && Wb.log(Ia, "Handler for " + a.type + " event failed: " + c, c);
+      }
+    });
+  };
+
+  var Xb = function Xb(a) {
+    a = a || {};
+    this.receiverApplicationId = a.receiverApplicationId || null;
+    this.resumeSavedSession = void 0 !== a.resumeSavedSession ? a.resumeSavedSession : !0;
+    this.autoJoinPolicy = void 0 !== a.autoJoinPolicy ? a.autoJoinPolicy : chrome.cast.AutoJoinPolicy.TAB_AND_ORIGIN_SCOPED;
+    this.language = a.language || null;
+  };
+
+  r("cast.framework.CastOptions", Xb);
+
+  var Yb = function Yb(a) {
+    this.type = "mediasession";
+    this.mediaSession = a;
+  };
+
+  g(Yb, Q);
+  r("cast.framework.MediaSessionEventData", Yb);
+
+  var Zb = function Zb(a, b) {
+    this.type = "volumechanged";
+    this.volume = a;
+    this.isMute = b;
+  };
+
+  g(Zb, Q);
+  r("cast.framework.VolumeEventData", Zb);
+
+  var S = function S(a, b) {
+    this.h = new R();
+    this.g = b;
+    this.c = a;
+    this.Ta = a.sessionId;
+    this.U = a.statusText;
+    this.Qa = a.receiver;
+    this.i = a.receiver.volume;
+    this.ba = new Tb(a);
+    this.aa = a.receiver.isActiveInput;
+    this.c.addMediaListener(this.wa.bind(this));
+    $b(this);
+  };
+
+  r("cast.framework.CastSession", S);
+
+  var $b = function $b(a) {
+    var b = a.c.loadMedia.bind(a.c);
+
+    a.c.loadMedia = function (c, e, m) {
+      b(c, function (b) {
+        e && e(b);
+        a.wa(b);
+      }, m);
+    };
+
+    var c = a.c.queueLoad.bind(a.c);
+
+    a.c.queueLoad = function (b, e, m) {
+      c(b, function (b) {
+        e && e(b);
+        a.wa(b);
+      }, m);
+    };
+  };
+
+  S.prototype.addEventListener = function (a, b) {
+    this.h.addEventListener(a, b);
+  };
+
+  S.prototype.addEventListener = S.prototype.addEventListener;
+
+  S.prototype.removeEventListener = function (a, b) {
+    this.h.removeEventListener(a, b);
+  };
+
+  S.prototype.removeEventListener = S.prototype.removeEventListener;
+
+  var ac = function ac(a, b) {
+    a.Qa = b;
+    !b.volume || a.i && a.i.muted == b.volume.muted && a.i.level == b.volume.level || (a.i = b.volume, a.h.dispatchEvent(new Zb(a.i.level, a.i.muted)));
+    a.aa != b.isActiveInput && (a.aa = b.isActiveInput, b = a.aa, a.h.dispatchEvent(new Sb(null == b ? -1 : b ? 1 : 0)));
+  };
+
+  S.prototype.ub = function () {
+    return this.c;
+  };
+
+  S.prototype.getSessionObj = S.prototype.ub;
+
+  S.prototype.tb = function () {
+    return this.Ta;
+  };
+
+  S.prototype.getSessionId = S.prototype.tb;
+
+  S.prototype.ta = function () {
+    return this.g;
+  };
+
+  S.prototype.getSessionState = S.prototype.ta;
+
+  S.prototype.qb = function () {
+    return this.Qa;
+  };
+
+  S.prototype.getCastDevice = S.prototype.qb;
+
+  S.prototype.ob = function () {
+    return this.ba;
+  };
+
+  S.prototype.getApplicationMetadata = S.prototype.ob;
+
+  S.prototype.pb = function () {
+    return this.U;
+  };
+
+  S.prototype.getApplicationStatus = S.prototype.pb;
+
+  S.prototype.nb = function () {
+    var a = this.aa;
+    return null == a ? -1 : a ? 1 : 0;
+  };
+
+  S.prototype.getActiveInputState = S.prototype.nb;
+
+  S.prototype.Ia = function (a) {
+    "SESSION_ENDED" != this.g && (a ? this.c.stop(l, l) : this.c.leave(l, l));
+  };
+
+  S.prototype.endSession = S.prototype.Ia;
+
+  S.prototype.setVolume = function (a) {
+    var b = N(),
+        c = Promise.resolve(b.K);
+    this.i && (this.i.level = a, this.i.muted = !1);
+    this.c.setReceiverVolumeLevel(a, function () {
+      return b.resolve();
+    }, function (a) {
+      return b.reject(a.code);
+    });
+    return c;
+  };
+
+  S.prototype.setVolume = S.prototype.setVolume;
+
+  S.prototype.vb = function () {
+    return this.i ? this.i.level : null;
+  };
+
+  S.prototype.getVolume = S.prototype.vb;
+
+  S.prototype.Mb = function (a) {
+    var b = N(),
+        c = Promise.resolve(b.K);
+    this.i && (this.i.muted = a);
+    this.c.setReceiverMuted(a, function () {
+      return b.resolve();
+    }, function (a) {
+      return b.reject(a.code);
+    });
+    return c;
+  };
+
+  S.prototype.setMute = S.prototype.Mb;
+
+  S.prototype.isMute = function () {
+    return this.i ? this.i.muted : null;
+  };
+
+  S.prototype.isMute = S.prototype.isMute;
+
+  S.prototype.sendMessage = function (a, b) {
+    var c = N(),
+        d = Promise.resolve(c.K);
+    this.c.sendMessage(a, b, function () {
+      return c.resolve();
+    }, function (a) {
+      return c.reject(a.code);
+    });
+    return d;
+  };
+
+  S.prototype.sendMessage = S.prototype.sendMessage;
+
+  S.prototype.addMessageListener = function (a, b) {
+    this.c.addMessageListener(a, b);
+  };
+
+  S.prototype.addMessageListener = S.prototype.addMessageListener;
+
+  S.prototype.removeMessageListener = function (a, b) {
+    this.c.removeMessageListener(a, b);
+  };
+
+  S.prototype.removeMessageListener = S.prototype.removeMessageListener;
+
+  S.prototype.loadMedia = function (a) {
+    var b = N(),
+        c = Promise.resolve(b.K);
+    this.c.loadMedia(a, function () {
+      b.resolve();
+    }, function (a) {
+      b.reject(a.code);
+    });
+    return c;
+  };
+
+  S.prototype.loadMedia = S.prototype.loadMedia;
+
+  S.prototype.Ja = function () {
+    a: {
+      var a = this.c;
+
+      if (a.media) {
+        a = na(a.media);
+
+        for (var b = a.next(); !b.done; b = a.next()) {
+          if (b = b.value, !b.idleReason) {
+            a = b;
+            break a;
+          }
+        }
+      }
+
+      a = null;
+    }
+
+    return a;
+  };
+
+  S.prototype.getMediaSession = S.prototype.Ja;
+
+  S.prototype.wa = function (a) {
+    a.media && this.h.dispatchEvent(new Yb(a));
+  };
+
+  S.prototype.ya = function (a) {
+    return a.map(function (a, c) {
+      return c.name;
+    });
+  };
+
+  var bc = function bc(a) {
+    this.type = "caststatechanged";
+    this.castState = a;
+  };
+
+  g(bc, Q);
+  r("cast.framework.CastStateEventData", bc);
+
+  var cc = function cc(a, b, c) {
+    this.type = "sessionstatechanged";
+    this.session = a;
+    this.sessionState = b;
+    this.errorCode = void 0 !== c ? c : null;
+  };
+
+  g(cc, Q);
+  r("cast.framework.SessionStateEventData", cc);
+
+  var Ta = Sa("cast.framework.CastContext"),
+      T = function T() {
+    this.h = new R();
+    this.va = !1;
+    this.u = null;
+    this.Ba = !1;
+    this.N = "NO_DEVICES_AVAILABLE";
+    this.l = "NO_SESSION";
+    this.ea = this.b = null;
+  };
+
+  r("cast.framework.CastContext", T);
+
+  T.prototype.addEventListener = function (a, b) {
+    this.h.addEventListener(a, b);
+  };
+
+  T.prototype.addEventListener = T.prototype.addEventListener;
+
+  T.prototype.removeEventListener = function (a, b) {
+    this.h.removeEventListener(a, b);
+  };
+
+  T.prototype.removeEventListener = T.prototype.removeEventListener;
+
+  T.prototype.Nb = function (a) {
+    if (this.va) B("CastContext already initialized, new options are ignored");else {
+      this.u = new Xb(a);
+      if (!this.u || !this.u.receiverApplicationId) throw Error("Missing application id in cast options");
+      a = new chrome.cast.SessionRequest(this.u.receiverApplicationId);
+      this.u.language && (a.language = this.u.language);
+      a = new chrome.cast.ApiConfig(a, this.Ua.bind(this), this.Jb.bind(this), this.u.autoJoinPolicy);
+      chrome.cast.initialize(a, l, l);
+      chrome.cast.addReceiverActionListener(this.Ib.bind(this));
+      this.va = !0;
+    }
+  };
+
+  T.prototype.setOptions = T.prototype.Nb;
+
+  T.prototype.rb = function () {
+    return this.N;
+  };
+
+  T.prototype.getCastState = T.prototype.rb;
+
+  T.prototype.ta = function () {
+    return this.l;
+  };
+
+  T.prototype.getSessionState = T.prototype.ta;
+
+  T.prototype.requestSession = function () {
+    var a = this;
+    if (!this.va) throw Error("Cannot start session before cast options are provided");
+    var b = N(),
+        c = Promise.resolve(b.K);
+    ub(b.K, null, l, void 0);
+    c.catch(l);
+    var d = "NOT_CONNECTED" == this.N;
+    chrome.cast.requestSession(function (c) {
+      a.Ua(c);
+      b.resolve(null);
+    }, function (c) {
+      d && U(a, "SESSION_START_FAILED", c ? c.code : void 0);
+      b.reject(c.code);
+    });
+    return c;
+  };
+
+  T.prototype.requestSession = T.prototype.requestSession;
+
+  T.prototype.sb = function () {
+    return this.b;
+  };
+
+  T.prototype.getCurrentSession = T.prototype.sb;
+
+  T.prototype.ib = function (a) {
+    this.b && this.b.Ia(a);
+  };
+
+  T.prototype.endCurrentSession = T.prototype.ib;
+
+  T.prototype.Jb = function (a) {
+    (this.Ba = a == chrome.cast.ReceiverAvailability.AVAILABLE) && !this.b && this.ea && this.u.resumeSavedSession && chrome.cast.requestSessionById(this.ea);
+    dc(this);
+  };
+
+  T.prototype.Ib = function (a, b) {
+    this.b || b != chrome.cast.ReceiverAction.CAST ? this.b && b == chrome.cast.ReceiverAction.STOP ? U(this, "SESSION_ENDING") : a && ac(this.b, a) : U(this, "SESSION_STARTING");
+  };
+
+  T.prototype.Ua = function (a) {
+    var b = "SESSION_STARTING" == this.l ? "SESSION_STARTED" : "SESSION_RESUMED";
+    this.ea = null;
+    this.b = new S(a, b);
+    a.addUpdateListener(this.Ca.bind(this));
+    U(this, b);
+  };
+
+  T.prototype.Ca = function () {
+    if (this.b) switch (this.b.c.status) {
+      case chrome.cast.SessionStatus.DISCONNECTED:
+      case chrome.cast.SessionStatus.STOPPED:
+        U(this, "SESSION_ENDED");
+        this.ea = this.b.Ta;
+        this.b = null;
+        break;
+
+      case chrome.cast.SessionStatus.CONNECTED:
+        var a = this.b,
+            b = a.ba,
+            c = a.c,
+            d;
+        if (d = b.applicationId == c.appId && b.name == c.displayName) a: if (d = b.namespaces, b = b.ya(c.namespaces || []), pa(d) && pa(b) && d.length == b.length) {
+          c = d.length;
+
+          for (var e = 0; e < c; e++) {
+            if (d[e] !== b[e]) {
+              d = !1;
+              break a;
+            }
+          }
+
+          d = !0;
+        } else d = !1;
+        d || (a.ba = new Tb(a.c), a.h.dispatchEvent(new Ub(a.ba)));
+        ac(a, a.c.receiver);
+        a.U != a.c.statusText && (a.U = a.c.statusText, a.h.dispatchEvent(new Vb(a.U)));
+        break;
+
+      default:
+        B("Unknown session status " + this.b.c.status);
+    } else B("Received session update event without known session");
+  };
+
+  var U = function U(a, b, c) {
+    b == a.l ? "SESSION_START_FAILED" == b && a.h.dispatchEvent(new cc(a.b, a.l, c)) : (a.l = b, a.b && (a.b.g = a.l), a.h.dispatchEvent(new cc(a.b, a.l, c)), dc(a));
+  },
+      dc = function dc(a) {
+    var b = "NO_DEVICES_AVAILABLE";
+
+    switch (a.l) {
+      case "SESSION_STARTING":
+      case "SESSION_ENDING":
+        b = "CONNECTING";
+        break;
+
+      case "SESSION_STARTED":
+      case "SESSION_RESUMED":
+        b = "CONNECTED";
+        break;
+
+      case "NO_SESSION":
+      case "SESSION_ENDED":
+      case "SESSION_START_FAILED":
+        b = a.Ba ? "NOT_CONNECTED" : "NO_DEVICES_AVAILABLE";
+        break;
+
+      default:
+        B("Unexpected session state: " + a.l);
+    }
+
+    b !== a.N && (a.N = b, a.h.dispatchEvent(new bc(b)));
+  };
+
+  T.ua = void 0;
+
+  T.O = function () {
+    return T.ua ? T.ua : T.ua = new T();
+  };
+
+  T.getInstance = T.O;
+
+  var V = function V(a) {
+    this.F = a;
+
+    try {
+      this.F.createShadowRoot().innerHTML = cb().content;
+    } catch (b) {
+      this.F.innerHTML = db();
+    }
+  },
+      gc = function gc(a, b) {
+    a.ka = T.O();
+    a.Oa = a.Db.bind(a);
+    a.ga = [];
+
+    for (var c = 0; 3 > c; c++) {
+      a.ga.push(b.querySelector("#cast_caf_icon_arch" + c));
+    }
+
+    a.ab = b.querySelector("#cast_caf_icon_box");
+    a.bb = b.querySelector("#cast_caf_icon_boxfill");
+    a.Aa = 0;
+    a.J = null;
+    a.hb = window.getComputedStyle(a.F, null).display;
+    a.g = a.ka.N;
+    ec(a);
+    a.F.addEventListener("click", fc);
+    a.ka.addEventListener("caststatechanged", a.Oa);
+  },
+      hc = function hc(a) {
+    a.ka.removeEventListener("caststatechanged", a.Oa);
+    null !== a.J && (window.clearTimeout(a.J), a.J = null);
+  },
+      fc = function fc() {
+    T.O().requestSession();
+  };
+
+  V.prototype.Db = function (a) {
+    this.g = a.castState;
+    ec(this);
+  };
+
+  var ec = function ec(a) {
+    if ("NO_DEVICES_AVAILABLE" == a.g) a.F.style.display = "none";else switch (a.F.style.display = a.hb, a.g) {
+      case "NOT_CONNECTED":
+        ic(a, !1, "cast_caf_state_h");
+        break;
+
+      case "CONNECTING":
+        ic(a, !1, "cast_caf_state_h");
+        a.J || a.Ha();
+        break;
+
+      case "CONNECTED":
+        ic(a, !0, "cast_caf_state_c");
+    }
+  };
+
+  V.prototype.Ha = function () {
+    this.J = null;
+
+    if ("CONNECTING" == this.g) {
+      for (var a = 0; 3 > a; a++) {
+        jc(this.ga[a], a == this.Aa);
+      }
+
+      this.Aa = (this.Aa + 1) % 3;
+      this.J = window.setTimeout(this.Ha.bind(this), 300);
+    }
+  };
+
+  var ic = function ic(a, b, c) {
+    for (var d = na(a.ga), e = d.next(); !e.done; e = d.next()) {
+      jc(e.value, b);
+    }
+
+    jc(a.ab, b);
+    a.bb.setAttribute("class", c);
+  },
+      jc = function jc(a, b) {
+    a.setAttribute("class", b ? "cast_caf_state_c" : "cast_caf_state_d");
+  },
+      W = function W() {
+    return HTMLElement.call(this) || this;
+  };
+
+  g(W, HTMLElement);
+
+  W.prototype.createdCallback = function () {
+    this.s = new V(this);
+  };
+
+  W.prototype.attachedCallback = function () {
+    gc(this.s, this.shadowRoot || this);
+  };
+
+  W.prototype.detachedCallback = function () {
+    hc(this.s);
+  };
+
+  W.prototype.la = function () {};
+
+  var X = function X() {
+    return HTMLButtonElement.call(this) || this;
+  };
+
+  g(X, HTMLButtonElement);
+
+  X.prototype.createdCallback = function () {
+    this.s = new V(this);
+  };
+
+  X.prototype.attachedCallback = function () {
+    gc(this.s, this.shadowRoot || this);
+  };
+
+  X.prototype.detachedCallback = function () {
+    hc(this.s);
+  };
+
+  X.prototype.la = function () {};
+
+  var lc = function lc() {
+    var a = document.createElement.bind(document);
+
+    document.createElement = function (b, c) {
+      if ("google-cast-launcher" === b || "button" === b && c && ("google-cast-button" === c || "google-cast-button" === c.is)) {
+        var d = a(b, c);
+        kc(d);
+        return d;
+      }
+
+      return a.apply(null, arguments);
+    };
+  },
+      mc = function mc() {
+    document.querySelectorAll("button[is=google-cast-button], google-cast-launcher").forEach(function (a) {
+      return kc(a);
+    });
+  },
+      kc = function kc(a) {
+    a.s = new V(a);
+    gc(a.s, a.shadowRoot || a);
+
+    a.la = function () {
+      hc(a.s);
+    };
+  };
+
+  document.registerElement ? (document.registerElement("google-cast-button", {
+    prototype: X.prototype,
+    extends: "button"
+  }), document.registerElement("google-cast-launcher", {
+    prototype: W.prototype
+  })) : ("complete" !== document.readyState ? window.addEventListener("load", mc) : mc(), lc());
+  r("cast.framework.RemotePlayer", function () {
+    this.isMediaLoaded = this.isConnected = !1;
+    this.currentTime = this.duration = 0;
+    this.volumeLevel = 1;
+    this.canControlVolume = !0;
+    this.canSeek = this.canPause = this.isMuted = this.isPaused = !1;
+    this.displayStatus = this.title = this.statusText = this.displayName = "";
+    this.controller = this.savedPlayerState = this.playerState = this.imageUrl = this.mediaInfo = null;
+  });
+
+  var nc = function nc(a, b, c) {
+    this.type = a;
+    this.field = b;
+    this.value = c;
+  };
+
+  g(nc, Q);
+  r("cast.framework.RemotePlayerChangedEvent", nc);
+
+  var Y = function Y(a) {
+    var b = new R();
+    P.call(this, oc(a, b));
+    this.h = b;
+    a = T.O();
+    a.addEventListener("sessionstatechanged", this.Lb.bind(this));
+    (a = a.b) ? Hb(this, a.c) : this.w();
+  };
+
+  g(Y, P);
+  r("cast.framework.RemotePlayerController", Y);
+
+  var oc = function oc(a, b) {
+    return new window.Proxy(a, {
+      set: function set(a, d, e) {
+        if (e === a[d]) return !0;
+        a[d] = e;
+        b.dispatchEvent(new nc(d + "Changed", d, e));
+        b.dispatchEvent(new nc("anyChanged", d, e));
+        return !0;
+      }
+    });
+  };
+
+  Y.prototype.addEventListener = function (a, b) {
+    this.h.addEventListener(a, b);
+  };
+
+  Y.prototype.addEventListener = Y.prototype.addEventListener;
+
+  Y.prototype.removeEventListener = function (a, b) {
+    this.h.removeEventListener(a, b);
+  };
+
+  Y.prototype.removeEventListener = Y.prototype.removeEventListener;
+
+  Y.prototype.Lb = function (a) {
+    switch (a.sessionState) {
+      case "SESSION_STARTED":
+      case "SESSION_RESUMED":
+        this.a.isConnected = !0;
+        var b = a.session && a.session.c;
+        b && (Hb(this, b), a.session.addEventListener("mediasession", this.Ma.bind(this)));
+    }
+  };
+
+  Y.prototype.w = function (a) {
+    var b = T.O().b;
+    b ? this.a.savedPlayerState = null : this.a.isConnected && (this.a.savedPlayerState = {
+      mediaInfo: this.a.mediaInfo,
+      currentTime: this.a.currentTime,
+      isPaused: this.a.isPaused
+    });
+    P.prototype.w.call(this, a);
+    this.a.isConnected = !!b;
+    this.a.statusText = b && b.U || "";
+    a = b && b.Ja();
+    this.a.playerState = a && a.playerState || null;
+  };
+
+  Y.prototype.V = function (a) {
+    P.prototype.V.call(this, a);
+    var b = (this.a.mediaInfo = a) && a.metadata;
+    a = null;
+    var c = "";
+    b && (c = b.title || "", (b = b.images) && 0 < b.length && (a = b[0].url));
+    this.a.title = c;
+    this.a.imageUrl = a;
+  };
+
+  Y.prototype.za = function () {
+    P.prototype.za.call(this);
+  };
+
+  Y.prototype.playOrPause = Y.prototype.za;
+
+  Y.prototype.stop = function () {
+    P.prototype.stop.call(this);
+  };
+
+  Y.prototype.stop = Y.prototype.stop;
+
+  Y.prototype.seek = function () {
+    P.prototype.seek.call(this);
+  };
+
+  Y.prototype.seek = Y.prototype.seek;
+
+  Y.prototype.xa = function () {
+    P.prototype.xa.call(this);
+  };
+
+  Y.prototype.muteOrUnmute = Y.prototype.xa;
+
+  Y.prototype.Ea = function () {
+    P.prototype.Ea.call(this);
+  };
+
+  Y.prototype.setVolumeLevel = Y.prototype.Ea;
+
+  Y.prototype.qa = function (a) {
+    return P.prototype.qa.call(this, a);
+  };
+
+  Y.prototype.getFormattedTime = Y.prototype.qa;
+
+  Y.prototype.ra = function (a, b) {
+    return P.prototype.ra.call(this, a, b);
+  };
+
+  Y.prototype.getSeekPosition = Y.prototype.ra;
+
+  Y.prototype.sa = function (a, b) {
+    return P.prototype.sa.call(this, a, b);
+  };
+
+  Y.prototype.getSeekTime = Y.prototype.sa;
+}).call(window);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(6)))
 
 /***/ }),
 /* 39 */
-/***/ (function(module, exports, __webpack_require__) {
+/***/ (function(module, exports) {
 
-var _ = __webpack_require__(8);
+(function () {
+  var e = function e(a) {
+    return !!document.currentScript && (-1 != document.currentScript.src.indexOf("?" + a) || -1 != document.currentScript.src.indexOf("&" + a));
+  },
+      f = e("loadGamesSDK") ? "/cast_game_sender.js" : "/cast_sender.js",
+      g = e("loadCastFramework") || e("loadCastApplicationFramework"),
+      h = function h() {
+    return "function" == typeof window.__onGCastApiAvailable ? window.__onGCastApiAvailable : null;
+  },
+      k = ["pkedcjkdefgpdelpbcmbmeomcjbeemfm", "enhhojjnijigcajfphajepfemndkmdlo"],
+      m = function m(a) {
+    a.length ? l(a.shift(), function () {
+      m(a);
+    }) : n();
+  },
+      p = function p(a) {
+    return "chrome-extension://" + a + f;
+  },
+      l = function l(a, c, b) {
+    var d = document.createElement("script");
+    d.onerror = c;
+    b && (d.onload = b);
+    d.src = a;
+    (document.head || document.documentElement).appendChild(d);
+  },
+      q = function q(a) {
+    return 0 <= window.navigator.userAgent.indexOf(a);
+  },
+      n = function n() {
+    var a = h();
+    a && a(!1, "No cast extension found");
+  },
+      r = function r() {
+    if (g) {
+      var a = 2,
+          c = h(),
+          b = function b() {
+        a--;
+        0 == a && c && c(!0);
+      };
 
-var Cover = function(flow, index, url, config) {
+      window.__onGCastApiAvailable = b;
+      l("//www.gstatic.com/cast/sdk/libs/sender/1.0/cast_framework.js", n, b);
+    }
+  };
 
-	var _this = this;
-
-	var newWidth;
-	var newHeight;
-	
-	this.index = index;
-	this.halfHeight = 0;
-	
-	this.el = document.createElement('div');
-	this.el.className = Cover.getClassName();
-	var cellStyle = this.el.style;
-	if (config.backgroundopacity === 1) {
-		cellStyle.backgroundColor = config.backgroundcolor;
-	}
-	
-	var bitmap = document.createElement('canvas');
-	this.el.appendChild(bitmap);
-
-	var image = new Image();
-	image.onload = onComplete;
-	image.src = url;
-	
-	function onComplete() {
-
-		var wid = image.width;
-		var hei = image.height;
-			
-		var cropTop = 0;
-		var cropLeft = 0;
-		
-		// calculate the image size, ratio values
-		if (config.fixedsize) {
-			newWidth = Math.round(config.coverwidth);
-			newHeight = Math.round(config.coverheight);
-			var off = _.getCropOffsets(wid, hei, newWidth, newHeight);
-			cropLeft = Math.round(off.left);
-			cropTop = Math.round(off.top);
-		} else {
-			var fit = _.getResizeDimensions(wid, hei, config.coverwidth, config.coverheight);
-			newWidth = Math.round(fit.width);
-			newHeight = Math.round(fit.height);
-		}
-		
-		_this.width = newWidth;
-		_this.height = newHeight;
-		_this.halfHeight = newHeight;
-		
-		cellStyle.top = -(newHeight * 0.5) + 'px';
-		cellStyle.left = -(newWidth * 0.5) + 'px';
-		cellStyle.width = newWidth + 'px';
-		cellStyle.height = newHeight + 'px';
-
-		bitmap.width = newWidth;
-		bitmap.height = newHeight * 2;
-		var ctx = bitmap.getContext('2d');
-		ctx.drawImage(image, cropLeft, cropTop, wid-2*cropLeft, hei-2*cropTop, 0, 0, newWidth, newHeight);
-
-		if (config.reflectionopacity > 0) {
-			cellStyle.height = (newHeight * 2) + 'px';
-			Cover.reflect(bitmap, newWidth, newHeight, config.reflectionopacity, config.reflectionratio, config.reflectionoffset);
-		}
-	
-		flow.itemComplete(newHeight);
-	}
-	
-	this.setY = function(maxCoverHeight) {
-		var offsetY = maxCoverHeight * 0.5 - (maxCoverHeight - newHeight);
-		this.el.style.top = -offsetY + 'px';
-	};
-};
-
-Cover.getClassName = function() {
-	return 'coverflow-cell';
-};
-
-Cover.reflect = function(bitmap, wid, hei, reflectOpacity, reflectRatio, reflectOffset) {
-
-	var ctx = bitmap.getContext('2d');
-	ctx.save();
-	ctx.scale(1, -1);
-	ctx.drawImage(bitmap, 0, -hei*2 - reflectOffset);
-	ctx.restore();
-	ctx.globalCompositeOperation = 'destination-out';
-
-	var gradient = ctx.createLinearGradient(0, 0, 0, hei);
-	gradient.addColorStop(reflectRatio/255, 'rgba(255, 255, 255, 1.0)');
-	gradient.addColorStop(0, 'rgba(255, 255, 255, ' + (1 - reflectOpacity) + ')');
-	ctx.translate(0, hei + reflectOffset);
-	ctx.fillStyle = gradient;
-	ctx.fillRect(0, 0, wid, hei);
-};
-
-module.exports = Cover;
+  if (q("CriOS")) {
+    var t = window.__gCrWeb && window.__gCrWeb.message && window.__gCrWeb.message.invokeOnHost;
+    t && (r(), t({
+      command: "cast.sender.init"
+    }));
+  } else if (q("Android") && q("Chrome/") && window.navigator.presentation) {
+    r();
+    var u = window.navigator.userAgent.match(/Chrome\/([0-9]+)/);
+    m(["//www.gstatic.com/eureka/clank/" + (u ? parseInt(u[1], 10) : 0) + f, "//www.gstatic.com/eureka/clank" + f]);
+  } else window.chrome && window.navigator.presentation && !q("Edge") ? (r(), m(k.map(p))) : n();
+})();
 
 /***/ }),
 /* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var _ = __webpack_require__(11);
 
-var _ = __webpack_require__(8);
+var PlaylistLoader = __webpack_require__(41);
 
-var Hit = function(flow, index, config) {
-	
-	this.index = index;
-	
-	this.el = document.createElement('div');
-	this.el.className = Hit.getClassName();
+var CoverFlow = __webpack_require__(146);
 
-	this.resize(config.coverwidth, config.coverheight);
+var Html5 = function Html5(api) {
+  var _this = this;
 
-	this.setY = function(maxCoverHeight) {
-		var offsetY = maxCoverHeight * 0.5 - (maxCoverHeight - this.height);
-		this.el.style.top = -offsetY + 'px';
-	};
+  var div = api.el;
+  var config = api.config;
+  var playlist;
+  var coverFlow;
+  var textField;
+  var rotateInterval;
+
+  function setup() {
+    var styleElement = document.createElement('style');
+    styleElement.type = 'text/css';
+    document.getElementsByTagName('head')[0].appendChild(styleElement);
+    styleElement.appendChild(document.createTextNode(config.textstyle));
+
+    var rgb = _.hexToRgb(config.backgroundcolor);
+
+    config.backgroundcolor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + config.backgroundopacity + ')';
+    div.style.backgroundColor = config.backgroundcolor;
+
+    if (config.gradientcolor !== undefined) {
+      rgb = _.hexToRgb(config.gradientcolor);
+      config.gradientcolor = 'rgba(' + rgb.r + ',' + rgb.g + ',' + rgb.b + ',' + config.backgroundopacity + ')';
+      div.style.background = '-webkit-gradient(linear, left top, left bottom, from(' + config.gradientcolor + '), to(' + config.backgroundcolor + '))';
+    }
+
+    api.trigger('ready');
+    api.events.playlist.on(playlistLoaded);
+    var loader = new PlaylistLoader(api);
+    loader.load(api.config.playlist);
+  }
+
+  function playlistLoaded(p) {
+    playlist = p;
+
+    if (config.rotatedelay > 0) {
+      //must be before coverFlow is created, event order
+      div.addEventListener('touchstart', _this.stopRotation, true);
+      div.addEventListener('mousedown', _this.stopRotation, true);
+      div.addEventListener('keydown', _this.stopRotation, true);
+    }
+
+    config.coverheight = config.coverheight == 'auto' ? config.height : config.coverheight;
+    if (coverFlow) coverFlow.destroy();
+    if (textField) div.removeChild(textField);
+
+    if (config.showtext === true) {
+      textField = document.createElement('div');
+
+      _.addClass(textField, 'coverflow-text');
+
+      div.appendChild(textField);
+    }
+
+    coverFlow = new CoverFlow(div, playlist, config);
+    div.appendChild(coverFlow.el);
+    coverFlow.on('focus', coverFocus);
+    coverFlow.on('click', coverClick);
+    coverFlow.to(config.item);
+
+    _this.resize(config.width, config.height);
+
+    if (config.rotatedelay > 0) {
+      _this.stopRotation();
+
+      rotateInterval = setInterval(rotateHandler, config.rotatedelay);
+    }
+
+    if (config.mousewheel) {
+      div.addEventListener('mousewheel', scrollOnMousewheel);
+      div.addEventListener('DOMMouseScroll', scrollOnMousewheel);
+    }
+  }
+
+  function scrollOnMousewheel(e) {
+    e.preventDefault();
+
+    _this.stopRotation();
+
+    var delta = e.detail ? e.detail * -120 : e.wheelDelta;
+    var count = Math.ceil(Math.abs(delta) / 120);
+
+    if (count > 0) {
+      var sign = Math.abs(delta) / delta;
+      var func = null;
+      if (sign > 0) func = _this.left;else if (sign < 0) func = _this.right;
+
+      if (typeof func === 'function') {
+        for (var i = 0; i < count; i++) {
+          func();
+        }
+      }
+    }
+  }
+
+  function coverFocus(index) {
+    if (config.showtext === true) {
+      var d = playlist[index];
+
+      if (d) {
+        textField.innerHTML = '<h1>' + (d.title === undefined ? '' : d.title) + '</h1><h2>' + (d.description === undefined ? '' : d.description) + '</h2>';
+      }
+    }
+
+    api.trigger('focus', index, playlist[index] ? playlist[index].link : undefined);
+  }
+
+  function coverClick(index) {
+    _this.stopRotation();
+
+    api.trigger('click', index, playlist[index] ? playlist[index].link : undefined);
+  }
+
+  this.stopRotation = function () {
+    if (rotateInterval) {
+      div.removeEventListener('touchstart', _this.stopRotation, true);
+      div.removeEventListener('mousedown', _this.stopRotation, true);
+      div.removeEventListener('keydown', _this.stopRotation, true);
+      clearInterval(rotateInterval);
+      rotateInterval = false;
+    }
+  };
+
+  function rotateHandler() {
+    coverFlow.next();
+  }
+
+  this.resize = function (wid, hei) {
+    if (coverFlow) {
+      coverFlow.resize(wid, hei);
+    }
+
+    if (textField) {//	textField.style.top = (hei - config.textoffset) + 'px';
+    }
+  };
+
+  this.left = function () {
+    _this.stopRotation();
+
+    coverFlow.left();
+  };
+
+  this.right = function () {
+    _this.stopRotation();
+
+    coverFlow.right();
+  };
+
+  this.prev = function () {
+    _this.stopRotation();
+
+    coverFlow.prev();
+  };
+
+  this.next = function () {
+    _this.stopRotation();
+
+    coverFlow.next();
+  };
+
+  this.to = function (index) {
+    _this.stopRotation();
+
+    coverFlow.to(index);
+  };
+
+  this.destroy = function () {
+    if (coverFlow) coverFlow.destroy();
+  };
+
+  setup();
 };
 
-Hit.prototype.resize = function(wid, hei) {
+module.exports = Html5;
 
-	this.height = hei;
+/***/ }),
+/* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-	_.css(this.el, {
-		backgroundColor: '#00ff00',
-		width: wid,
-		height: hei,
-		top: -hei * 0.5,
-		left: -wid * 0.5
-	});
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(_, module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
+
+
+var PlaylistLoader = function PlaylistLoader(api) {
+  var config = api.config;
+
+  this.load = function (p) {
+    if (typeof p === 'string') {
+      if (p.indexOf('callback=?') !== -1) {
+        _.jsonp(p, jsonpLoaded);
+      } else {
+        _.ajax(p, ajaxLoaded);
+      }
+    } else if (__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(p) === 'object') {
+      api.events.playlist.trigger(p);
+      api.events.playlist.off();
+    }
+  };
+
+  function jsonpLoaded(json) {
+    var playlist = [];
+
+    if (config.hasOwnProperty('route')) {
+      if (config.route.hasOwnProperty('playlist')) {
+        json = json[config.route.playlist];
+      }
+
+      for (var i = 0; i < json.length; i++) {
+        playlist[i] = {
+          image: findJsonValue(json[i], 'image'),
+          title: findJsonValue(json[i], 'title'),
+          description: findJsonValue(json[i], 'description'),
+          link: findJsonValue(json[i], 'link'),
+          duration: findJsonValue(json[i], 'duration')
+        };
+      }
+    }
+
+    api.events.playlist.trigger(playlist);
+    api.events.playlist.off();
+  }
+
+  function findJsonValue(obj, type) {
+    if (config.route.hasOwnProperty(type)) {
+      var value = obj;
+      var keys = config.route[type].split('.');
+
+      for (var i = 0; i < keys.length; i++) {
+        value = value[keys[i]];
+      }
+
+      return value;
+    } else {
+      return obj[type];
+    }
+  }
+
+  function ajaxLoaded(xmlhttp) {
+    var playlist = JSON.parse(xmlhttp.responseText);
+    api.events.playlist.trigger(playlist);
+    api.events.playlist.off();
+  }
 };
 
-Hit.getClassName = function() {
-	return 'coverflow-hit';
+module.exports = PlaylistLoader;
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(17), __webpack_require__(19)(module)))
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports) {
+
+var Controller = function Controller(flow, elem, config) {
+  this.flow = flow;
+  this.elem = elem;
+  this.config = config;
+  this.currentX = 0;
+  this.currentY = 0; //this.transformProp = Modernizr.prefixed('transitionDuration');
+};
+
+Controller.prototype.handleEvent = function (e) {
+  this[e.type](e);
+};
+
+Controller.prototype.touchstart = function (e) {
+  e.stopImmediatePropagation();
+  this.startX = e.touches[0].pageX - this.currentX;
+  this.startY = e.touches[0].pageY - this.currentY;
+  this.pageY = e.touches[0].pageY;
+  this.moved = false;
+  window.addEventListener('touchmove', this, true);
+  window.addEventListener('touchend', this, true);
+  this.elem.style[this.transformProp] = '0s';
+};
+
+Controller.prototype.touchmove = function (e) {
+  e.stopImmediatePropagation();
+  this.lastX = this.currentX;
+  this.lastY = this.currentY;
+  this.currentX = e.touches[0].pageX - this.startX;
+  this.currentY = e.touches[0].pageY - this.startY;
+
+  if (Math.abs(this.currentX - this.lastX) > Math.abs(this.currentY - this.lastY)) {
+    e.preventDefault();
+    this.moved = true;
+    this.lastMoveTime = new Date().getTime();
+    this.flow.update(this.currentX);
+  } else {
+    window.removeEventListener('touchmove', this, true);
+    window.removeEventListener('touchend', this, true);
+  }
+};
+
+Controller.prototype.touchend = function (e) {
+  e.stopImmediatePropagation();
+  e.preventDefault();
+  window.removeEventListener('touchmove', this, true);
+  window.removeEventListener('touchend', this, true);
+  this.elem.style[this.transformProp] = this.config.tweentime + 's';
+
+  if (this.moved) {
+    var delta = this.currentX - this.lastX;
+    var dt = new Date().getTime() - this.lastMoveTime + 1;
+    this.currentX = this.currentX + delta * 50 / dt;
+    this.flow.updateTouchEnd(this);
+  } else {
+    this.flow.tap(e, this.currentX);
+  }
+};
+
+Controller.prototype.to = function (index) {
+  this.currentX = -index * this.config.covergap;
+  this.flow.update(this.currentX);
+};
+
+module.exports = Controller;
+
+/***/ }),
+/* 43 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = __webpack_require__(11);
+
+var Cover = function Cover(flow, index, url, config) {
+  var _this = this;
+
+  var newWidth;
+  var newHeight;
+  this.index = index;
+  this.halfHeight = 0;
+  this.el = document.createElement('div');
+  this.el.className = Cover.getClassName();
+  var cellStyle = this.el.style;
+
+  if (config.backgroundopacity === 1) {
+    cellStyle.backgroundColor = config.backgroundcolor;
+  }
+
+  var bitmap = document.createElement('canvas');
+  this.el.appendChild(bitmap);
+  var image = new Image();
+  image.onload = onComplete;
+  image.src = url;
+
+  function onComplete() {
+    var wid = image.width;
+    var hei = image.height;
+    var cropTop = 0;
+    var cropLeft = 0; // calculate the image size, ratio values
+
+    if (config.fixedsize) {
+      newWidth = Math.round(config.coverwidth);
+      newHeight = Math.round(config.coverheight);
+
+      var off = _.getCropOffsets(wid, hei, newWidth, newHeight);
+
+      cropLeft = Math.round(off.left);
+      cropTop = Math.round(off.top);
+    } else {
+      var fit = _.getResizeDimensions(wid, hei, config.coverwidth, config.coverheight);
+
+      newWidth = Math.round(fit.width);
+      newHeight = Math.round(fit.height);
+    }
+
+    _this.width = newWidth;
+    _this.height = newHeight;
+    _this.halfHeight = newHeight;
+    cellStyle.top = -(newHeight * 0.5) + 'px';
+    cellStyle.left = -(newWidth * 0.5) + 'px';
+    cellStyle.width = newWidth + 'px';
+    cellStyle.height = newHeight + 'px';
+    bitmap.width = newWidth;
+    bitmap.height = newHeight * 2;
+    var ctx = bitmap.getContext('2d');
+    ctx.drawImage(image, cropLeft, cropTop, wid - 2 * cropLeft, hei - 2 * cropTop, 0, 0, newWidth, newHeight);
+
+    if (config.reflectionopacity > 0) {
+      cellStyle.height = newHeight * 2 + 'px';
+      Cover.reflect(bitmap, newWidth, newHeight, config.reflectionopacity, config.reflectionratio, config.reflectionoffset);
+    }
+
+    flow.itemComplete(newHeight);
+  }
+
+  this.setY = function (maxCoverHeight) {
+    var offsetY = maxCoverHeight * 0.5 - (maxCoverHeight - newHeight);
+    this.el.style.top = -offsetY + 'px';
+  };
+};
+
+Cover.getClassName = function () {
+  return 'coverflow-cell';
+};
+
+Cover.reflect = function (bitmap, wid, hei, reflectOpacity, reflectRatio, reflectOffset) {
+  var ctx = bitmap.getContext('2d');
+  ctx.save();
+  ctx.scale(1, -1);
+  ctx.drawImage(bitmap, 0, -hei * 2 - reflectOffset);
+  ctx.restore();
+  ctx.globalCompositeOperation = 'destination-out';
+  var gradient = ctx.createLinearGradient(0, 0, 0, hei);
+  gradient.addColorStop(reflectRatio / 255, 'rgba(255, 255, 255, 1.0)');
+  gradient.addColorStop(0, 'rgba(255, 255, 255, ' + (1 - reflectOpacity) + ')');
+  ctx.translate(0, hei + reflectOffset);
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, wid, hei);
+};
+
+module.exports = Cover;
+
+/***/ }),
+/* 44 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var _ = __webpack_require__(11);
+
+var Hit = function Hit(flow, index, config) {
+  this.index = index;
+  this.el = document.createElement('div');
+  this.el.className = Hit.getClassName();
+  this.resize(config.coverwidth, config.coverheight);
+
+  this.setY = function (maxCoverHeight) {
+    var offsetY = maxCoverHeight * 0.5 - (maxCoverHeight - this.height);
+    this.el.style.top = -offsetY + 'px';
+  };
+};
+
+Hit.prototype.resize = function (wid, hei) {
+  this.height = hei;
+
+  _.css(this.el, {
+    backgroundColor: '#00ff00',
+    width: wid,
+    height: hei,
+    top: -hei * 0.5,
+    left: -wid * 0.5
+  });
+};
+
+Hit.getClassName = function () {
+  return 'coverflow-hit';
 };
 
 module.exports = Hit;
 
 /***/ }),
-/* 41 */
-/***/ (function(module, exports) {
-
-/*** IMPORTS FROM imports-loader ***/
-(function() {
-
-/* Modernizr 2.6.2 (Custom Build) | MIT & BSD
- * Build: http://modernizr.com/download/#-csstransforms3d-csstransitions-canvas-canvastext-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes
- */
-;window.Modernizr=function(a,b,c){function y(a){i.cssText=a}function z(a,b){return y(l.join(a+";")+(b||""))}function A(a,b){return typeof a===b}function B(a,b){return!!~(""+a).indexOf(b)}function C(a,b){for(var d in a){var e=a[d];if(!B(e,"-")&&i[e]!==c)return b=="pfx"?e:!0}return!1}function D(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:A(f,"function")?f.bind(d||b):f}return!1}function E(a,b,c){var d=a.charAt(0).toUpperCase()+a.slice(1),e=(a+" "+n.join(d+" ")+d).split(" ");return A(b,"string")||A(b,"undefined")?C(e,b):(e=(a+" "+o.join(d+" ")+d).split(" "),D(e,b,c))}var d="2.6.2",e={},f=b.documentElement,g="modernizr",h=b.createElement(g),i=h.style,j,k={}.toString,l=" -webkit- -moz- -o- -ms- ".split(" "),m="Webkit Moz O ms",n=m.split(" "),o=m.toLowerCase().split(" "),p={},q={},r={},s=[],t=s.slice,u,v=function(a,c,d,e){var h,i,j,k,l=b.createElement("div"),m=b.body,n=m||b.createElement("body");if(parseInt(d,10))while(d--)j=b.createElement("div"),j.id=e?e[d]:g+(d+1),l.appendChild(j);return h=["&#173;",'<style id="s',g,'">',a,"</style>"].join(""),l.id=g,(m?l:n).innerHTML+=h,n.appendChild(l),m||(n.style.background="",n.style.overflow="hidden",k=f.style.overflow,f.style.overflow="hidden",f.appendChild(n)),i=c(l,a),m?l.parentNode.removeChild(l):(n.parentNode.removeChild(n),f.style.overflow=k),!!i},w={}.hasOwnProperty,x;!A(w,"undefined")&&!A(w.call,"undefined")?x=function(a,b){return w.call(a,b)}:x=function(a,b){return b in a&&A(a.constructor.prototype[b],"undefined")},Function.prototype.bind||(Function.prototype.bind=function(b){var c=this;if(typeof c!="function")throw new TypeError;var d=t.call(arguments,1),e=function(){if(this instanceof e){var a=function(){};a.prototype=c.prototype;var f=new a,g=c.apply(f,d.concat(t.call(arguments)));return Object(g)===g?g:f}return c.apply(b,d.concat(t.call(arguments)))};return e}),p.canvas=function(){var a=b.createElement("canvas");return!!a.getContext&&!!a.getContext("2d")},p.canvastext=function(){return!!e.canvas&&!!A(b.createElement("canvas").getContext("2d").fillText,"function")},p.csstransforms3d=function(){var a=!!E("perspective");return a&&"webkitPerspective"in f.style&&v("@media (transform-3d),(-webkit-transform-3d){#modernizr{left:9px;position:absolute;height:3px;}}",function(b,c){a=b.offsetLeft===9&&b.offsetHeight===3}),a},p.csstransitions=function(){return E("transition")};for(var F in p)x(p,F)&&(u=F.toLowerCase(),e[u]=p[F](),s.push((e[u]?"":"no-")+u));return e.addTest=function(a,b){if(typeof a=="object")for(var d in a)x(a,d)&&e.addTest(d,a[d]);else{a=a.toLowerCase();if(e[a]!==c)return e;b=typeof b=="function"?b():b,typeof enableClasses!="undefined"&&enableClasses&&(f.className+=" "+(b?"":"no-")+a),e[a]=b}return e},y(""),h=j=null,e._version=d,e._prefixes=l,e._domPrefixes=o,e._cssomPrefixes=n,e.testProp=function(a){return C([a])},e.testAllProps=E,e.testStyles=v,e.prefixed=function(a,b,c){return b?E(a,b,c):E(a,"pfx")},e}(this,this.document);
-
-
-/*** EXPORTS FROM exports-loader ***/
-module.exports = window.Modernizr;
-}.call(window));
-
-/***/ }),
-/* 42 */,
-/* 43 */,
-/* 44 */
+/* 45 */,
+/* 46 */,
+/* 47 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_crypto_js__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppUtilities; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_crypto_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_crypto_js__);
 
 
-class AppUtilities {
-  constructor($rootScope, $timeout) {
+
+
+var AppUtilities =
+/*#__PURE__*/
+function () {
+  AppUtilities.$inject = ["$rootScope", "$timeout"];
+
+  function AppUtilities($rootScope, $timeout) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, AppUtilities);
+
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.$rootScope.goBack = this.goBack;
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
     this.$rootScope.updateGridRows = this.updateGridRows;
-
     this.$rootScope.decryptPassword = this.decryptPassword;
     this.$rootScope.formatTime = this.formatTime;
   }
 
-  broadcast(e, d) {
-    this.$rootScope.$broadcast(e, d);
-  }
-
-  apply() {
-    if (!this.$rootScope.$$phase) {
-      //$digest or $apply
-      this.$rootScope.$digest();
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(AppUtilities, [{
+    key: "broadcast",
+    value: function broadcast(e, d) {
+      this.$rootScope.$broadcast(e, d);
     }
-  }
-
-  goBack() {
-    window.history.back();
-  }
-
-  getBackgroundStyle(imagepath) {
-    return {
-      'background-image': 'url(' + imagepath + ')'
-    }
-  }
-
-  shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
-  showLoader() {
-    $("#root.root").css("display", "none");
-    $(".loader").css("display", "block");
-  }
-
-  hideLoader() {
-    $(".loader").css("display", "none");
-    $("#root.root").css("display", "initial");
-  }
-
-  setContentBackground(img) {
-    if (img) {
-      var bgUrl = img.replace('300x300', Math.round($('.art-backdrop').width()) + 'x' + Math.round($('.art-backdrop').height()));
-      $('.art-backdrop').css('background-image', 'url(' + bgUrl + ')');
-      this.apply();
-    }
-  }
-
-  resetContentBackground() {
-    $('.art-backdrop').css('background-image', 'url("")');
-  }
-
-  updateGridRows(gridOptions) {
-    this.$timeout(function () {
-      if (gridOptions && gridOptions.api) {
-        gridOptions.api.redrawRows({
-          force: true
-        });
-        gridOptions.api.doLayout();
-        gridOptions.api.sizeColumnsToFit();
+  }, {
+    key: "apply",
+    value: function apply() {
+      if (!this.$rootScope.$$phase) {
+        //$digest or $apply
+        this.$rootScope.$digest();
       }
-    });
-  }
-
-  showNoRows(gridOptions) {
-    if (gridOptions && gridOptions.api) {
-      gridOptions.api.showNoRowsOverlay();
     }
-  }
-
-  setRowData(gridOptions, data) {
-    if (gridOptions && gridOptions.api) {
-      gridOptions.api.setRowData(data);
-      this.updateGridRows(gridOptions);
+  }, {
+    key: "goBack",
+    value: function goBack() {
+      window.history.back();
     }
-  }
-
-  fallbackCopyTextToClipboard(text) {
-    var textArea = document.createElement("textarea");
-    textArea.value = text;
-    document.body.appendChild(textArea);
-    textArea.focus();
-    textArea.select();
-
-    try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Fallback: Copying text command was ' + msg);
-    } catch (err) {
-      console.error('Fallback: Oops, unable to copy', err);
-    }
-
-    document.body.removeChild(textArea);
-  }
-
-  copyTextToClipboard(text) {
-    if (!navigator.clipboard) {
-      this.fallbackCopyTextToClipboard(text);
-      return;
-    }
-    navigator.clipboard.writeText(text).then(function () {
-      console.log('Async: Copying to clipboard was successful!');
-    }, function (err) {
-      console.error('Async: Could not copy text: ', err);
-    });
-  }
-
-  formatTime(seconds) {
-    var minutes = Math.floor(seconds / 60);
-    minutes = (minutes >= 10) ? minutes : "0" + minutes;
-    seconds = Math.floor(seconds % 60);
-    seconds = (seconds >= 10) ? seconds : "0" + seconds;
-    return minutes + ":" + seconds;
-  }
-
-  msToTime(duration) {
-    var milliseconds = parseInt((duration % 1000) / 100),
-      seconds = parseInt((duration / 1000) % 60),
-      minutes = parseInt((duration / (1000 * 60)) % 60),
-      hours = parseInt((duration / (1000 * 60 * 60)) % 24);
-
-    hours = (hours < 10) ? "0" + hours : hours;
-    minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
-
-    return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
-  }
-
-  debounce(func, wait, immediate) {
-    var timeout;
-    return function () {
-      var context = this,
-        args = arguments;
-      var later = function () {
-        timeout = null;
-        if (!immediate) func.apply(context, args);
+  }, {
+    key: "getBackgroundStyle",
+    value: function getBackgroundStyle(imagepath) {
+      return {
+        'background-image': 'url(' + imagepath + ')'
       };
-      var callNow = immediate && !timeout;
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
-    };
-  }
+    }
+  }, {
+    key: "shuffle",
+    value: function shuffle(a) {
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var _ref = [a[j], a[i]];
+        a[i] = _ref[0];
+        a[j] = _ref[1];
+      }
 
-  encryptPassword(pass) {
-    return __WEBPACK_IMPORTED_MODULE_0_crypto_js___default.a.AES.encrypt(pass, "12345").toString();
+      return a;
+    }
+  }, {
+    key: "showLoader",
+    value: function showLoader() {
+      $("#root.root").css("display", "none");
+      $(".loader").css("display", "block");
+    }
+  }, {
+    key: "hideLoader",
+    value: function hideLoader() {
+      $(".loader").css("display", "none");
+      $("#root.root").css("display", "initial");
+    }
+  }, {
+    key: "setContentBackground",
+    value: function setContentBackground(img) {
+      if (img) {
+        var bgUrl = img.replace('300x300', Math.round($('.art-backdrop').width()) + 'x' + Math.round($('.art-backdrop').height()));
+        $('.art-backdrop').css('background-image', 'url(' + bgUrl + ')');
+        this.apply();
+      }
+    }
+  }, {
+    key: "resetContentBackground",
+    value: function resetContentBackground() {
+      $('.art-backdrop').css('background-image', 'url("")');
+    }
+  }, {
+    key: "updateGridRows",
+    value: function updateGridRows(gridOptions) {
+      this.$timeout(function () {
+        if (gridOptions && gridOptions.api) {
+          gridOptions.api.redrawRows({
+            force: true
+          });
+          gridOptions.api.doLayout();
+          gridOptions.api.sizeColumnsToFit();
+        }
+      });
+    }
+  }, {
+    key: "showNoRows",
+    value: function showNoRows(gridOptions) {
+      if (gridOptions && gridOptions.api) {
+        gridOptions.api.showNoRowsOverlay();
+      }
+    }
+  }, {
+    key: "setRowData",
+    value: function setRowData(gridOptions, data) {
+      if (gridOptions && gridOptions.api) {
+        gridOptions.api.setRowData(data);
+        this.updateGridRows(gridOptions);
+      }
+    }
+  }, {
+    key: "fallbackCopyTextToClipboard",
+    value: function fallbackCopyTextToClipboard(text) {
+      var textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
 
-  }
+      try {
+        var successful = document.execCommand('copy');
+        var msg = successful ? 'successful' : 'unsuccessful';
+        console.log('Fallback: Copying text command was ' + msg);
+      } catch (err) {
+        console.error('Fallback: Oops, unable to copy', err);
+      }
 
-  decryptPassword(pass) {
-    return __WEBPACK_IMPORTED_MODULE_0_crypto_js___default.a.AES.decrypt(pass, "12345").toString(__WEBPACK_IMPORTED_MODULE_0_crypto_js___default.a.enc.Utf8);
-  }
+      document.body.removeChild(textArea);
+    }
+  }, {
+    key: "copyTextToClipboard",
+    value: function copyTextToClipboard(text) {
+      if (!navigator.clipboard) {
+        this.fallbackCopyTextToClipboard(text);
+        return;
+      }
 
-  //shuffle(array) {
-  //  var currentIndex = array.length, temporaryValue, randomIndex;
-  //  while (0 !== currentIndex) {
-  //    randomIndex = Math.floor(Math.random() * currentIndex);
-  //    var existing = array[currentIndex];
-  //    var existing2 = array[randomIndex];
-  //    if (existing && existing2) {
-  //      while (true) {
-  //        if (array[randomIndex].artist === array[currentIndex].artist)
-  //          randomIndex = Math.floor(Math.random() * currentIndex);
-  //        else break;
-  //      }
-  //    }
-  //    currentIndex -= 1;
-  //    temporaryValue = array[currentIndex];
-  //    array[currentIndex] = array[randomIndex];
-  //    array[randomIndex] = temporaryValue;
-  //  }
-  //  return array;
-  //}
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = AppUtilities;
+      navigator.clipboard.writeText(text).then(function () {
+        console.log('Async: Copying to clipboard was successful!');
+      }, function (err) {
+        console.error('Async: Could not copy text: ', err);
+      });
+    }
+  }, {
+    key: "formatTime",
+    value: function formatTime(seconds) {
+      var minutes = Math.floor(seconds / 60);
+      minutes = minutes >= 10 ? minutes : "0" + minutes;
+      seconds = Math.floor(seconds % 60);
+      seconds = seconds >= 10 ? seconds : "0" + seconds;
+      return minutes + ":" + seconds;
+    }
+  }, {
+    key: "msToTime",
+    value: function msToTime(duration) {
+      var milliseconds = parseInt(duration % 1000 / 100),
+          seconds = parseInt(duration / 1000 % 60),
+          minutes = parseInt(duration / (1000 * 60) % 60),
+          hours = parseInt(duration / (1000 * 60 * 60) % 24);
+      hours = hours < 10 ? "0" + hours : hours;
+      minutes = minutes < 10 ? "0" + minutes : minutes;
+      seconds = seconds < 10 ? "0" + seconds : seconds;
+      return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    }
+  }, {
+    key: "debounce",
+    value: function debounce(func, wait, immediate) {
+      var timeout;
+      return function () {
+        var context = this,
+            args = arguments;
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+        var later = function later() {
+          timeout = null;
+          if (!immediate) func.apply(context, args);
+        };
+
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+      };
+    }
+  }, {
+    key: "encryptPassword",
+    value: function encryptPassword(pass) {
+      return __WEBPACK_IMPORTED_MODULE_2_crypto_js___default.a.AES.encrypt(pass, "12345").toString();
+    }
+  }, {
+    key: "decryptPassword",
+    value: function decryptPassword(pass) {
+      return __WEBPACK_IMPORTED_MODULE_2_crypto_js___default.a.AES.decrypt(pass, "12345").toString(__WEBPACK_IMPORTED_MODULE_2_crypto_js___default.a.enc.Utf8);
+    } //shuffle(array) {
+    //  var currentIndex = array.length, temporaryValue, randomIndex;
+    //  while (0 !== currentIndex) {
+    //    randomIndex = Math.floor(Math.random() * currentIndex);
+    //    var existing = array[currentIndex];
+    //    var existing2 = array[randomIndex];
+    //    if (existing && existing2) {
+    //      while (true) {
+    //        if (array[randomIndex].artist === array[currentIndex].artist)
+    //          randomIndex = Math.floor(Math.random() * currentIndex);
+    //        else break;
+    //      }
+    //    }
+    //    currentIndex -= 1;
+    //    temporaryValue = array[currentIndex];
+    //    array[currentIndex] = array[randomIndex];
+    //    array[randomIndex] = temporaryValue;
+    //  }
+    //  return array;
+    //}
+
+  }]);
+
+  return AppUtilities;
+}();
+
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 45 */,
-/* 46 */,
-/* 47 */,
 /* 48 */,
 /* 49 */,
 /* 50 */,
@@ -1193,67 +3242,65 @@ class AppUtilities {
 /* 54 */,
 /* 55 */,
 /* 56 */,
-/* 57 */
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(58);
+module.exports = __webpack_require__(61);
 
 
 /***/ }),
-/* 58 */
+/* 61 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular_route__ = __webpack_require__(60);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular_route__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_angular_route___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_angular_route__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_index__ = __webpack_require__(62);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__styles_index__ = __webpack_require__(65);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash__ = __webpack_require__(17);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_popper_js__ = __webpack_require__(21);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_tooltip_js__ = __webpack_require__(104);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular_bootstrap_contextmenu_contextMenu__ = __webpack_require__(105);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_popper_js__ = __webpack_require__(25);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_tooltip_js__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular_bootstrap_contextmenu_contextMenu__ = __webpack_require__(108);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_angular_bootstrap_contextmenu_contextMenu___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_angular_bootstrap_contextmenu_contextMenu__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jquery_flipster__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jquery_flipster__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7_jquery_flipster___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7_jquery_flipster__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_moment__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_moment__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8_moment__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_typeface_roboto__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_typeface_roboto__ = __webpack_require__(111);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_typeface_roboto___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_typeface_roboto__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angular_sanitize__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angular_sanitize__ = __webpack_require__(137);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10_angular_sanitize___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10_angular_sanitize__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_bootstrap_js_dist_carousel__ = __webpack_require__(136);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_bootstrap_js_dist_carousel__ = __webpack_require__(139);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_bootstrap_js_dist_carousel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11_bootstrap_js_dist_carousel__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_bootstrap_js_dist_collapse__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_bootstrap_js_dist_collapse__ = __webpack_require__(140);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12_bootstrap_js_dist_collapse___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12_bootstrap_js_dist_collapse__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_bootstrap_js_dist_popover__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_bootstrap_js_dist_popover__ = __webpack_require__(141);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_bootstrap_js_dist_popover___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13_bootstrap_js_dist_popover__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_bootstrap_js_dist_tooltip__ = __webpack_require__(33);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_bootstrap_js_dist_tooltip__ = __webpack_require__(37);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_bootstrap_js_dist_tooltip___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14_bootstrap_js_dist_tooltip__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_bootstrap_js_dist_util__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_bootstrap_js_dist_util__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15_bootstrap_js_dist_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15_bootstrap_js_dist_util__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__API_alloy_db__ = __webpack_require__(139);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__API_alloy_db___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__API_alloy_db__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__API_cast_framework__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__API_cast_framework___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_17__API_cast_framework__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__API_cast_v1__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__API_alloy_db__ = __webpack_require__(142);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__API_cast_framework__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__API_cast_v1__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__API_cast_v1___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_18__API_cast_v1__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__API_angular_auto_complete__ = __webpack_require__(140);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__API_angular_auto_complete___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_19__API_angular_auto_complete__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__API_coverflow_index__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__API_coverflow_index___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_20__API_coverflow_index__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__directives__ = __webpack_require__(145);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components__ = __webpack_require__(161);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services__ = __webpack_require__(250);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__factories__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__config_js__ = __webpack_require__(283);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__run_js__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__API_angular_auto_complete__ = __webpack_require__(143);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__API_coverflow_index__ = __webpack_require__(145);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__directives__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__components__ = __webpack_require__(165);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__services__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__factories__ = __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__config_js__ = __webpack_require__(288);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__run_js__ = __webpack_require__(289);
 
 
-__webpack_require__.p = "http://localhost:" + 3000 + "/";
-
+__webpack_require__.p = "http://localhost:" + undefined + "/";
 
 
 
@@ -1262,7 +3309,6 @@ __webpack_require__.p = "http://localhost:" + 3000 + "/";
 
 
 
-  
 
 
 
@@ -1270,7 +3316,7 @@ __webpack_require__.p = "http://localhost:" + 3000 + "/";
 
 
 
- 
+
 
 
 
@@ -1281,53 +3327,50 @@ __webpack_require__.p = "http://localhost:" + 3000 + "/";
 
 
 $('[data-toggle="popover"]').popover();
-
-__WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('alloy', [__WEBPACK_IMPORTED_MODULE_1_angular_route___default.a, 'ngSanitize', 'autoCompleteModule', 'ui.bootstrap.contextMenu', __WEBPACK_IMPORTED_MODULE_21__directives__["a" /* default */].name, __WEBPACK_IMPORTED_MODULE_22__components__["a" /* default */].name, __WEBPACK_IMPORTED_MODULE_24__factories__["a" /* default */].name, __WEBPACK_IMPORTED_MODULE_23__services__["a" /* default */].name])
-  .config(__WEBPACK_IMPORTED_MODULE_25__config_js__["a" /* default */])
-  .run(__WEBPACK_IMPORTED_MODULE_26__run_js__["a" /* default */]);
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+__WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('alloy', [__WEBPACK_IMPORTED_MODULE_1_angular_route___default.a, 'ngSanitize', 'autoCompleteModule', 'ui.bootstrap.contextMenu', __WEBPACK_IMPORTED_MODULE_21__directives__["a" /* default */].name, __WEBPACK_IMPORTED_MODULE_22__components__["a" /* default */].name, __WEBPACK_IMPORTED_MODULE_24__factories__["a" /* default */].name, __WEBPACK_IMPORTED_MODULE_23__services__["a" /* default */].name]).config(__WEBPACK_IMPORTED_MODULE_25__config_js__["a" /* default */]).run(__WEBPACK_IMPORTED_MODULE_26__run_js__["a" /* default */]);
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap_scss__ = __webpack_require__(63);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap_scss__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fontawesome_scss__ = __webpack_require__(66);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fontawesome_scss__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fontawesome_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fontawesome_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery_flipster_dist_jquery_flipster_min_css__ = __webpack_require__(74);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery_flipster_dist_jquery_flipster_min_css__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_jquery_flipster_dist_jquery_flipster_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_jquery_flipster_dist_jquery_flipster_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__glidejs_glide_dist_css_glide_core_min_css__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__glidejs_glide_dist_css_glide_core_min_css__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__glidejs_glide_dist_css_glide_core_min_css___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__glidejs_glide_dist_css_glide_core_min_css__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_autocomplete_scss__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_autocomplete_scss__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__angular_autocomplete_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__angular_autocomplete_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__base_scss__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__base_scss__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__base_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__base_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_scss__ = __webpack_require__(82);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_scss__ = __webpack_require__(85);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__mixins_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__mixins_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__loader_scss__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__loader_scss__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__loader_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__loader_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__debug_scss__ = __webpack_require__(86);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__debug_scss__ = __webpack_require__(89);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__debug_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__debug_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_pagecontainer_scss__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_pagecontainer_scss__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_pagecontainer_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__ui_pagecontainer_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_pageheader_scss__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_pageheader_scss__ = __webpack_require__(93);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_pageheader_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ui_pageheader_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_pagecontent_scss__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_pagecontent_scss__ = __webpack_require__(95);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_pagecontent_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ui_pagecontent_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_pagetoolbar_scss__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_pagetoolbar_scss__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_pagetoolbar_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__ui_pagetoolbar_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_tables_scss__ = __webpack_require__(96);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_tables_scss__ = __webpack_require__(99);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_tables_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__ui_tables_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_jumpbar_scss__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_jumpbar_scss__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_jumpbar_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__ui_jumpbar_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_detaillabel_scss__ = __webpack_require__(100);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_detaillabel_scss__ = __webpack_require__(103);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_detaillabel_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__ui_detaillabel_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ui_expander_scss__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ui_expander_scss__ = __webpack_require__(105);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__ui_expander_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_16__ui_expander_scss__);
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -1338,10 +3381,8 @@ __WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('alloy', [__WEBPACK_IMPOR
 
 
 
+ //ui components
 
-
-
-//ui components
 
 
 
@@ -1352,13 +3393,13 @@ __WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('alloy', [__WEBPACK_IMPOR
 
 
 /***/ }),
-/* 63 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(64);
+var content = __webpack_require__(67);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1383,7 +3424,7 @@ if(false) {
 }
 
 /***/ }),
-/* 64 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1397,14 +3438,14 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 65 */,
-/* 66 */
+/* 68 */,
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(67);
+var content = __webpack_require__(70);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1429,24 +3470,21 @@ if(false) {
 }
 
 /***/ }),
-/* 67 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var escape = __webpack_require__(31);
+var escape = __webpack_require__(35);
 exports = module.exports = __webpack_require__(0)(false);
 // imports
 
 
 // module
-exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n/*!\n *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + escape(__webpack_require__(68)) + ");\n  src: url(" + escape(__webpack_require__(69)) + "?#iefix&v=4.7.0) format(\"embedded-opentype\"), url(" + escape(__webpack_require__(70)) + ") format(\"woff2\"), url(" + escape(__webpack_require__(71)) + ") format(\"woff\"), url(" + escape(__webpack_require__(72)) + ") format(\"truetype\"), url(" + escape(__webpack_require__(73)) + "#fontawesomeregular) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n.fa {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n/* makes the font 33% larger relative to the icon container */\n.fa-lg {\n  font-size: 1.33333em;\n  line-height: 0.75em;\n  vertical-align: -15%; }\n\n.fa-2x {\n  font-size: 2em; }\n\n.fa-3x {\n  font-size: 3em; }\n\n.fa-4x {\n  font-size: 4em; }\n\n.fa-5x {\n  font-size: 5em; }\n\n.fa-fw {\n  width: 1.28571em;\n  text-align: center; }\n\n.fa-ul {\n  padding-left: 0;\n  margin-left: 2.14286em;\n  list-style-type: none; }\n  .fa-ul > li {\n    position: relative; }\n\n.fa-li {\n  position: absolute;\n  left: -2.14286em;\n  width: 2.14286em;\n  top: 0.14286em;\n  text-align: center; }\n  .fa-li.fa-lg {\n    left: -1.85714em; }\n\n.fa-border {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eee;\n  border-radius: .1em; }\n\n.fa-pull-left {\n  float: left; }\n\n.fa-pull-right {\n  float: right; }\n\n.fa.fa-pull-left {\n  margin-right: .3em; }\n\n.fa.fa-pull-right {\n  margin-left: .3em; }\n\n/* Deprecated as of 4.4.0 */\n.pull-right {\n  float: right; }\n\n.pull-left {\n  float: left; }\n\n.fa.pull-left {\n  margin-right: .3em; }\n\n.fa.pull-right {\n  margin-left: .3em; }\n\n.fa-spin {\n  -webkit-animation: fa-spin 2s infinite linear;\n  animation: fa-spin 2s infinite linear; }\n\n.fa-pulse {\n  -webkit-animation: fa-spin 1s infinite steps(8);\n  animation: fa-spin 1s infinite steps(8); }\n\n@-webkit-keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg); } }\n\n@keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg); } }\n\n.fa-rotate-90 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)\";\n  -webkit-transform: rotate(90deg);\n  transform: rotate(90deg); }\n\n.fa-rotate-180 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)\";\n  -webkit-transform: rotate(180deg);\n  transform: rotate(180deg); }\n\n.fa-rotate-270 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)\";\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg); }\n\n.fa-flip-horizontal {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)\";\n  -webkit-transform: scale(-1, 1);\n  transform: scale(-1, 1); }\n\n.fa-flip-vertical {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(1, -1);\n  transform: scale(1, -1); }\n\n:root .fa-rotate-90,\n:root .fa-rotate-180,\n:root .fa-rotate-270,\n:root .fa-flip-horizontal,\n:root .fa-flip-vertical {\n  -webkit-filter: none;\n          filter: none; }\n\n.fa-stack {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle; }\n\n.fa-stack-1x, .fa-stack-2x {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center; }\n\n.fa-stack-1x {\n  line-height: inherit; }\n\n.fa-stack-2x {\n  font-size: 2em; }\n\n.fa-inverse {\n  color: #fff; }\n\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.fa-glass:before {\n  content: \"\\F000\"; }\n\n.fa-music:before {\n  content: \"\\F001\"; }\n\n.fa-search:before {\n  content: \"\\F002\"; }\n\n.fa-envelope-o:before {\n  content: \"\\F003\"; }\n\n.fa-heart:before {\n  content: \"\\F004\"; }\n\n.fa-star:before {\n  content: \"\\F005\"; }\n\n.fa-star-o:before {\n  content: \"\\F006\"; }\n\n.fa-user:before {\n  content: \"\\F007\"; }\n\n.fa-film:before {\n  content: \"\\F008\"; }\n\n.fa-th-large:before {\n  content: \"\\F009\"; }\n\n.fa-th:before {\n  content: \"\\F00A\"; }\n\n.fa-th-list:before {\n  content: \"\\F00B\"; }\n\n.fa-check:before {\n  content: \"\\F00C\"; }\n\n.fa-remove:before,\n.fa-close:before,\n.fa-times:before {\n  content: \"\\F00D\"; }\n\n.fa-search-plus:before {\n  content: \"\\F00E\"; }\n\n.fa-search-minus:before {\n  content: \"\\F010\"; }\n\n.fa-power-off:before {\n  content: \"\\F011\"; }\n\n.fa-signal:before {\n  content: \"\\F012\"; }\n\n.fa-gear:before,\n.fa-cog:before {\n  content: \"\\F013\"; }\n\n.fa-trash-o:before {\n  content: \"\\F014\"; }\n\n.fa-home:before {\n  content: \"\\F015\"; }\n\n.fa-file-o:before {\n  content: \"\\F016\"; }\n\n.fa-clock-o:before {\n  content: \"\\F017\"; }\n\n.fa-road:before {\n  content: \"\\F018\"; }\n\n.fa-download:before {\n  content: \"\\F019\"; }\n\n.fa-arrow-circle-o-down:before {\n  content: \"\\F01A\"; }\n\n.fa-arrow-circle-o-up:before {\n  content: \"\\F01B\"; }\n\n.fa-inbox:before {\n  content: \"\\F01C\"; }\n\n.fa-play-circle-o:before {\n  content: \"\\F01D\"; }\n\n.fa-rotate-right:before,\n.fa-repeat:before {\n  content: \"\\F01E\"; }\n\n.fa-refresh:before {\n  content: \"\\F021\"; }\n\n.fa-list-alt:before {\n  content: \"\\F022\"; }\n\n.fa-lock:before {\n  content: \"\\F023\"; }\n\n.fa-flag:before {\n  content: \"\\F024\"; }\n\n.fa-headphones:before {\n  content: \"\\F025\"; }\n\n.fa-volume-off:before {\n  content: \"\\F026\"; }\n\n.fa-volume-down:before {\n  content: \"\\F027\"; }\n\n.fa-volume-up:before {\n  content: \"\\F028\"; }\n\n.fa-qrcode:before {\n  content: \"\\F029\"; }\n\n.fa-barcode:before {\n  content: \"\\F02A\"; }\n\n.fa-tag:before {\n  content: \"\\F02B\"; }\n\n.fa-tags:before {\n  content: \"\\F02C\"; }\n\n.fa-book:before {\n  content: \"\\F02D\"; }\n\n.fa-bookmark:before {\n  content: \"\\F02E\"; }\n\n.fa-print:before {\n  content: \"\\F02F\"; }\n\n.fa-camera:before {\n  content: \"\\F030\"; }\n\n.fa-font:before {\n  content: \"\\F031\"; }\n\n.fa-bold:before {\n  content: \"\\F032\"; }\n\n.fa-italic:before {\n  content: \"\\F033\"; }\n\n.fa-text-height:before {\n  content: \"\\F034\"; }\n\n.fa-text-width:before {\n  content: \"\\F035\"; }\n\n.fa-align-left:before {\n  content: \"\\F036\"; }\n\n.fa-align-center:before {\n  content: \"\\F037\"; }\n\n.fa-align-right:before {\n  content: \"\\F038\"; }\n\n.fa-align-justify:before {\n  content: \"\\F039\"; }\n\n.fa-list:before {\n  content: \"\\F03A\"; }\n\n.fa-dedent:before,\n.fa-outdent:before {\n  content: \"\\F03B\"; }\n\n.fa-indent:before {\n  content: \"\\F03C\"; }\n\n.fa-video-camera:before {\n  content: \"\\F03D\"; }\n\n.fa-photo:before,\n.fa-image:before,\n.fa-picture-o:before {\n  content: \"\\F03E\"; }\n\n.fa-pencil:before {\n  content: \"\\F040\"; }\n\n.fa-map-marker:before {\n  content: \"\\F041\"; }\n\n.fa-adjust:before {\n  content: \"\\F042\"; }\n\n.fa-tint:before {\n  content: \"\\F043\"; }\n\n.fa-edit:before,\n.fa-pencil-square-o:before {\n  content: \"\\F044\"; }\n\n.fa-share-square-o:before {\n  content: \"\\F045\"; }\n\n.fa-check-square-o:before {\n  content: \"\\F046\"; }\n\n.fa-arrows:before {\n  content: \"\\F047\"; }\n\n.fa-step-backward:before {\n  content: \"\\F048\"; }\n\n.fa-fast-backward:before {\n  content: \"\\F049\"; }\n\n.fa-backward:before {\n  content: \"\\F04A\"; }\n\n.fa-play:before {\n  content: \"\\F04B\"; }\n\n.fa-pause:before {\n  content: \"\\F04C\"; }\n\n.fa-stop:before {\n  content: \"\\F04D\"; }\n\n.fa-forward:before {\n  content: \"\\F04E\"; }\n\n.fa-fast-forward:before {\n  content: \"\\F050\"; }\n\n.fa-step-forward:before {\n  content: \"\\F051\"; }\n\n.fa-eject:before {\n  content: \"\\F052\"; }\n\n.fa-chevron-left:before {\n  content: \"\\F053\"; }\n\n.fa-chevron-right:before {\n  content: \"\\F054\"; }\n\n.fa-plus-circle:before {\n  content: \"\\F055\"; }\n\n.fa-minus-circle:before {\n  content: \"\\F056\"; }\n\n.fa-times-circle:before {\n  content: \"\\F057\"; }\n\n.fa-check-circle:before {\n  content: \"\\F058\"; }\n\n.fa-question-circle:before {\n  content: \"\\F059\"; }\n\n.fa-info-circle:before {\n  content: \"\\F05A\"; }\n\n.fa-crosshairs:before {\n  content: \"\\F05B\"; }\n\n.fa-times-circle-o:before {\n  content: \"\\F05C\"; }\n\n.fa-check-circle-o:before {\n  content: \"\\F05D\"; }\n\n.fa-ban:before {\n  content: \"\\F05E\"; }\n\n.fa-arrow-left:before {\n  content: \"\\F060\"; }\n\n.fa-arrow-right:before {\n  content: \"\\F061\"; }\n\n.fa-arrow-up:before {\n  content: \"\\F062\"; }\n\n.fa-arrow-down:before {\n  content: \"\\F063\"; }\n\n.fa-mail-forward:before,\n.fa-share:before {\n  content: \"\\F064\"; }\n\n.fa-expand:before {\n  content: \"\\F065\"; }\n\n.fa-compress:before {\n  content: \"\\F066\"; }\n\n.fa-plus:before {\n  content: \"\\F067\"; }\n\n.fa-minus:before {\n  content: \"\\F068\"; }\n\n.fa-asterisk:before {\n  content: \"\\F069\"; }\n\n.fa-exclamation-circle:before {\n  content: \"\\F06A\"; }\n\n.fa-gift:before {\n  content: \"\\F06B\"; }\n\n.fa-leaf:before {\n  content: \"\\F06C\"; }\n\n.fa-fire:before {\n  content: \"\\F06D\"; }\n\n.fa-eye:before {\n  content: \"\\F06E\"; }\n\n.fa-eye-slash:before {\n  content: \"\\F070\"; }\n\n.fa-warning:before,\n.fa-exclamation-triangle:before {\n  content: \"\\F071\"; }\n\n.fa-plane:before {\n  content: \"\\F072\"; }\n\n.fa-calendar:before {\n  content: \"\\F073\"; }\n\n.fa-random:before {\n  content: \"\\F074\"; }\n\n.fa-comment:before {\n  content: \"\\F075\"; }\n\n.fa-magnet:before {\n  content: \"\\F076\"; }\n\n.fa-chevron-up:before {\n  content: \"\\F077\"; }\n\n.fa-chevron-down:before {\n  content: \"\\F078\"; }\n\n.fa-retweet:before {\n  content: \"\\F079\"; }\n\n.fa-shopping-cart:before {\n  content: \"\\F07A\"; }\n\n.fa-folder:before {\n  content: \"\\F07B\"; }\n\n.fa-folder-open:before {\n  content: \"\\F07C\"; }\n\n.fa-arrows-v:before {\n  content: \"\\F07D\"; }\n\n.fa-arrows-h:before {\n  content: \"\\F07E\"; }\n\n.fa-bar-chart-o:before,\n.fa-bar-chart:before {\n  content: \"\\F080\"; }\n\n.fa-twitter-square:before {\n  content: \"\\F081\"; }\n\n.fa-facebook-square:before {\n  content: \"\\F082\"; }\n\n.fa-camera-retro:before {\n  content: \"\\F083\"; }\n\n.fa-key:before {\n  content: \"\\F084\"; }\n\n.fa-gears:before,\n.fa-cogs:before {\n  content: \"\\F085\"; }\n\n.fa-comments:before {\n  content: \"\\F086\"; }\n\n.fa-thumbs-o-up:before {\n  content: \"\\F087\"; }\n\n.fa-thumbs-o-down:before {\n  content: \"\\F088\"; }\n\n.fa-star-half:before {\n  content: \"\\F089\"; }\n\n.fa-heart-o:before {\n  content: \"\\F08A\"; }\n\n.fa-sign-out:before {\n  content: \"\\F08B\"; }\n\n.fa-linkedin-square:before {\n  content: \"\\F08C\"; }\n\n.fa-thumb-tack:before {\n  content: \"\\F08D\"; }\n\n.fa-external-link:before {\n  content: \"\\F08E\"; }\n\n.fa-sign-in:before {\n  content: \"\\F090\"; }\n\n.fa-trophy:before {\n  content: \"\\F091\"; }\n\n.fa-github-square:before {\n  content: \"\\F092\"; }\n\n.fa-upload:before {\n  content: \"\\F093\"; }\n\n.fa-lemon-o:before {\n  content: \"\\F094\"; }\n\n.fa-phone:before {\n  content: \"\\F095\"; }\n\n.fa-square-o:before {\n  content: \"\\F096\"; }\n\n.fa-bookmark-o:before {\n  content: \"\\F097\"; }\n\n.fa-phone-square:before {\n  content: \"\\F098\"; }\n\n.fa-twitter:before {\n  content: \"\\F099\"; }\n\n.fa-facebook-f:before,\n.fa-facebook:before {\n  content: \"\\F09A\"; }\n\n.fa-github:before {\n  content: \"\\F09B\"; }\n\n.fa-unlock:before {\n  content: \"\\F09C\"; }\n\n.fa-credit-card:before {\n  content: \"\\F09D\"; }\n\n.fa-feed:before,\n.fa-rss:before {\n  content: \"\\F09E\"; }\n\n.fa-hdd-o:before {\n  content: \"\\F0A0\"; }\n\n.fa-bullhorn:before {\n  content: \"\\F0A1\"; }\n\n.fa-bell:before {\n  content: \"\\F0F3\"; }\n\n.fa-certificate:before {\n  content: \"\\F0A3\"; }\n\n.fa-hand-o-right:before {\n  content: \"\\F0A4\"; }\n\n.fa-hand-o-left:before {\n  content: \"\\F0A5\"; }\n\n.fa-hand-o-up:before {\n  content: \"\\F0A6\"; }\n\n.fa-hand-o-down:before {\n  content: \"\\F0A7\"; }\n\n.fa-arrow-circle-left:before {\n  content: \"\\F0A8\"; }\n\n.fa-arrow-circle-right:before {\n  content: \"\\F0A9\"; }\n\n.fa-arrow-circle-up:before {\n  content: \"\\F0AA\"; }\n\n.fa-arrow-circle-down:before {\n  content: \"\\F0AB\"; }\n\n.fa-globe:before {\n  content: \"\\F0AC\"; }\n\n.fa-wrench:before {\n  content: \"\\F0AD\"; }\n\n.fa-tasks:before {\n  content: \"\\F0AE\"; }\n\n.fa-filter:before {\n  content: \"\\F0B0\"; }\n\n.fa-briefcase:before {\n  content: \"\\F0B1\"; }\n\n.fa-arrows-alt:before {\n  content: \"\\F0B2\"; }\n\n.fa-group:before,\n.fa-users:before {\n  content: \"\\F0C0\"; }\n\n.fa-chain:before,\n.fa-link:before {\n  content: \"\\F0C1\"; }\n\n.fa-cloud:before {\n  content: \"\\F0C2\"; }\n\n.fa-flask:before {\n  content: \"\\F0C3\"; }\n\n.fa-cut:before,\n.fa-scissors:before {\n  content: \"\\F0C4\"; }\n\n.fa-copy:before,\n.fa-files-o:before {\n  content: \"\\F0C5\"; }\n\n.fa-paperclip:before {\n  content: \"\\F0C6\"; }\n\n.fa-save:before,\n.fa-floppy-o:before {\n  content: \"\\F0C7\"; }\n\n.fa-square:before {\n  content: \"\\F0C8\"; }\n\n.fa-navicon:before,\n.fa-reorder:before,\n.fa-bars:before {\n  content: \"\\F0C9\"; }\n\n.fa-list-ul:before {\n  content: \"\\F0CA\"; }\n\n.fa-list-ol:before {\n  content: \"\\F0CB\"; }\n\n.fa-strikethrough:before {\n  content: \"\\F0CC\"; }\n\n.fa-underline:before {\n  content: \"\\F0CD\"; }\n\n.fa-table:before {\n  content: \"\\F0CE\"; }\n\n.fa-magic:before {\n  content: \"\\F0D0\"; }\n\n.fa-truck:before {\n  content: \"\\F0D1\"; }\n\n.fa-pinterest:before {\n  content: \"\\F0D2\"; }\n\n.fa-pinterest-square:before {\n  content: \"\\F0D3\"; }\n\n.fa-google-plus-square:before {\n  content: \"\\F0D4\"; }\n\n.fa-google-plus:before {\n  content: \"\\F0D5\"; }\n\n.fa-money:before {\n  content: \"\\F0D6\"; }\n\n.fa-caret-down:before {\n  content: \"\\F0D7\"; }\n\n.fa-caret-up:before {\n  content: \"\\F0D8\"; }\n\n.fa-caret-left:before {\n  content: \"\\F0D9\"; }\n\n.fa-caret-right:before {\n  content: \"\\F0DA\"; }\n\n.fa-columns:before {\n  content: \"\\F0DB\"; }\n\n.fa-unsorted:before,\n.fa-sort:before {\n  content: \"\\F0DC\"; }\n\n.fa-sort-down:before,\n.fa-sort-desc:before {\n  content: \"\\F0DD\"; }\n\n.fa-sort-up:before,\n.fa-sort-asc:before {\n  content: \"\\F0DE\"; }\n\n.fa-envelope:before {\n  content: \"\\F0E0\"; }\n\n.fa-linkedin:before {\n  content: \"\\F0E1\"; }\n\n.fa-rotate-left:before,\n.fa-undo:before {\n  content: \"\\F0E2\"; }\n\n.fa-legal:before,\n.fa-gavel:before {\n  content: \"\\F0E3\"; }\n\n.fa-dashboard:before,\n.fa-tachometer:before {\n  content: \"\\F0E4\"; }\n\n.fa-comment-o:before {\n  content: \"\\F0E5\"; }\n\n.fa-comments-o:before {\n  content: \"\\F0E6\"; }\n\n.fa-flash:before,\n.fa-bolt:before {\n  content: \"\\F0E7\"; }\n\n.fa-sitemap:before {\n  content: \"\\F0E8\"; }\n\n.fa-umbrella:before {\n  content: \"\\F0E9\"; }\n\n.fa-paste:before,\n.fa-clipboard:before {\n  content: \"\\F0EA\"; }\n\n.fa-lightbulb-o:before {\n  content: \"\\F0EB\"; }\n\n.fa-exchange:before {\n  content: \"\\F0EC\"; }\n\n.fa-cloud-download:before {\n  content: \"\\F0ED\"; }\n\n.fa-cloud-upload:before {\n  content: \"\\F0EE\"; }\n\n.fa-user-md:before {\n  content: \"\\F0F0\"; }\n\n.fa-stethoscope:before {\n  content: \"\\F0F1\"; }\n\n.fa-suitcase:before {\n  content: \"\\F0F2\"; }\n\n.fa-bell-o:before {\n  content: \"\\F0A2\"; }\n\n.fa-coffee:before {\n  content: \"\\F0F4\"; }\n\n.fa-cutlery:before {\n  content: \"\\F0F5\"; }\n\n.fa-file-text-o:before {\n  content: \"\\F0F6\"; }\n\n.fa-building-o:before {\n  content: \"\\F0F7\"; }\n\n.fa-hospital-o:before {\n  content: \"\\F0F8\"; }\n\n.fa-ambulance:before {\n  content: \"\\F0F9\"; }\n\n.fa-medkit:before {\n  content: \"\\F0FA\"; }\n\n.fa-fighter-jet:before {\n  content: \"\\F0FB\"; }\n\n.fa-beer:before {\n  content: \"\\F0FC\"; }\n\n.fa-h-square:before {\n  content: \"\\F0FD\"; }\n\n.fa-plus-square:before {\n  content: \"\\F0FE\"; }\n\n.fa-angle-double-left:before {\n  content: \"\\F100\"; }\n\n.fa-angle-double-right:before {\n  content: \"\\F101\"; }\n\n.fa-angle-double-up:before {\n  content: \"\\F102\"; }\n\n.fa-angle-double-down:before {\n  content: \"\\F103\"; }\n\n.fa-angle-left:before {\n  content: \"\\F104\"; }\n\n.fa-angle-right:before {\n  content: \"\\F105\"; }\n\n.fa-angle-up:before {\n  content: \"\\F106\"; }\n\n.fa-angle-down:before {\n  content: \"\\F107\"; }\n\n.fa-desktop:before {\n  content: \"\\F108\"; }\n\n.fa-laptop:before {\n  content: \"\\F109\"; }\n\n.fa-tablet:before {\n  content: \"\\F10A\"; }\n\n.fa-mobile-phone:before,\n.fa-mobile:before {\n  content: \"\\F10B\"; }\n\n.fa-circle-o:before {\n  content: \"\\F10C\"; }\n\n.fa-quote-left:before {\n  content: \"\\F10D\"; }\n\n.fa-quote-right:before {\n  content: \"\\F10E\"; }\n\n.fa-spinner:before {\n  content: \"\\F110\"; }\n\n.fa-circle:before {\n  content: \"\\F111\"; }\n\n.fa-mail-reply:before,\n.fa-reply:before {\n  content: \"\\F112\"; }\n\n.fa-github-alt:before {\n  content: \"\\F113\"; }\n\n.fa-folder-o:before {\n  content: \"\\F114\"; }\n\n.fa-folder-open-o:before {\n  content: \"\\F115\"; }\n\n.fa-smile-o:before {\n  content: \"\\F118\"; }\n\n.fa-frown-o:before {\n  content: \"\\F119\"; }\n\n.fa-meh-o:before {\n  content: \"\\F11A\"; }\n\n.fa-gamepad:before {\n  content: \"\\F11B\"; }\n\n.fa-keyboard-o:before {\n  content: \"\\F11C\"; }\n\n.fa-flag-o:before {\n  content: \"\\F11D\"; }\n\n.fa-flag-checkered:before {\n  content: \"\\F11E\"; }\n\n.fa-terminal:before {\n  content: \"\\F120\"; }\n\n.fa-code:before {\n  content: \"\\F121\"; }\n\n.fa-mail-reply-all:before,\n.fa-reply-all:before {\n  content: \"\\F122\"; }\n\n.fa-star-half-empty:before,\n.fa-star-half-full:before,\n.fa-star-half-o:before {\n  content: \"\\F123\"; }\n\n.fa-location-arrow:before {\n  content: \"\\F124\"; }\n\n.fa-crop:before {\n  content: \"\\F125\"; }\n\n.fa-code-fork:before {\n  content: \"\\F126\"; }\n\n.fa-unlink:before,\n.fa-chain-broken:before {\n  content: \"\\F127\"; }\n\n.fa-question:before {\n  content: \"\\F128\"; }\n\n.fa-info:before {\n  content: \"\\F129\"; }\n\n.fa-exclamation:before {\n  content: \"\\F12A\"; }\n\n.fa-superscript:before {\n  content: \"\\F12B\"; }\n\n.fa-subscript:before {\n  content: \"\\F12C\"; }\n\n.fa-eraser:before {\n  content: \"\\F12D\"; }\n\n.fa-puzzle-piece:before {\n  content: \"\\F12E\"; }\n\n.fa-microphone:before {\n  content: \"\\F130\"; }\n\n.fa-microphone-slash:before {\n  content: \"\\F131\"; }\n\n.fa-shield:before {\n  content: \"\\F132\"; }\n\n.fa-calendar-o:before {\n  content: \"\\F133\"; }\n\n.fa-fire-extinguisher:before {\n  content: \"\\F134\"; }\n\n.fa-rocket:before {\n  content: \"\\F135\"; }\n\n.fa-maxcdn:before {\n  content: \"\\F136\"; }\n\n.fa-chevron-circle-left:before {\n  content: \"\\F137\"; }\n\n.fa-chevron-circle-right:before {\n  content: \"\\F138\"; }\n\n.fa-chevron-circle-up:before {\n  content: \"\\F139\"; }\n\n.fa-chevron-circle-down:before {\n  content: \"\\F13A\"; }\n\n.fa-html5:before {\n  content: \"\\F13B\"; }\n\n.fa-css3:before {\n  content: \"\\F13C\"; }\n\n.fa-anchor:before {\n  content: \"\\F13D\"; }\n\n.fa-unlock-alt:before {\n  content: \"\\F13E\"; }\n\n.fa-bullseye:before {\n  content: \"\\F140\"; }\n\n.fa-ellipsis-h:before {\n  content: \"\\F141\"; }\n\n.fa-ellipsis-v:before {\n  content: \"\\F142\"; }\n\n.fa-rss-square:before {\n  content: \"\\F143\"; }\n\n.fa-play-circle:before {\n  content: \"\\F144\"; }\n\n.fa-ticket:before {\n  content: \"\\F145\"; }\n\n.fa-minus-square:before {\n  content: \"\\F146\"; }\n\n.fa-minus-square-o:before {\n  content: \"\\F147\"; }\n\n.fa-level-up:before {\n  content: \"\\F148\"; }\n\n.fa-level-down:before {\n  content: \"\\F149\"; }\n\n.fa-check-square:before {\n  content: \"\\F14A\"; }\n\n.fa-pencil-square:before {\n  content: \"\\F14B\"; }\n\n.fa-external-link-square:before {\n  content: \"\\F14C\"; }\n\n.fa-share-square:before {\n  content: \"\\F14D\"; }\n\n.fa-compass:before {\n  content: \"\\F14E\"; }\n\n.fa-toggle-down:before,\n.fa-caret-square-o-down:before {\n  content: \"\\F150\"; }\n\n.fa-toggle-up:before,\n.fa-caret-square-o-up:before {\n  content: \"\\F151\"; }\n\n.fa-toggle-right:before,\n.fa-caret-square-o-right:before {\n  content: \"\\F152\"; }\n\n.fa-euro:before,\n.fa-eur:before {\n  content: \"\\F153\"; }\n\n.fa-gbp:before {\n  content: \"\\F154\"; }\n\n.fa-dollar:before,\n.fa-usd:before {\n  content: \"\\F155\"; }\n\n.fa-rupee:before,\n.fa-inr:before {\n  content: \"\\F156\"; }\n\n.fa-cny:before,\n.fa-rmb:before,\n.fa-yen:before,\n.fa-jpy:before {\n  content: \"\\F157\"; }\n\n.fa-ruble:before,\n.fa-rouble:before,\n.fa-rub:before {\n  content: \"\\F158\"; }\n\n.fa-won:before,\n.fa-krw:before {\n  content: \"\\F159\"; }\n\n.fa-bitcoin:before,\n.fa-btc:before {\n  content: \"\\F15A\"; }\n\n.fa-file:before {\n  content: \"\\F15B\"; }\n\n.fa-file-text:before {\n  content: \"\\F15C\"; }\n\n.fa-sort-alpha-asc:before {\n  content: \"\\F15D\"; }\n\n.fa-sort-alpha-desc:before {\n  content: \"\\F15E\"; }\n\n.fa-sort-amount-asc:before {\n  content: \"\\F160\"; }\n\n.fa-sort-amount-desc:before {\n  content: \"\\F161\"; }\n\n.fa-sort-numeric-asc:before {\n  content: \"\\F162\"; }\n\n.fa-sort-numeric-desc:before {\n  content: \"\\F163\"; }\n\n.fa-thumbs-up:before {\n  content: \"\\F164\"; }\n\n.fa-thumbs-down:before {\n  content: \"\\F165\"; }\n\n.fa-youtube-square:before {\n  content: \"\\F166\"; }\n\n.fa-youtube:before {\n  content: \"\\F167\"; }\n\n.fa-xing:before {\n  content: \"\\F168\"; }\n\n.fa-xing-square:before {\n  content: \"\\F169\"; }\n\n.fa-youtube-play:before {\n  content: \"\\F16A\"; }\n\n.fa-dropbox:before {\n  content: \"\\F16B\"; }\n\n.fa-stack-overflow:before {\n  content: \"\\F16C\"; }\n\n.fa-instagram:before {\n  content: \"\\F16D\"; }\n\n.fa-flickr:before {\n  content: \"\\F16E\"; }\n\n.fa-adn:before {\n  content: \"\\F170\"; }\n\n.fa-bitbucket:before {\n  content: \"\\F171\"; }\n\n.fa-bitbucket-square:before {\n  content: \"\\F172\"; }\n\n.fa-tumblr:before {\n  content: \"\\F173\"; }\n\n.fa-tumblr-square:before {\n  content: \"\\F174\"; }\n\n.fa-long-arrow-down:before {\n  content: \"\\F175\"; }\n\n.fa-long-arrow-up:before {\n  content: \"\\F176\"; }\n\n.fa-long-arrow-left:before {\n  content: \"\\F177\"; }\n\n.fa-long-arrow-right:before {\n  content: \"\\F178\"; }\n\n.fa-apple:before {\n  content: \"\\F179\"; }\n\n.fa-windows:before {\n  content: \"\\F17A\"; }\n\n.fa-android:before {\n  content: \"\\F17B\"; }\n\n.fa-linux:before {\n  content: \"\\F17C\"; }\n\n.fa-dribbble:before {\n  content: \"\\F17D\"; }\n\n.fa-skype:before {\n  content: \"\\F17E\"; }\n\n.fa-foursquare:before {\n  content: \"\\F180\"; }\n\n.fa-trello:before {\n  content: \"\\F181\"; }\n\n.fa-female:before {\n  content: \"\\F182\"; }\n\n.fa-male:before {\n  content: \"\\F183\"; }\n\n.fa-gittip:before,\n.fa-gratipay:before {\n  content: \"\\F184\"; }\n\n.fa-sun-o:before {\n  content: \"\\F185\"; }\n\n.fa-moon-o:before {\n  content: \"\\F186\"; }\n\n.fa-archive:before {\n  content: \"\\F187\"; }\n\n.fa-bug:before {\n  content: \"\\F188\"; }\n\n.fa-vk:before {\n  content: \"\\F189\"; }\n\n.fa-weibo:before {\n  content: \"\\F18A\"; }\n\n.fa-renren:before {\n  content: \"\\F18B\"; }\n\n.fa-pagelines:before {\n  content: \"\\F18C\"; }\n\n.fa-stack-exchange:before {\n  content: \"\\F18D\"; }\n\n.fa-arrow-circle-o-right:before {\n  content: \"\\F18E\"; }\n\n.fa-arrow-circle-o-left:before {\n  content: \"\\F190\"; }\n\n.fa-toggle-left:before,\n.fa-caret-square-o-left:before {\n  content: \"\\F191\"; }\n\n.fa-dot-circle-o:before {\n  content: \"\\F192\"; }\n\n.fa-wheelchair:before {\n  content: \"\\F193\"; }\n\n.fa-vimeo-square:before {\n  content: \"\\F194\"; }\n\n.fa-turkish-lira:before,\n.fa-try:before {\n  content: \"\\F195\"; }\n\n.fa-plus-square-o:before {\n  content: \"\\F196\"; }\n\n.fa-space-shuttle:before {\n  content: \"\\F197\"; }\n\n.fa-slack:before {\n  content: \"\\F198\"; }\n\n.fa-envelope-square:before {\n  content: \"\\F199\"; }\n\n.fa-wordpress:before {\n  content: \"\\F19A\"; }\n\n.fa-openid:before {\n  content: \"\\F19B\"; }\n\n.fa-institution:before,\n.fa-bank:before,\n.fa-university:before {\n  content: \"\\F19C\"; }\n\n.fa-mortar-board:before,\n.fa-graduation-cap:before {\n  content: \"\\F19D\"; }\n\n.fa-yahoo:before {\n  content: \"\\F19E\"; }\n\n.fa-google:before {\n  content: \"\\F1A0\"; }\n\n.fa-reddit:before {\n  content: \"\\F1A1\"; }\n\n.fa-reddit-square:before {\n  content: \"\\F1A2\"; }\n\n.fa-stumbleupon-circle:before {\n  content: \"\\F1A3\"; }\n\n.fa-stumbleupon:before {\n  content: \"\\F1A4\"; }\n\n.fa-delicious:before {\n  content: \"\\F1A5\"; }\n\n.fa-digg:before {\n  content: \"\\F1A6\"; }\n\n.fa-pied-piper-pp:before {\n  content: \"\\F1A7\"; }\n\n.fa-pied-piper-alt:before {\n  content: \"\\F1A8\"; }\n\n.fa-drupal:before {\n  content: \"\\F1A9\"; }\n\n.fa-joomla:before {\n  content: \"\\F1AA\"; }\n\n.fa-language:before {\n  content: \"\\F1AB\"; }\n\n.fa-fax:before {\n  content: \"\\F1AC\"; }\n\n.fa-building:before {\n  content: \"\\F1AD\"; }\n\n.fa-child:before {\n  content: \"\\F1AE\"; }\n\n.fa-paw:before {\n  content: \"\\F1B0\"; }\n\n.fa-spoon:before {\n  content: \"\\F1B1\"; }\n\n.fa-cube:before {\n  content: \"\\F1B2\"; }\n\n.fa-cubes:before {\n  content: \"\\F1B3\"; }\n\n.fa-behance:before {\n  content: \"\\F1B4\"; }\n\n.fa-behance-square:before {\n  content: \"\\F1B5\"; }\n\n.fa-steam:before {\n  content: \"\\F1B6\"; }\n\n.fa-steam-square:before {\n  content: \"\\F1B7\"; }\n\n.fa-recycle:before {\n  content: \"\\F1B8\"; }\n\n.fa-automobile:before,\n.fa-car:before {\n  content: \"\\F1B9\"; }\n\n.fa-cab:before,\n.fa-taxi:before {\n  content: \"\\F1BA\"; }\n\n.fa-tree:before {\n  content: \"\\F1BB\"; }\n\n.fa-spotify:before {\n  content: \"\\F1BC\"; }\n\n.fa-deviantart:before {\n  content: \"\\F1BD\"; }\n\n.fa-soundcloud:before {\n  content: \"\\F1BE\"; }\n\n.fa-database:before {\n  content: \"\\F1C0\"; }\n\n.fa-file-pdf-o:before {\n  content: \"\\F1C1\"; }\n\n.fa-file-word-o:before {\n  content: \"\\F1C2\"; }\n\n.fa-file-excel-o:before {\n  content: \"\\F1C3\"; }\n\n.fa-file-powerpoint-o:before {\n  content: \"\\F1C4\"; }\n\n.fa-file-photo-o:before,\n.fa-file-picture-o:before,\n.fa-file-image-o:before {\n  content: \"\\F1C5\"; }\n\n.fa-file-zip-o:before,\n.fa-file-archive-o:before {\n  content: \"\\F1C6\"; }\n\n.fa-file-sound-o:before,\n.fa-file-audio-o:before {\n  content: \"\\F1C7\"; }\n\n.fa-file-movie-o:before,\n.fa-file-video-o:before {\n  content: \"\\F1C8\"; }\n\n.fa-file-code-o:before {\n  content: \"\\F1C9\"; }\n\n.fa-vine:before {\n  content: \"\\F1CA\"; }\n\n.fa-codepen:before {\n  content: \"\\F1CB\"; }\n\n.fa-jsfiddle:before {\n  content: \"\\F1CC\"; }\n\n.fa-life-bouy:before,\n.fa-life-buoy:before,\n.fa-life-saver:before,\n.fa-support:before,\n.fa-life-ring:before {\n  content: \"\\F1CD\"; }\n\n.fa-circle-o-notch:before {\n  content: \"\\F1CE\"; }\n\n.fa-ra:before,\n.fa-resistance:before,\n.fa-rebel:before {\n  content: \"\\F1D0\"; }\n\n.fa-ge:before,\n.fa-empire:before {\n  content: \"\\F1D1\"; }\n\n.fa-git-square:before {\n  content: \"\\F1D2\"; }\n\n.fa-git:before {\n  content: \"\\F1D3\"; }\n\n.fa-y-combinator-square:before,\n.fa-yc-square:before,\n.fa-hacker-news:before {\n  content: \"\\F1D4\"; }\n\n.fa-tencent-weibo:before {\n  content: \"\\F1D5\"; }\n\n.fa-qq:before {\n  content: \"\\F1D6\"; }\n\n.fa-wechat:before,\n.fa-weixin:before {\n  content: \"\\F1D7\"; }\n\n.fa-send:before,\n.fa-paper-plane:before {\n  content: \"\\F1D8\"; }\n\n.fa-send-o:before,\n.fa-paper-plane-o:before {\n  content: \"\\F1D9\"; }\n\n.fa-history:before {\n  content: \"\\F1DA\"; }\n\n.fa-circle-thin:before {\n  content: \"\\F1DB\"; }\n\n.fa-header:before {\n  content: \"\\F1DC\"; }\n\n.fa-paragraph:before {\n  content: \"\\F1DD\"; }\n\n.fa-sliders:before {\n  content: \"\\F1DE\"; }\n\n.fa-share-alt:before {\n  content: \"\\F1E0\"; }\n\n.fa-share-alt-square:before {\n  content: \"\\F1E1\"; }\n\n.fa-bomb:before {\n  content: \"\\F1E2\"; }\n\n.fa-soccer-ball-o:before,\n.fa-futbol-o:before {\n  content: \"\\F1E3\"; }\n\n.fa-tty:before {\n  content: \"\\F1E4\"; }\n\n.fa-binoculars:before {\n  content: \"\\F1E5\"; }\n\n.fa-plug:before {\n  content: \"\\F1E6\"; }\n\n.fa-slideshare:before {\n  content: \"\\F1E7\"; }\n\n.fa-twitch:before {\n  content: \"\\F1E8\"; }\n\n.fa-yelp:before {\n  content: \"\\F1E9\"; }\n\n.fa-newspaper-o:before {\n  content: \"\\F1EA\"; }\n\n.fa-wifi:before {\n  content: \"\\F1EB\"; }\n\n.fa-calculator:before {\n  content: \"\\F1EC\"; }\n\n.fa-paypal:before {\n  content: \"\\F1ED\"; }\n\n.fa-google-wallet:before {\n  content: \"\\F1EE\"; }\n\n.fa-cc-visa:before {\n  content: \"\\F1F0\"; }\n\n.fa-cc-mastercard:before {\n  content: \"\\F1F1\"; }\n\n.fa-cc-discover:before {\n  content: \"\\F1F2\"; }\n\n.fa-cc-amex:before {\n  content: \"\\F1F3\"; }\n\n.fa-cc-paypal:before {\n  content: \"\\F1F4\"; }\n\n.fa-cc-stripe:before {\n  content: \"\\F1F5\"; }\n\n.fa-bell-slash:before {\n  content: \"\\F1F6\"; }\n\n.fa-bell-slash-o:before {\n  content: \"\\F1F7\"; }\n\n.fa-trash:before {\n  content: \"\\F1F8\"; }\n\n.fa-copyright:before {\n  content: \"\\F1F9\"; }\n\n.fa-at:before {\n  content: \"\\F1FA\"; }\n\n.fa-eyedropper:before {\n  content: \"\\F1FB\"; }\n\n.fa-paint-brush:before {\n  content: \"\\F1FC\"; }\n\n.fa-birthday-cake:before {\n  content: \"\\F1FD\"; }\n\n.fa-area-chart:before {\n  content: \"\\F1FE\"; }\n\n.fa-pie-chart:before {\n  content: \"\\F200\"; }\n\n.fa-line-chart:before {\n  content: \"\\F201\"; }\n\n.fa-lastfm:before {\n  content: \"\\F202\"; }\n\n.fa-lastfm-square:before {\n  content: \"\\F203\"; }\n\n.fa-toggle-off:before {\n  content: \"\\F204\"; }\n\n.fa-toggle-on:before {\n  content: \"\\F205\"; }\n\n.fa-bicycle:before {\n  content: \"\\F206\"; }\n\n.fa-bus:before {\n  content: \"\\F207\"; }\n\n.fa-ioxhost:before {\n  content: \"\\F208\"; }\n\n.fa-angellist:before {\n  content: \"\\F209\"; }\n\n.fa-cc:before {\n  content: \"\\F20A\"; }\n\n.fa-shekel:before,\n.fa-sheqel:before,\n.fa-ils:before {\n  content: \"\\F20B\"; }\n\n.fa-meanpath:before {\n  content: \"\\F20C\"; }\n\n.fa-buysellads:before {\n  content: \"\\F20D\"; }\n\n.fa-connectdevelop:before {\n  content: \"\\F20E\"; }\n\n.fa-dashcube:before {\n  content: \"\\F210\"; }\n\n.fa-forumbee:before {\n  content: \"\\F211\"; }\n\n.fa-leanpub:before {\n  content: \"\\F212\"; }\n\n.fa-sellsy:before {\n  content: \"\\F213\"; }\n\n.fa-shirtsinbulk:before {\n  content: \"\\F214\"; }\n\n.fa-simplybuilt:before {\n  content: \"\\F215\"; }\n\n.fa-skyatlas:before {\n  content: \"\\F216\"; }\n\n.fa-cart-plus:before {\n  content: \"\\F217\"; }\n\n.fa-cart-arrow-down:before {\n  content: \"\\F218\"; }\n\n.fa-diamond:before {\n  content: \"\\F219\"; }\n\n.fa-ship:before {\n  content: \"\\F21A\"; }\n\n.fa-user-secret:before {\n  content: \"\\F21B\"; }\n\n.fa-motorcycle:before {\n  content: \"\\F21C\"; }\n\n.fa-street-view:before {\n  content: \"\\F21D\"; }\n\n.fa-heartbeat:before {\n  content: \"\\F21E\"; }\n\n.fa-venus:before {\n  content: \"\\F221\"; }\n\n.fa-mars:before {\n  content: \"\\F222\"; }\n\n.fa-mercury:before {\n  content: \"\\F223\"; }\n\n.fa-intersex:before,\n.fa-transgender:before {\n  content: \"\\F224\"; }\n\n.fa-transgender-alt:before {\n  content: \"\\F225\"; }\n\n.fa-venus-double:before {\n  content: \"\\F226\"; }\n\n.fa-mars-double:before {\n  content: \"\\F227\"; }\n\n.fa-venus-mars:before {\n  content: \"\\F228\"; }\n\n.fa-mars-stroke:before {\n  content: \"\\F229\"; }\n\n.fa-mars-stroke-v:before {\n  content: \"\\F22A\"; }\n\n.fa-mars-stroke-h:before {\n  content: \"\\F22B\"; }\n\n.fa-neuter:before {\n  content: \"\\F22C\"; }\n\n.fa-genderless:before {\n  content: \"\\F22D\"; }\n\n.fa-facebook-official:before {\n  content: \"\\F230\"; }\n\n.fa-pinterest-p:before {\n  content: \"\\F231\"; }\n\n.fa-whatsapp:before {\n  content: \"\\F232\"; }\n\n.fa-server:before {\n  content: \"\\F233\"; }\n\n.fa-user-plus:before {\n  content: \"\\F234\"; }\n\n.fa-user-times:before {\n  content: \"\\F235\"; }\n\n.fa-hotel:before,\n.fa-bed:before {\n  content: \"\\F236\"; }\n\n.fa-viacoin:before {\n  content: \"\\F237\"; }\n\n.fa-train:before {\n  content: \"\\F238\"; }\n\n.fa-subway:before {\n  content: \"\\F239\"; }\n\n.fa-medium:before {\n  content: \"\\F23A\"; }\n\n.fa-yc:before,\n.fa-y-combinator:before {\n  content: \"\\F23B\"; }\n\n.fa-optin-monster:before {\n  content: \"\\F23C\"; }\n\n.fa-opencart:before {\n  content: \"\\F23D\"; }\n\n.fa-expeditedssl:before {\n  content: \"\\F23E\"; }\n\n.fa-battery-4:before,\n.fa-battery:before,\n.fa-battery-full:before {\n  content: \"\\F240\"; }\n\n.fa-battery-3:before,\n.fa-battery-three-quarters:before {\n  content: \"\\F241\"; }\n\n.fa-battery-2:before,\n.fa-battery-half:before {\n  content: \"\\F242\"; }\n\n.fa-battery-1:before,\n.fa-battery-quarter:before {\n  content: \"\\F243\"; }\n\n.fa-battery-0:before,\n.fa-battery-empty:before {\n  content: \"\\F244\"; }\n\n.fa-mouse-pointer:before {\n  content: \"\\F245\"; }\n\n.fa-i-cursor:before {\n  content: \"\\F246\"; }\n\n.fa-object-group:before {\n  content: \"\\F247\"; }\n\n.fa-object-ungroup:before {\n  content: \"\\F248\"; }\n\n.fa-sticky-note:before {\n  content: \"\\F249\"; }\n\n.fa-sticky-note-o:before {\n  content: \"\\F24A\"; }\n\n.fa-cc-jcb:before {\n  content: \"\\F24B\"; }\n\n.fa-cc-diners-club:before {\n  content: \"\\F24C\"; }\n\n.fa-clone:before {\n  content: \"\\F24D\"; }\n\n.fa-balance-scale:before {\n  content: \"\\F24E\"; }\n\n.fa-hourglass-o:before {\n  content: \"\\F250\"; }\n\n.fa-hourglass-1:before,\n.fa-hourglass-start:before {\n  content: \"\\F251\"; }\n\n.fa-hourglass-2:before,\n.fa-hourglass-half:before {\n  content: \"\\F252\"; }\n\n.fa-hourglass-3:before,\n.fa-hourglass-end:before {\n  content: \"\\F253\"; }\n\n.fa-hourglass:before {\n  content: \"\\F254\"; }\n\n.fa-hand-grab-o:before,\n.fa-hand-rock-o:before {\n  content: \"\\F255\"; }\n\n.fa-hand-stop-o:before,\n.fa-hand-paper-o:before {\n  content: \"\\F256\"; }\n\n.fa-hand-scissors-o:before {\n  content: \"\\F257\"; }\n\n.fa-hand-lizard-o:before {\n  content: \"\\F258\"; }\n\n.fa-hand-spock-o:before {\n  content: \"\\F259\"; }\n\n.fa-hand-pointer-o:before {\n  content: \"\\F25A\"; }\n\n.fa-hand-peace-o:before {\n  content: \"\\F25B\"; }\n\n.fa-trademark:before {\n  content: \"\\F25C\"; }\n\n.fa-registered:before {\n  content: \"\\F25D\"; }\n\n.fa-creative-commons:before {\n  content: \"\\F25E\"; }\n\n.fa-gg:before {\n  content: \"\\F260\"; }\n\n.fa-gg-circle:before {\n  content: \"\\F261\"; }\n\n.fa-tripadvisor:before {\n  content: \"\\F262\"; }\n\n.fa-odnoklassniki:before {\n  content: \"\\F263\"; }\n\n.fa-odnoklassniki-square:before {\n  content: \"\\F264\"; }\n\n.fa-get-pocket:before {\n  content: \"\\F265\"; }\n\n.fa-wikipedia-w:before {\n  content: \"\\F266\"; }\n\n.fa-safari:before {\n  content: \"\\F267\"; }\n\n.fa-chrome:before {\n  content: \"\\F268\"; }\n\n.fa-firefox:before {\n  content: \"\\F269\"; }\n\n.fa-opera:before {\n  content: \"\\F26A\"; }\n\n.fa-internet-explorer:before {\n  content: \"\\F26B\"; }\n\n.fa-tv:before,\n.fa-television:before {\n  content: \"\\F26C\"; }\n\n.fa-contao:before {\n  content: \"\\F26D\"; }\n\n.fa-500px:before {\n  content: \"\\F26E\"; }\n\n.fa-amazon:before {\n  content: \"\\F270\"; }\n\n.fa-calendar-plus-o:before {\n  content: \"\\F271\"; }\n\n.fa-calendar-minus-o:before {\n  content: \"\\F272\"; }\n\n.fa-calendar-times-o:before {\n  content: \"\\F273\"; }\n\n.fa-calendar-check-o:before {\n  content: \"\\F274\"; }\n\n.fa-industry:before {\n  content: \"\\F275\"; }\n\n.fa-map-pin:before {\n  content: \"\\F276\"; }\n\n.fa-map-signs:before {\n  content: \"\\F277\"; }\n\n.fa-map-o:before {\n  content: \"\\F278\"; }\n\n.fa-map:before {\n  content: \"\\F279\"; }\n\n.fa-commenting:before {\n  content: \"\\F27A\"; }\n\n.fa-commenting-o:before {\n  content: \"\\F27B\"; }\n\n.fa-houzz:before {\n  content: \"\\F27C\"; }\n\n.fa-vimeo:before {\n  content: \"\\F27D\"; }\n\n.fa-black-tie:before {\n  content: \"\\F27E\"; }\n\n.fa-fonticons:before {\n  content: \"\\F280\"; }\n\n.fa-reddit-alien:before {\n  content: \"\\F281\"; }\n\n.fa-edge:before {\n  content: \"\\F282\"; }\n\n.fa-credit-card-alt:before {\n  content: \"\\F283\"; }\n\n.fa-codiepie:before {\n  content: \"\\F284\"; }\n\n.fa-modx:before {\n  content: \"\\F285\"; }\n\n.fa-fort-awesome:before {\n  content: \"\\F286\"; }\n\n.fa-usb:before {\n  content: \"\\F287\"; }\n\n.fa-product-hunt:before {\n  content: \"\\F288\"; }\n\n.fa-mixcloud:before {\n  content: \"\\F289\"; }\n\n.fa-scribd:before {\n  content: \"\\F28A\"; }\n\n.fa-pause-circle:before {\n  content: \"\\F28B\"; }\n\n.fa-pause-circle-o:before {\n  content: \"\\F28C\"; }\n\n.fa-stop-circle:before {\n  content: \"\\F28D\"; }\n\n.fa-stop-circle-o:before {\n  content: \"\\F28E\"; }\n\n.fa-shopping-bag:before {\n  content: \"\\F290\"; }\n\n.fa-shopping-basket:before {\n  content: \"\\F291\"; }\n\n.fa-hashtag:before {\n  content: \"\\F292\"; }\n\n.fa-bluetooth:before {\n  content: \"\\F293\"; }\n\n.fa-bluetooth-b:before {\n  content: \"\\F294\"; }\n\n.fa-percent:before {\n  content: \"\\F295\"; }\n\n.fa-gitlab:before {\n  content: \"\\F296\"; }\n\n.fa-wpbeginner:before {\n  content: \"\\F297\"; }\n\n.fa-wpforms:before {\n  content: \"\\F298\"; }\n\n.fa-envira:before {\n  content: \"\\F299\"; }\n\n.fa-universal-access:before {\n  content: \"\\F29A\"; }\n\n.fa-wheelchair-alt:before {\n  content: \"\\F29B\"; }\n\n.fa-question-circle-o:before {\n  content: \"\\F29C\"; }\n\n.fa-blind:before {\n  content: \"\\F29D\"; }\n\n.fa-audio-description:before {\n  content: \"\\F29E\"; }\n\n.fa-volume-control-phone:before {\n  content: \"\\F2A0\"; }\n\n.fa-braille:before {\n  content: \"\\F2A1\"; }\n\n.fa-assistive-listening-systems:before {\n  content: \"\\F2A2\"; }\n\n.fa-asl-interpreting:before,\n.fa-american-sign-language-interpreting:before {\n  content: \"\\F2A3\"; }\n\n.fa-deafness:before,\n.fa-hard-of-hearing:before,\n.fa-deaf:before {\n  content: \"\\F2A4\"; }\n\n.fa-glide:before {\n  content: \"\\F2A5\"; }\n\n.fa-glide-g:before {\n  content: \"\\F2A6\"; }\n\n.fa-signing:before,\n.fa-sign-language:before {\n  content: \"\\F2A7\"; }\n\n.fa-low-vision:before {\n  content: \"\\F2A8\"; }\n\n.fa-viadeo:before {\n  content: \"\\F2A9\"; }\n\n.fa-viadeo-square:before {\n  content: \"\\F2AA\"; }\n\n.fa-snapchat:before {\n  content: \"\\F2AB\"; }\n\n.fa-snapchat-ghost:before {\n  content: \"\\F2AC\"; }\n\n.fa-snapchat-square:before {\n  content: \"\\F2AD\"; }\n\n.fa-pied-piper:before {\n  content: \"\\F2AE\"; }\n\n.fa-first-order:before {\n  content: \"\\F2B0\"; }\n\n.fa-yoast:before {\n  content: \"\\F2B1\"; }\n\n.fa-themeisle:before {\n  content: \"\\F2B2\"; }\n\n.fa-google-plus-circle:before,\n.fa-google-plus-official:before {\n  content: \"\\F2B3\"; }\n\n.fa-fa:before,\n.fa-font-awesome:before {\n  content: \"\\F2B4\"; }\n\n.fa-handshake-o:before {\n  content: \"\\F2B5\"; }\n\n.fa-envelope-open:before {\n  content: \"\\F2B6\"; }\n\n.fa-envelope-open-o:before {\n  content: \"\\F2B7\"; }\n\n.fa-linode:before {\n  content: \"\\F2B8\"; }\n\n.fa-address-book:before {\n  content: \"\\F2B9\"; }\n\n.fa-address-book-o:before {\n  content: \"\\F2BA\"; }\n\n.fa-vcard:before,\n.fa-address-card:before {\n  content: \"\\F2BB\"; }\n\n.fa-vcard-o:before,\n.fa-address-card-o:before {\n  content: \"\\F2BC\"; }\n\n.fa-user-circle:before {\n  content: \"\\F2BD\"; }\n\n.fa-user-circle-o:before {\n  content: \"\\F2BE\"; }\n\n.fa-user-o:before {\n  content: \"\\F2C0\"; }\n\n.fa-id-badge:before {\n  content: \"\\F2C1\"; }\n\n.fa-drivers-license:before,\n.fa-id-card:before {\n  content: \"\\F2C2\"; }\n\n.fa-drivers-license-o:before,\n.fa-id-card-o:before {\n  content: \"\\F2C3\"; }\n\n.fa-quora:before {\n  content: \"\\F2C4\"; }\n\n.fa-free-code-camp:before {\n  content: \"\\F2C5\"; }\n\n.fa-telegram:before {\n  content: \"\\F2C6\"; }\n\n.fa-thermometer-4:before,\n.fa-thermometer:before,\n.fa-thermometer-full:before {\n  content: \"\\F2C7\"; }\n\n.fa-thermometer-3:before,\n.fa-thermometer-three-quarters:before {\n  content: \"\\F2C8\"; }\n\n.fa-thermometer-2:before,\n.fa-thermometer-half:before {\n  content: \"\\F2C9\"; }\n\n.fa-thermometer-1:before,\n.fa-thermometer-quarter:before {\n  content: \"\\F2CA\"; }\n\n.fa-thermometer-0:before,\n.fa-thermometer-empty:before {\n  content: \"\\F2CB\"; }\n\n.fa-shower:before {\n  content: \"\\F2CC\"; }\n\n.fa-bathtub:before,\n.fa-s15:before,\n.fa-bath:before {\n  content: \"\\F2CD\"; }\n\n.fa-podcast:before {\n  content: \"\\F2CE\"; }\n\n.fa-window-maximize:before {\n  content: \"\\F2D0\"; }\n\n.fa-window-minimize:before {\n  content: \"\\F2D1\"; }\n\n.fa-window-restore:before {\n  content: \"\\F2D2\"; }\n\n.fa-times-rectangle:before,\n.fa-window-close:before {\n  content: \"\\F2D3\"; }\n\n.fa-times-rectangle-o:before,\n.fa-window-close-o:before {\n  content: \"\\F2D4\"; }\n\n.fa-bandcamp:before {\n  content: \"\\F2D5\"; }\n\n.fa-grav:before {\n  content: \"\\F2D6\"; }\n\n.fa-etsy:before {\n  content: \"\\F2D7\"; }\n\n.fa-imdb:before {\n  content: \"\\F2D8\"; }\n\n.fa-ravelry:before {\n  content: \"\\F2D9\"; }\n\n.fa-eercast:before {\n  content: \"\\F2DA\"; }\n\n.fa-microchip:before {\n  content: \"\\F2DB\"; }\n\n.fa-snowflake-o:before {\n  content: \"\\F2DC\"; }\n\n.fa-superpowers:before {\n  content: \"\\F2DD\"; }\n\n.fa-wpexplorer:before {\n  content: \"\\F2DE\"; }\n\n.fa-meetup:before {\n  content: \"\\F2E0\"; }\n\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0; }\n\n.sr-only-focusable:active, .sr-only-focusable:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto; }\n", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n/*!\n *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome\n *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)\n */\n/* FONT PATH\n * -------------------------- */\n@font-face {\n  font-family: 'FontAwesome';\n  src: url(" + escape(__webpack_require__(71)) + ");\n  src: url(" + escape(__webpack_require__(72)) + "?#iefix&v=4.7.0) format(\"embedded-opentype\"), url(" + escape(__webpack_require__(73)) + ") format(\"woff2\"), url(" + escape(__webpack_require__(74)) + ") format(\"woff\"), url(" + escape(__webpack_require__(75)) + ") format(\"truetype\"), url(" + escape(__webpack_require__(76)) + "#fontawesomeregular) format(\"svg\");\n  font-weight: normal;\n  font-style: normal; }\n\n.fa {\n  display: inline-block;\n  font: normal normal normal 14px/1 FontAwesome;\n  font-size: inherit;\n  text-rendering: auto;\n  -webkit-font-smoothing: antialiased;\n  -moz-osx-font-smoothing: grayscale; }\n\n/* makes the font 33% larger relative to the icon container */\n.fa-lg {\n  font-size: 1.33333em;\n  line-height: 0.75em;\n  vertical-align: -15%; }\n\n.fa-2x {\n  font-size: 2em; }\n\n.fa-3x {\n  font-size: 3em; }\n\n.fa-4x {\n  font-size: 4em; }\n\n.fa-5x {\n  font-size: 5em; }\n\n.fa-fw {\n  width: 1.28571em;\n  text-align: center; }\n\n.fa-ul {\n  padding-left: 0;\n  margin-left: 2.14286em;\n  list-style-type: none; }\n  .fa-ul > li {\n    position: relative; }\n\n.fa-li {\n  position: absolute;\n  left: -2.14286em;\n  width: 2.14286em;\n  top: 0.14286em;\n  text-align: center; }\n  .fa-li.fa-lg {\n    left: -1.85714em; }\n\n.fa-border {\n  padding: .2em .25em .15em;\n  border: solid 0.08em #eee;\n  border-radius: .1em; }\n\n.fa-pull-left {\n  float: left; }\n\n.fa-pull-right {\n  float: right; }\n\n.fa.fa-pull-left {\n  margin-right: .3em; }\n\n.fa.fa-pull-right {\n  margin-left: .3em; }\n\n/* Deprecated as of 4.4.0 */\n.pull-right {\n  float: right; }\n\n.pull-left {\n  float: left; }\n\n.fa.pull-left {\n  margin-right: .3em; }\n\n.fa.pull-right {\n  margin-left: .3em; }\n\n.fa-spin {\n  -webkit-animation: fa-spin 2s infinite linear;\n  animation: fa-spin 2s infinite linear; }\n\n.fa-pulse {\n  -webkit-animation: fa-spin 1s infinite steps(8);\n  animation: fa-spin 1s infinite steps(8); }\n\n@-webkit-keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg); } }\n\n@keyframes fa-spin {\n  0% {\n    -webkit-transform: rotate(0deg);\n    transform: rotate(0deg); }\n  100% {\n    -webkit-transform: rotate(359deg);\n    transform: rotate(359deg); } }\n\n.fa-rotate-90 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)\";\n  -webkit-transform: rotate(90deg);\n  transform: rotate(90deg); }\n\n.fa-rotate-180 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)\";\n  -webkit-transform: rotate(180deg);\n  transform: rotate(180deg); }\n\n.fa-rotate-270 {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)\";\n  -webkit-transform: rotate(270deg);\n  transform: rotate(270deg); }\n\n.fa-flip-horizontal {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)\";\n  -webkit-transform: scale(-1, 1);\n  transform: scale(-1, 1); }\n\n.fa-flip-vertical {\n  -ms-filter: \"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)\";\n  -webkit-transform: scale(1, -1);\n  transform: scale(1, -1); }\n\n:root .fa-rotate-90,\n:root .fa-rotate-180,\n:root .fa-rotate-270,\n:root .fa-flip-horizontal,\n:root .fa-flip-vertical {\n  -webkit-filter: none;\n          filter: none; }\n\n.fa-stack {\n  position: relative;\n  display: inline-block;\n  width: 2em;\n  height: 2em;\n  line-height: 2em;\n  vertical-align: middle; }\n\n.fa-stack-1x, .fa-stack-2x {\n  position: absolute;\n  left: 0;\n  width: 100%;\n  text-align: center; }\n\n.fa-stack-1x {\n  line-height: inherit; }\n\n.fa-stack-2x {\n  font-size: 2em; }\n\n.fa-inverse {\n  color: #fff; }\n\n/* Font Awesome uses the Unicode Private Use Area (PUA) to ensure screen\n   readers do not read off random characters that represent icons */\n.fa-glass:before {\n  content: \"\\F000\"; }\n\n.fa-music:before {\n  content: \"\\F001\"; }\n\n.fa-search:before {\n  content: \"\\F002\"; }\n\n.fa-envelope-o:before {\n  content: \"\\F003\"; }\n\n.fa-heart:before {\n  content: \"\\F004\"; }\n\n.fa-star:before {\n  content: \"\\F005\"; }\n\n.fa-star-o:before {\n  content: \"\\F006\"; }\n\n.fa-user:before {\n  content: \"\\F007\"; }\n\n.fa-film:before {\n  content: \"\\F008\"; }\n\n.fa-th-large:before {\n  content: \"\\F009\"; }\n\n.fa-th:before {\n  content: \"\\F00A\"; }\n\n.fa-th-list:before {\n  content: \"\\F00B\"; }\n\n.fa-check:before {\n  content: \"\\F00C\"; }\n\n.fa-remove:before,\n.fa-close:before,\n.fa-times:before {\n  content: \"\\F00D\"; }\n\n.fa-search-plus:before {\n  content: \"\\F00E\"; }\n\n.fa-search-minus:before {\n  content: \"\\F010\"; }\n\n.fa-power-off:before {\n  content: \"\\F011\"; }\n\n.fa-signal:before {\n  content: \"\\F012\"; }\n\n.fa-gear:before,\n.fa-cog:before {\n  content: \"\\F013\"; }\n\n.fa-trash-o:before {\n  content: \"\\F014\"; }\n\n.fa-home:before {\n  content: \"\\F015\"; }\n\n.fa-file-o:before {\n  content: \"\\F016\"; }\n\n.fa-clock-o:before {\n  content: \"\\F017\"; }\n\n.fa-road:before {\n  content: \"\\F018\"; }\n\n.fa-download:before {\n  content: \"\\F019\"; }\n\n.fa-arrow-circle-o-down:before {\n  content: \"\\F01A\"; }\n\n.fa-arrow-circle-o-up:before {\n  content: \"\\F01B\"; }\n\n.fa-inbox:before {\n  content: \"\\F01C\"; }\n\n.fa-play-circle-o:before {\n  content: \"\\F01D\"; }\n\n.fa-rotate-right:before,\n.fa-repeat:before {\n  content: \"\\F01E\"; }\n\n.fa-refresh:before {\n  content: \"\\F021\"; }\n\n.fa-list-alt:before {\n  content: \"\\F022\"; }\n\n.fa-lock:before {\n  content: \"\\F023\"; }\n\n.fa-flag:before {\n  content: \"\\F024\"; }\n\n.fa-headphones:before {\n  content: \"\\F025\"; }\n\n.fa-volume-off:before {\n  content: \"\\F026\"; }\n\n.fa-volume-down:before {\n  content: \"\\F027\"; }\n\n.fa-volume-up:before {\n  content: \"\\F028\"; }\n\n.fa-qrcode:before {\n  content: \"\\F029\"; }\n\n.fa-barcode:before {\n  content: \"\\F02A\"; }\n\n.fa-tag:before {\n  content: \"\\F02B\"; }\n\n.fa-tags:before {\n  content: \"\\F02C\"; }\n\n.fa-book:before {\n  content: \"\\F02D\"; }\n\n.fa-bookmark:before {\n  content: \"\\F02E\"; }\n\n.fa-print:before {\n  content: \"\\F02F\"; }\n\n.fa-camera:before {\n  content: \"\\F030\"; }\n\n.fa-font:before {\n  content: \"\\F031\"; }\n\n.fa-bold:before {\n  content: \"\\F032\"; }\n\n.fa-italic:before {\n  content: \"\\F033\"; }\n\n.fa-text-height:before {\n  content: \"\\F034\"; }\n\n.fa-text-width:before {\n  content: \"\\F035\"; }\n\n.fa-align-left:before {\n  content: \"\\F036\"; }\n\n.fa-align-center:before {\n  content: \"\\F037\"; }\n\n.fa-align-right:before {\n  content: \"\\F038\"; }\n\n.fa-align-justify:before {\n  content: \"\\F039\"; }\n\n.fa-list:before {\n  content: \"\\F03A\"; }\n\n.fa-dedent:before,\n.fa-outdent:before {\n  content: \"\\F03B\"; }\n\n.fa-indent:before {\n  content: \"\\F03C\"; }\n\n.fa-video-camera:before {\n  content: \"\\F03D\"; }\n\n.fa-photo:before,\n.fa-image:before,\n.fa-picture-o:before {\n  content: \"\\F03E\"; }\n\n.fa-pencil:before {\n  content: \"\\F040\"; }\n\n.fa-map-marker:before {\n  content: \"\\F041\"; }\n\n.fa-adjust:before {\n  content: \"\\F042\"; }\n\n.fa-tint:before {\n  content: \"\\F043\"; }\n\n.fa-edit:before,\n.fa-pencil-square-o:before {\n  content: \"\\F044\"; }\n\n.fa-share-square-o:before {\n  content: \"\\F045\"; }\n\n.fa-check-square-o:before {\n  content: \"\\F046\"; }\n\n.fa-arrows:before {\n  content: \"\\F047\"; }\n\n.fa-step-backward:before {\n  content: \"\\F048\"; }\n\n.fa-fast-backward:before {\n  content: \"\\F049\"; }\n\n.fa-backward:before {\n  content: \"\\F04A\"; }\n\n.fa-play:before {\n  content: \"\\F04B\"; }\n\n.fa-pause:before {\n  content: \"\\F04C\"; }\n\n.fa-stop:before {\n  content: \"\\F04D\"; }\n\n.fa-forward:before {\n  content: \"\\F04E\"; }\n\n.fa-fast-forward:before {\n  content: \"\\F050\"; }\n\n.fa-step-forward:before {\n  content: \"\\F051\"; }\n\n.fa-eject:before {\n  content: \"\\F052\"; }\n\n.fa-chevron-left:before {\n  content: \"\\F053\"; }\n\n.fa-chevron-right:before {\n  content: \"\\F054\"; }\n\n.fa-plus-circle:before {\n  content: \"\\F055\"; }\n\n.fa-minus-circle:before {\n  content: \"\\F056\"; }\n\n.fa-times-circle:before {\n  content: \"\\F057\"; }\n\n.fa-check-circle:before {\n  content: \"\\F058\"; }\n\n.fa-question-circle:before {\n  content: \"\\F059\"; }\n\n.fa-info-circle:before {\n  content: \"\\F05A\"; }\n\n.fa-crosshairs:before {\n  content: \"\\F05B\"; }\n\n.fa-times-circle-o:before {\n  content: \"\\F05C\"; }\n\n.fa-check-circle-o:before {\n  content: \"\\F05D\"; }\n\n.fa-ban:before {\n  content: \"\\F05E\"; }\n\n.fa-arrow-left:before {\n  content: \"\\F060\"; }\n\n.fa-arrow-right:before {\n  content: \"\\F061\"; }\n\n.fa-arrow-up:before {\n  content: \"\\F062\"; }\n\n.fa-arrow-down:before {\n  content: \"\\F063\"; }\n\n.fa-mail-forward:before,\n.fa-share:before {\n  content: \"\\F064\"; }\n\n.fa-expand:before {\n  content: \"\\F065\"; }\n\n.fa-compress:before {\n  content: \"\\F066\"; }\n\n.fa-plus:before {\n  content: \"\\F067\"; }\n\n.fa-minus:before {\n  content: \"\\F068\"; }\n\n.fa-asterisk:before {\n  content: \"\\F069\"; }\n\n.fa-exclamation-circle:before {\n  content: \"\\F06A\"; }\n\n.fa-gift:before {\n  content: \"\\F06B\"; }\n\n.fa-leaf:before {\n  content: \"\\F06C\"; }\n\n.fa-fire:before {\n  content: \"\\F06D\"; }\n\n.fa-eye:before {\n  content: \"\\F06E\"; }\n\n.fa-eye-slash:before {\n  content: \"\\F070\"; }\n\n.fa-warning:before,\n.fa-exclamation-triangle:before {\n  content: \"\\F071\"; }\n\n.fa-plane:before {\n  content: \"\\F072\"; }\n\n.fa-calendar:before {\n  content: \"\\F073\"; }\n\n.fa-random:before {\n  content: \"\\F074\"; }\n\n.fa-comment:before {\n  content: \"\\F075\"; }\n\n.fa-magnet:before {\n  content: \"\\F076\"; }\n\n.fa-chevron-up:before {\n  content: \"\\F077\"; }\n\n.fa-chevron-down:before {\n  content: \"\\F078\"; }\n\n.fa-retweet:before {\n  content: \"\\F079\"; }\n\n.fa-shopping-cart:before {\n  content: \"\\F07A\"; }\n\n.fa-folder:before {\n  content: \"\\F07B\"; }\n\n.fa-folder-open:before {\n  content: \"\\F07C\"; }\n\n.fa-arrows-v:before {\n  content: \"\\F07D\"; }\n\n.fa-arrows-h:before {\n  content: \"\\F07E\"; }\n\n.fa-bar-chart-o:before,\n.fa-bar-chart:before {\n  content: \"\\F080\"; }\n\n.fa-twitter-square:before {\n  content: \"\\F081\"; }\n\n.fa-facebook-square:before {\n  content: \"\\F082\"; }\n\n.fa-camera-retro:before {\n  content: \"\\F083\"; }\n\n.fa-key:before {\n  content: \"\\F084\"; }\n\n.fa-gears:before,\n.fa-cogs:before {\n  content: \"\\F085\"; }\n\n.fa-comments:before {\n  content: \"\\F086\"; }\n\n.fa-thumbs-o-up:before {\n  content: \"\\F087\"; }\n\n.fa-thumbs-o-down:before {\n  content: \"\\F088\"; }\n\n.fa-star-half:before {\n  content: \"\\F089\"; }\n\n.fa-heart-o:before {\n  content: \"\\F08A\"; }\n\n.fa-sign-out:before {\n  content: \"\\F08B\"; }\n\n.fa-linkedin-square:before {\n  content: \"\\F08C\"; }\n\n.fa-thumb-tack:before {\n  content: \"\\F08D\"; }\n\n.fa-external-link:before {\n  content: \"\\F08E\"; }\n\n.fa-sign-in:before {\n  content: \"\\F090\"; }\n\n.fa-trophy:before {\n  content: \"\\F091\"; }\n\n.fa-github-square:before {\n  content: \"\\F092\"; }\n\n.fa-upload:before {\n  content: \"\\F093\"; }\n\n.fa-lemon-o:before {\n  content: \"\\F094\"; }\n\n.fa-phone:before {\n  content: \"\\F095\"; }\n\n.fa-square-o:before {\n  content: \"\\F096\"; }\n\n.fa-bookmark-o:before {\n  content: \"\\F097\"; }\n\n.fa-phone-square:before {\n  content: \"\\F098\"; }\n\n.fa-twitter:before {\n  content: \"\\F099\"; }\n\n.fa-facebook-f:before,\n.fa-facebook:before {\n  content: \"\\F09A\"; }\n\n.fa-github:before {\n  content: \"\\F09B\"; }\n\n.fa-unlock:before {\n  content: \"\\F09C\"; }\n\n.fa-credit-card:before {\n  content: \"\\F09D\"; }\n\n.fa-feed:before,\n.fa-rss:before {\n  content: \"\\F09E\"; }\n\n.fa-hdd-o:before {\n  content: \"\\F0A0\"; }\n\n.fa-bullhorn:before {\n  content: \"\\F0A1\"; }\n\n.fa-bell:before {\n  content: \"\\F0F3\"; }\n\n.fa-certificate:before {\n  content: \"\\F0A3\"; }\n\n.fa-hand-o-right:before {\n  content: \"\\F0A4\"; }\n\n.fa-hand-o-left:before {\n  content: \"\\F0A5\"; }\n\n.fa-hand-o-up:before {\n  content: \"\\F0A6\"; }\n\n.fa-hand-o-down:before {\n  content: \"\\F0A7\"; }\n\n.fa-arrow-circle-left:before {\n  content: \"\\F0A8\"; }\n\n.fa-arrow-circle-right:before {\n  content: \"\\F0A9\"; }\n\n.fa-arrow-circle-up:before {\n  content: \"\\F0AA\"; }\n\n.fa-arrow-circle-down:before {\n  content: \"\\F0AB\"; }\n\n.fa-globe:before {\n  content: \"\\F0AC\"; }\n\n.fa-wrench:before {\n  content: \"\\F0AD\"; }\n\n.fa-tasks:before {\n  content: \"\\F0AE\"; }\n\n.fa-filter:before {\n  content: \"\\F0B0\"; }\n\n.fa-briefcase:before {\n  content: \"\\F0B1\"; }\n\n.fa-arrows-alt:before {\n  content: \"\\F0B2\"; }\n\n.fa-group:before,\n.fa-users:before {\n  content: \"\\F0C0\"; }\n\n.fa-chain:before,\n.fa-link:before {\n  content: \"\\F0C1\"; }\n\n.fa-cloud:before {\n  content: \"\\F0C2\"; }\n\n.fa-flask:before {\n  content: \"\\F0C3\"; }\n\n.fa-cut:before,\n.fa-scissors:before {\n  content: \"\\F0C4\"; }\n\n.fa-copy:before,\n.fa-files-o:before {\n  content: \"\\F0C5\"; }\n\n.fa-paperclip:before {\n  content: \"\\F0C6\"; }\n\n.fa-save:before,\n.fa-floppy-o:before {\n  content: \"\\F0C7\"; }\n\n.fa-square:before {\n  content: \"\\F0C8\"; }\n\n.fa-navicon:before,\n.fa-reorder:before,\n.fa-bars:before {\n  content: \"\\F0C9\"; }\n\n.fa-list-ul:before {\n  content: \"\\F0CA\"; }\n\n.fa-list-ol:before {\n  content: \"\\F0CB\"; }\n\n.fa-strikethrough:before {\n  content: \"\\F0CC\"; }\n\n.fa-underline:before {\n  content: \"\\F0CD\"; }\n\n.fa-table:before {\n  content: \"\\F0CE\"; }\n\n.fa-magic:before {\n  content: \"\\F0D0\"; }\n\n.fa-truck:before {\n  content: \"\\F0D1\"; }\n\n.fa-pinterest:before {\n  content: \"\\F0D2\"; }\n\n.fa-pinterest-square:before {\n  content: \"\\F0D3\"; }\n\n.fa-google-plus-square:before {\n  content: \"\\F0D4\"; }\n\n.fa-google-plus:before {\n  content: \"\\F0D5\"; }\n\n.fa-money:before {\n  content: \"\\F0D6\"; }\n\n.fa-caret-down:before {\n  content: \"\\F0D7\"; }\n\n.fa-caret-up:before {\n  content: \"\\F0D8\"; }\n\n.fa-caret-left:before {\n  content: \"\\F0D9\"; }\n\n.fa-caret-right:before {\n  content: \"\\F0DA\"; }\n\n.fa-columns:before {\n  content: \"\\F0DB\"; }\n\n.fa-unsorted:before,\n.fa-sort:before {\n  content: \"\\F0DC\"; }\n\n.fa-sort-down:before,\n.fa-sort-desc:before {\n  content: \"\\F0DD\"; }\n\n.fa-sort-up:before,\n.fa-sort-asc:before {\n  content: \"\\F0DE\"; }\n\n.fa-envelope:before {\n  content: \"\\F0E0\"; }\n\n.fa-linkedin:before {\n  content: \"\\F0E1\"; }\n\n.fa-rotate-left:before,\n.fa-undo:before {\n  content: \"\\F0E2\"; }\n\n.fa-legal:before,\n.fa-gavel:before {\n  content: \"\\F0E3\"; }\n\n.fa-dashboard:before,\n.fa-tachometer:before {\n  content: \"\\F0E4\"; }\n\n.fa-comment-o:before {\n  content: \"\\F0E5\"; }\n\n.fa-comments-o:before {\n  content: \"\\F0E6\"; }\n\n.fa-flash:before,\n.fa-bolt:before {\n  content: \"\\F0E7\"; }\n\n.fa-sitemap:before {\n  content: \"\\F0E8\"; }\n\n.fa-umbrella:before {\n  content: \"\\F0E9\"; }\n\n.fa-paste:before,\n.fa-clipboard:before {\n  content: \"\\F0EA\"; }\n\n.fa-lightbulb-o:before {\n  content: \"\\F0EB\"; }\n\n.fa-exchange:before {\n  content: \"\\F0EC\"; }\n\n.fa-cloud-download:before {\n  content: \"\\F0ED\"; }\n\n.fa-cloud-upload:before {\n  content: \"\\F0EE\"; }\n\n.fa-user-md:before {\n  content: \"\\F0F0\"; }\n\n.fa-stethoscope:before {\n  content: \"\\F0F1\"; }\n\n.fa-suitcase:before {\n  content: \"\\F0F2\"; }\n\n.fa-bell-o:before {\n  content: \"\\F0A2\"; }\n\n.fa-coffee:before {\n  content: \"\\F0F4\"; }\n\n.fa-cutlery:before {\n  content: \"\\F0F5\"; }\n\n.fa-file-text-o:before {\n  content: \"\\F0F6\"; }\n\n.fa-building-o:before {\n  content: \"\\F0F7\"; }\n\n.fa-hospital-o:before {\n  content: \"\\F0F8\"; }\n\n.fa-ambulance:before {\n  content: \"\\F0F9\"; }\n\n.fa-medkit:before {\n  content: \"\\F0FA\"; }\n\n.fa-fighter-jet:before {\n  content: \"\\F0FB\"; }\n\n.fa-beer:before {\n  content: \"\\F0FC\"; }\n\n.fa-h-square:before {\n  content: \"\\F0FD\"; }\n\n.fa-plus-square:before {\n  content: \"\\F0FE\"; }\n\n.fa-angle-double-left:before {\n  content: \"\\F100\"; }\n\n.fa-angle-double-right:before {\n  content: \"\\F101\"; }\n\n.fa-angle-double-up:before {\n  content: \"\\F102\"; }\n\n.fa-angle-double-down:before {\n  content: \"\\F103\"; }\n\n.fa-angle-left:before {\n  content: \"\\F104\"; }\n\n.fa-angle-right:before {\n  content: \"\\F105\"; }\n\n.fa-angle-up:before {\n  content: \"\\F106\"; }\n\n.fa-angle-down:before {\n  content: \"\\F107\"; }\n\n.fa-desktop:before {\n  content: \"\\F108\"; }\n\n.fa-laptop:before {\n  content: \"\\F109\"; }\n\n.fa-tablet:before {\n  content: \"\\F10A\"; }\n\n.fa-mobile-phone:before,\n.fa-mobile:before {\n  content: \"\\F10B\"; }\n\n.fa-circle-o:before {\n  content: \"\\F10C\"; }\n\n.fa-quote-left:before {\n  content: \"\\F10D\"; }\n\n.fa-quote-right:before {\n  content: \"\\F10E\"; }\n\n.fa-spinner:before {\n  content: \"\\F110\"; }\n\n.fa-circle:before {\n  content: \"\\F111\"; }\n\n.fa-mail-reply:before,\n.fa-reply:before {\n  content: \"\\F112\"; }\n\n.fa-github-alt:before {\n  content: \"\\F113\"; }\n\n.fa-folder-o:before {\n  content: \"\\F114\"; }\n\n.fa-folder-open-o:before {\n  content: \"\\F115\"; }\n\n.fa-smile-o:before {\n  content: \"\\F118\"; }\n\n.fa-frown-o:before {\n  content: \"\\F119\"; }\n\n.fa-meh-o:before {\n  content: \"\\F11A\"; }\n\n.fa-gamepad:before {\n  content: \"\\F11B\"; }\n\n.fa-keyboard-o:before {\n  content: \"\\F11C\"; }\n\n.fa-flag-o:before {\n  content: \"\\F11D\"; }\n\n.fa-flag-checkered:before {\n  content: \"\\F11E\"; }\n\n.fa-terminal:before {\n  content: \"\\F120\"; }\n\n.fa-code:before {\n  content: \"\\F121\"; }\n\n.fa-mail-reply-all:before,\n.fa-reply-all:before {\n  content: \"\\F122\"; }\n\n.fa-star-half-empty:before,\n.fa-star-half-full:before,\n.fa-star-half-o:before {\n  content: \"\\F123\"; }\n\n.fa-location-arrow:before {\n  content: \"\\F124\"; }\n\n.fa-crop:before {\n  content: \"\\F125\"; }\n\n.fa-code-fork:before {\n  content: \"\\F126\"; }\n\n.fa-unlink:before,\n.fa-chain-broken:before {\n  content: \"\\F127\"; }\n\n.fa-question:before {\n  content: \"\\F128\"; }\n\n.fa-info:before {\n  content: \"\\F129\"; }\n\n.fa-exclamation:before {\n  content: \"\\F12A\"; }\n\n.fa-superscript:before {\n  content: \"\\F12B\"; }\n\n.fa-subscript:before {\n  content: \"\\F12C\"; }\n\n.fa-eraser:before {\n  content: \"\\F12D\"; }\n\n.fa-puzzle-piece:before {\n  content: \"\\F12E\"; }\n\n.fa-microphone:before {\n  content: \"\\F130\"; }\n\n.fa-microphone-slash:before {\n  content: \"\\F131\"; }\n\n.fa-shield:before {\n  content: \"\\F132\"; }\n\n.fa-calendar-o:before {\n  content: \"\\F133\"; }\n\n.fa-fire-extinguisher:before {\n  content: \"\\F134\"; }\n\n.fa-rocket:before {\n  content: \"\\F135\"; }\n\n.fa-maxcdn:before {\n  content: \"\\F136\"; }\n\n.fa-chevron-circle-left:before {\n  content: \"\\F137\"; }\n\n.fa-chevron-circle-right:before {\n  content: \"\\F138\"; }\n\n.fa-chevron-circle-up:before {\n  content: \"\\F139\"; }\n\n.fa-chevron-circle-down:before {\n  content: \"\\F13A\"; }\n\n.fa-html5:before {\n  content: \"\\F13B\"; }\n\n.fa-css3:before {\n  content: \"\\F13C\"; }\n\n.fa-anchor:before {\n  content: \"\\F13D\"; }\n\n.fa-unlock-alt:before {\n  content: \"\\F13E\"; }\n\n.fa-bullseye:before {\n  content: \"\\F140\"; }\n\n.fa-ellipsis-h:before {\n  content: \"\\F141\"; }\n\n.fa-ellipsis-v:before {\n  content: \"\\F142\"; }\n\n.fa-rss-square:before {\n  content: \"\\F143\"; }\n\n.fa-play-circle:before {\n  content: \"\\F144\"; }\n\n.fa-ticket:before {\n  content: \"\\F145\"; }\n\n.fa-minus-square:before {\n  content: \"\\F146\"; }\n\n.fa-minus-square-o:before {\n  content: \"\\F147\"; }\n\n.fa-level-up:before {\n  content: \"\\F148\"; }\n\n.fa-level-down:before {\n  content: \"\\F149\"; }\n\n.fa-check-square:before {\n  content: \"\\F14A\"; }\n\n.fa-pencil-square:before {\n  content: \"\\F14B\"; }\n\n.fa-external-link-square:before {\n  content: \"\\F14C\"; }\n\n.fa-share-square:before {\n  content: \"\\F14D\"; }\n\n.fa-compass:before {\n  content: \"\\F14E\"; }\n\n.fa-toggle-down:before,\n.fa-caret-square-o-down:before {\n  content: \"\\F150\"; }\n\n.fa-toggle-up:before,\n.fa-caret-square-o-up:before {\n  content: \"\\F151\"; }\n\n.fa-toggle-right:before,\n.fa-caret-square-o-right:before {\n  content: \"\\F152\"; }\n\n.fa-euro:before,\n.fa-eur:before {\n  content: \"\\F153\"; }\n\n.fa-gbp:before {\n  content: \"\\F154\"; }\n\n.fa-dollar:before,\n.fa-usd:before {\n  content: \"\\F155\"; }\n\n.fa-rupee:before,\n.fa-inr:before {\n  content: \"\\F156\"; }\n\n.fa-cny:before,\n.fa-rmb:before,\n.fa-yen:before,\n.fa-jpy:before {\n  content: \"\\F157\"; }\n\n.fa-ruble:before,\n.fa-rouble:before,\n.fa-rub:before {\n  content: \"\\F158\"; }\n\n.fa-won:before,\n.fa-krw:before {\n  content: \"\\F159\"; }\n\n.fa-bitcoin:before,\n.fa-btc:before {\n  content: \"\\F15A\"; }\n\n.fa-file:before {\n  content: \"\\F15B\"; }\n\n.fa-file-text:before {\n  content: \"\\F15C\"; }\n\n.fa-sort-alpha-asc:before {\n  content: \"\\F15D\"; }\n\n.fa-sort-alpha-desc:before {\n  content: \"\\F15E\"; }\n\n.fa-sort-amount-asc:before {\n  content: \"\\F160\"; }\n\n.fa-sort-amount-desc:before {\n  content: \"\\F161\"; }\n\n.fa-sort-numeric-asc:before {\n  content: \"\\F162\"; }\n\n.fa-sort-numeric-desc:before {\n  content: \"\\F163\"; }\n\n.fa-thumbs-up:before {\n  content: \"\\F164\"; }\n\n.fa-thumbs-down:before {\n  content: \"\\F165\"; }\n\n.fa-youtube-square:before {\n  content: \"\\F166\"; }\n\n.fa-youtube:before {\n  content: \"\\F167\"; }\n\n.fa-xing:before {\n  content: \"\\F168\"; }\n\n.fa-xing-square:before {\n  content: \"\\F169\"; }\n\n.fa-youtube-play:before {\n  content: \"\\F16A\"; }\n\n.fa-dropbox:before {\n  content: \"\\F16B\"; }\n\n.fa-stack-overflow:before {\n  content: \"\\F16C\"; }\n\n.fa-instagram:before {\n  content: \"\\F16D\"; }\n\n.fa-flickr:before {\n  content: \"\\F16E\"; }\n\n.fa-adn:before {\n  content: \"\\F170\"; }\n\n.fa-bitbucket:before {\n  content: \"\\F171\"; }\n\n.fa-bitbucket-square:before {\n  content: \"\\F172\"; }\n\n.fa-tumblr:before {\n  content: \"\\F173\"; }\n\n.fa-tumblr-square:before {\n  content: \"\\F174\"; }\n\n.fa-long-arrow-down:before {\n  content: \"\\F175\"; }\n\n.fa-long-arrow-up:before {\n  content: \"\\F176\"; }\n\n.fa-long-arrow-left:before {\n  content: \"\\F177\"; }\n\n.fa-long-arrow-right:before {\n  content: \"\\F178\"; }\n\n.fa-apple:before {\n  content: \"\\F179\"; }\n\n.fa-windows:before {\n  content: \"\\F17A\"; }\n\n.fa-android:before {\n  content: \"\\F17B\"; }\n\n.fa-linux:before {\n  content: \"\\F17C\"; }\n\n.fa-dribbble:before {\n  content: \"\\F17D\"; }\n\n.fa-skype:before {\n  content: \"\\F17E\"; }\n\n.fa-foursquare:before {\n  content: \"\\F180\"; }\n\n.fa-trello:before {\n  content: \"\\F181\"; }\n\n.fa-female:before {\n  content: \"\\F182\"; }\n\n.fa-male:before {\n  content: \"\\F183\"; }\n\n.fa-gittip:before,\n.fa-gratipay:before {\n  content: \"\\F184\"; }\n\n.fa-sun-o:before {\n  content: \"\\F185\"; }\n\n.fa-moon-o:before {\n  content: \"\\F186\"; }\n\n.fa-archive:before {\n  content: \"\\F187\"; }\n\n.fa-bug:before {\n  content: \"\\F188\"; }\n\n.fa-vk:before {\n  content: \"\\F189\"; }\n\n.fa-weibo:before {\n  content: \"\\F18A\"; }\n\n.fa-renren:before {\n  content: \"\\F18B\"; }\n\n.fa-pagelines:before {\n  content: \"\\F18C\"; }\n\n.fa-stack-exchange:before {\n  content: \"\\F18D\"; }\n\n.fa-arrow-circle-o-right:before {\n  content: \"\\F18E\"; }\n\n.fa-arrow-circle-o-left:before {\n  content: \"\\F190\"; }\n\n.fa-toggle-left:before,\n.fa-caret-square-o-left:before {\n  content: \"\\F191\"; }\n\n.fa-dot-circle-o:before {\n  content: \"\\F192\"; }\n\n.fa-wheelchair:before {\n  content: \"\\F193\"; }\n\n.fa-vimeo-square:before {\n  content: \"\\F194\"; }\n\n.fa-turkish-lira:before,\n.fa-try:before {\n  content: \"\\F195\"; }\n\n.fa-plus-square-o:before {\n  content: \"\\F196\"; }\n\n.fa-space-shuttle:before {\n  content: \"\\F197\"; }\n\n.fa-slack:before {\n  content: \"\\F198\"; }\n\n.fa-envelope-square:before {\n  content: \"\\F199\"; }\n\n.fa-wordpress:before {\n  content: \"\\F19A\"; }\n\n.fa-openid:before {\n  content: \"\\F19B\"; }\n\n.fa-institution:before,\n.fa-bank:before,\n.fa-university:before {\n  content: \"\\F19C\"; }\n\n.fa-mortar-board:before,\n.fa-graduation-cap:before {\n  content: \"\\F19D\"; }\n\n.fa-yahoo:before {\n  content: \"\\F19E\"; }\n\n.fa-google:before {\n  content: \"\\F1A0\"; }\n\n.fa-reddit:before {\n  content: \"\\F1A1\"; }\n\n.fa-reddit-square:before {\n  content: \"\\F1A2\"; }\n\n.fa-stumbleupon-circle:before {\n  content: \"\\F1A3\"; }\n\n.fa-stumbleupon:before {\n  content: \"\\F1A4\"; }\n\n.fa-delicious:before {\n  content: \"\\F1A5\"; }\n\n.fa-digg:before {\n  content: \"\\F1A6\"; }\n\n.fa-pied-piper-pp:before {\n  content: \"\\F1A7\"; }\n\n.fa-pied-piper-alt:before {\n  content: \"\\F1A8\"; }\n\n.fa-drupal:before {\n  content: \"\\F1A9\"; }\n\n.fa-joomla:before {\n  content: \"\\F1AA\"; }\n\n.fa-language:before {\n  content: \"\\F1AB\"; }\n\n.fa-fax:before {\n  content: \"\\F1AC\"; }\n\n.fa-building:before {\n  content: \"\\F1AD\"; }\n\n.fa-child:before {\n  content: \"\\F1AE\"; }\n\n.fa-paw:before {\n  content: \"\\F1B0\"; }\n\n.fa-spoon:before {\n  content: \"\\F1B1\"; }\n\n.fa-cube:before {\n  content: \"\\F1B2\"; }\n\n.fa-cubes:before {\n  content: \"\\F1B3\"; }\n\n.fa-behance:before {\n  content: \"\\F1B4\"; }\n\n.fa-behance-square:before {\n  content: \"\\F1B5\"; }\n\n.fa-steam:before {\n  content: \"\\F1B6\"; }\n\n.fa-steam-square:before {\n  content: \"\\F1B7\"; }\n\n.fa-recycle:before {\n  content: \"\\F1B8\"; }\n\n.fa-automobile:before,\n.fa-car:before {\n  content: \"\\F1B9\"; }\n\n.fa-cab:before,\n.fa-taxi:before {\n  content: \"\\F1BA\"; }\n\n.fa-tree:before {\n  content: \"\\F1BB\"; }\n\n.fa-spotify:before {\n  content: \"\\F1BC\"; }\n\n.fa-deviantart:before {\n  content: \"\\F1BD\"; }\n\n.fa-soundcloud:before {\n  content: \"\\F1BE\"; }\n\n.fa-database:before {\n  content: \"\\F1C0\"; }\n\n.fa-file-pdf-o:before {\n  content: \"\\F1C1\"; }\n\n.fa-file-word-o:before {\n  content: \"\\F1C2\"; }\n\n.fa-file-excel-o:before {\n  content: \"\\F1C3\"; }\n\n.fa-file-powerpoint-o:before {\n  content: \"\\F1C4\"; }\n\n.fa-file-photo-o:before,\n.fa-file-picture-o:before,\n.fa-file-image-o:before {\n  content: \"\\F1C5\"; }\n\n.fa-file-zip-o:before,\n.fa-file-archive-o:before {\n  content: \"\\F1C6\"; }\n\n.fa-file-sound-o:before,\n.fa-file-audio-o:before {\n  content: \"\\F1C7\"; }\n\n.fa-file-movie-o:before,\n.fa-file-video-o:before {\n  content: \"\\F1C8\"; }\n\n.fa-file-code-o:before {\n  content: \"\\F1C9\"; }\n\n.fa-vine:before {\n  content: \"\\F1CA\"; }\n\n.fa-codepen:before {\n  content: \"\\F1CB\"; }\n\n.fa-jsfiddle:before {\n  content: \"\\F1CC\"; }\n\n.fa-life-bouy:before,\n.fa-life-buoy:before,\n.fa-life-saver:before,\n.fa-support:before,\n.fa-life-ring:before {\n  content: \"\\F1CD\"; }\n\n.fa-circle-o-notch:before {\n  content: \"\\F1CE\"; }\n\n.fa-ra:before,\n.fa-resistance:before,\n.fa-rebel:before {\n  content: \"\\F1D0\"; }\n\n.fa-ge:before,\n.fa-empire:before {\n  content: \"\\F1D1\"; }\n\n.fa-git-square:before {\n  content: \"\\F1D2\"; }\n\n.fa-git:before {\n  content: \"\\F1D3\"; }\n\n.fa-y-combinator-square:before,\n.fa-yc-square:before,\n.fa-hacker-news:before {\n  content: \"\\F1D4\"; }\n\n.fa-tencent-weibo:before {\n  content: \"\\F1D5\"; }\n\n.fa-qq:before {\n  content: \"\\F1D6\"; }\n\n.fa-wechat:before,\n.fa-weixin:before {\n  content: \"\\F1D7\"; }\n\n.fa-send:before,\n.fa-paper-plane:before {\n  content: \"\\F1D8\"; }\n\n.fa-send-o:before,\n.fa-paper-plane-o:before {\n  content: \"\\F1D9\"; }\n\n.fa-history:before {\n  content: \"\\F1DA\"; }\n\n.fa-circle-thin:before {\n  content: \"\\F1DB\"; }\n\n.fa-header:before {\n  content: \"\\F1DC\"; }\n\n.fa-paragraph:before {\n  content: \"\\F1DD\"; }\n\n.fa-sliders:before {\n  content: \"\\F1DE\"; }\n\n.fa-share-alt:before {\n  content: \"\\F1E0\"; }\n\n.fa-share-alt-square:before {\n  content: \"\\F1E1\"; }\n\n.fa-bomb:before {\n  content: \"\\F1E2\"; }\n\n.fa-soccer-ball-o:before,\n.fa-futbol-o:before {\n  content: \"\\F1E3\"; }\n\n.fa-tty:before {\n  content: \"\\F1E4\"; }\n\n.fa-binoculars:before {\n  content: \"\\F1E5\"; }\n\n.fa-plug:before {\n  content: \"\\F1E6\"; }\n\n.fa-slideshare:before {\n  content: \"\\F1E7\"; }\n\n.fa-twitch:before {\n  content: \"\\F1E8\"; }\n\n.fa-yelp:before {\n  content: \"\\F1E9\"; }\n\n.fa-newspaper-o:before {\n  content: \"\\F1EA\"; }\n\n.fa-wifi:before {\n  content: \"\\F1EB\"; }\n\n.fa-calculator:before {\n  content: \"\\F1EC\"; }\n\n.fa-paypal:before {\n  content: \"\\F1ED\"; }\n\n.fa-google-wallet:before {\n  content: \"\\F1EE\"; }\n\n.fa-cc-visa:before {\n  content: \"\\F1F0\"; }\n\n.fa-cc-mastercard:before {\n  content: \"\\F1F1\"; }\n\n.fa-cc-discover:before {\n  content: \"\\F1F2\"; }\n\n.fa-cc-amex:before {\n  content: \"\\F1F3\"; }\n\n.fa-cc-paypal:before {\n  content: \"\\F1F4\"; }\n\n.fa-cc-stripe:before {\n  content: \"\\F1F5\"; }\n\n.fa-bell-slash:before {\n  content: \"\\F1F6\"; }\n\n.fa-bell-slash-o:before {\n  content: \"\\F1F7\"; }\n\n.fa-trash:before {\n  content: \"\\F1F8\"; }\n\n.fa-copyright:before {\n  content: \"\\F1F9\"; }\n\n.fa-at:before {\n  content: \"\\F1FA\"; }\n\n.fa-eyedropper:before {\n  content: \"\\F1FB\"; }\n\n.fa-paint-brush:before {\n  content: \"\\F1FC\"; }\n\n.fa-birthday-cake:before {\n  content: \"\\F1FD\"; }\n\n.fa-area-chart:before {\n  content: \"\\F1FE\"; }\n\n.fa-pie-chart:before {\n  content: \"\\F200\"; }\n\n.fa-line-chart:before {\n  content: \"\\F201\"; }\n\n.fa-lastfm:before {\n  content: \"\\F202\"; }\n\n.fa-lastfm-square:before {\n  content: \"\\F203\"; }\n\n.fa-toggle-off:before {\n  content: \"\\F204\"; }\n\n.fa-toggle-on:before {\n  content: \"\\F205\"; }\n\n.fa-bicycle:before {\n  content: \"\\F206\"; }\n\n.fa-bus:before {\n  content: \"\\F207\"; }\n\n.fa-ioxhost:before {\n  content: \"\\F208\"; }\n\n.fa-angellist:before {\n  content: \"\\F209\"; }\n\n.fa-cc:before {\n  content: \"\\F20A\"; }\n\n.fa-shekel:before,\n.fa-sheqel:before,\n.fa-ils:before {\n  content: \"\\F20B\"; }\n\n.fa-meanpath:before {\n  content: \"\\F20C\"; }\n\n.fa-buysellads:before {\n  content: \"\\F20D\"; }\n\n.fa-connectdevelop:before {\n  content: \"\\F20E\"; }\n\n.fa-dashcube:before {\n  content: \"\\F210\"; }\n\n.fa-forumbee:before {\n  content: \"\\F211\"; }\n\n.fa-leanpub:before {\n  content: \"\\F212\"; }\n\n.fa-sellsy:before {\n  content: \"\\F213\"; }\n\n.fa-shirtsinbulk:before {\n  content: \"\\F214\"; }\n\n.fa-simplybuilt:before {\n  content: \"\\F215\"; }\n\n.fa-skyatlas:before {\n  content: \"\\F216\"; }\n\n.fa-cart-plus:before {\n  content: \"\\F217\"; }\n\n.fa-cart-arrow-down:before {\n  content: \"\\F218\"; }\n\n.fa-diamond:before {\n  content: \"\\F219\"; }\n\n.fa-ship:before {\n  content: \"\\F21A\"; }\n\n.fa-user-secret:before {\n  content: \"\\F21B\"; }\n\n.fa-motorcycle:before {\n  content: \"\\F21C\"; }\n\n.fa-street-view:before {\n  content: \"\\F21D\"; }\n\n.fa-heartbeat:before {\n  content: \"\\F21E\"; }\n\n.fa-venus:before {\n  content: \"\\F221\"; }\n\n.fa-mars:before {\n  content: \"\\F222\"; }\n\n.fa-mercury:before {\n  content: \"\\F223\"; }\n\n.fa-intersex:before,\n.fa-transgender:before {\n  content: \"\\F224\"; }\n\n.fa-transgender-alt:before {\n  content: \"\\F225\"; }\n\n.fa-venus-double:before {\n  content: \"\\F226\"; }\n\n.fa-mars-double:before {\n  content: \"\\F227\"; }\n\n.fa-venus-mars:before {\n  content: \"\\F228\"; }\n\n.fa-mars-stroke:before {\n  content: \"\\F229\"; }\n\n.fa-mars-stroke-v:before {\n  content: \"\\F22A\"; }\n\n.fa-mars-stroke-h:before {\n  content: \"\\F22B\"; }\n\n.fa-neuter:before {\n  content: \"\\F22C\"; }\n\n.fa-genderless:before {\n  content: \"\\F22D\"; }\n\n.fa-facebook-official:before {\n  content: \"\\F230\"; }\n\n.fa-pinterest-p:before {\n  content: \"\\F231\"; }\n\n.fa-whatsapp:before {\n  content: \"\\F232\"; }\n\n.fa-server:before {\n  content: \"\\F233\"; }\n\n.fa-user-plus:before {\n  content: \"\\F234\"; }\n\n.fa-user-times:before {\n  content: \"\\F235\"; }\n\n.fa-hotel:before,\n.fa-bed:before {\n  content: \"\\F236\"; }\n\n.fa-viacoin:before {\n  content: \"\\F237\"; }\n\n.fa-train:before {\n  content: \"\\F238\"; }\n\n.fa-subway:before {\n  content: \"\\F239\"; }\n\n.fa-medium:before {\n  content: \"\\F23A\"; }\n\n.fa-yc:before,\n.fa-y-combinator:before {\n  content: \"\\F23B\"; }\n\n.fa-optin-monster:before {\n  content: \"\\F23C\"; }\n\n.fa-opencart:before {\n  content: \"\\F23D\"; }\n\n.fa-expeditedssl:before {\n  content: \"\\F23E\"; }\n\n.fa-battery-4:before,\n.fa-battery:before,\n.fa-battery-full:before {\n  content: \"\\F240\"; }\n\n.fa-battery-3:before,\n.fa-battery-three-quarters:before {\n  content: \"\\F241\"; }\n\n.fa-battery-2:before,\n.fa-battery-half:before {\n  content: \"\\F242\"; }\n\n.fa-battery-1:before,\n.fa-battery-quarter:before {\n  content: \"\\F243\"; }\n\n.fa-battery-0:before,\n.fa-battery-empty:before {\n  content: \"\\F244\"; }\n\n.fa-mouse-pointer:before {\n  content: \"\\F245\"; }\n\n.fa-i-cursor:before {\n  content: \"\\F246\"; }\n\n.fa-object-group:before {\n  content: \"\\F247\"; }\n\n.fa-object-ungroup:before {\n  content: \"\\F248\"; }\n\n.fa-sticky-note:before {\n  content: \"\\F249\"; }\n\n.fa-sticky-note-o:before {\n  content: \"\\F24A\"; }\n\n.fa-cc-jcb:before {\n  content: \"\\F24B\"; }\n\n.fa-cc-diners-club:before {\n  content: \"\\F24C\"; }\n\n.fa-clone:before {\n  content: \"\\F24D\"; }\n\n.fa-balance-scale:before {\n  content: \"\\F24E\"; }\n\n.fa-hourglass-o:before {\n  content: \"\\F250\"; }\n\n.fa-hourglass-1:before,\n.fa-hourglass-start:before {\n  content: \"\\F251\"; }\n\n.fa-hourglass-2:before,\n.fa-hourglass-half:before {\n  content: \"\\F252\"; }\n\n.fa-hourglass-3:before,\n.fa-hourglass-end:before {\n  content: \"\\F253\"; }\n\n.fa-hourglass:before {\n  content: \"\\F254\"; }\n\n.fa-hand-grab-o:before,\n.fa-hand-rock-o:before {\n  content: \"\\F255\"; }\n\n.fa-hand-stop-o:before,\n.fa-hand-paper-o:before {\n  content: \"\\F256\"; }\n\n.fa-hand-scissors-o:before {\n  content: \"\\F257\"; }\n\n.fa-hand-lizard-o:before {\n  content: \"\\F258\"; }\n\n.fa-hand-spock-o:before {\n  content: \"\\F259\"; }\n\n.fa-hand-pointer-o:before {\n  content: \"\\F25A\"; }\n\n.fa-hand-peace-o:before {\n  content: \"\\F25B\"; }\n\n.fa-trademark:before {\n  content: \"\\F25C\"; }\n\n.fa-registered:before {\n  content: \"\\F25D\"; }\n\n.fa-creative-commons:before {\n  content: \"\\F25E\"; }\n\n.fa-gg:before {\n  content: \"\\F260\"; }\n\n.fa-gg-circle:before {\n  content: \"\\F261\"; }\n\n.fa-tripadvisor:before {\n  content: \"\\F262\"; }\n\n.fa-odnoklassniki:before {\n  content: \"\\F263\"; }\n\n.fa-odnoklassniki-square:before {\n  content: \"\\F264\"; }\n\n.fa-get-pocket:before {\n  content: \"\\F265\"; }\n\n.fa-wikipedia-w:before {\n  content: \"\\F266\"; }\n\n.fa-safari:before {\n  content: \"\\F267\"; }\n\n.fa-chrome:before {\n  content: \"\\F268\"; }\n\n.fa-firefox:before {\n  content: \"\\F269\"; }\n\n.fa-opera:before {\n  content: \"\\F26A\"; }\n\n.fa-internet-explorer:before {\n  content: \"\\F26B\"; }\n\n.fa-tv:before,\n.fa-television:before {\n  content: \"\\F26C\"; }\n\n.fa-contao:before {\n  content: \"\\F26D\"; }\n\n.fa-500px:before {\n  content: \"\\F26E\"; }\n\n.fa-amazon:before {\n  content: \"\\F270\"; }\n\n.fa-calendar-plus-o:before {\n  content: \"\\F271\"; }\n\n.fa-calendar-minus-o:before {\n  content: \"\\F272\"; }\n\n.fa-calendar-times-o:before {\n  content: \"\\F273\"; }\n\n.fa-calendar-check-o:before {\n  content: \"\\F274\"; }\n\n.fa-industry:before {\n  content: \"\\F275\"; }\n\n.fa-map-pin:before {\n  content: \"\\F276\"; }\n\n.fa-map-signs:before {\n  content: \"\\F277\"; }\n\n.fa-map-o:before {\n  content: \"\\F278\"; }\n\n.fa-map:before {\n  content: \"\\F279\"; }\n\n.fa-commenting:before {\n  content: \"\\F27A\"; }\n\n.fa-commenting-o:before {\n  content: \"\\F27B\"; }\n\n.fa-houzz:before {\n  content: \"\\F27C\"; }\n\n.fa-vimeo:before {\n  content: \"\\F27D\"; }\n\n.fa-black-tie:before {\n  content: \"\\F27E\"; }\n\n.fa-fonticons:before {\n  content: \"\\F280\"; }\n\n.fa-reddit-alien:before {\n  content: \"\\F281\"; }\n\n.fa-edge:before {\n  content: \"\\F282\"; }\n\n.fa-credit-card-alt:before {\n  content: \"\\F283\"; }\n\n.fa-codiepie:before {\n  content: \"\\F284\"; }\n\n.fa-modx:before {\n  content: \"\\F285\"; }\n\n.fa-fort-awesome:before {\n  content: \"\\F286\"; }\n\n.fa-usb:before {\n  content: \"\\F287\"; }\n\n.fa-product-hunt:before {\n  content: \"\\F288\"; }\n\n.fa-mixcloud:before {\n  content: \"\\F289\"; }\n\n.fa-scribd:before {\n  content: \"\\F28A\"; }\n\n.fa-pause-circle:before {\n  content: \"\\F28B\"; }\n\n.fa-pause-circle-o:before {\n  content: \"\\F28C\"; }\n\n.fa-stop-circle:before {\n  content: \"\\F28D\"; }\n\n.fa-stop-circle-o:before {\n  content: \"\\F28E\"; }\n\n.fa-shopping-bag:before {\n  content: \"\\F290\"; }\n\n.fa-shopping-basket:before {\n  content: \"\\F291\"; }\n\n.fa-hashtag:before {\n  content: \"\\F292\"; }\n\n.fa-bluetooth:before {\n  content: \"\\F293\"; }\n\n.fa-bluetooth-b:before {\n  content: \"\\F294\"; }\n\n.fa-percent:before {\n  content: \"\\F295\"; }\n\n.fa-gitlab:before {\n  content: \"\\F296\"; }\n\n.fa-wpbeginner:before {\n  content: \"\\F297\"; }\n\n.fa-wpforms:before {\n  content: \"\\F298\"; }\n\n.fa-envira:before {\n  content: \"\\F299\"; }\n\n.fa-universal-access:before {\n  content: \"\\F29A\"; }\n\n.fa-wheelchair-alt:before {\n  content: \"\\F29B\"; }\n\n.fa-question-circle-o:before {\n  content: \"\\F29C\"; }\n\n.fa-blind:before {\n  content: \"\\F29D\"; }\n\n.fa-audio-description:before {\n  content: \"\\F29E\"; }\n\n.fa-volume-control-phone:before {\n  content: \"\\F2A0\"; }\n\n.fa-braille:before {\n  content: \"\\F2A1\"; }\n\n.fa-assistive-listening-systems:before {\n  content: \"\\F2A2\"; }\n\n.fa-asl-interpreting:before,\n.fa-american-sign-language-interpreting:before {\n  content: \"\\F2A3\"; }\n\n.fa-deafness:before,\n.fa-hard-of-hearing:before,\n.fa-deaf:before {\n  content: \"\\F2A4\"; }\n\n.fa-glide:before {\n  content: \"\\F2A5\"; }\n\n.fa-glide-g:before {\n  content: \"\\F2A6\"; }\n\n.fa-signing:before,\n.fa-sign-language:before {\n  content: \"\\F2A7\"; }\n\n.fa-low-vision:before {\n  content: \"\\F2A8\"; }\n\n.fa-viadeo:before {\n  content: \"\\F2A9\"; }\n\n.fa-viadeo-square:before {\n  content: \"\\F2AA\"; }\n\n.fa-snapchat:before {\n  content: \"\\F2AB\"; }\n\n.fa-snapchat-ghost:before {\n  content: \"\\F2AC\"; }\n\n.fa-snapchat-square:before {\n  content: \"\\F2AD\"; }\n\n.fa-pied-piper:before {\n  content: \"\\F2AE\"; }\n\n.fa-first-order:before {\n  content: \"\\F2B0\"; }\n\n.fa-yoast:before {\n  content: \"\\F2B1\"; }\n\n.fa-themeisle:before {\n  content: \"\\F2B2\"; }\n\n.fa-google-plus-circle:before,\n.fa-google-plus-official:before {\n  content: \"\\F2B3\"; }\n\n.fa-fa:before,\n.fa-font-awesome:before {\n  content: \"\\F2B4\"; }\n\n.fa-handshake-o:before {\n  content: \"\\F2B5\"; }\n\n.fa-envelope-open:before {\n  content: \"\\F2B6\"; }\n\n.fa-envelope-open-o:before {\n  content: \"\\F2B7\"; }\n\n.fa-linode:before {\n  content: \"\\F2B8\"; }\n\n.fa-address-book:before {\n  content: \"\\F2B9\"; }\n\n.fa-address-book-o:before {\n  content: \"\\F2BA\"; }\n\n.fa-vcard:before,\n.fa-address-card:before {\n  content: \"\\F2BB\"; }\n\n.fa-vcard-o:before,\n.fa-address-card-o:before {\n  content: \"\\F2BC\"; }\n\n.fa-user-circle:before {\n  content: \"\\F2BD\"; }\n\n.fa-user-circle-o:before {\n  content: \"\\F2BE\"; }\n\n.fa-user-o:before {\n  content: \"\\F2C0\"; }\n\n.fa-id-badge:before {\n  content: \"\\F2C1\"; }\n\n.fa-drivers-license:before,\n.fa-id-card:before {\n  content: \"\\F2C2\"; }\n\n.fa-drivers-license-o:before,\n.fa-id-card-o:before {\n  content: \"\\F2C3\"; }\n\n.fa-quora:before {\n  content: \"\\F2C4\"; }\n\n.fa-free-code-camp:before {\n  content: \"\\F2C5\"; }\n\n.fa-telegram:before {\n  content: \"\\F2C6\"; }\n\n.fa-thermometer-4:before,\n.fa-thermometer:before,\n.fa-thermometer-full:before {\n  content: \"\\F2C7\"; }\n\n.fa-thermometer-3:before,\n.fa-thermometer-three-quarters:before {\n  content: \"\\F2C8\"; }\n\n.fa-thermometer-2:before,\n.fa-thermometer-half:before {\n  content: \"\\F2C9\"; }\n\n.fa-thermometer-1:before,\n.fa-thermometer-quarter:before {\n  content: \"\\F2CA\"; }\n\n.fa-thermometer-0:before,\n.fa-thermometer-empty:before {\n  content: \"\\F2CB\"; }\n\n.fa-shower:before {\n  content: \"\\F2CC\"; }\n\n.fa-bathtub:before,\n.fa-s15:before,\n.fa-bath:before {\n  content: \"\\F2CD\"; }\n\n.fa-podcast:before {\n  content: \"\\F2CE\"; }\n\n.fa-window-maximize:before {\n  content: \"\\F2D0\"; }\n\n.fa-window-minimize:before {\n  content: \"\\F2D1\"; }\n\n.fa-window-restore:before {\n  content: \"\\F2D2\"; }\n\n.fa-times-rectangle:before,\n.fa-window-close:before {\n  content: \"\\F2D3\"; }\n\n.fa-times-rectangle-o:before,\n.fa-window-close-o:before {\n  content: \"\\F2D4\"; }\n\n.fa-bandcamp:before {\n  content: \"\\F2D5\"; }\n\n.fa-grav:before {\n  content: \"\\F2D6\"; }\n\n.fa-etsy:before {\n  content: \"\\F2D7\"; }\n\n.fa-imdb:before {\n  content: \"\\F2D8\"; }\n\n.fa-ravelry:before {\n  content: \"\\F2D9\"; }\n\n.fa-eercast:before {\n  content: \"\\F2DA\"; }\n\n.fa-microchip:before {\n  content: \"\\F2DB\"; }\n\n.fa-snowflake-o:before {\n  content: \"\\F2DC\"; }\n\n.fa-superpowers:before {\n  content: \"\\F2DD\"; }\n\n.fa-wpexplorer:before {\n  content: \"\\F2DE\"; }\n\n.fa-meetup:before {\n  content: \"\\F2E0\"; }\n\n.sr-only {\n  position: absolute;\n  width: 1px;\n  height: 1px;\n  padding: 0;\n  margin: -1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0);\n  border: 0; }\n\n.sr-only-focusable:active, .sr-only-focusable:focus {\n  position: static;\n  width: auto;\n  height: auto;\n  margin: 0;\n  overflow: visible;\n  clip: auto; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 68 */,
-/* 69 */,
-/* 70 */,
 /* 71 */,
 /* 72 */,
 /* 73 */,
@@ -1454,13 +3492,16 @@ exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: \"Lat
 /* 75 */,
 /* 76 */,
 /* 77 */,
-/* 78 */
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(79);
+var content = __webpack_require__(82);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1485,7 +3526,7 @@ if(false) {
 }
 
 /***/ }),
-/* 79 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1499,13 +3540,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(81);
+var content = __webpack_require__(84);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1530,7 +3571,7 @@ if(false) {
 }
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1544,13 +3585,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(83);
+var content = __webpack_require__(86);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1575,7 +3616,7 @@ if(false) {
 }
 
 /***/ }),
-/* 83 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1589,13 +3630,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 84 */
+/* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(85);
+var content = __webpack_require__(88);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1620,7 +3661,7 @@ if(false) {
 }
 
 /***/ }),
-/* 85 */
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1634,13 +3675,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 86 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(87);
+var content = __webpack_require__(90);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1665,7 +3706,7 @@ if(false) {
 }
 
 /***/ }),
-/* 87 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1673,19 +3714,19 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px lime; }\n\n.row {\n  border: 0px orange; }\n\n.col {\n  border: 0px yellow; }\n\n.main-container {\n  border: 0px red; }\n\n.sidebar {\n  border: 0px lime; }\n\n* {\n  border: 0px red; }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.card {\n  box-sizing: content-box;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  border: 0px lime; }\n\n.row {\n  border: 0px pink; }\n\n.col {\n  border: 0px pink; }\n\n.main-container {\n  border: 0px red; }\n\n.sidebar {\n  border: 0px red; }\n\n* {\n  border: 0px lime; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 88 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(89);
+var content = __webpack_require__(92);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1710,7 +3751,7 @@ if(false) {
 }
 
 /***/ }),
-/* 89 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1724,13 +3765,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 90 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(91);
+var content = __webpack_require__(94);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1755,7 +3796,7 @@ if(false) {
 }
 
 /***/ }),
-/* 91 */
+/* 94 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1763,19 +3804,19 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.PageContent-header {\n  position: relative;\n  width: 100%;\n  height: 375px; }\n\n.PageContent-backdrop {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.PageContent-backdrop-bg {\n  background-size: 100% auto;\n  background-repeat: no-repeat;\n  background-position: center;\n  filter: blur(28px);\n  -webkit-filter: blur(28px); }\n\n.PageContent-backdropOverlay {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.445); }\n\n.PageContent-headerContent {\n  display: flex;\n  padding: 30px;\n  width: 100%;\n  height: 100%;\n  color: #fff; }\n\n.PageContent-HeaderDetails-poster {\n  flex-shrink: 0;\n  margin-right: 35px;\n  width: 250px;\n  height: 250px; }\n\n.PageContent-HeaderDetails-info {\n  display: flex;\n  flex-direction: column;\n  flex-grow: 1;\n  overflow: hidden; }\n\n.PageContent-HeaderDetails-titleContainer {\n  display: flex;\n  justify-content: space-between; }\n\n.PageContent-HeaderDetails-title {\n  margin-bottom: 5px;\n  font-weight: 300;\n  font-size: 50px;\n  line-height: 50px; }\n\n.PageContent-HeaderDetails-navigation-buttons {\n  white-space: nowrap; }\n\n.PageContent-HeaderDetails-navigation-button {\n  margin-left: 5px;\n  width: 30px;\n  color: #e1e2e3;\n  white-space: nowrap; }\n\n.PageContent-HeaderDetails-details {\n  font-weight: 300;\n  font-size: 20px; }\n\n.PageContent-HeaderDetails-detailsLabel {\n  margin: 5px 10px 5px 0; }\n\n.PageContent-HeaderDetails-overview {\n  flex: 1 0 auto;\n  min-height: 0; }\n\n@media only screen and (max-width: 768px) {\n  .PageContent-headerContent {\n    padding: 15px; } }\n\n@media only screen and (max-width: 1200px) {\n  .PageContent-HeaderDetails-poster {\n    display: none; } }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.PageContent-header {\n  position: relative;\n  width: 100%;\n  height: 375px; }\n\n.PageContent-header-small {\n  position: relative;\n  width: 100%;\n  height: 220px; }\n\n.PageContent-header-dynamic {\n  position: relative;\n  width: 100%; }\n\n.PageContent-backdrop {\n  position: absolute;\n  width: 100%;\n  height: 100%; }\n\n.PageContent-backdrop-bg {\n  background-size: 100% auto;\n  background-repeat: no-repeat;\n  background-position: center;\n  filter: blur(28px);\n  -webkit-filter: blur(28px); }\n\n.PageContent-backdropOverlay {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  background: rgba(0, 0, 0, 0.445); }\n\n.PageContent-headerContent {\n  display: flex;\n  padding: 30px;\n  width: 100%;\n  height: 100%;\n  color: #fff; }\n\n.PageContent-HeaderDetails-poster {\n  flex-shrink: 0;\n  margin-right: 35px;\n  width: 250px;\n  height: 250px; }\n\n.PageContent-HeaderDetails-info {\n  display: flex;\n  flex-direction: column;\n  flex-grow: 1;\n  overflow: hidden; }\n\n.PageContent-HeaderDetails-titleContainer {\n  display: flex;\n  justify-content: space-between; }\n\n.PageContent-HeaderDetails-title {\n  margin-bottom: 5px;\n  font-weight: 300;\n  font-size: 50px;\n  line-height: 50px; }\n\n.PageContent-HeaderDetails-navigation-buttons {\n  white-space: nowrap; }\n\n.PageContent-HeaderDetails-navigation-button {\n  margin-left: 5px;\n  width: 30px;\n  color: #e1e2e3;\n  white-space: nowrap; }\n\n.PageContent-HeaderDetails-details {\n  font-weight: 300;\n  font-size: 20px; }\n\n.PageContent-HeaderDetails-detailsLabel {\n  margin: 5px 10px 5px 0; }\n\n.PageContent-HeaderDetails-overview {\n  flex: 1 0 auto;\n  min-height: 0; }\n\n@media only screen and (max-width: 768px) {\n  .PageContent-headerContent {\n    padding: 15px; } }\n\n@media only screen and (max-width: 1200px) {\n  .PageContent-HeaderDetails-poster {\n    display: none; } }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 92 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(93);
+var content = __webpack_require__(96);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1800,7 +3841,7 @@ if(false) {
 }
 
 /***/ }),
-/* 93 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1814,13 +3855,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 94 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(95);
+var content = __webpack_require__(98);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1845,7 +3886,7 @@ if(false) {
 }
 
 /***/ }),
-/* 95 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1859,13 +3900,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 96 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(97);
+var content = __webpack_require__(100);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1890,7 +3931,7 @@ if(false) {
 }
 
 /***/ }),
-/* 97 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1898,19 +3939,19 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.Table-tableContainer {\n  overflow-x: auto; }\n\n.Table-table {\n  max-width: 100%;\n  width: 100%;\n  border-collapse: collapse; }\n\n.TableHeaderCell-headerCell {\n  padding: 8px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableHeaderCell-sortIcon {\n  margin-left: 10px; }\n\n.TableRow-row {\n  transition: background-color 500ms; }\n\n.TableRow-row-now-playing {\n  transition: background-color 500ms;\n  background-color: rgba(2, 158, 197, 0.904) !important;\n  color: rgba(0, 0, 0, 0.904) !important; }\n\n.TableRow-row:hover {\n  background-color: #242424;\n  color: white; }\n\n.TableRowCell-cell {\n  padding-left: 8px;\n  padding-right: 4px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n  border-top: 1px solid rgba(20, 22, 24, 0.904);\n  line-height: 1.52857143;\n  color: white; }\n\n.TableRowHeaderCell-Starred {\n  width: 15px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-Play {\n  width: 15px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-TrackCount {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowHeaderCell-TrackCount-Center {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  text-align: center;\n  text-align: center;\n  font-weight: bold; }\n\n.RelativeDateCell-cell {\n  width: 180px; }\n\n.AlbumSearchCell-AlbumSearchCell {\n  width: 70px;\n  white-space: nowrap; }\n\n.TableRowCell-monitored {\n  width: 42px; }\n\n.TableRowCell-now-playing {\n  font-weight: bold; }\n\n.TableRowCell-status {\n  width: 75px;\n  text-align: center;\n  vertical-align: middle; }\n\n.TableRowCell-star {\n  width: 15px; }\n\n.TableRowCell-play {\n  width: 15px; }\n\n.TableRowCell-count {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: right; }\n\n.TableRowCell-count-center {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowCell-duration {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.StarRating-starRating {\n  display: flex;\n  align-items: left;\n  justify-content: left; }\n\n.StarRating-backStar {\n  position: relative;\n  display: flex;\n  color: #515253; }\n\n.StarRating-frontStar {\n  position: absolute;\n  top: 0;\n  display: flex;\n  overflow: hidden;\n  color: #ffbc0b; }\n\n.MonitorToggleButton-toggleButton {\n  padding: 0;\n  font-size: inherit; }\n\n@media screen and (max-width: 768px) {\n  .Table-tableContainer {\n    overflow-y: hidden;\n    width: 100%; }\n  .TableHeaderCell-headerCell {\n    white-space: nowrap; }\n  .TableRowCell-cell {\n    white-space: nowrap; } }\n", ""]);
+exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-serif;\n  src: url(/content/Lato-Regular.ttf) format(\"truetype\"); }\n\n@font-face {\n  font-family: \"MavenPro-Regular\", sans-serif;\n  src: url(/content/MavenPro-Regular.ttf) format(\"truetype\"); }\n\n.Table-tableContainer {\n  overflow-x: auto; }\n\n.Table-table {\n  max-width: 100%;\n  width: 100%;\n  border-collapse: collapse; }\n\n.TableHeaderCell-headerCell {\n  padding: 8px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableHeaderCell-sortIcon {\n  margin-left: 10px; }\n\n.TableRow-row {\n  transition: background-color 500ms; }\n\n.TableRow-row-now-playing {\n  transition: background-color 500ms;\n  background-color: rgba(2, 158, 197, 0.904) !important;\n  color: rgba(0, 0, 0, 0.904) !important; }\n\n.TableRow-row-selected {\n  transition: background-color 500ms;\n  border: 2px solid rgba(2, 158, 197, 0.904);\n  box-sizing: border-box;\n  color: rgba(0, 0, 0, 0.904) !important; }\n\n.TableRow-row:hover {\n  background-color: #242424;\n  color: white; }\n\n.TableRowCell-cell {\n  padding-left: 8px;\n  padding-right: 4px;\n  padding-top: 2px;\n  padding-bottom: 2px;\n  border-top: 1px solid rgba(20, 22, 24, 0.904);\n  line-height: 1.52857143;\n  color: white; }\n\n.TableRowHeaderCell-Starred {\n  width: 15px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-Play {\n  width: 15px;\n  border: none !important;\n  text-align: left;\n  font-weight: bold; }\n\n.TableRowHeaderCell-TrackCount {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowHeaderCell-TrackCount-Center {\n  padding: 8px;\n  width: 50px;\n  border: none !important;\n  text-align: center;\n  text-align: center;\n  font-weight: bold; }\n\n.RelativeDateCell-cell {\n  width: 180px; }\n\n.AlbumSearchCell-AlbumSearchCell {\n  width: 70px;\n  white-space: nowrap; }\n\n.TableRowCell-monitored {\n  width: 42px; }\n\n.TableRowCell-now-playing {\n  font-weight: bold; }\n\n.TableRowCell-status {\n  width: 75px;\n  text-align: center;\n  vertical-align: middle; }\n\n.TableRowCell-star {\n  width: 15px; }\n\n.TableRowCell-play {\n  width: 15px; }\n\n.TableRowCell-count {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: right; }\n\n.TableRowCell-count-center {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.TableRowCell-duration {\n  width: 30px;\n  vertical-align: middle;\n  align-content: center;\n  text-align: center; }\n\n.StarRating-starRating {\n  display: flex;\n  align-items: left;\n  justify-content: left; }\n\n.StarRating-backStar {\n  position: relative;\n  display: flex;\n  color: #515253; }\n\n.StarRating-frontStar {\n  position: absolute;\n  top: 0;\n  display: flex;\n  overflow: hidden;\n  color: #ffbc0b; }\n\n.MonitorToggleButton-toggleButton {\n  padding: 0;\n  font-size: inherit; }\n\n@media screen and (max-width: 768px) {\n  .Table-tableContainer {\n    overflow-y: hidden;\n    width: 100%; }\n  .TableHeaderCell-headerCell {\n    white-space: nowrap; }\n  .TableRowCell-cell {\n    white-space: nowrap; } }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 98 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(99);
+var content = __webpack_require__(102);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1935,7 +3976,7 @@ if(false) {
 }
 
 /***/ }),
-/* 99 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1949,13 +3990,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(101);
+var content = __webpack_require__(104);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -1980,7 +4021,7 @@ if(false) {
 }
 
 /***/ }),
-/* 101 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -1994,13 +4035,13 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 102 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(103);
+var content = __webpack_require__(106);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -2025,7 +4066,7 @@ if(false) {
 }
 
 /***/ }),
-/* 103 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -2039,9 +4080,6 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 104 */,
-/* 105 */,
-/* 106 */,
 /* 107 */,
 /* 108 */,
 /* 109 */,
@@ -2074,8 +4112,16 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 /* 136 */,
 /* 137 */,
 /* 138 */,
-/* 139 */
-/***/ (function(module, exports) {
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
+
 
 var _createClass = function () {
   function defineProperties(target, props) {
@@ -2087,6 +4133,7 @@ var _createClass = function () {
       Object.defineProperty(target, descriptor.key, descriptor);
     }
   }
+
   return function (Constructor, protoProps, staticProps) {
     if (protoProps) defineProperties(Constructor.prototype, protoProps);
     if (staticProps) defineProperties(Constructor, staticProps);
@@ -2101,20 +4148,18 @@ function _classCallCheck(instance, Constructor) {
 }
 
 window.AlloyApi = function () {
-
   var AlloyApi = function () {
     function AlloyApi(obj) {
       var _this = this;
 
       _classCallCheck(this, AlloyApi);
 
-      if (typeof obj !== 'object') {
+      if (__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(obj) !== 'object') {
         throw new Error('Input must be an object & contain url & apikey');
         return;
       }
-      if (obj.hasOwnProperty('alloydb_host') && obj.hasOwnProperty('alloydb_port') && obj.hasOwnProperty('alloydb_apikey')) {
 
-      } else {
+      if (obj.hasOwnProperty('alloydb_host') && obj.hasOwnProperty('alloydb_port') && obj.hasOwnProperty('alloydb_apikey')) {} else {
         throw new TypeError('Input must be an object & contain url and apikey fields');
         return;
       }
@@ -2122,41 +4167,35 @@ window.AlloyApi = function () {
       this._settings = obj;
     }
 
-
     _createClass(AlloyApi, [{
       key: '_toQueryString',
       value: function _toQueryString(params) {
         var r = [];
+
         for (var n in params) {
           n = encodeURIComponent(n);
           r.push(params[n] === null ? n : n + '=' + encodeURIComponent(params[n]));
         }
+
         return r.join('&');
       }
-    },
-    {
+    }, {
       key: '_buildUrl',
       value: function _buildUrl(method, options) {
-        if (options !== null && typeof options === 'object') {
+        if (options !== null && __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(options) === 'object') {
           options = '&' + this._toQueryString(options);
         }
+
         if (!options) {
           options = '';
         }
 
-        if (this._settings.alloydb_use_ssl)
-          this._url = "https://";
-        else
-          this._url = "http://";
-
+        if (this._settings.alloydb_use_ssl) this._url = "https://";else this._url = "http://";
         this._url += this._settings.alloydb_host;
-        if (this._settings.alloydb_include_port_in_url)
-          this._url += ":" + this._settings.alloydb_port;
+        if (this._settings.alloydb_include_port_in_url) this._url += ":" + this._settings.alloydb_port;
         return this._url + '/api/v1/' + method + '?' + this._toQueryString(this.params) + options;
-
       }
-    },
-    {
+    }, {
       key: '_xhr',
       value: function _xhr(url, dataType) {
         var _this2 = this;
@@ -2171,8 +4210,7 @@ window.AlloyApi = function () {
           _this2._lastXhr = xhr;
         });
       }
-    },
-    {
+    }, {
       key: '_xhrput',
       value: function _xhrput(url, dataType) {
         var _this2 = this;
@@ -2187,8 +4225,7 @@ window.AlloyApi = function () {
           _this2._lastXhr = xhr;
         });
       }
-    },
-    {
+    }, {
       key: '_xhrdel',
       value: function _xhrput(url, dataType) {
         var _this2 = this;
@@ -2203,15 +4240,18 @@ window.AlloyApi = function () {
           _this2._lastXhr = xhr;
         });
       }
-    },
-    {
+    }, {
       key: '_get',
       value: function _get(method, options) {
         var _that = this;
+
         var opt = {};
-        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
+        Object.assign(opt, {
+          api_key: _that._settings.alloydb_apikey
+        }, options);
         return new Promise(function (resolve, reject) {
           var url = _that._buildUrl(method, opt);
+
           _that._xhr(url).then(function (e) {
             var res = e.target.response;
             resolve(res);
@@ -2220,15 +4260,18 @@ window.AlloyApi = function () {
           });
         });
       }
-    },
-    {
+    }, {
       key: '_put',
       value: function _put(method, options) {
         var _that = this;
+
         var opt = {};
-        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
+        Object.assign(opt, {
+          api_key: _that._settings.alloydb_apikey
+        }, options);
         return new Promise(function (resolve, reject) {
           var url = _that._buildUrl(method, opt);
+
           _that._xhrput(url).then(function (e) {
             var res = e.target.response;
             resolve(res);
@@ -2237,15 +4280,18 @@ window.AlloyApi = function () {
           });
         });
       }
-    },
-    {
+    }, {
       key: '_delete',
       value: function _delete(method, options) {
         var _that = this;
+
         var opt = {};
-        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
+        Object.assign(opt, {
+          api_key: _that._settings.alloydb_apikey
+        }, options);
         return new Promise(function (resolve, reject) {
           var url = _that._buildUrl(method, opt);
+
           _that._xhrdel(url).then(function (e) {
             var res = e.target.response;
             resolve(res);
@@ -2254,218 +4300,224 @@ window.AlloyApi = function () {
           });
         });
       }
-    },
-    {
+    }, {
       key: 'ping',
       value: function ping() {
         return this._get('system/ping');
       }
-    },
-    {
+    }, {
       key: 'getSchedulerStatus',
       value: function getSchedulerStatus() {
         return this._get('system/scheduler');
       }
-    },
-    {
+    }, {
       key: 'getLibraryInfo',
       value: function getLibraryInfo() {
         return this._get('system/stats');
       }
-    },
-    {
+    }, {
       key: 'getMediaPaths',
       value: function getLibraryInfo() {
         return this._get('config/mediapaths');
       }
-    },
-    {
+    }, {
       key: 'getMusicFolders',
       value: function getMusicFolders() {
         return this._get('browse/music_folders');
       }
-    },
-    {
+    }, {
       key: 'getMusicFoldersIndex',
       value: function getMusicFoldersIndex() {
         return this._get('browse/music_folders_index');
       }
-    },
-    {
+    }, {
       key: 'getRandomSongs',
       value: function getRandomSongs() {
         return this._get('list/random_songs');
       }
-    },
-    {
+    }, {
       key: 'getFresh',
       value: function getFresh(limit) {
-        return this._get('browse/fresh', { limit: limit });
+        return this._get('browse/fresh', {
+          limit: limit
+        });
       }
-    },
-    {
+    }, {
       key: 'getStarred',
       value: function getStarred() {
         return this._get('list/starred');
       }
-    },
-    {
+    }, {
       key: 'getAlbums',
       value: function getAlbums() {
         return this._get('list/album_list');
       }
-    },
-    {
+    }, {
       key: 'getAlbum',
       value: function id(id) {
-        return this._get('browse/album', { id: id });
+        return this._get('browse/album', {
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'getGenre',
       value: function getGenre(id) {
-        return this._get('browse/genre', { id: id });
+        return this._get('browse/genre', {
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'getGenres',
       value: function getGenres() {
         return this._get('browse/genres');
       }
-    },
-    {
+    }, {
       key: 'getSongsByGenre',
       value: function getSongsByGenre(id) {
-        return this._get('list/songs_by_genre', { id: id });
+        return this._get('list/songs_by_genre', {
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'getArtist',
       value: function getArtist(id) {
-        return this._get('browse/artist', { id: id });
+        return this._get('browse/artist', {
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'getArtistInfo',
       value: function getArtistInfo(artist) {
-        return this._get('lastfm/artist_info', { artist: artist });
+        return this._get('lastfm/artist_info', {
+          artist: artist
+        });
       }
-    },
-    {
+    }, {
       key: 'getAlbumInfo',
       value: function getAlbumInfo(artist, album) {
-        return this._get('lastfm/album_info', { artist: artist, album: album });
+        return this._get('lastfm/album_info', {
+          artist: artist,
+          album: album
+        });
       }
-    },
-    {
+    }, {
       key: 'getTrackInfo',
       value: function getTrackInfo(id) {
-        return this._get('lastfm/track_info', { id: id });
+        return this._get('lastfm/track_info', {
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'getGenreInfo',
       value: function getGenreInfo(genre) {
-        return this._get('lastfm/genre_info', { genre: genre });
+        return this._get('lastfm/genre_info', {
+          genre: genre
+        });
       }
-    },
-    {
+    }, {
       key: 'scanFullStart',
       value: function scanFullStart() {
         return this._get('system/start_full_scan');
       }
-    },
-    {
+    }, {
       key: 'scanQuickStart',
       value: function scanQuickStart() {
         return this._get('system/start_quick_scan');
       }
-    },
-    {
+    }, {
       key: 'scanStatus',
       value: function scanStatus() {
         return this._get('system/scan_status');
       }
-    },
-    {
+    }, {
       key: 'scanCancel',
       value: function scanCancel() {
         return this._get('system/cancel_scan');
       }
-    },
-    {
+    }, {
       key: 'search',
       value: function search(query) {
-        return this._get('search', { any: query });
+        return this._get('search', {
+          any: query
+        });
       }
-    },
-    {
+    }, {
       key: 'addPlay',
       value: function addPlay(id) {
-        return this._put('annotation/add_play', { id: id });
+        return this._put('annotation/add_play', {
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'love',
       value: function love(params) {
         return this._put('lastfm/love', params);
       }
-    },
-    {
+    }, {
       key: 'unlove',
       value: function unlove(params) {
         return this._delete('lastfm/love', params);
       }
-    },
-    {
+    }, {
       key: 'star',
       value: function star(params) {
         return this._put('annotation/star', params);
       }
-    },
-    {
+    }, {
       key: 'unstar',
       value: function unstar(params) {
         return this._put('annotation/unstar', params);
       }
-    },
-    {
+    }, {
       key: 'stream',
       value: function stream(id, quality) {
-        return this._buildUrl('media/stream', { api_key: this._settings.alloydb_apikey, id: id, quality: quality })
+        return this._buildUrl('media/stream', {
+          api_key: this._settings.alloydb_apikey,
+          id: id,
+          quality: quality
+        });
       }
-    },
-    {
+    }, {
       key: 'download',
       value: function download(id, quality) {
-        return this._buildUrl('media/download', { api_key: this._settings.alloydb_apikey, id: id })
+        return this._buildUrl('media/download', {
+          api_key: this._settings.alloydb_apikey,
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'getCoverArt',
       value: function getCoverArt(id) {
-        return this._buildUrl('media/cover_art', { api_key: this._settings.alloydb_apikey, id: id })
+        return this._buildUrl('media/cover_art', {
+          api_key: this._settings.alloydb_apikey,
+          id: id
+        });
       }
-    },
-    {
+    }, {
       key: 'lastFmLogin',
       value: function lastFmLogin(username, password) {
-        return this._put('lastfm/lastfm_login', { username: username, password: password });
+        return this._put('lastfm/lastfm_login', {
+          username: username,
+          password: password
+        });
       }
-    },
-    {
+    }, {
       key: 'scrobble',
       value: function scrobble(id) {
-        return this._put('lastfm/scrobble', { id: id, submission: 'true' });
+        return this._put('lastfm/scrobble', {
+          id: id,
+          submission: 'true'
+        });
       }
-    },
-    {
+    }, {
       key: 'scrobbleNowPlaying',
       value: function scrobbleNowPlaying(id) {
-        return this._put('lastfm/scrobble', { id: id, submission: 'false' });
+        return this._put('lastfm/scrobble', {
+          id: id,
+          submission: 'false'
+        });
       }
-    },
-    ]);
+    }]);
 
     return AlloyApi;
   }();
@@ -2474,37 +4526,34 @@ window.AlloyApi = function () {
 }();
 
 /***/ }),
-/* 140 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 143 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery, _, $) {(function (global, factory) {
+"use strict";
+/* WEBPACK VAR INJECTION */(function(__webpack_provided_window_dot_jQuery, _, $, module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
+
+
+(function (global, factory) {
   'use strict';
 
-  if (true) {
+  if ((typeof exports === "undefined" ? "undefined" : __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(exports)) === 'object' && typeof module !== 'undefined') {
     // commonJS
-    module.exports = factory(__webpack_require__(7));
-  }
-  else if (typeof define === 'function' && define.amd) {
+    module.exports = factory(__webpack_require__(10));
+  } else if (typeof define === 'function' && __webpack_require__(144)) {
     // AMD
     define(['module', 'angular'], function (module, angular) {
       module.exports = factory(angular);
     });
-  }
-  else {
+  } else {
     factory(global.angular);
   }
-}(this, function (angular) {
+})(this, function (angular) {
   var helperService = new HelperService();
-
-  angular
-    .module('autoCompleteModule', ['ngSanitize'])
-    .directive('autoComplete', autoCompleteDirective)
-    .directive('autoCompleteItem', autoCompleteItemDirective)
-    .directive('autoCompleteNoMatch', autoCompleteNoMatchDirective);
-
+  angular.module('autoCompleteModule', ['ngSanitize']).directive('autoComplete', autoCompleteDirective).directive('autoCompleteItem', autoCompleteItemDirective).directive('autoCompleteNoMatch', autoCompleteNoMatchDirective);
   autoCompleteDirective.$inject = ['$q', '$compile', '$document', '$window', '$timeout'];
-  function autoCompleteDirective($q, $compile, $document, $window, $timeout) {
 
+  function autoCompleteDirective($q, $compile, $document, $window, $timeout) {
     return {
       restrict: 'A',
       scope: {},
@@ -2520,11 +4569,11 @@ window.AlloyApi = function () {
 
     function postLinkFn(scope, element, attrs, ctrls) {
       var ctrl = ctrls[0]; //directive controller
+
       ctrl.textModelCtrl = ctrls[1]; // textbox model controller
-
       // store the jquery element on the controller
-      ctrl.target = element;
 
+      ctrl.target = element;
       $timeout(function () {
         // execute the options expression
         $q.when(ctrl.initialOptions()).then(_initialize);
@@ -2532,10 +4581,10 @@ window.AlloyApi = function () {
 
       function _initialize(options) {
         options = options || {};
-
         ctrl.init(angular.extend({}, defaultOptions, options));
 
         _initializeContainer();
+
         _wireupEvents();
       }
 
@@ -2544,19 +4593,18 @@ window.AlloyApi = function () {
 
         if (ctrl.options.containerCssClass) {
           ctrl.container.addClass(ctrl.options.containerCssClass);
-        }
-
-        // if a jquery parent is specified in options append the container to that
+        } // if a jquery parent is specified in options append the container to that
         // otherwise append to body
+
+
         if (ctrl.options.dropdownParent) {
           ctrl.options.dropdownParent.append(ctrl.container);
-        }
-        else {
+        } else {
           $document.find('body').append(ctrl.container);
           ctrl.container.addClass('auto-complete-absolute-container');
-        }
+        } // keep a reference to the <ul> element
 
-        // keep a reference to the <ul> element
+
         ctrl.elementUL = angular.element(ctrl.container[0].querySelector('ul.auto-complete-results'));
       }
 
@@ -2564,6 +4612,7 @@ window.AlloyApi = function () {
         if (angular.isElement(ctrl.options.dropdownParent)) {
           return _getCustomContainer();
         }
+
         if (ctrl.options.containerTemplate) {
           var linkFn = $compile(ctrl.options.containerTemplate);
           return linkFn(scope);
@@ -2574,14 +4623,11 @@ window.AlloyApi = function () {
 
       function _getCustomContainer() {
         var container = ctrl.options.dropdownParent;
-
         container.addClass('auto-complete-container unselectable');
         container.attr('data-instance-id', ctrl.instanceId);
-
         var linkFn = $compile(_getDropdownListTemplate());
         var elementUL = linkFn(scope);
         container.append(elementUL);
-
         return container;
       }
 
@@ -2597,7 +4643,6 @@ window.AlloyApi = function () {
         html += '     ng-show="ctrl.containerVisible">';
         html += _getDropdownListTemplate();
         html += '</div>';
-
         return html;
       }
 
@@ -2621,35 +4666,31 @@ window.AlloyApi = function () {
         html += '                      search-text="ctrl.searchText" />';
         html += '         </li>';
         html += '     </ul>';
-
         return html;
       }
 
       function _wireupEvents() {
-
         // when the target(textbox) gets focus activate the corresponding container
         element.on(DOM_EVENT.FOCUS, function () {
           scope.$evalAsync(function () {
             ctrl.activate();
+
             if (ctrl.options.activateOnFocus) {
               _waitAndQuery(element.val(), 100);
             }
           });
         });
-
         element.on(DOM_EVENT.INPUT, function () {
           scope.$evalAsync(function () {
             _tryQuery(element.val());
           });
         });
-
         element.on(DOM_EVENT.KEYDOWN, function (event) {
           var $event = event;
           scope.$evalAsync(function () {
             _handleElementKeyDown($event);
           });
         });
-
         ctrl.container.find('ul').on(DOM_EVENT.SCROLL, function () {
           if (!ctrl.options.pagingEnabled) {
             return;
@@ -2659,30 +4700,27 @@ window.AlloyApi = function () {
           scope.$evalAsync(function () {
             if (!ctrl.containerVisible) {
               return;
-            }
+            } // scrolled to the bottom?
 
-            // scrolled to the bottom?
-            if ((list.offsetHeight + list.scrollTop) >= list.scrollHeight) {
+
+            if (list.offsetHeight + list.scrollTop >= list.scrollHeight) {
               ctrl.tryLoadNextPage();
             }
           });
         });
-
         $document.on(DOM_EVENT.KEYDOWN, function (event) {
           var $event = event;
           scope.$evalAsync(function () {
             _handleDocumentKeyDown($event);
           });
         });
-
         $document.on(DOM_EVENT.CLICK, function (event) {
           var $event = event;
           scope.$evalAsync(function () {
             _handleDocumentClick($event);
           });
-        });
+        }); // $window is a reference to the browser's window object
 
-        // $window is a reference to the browser's window object
         angular.element($window).on(DOM_EVENT.RESIZE, function () {
           if (ctrl.options.hideDropdownOnWindowResize) {
             scope.$evalAsync(function () {
@@ -2693,15 +4731,7 @@ window.AlloyApi = function () {
       }
 
       function _ignoreKeyCode(keyCode) {
-        return [
-          KEYCODE.TAB,
-          KEYCODE.ALT,
-          KEYCODE.CTRL,
-          KEYCODE.LEFTARROW,
-          KEYCODE.RIGHTARROW,
-          KEYCODE.MAC_COMMAND_LEFT,
-          KEYCODE.MAC_COMMAND_RIGHT
-        ].indexOf(keyCode) !== -1;
+        return [KEYCODE.TAB, KEYCODE.ALT, KEYCODE.CTRL, KEYCODE.LEFTARROW, KEYCODE.RIGHTARROW, KEYCODE.MAC_COMMAND_LEFT, KEYCODE.MAC_COMMAND_RIGHT].indexOf(keyCode) !== -1;
       }
 
       function _handleElementKeyDown(event) {
@@ -2714,36 +4744,28 @@ window.AlloyApi = function () {
         switch (keyCode) {
           case KEYCODE.UPARROW:
             ctrl.scrollToPreviousItem();
-
             event.stopPropagation();
             event.preventDefault();
-
             break;
 
           case KEYCODE.DOWNARROW:
             ctrl.scrollToNextItem();
-
             event.stopPropagation();
             event.preventDefault();
-
             break;
 
           case KEYCODE.ENTER:
-            ctrl.selectItem(ctrl.selectedListIndex, ctrl.selectedIndex, true);
+            ctrl.selectItem(ctrl.selectedListIndex, ctrl.selectedIndex, true); //prevent postback upon hitting enter
 
-            //prevent postback upon hitting enter
             event.preventDefault();
             event.stopPropagation();
-
             break;
 
           case KEYCODE.ESCAPE:
             ctrl.restoreOriginalText();
             ctrl.autoHide();
-
             event.preventDefault();
             event.stopPropagation();
-
             break;
 
           default:
@@ -2758,19 +4780,18 @@ window.AlloyApi = function () {
 
       function _handleDocumentClick(event) {
         // hide inactive dropdowns when multiple auto complete exist on a page
-        helperService.hideAllInactive();
+        helperService.hideAllInactive(); // ignore inline
 
-        // ignore inline
         if (ctrl.isInline()) {
           return;
-        }
+        } // no container. probably destroyed in scope $destroy
 
-        // no container. probably destroyed in scope $destroy
+
         if (!ctrl.container) {
           return;
-        }
+        } // ignore target click
 
-        // ignore target click
+
         if (event.target === ctrl.target[0]) {
           event.stopPropagation();
           return;
@@ -2786,9 +4807,9 @@ window.AlloyApi = function () {
 
       function _tryQuery(searchText) {
         // query only if minimum number of chars are typed; else hide dropdown
-        if ((ctrl.options.minimumChars === 0)
-          || (searchText && searchText.trim().length !== 0 && searchText.length >= ctrl.options.minimumChars)) {
+        if (ctrl.options.minimumChars === 0 || searchText && searchText.trim().length !== 0 && searchText.length >= ctrl.options.minimumChars) {
           _waitAndQuery(searchText);
+
           return;
         }
 
@@ -2801,34 +4822,32 @@ window.AlloyApi = function () {
           // has searchText unchanged?
           if (searchText === element.val()) {
             ctrl.query(searchText);
-          }
+          } //cancel the timeout
 
-          //cancel the timeout
+
           $timeout.cancel(promise);
-
-        }, (delay || 300));
+        }, delay || 300);
       }
 
       function _containerContainsTarget(target) {
         // use native Node.contains
         // https://developer.mozilla.org/en-US/docs/Web/API/Node/contains
         var container = ctrl.container[0];
+
         if (angular.isFunction(container.contains) && container.contains(target)) {
           return true;
-        }
+        } // otherwise use .has() if jQuery is available
 
-        // otherwise use .has() if jQuery is available
-        if (__webpack_provided_window_dot_jQuery && angular.isFunction(ctrl.container.has) &&
-          ctrl.container.has(target).length > 0) {
 
+        if (__webpack_provided_window_dot_jQuery && angular.isFunction(ctrl.container.has) && ctrl.container.has(target).length > 0) {
           return true;
-        }
+        } // assume target is not in container
 
-        // assume target is not in container
+
         return false;
-      }
+      } // cleanup on destroy
 
-      // cleanup on destroy
+
       var destroyFn = scope.$on('$destroy', function () {
         if (ctrl.container) {
           ctrl.container.remove();
@@ -2841,6 +4860,7 @@ window.AlloyApi = function () {
   }
 
   MainCtrl.$inject = ['$q', '$window', '$document', '$timeout', '$templateRequest', '$compile', '$exceptionHandler'];
+
   function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, $exceptionHandler) {
     var that = this;
     var originalSearchText = null;
@@ -2848,7 +4868,6 @@ window.AlloyApi = function () {
     var dataLoadInProgress = false;
     var endOfPagedList = false;
     var currentPageIndex = 0;
-
     this.target = null;
     this.instanceId = -1;
     this.selectedListIndex = -1;
@@ -2872,10 +4891,10 @@ window.AlloyApi = function () {
     };
 
     this.activate = function () {
-      helperService.setActiveInstanceId(that.instanceId);
-      // do not reset if the container (dropdown list) is currently visible
+      helperService.setActiveInstanceId(that.instanceId); // do not reset if the container (dropdown list) is currently visible
       // Ex: Switching to a different tab or window and switching back
       // again when the dropdown list is visible.
+
       if (!that.containerVisible) {
         originalSearchText = that.searchText = null;
       }
@@ -2883,6 +4902,7 @@ window.AlloyApi = function () {
 
     this.query = function (searchText) {
       that.empty();
+
       _reset();
 
       return _query(searchText, 0);
@@ -2892,9 +4912,9 @@ window.AlloyApi = function () {
       // the show() method is called after the items are ready for display
       // the textbox position can change (ex: window resize) when it has focus
       // so reposition the dropdown before it's shown
-      _positionDropdown();
+      _positionDropdown(); // callback
 
-      // callback
+
       _safeCallback(that.options.dropdownShown);
     };
 
@@ -2919,6 +4939,7 @@ window.AlloyApi = function () {
 
     this.scrollToPreviousItem = function () {
       var itemIndex = _getItemIndexFromOffset(-1);
+
       if (itemIndex === -1) {
         return;
       }
@@ -2928,6 +4949,7 @@ window.AlloyApi = function () {
 
     this.scrollToNextItem = function () {
       var itemIndex = _getItemIndexFromOffset(1);
+
       if (itemIndex === -1) {
         return;
       }
@@ -2940,7 +4962,6 @@ window.AlloyApi = function () {
     };
 
     this.selectItem = function (item, type, closeDropdownAndRaiseCallback) {
-    
       if (!item) {
         return;
       }
@@ -2952,12 +4973,15 @@ window.AlloyApi = function () {
       if (closeDropdownAndRaiseCallback) {
         that.autoHide();
 
-        _safeCallback(that.options.itemSelected, { item: item, type: type });
+        _safeCallback(that.options.itemSelected, {
+          item: item,
+          type: type
+        });
       }
     };
 
     this.getSelectedCssClass = function (item) {
-      return (item === that.selectedItem) ? that.options.selectedCssClass : '';
+      return item === that.selectedItem ? that.options.selectedCssClass : '';
     };
 
     this.tryLoadNextPage = function () {
@@ -2966,9 +4990,8 @@ window.AlloyApi = function () {
       }
     };
 
-
     function _loadNextPage() {
-      return _query(originalSearchText, (currentPageIndex + 1));
+      return _query(originalSearchText, currentPageIndex + 1);
     }
 
     function _query(searchText, pageIndex) {
@@ -2980,50 +5003,46 @@ window.AlloyApi = function () {
         },
         queryId: ++queryCounter
       };
-
-      var renderListFn = (that.options.pagingEnabled ? _renderPagedList : _renderList);
-
+      var renderListFn = that.options.pagingEnabled ? _renderPagedList : _renderList;
       return _queryInternal(params, renderListFn.bind(that, params));
     }
 
     function _queryInternal(params, renderListFn) {
       // backup original search term in case we need to restore if user hits ESCAPE
       originalSearchText = params.searchText;
-
       dataLoadInProgress = true;
 
       _safeCallback(that.options.loading);
 
-      return $q.when(that.options.data(params.searchText, params.paging),
-        function successCallback(result) {
-          // verify that the queryId did not change since the possibility exists that the
-          // search text changed before the 'data' promise was resolved. Say, due to a lag
-          // in getting data from a remote web service.
-          if (_didQueryIdChange(params)) {
-            that.autoHide();
-            return;
-          }
-
-          if (_shouldHideDropdown(params, result)) {
-            that.autoHide();
-            return;
-          }
-
-          renderListFn(result).then(function () {
-            that.searchText = params.searchText;
-            that.show();
-          });
-
-          // callback
-          _safeCallback(that.options.loadingComplete);
-        },
-        function errorCallback(error) {
+      return $q.when(that.options.data(params.searchText, params.paging), function successCallback(result) {
+        // verify that the queryId did not change since the possibility exists that the
+        // search text changed before the 'data' promise was resolved. Say, due to a lag
+        // in getting data from a remote web service.
+        if (_didQueryIdChange(params)) {
           that.autoHide();
+          return;
+        }
 
-          _safeCallback(that.options.loadingComplete, { error: error });
-        }).then(function () {
-          dataLoadInProgress = false;
+        if (_shouldHideDropdown(params, result)) {
+          that.autoHide();
+          return;
+        }
+
+        renderListFn(result).then(function () {
+          that.searchText = params.searchText;
+          that.show();
+        }); // callback
+
+        _safeCallback(that.options.loadingComplete);
+      }, function errorCallback(error) {
+        that.autoHide();
+
+        _safeCallback(that.options.loadingComplete, {
+          error: error
         });
+      }).then(function () {
+        dataLoadInProgress = false;
+      });
     }
 
     function _getItemIndexFromOffset(itemOffset) {
@@ -3042,17 +5061,17 @@ window.AlloyApi = function () {
       }
 
       that.selectItem(itemIndex);
-
-      var attrSelector = 'li[data-index="' + itemIndex + '"]';
-
-      // use jquery.scrollTo plugin if available
+      var attrSelector = 'li[data-index="' + itemIndex + '"]'; // use jquery.scrollTo plugin if available
       // http://flesler.blogspot.com/2007/10/jqueryscrollto.html
-      if (__webpack_provided_window_dot_jQuery && __webpack_provided_window_dot_jQuery.scrollTo) {  // requires jquery to be loaded
+
+      if (__webpack_provided_window_dot_jQuery && __webpack_provided_window_dot_jQuery.scrollTo) {
+        // requires jquery to be loaded
         that.elementUL.scrollTo(that.elementUL.find(attrSelector));
         return;
       }
 
       var li = that.elementUL[0].querySelector(attrSelector);
+
       if (li) {
         // this was causing the page to jump/scroll
         //    li.scrollIntoView(true);
@@ -3067,8 +5086,7 @@ window.AlloyApi = function () {
 
       try {
         return fn.call(that.target, args);
-      } catch (ex) {
-        //ignore
+      } catch (ex) {//ignore
       }
     }
 
@@ -3086,25 +5104,30 @@ window.AlloyApi = function () {
       }
 
       var dropdownWidth = null;
+
       if (that.options.dropdownWidth && that.options.dropdownWidth !== 'auto') {
         dropdownWidth = that.options.dropdownWidth;
-      }
-      else {
+      } else {
         // same as textbox width
         dropdownWidth = that.target[0].getBoundingClientRect().width + 'px';
       }
-      that.container.css({ 'width': dropdownWidth });
+
+      that.container.css({
+        'width': dropdownWidth
+      });
 
       if (that.options.dropdownHeight && that.options.dropdownHeight !== 'auto') {
-        that.elementUL.css({ 'max-height': that.options.dropdownHeight });
-      }
+        that.elementUL.css({
+          'max-height': that.options.dropdownHeight
+        });
+      } // use the .position() function from jquery.ui if available (requires both jquery and jquery-ui)
 
-      // use the .position() function from jquery.ui if available (requires both jquery and jquery-ui)
+
       var hasJQueryUI = !!(__webpack_provided_window_dot_jQuery && __webpack_provided_window_dot_jQuery.ui);
+
       if (that.options.positionUsingJQuery && hasJQueryUI) {
         _positionUsingJQuery();
-      }
-      else {
+      } else {
         _positionUsingDomAPI();
       }
     }
@@ -3116,42 +5139,39 @@ window.AlloyApi = function () {
         of: that.target,
         collision: 'none flip'
       };
+      var position = angular.extend({}, defaultPosition, that.options.positionUsing); // jquery.ui position() requires the container to be visible to calculate its position.
 
-      var position = angular.extend({}, defaultPosition, that.options.positionUsing);
-
-      // jquery.ui position() requires the container to be visible to calculate its position.
       if (!that.containerVisible) {
-        that.container.css({ 'visibility': 'hidden' });
+        that.container.css({
+          'visibility': 'hidden'
+        });
       }
+
       that.containerVisible = true; // used in the template to set ng-show.
+
       $timeout(function () {
         that.container.position(position);
-        that.container.css({ 'visibility': 'visible' });
+        that.container.css({
+          'visibility': 'visible'
+        });
       });
     }
 
     function _positionUsingDomAPI() {
       var rect = that.target[0].getBoundingClientRect();
       var DOCUMENT = $document[0];
-
       var scrollTop = DOCUMENT.body.scrollTop || DOCUMENT.documentElement.scrollTop || $window.pageYOffset;
       var scrollLeft = DOCUMENT.body.scrollLeft || DOCUMENT.documentElement.scrollLeft || $window.pageXOffset;
-
       that.container.css({
         'left': rect.left + scrollLeft + 'px',
         'top': rect.top + rect.height + scrollTop + 'px'
       });
-
       that.containerVisible = true;
     }
 
     function _updateTarget() {
-    
-
-      if(that.selectedItem.name)
-        _setTargetValue(that.selectedItem.name);
-      if(that.selectedItem.title)
-        _setTargetValue(that.selectedItem.title);
+      if (that.selectedItem.name) _setTargetValue(that.selectedItem.name);
+      if (that.selectedItem.title) _setTargetValue(that.selectedItem.title);
     }
 
     function _setTargetValue(value) {
@@ -3162,16 +5182,16 @@ window.AlloyApi = function () {
     function _hideDropdown() {
       if (that.isInline() || !that.containerVisible) {
         return;
-      }
-
-      // reset scroll position
+      } // reset scroll position
       //that.elementUL[0].scrollTop = 0;
+
+
       that.containerVisible = false;
       that.empty();
 
-      _reset();
+      _reset(); // callback
 
-      // callback
+
       _safeCallback(that.options.dropdownHidden);
     }
 
@@ -3180,23 +5200,23 @@ window.AlloyApi = function () {
       // because the no match template is rendered within the dropdown container
       if (that.options.noMatchTemplateEnabled) {
         return false;
-      }
+      } // do we have results to render?
 
-      // do we have results to render?
+
       if (!_.isEmpty(result)) {
         return false;
-      }
+      } // if paging is enabled hide the dropdown only when rendering the first page
 
-      // if paging is enabled hide the dropdown only when rendering the first page
+
       if (that.options.pagingEnabled) {
-        return (params.paging.pageIndex === 0);
+        return params.paging.pageIndex === 0;
       }
 
       return true;
     }
 
     function _didQueryIdChange(params) {
-      return (params.queryId !== queryCounter);
+      return params.queryId !== queryCounter;
     }
 
     function _renderList(params, result) {
@@ -3215,15 +5235,14 @@ window.AlloyApi = function () {
           return;
         }
 
-        var items = _renderItems(renderFn, result);
+        var items = _renderItems(renderFn, result); // in case of paged list we add to the array instead of replacing it
 
-        // in case of paged list we add to the array instead of replacing it
+
         angular.forEach(items, function (item) {
           that.renderItems.push(item);
         });
-
         currentPageIndex = params.paging.pageIndex;
-        endOfPagedList = (items.length < that.options.pageSize);
+        endOfPagedList = items.length < that.options.pageSize;
       });
     }
 
@@ -3240,18 +5259,17 @@ window.AlloyApi = function () {
 
         if (!item || !item.hasOwnProperty('label') || !item.hasOwnProperty('value')) {
           return null;
-        }
+        } // store the data on the renderItem and add to array
 
-        // store the data on the renderItem and add to array
-        item.data = data;
-        // unique 'id' for use in the 'track by' clause
-        item.id = item.hasOwnProperty('id') ? item.id : (item.value + item.label + index);
 
+        item.data = data; // unique 'id' for use in the 'track by' clause
+
+        item.id = item.hasOwnProperty('id') ? item.id : item.value + item.label + index;
         return item;
       });
 
       return _.filter(itemsToRender, function (item) {
-        return (item !== null);
+        return item !== null;
       });
     }
 
@@ -3272,15 +5290,15 @@ window.AlloyApi = function () {
       // itemTemplateUrl
       if (that.options.itemTemplateUrl) {
         return $templateRequest(that.options.itemTemplateUrl);
-      }
+      } // itemTemplate or default
 
-      // itemTemplate or default
+
       var template = that.options.itemTemplate || '<span ng-bind-html="entry.item"></span>';
       return $q.when(template);
     }
 
     function _getRenderItem(template, data) {
-      var value = (angular.isObject(data) && that.options.selectedTextAttr) ? data[that.options.selectedTextAttr] : data;
+      var value = angular.isObject(data) && that.options.selectedTextAttr ? data[that.options.selectedTextAttr] : data;
       return {
         value: value,
         label: template
@@ -3318,16 +5336,17 @@ window.AlloyApi = function () {
       });
     }
 
-    var publicApi = (function () {
+    var publicApi = function () {
       return {
         setOptions: _setOptions,
         positionDropdown: _positionDropdownIfVisible,
         hideDropdown: _hideDropdown
       };
-    })();
+    }();
   }
 
   autoCompleteItemDirective.$inject = ['$compile', '$rootScope', '$sce', '$controller'];
+
   function autoCompleteItemDirective($compile, $rootScope, $sce, $controller) {
     return {
       restrict: 'E',
@@ -3340,13 +5359,13 @@ window.AlloyApi = function () {
         searchText: '<',
         itemTemplateLinkFn: '<'
       },
-      controller: function () { },
-      link: function (scope, element) {
+      controller: function controller() {},
+      link: function link(scope, element) {
         var linkFn = null;
+
         if (_.isFunction(scope.ctrl.itemTemplateLinkFn)) {
           linkFn = scope.ctrl.itemTemplateLinkFn;
-        }
-        else {
+        } else {
           // Needed to maintain backward compatibility since the parameter passed to $compile must be html.
           // When 'item' is returned from the 'options.renderItem' callback the 'label' might contain
           // a trusted value [returned by a call to $sce.trustAsHtml(html)]. We can get the original
@@ -3364,18 +5383,18 @@ window.AlloyApi = function () {
     };
 
     function createEntryScope(directiveScope) {
-      var entryScope = $rootScope.$new(true);
+      var entryScope = $rootScope.$new(true); // for now its an empty controller. Additional logic can be added to this controller if needed
 
-      // for now its an empty controller. Additional logic can be added to this controller if needed
       var entry = entryScope.entry = $controller(angular.noop);
 
       var deregisterWatchesFn = _.map(['index', 'renderItem', 'searchText'], function (key) {
-        return directiveScope.$watch(('ctrl.' + key), function (newVal) {
+        return directiveScope.$watch('ctrl.' + key, function (newVal) {
           switch (key) {
             case 'renderItem':
               // add 'item' property on entryScope for backward compatibility
               entry.item = entryScope.item = newVal.data;
               break;
+
             default:
               entry[key] = newVal;
               break;
@@ -3384,12 +5403,12 @@ window.AlloyApi = function () {
       });
 
       helperService.deregisterOnDestroy(directiveScope, deregisterWatchesFn);
-
       return entryScope;
     }
   }
 
   autoCompleteNoMatchDirective.$inject = ['$compile', '$rootScope', '$controller'];
+
   function autoCompleteNoMatchDirective($compile, $rootScope, $controller) {
     return {
       restrict: 'E',
@@ -3400,8 +5419,8 @@ window.AlloyApi = function () {
         template: '<',
         searchText: '<'
       },
-      controller: function () { },
-      link: function (scope, element) {
+      controller: function controller() {},
+      link: function link(scope, element) {
         var linkFn = $compile(scope.ctrl.template);
         linkFn(createEntryScope(scope), function (clonedElement) {
           // append to the directive element's parent (<li>) since this directive element is replaced (transclude is set to 'element').
@@ -3411,17 +5430,13 @@ window.AlloyApi = function () {
     };
 
     function createEntryScope(directiveScope) {
-      var entryScope = $rootScope.$new(true);
+      var entryScope = $rootScope.$new(true); // for now its an empty controller. Additional logic can be added to this controller if needed
 
-      // for now its an empty controller. Additional logic can be added to this controller if needed
       var entry = entryScope.entry = $controller(angular.noop);
-
       var deregisterFn = directiveScope.$watch('ctrl.searchText', function (newVal) {
         entry.searchText = newVal;
       });
-
       helperService.deregisterOnDestroy(directiveScope, [deregisterFn]);
-
       return entryScope;
     }
   }
@@ -3475,7 +5490,6 @@ window.AlloyApi = function () {
     FOCUS: 'focus',
     INPUT: 'input'
   };
-
   var KEYCODE = {
     TAB: 9,
     ENTER: 13,
@@ -3489,75 +5503,87 @@ window.AlloyApi = function () {
     MAC_COMMAND_LEFT: 91,
     MAC_COMMAND_RIGHT: 93
   };
-
   var defaultOptions = {
     /**
      * CSS class applied to the dropdown container.
      * @default null
      */
     containerCssClass: null,
+
     /**
      * CSS class applied to the selected list element.
      * @default auto-complete-item-selected
      */
     selectedCssClass: 'auto-complete-item-selected',
+
     /**
      * Minimum number of characters required to display the dropdown.
      * @default 1
      */
     minimumChars: 1,
+
     /**
      * Maximum number of items to render in the list.
      * @default 20
      */
     maxItemsToRender: 20,
+
     /**
      * If true displays the dropdown list when the textbox gets focus.
      * @default false
      */
     activateOnFocus: false,
+
     /**
      * Width in "px" of the dropddown list. This can also be applied using CSS.
      * @default 'auto'
      */
     dropdownWidth: 'auto',
+
     /**
      * Maximum height in "px" of the dropddown list. This can also be applied using CSS.
      * @default 'auto'
      */
     dropdownHeight: 'auto',
+
     /**
      * a jQuery object to append the dropddown list.
      * @default null
      */
     dropdownParent: null,
+
     /**
      * If the data for the dropdown is a collection of objects, this should be the name 
      * of a property on the object. The property value will be used to update the input textbox.
      * @default null
      */
     selectedTextAttr: null,
+
     /**
      * A template for the dropddown list item. For example "<p ng-bind-html='entry.item.name'></p>";
      * Or using interpolation "<p>{{entry.item.lastName}}, {{entry.item.firstName}}></p>".
      * @default null
      */
     itemTemplate: null,
+
     /**
      * This is similar to template but the template is loaded from the specified URL, asynchronously.
      * @default null
      */
     itemTemplateUrl: null,
+
     /**
      * Set to true to enable server side paging. See "data" callback for more information.
      * @default false
      */
     pagingEnabled: false,
+
     /**
      * The number of items to display per page when paging is enabled.
      * @default 5
      */
     pageSize: 5,
+
     /**
      * When using the keyboard arrow key to scroll down the list, the "data" callback will 
      * be invoked when at least this many items remain below the current focused item. 
@@ -3565,6 +5591,7 @@ window.AlloyApi = function () {
      * @default 1
      */
     invokePageLoadWhenItemsRemaining: 1,
+
     /**
      * Set to true to position the dropdown list using the position() method from the jQueryUI library.
      * See <a href="https://api.jqueryui.com/position/">jQueryUI.position() documentation</a>
@@ -3572,17 +5599,20 @@ window.AlloyApi = function () {
      * @bindAsHtml true
      */
     positionUsingJQuery: true,
+
     /**
      * Options that will be passed to jQueryUI position() method.
      * @default null
      */
     positionUsing: null,
+
     /**
      * Set to true to let the plugin hide the dropdown list. If this option is set to false you can hide the dropdown list
      * with the hideDropdown() method available in the ready callback.
      * @default true
      */
     autoHideDropdown: true,
+
     /**
      * Set to true to hide the dropdown list when the window is resized. If this option is set to false you can hide
      * or re-position the dropdown list with the hideDropdown() or positionDropdown() methods available in the ready.
@@ -3590,26 +5620,31 @@ window.AlloyApi = function () {
      * @default true
      */
     hideDropdownOnWindowResize: true,
+
     /**
      * Set to true to enable the template to display a message when no items match the search text.
      * @default true
      */
     noMatchTemplateEnabled: true,
+
     /**
      * The template used to display the message when no items match the search text.
      * @default "<span>No results match '{{entry.searchText}}'></span>"
      */
     noMatchTemplate: "<span>No results match '{{entry.searchText}}'</span>",
+
     /**
      * Callback after the plugin is initialized and ready. The callback receives an object with the following methods:
      * @default angular.noop
      */
     ready: angular.noop,
+
     /**
      * Callback before the "data" callback is invoked.
      * @default angular.noop
      */
     loading: angular.noop,
+
     /**
      * Callback to get the data for the dropdown. The callback receives the search text as the first parameter.
      * If paging is enabled the callback receives an object with "pageIndex" and "pageSize" properties as the second parameter.
@@ -3617,11 +5652,13 @@ window.AlloyApi = function () {
      * @default angular.noop
      */
     data: angular.noop,
+
     /**
      * Callback after the items are rendered in the dropdown
      * @default angular.noop
      */
     loadingComplete: angular.noop,
+
     /**
      * Callback for custom rendering a list item. This is called for each item in the dropdown.
      * This must return an object literal with "value" and "label" properties where
@@ -3630,483 +5667,518 @@ window.AlloyApi = function () {
      * @default angular.noop
      */
     renderItem: angular.noop,
+
     /**
      * Callback after an item is selected from the dropdown. The callback receives an object with an "item" property representing the selected item.
      * @default angular.noop
      */
     itemSelected: angular.noop,
+
     /**
      * Callback after the dropdown is shown.
      * @default angular.noop
      */
     dropdownShown: angular.noop,
+
     /**
      * Callback after the dropdown is hidden.
      * @default angular.noop
      */
     dropdownHidden: angular.noop
   };
-
-}));
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(14), __webpack_require__(3)))
+});
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4), __webpack_require__(17), __webpack_require__(4), __webpack_require__(19)(module)))
 
 /***/ }),
-/* 141 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 144 */,
+/* 145 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery, $) {__webpack_require__(8)
-__webpack_require__(22)
-__webpack_require__(38)
-__webpack_require__(39)
-__webpack_require__(143)
-__webpack_require__(40)
-__webpack_require__(36)
-__webpack_require__(144)
-//require('./modernizr')
-__webpack_require__(37)
-__webpack_require__(23)
+"use strict";
+/* WEBPACK VAR INJECTION */(function(jQuery, $, module) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
 
-var Api = __webpack_require__(22);
+
+__webpack_require__(11);
+
+__webpack_require__(26);
+
+__webpack_require__(42);
+
+__webpack_require__(43);
+
+__webpack_require__(147);
+
+__webpack_require__(44);
+
+__webpack_require__(40);
+
+__webpack_require__(148); //require('./modernizr')
+
+
+__webpack_require__(41);
+
+__webpack_require__(27);
+
+var Api = __webpack_require__(26);
+
 var players = {};
 
-var coverflow = window.coverflow = function(id) {
-	if (!id) {
-		for (var key in players) {
-			id = players[key].id;
-		}
-	}
-	if (id) {
-		var foundPlayer = players[id];
-		if (foundPlayer) {
-			return foundPlayer;
-		} else {
-			return players[id] = new Api(id);
-		}
-	}
-	return null;
+var coverflow = window.coverflow = function (id) {
+  if (!id) {
+    for (var key in players) {
+      id = players[key].id;
+    }
+  }
+
+  if (id) {
+    var foundPlayer = players[id];
+
+    if (foundPlayer) {
+      return foundPlayer;
+    } else {
+      return players[id] = new Api(id);
+    }
+  }
+
+  return null;
 };
 
 if (typeof jQuery !== 'undefined') {
-	jQuery.fn.coverflow = function(method) {
-		var player = coverflow(this[0].id);
-		if (player[method]) {
-			return player[method].apply(player, Array.prototype.slice.call(arguments, 1));
-		} else if (typeof method === 'object') {
-			return player.setup.apply(player, arguments);
-		} else if (!method) {
-			return player;
-		} else {
-			$.error('Method ' + method + ' does not exist on jQuery.coverflow');
-		}
-	};
+  jQuery.fn.coverflow = function (method) {
+    var player = coverflow(this[0].id);
+
+    if (player[method]) {
+      return player[method].apply(player, Array.prototype.slice.call(arguments, 1));
+    } else if (__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(method) === 'object') {
+      return player.setup.apply(player, arguments);
+    } else if (!method) {
+      return player;
+    } else {
+      $.error('Method ' + method + ' does not exist on jQuery.coverflow');
+    }
+  };
 }
 
 module.exports = coverflow;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4), __webpack_require__(4), __webpack_require__(19)(module)))
 
 /***/ }),
-/* 142 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Signal = __webpack_require__(27);
 
-var Signal = __webpack_require__(23);
-var Controller = __webpack_require__(38);
-var Cover = __webpack_require__(39);
-var Hit = __webpack_require__(40);
-var Modernizr = __webpack_require__(41);
-var _ = __webpack_require__(8);
-var CoverFlow = function(div, playlist, config) {
-	var _this = this;
+var Controller = __webpack_require__(42);
 
-	this.config = config;
-	
-	var coversLength = playlist.length;
-	var completeLength = 0;
-	var maxCoverHeight = 0;
-	var current = 0;
+var Cover = __webpack_require__(43);
 
-	this.events = {
-		focus: new Signal(),
-		click: new Signal()
-	};
-
-	this.covers = [];
-	this.transforms = [];
-	this.hits = [];
-	this.transforms2 = [];
-	this.prevF = -1;
-  this.transformProp = Modernizr.prefixed('transform');
-  
-	this.space = config.coveroffset + config.covergap;
-	this._angle = 'rotateY(' + (-config.coverangle) + 'deg)';
-	this.angle = 'rotateY(' + config.coverangle + 'deg)';
-
-	this.offsetX = 0;
-	this.offsetY = 0;
-	
-	this.el = document.createElement('div');
-	this.el.className = 'coverflow-wrap';
-	this.tray = document.createElement('div');
-	this.tray.className = 'coverflow-tray';
-	this.el.appendChild(this.tray);
-	this.rect = document.createElement('div');
-	this.rect.className = 'coverflow-rect';
-	this.el.appendChild(this.rect);
-	
-	this.el.style[Modernizr.prefixed('perspective')] = config.focallength+'px';
-	this.tray.style[Modernizr.prefixed('transitionDuration')] = this.config.tweentime + 's';
-	
-	var controller = new Controller(this, this.tray, this.config);
-
-	var cover = null;
-	var hit = null;
-	for (var i = 0; i < coversLength; i++) {
-		
-		cover = new Cover(_this, i, playlist[i].image, config);
-		this.tray.appendChild(cover.el);
-		cover.el.style[Modernizr.prefixed('transitionDuration')] = this.config.tweentime + 's';
-		this.covers[i] = cover;
-
-		hit = new Hit(_this, i, config);
-		this.rect.appendChild(hit.el);
-		this.hits[i] = hit;
-	}
-
-	div.addEventListener('touchstart', controller, true);
-	div.addEventListener('keydown', keyboard, false);
-	this.rect.addEventListener('mousedown', clickHandler, false);
+var Hit = __webpack_require__(44); //var Modernizr = require('./modernizr');
 
 
-	this.itemComplete = function(h) {
-		maxCoverHeight = maxCoverHeight < h ? h : maxCoverHeight;
-		completeLength += 1;
-		if (completeLength == coversLength) {
-			for (var i = 0; i < coversLength; i++) {
-				var cover = this.covers[i];
-				cover.setY(maxCoverHeight);
-				this.hits[i].resize(cover.width, cover.height);
-				this.hits[i].setY(maxCoverHeight);
-			}
-		}
-	};
+var _ = __webpack_require__(11);
 
-	this.left = function() {
-		if (current > 0) _this.to(current - 1);
-	};
-		
-	this.right = function() {
-		if (current < coversLength - 1) _this.to(current + 1);
-	};
-	
-	this.prev = function() {
-		if (current > 0) _this.to(current - 1);
-		else _this.to(coversLength - 1);
-	};
-	
-	this.next = function() {
-		if (current < coversLength - 1) _this.to(current + 1);
-		else _this.to(0);
-	};
-	
-	this.to = function(index) {
+var CoverFlow = function CoverFlow(div, playlist, config) {
+  var _this = this;
 
-		var match;
-		if (typeof index === 'string' && (match = /^([+-])=(\d)/.exec(index))) {
-			index = (match[1] + 1) * match[2] + current;
-		}
+  this.config = config;
+  var coversLength = playlist.length;
+  var completeLength = 0;
+  var maxCoverHeight = 0;
+  var current = 0;
+  this.events = {
+    focus: new Signal(),
+    click: new Signal()
+  };
+  this.covers = [];
+  this.transforms = [];
+  this.hits = [];
+  this.transforms2 = [];
+  this.prevF = -1; //this.transformProp = Modernizr.prefixed('transform');
 
-		if (index > coversLength - 1) index = coversLength - 1;
-		else if (index < 0) index = 0;
-					
-		current = index;
-		controller.to(index);
-	};
+  this.space = config.coveroffset + config.covergap;
+  this._angle = 'rotateY(' + -config.coverangle + 'deg)';
+  this.angle = 'rotateY(' + config.coverangle + 'deg)';
+  this.offsetX = 0;
+  this.offsetY = 0;
+  this.el = document.createElement('div');
+  this.el.className = 'coverflow-wrap';
+  this.tray = document.createElement('div');
+  this.tray.className = 'coverflow-tray';
+  this.el.appendChild(this.tray);
+  this.rect = document.createElement('div');
+  this.rect.className = 'coverflow-rect';
+  this.el.appendChild(this.rect); //this.el.style[Modernizr.prefixed('perspective')] = config.focallength+'px';
+  //this.tray.style[Modernizr.prefixed('transitionDuration')] = this.config.tweentime + 's';
 
-	this.on = function(e, fn) {
-		this.events[e].on(fn);
-	};
-	
-	this.destroy = function() {
-		div.removeChild(_this.el);
+  var controller = new Controller(this, this.tray, this.config);
+  var cover = null;
+  var hit = null;
 
-		div.removeEventListener('touchstart', controller, true);
-		div.removeEventListener('keydown', keyboard, false);
-	};
+  for (var i = 0; i < coversLength; i++) {
+    cover = new Cover(_this, i, playlist[i].image, config);
+    this.tray.appendChild(cover.el);
+    cover.el.style[Modernizr.prefixed('transitionDuration')] = this.config.tweentime + 's';
+    this.covers[i] = cover;
+    hit = new Hit(_this, i, config);
+    this.rect.appendChild(hit.el);
+    this.hits[i] = hit;
+  }
 
-	this.resize = function() {
-		this.offsetX = config.width * 0.5 + config.x;
-		this.offsetY = config.height * 0.5 + config.y;
-		this.setTrayStyle((controller.currentX + this.offsetX), this.offsetY);
-		this.setRectStyle((controller.currentX + this.offsetX), this.offsetY);
-	};
-	
-	function clickHandler(e) {
-		if (e.button === 0) {
-			e.stopImmediatePropagation();
-			e.preventDefault();
+  div.addEventListener('touchstart', controller, true);
+  div.addEventListener('keydown', keyboard, false);
+  this.rect.addEventListener('mousedown', clickHandler, false);
 
-			var hit = _this.hits[_.getChildIndex(e.target)];
-			if (hit.index == current) {
-				_this.events.click.trigger(hit.index);
-			} else {
-				_this.to(hit.index);
-			}
-		}
-	}
+  this.itemComplete = function (h) {
+    maxCoverHeight = maxCoverHeight < h ? h : maxCoverHeight;
+    completeLength += 1;
 
-	function keyboard(e) {
-		var element = e.target;
-		if (element.tagName == 'INPUT' ||
-			element.tagName == 'SELECT' ||
-			element.tagName == 'TEXTAREA') return;
+    if (completeLength == coversLength) {
+      for (var i = 0; i < coversLength; i++) {
+        var cover = this.covers[i];
+        cover.setY(maxCoverHeight);
+        this.hits[i].resize(cover.width, cover.height);
+        this.hits[i].setY(maxCoverHeight);
+      }
+    }
+  };
 
-		if ([37, 39, 38, 40, 32].indexOf(e.keyCode) !== -1) {
-			e.preventDefault();
-			switch (e.keyCode) {
-			case 37:
-				_this.left();
-				break;
-			case 39:
-				_this.right();
-				break;
-			case 38:
-				_this.to(0);
-				break;
-			case 40:
-				_this.to(coversLength - 1);
-				break;
-			case 32:
-				_this.events.click.trigger(current);
-				break;
-			}
-		}
-	}
+  this.left = function () {
+    if (current > 0) _this.to(current - 1);
+  };
+
+  this.right = function () {
+    if (current < coversLength - 1) _this.to(current + 1);
+  };
+
+  this.prev = function () {
+    if (current > 0) _this.to(current - 1);else _this.to(coversLength - 1);
+  };
+
+  this.next = function () {
+    if (current < coversLength - 1) _this.to(current + 1);else _this.to(0);
+  };
+
+  this.to = function (index) {
+    var match;
+
+    if (typeof index === 'string' && (match = /^([+-])=(\d)/.exec(index))) {
+      index = (match[1] + 1) * match[2] + current;
+    }
+
+    if (index > coversLength - 1) index = coversLength - 1;else if (index < 0) index = 0;
+    current = index;
+    controller.to(index);
+  };
+
+  this.on = function (e, fn) {
+    this.events[e].on(fn);
+  };
+
+  this.destroy = function () {
+    div.removeChild(_this.el);
+    div.removeEventListener('touchstart', controller, true);
+    div.removeEventListener('keydown', keyboard, false);
+  };
+
+  this.resize = function () {
+    this.offsetX = config.width * 0.5 + config.x;
+    this.offsetY = config.height * 0.5 + config.y;
+    this.setTrayStyle(controller.currentX + this.offsetX, this.offsetY);
+    this.setRectStyle(controller.currentX + this.offsetX, this.offsetY);
+  };
+
+  function clickHandler(e) {
+    if (e.button === 0) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+
+      var hit = _this.hits[_.getChildIndex(e.target)];
+
+      if (hit.index == current) {
+        _this.events.click.trigger(hit.index);
+      } else {
+        _this.to(hit.index);
+      }
+    }
+  }
+
+  function keyboard(e) {
+    var element = e.target;
+    if (element.tagName == 'INPUT' || element.tagName == 'SELECT' || element.tagName == 'TEXTAREA') return;
+
+    if ([37, 39, 38, 40, 32].indexOf(e.keyCode) !== -1) {
+      e.preventDefault();
+
+      switch (e.keyCode) {
+        case 37:
+          _this.left();
+
+          break;
+
+        case 39:
+          _this.right();
+
+          break;
+
+        case 38:
+          _this.to(0);
+
+          break;
+
+        case 40:
+          _this.to(coversLength - 1);
+
+          break;
+
+        case 32:
+          _this.events.click.trigger(current);
+
+          break;
+      }
+    }
+  }
 };
 
-CoverFlow.prototype.updateTouchEnd = function(controller) {
-	var i = this.getFocusedCover(controller.currentX);
-	controller.currentX = -i * this.config.covergap;
-	this.update(controller.currentX);
+CoverFlow.prototype.updateTouchEnd = function (controller) {
+  var i = this.getFocusedCover(controller.currentX);
+  controller.currentX = -i * this.config.covergap;
+  this.update(controller.currentX);
 };
 
-CoverFlow.prototype.getFocusedCover = function(currentX) {
-	var i = -Math.round(currentX / this.config.covergap);
-	return Math.min(Math.max(i, 0), this.covers.length - 1);
+CoverFlow.prototype.getFocusedCover = function (currentX) {
+  var i = -Math.round(currentX / this.config.covergap);
+  return Math.min(Math.max(i, 0), this.covers.length - 1);
 };
 
-CoverFlow.prototype.getFocusedCoverOne = function(currentX) {
-	var i = -Math.round(currentX / this.config.covergap);
-	return Math.min(Math.max(i, -1), this.covers.length);
+CoverFlow.prototype.getFocusedCoverOne = function (currentX) {
+  var i = -Math.round(currentX / this.config.covergap);
+  return Math.min(Math.max(i, -1), this.covers.length);
 };
 
-CoverFlow.prototype.tap = function(e, currentX) {
-	if (e.target.className == 'coverflow-hit') {
-		var current = this.getFocusedCover(currentX);
-		var hit = this.hits[_.getChildIndex(e.target)];
-		if (hit.index == current) {
-			this.events.click.trigger(hit.index);
-		} else {
-			this.to(hit.index);
-		}
-	}
+CoverFlow.prototype.tap = function (e, currentX) {
+  if (e.target.className == 'coverflow-hit') {
+    var current = this.getFocusedCover(currentX);
+
+    var hit = this.hits[_.getChildIndex(e.target)];
+
+    if (hit.index == current) {
+      this.events.click.trigger(hit.index);
+    } else {
+      this.to(hit.index);
+    }
+  }
 };
 
-CoverFlow.prototype.setTrayStyle = function(x, y) {
-	this.tray.style[this.transformProp] = 'translate3d(' + x + 'px, ' + y + 'px, -' + this.config.coverdepth + 'px)';
+CoverFlow.prototype.setTrayStyle = function (x, y) {
+  this.tray.style[this.transformProp] = 'translate3d(' + x + 'px, ' + y + 'px, -' + this.config.coverdepth + 'px)';
 };
 
-CoverFlow.prototype.setRectStyle = function(x, y) {
-	this.rect.style[this.transformProp] = 'translate3d(' + x + 'px, ' + y + 'px, -' + this.config.coverdepth + 'px)';
+CoverFlow.prototype.setRectStyle = function (x, y) {
+  this.rect.style[this.transformProp] = 'translate3d(' + x + 'px, ' + y + 'px, -' + this.config.coverdepth + 'px)';
 };
 
-CoverFlow.prototype.setHitStyle = function(hit, i, transform) {
-	if (this.transforms2[i] != transform) {
-		hit.el.style[this.transformProp] = transform;
-		this.transforms2[i] = transform;
-	}
+CoverFlow.prototype.setHitStyle = function (hit, i, transform) {
+  if (this.transforms2[i] != transform) {
+    hit.el.style[this.transformProp] = transform;
+    this.transforms2[i] = transform;
+  }
 };
 
-CoverFlow.prototype.setCoverStyle = function(cover, i, transform) {
-	if (this.transforms[i] != transform) {
-		cover.el.style[this.transformProp] = transform;
-		this.transforms[i] = transform;
-	}
+CoverFlow.prototype.setCoverStyle = function (cover, i, transform) {
+  if (this.transforms[i] != transform) {
+    cover.el.style[this.transformProp] = transform;
+    this.transforms[i] = transform;
+  }
 };
 
-CoverFlow.prototype.getCoverTransform = function(f, i) {
-	var x = i * this.config.covergap;
-	if (f == i) {
-		return 'translate3d(' + x + 'px, 0, ' + this.config.coverdepth + 'px)';
-	} else if (i > f) {
-		return 'translate3d(' + (x + this.space) + 'px, 0, 0) ' + this._angle;
-	} else {
-		return 'translate3d(' + (x - this.space) + 'px, 0, 0) ' + this.angle;
-	}
+CoverFlow.prototype.getCoverTransform = function (f, i) {
+  var x = i * this.config.covergap;
+
+  if (f == i) {
+    return 'translate3d(' + x + 'px, 0, ' + this.config.coverdepth + 'px)';
+  } else if (i > f) {
+    return 'translate3d(' + (x + this.space) + 'px, 0, 0) ' + this._angle;
+  } else {
+    return 'translate3d(' + (x - this.space) + 'px, 0, 0) ' + this.angle;
+  }
 };
 
-CoverFlow.prototype.update = function(currentX) {
+CoverFlow.prototype.update = function (currentX) {
+  var f = this.getFocusedCoverOne(currentX);
 
-	var f = this.getFocusedCoverOne(currentX);
-	if (f != this.prevF) {
-		this.events.focus.trigger(f);
-		this.prevF = f;
-	}
+  if (f != this.prevF) {
+    this.events.focus.trigger(f);
+    this.prevF = f;
+  }
 
-	this.setRectStyle((currentX + this.offsetX), this.offsetY);
-	this.setTrayStyle((currentX + this.offsetX), this.offsetY);
-	for (var i = 0; i < this.covers.length; i++) {
-		this.setHitStyle(this.hits[i], i, this.getCoverTransform(f, i));
-		this.setCoverStyle(this.covers[i], i, this.getCoverTransform(f, i));
-	}
+  this.setRectStyle(currentX + this.offsetX, this.offsetY);
+  this.setTrayStyle(currentX + this.offsetX, this.offsetY);
+
+  for (var i = 0; i < this.covers.length; i++) {
+    this.setHitStyle(this.hits[i], i, this.getCoverTransform(f, i));
+    this.setCoverStyle(this.covers[i], i, this.getCoverTransform(f, i));
+  }
 };
 
 module.exports = CoverFlow;
 
 /***/ }),
-/* 143 */
-/***/ (function(module, exports) {
+/* 147 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
 
 
-var Flash = function(api) {
+var Flash = function Flash(api) {
+  var swf;
 
-	var swf;
+  function setup() {
+    var html = '<object id="' + api.id + '-coverflow-flash" data="' + api.config.flash + '" width="100%" height="100%" type="application/x-shockwave-flash">' + '<param name="movie" value="' + api.config.flash + '" />' + '<param name="wmode" value="' + api.config.wmode + '" />' + '<param name="allowscriptaccess" value="always" />' + '<param name="flashvars" value="' + jsonToFlashvars(api.config) + '" />' + '<a href="http://get.adobe.com/flashplayer/">Get Adobe Flash player</a>' + '</object>';
+    api.el.innerHTML = html;
+    swf = document.getElementById(api.id + '-coverflow-flash');
+  }
 
-	function setup() {
+  function jsonToFlashvars(json) {
+    var flashvars = '';
 
-		var html = '<object id="' + api.id + '-coverflow-flash" data="' + api.config.flash + '" width="100%" height="100%" type="application/x-shockwave-flash">' +
-			'<param name="movie" value="' + api.config.flash + '" />' +
-			'<param name="wmode" value="' + api.config.wmode + '" />' +
-			'<param name="allowscriptaccess" value="always" />' +
-			'<param name="flashvars" value="' + jsonToFlashvars(api.config) + '" />' +
-			'<a href="http://get.adobe.com/flashplayer/">Get Adobe Flash player</a>' +
-		'</object>';
-		api.el.innerHTML = html;
-		
-		swf = document.getElementById(api.id + '-coverflow-flash');
-	}
+    for (var key in json) {
+      if (__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(json[key]) === 'object') {
+        flashvars += key + '=' + encodeURIComponent('[[JSON]]' + JSON.stringify(json[key])) + '&';
+      } else {
+        flashvars += key + '=' + encodeURIComponent(json[key]) + '&';
+      }
+    }
 
-	function jsonToFlashvars(json) {
-		var flashvars = '';
-		for (var key in json) {
-			if (typeof(json[key]) === 'object') {
-				flashvars += key + '=' + encodeURIComponent('[[JSON]]' + JSON.stringify(json[key])) + '&';
-			} else {
-				flashvars += key + '=' + encodeURIComponent(json[key]) + '&';
-			}
-		}
-		return flashvars.slice(0, -1);
-	}
+    return flashvars.slice(0, -1);
+  }
 
-	this.resize = function(wid, hei) {
-		swf.apiResize(wid, hei);
-	};
+  this.resize = function (wid, hei) {
+    swf.apiResize(wid, hei);
+  };
 
-	this.left = function() {
-		swf.apiLeft();
-	};
-	this.right = function() {
-		swf.apiRight();
-	};
-	this.prev = function() {
-		swf.apiPrev();
-	};
-	this.next = function() {
-		swf.apiNext();
-	};
-	this.to = function(index) {
-		swf.apiTo(index);
-	};
-	this.destroy = function() {
-	};
+  this.left = function () {
+    swf.apiLeft();
+  };
 
-	setup();
+  this.right = function () {
+    swf.apiRight();
+  };
+
+  this.prev = function () {
+    swf.apiPrev();
+  };
+
+  this.next = function () {
+    swf.apiNext();
+  };
+
+  this.to = function (index) {
+    swf.apiTo(index);
+  };
+
+  this.destroy = function () {};
+
+  setup();
 };
 
-
 /***/ }),
-/* 144 */
-/***/ (function(module, exports, __webpack_require__) {
+/* 148 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(jQuery, $) {/** @license
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* WEBPACK VAR INJECTION */(function(jQuery, $) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__ = __webpack_require__(8);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof__);
+
+
+/** @license
  * Cover Flow
  *
  * Author: Wesley Luyten
  * Version: 1.0 - (2012/06/20)
  * Version: 1.2 - (2013/11/09)
  */
-var Api = __webpack_require__(22);
+var Api = __webpack_require__(26);
+
 var players = {};
 
-var coverflow = window.coverflow = function(id) {
-	if (!id) {
-		for (var key in players) {
-			id = players[key].id;
-		}
-	}
-	if (id) {
-		var foundPlayer = players[id];
-		if (foundPlayer) {
-			return foundPlayer;
-		} else {
-			return players[id] = new Api(id);
-		}
-	}
-	return null;
+var coverflow = window.coverflow = function (id) {
+  if (!id) {
+    for (var key in players) {
+      id = players[key].id;
+    }
+  }
+
+  if (id) {
+    var foundPlayer = players[id];
+
+    if (foundPlayer) {
+      return foundPlayer;
+    } else {
+      return players[id] = new Api(id);
+    }
+  }
+
+  return null;
 };
 
 if (typeof jQuery !== 'undefined') {
-	jQuery.fn.coverflow = function(method) {
-		var player = coverflow(this[0].id);
-		if (player[method]) {
-			return player[method].apply(player, Array.prototype.slice.call(arguments, 1));
-		} else if (typeof method === 'object') {
-			return player.setup.apply(player, arguments);
-		} else if (!method) {
-			return player;
-		} else {
-			$.error('Method ' + method + ' does not exist on jQuery.coverflow');
-		}
-	};
-}
+  jQuery.fn.coverflow = function (method) {
+    var player = coverflow(this[0].id);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(3)))
+    if (player[method]) {
+      return player[method].apply(player, Array.prototype.slice.call(arguments, 1));
+    } else if (__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_typeof___default()(method) === 'object') {
+      return player.setup.apply(player, arguments);
+    } else if (!method) {
+      return player;
+    } else {
+      $.error('Method ' + method + ' does not exist on jQuery.coverflow');
+    }
+  };
+}
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4), __webpack_require__(4)))
 
 /***/ }),
-/* 145 */
+/* 149 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ui_toolbarbutton__ = __webpack_require__(146);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ui_toolbarbutton__ = __webpack_require__(150);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ui_toolbarbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__ui_toolbarbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ui_toolbarseperator__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ui_toolbarseperator__ = __webpack_require__(151);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ui_toolbarseperator___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__ui_toolbarseperator__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ui_navbutton__ = __webpack_require__(148);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ui_navbutton__ = __webpack_require__(152);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ui_navbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__ui_navbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ui_albumslist__ = __webpack_require__(149);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ui_albumslist__ = __webpack_require__(153);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ui_albumslist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__ui_albumslist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ui_artistlist__ = __webpack_require__(150);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ui_artistlist__ = __webpack_require__(154);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ui_artistlist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__ui_artistlist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ui_genrelist__ = __webpack_require__(151);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ui_genrelist__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ui_genrelist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__ui_genrelist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ui_tracklist__ = __webpack_require__(152);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ui_tracklist__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ui_tracklist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__ui_tracklist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist__ = __webpack_require__(158);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist__ = __webpack_require__(155);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist__ = __webpack_require__(159);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar__ = __webpack_require__(160);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_11__ui_jumpbar__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel__ = __webpack_require__(161);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_12__ui_detaillabel__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton__ = __webpack_require__(162);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_13__ui_expandbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_coverflow__ = __webpack_require__(160);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_coverflow__ = __webpack_require__(164);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__ui_coverflow___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_15__ui_coverflow__);
 
 
@@ -4124,29 +6196,10 @@ if (typeof jQuery !== 'undefined') {
 
 
 
-
-
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a
-  .module('app.directives', [])
-  .directive('toolbarbutton', __WEBPACK_IMPORTED_MODULE_1__ui_toolbarbutton___default.a)
-  .directive('toolbarseperator', __WEBPACK_IMPORTED_MODULE_2__ui_toolbarseperator___default.a)
-  .directive('navbutton', __WEBPACK_IMPORTED_MODULE_3__ui_navbutton___default.a)
-  .directive('albumslist', __WEBPACK_IMPORTED_MODULE_4__ui_albumslist___default.a)
-  .directive('artistlist', __WEBPACK_IMPORTED_MODULE_5__ui_artistlist___default.a)
-  .directive('genrelist', __WEBPACK_IMPORTED_MODULE_6__ui_genrelist___default.a)
-  .directive('tracklist', __WEBPACK_IMPORTED_MODULE_7__ui_tracklist___default.a)
-  .directive('queuelist', __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist___default.a)
-  .directive('historylist', __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist___default.a)
-  .directive('blacklist', __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist___default.a)
-  .directive('jumpbar', __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar___default.a)
-  .directive('detaillabel', __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel___default.a)
-  .directive('expandbutton', __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton___default.a)
-  .directive('popoverbutton', __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton___default.a)
-  .directive('coverflow', __WEBPACK_IMPORTED_MODULE_15__ui_coverflow___default.a));
-
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('app.directives', []).directive('toolbarbutton', __WEBPACK_IMPORTED_MODULE_1__ui_toolbarbutton___default.a).directive('toolbarseperator', __WEBPACK_IMPORTED_MODULE_2__ui_toolbarseperator___default.a).directive('navbutton', __WEBPACK_IMPORTED_MODULE_3__ui_navbutton___default.a).directive('albumslist', __WEBPACK_IMPORTED_MODULE_4__ui_albumslist___default.a).directive('artistlist', __WEBPACK_IMPORTED_MODULE_5__ui_artistlist___default.a).directive('genrelist', __WEBPACK_IMPORTED_MODULE_6__ui_genrelist___default.a).directive('tracklist', __WEBPACK_IMPORTED_MODULE_7__ui_tracklist___default.a).directive('queuelist', __WEBPACK_IMPORTED_MODULE_8__ui_sabnzbd_queuelist___default.a).directive('historylist', __WEBPACK_IMPORTED_MODULE_10__ui_sabnzbd_historylist___default.a).directive('blacklist', __WEBPACK_IMPORTED_MODULE_9__ui_sabnzbd_blacklist___default.a).directive('jumpbar', __WEBPACK_IMPORTED_MODULE_11__ui_jumpbar___default.a).directive('detaillabel', __WEBPACK_IMPORTED_MODULE_12__ui_detaillabel___default.a).directive('expandbutton', __WEBPACK_IMPORTED_MODULE_13__ui_expandbutton___default.a).directive('popoverbutton', __WEBPACK_IMPORTED_MODULE_14__ui_popoverbutton___default.a).directive('coverflow', __WEBPACK_IMPORTED_MODULE_15__ui_coverflow___default.a));
 
 /***/ }),
-/* 146 */
+/* 150 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -4160,27 +6213,21 @@ module.exports = function () {
       buttonclick: '&'
     },
     // object is passed while making the call
-    template: '<button type="button" id="{{buttonid}}" ng-click="clickButton()" class="PageToolbarButton-toolbarButton Link-link" rel="{{buttonrel}}">' +
-      '	<i aria-hidden="true" data-prefix="fas" class="fa {{buttonicon}} fa-w-16 Icon-default"></i>' +
-      '	<div class="PageToolbarButton-labelContainer">' +
-      '		<div class="PageToolbarButton-label">{{buttontext}}</div>' +
-      '	</div>' +
-      '</button>',
+    template: '<button type="button" id="{{buttonid}}" ng-click="clickButton()" class="PageToolbarButton-toolbarButton Link-link" rel="{{buttonrel}}">' + '	<i aria-hidden="true" data-prefix="fas" class="fa {{buttonicon}} fa-w-16 Icon-default"></i>' + '	<div class="PageToolbarButton-labelContainer">' + '		<div class="PageToolbarButton-label">{{buttontext}}</div>' + '	</div>' + '</button>',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.clickButton = function () {
         scope.buttonclick();
-      }
+      };
+
       scope.text = scope.buttontext;
     }
-  }
+  };
 };
 
 /***/ }),
-/* 147 */
+/* 151 */
 /***/ (function(module, exports) {
-
-
 
 module.exports = function () {
   return {
@@ -4188,11 +6235,11 @@ module.exports = function () {
     // object is passed while making the call
     template: '<div class="PageToolbarSeparator-separator"></div>',
     replace: true
-  }
+  };
 };
 
 /***/ }),
-/* 148 */
+/* 152 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -4205,28 +6252,20 @@ module.exports = function () {
       buttonclick: '&'
     },
     // object is passed while making the call
-    template:
-      '<a title="{{buttontext}}" href="{{href}}" class="PageContent-HeaderDetails-navigation-button IconButton-button Link-link Link-link">' +
-      ' <svg aria-hidden="true" data-prefix="fas" data-icon="arrow-circle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 30px;" class="svg-inline--fa fa-arrow-circle-left fa-w-16 Icon-default">' +
-      `  <path ng-show="{{direction == 'left'}}"  fill="currentColor" d="M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zm28.9-143.6L209.4 288H392c13.3 0 24-10.7 24-24v-16c0-13.3-10.7-24-24-24H209.4l75.5-72.4c9.7-9.3 9.9-24.8.4-34.3l-11-10.9c-9.4-9.4-24.6-9.4-33.9 0L107.7 239c-9.4 9.4-9.4 24.6 0 33.9l132.7 132.7c9.4 9.4 24.6 9.4 33.9 0l11-10.9c9.5-9.5 9.3-25-.4-34.3z"></path>` +
-      `   <path ng-show="{{direction == 'right'}}" fill="currentColor" d="M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z"></path>` +
-      ' </svg>' +
-      '</a>',
+    template: '<a title="{{buttontext}}" href="{{href}}" class="PageContent-HeaderDetails-navigation-button IconButton-button Link-link Link-link">' + ' <svg aria-hidden="true" data-prefix="fas" data-icon="arrow-circle-left" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 30px;" class="svg-inline--fa fa-arrow-circle-left fa-w-16 Icon-default">' + "  <path ng-show=\"{{direction == 'left'}}\"  fill=\"currentColor\" d=\"M256 504C119 504 8 393 8 256S119 8 256 8s248 111 248 248-111 248-248 248zm28.9-143.6L209.4 288H392c13.3 0 24-10.7 24-24v-16c0-13.3-10.7-24-24-24H209.4l75.5-72.4c9.7-9.3 9.9-24.8.4-34.3l-11-10.9c-9.4-9.4-24.6-9.4-33.9 0L107.7 239c-9.4 9.4-9.4 24.6 0 33.9l132.7 132.7c9.4 9.4 24.6 9.4 33.9 0l11-10.9c9.5-9.5 9.3-25-.4-34.3z\"></path>" + "   <path ng-show=\"{{direction == 'right'}}\" fill=\"currentColor\" d=\"M256 8c137 0 248 111 248 248S393 504 256 504 8 393 8 256 119 8 256 8zm-28.9 143.6l75.5 72.4H120c-13.3 0-24 10.7-24 24v16c0 13.3 10.7 24 24 24h182.6l-75.5 72.4c-9.7 9.3-9.9 24.8-.4 34.3l11 10.9c9.4 9.4 24.6 9.4 33.9 0L404.3 273c9.4-9.4 9.4-24.6 0-33.9L271.6 106.3c-9.4-9.4-24.6-9.4-33.9 0l-11 10.9c-9.5 9.6-9.3 25.1.4 34.4z\"></path>" + ' </svg>' + '</a>',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.clickButton = function () {
         scope.buttonclick();
-      }
+      };
+
       scope.text = scope.buttontext;
     }
-  }
+  };
 };
 
-
-
-
 /***/ }),
-/* 149 */
+/* 153 */
 /***/ (function(module, exports) {
 
 module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
@@ -4239,41 +6278,53 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPl
     },
     templateUrl: '/template/albumslist.jade',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.navToAlbum = function (id) {
         $location.path('/album/' + id);
-      }
+      };
+
       scope.navToArtist = function (id) {
         $location.path('/artist/' + id);
-      }
+      };
+
       scope.checkIfNowPlaying = function (id) {
         var selected = MediaPlayer.selectedTrack();
+
         if (selected) {
           return id === selected.album_id;
         }
+
         return false;
-      }
+      };
+
       scope.starAlbum = function (album) {
         Backend.info('starring album: ' + album.artist + " - " + album.name);
+
         if (album.starred === 'true') {
-          AlloyDbService.unstar({ album: album.id }).then(function (result) {
+          AlloyDbService.unstar({
+            album: album.id
+          }).then(function (result) {
             Backend.info('UnStarred');
             Backend.info(result);
             album.starred = 'false';
             AppUtilities.apply();
           });
         } else {
-          AlloyDbService.star({ album: album.id }).then(function (result) {
+          AlloyDbService.star({
+            album: album.id
+          }).then(function (result) {
             Backend.info('starred');
             Backend.info(result);
             album.starred = 'true';
             AppUtilities.apply();
           });
         }
-      }
+      };
+
       scope.playAlbum = function (album) {
         console.log(album);
         var album = AlloyDbService.getAlbum(album.id);
+
         if (album) {
           album.then(function (data) {
             Backend.debug('selection changed');
@@ -4281,13 +6332,13 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPl
             MediaPlayer.loadTrack(0);
           });
         }
-      }
+      };
     }
-  }
+  };
 };
 
 /***/ }),
-/* 150 */
+/* 154 */
 /***/ (function(module, exports) {
 
 module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
@@ -4299,58 +6350,66 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDb
     },
     templateUrl: 'template/artistlist.jade',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.navToArtist = function (id) {
         $location.path('/artist/' + id);
-      }
-      var testForLetter = function (character) {
+      };
+
+      var testForLetter = function testForLetter(character) {
         try {
           //Variable declarations can't start with digits or operators
           //If no error is thrown check for dollar or underscore. Those are the only nonletter characters that are allowed as identifiers
           eval("let " + character + ";");
-          let regExSpecial = /[^\$_]/;
+          var regExSpecial = /[^\$_]/;
           return regExSpecial.test(character);
-        }
-        catch (error) {
+        } catch (error) {
           return false;
         }
-      }
-      scope.getId = function (name) {
+      };
 
+      scope.getId = function (name) {
         if (!testForLetter(name.charAt(0).toUpperCase())) return 'symbol';
-        return name.charAt(0).toUpperCase()
-      }
+        return name.charAt(0).toUpperCase();
+      };
 
       scope.checkIfNowPlaying = function (id) {
         var selected = MediaPlayer.selectedTrack();
+
         if (selected) {
           return id === selected.base_id;
         }
+
         return false;
-      }
+      };
 
       scope.starArtist = function (artist) {
         Backend.info('starring artist: ' + artist.base_path);
+
         if (artist.starred === 'true') {
-          AlloyDbService.unstar({ artist: artist.base_id }).then(function (result) {
+          AlloyDbService.unstar({
+            artist: artist.base_id
+          }).then(function (result) {
             Backend.info('UnStarred');
             Backend.info(result);
             artist.starred = 'false';
             AppUtilities.apply();
           });
         } else {
-          AlloyDbService.star({ artist: artist.base_id }).then(function (result) {
+          AlloyDbService.star({
+            artist: artist.base_id
+          }).then(function (result) {
             Backend.info('starred');
             Backend.info(result);
             artist.starred = 'true';
             AppUtilities.apply();
           });
         }
-      }
+      };
 
       scope.playArtist = function (artist) {
         console.log(artist);
         var artist = AlloyDbService.getArtist(artist.base_id);
+
         if (artist) {
           artist.then(function (artist) {
             Backend.debug('selection changed');
@@ -4358,14 +6417,13 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDb
             MediaPlayer.loadTrack(0);
           });
         }
-      }
+      };
     }
-  }
+  };
 };
 
-
 /***/ }),
-/* 151 */
+/* 155 */
 /***/ (function(module, exports) {
 
 module.exports = function ($rootScope, $location, Backend, MediaPlayer, AlloyDbService) {
@@ -4376,22 +6434,26 @@ module.exports = function ($rootScope, $location, Backend, MediaPlayer, AlloyDbS
       hasjumpbar: '@'
     },
     templateUrl: 'template/genrelist.jade',
-
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.navToGenre = function (id) {
         $location.path('/genre/' + id);
-      }
+      };
+
       scope.checkIfNowPlaying = function (id) {
         var selected = MediaPlayer.selectedTrack();
+
         if (selected) {
           return id === selected.genre_id;
         }
+
         return false;
-      }
+      };
+
       scope.playGenre = function (genre) {
         console.log(genre);
         var genre = AlloyDbService.getGenre(genre.id);
+
         if (genre) {
           genre.then(function (data) {
             Backend.debug('selection changed');
@@ -4399,13 +6461,13 @@ module.exports = function ($rootScope, $location, Backend, MediaPlayer, AlloyDbS
             MediaPlayer.loadTrack(0);
           });
         }
-      }
+      };
     }
-  }
+  };
 };
 
 /***/ }),
-/* 152 */
+/* 156 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(_) {module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
@@ -4413,89 +6475,102 @@ module.exports = function ($rootScope, $location, Backend, MediaPlayer, AlloyDbS
     restrict: 'E',
     scope: {
       data: '=',
-      showartist:'@',
-      showalbum:'@',
+      showartist: '@',
+      showalbum: '@',
       hasjumpbar: '@'
     },
     templateUrl: '/template/tracklist.jade',
-
     replace: true,
-    link: function (scope, elm, attrs) {
-      scope.navToAlbum = function(id){
+    link: function link(scope, elm, attrs) {
+      scope.navToAlbum = function (id) {
         $location.path('/album/' + id);
-      }
-      scope.navToArtist = function(id){
+      };
+
+      scope.navToArtist = function (id) {
         $location.path('/artist/' + id);
-      }
-      scope.navToGenre = function(id){
+      };
+
+      scope.navToGenre = function (id) {
         $location.path('/genre/' + id);
-      }
+      };
 
       scope.requestPlay = function (id) {
         Backend.debug('selection changed');
+        scope.data.forEach(function (track) {
+          track.selected = null;
+        });
         $rootScope.tracks = scope.data;
+
         var index = _.findIndex($rootScope.tracks, function (track) {
           return track.id === id;
         });
+
         MediaPlayer.loadTrack(index);
-      }
+      };
 
       scope.checkIfNowPlaying = function (id) {
         var selected = MediaPlayer.selectedTrack();
+
         if (selected) {
           return id === selected.id;
         }
+
         return false;
-      }
+      };
 
       scope.starTrack = function (track) {
         Backend.info('starring track: ' + track.artist + " - " + track.title);
+
         if (track.starred === 'true') {
-          AlloyDbService.unstar({ id: track.id }).then(function (result) {
+          AlloyDbService.unstar({
+            id: track.id
+          }).then(function (result) {
             if ($rootScope.settings.alloydb.alloydb_love_tracks === true) {
-              AlloyDbService.unlove({ id: track.id })
+              AlloyDbService.unlove({
+                id: track.id
+              });
             }
+
             Backend.info('UnStarred');
             Backend.info(result);
             track.starred = 'false';
             $timeout(function () {
               AppUtilities.apply();
-            })
+            });
           });
         } else {
-          AlloyDbService.star({ id: track.id }).then(function (result) {
+          AlloyDbService.star({
+            id: track.id
+          }).then(function (result) {
             if ($rootScope.settings.alloydb.alloydb_love_tracks === true) {
-              AlloyDbService.love({ id: track.id })
+              AlloyDbService.love({
+                id: track.id
+              });
             }
+
             Backend.info('starred');
             Backend.info(result);
             track.starred = 'true';
             $timeout(function () {
               AppUtilities.apply();
-            })
-
+            });
           });
         }
-
-
-
-
-      }
+      };
 
       scope.$watch('data', function (newVal, oldVal) {
         AppUtilities.apply();
       });
-
     }
-  }
+  };
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17)))
 
 /***/ }),
-/* 153 */
+/* 157 */
 /***/ (function(module, exports) {
 
-module.exports = function(Backend, AppUtilities, AlloyDbService) {
+module.exports = function (Backend, AppUtilities, AlloyDbService) {
   return {
     restrict: "E",
     scope: {
@@ -4503,26 +6578,21 @@ module.exports = function(Backend, AppUtilities, AlloyDbService) {
     },
     templateUrl: "/template/queuelist.jade",
     replace: true,
-    link: function(scope, elm, attrs) {
-      scope.makePercent = function(percent) {
+    link: function link(scope, elm, attrs) {
+      scope.makePercent = function (percent) {
         return percent.value + "%";
       };
 
-      scope.humanFileSize = function(size) {
+      scope.humanFileSize = function (size) {
         var i = Math.floor(Math.log(size.value) / Math.log(1024));
-        return (
-          (size.value / Math.pow(1024, i)).toFixed(2) * 1 +
-          " " +
-          ["B", "kB", "MB", "GB", "TB"][i]
-        );
+        return (size.value / Math.pow(1024, i)).toFixed(2) * 1 + " " + ["B", "kB", "MB", "GB", "TB"][i];
       };
     }
   };
 };
 
-
 /***/ }),
-/* 154 */
+/* 158 */
 /***/ (function(module, exports) {
 
 module.exports = function (Backend, AppUtilities, AlloyDbService) {
@@ -4533,14 +6603,12 @@ module.exports = function (Backend, AppUtilities, AlloyDbService) {
     },
     templateUrl: '/template/blacklist.jade',
     replace: true,
-    link: function (scope, elm, attrs) {
-      
-    }
-  }
+    link: function link(scope, elm, attrs) {}
+  };
 };
 
 /***/ }),
-/* 155 */
+/* 159 */
 /***/ (function(module, exports) {
 
 module.exports = function (Backend, AppUtilities, AlloyDbService) {
@@ -4551,14 +6619,12 @@ module.exports = function (Backend, AppUtilities, AlloyDbService) {
     },
     templateUrl: '/template/historylist.jade',
     replace: true,
-    link: function (scope, elm, attrs) {
-      
-    }
-  }
+    link: function link(scope, elm, attrs) {}
+  };
 };
 
 /***/ }),
-/* 156 */
+/* 160 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = function () {
@@ -4568,34 +6634,33 @@ module.exports = function (Backend, AppUtilities, AlloyDbService) {
       data: '=',
       buttonclick: '&'
     },
-    template:
-      '<div class="PageJumpBar-jumpBar">' +
-      '   <div class="PageJumpBar-jumpBarItems">' +
-      '     <a href="#" class="Link-link PageJumpBarItem-jumpBarItem" ng-repeat="artist in data" ng-click="clickButton(artist.name)">{{artist.name}}</a>' +
-      '  </div>' +
-      '</div>',
+    template: '<div class="PageJumpBar-jumpBar">' + '   <div class="PageJumpBar-jumpBarItems">' + '     <a href="#" class="Link-link PageJumpBarItem-jumpBarItem" ng-repeat="artist in data" ng-click="clickButton(artist.name)">{{artist.name}}</a>' + '  </div>' + '</div>',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.clickButton = function (x) {
         if (x === '#') {
           $("#symbol")[0].scrollIntoView({
-            behavior: "smooth", // or "auto" or "instant"
+            behavior: "smooth",
+            // or "auto" or "instant"
             block: "start" // or "end"
+
           });
         } else {
           $("#" + x)[0].scrollIntoView({
-            behavior: "smooth", // or "auto" or "instant"
+            behavior: "smooth",
+            // or "auto" or "instant"
             block: "start" // or "end"
+
           });
         }
-      }
+      };
     }
-  }
+  };
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 157 */
+/* 161 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -4608,20 +6673,18 @@ module.exports = function () {
       href: "@"
     },
     // object is passed while making the call
-    templateUrl:'/template/detaillabel.jade',
+    templateUrl: '/template/detaillabel.jade',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.clickButton = function () {
         scope.buttonclick();
-      }
+      };
     }
-  }
+  };
 };
 
-
-
 /***/ }),
-/* 158 */
+/* 162 */
 /***/ (function(module, exports) {
 
 module.exports = function () {
@@ -4632,40 +6695,33 @@ module.exports = function () {
     },
     // object is passed while making the call
     template: "",
-    link: function (scope, element, attrs) {
-
+    link: function link(scope, element, attrs) {
       if (attrs.mini) {
-        var t = '<svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 20px;" class="svg-inline--fa fa-chevron-circle-up fa-w-16 Icon-default">' +
-          '	<path fill="currentColor" d="M8 256C8 119 119 8 256 8s248 111 248 248-111 248-248 248S8 393 8 256zm231-113.9L103.5 277.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c9.4 9.4 24.6 9.4 33.9 0L256 226.9l101.6 101.6c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L273 142.1c-9.4-9.4-24.6-9.4-34 0z"></path>' +
-          '</svg>';
+        var t = '<svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-up" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 20px;" class="svg-inline--fa fa-chevron-circle-up fa-w-16 Icon-default">' + '	<path fill="currentColor" d="M8 256C8 119 119 8 256 8s248 111 248 248-111 248-248 248S8 393 8 256zm231-113.9L103.5 277.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c9.4 9.4 24.6 9.4 33.9 0L256 226.9l101.6 101.6c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L273 142.1c-9.4-9.4-24.6-9.4-34 0z"></path>' + '</svg>';
         element.html(t);
       } else {
-        var t = '<span title="Hide albums">' +
-          '  <svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-{{direction}}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 24px;" class="svg-inline--fa fa-chevron-circle-down fa-w-16 ExpanderContainer-expandButtonIcon ExpanderContainer-actionButton IconButton-button Link-link Icon-default">';
+        var t = '<span title="Hide albums">' + '  <svg aria-hidden="true" data-prefix="fas" data-icon="chevron-circle-{{direction}}" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="font-size: 24px;" class="svg-inline--fa fa-chevron-circle-down fa-w-16 ExpanderContainer-expandButtonIcon ExpanderContainer-actionButton IconButton-button Link-link Icon-default">';
 
         switch (scope.direction) {
           case 'up':
             t += '	<path fill="currentColor" d="M8 256C8 119 119 8 256 8s248 111 248 248-111 248-248 248S8 393 8 256zm231-113.9L103.5 277.6c-9.4 9.4-9.4 24.6 0 33.9l17 17c9.4 9.4 24.6 9.4 33.9 0L256 226.9l101.6 101.6c9.4 9.4 24.6 9.4 33.9 0l17-17c9.4-9.4 9.4-24.6 0-33.9L273 142.1c-9.4-9.4-24.6-9.4-34 0z"></path>';
             break;
+
           case 'down':
             t += '   <path fill="currentColor" d="M504 256c0 137-111 248-248 248S8 393 8 256 119 8 256 8s248 111 248 248zM273 369.9l135.5-135.5c9.4-9.4 9.4-24.6 0-33.9l-17-17c-9.4-9.4-24.6-9.4-33.9 0L256 285.1 154.4 183.5c-9.4-9.4-24.6-9.4-33.9 0l-17 17c-9.4 9.4-9.4 24.6 0 33.9L239 369.9c9.4 9.4 24.6 9.4 34 0z"></path>';
             break;
         }
 
-        t += '  </svg>' +
-          '</span>';
-
+        t += '  </svg>' + '</span>';
         element.html(t);
       }
-
-
     },
     replace: true
-  }
+  };
 };
 
 /***/ }),
-/* 159 */
+/* 163 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function($) {module.exports = function () {
@@ -4677,25 +6733,17 @@ module.exports = function () {
       data: '='
     },
     // object is passed while making the call
-    templateUrl:'/template/popoverbutton.jade',
+    templateUrl: '/template/popoverbutton.jade',
     replace: true,
-
-    link: function (scope, elm, attrs) {
-      console.log('linking')
+    link: function link(scope, elm, attrs) {
+      console.log('linking');
       scope.$watch('data', function (newVal, oldVal) {
         if (scope.data) {
-          var t = '<div class="popover" role="tooltip">' +
-            '<div class="arrow">' +
-            '</div>' +
-            '<h3 class="popover-header"></h3>' +
-            '<div class="popover-body"></div>' +
-            '</div>';
+          var t = '<div class="popover" role="tooltip">' + '<div class="arrow">' + '</div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div>' + '</div>';
           var content = [];
-          scope.data.forEach(tag => {
-            content.push("<div class='Details-Label Label-label Label-default Label-large'>" + tag.name + "</div>")
+          scope.data.forEach(function (tag) {
+            content.push("<div class='Details-Label Label-label Label-default Label-large'>" + tag.name + "</div>");
           });
-
-
           $('body').popover({
             html: true,
             selector: '[rel=popover-button-selector]',
@@ -4703,17 +6751,17 @@ module.exports = function () {
             template: t,
             content: content.join(''),
             container: '.PageContentBody-contentBody',
-            placement: "bottom",
+            placement: "bottom"
           });
         }
       });
     }
-  }
+  };
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 160 */
+/* 164 */
 /***/ (function(module, exports) {
 
 module.exports = function ($timeout) {
@@ -4725,25 +6773,25 @@ module.exports = function ($timeout) {
       onclick: '&',
       coverwidth: '@',
       coverheight: '@',
-      width: '@',
+      width: '@'
     },
     // object is passed while making the call
     template: '<div id="player" style="overflow: hidden;"/>',
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: function link(scope, elm, attrs) {
       scope.$watch('data', function (newVal, oldVal) {
         if (scope.data.length > 0) {
           $timeout(function () {
             scope.clickButton = function (idx, link) {
               scope.onclick(idx, link);
-            }
+            };
 
             scope.coverflow = coverflow('player').setup({
               playlist: scope.data,
               width: scope.width,
               coverwidth: scope.coverwidth,
               coverheight: scope.coverheight,
-              fixedsize: true,
+              fixedsize: true
             }).on('ready', function () {
               this.on('focus', scope.onfocus);
               this.on('click', scope.clickButton);
@@ -4752,49 +6800,46 @@ module.exports = function ($timeout) {
         }
       });
     }
-  }
+  };
 };
 
 /***/ }),
-/* 161 */
+/* 165 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_artist_component__ = __webpack_require__(162);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__artists_artists_component__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__album_album_component__ = __webpack_require__(169);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__albums_albums_component__ = __webpack_require__(172);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__fresh_fresh_component__ = __webpack_require__(175);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__ = __webpack_require__(178);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__genre_genre_component__ = __webpack_require__(181);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__genres_genres_component__ = __webpack_require__(184);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__home_home_component__ = __webpack_require__(187);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__index_index_component__ = __webpack_require__(190);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__navbar_navbar_component__ = __webpack_require__(191);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__playing_playing_component__ = __webpack_require__(194);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__playlist_playlist_component__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__playlists_playlists_component__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__podcasts_podcasts_component__ = __webpack_require__(203);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__sidenav_sidenav_component__ = __webpack_require__(206);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__config_config_component__ = __webpack_require__(209);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__config_general_configGeneral_component__ = __webpack_require__(212);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__config_alloydb_configAlloyDb_Component__ = __webpack_require__(213);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__config_sabnzbd_configSabnzbd_component__ = __webpack_require__(214);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__config_scheduler_configScheduler_component__ = __webpack_require__(238);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__activity_activity_component__ = __webpack_require__(239);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__activity_general_activityGeneral_component__ = __webpack_require__(240);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__activity_queue_activityQueue_component__ = __webpack_require__(241);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__activity_history_activityHistory_component__ = __webpack_require__(242);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__activity_blacklist_activityBlacklist_component__ = __webpack_require__(243);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__starred_starred_component__ = __webpack_require__(244);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__status_status_component__ = __webpack_require__(247);
-
-
-//Page Components
-
-
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_artist_component__ = __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__artists_artists_component__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__album_album_component__ = __webpack_require__(173);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__albums_albums_component__ = __webpack_require__(176);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__fresh_fresh_component__ = __webpack_require__(179);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__genre_genre_component__ = __webpack_require__(185);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__genres_genres_component__ = __webpack_require__(188);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__home_home_component__ = __webpack_require__(191);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__index_index_component__ = __webpack_require__(194);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__navbar_navbar_component__ = __webpack_require__(195);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__playing_playing_component__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__playlist_playlist_component__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__playlists_playlists_component__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__podcasts_podcasts_component__ = __webpack_require__(207);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__sidenav_sidenav_component__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__config_config_component__ = __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__config_general_configGeneral_component__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__config_alloydb_configAlloyDb_Component__ = __webpack_require__(217);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__config_mediapaths_configMediaPaths_component__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__config_sabnzbd_configSabnzbd_component__ = __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__config_scheduler_configScheduler_component__ = __webpack_require__(243);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__activity_activity_component__ = __webpack_require__(244);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_24__activity_general_activityGeneral_component__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__activity_queue_activityQueue_component__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__activity_history_activityHistory_component__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__activity_blacklist_activityBlacklist_component__ = __webpack_require__(248);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__starred_starred_component__ = __webpack_require__(249);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__status_status_component__ = __webpack_require__(252);
+ //Page Components
 
 
 
@@ -4822,229 +6867,195 @@ module.exports = function ($timeout) {
 
 
 
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a
-  .module('app.components', [])
-  .component('artist', __WEBPACK_IMPORTED_MODULE_1__artist_artist_component__["a" /* default */])
-  .component('artists', __WEBPACK_IMPORTED_MODULE_2__artists_artists_component__["a" /* default */])
-  .component('album', __WEBPACK_IMPORTED_MODULE_3__album_album_component__["a" /* default */])
-  .component('albums', __WEBPACK_IMPORTED_MODULE_4__albums_albums_component__["a" /* default */])
-  .component('fresh', __WEBPACK_IMPORTED_MODULE_5__fresh_fresh_component__["a" /* default */])
-  .component('footer', __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__["a" /* default */])
-  .component('genre', __WEBPACK_IMPORTED_MODULE_7__genre_genre_component__["a" /* default */])
-  .component('genres', __WEBPACK_IMPORTED_MODULE_8__genres_genres_component__["a" /* default */])
-  .component('home', __WEBPACK_IMPORTED_MODULE_9__home_home_component__["a" /* default */])
-  .component('index', __WEBPACK_IMPORTED_MODULE_10__index_index_component__["a" /* default */])
-  .component('header', __WEBPACK_IMPORTED_MODULE_11__navbar_navbar_component__["a" /* default */])
-  .component('playing', __WEBPACK_IMPORTED_MODULE_12__playing_playing_component__["a" /* default */])
-  .component('playlist', __WEBPACK_IMPORTED_MODULE_13__playlist_playlist_component__["a" /* default */])
-  .component('playlists', __WEBPACK_IMPORTED_MODULE_14__playlists_playlists_component__["a" /* default */])
-  .component('podcasts', __WEBPACK_IMPORTED_MODULE_15__podcasts_podcasts_component__["a" /* default */])
-  .component('sidenav', __WEBPACK_IMPORTED_MODULE_16__sidenav_sidenav_component__["a" /* default */])
-  .component('config', __WEBPACK_IMPORTED_MODULE_17__config_config_component__["a" /* default */])
-  .component('configgeneral', __WEBPACK_IMPORTED_MODULE_18__config_general_configGeneral_component__["a" /* default */])
-  .component('configalloydb', __WEBPACK_IMPORTED_MODULE_19__config_alloydb_configAlloyDb_Component__["a" /* default */])
-  .component('configsabnzbd', __WEBPACK_IMPORTED_MODULE_20__config_sabnzbd_configSabnzbd_component__["a" /* default */])
-  .component('configscheduler', __WEBPACK_IMPORTED_MODULE_21__config_scheduler_configScheduler_component__["a" /* default */])
-  .component('activity', __WEBPACK_IMPORTED_MODULE_22__activity_activity_component__["a" /* default */])
-  .component('activitygeneral', __WEBPACK_IMPORTED_MODULE_23__activity_general_activityGeneral_component__["a" /* default */])
-  .component('activityqueue', __WEBPACK_IMPORTED_MODULE_24__activity_queue_activityQueue_component__["a" /* default */])
-  .component('activityhistory', __WEBPACK_IMPORTED_MODULE_25__activity_history_activityHistory_component__["a" /* default */])
-  .component('activityblacklist', __WEBPACK_IMPORTED_MODULE_26__activity_blacklist_activityBlacklist_component__["a" /* default */])
-  .component('starred', __WEBPACK_IMPORTED_MODULE_27__starred_starred_component__["a" /* default */])
-  .component('status', __WEBPACK_IMPORTED_MODULE_28__status_status_component__["a" /* default */]));
 
+
+
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('app.components', []).component('artist', __WEBPACK_IMPORTED_MODULE_1__artist_artist_component__["a" /* default */]).component('artists', __WEBPACK_IMPORTED_MODULE_2__artists_artists_component__["a" /* default */]).component('album', __WEBPACK_IMPORTED_MODULE_3__album_album_component__["a" /* default */]).component('albums', __WEBPACK_IMPORTED_MODULE_4__albums_albums_component__["a" /* default */]).component('fresh', __WEBPACK_IMPORTED_MODULE_5__fresh_fresh_component__["a" /* default */]).component('footer', __WEBPACK_IMPORTED_MODULE_6__footer_footer_component__["a" /* default */]).component('genre', __WEBPACK_IMPORTED_MODULE_7__genre_genre_component__["a" /* default */]).component('genres', __WEBPACK_IMPORTED_MODULE_8__genres_genres_component__["a" /* default */]).component('home', __WEBPACK_IMPORTED_MODULE_9__home_home_component__["a" /* default */]).component('index', __WEBPACK_IMPORTED_MODULE_10__index_index_component__["a" /* default */]).component('header', __WEBPACK_IMPORTED_MODULE_11__navbar_navbar_component__["a" /* default */]).component('playing', __WEBPACK_IMPORTED_MODULE_12__playing_playing_component__["a" /* default */]).component('playlist', __WEBPACK_IMPORTED_MODULE_13__playlist_playlist_component__["a" /* default */]).component('playlists', __WEBPACK_IMPORTED_MODULE_14__playlists_playlists_component__["a" /* default */]).component('podcasts', __WEBPACK_IMPORTED_MODULE_15__podcasts_podcasts_component__["a" /* default */]).component('sidenav', __WEBPACK_IMPORTED_MODULE_16__sidenav_sidenav_component__["a" /* default */]).component('config', __WEBPACK_IMPORTED_MODULE_17__config_config_component__["a" /* default */]).component('configgeneral', __WEBPACK_IMPORTED_MODULE_18__config_general_configGeneral_component__["a" /* default */]).component('configalloydb', __WEBPACK_IMPORTED_MODULE_19__config_alloydb_configAlloyDb_Component__["a" /* default */]).component('configmediapaths', __WEBPACK_IMPORTED_MODULE_20__config_mediapaths_configMediaPaths_component__["a" /* default */]).component('configsabnzbd', __WEBPACK_IMPORTED_MODULE_21__config_sabnzbd_configSabnzbd_component__["a" /* default */]).component('configscheduler', __WEBPACK_IMPORTED_MODULE_22__config_scheduler_configScheduler_component__["a" /* default */]).component('activity', __WEBPACK_IMPORTED_MODULE_23__activity_activity_component__["a" /* default */]).component('activitygeneral', __WEBPACK_IMPORTED_MODULE_24__activity_general_activityGeneral_component__["a" /* default */]).component('activityqueue', __WEBPACK_IMPORTED_MODULE_25__activity_queue_activityQueue_component__["a" /* default */]).component('activityhistory', __WEBPACK_IMPORTED_MODULE_26__activity_history_activityHistory_component__["a" /* default */]).component('activityblacklist', __WEBPACK_IMPORTED_MODULE_27__activity_blacklist_activityBlacklist_component__["a" /* default */]).component('starred', __WEBPACK_IMPORTED_MODULE_28__starred_starred_component__["a" /* default */]).component('status', __WEBPACK_IMPORTED_MODULE_29__status_status_component__["a" /* default */]));
 
 /***/ }),
-/* 162 */
+/* 166 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artist_scss__ = __webpack_require__(163);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__artist_scss__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__glidejs_glide__ = __webpack_require__(165);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_scss__ = __webpack_require__(167);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__artist_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__glidejs_glide__ = __webpack_require__(169);
 
 
 
 
-class ArtistController {
-  constructor($scope, $rootScope, $routeParams, $compile, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$routeParams = $routeParams;
-    this.$compile = $compile;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.MediaPlayer = MediaPlayer;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('artist-controller');
-    this.AppUtilities.showLoader();
-    $scope.artistName = '';
-    $scope.artist = {};
-    $scope.artist = {};
-    $scope.albums = [];
-    $scope.tracks = [];
-    $scope.all_expanded = false;
-    $scope.albums_expanded = true;
-    $scope.tracks_expanded = false;
-    $('#trackListContainer').hide();
+var ArtistController = function ArtistController($scope, $rootScope, $routeParams, $compile, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  "ngInject";
 
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ArtistController);
 
-    var that = this;
-   
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
-    }
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$routeParams = $routeParams;
+  this.$compile = $compile;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.MediaPlayer = MediaPlayer;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('artist-controller');
+  this.AppUtilities.showLoader();
+  $scope.artistName = '';
+  $scope.artist = {};
+  $scope.artist = {};
+  $scope.albums = [];
+  $scope.tracks = [];
+  $scope.all_expanded = false;
+  $scope.albums_expanded = true;
+  $scope.tracks_expanded = false;
+  $('#trackListContainer').hide();
+  var that = this;
 
-    $scope.toggleAlbums = function () {
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
-      $scope.albums_expanded = !$scope.albums_expanded;
-    }
+  $scope.getCoverArt = function (id) {
+    return that.AlloyDbService.getCoverArt(id);
+  };
 
-    $scope.toggleTracks = function () {
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
-      $scope.tracks_expanded = !$scope.tracks_expanded;
-    }
+  $scope.toggleAlbums = function () {
+    if ($scope.albums_expanded) $('#albumListContainer').hide();else $('#albumListContainer').show();
+    $scope.albums_expanded = !$scope.albums_expanded;
+  };
 
-    $scope.toggleAll = function () {
-      $scope.tracks_expanded = $scope.all_expanded;
-      $scope.albums_expanded = $scope.all_expanded;
+  $scope.toggleTracks = function () {
+    if ($scope.tracks_expanded) $('#trackListContainer').hide();else $('#trackListContainer').show();
+    $scope.tracks_expanded = !$scope.tracks_expanded;
+  };
 
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
+  $scope.toggleAll = function () {
+    $scope.tracks_expanded = $scope.all_expanded;
+    $scope.albums_expanded = $scope.all_expanded;
+    if ($scope.albums_expanded) $('#albumListContainer').hide();else $('#albumListContainer').show();
+    if ($scope.tracks_expanded) $('#trackListContainer').hide();else $('#trackListContainer').show();
+    $scope.all_expanded = !$scope.all_expanded;
+  };
 
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
+  $scope.getTags = function (obj) {
+    return obj;
+  };
 
-      $scope.all_expanded = !$scope.all_expanded;
-    }
+  $scope.getArtist = function () {
+    var artist = that.AlloyDbService.getArtist($routeParams.id);
 
-    $scope.getTags = function(obj){
-      return obj;
-    }
+    if (artist) {
+      artist.then(function (artist) {
+        $scope.artist = artist;
+        $scope.artistName = artist.name;
+        $scope.artist.albums.forEach(function (album) {
+          album.cover_art = $scope.getCoverArt(album.cover_art);
+        });
+        $scope.tracks = artist.tracks;
+        var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
 
-    $scope.getArtist = function () {
+        if (artistInfo) {
+          artistInfo.then(function (info) {
+            if (info.artistInfo) {
+              $scope.artistInfo = info.artistInfo;
+              angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope)); // $('#linkContainer').append('<popoverbutton buttontext="Tags" buttonicon="fa-tags" data="artistInfo.tags.tag"><popoverbutton>')
 
-      var artist = that.AlloyDbService.getArtist($routeParams.id);
-      if (artist) {
-        artist.then(function (artist) {
-
-          $scope.artist = artist;
-          $scope.artistName = artist.name;
-          $scope.artist.albums.forEach(function (album) {
-            album.cover_art = $scope.getCoverArt(album.cover_art);
-          })
-
-          $scope.tracks = artist.tracks;
-
-
-
-          var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
-          if (artistInfo) {
-            artistInfo.then(function (info) {
-              if (info.artistInfo) {
-                $scope.artistInfo = info.artistInfo;
-
-                angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope));
-
-               // $('#linkContainer').append('<popoverbutton buttontext="Tags" buttonicon="fa-tags" data="artistInfo.tags.tag"><popoverbutton>')
-
-
-                if ($scope.artistInfo.bio) {
-                  $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-                }
-                if ($scope.artistInfo.similar) {
-                  $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-                }
-                if ($scope.artistInfo.image) {
-                  $scope.artistInfo.image.forEach(function (image) {
-                    if (image['@'].size === 'large') {
-                      $scope.artistImage = image['#'];
-                    }
-                    if (image['@'].size === 'extralarge') {
-                      $scope.artistImage = image['#'];
-                    }
-                  });
-                }
-                that.AppUtilities.apply();
-                that.AppUtilities.hideLoader();
-              } else {
-                that.AppUtilities.hideLoader();
+              if ($scope.artistInfo.bio) {
+                $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
               }
-            });
-          }
 
-          that.AppUtilities.apply();
-        });
-      }
-    };
+              if ($scope.artistInfo.similar) {
+                $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+              }
 
-    $scope.refresh = function () {
-      that.Backend.debug('refresh artist');
-      $scope.getArtist();
-    };
+              if ($scope.artistInfo.image) {
+                $scope.artistInfo.image.forEach(function (image) {
+                  if (image['@'].size === 'large') {
+                    $scope.artistImage = image['#'];
+                  }
 
-    $scope.startRadio = function () {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
-        that.Backend.debug('starting radio');
-        $rootScope.tracks = similarSongs.song;
-        MediaPlayer.loadTrack(0);
+                  if (image['@'].size === 'extralarge') {
+                    $scope.artistImage = image['#'];
+                  }
+                });
+              }
+
+              that.AppUtilities.apply();
+              that.AppUtilities.hideLoader();
+            } else {
+              that.AppUtilities.hideLoader();
+            }
+          });
+        }
+
+        that.AppUtilities.apply();
       });
-    };
+    }
+  };
 
-    $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
-      that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
-      that.MediaPlayer.loadTrack(0);
-    };
-
-    $scope.starArtist = function () {
-      that.Backend.info('starring artist: ' + $scope.artist);
-      if ($scope.artist.starred === 'true') {
-        that.AlloyDbService.unstar({ artist: that.$routeParams.id }).then(function (result) {
-          that.Backend.info('UnStarred');
-          that.Backend.info(result);
-          that.$scope.artist.starred = 'false'
-          that.AppUtilities.apply();
-        });
-      } else {
-        that.AlloyDbService.star({ artist: that.$routeParams.id }).then(function (result) {
-          that.Backend.info('starred');
-          that.Backend.info(result);
-          that.$scope.artist.starred = 'true'
-          that.AppUtilities.apply();
-        });
-      }
-    };
-
-   
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Artist reload on loginsatuschange');
-      $scope.getArtist();
-    });
-
+  $scope.refresh = function () {
+    that.Backend.debug('refresh artist');
     $scope.getArtist();
-  }
-}
+  };
 
+  $scope.startRadio = function () {
+    AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
+      that.Backend.debug('starting radio');
+      $rootScope.tracks = similarSongs.song;
+      MediaPlayer.loadTrack(0);
+    });
+  };
+
+  $scope.shuffle = function () {
+    that.Backend.debug('shuffle play');
+    that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
+    that.MediaPlayer.loadTrack(0);
+  };
+
+  $scope.starArtist = function () {
+    that.Backend.info('starring artist: ' + $scope.artist);
+
+    if ($scope.artist.starred === 'true') {
+      that.AlloyDbService.unstar({
+        artist: that.$routeParams.id
+      }).then(function (result) {
+        that.Backend.info('UnStarred');
+        that.Backend.info(result);
+        that.$scope.artist.starred = 'false';
+        that.AppUtilities.apply();
+      });
+    } else {
+      that.AlloyDbService.star({
+        artist: that.$routeParams.id
+      }).then(function (result) {
+        that.Backend.info('starred');
+        that.Backend.info(result);
+        that.$scope.artist.starred = 'true';
+        that.AppUtilities.apply();
+      });
+    }
+  };
+
+  $rootScope.$on('loginStatusChange', function (event, data) {
+    that.Backend.debug('Artist reload on loginsatuschange');
+    $scope.getArtist();
+  });
+  $scope.getArtist();
+};
+
+ArtistController.$inject = ["$scope", "$rootScope", "$routeParams", "$compile", "AppUtilities", "Backend", "MediaPlayer", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ArtistController,
   templateUrl: '/template/artist.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 163 */
+/* 167 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(164);
+var content = __webpack_require__(168);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5069,7 +7080,7 @@ if(false) {
 }
 
 /***/ }),
-/* 164 */
+/* 168 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5083,46 +7094,51 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 165 */,
-/* 166 */
+/* 169 */,
+/* 170 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artists_scss__ = __webpack_require__(167);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__artists_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__artists_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artists_scss__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__artists_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__artists_scss__);
 
-class ArtistsController {
-  constructor($scope, $rootScope, $timeout, $location, $anchorScroll, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$location = $location;
-    this.$anchorScroll = $anchorScroll;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.MediaPlayer = MediaPlayer;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('artists-controller');
-    this.AppUtilities.showLoader();
 
-    $scope.refresh = function () {
-      AlloyDbService.refreshArtists();
+
+var ArtistsController = function ArtistsController($scope, $rootScope, $timeout, $location, $anchorScroll, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ArtistsController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$location = $location;
+  this.$anchorScroll = $anchorScroll;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.MediaPlayer = MediaPlayer;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('artists-controller');
+  this.AppUtilities.showLoader();
+
+  $scope.refresh = function () {
+    AlloyDbService.refreshArtists();
+  };
+
+  $scope.jumpBarClick = function () {
+    console.log('jump bar clicked');
+  };
+
+  $rootScope.$watch('artists', function (newVal, oldVal) {
+    if ($rootScope.artists) {
+      AppUtilities.apply();
+      AppUtilities.hideLoader();
     }
+  });
+};
 
-    $scope.jumpBarClick = function () {
-      console.log('jump bar clicked');
-
-    }
-
-    $rootScope.$watch('artists', function (newVal, oldVal) {
-      if ($rootScope.artists) {
-        AppUtilities.apply();
-        AppUtilities.hideLoader();        
-      }
-    });
-  }
-}
-
+ArtistsController.$inject = ["$scope", "$rootScope", "$timeout", "$location", "$anchorScroll", "AppUtilities", "Backend", "MediaPlayer", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ArtistsController,
@@ -5130,13 +7146,13 @@ class ArtistsController {
 });
 
 /***/ }),
-/* 167 */
+/* 171 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(168);
+var content = __webpack_require__(172);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5161,7 +7177,7 @@ if(false) {
 }
 
 /***/ }),
-/* 168 */
+/* 172 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5175,201 +7191,210 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 169 */
+/* 173 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__album_scss__ = __webpack_require__(170);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__album_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__album_scss__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__album_scss__ = __webpack_require__(174);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__album_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__album_scss__);
 
-class AlbumController {
-  constructor($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.MediaPlayer = MediaPlayer;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('artist-controller');
-    this.AppUtilities.showLoader();
-    $scope.album = {};
-    $scope.tracks = [];
-    $scope.albumName = '';
-    $scope.artistName = '';
-    var that = this;
-    
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
-    }
 
-    $scope.getArtistInfo = function (data) {
-      if (data) {
-        data.forEach(function (info) {
-          if (info.artistInfo) {
-            $scope.artistInfo = info.artistInfo;
-            if ($scope.artistInfo.bio) {
-              $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-            }
-            if ($scope.artistInfo.similar) {
-              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-            }
-            if ($scope.artistInfo.image) {
-              $scope.artistInfo.image.forEach(function (image) {
-                if (image['@'].size === 'extralarge') {
-                  //that.AppUtilities.setContentBackground(image['#']);
-                }
-              });
-            }
+
+var AlbumController = function AlbumController($scope, $rootScope, $routeParams, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, AlbumController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.MediaPlayer = MediaPlayer;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug("artist-controller");
+  this.AppUtilities.showLoader();
+  $scope.album = {};
+  $scope.tracks = [];
+  $scope.albumName = "";
+  $scope.artistName = "";
+  var that = this;
+
+  $scope.getCoverArt = function (id) {
+    return that.AlloyDbService.getCoverArt(id);
+  };
+
+  $scope.getArtistInfo = function (data) {
+    if (data) {
+      data.forEach(function (info) {
+        if (info.artistInfo) {
+          $scope.artistInfo = info.artistInfo;
+
+          if ($scope.artistInfo.bio) {
+            $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
           }
-        });
-      }
-    };
-    $scope.getAlbumInfo = function (data) {
-      if (data) {
-        data.forEach(function (info) {
-          if (info.albumInfo) {
-            $scope.albumInfo = info.albumInfo;
-            if ($scope.albumInfo.image) {
-              $scope.artistInfo.image.forEach(function (image) {
-                if (image['@'].size === 'extralarge') {
-                  //that.AppUtilities.setContentBackground(image['#']);
-                }
-              });
-            }
+
+          if ($scope.artistInfo.similar) {
+            $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
           }
-        });
-      }
-    };
 
-    $scope.getAlbum = function () {
-      var alb = AlloyDbService.getAlbum($routeParams.id);
-      if (alb) {
-        alb.then(function (album) {
-          if (album) {
-            $scope.album = album;
-            $scope.albumName = album.name;
-            $scope.albumArt = $scope.getCoverArt(album.tracks[0].cover_art);
-            $scope.artistName = album.base_path;
-            $scope.tracks = album.tracks;
-
-            that.AppUtilities.setContentBackground($scope.albumArt);
-
-            var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
-            var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);
-
-            Promise.all([artistInfo, albumInfo]).then(function (info) {
-              $scope.getArtistInfo(info);
-              $scope.getAlbumInfo(info);
-
-              if ($scope.tracks && $scope.tracks.length > 0) {
- 
-                if ($routeParams.trackid) {
-                  $scope.gridOptions.api.forEachNode(function (node) {
-                    if (node.data.id === $routeParams.trackid) {
-                      $scope.gridOptions.api.selectNode(node, true);
-                    }
-                  });
-                }
+          if ($scope.artistInfo.image) {
+            $scope.artistInfo.image.forEach(function (image) {
+              if (image["@"].size === "extralarge") {//that.AppUtilities.setContentBackground(image['#']);
               }
-
-              that.AppUtilities.hideLoader();
-              that.AppUtilities.apply();
             });
-          } else {
-            that.AppUtilities.hideLoader();
           }
-        });
-      }
-    };
-
-    $scope.goToArtist = function (id) {
-      window.location.href = '/artist/' + id;
-
-    };
-
-    $scope.refresh = function () {
-      that.Backend.debug('refresh album');
-      $scope.getAlbum();
-    };
-
-    $scope.startRadio = function () {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
-        that.Backend.debug('starting radio');
-        $rootScope.tracks = similarSongs.song;
-        MediaPlayer.loadTrack(0);
+        }
       });
-    };
+    }
+  };
 
-    $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
-      that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
-      that.MediaPlayer.loadTrack(0);
-    };
+  $scope.getAlbumInfo = function (data) {
+    if (data) {
+      data.forEach(function (info) {
+        if (info.albumInfo) {
+          $scope.albumInfo = info.albumInfo;
 
-    $scope.shareAlbum = function () {
-      that.Backend.debug('shareButton');
-      that.AlloyDbService.createShare($scope.album.id, 'Shared from Alloy').then(function (result) {
-        $('#shareAlbumButton').popover({
-          animation: true,
-          content: 'Success! Url Copied to Clipboard.',
-          delay: {
-            "show": 0,
-            "hide": 5000
-          },
-          placement: 'top'
-        }).popover('show');
-        var url = result.url.toString();
-        that.AppUtilities.copyTextToClipboard(url);
-        setTimeout(() => {
-          $('#shareAlbumButton').popover('hide');
-        }, 5000);
+          if ($scope.albumInfo.image) {
+            $scope.artistInfo.image.forEach(function (image) {
+              if (image["@"].size === "extralarge") {//that.AppUtilities.setContentBackground(image['#']);
+              }
+            });
+          }
+        }
       });
-    };
+    }
+  };
 
-    $scope.starAlbum = function(){
-        that.Backend.info('liking album: ' + that.$scope.album.name);
-        if ($scope.album.starred === 'true') {
-          that.AlloyDbService.unstar({ album: that.$scope.album.id }).then(function (result) {
-            that.Backend.info('UnStarred');
-            that.Backend.info(result);
-            that.$scope.album.starred = 'false';
+  $scope.getAlbum = function () {
+    var alb = AlloyDbService.getAlbum($routeParams.id);
+
+    if (alb) {
+      alb.then(function (album) {
+        if (album) {
+          $scope.album = album;
+          $scope.albumName = album.name;
+          $scope.albumArt = $scope.getCoverArt(album.tracks[0].cover_art);
+          $scope.artistName = album.base_path;
+          $scope.tracks = album.tracks;
+          that.AppUtilities.setContentBackground($scope.albumArt);
+          var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
+          var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);
+          Promise.all([artistInfo, albumInfo]).then(function (info) {
+            $scope.getArtistInfo(info);
+            $scope.getAlbumInfo(info);
+
+            if ($scope.tracks && $scope.tracks.length > 0) {
+              if ($routeParams.trackid) {
+                $scope.tracks.forEach(function (track) {
+                  if (track.id === $routeParams.trackid) {
+                    track.selected = true;
+                  }
+                });
+              }
+            }
+
+            that.AppUtilities.hideLoader();
             that.AppUtilities.apply();
           });
         } else {
-          that.AlloyDbService.star({ album: that.$scope.album.id }).then(function (result) {
-            that.Backend.info('starred');
-            that.Backend.info(result);
-            that.$scope.album.starred = 'true';
-            that.AppUtilities.apply();
-          });
+          that.AppUtilities.hideLoader();
         }
-    };
+      });
+    }
+  };
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Album reload on loginsatuschange');
-      $scope.refresh();
+  $scope.goToArtist = function (id) {
+    window.location.href = "/artist/" + id;
+  };
+
+  $scope.refresh = function () {
+    that.Backend.debug("refresh album");
+    $scope.getAlbum();
+  };
+
+  $scope.startRadio = function () {
+    AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
+      that.Backend.debug("starting radio");
+      $rootScope.tracks = similarSongs.song;
+      MediaPlayer.loadTrack(0);
     });
+  };
 
+  $scope.shuffle = function () {
+    that.Backend.debug("shuffle play");
+    that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
+    that.MediaPlayer.loadTrack(0);
+  };
+
+  $scope.shareAlbum = function () {
+    that.Backend.debug("shareButton");
+    that.AlloyDbService.createShare($scope.album.id, "Shared from Alloy").then(function (result) {
+      $("#shareAlbumButton").popover({
+        animation: true,
+        content: "Success! Url Copied to Clipboard.",
+        delay: {
+          show: 0,
+          hide: 5000
+        },
+        placement: "top"
+      }).popover("show");
+      var url = result.url.toString();
+      that.AppUtilities.copyTextToClipboard(url);
+      setTimeout(function () {
+        $("#shareAlbumButton").popover("hide");
+      }, 5000);
+    });
+  };
+
+  $scope.starAlbum = function () {
+    that.Backend.info("liking album: " + that.$scope.album.name);
+
+    if ($scope.album.starred === "true") {
+      that.AlloyDbService.unstar({
+        album: that.$scope.album.id
+      }).then(function (result) {
+        that.Backend.info("UnStarred");
+        that.Backend.info(result);
+        that.$scope.album.starred = "false";
+        that.AppUtilities.apply();
+      });
+    } else {
+      that.AlloyDbService.star({
+        album: that.$scope.album.id
+      }).then(function (result) {
+        that.Backend.info("starred");
+        that.Backend.info(result);
+        that.$scope.album.starred = "true";
+        that.AppUtilities.apply();
+      });
+    }
+  };
+
+  $rootScope.$on("loginStatusChange", function (event, data) {
+    that.Backend.debug("Album reload on loginsatuschange");
     $scope.refresh();
-  }
-}
+  });
+  $scope.refresh();
+};
 
+AlbumController.$inject = ["$scope", "$rootScope", "$routeParams", "AppUtilities", "Backend", "MediaPlayer", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: AlbumController,
-  templateUrl: '/template/album.jade'
+  templateUrl: "/template/album.jade"
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 170 */
+/* 174 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(171);
+var content = __webpack_require__(175);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5394,7 +7419,7 @@ if(false) {
 }
 
 /***/ }),
-/* 171 */
+/* 175 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5408,38 +7433,44 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 172 */
+/* 176 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__albums_scss__ = __webpack_require__(173);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__albums_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__albums_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__albums_scss__ = __webpack_require__(177);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__albums_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__albums_scss__);
 
-class AlbumsController {
-  constructor($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.MediaPlayer = MediaPlayer;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('albums-controller');
-    this.AppUtilities.showLoader();
 
-    $scope.refresh = function () {
-      AlloyDbService.refreshAlbums();
-    };
 
-    $rootScope.$watch('albums', function (newVal, oldVal) {
-      if ($rootScope.albums) {
-        AppUtilities.apply();
-        AppUtilities.hideLoader();
-      }
-    });
-  }
-}
+var AlbumsController = function AlbumsController($scope, $rootScope, $location, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  "ngInject";
 
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, AlbumsController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.MediaPlayer = MediaPlayer;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('albums-controller');
+  this.AppUtilities.showLoader();
+
+  $scope.refresh = function () {
+    AlloyDbService.refreshAlbums();
+  };
+
+  $rootScope.$watch('albums', function (newVal, oldVal) {
+    if ($rootScope.albums) {
+      AppUtilities.apply();
+      AppUtilities.hideLoader();
+    }
+  });
+};
+
+AlbumsController.$inject = ["$scope", "$rootScope", "$location", "AppUtilities", "Backend", "MediaPlayer", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: AlbumsController,
@@ -5447,13 +7478,13 @@ class AlbumsController {
 });
 
 /***/ }),
-/* 173 */
+/* 177 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(174);
+var content = __webpack_require__(178);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5478,7 +7509,7 @@ if(false) {
 }
 
 /***/ }),
-/* 174 */
+/* 178 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5492,52 +7523,52 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 175 */
+/* 179 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fresh_scss__ = __webpack_require__(176);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fresh_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__fresh_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fresh_scss__ = __webpack_require__(180);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__fresh_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__fresh_scss__);
 
 
-class FreshController {
-  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$timeout = $timeout;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('fresh-controller');
-    this.AppUtilities.showLoader();
-    var that = this;
 
-    $scope.refreshing = false;
+var FreshController = function FreshController($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
 
-    $scope.tracks = [];
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, FreshController);
 
-    $scope.continousPlay = true;
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$timeout = $timeout;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug("fresh-controller");
+  this.AppUtilities.showLoader();
+  var that = this;
+  $scope.refreshing = false;
+  $scope.tracks = [];
+  $scope.continousPlay = true;
 
-    $scope.toggleContinousPlay = function () {
-      $scope.continousPlay = !$scope.continousPlay;
-    };
+  $scope.toggleContinousPlay = function () {
+    $scope.continousPlay = !$scope.continousPlay;
+  };
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
-    }
+  $scope.getCoverArt = function (id) {
+    return that.AlloyDbService.getCoverArt(id);
+  };
 
-    $scope.findNowPlaying = function (id) {
-      $rootScope.fresh_albums.forEach(function (album) {
+  $scope.findNowPlaying = function (id) {
+    $rootScope.fresh_albums.forEach(function (album) {});
+  };
 
-      });
-    }
-
-    $scope.getAlbum = function (album) {
-      that.$scope.tracks = album.tracks;
-
+  $scope.getAlbum = function (album) {
+    that.$scope.tracks = album.tracks;
+    $timeout(function () {
       if ($scope.play_prev_album) {
         $rootScope.tracks = $scope.tracks;
         MediaPlayer.loadTrack($scope.tracks.length - 1);
@@ -5551,119 +7582,116 @@ class FreshController {
       }
 
       that.AppUtilities.apply();
-    }
+    });
+  };
 
-    $scope.findNowPlaying = function () {
-      var found = false;
-      for (var i = 0; i < $rootScope.fresh_albums.length; i++) {
+  $scope.findNowPlaying = function () {
+    var found = false;
+
+    for (var i = 0; i < $rootScope.fresh_albums.length; i++) {
+      if (found) return;
+      var album = $rootScope.fresh_albums[i];
+      album.tracks.forEach(function (track) {
         if (found) return;
-        var album = $rootScope.fresh_albums[i];
-        album.tracks.forEach(function (track) {
-          if (found) return;
-          if (MediaPlayer.checkIfNowPlaying(track)) {
-            $scope.coverflow.to(i);
-            found = true;
-          }
-        })
-      }
-    };
 
-
-
-    $scope.refresh = function () {
-      AlloyDbService.refreshFresh();
-    };
-
-    $scope.startRadio = function () {
-      var track = that.MediaPlayer.selectedTrack();
-      if (!track || !track.artistId) {
-        track = $scope.tracks[0];
-      }
-
-      AlloyDbService.getSimilarSongs2(track.artistId).then(function (similarSongs) {
-        that.Backend.debug('starting radio');
-        if (similarSongs && similarSongs.song) {
-          $rootScope.tracks = similarSongs.song;
-          MediaPlayer.loadTrack(0);
+        if (MediaPlayer.checkIfNowPlaying(track)) {
+          $scope.coverflow.to(i);
+          found = true;
         }
       });
-    };
+    }
+  };
 
-    $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
-      $rootScope.tracks = AppUtilities.shuffle($scope.tracks);
-      MediaPlayer.loadTrack(0);
-    };
+  $scope.refresh = function () {
+    AlloyDbService.refreshFresh();
+  };
 
-    $rootScope.$on('playlistBeginEvent', function (event, data) {
-      if ($scope.continousPlay) {
-        $scope.play_prev_album = true;
-        $scope.coverflow.prev();
+  $scope.startRadio = function () {
+    var track = that.MediaPlayer.selectedTrack();
+
+    if (!track || !track.artistId) {
+      track = $scope.tracks[0];
+    }
+
+    AlloyDbService.getSimilarSongs2(track.artistId).then(function (similarSongs) {
+      that.Backend.debug("starting radio");
+
+      if (similarSongs && similarSongs.song) {
+        $rootScope.tracks = similarSongs.song;
+        MediaPlayer.loadTrack(0);
       }
     });
+  };
 
-    $rootScope.$on('playlistEndEvent', function (event, data) {
-      if ($scope.continousPlay) {
-        $scope.play_next_album = true;
-        $scope.coverflow.next();
-      }
-    });
+  $scope.shuffle = function () {
+    that.Backend.debug("shuffle play");
+    $rootScope.tracks = AppUtilities.shuffle($scope.tracks);
+    MediaPlayer.loadTrack(0);
+  };
 
-    $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
-      if ($rootScope.fresh_albums) {
-
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
-        $timeout(function () {
-          $scope.coverflow = coverflow('player').setup({
-
-            playlist: $rootScope.fresh_albums,
-            width: '100%',
-            coverwidth: 200,
-            coverheight: 200,
-            fixedsize: true,
-          }).on('ready', function () {
-            this.on('focus', function (index) {
-              if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
-                $scope.getAlbum($rootScope.fresh_albums[index]);
-              }
-            });
-
-            this.on('click', function (index, link) {
-              if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
-                $scope.getAlbum($rootScope.fresh_albums[index]);
-              }
-            });
+  $rootScope.$on("playlistBeginEvent", function (event, data) {
+    if ($scope.continousPlay) {
+      $scope.play_prev_album = true;
+      $scope.coverflow.prev();
+    }
+  });
+  $rootScope.$on("playlistEndEvent", function (event, data) {
+    if ($scope.continousPlay) {
+      $scope.play_next_album = true;
+      $scope.coverflow.next();
+    }
+  });
+  $rootScope.$watch("fresh_albums", function (newVal, oldVal) {
+    if ($rootScope.fresh_albums) {
+      that.AppUtilities.apply();
+      that.AppUtilities.hideLoader();
+      $timeout(function () {
+        $scope.coverflow = coverflow("player").setup({
+          playlist: $rootScope.fresh_albums,
+          width: "100%",
+          coverwidth: 200,
+          coverheight: 200,
+          fixedsize: true
+        }).on("ready", function () {
+          this.on("focus", function (index) {
+            if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
+              $scope.getAlbum($rootScope.fresh_albums[index]);
+            }
           });
-
-          if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
-            $scope.getAlbum($rootScope.fresh_albums[0]);
-            $scope.findNowPlaying();
-          }
-
-          $scope.refreshing = false;
-          console.log('refreshed')
+          this.on("click", function (index, link) {
+            if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
+              $scope.getAlbum($rootScope.fresh_albums[index]);
+            }
+          });
         });
-      }
 
-    });
-  }
-}
+        if ($rootScope.fresh_albums && $rootScope.fresh_albums.length > 0) {
+          $scope.getAlbum($rootScope.fresh_albums[0]);
+          $scope.findNowPlaying();
+        }
 
+        $scope.refreshing = false;
+        console.log("refreshed");
+      });
+    }
+  });
+};
+
+FreshController.$inject = ["$scope", "$rootScope", "$timeout", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: FreshController,
-  templateUrl: '/template/fresh.jade'
+  templateUrl: "/template/fresh.jade"
 });
 
 /***/ }),
-/* 176 */
+/* 180 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(177);
+var content = __webpack_require__(181);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5688,7 +7716,7 @@ if(false) {
 }
 
 /***/ }),
-/* 177 */
+/* 181 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5702,16 +7730,30 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 178 */
+/* 182 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__footer_scss__ = __webpack_require__(179);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__footer_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__footer_scss__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__footer_scss__ = __webpack_require__(183);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__footer_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__footer_scss__);
 
-class FooterController {
-  constructor($scope, $rootScope, $location, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+
+
+
+var FooterController =
+/*#__PURE__*/
+function () {
+  FooterController.$inject = ["$scope", "$rootScope", "$location", "MediaElement", "AppUtilities", "Backend", "MediaPlayer", "AlloyDbService"];
+
+  function FooterController($scope, $rootScope, $location, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, FooterController);
+
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
@@ -5720,189 +7762,190 @@ class FooterController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-
     this.Backend.debug('footer-controller');
   }
 
-  updateVolume(val) {
-    this.MediaPlayer.currentVolume = val;
-    if (this.MediaPlayer.remotePlayerConnected()) {
-      this.MediaPlayer.remotePlayer.volumeLevel = val;
-      this.MediaPlayer.remotePlayerController.setVolumeLevel();
-    } else {
-      this.MediaElement.volume = val;
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(FooterController, [{
+    key: "updateVolume",
+    value: function updateVolume(val) {
+      this.MediaPlayer.currentVolume = val;
+
+      if (this.MediaPlayer.remotePlayerConnected()) {
+        this.MediaPlayer.remotePlayer.volumeLevel = val;
+        this.MediaPlayer.remotePlayerController.setVolumeLevel();
+      } else {
+        this.MediaElement.volume = val;
+      }
     }
-  }
+  }, {
+    key: "$onInit",
+    value: function $onInit() {
+      var that = this;
+      that.Backend.debug('footer-init');
+      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('.btn').on('click', function (event) {
+        this.blur();
+      });
+      $('#volumeSlider').on('mousewheel', function (event) {
+        event.preventDefault();
+        var value = parseInt($("#volumeSlider").val());
 
-  $onInit() {
-    var that = this;
-    that.Backend.debug('footer-init');
-
-    $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-    $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-
-    $('.btn').on('click', function (event) {
-      this.blur();
-    });
-
-    $('#volumeSlider').on('mousewheel', function (event) {
-      event.preventDefault();
-      var value = parseInt($("#volumeSlider").val());
-      if (event.originalEvent.deltaY < 0) {
-        value = value + 5;
-        $("#volumeSlider").val(value);
-      }
-      else if (event.originalEvent.deltaY > 0) {
-        value = value - 5;
-        $("#volumeSlider").val(value);
-      }
-
-      that.updateVolume($('#volumeSlider').val() / 100);
-    });
-
-    $("#volumeSlider").on('change', function () {
-
-    });
-
-    $("#volumeSlider").on('input change', function () {
-      that.updateVolume($('#volumeSlider').val() / 100);
-    });
-
-    $("#clickProgress").click(function (e) {
-      var seekto = NaN;
-
-      if (that.MediaPlayer.remotePlayerConnected()) {
-        var currentMediaDuration = that.MediaPlayer.remotePlayer.duration;
-        seekto = currentMediaDuration * ((e.offsetX / $("#clickProgress").width()));
-        if (!isNaN(seekto)) {
-          that.MediaPlayer.remotePlayer.currentTime = seekto;
-          that.MediaPlayer.remotePlayerController.seek();
+        if (event.originalEvent.deltaY < 0) {
+          value = value + 5;
+          $("#volumeSlider").val(value);
+        } else if (event.originalEvent.deltaY > 0) {
+          value = value - 5;
+          $("#volumeSlider").val(value);
         }
-      } else {
-        var duration = that.MediaElement.duration;
-        if (!isFinite(duration))
-          duration = that.MediaPlayer.selectedTrack().duration;
-        seekto = duration * ((e.offsetX / $("#clickProgress").width()));
-        if (!isNaN(seekto)) {
-          that.MediaElement.currentTime = seekto;
-        }
-      }
-    });
 
-    $("#shareButton").click(function () {
-      that.Backend.debug('shareButton');
-      //that.AlloyDbService.createShare(that.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
-      //  $('#shareButton').popover({
-      //    animation: true,
-      //    content: 'Success! Url Copied to Clipboard.',
-      //    delay: {
-      //      "show": 0,
-      //      "hide": 5000
-      //    },
-      //    placement: 'top'
-      //  }).popover('show');
-      //  var url = result.url.toString();
-      //  that.AppUtilities.copyTextToClipboard(url);
-      //  setTimeout(() => {
-      //    $('#shareButton').popover('hide');
-      //  }, 5000);
-      //});
+        that.updateVolume($('#volumeSlider').val() / 100);
+      });
+      $("#volumeSlider").on('change', function () {});
+      $("#volumeSlider").on('input change', function () {
+        that.updateVolume($('#volumeSlider').val() / 100);
+      });
+      $("#clickProgress").click(function (e) {
+        var seekto = NaN;
 
-    });
+        if (that.MediaPlayer.remotePlayerConnected()) {
+          var currentMediaDuration = that.MediaPlayer.remotePlayer.duration;
+          seekto = currentMediaDuration * (e.offsetX / $("#clickProgress").width());
 
-    $("#muteButton").click(function () {
-      var vol = 0;
-      if (that.MediaPlayer.remotePlayerConnected()) {
-        that.MediaPlayer.remotePlayerController.muteOrUnmute();
-        that.MediaPlayer.isMuted = that.MediaPlayer.remotePlayer.isMuted;
-        if (that.MediaPlayer.isMuted) {
-          vol = 0;
-          $('#volumeSlider').val(vol);
-        } else {
-          vol = that.MediaPlayer.remotePlayer.volumeLevel;
-          $('#volumeSlider').val(vol * 100);
-        }
-      } else {
-        that.MediaPlayer.isMuted = !that.MediaPlayer.isMuted;
-        if (that.MediaPlayer.isMuted) {
-          that.MediaElement.volume = 0;
-          $('#volumeSlider').val(0);
-        } else {
-          that.MediaElement.volume = that.MediaPlayer.currentVolume;
-          $('#volumeSlider').val(that.MediaPlayer.currentVolume * 100);
-        }
-      }
-      this.blur();
-    });
-
-    $("#skipBackButton").click(function () {
-      that.MediaPlayer.previous();
-      this.blur();
-    });
-
-    $("#playPauseButton").click(function () {
-
-      if (that.MediaPlayer.remotePlayerConnected()) {
-        if (!that.MediaPlayer.remotePlayer.isPaused) that.MediaPlayer.pause();
-        else that.MediaPlayer.play();
-      } else {
-        if (that.MediaPlayer.playing) that.MediaPlayer.pause();
-        else that.MediaPlayer.play();
-      }
-      this.blur();
-    });
-
-    $("#skipNextButton").click(function () {
-      that.MediaPlayer.next();
-      this.blur();
-    });
-
-    $("#repeatButton").click(function () {
-      that.MediaPlayer.repeatEnabled = !that.MediaPlayer.repeatEnabled;
-      $("#repeatButton").toggleClass('button-selected');
-      this.blur();
-    });
-
-    $("#downloadButton").click(function () {
-      var dlUrl = that.AlloyDbService.download(that.MediaPlayer.selectedTrack().id);
-      window.open(dlUrl, '_blank');
-    });
-
-    $("#nowPlayingImageHolder").click(function () {
-      that.$location.path('/playing');
-    });
-
-    $("#likeButton").click(function () {
-      var track = that.MediaPlayer.selectedTrack();
-      that.Backend.info('liking track: ' + track.artist + " - " + track.title);
-      if (track.starred === 'true') {
-        that.AlloyDbService.unstar({ id: that.MediaPlayer.selectedTrack().id }).then(function (result) {
-          if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
-            that.AlloyDbService.unlove({ id: that.MediaPlayer.selectedTrack().id })
+          if (!isNaN(seekto)) {
+            that.MediaPlayer.remotePlayer.currentTime = seekto;
+            that.MediaPlayer.remotePlayerController.seek();
           }
-          that.Backend.info('UnStarred');
-          that.Backend.info(result);
-          that.MediaPlayer.selectedTrack().starred = 'false';
-          $("#likeButtonIcon").addClass('fa-star-o');
-          $("#likeButtonIcon").removeClass('fa-star');
-          that.AppUtilities.apply();
-        });
-      } else {
-        that.AlloyDbService.star({ id: that.MediaPlayer.selectedTrack().id }).then(function (result) {
-          if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
-            that.AlloyDbService.love({ id: that.MediaPlayer.selectedTrack().id })
+        } else {
+          var duration = that.MediaElement.duration;
+          if (!isFinite(duration)) duration = that.MediaPlayer.selectedTrack().duration;
+          seekto = duration * (e.offsetX / $("#clickProgress").width());
+
+          if (!isNaN(seekto)) {
+            that.MediaElement.currentTime = seekto;
           }
-          that.Backend.info('starred');
-          that.Backend.info(result);
-          that.MediaPlayer.selectedTrack().starred = 'true';
-          $("#likeButtonIcon").removeClass('fa-star-o');
-          $("#likeButtonIcon").addClass('fa-star');
-          that.AppUtilities.apply();
-        });
-      }
-    });
-  }
-}
+        }
+      });
+      $("#shareButton").click(function () {
+        that.Backend.debug('shareButton'); //that.AlloyDbService.createShare(that.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
+        //  $('#shareButton').popover({
+        //    animation: true,
+        //    content: 'Success! Url Copied to Clipboard.',
+        //    delay: {
+        //      "show": 0,
+        //      "hide": 5000
+        //    },
+        //    placement: 'top'
+        //  }).popover('show');
+        //  var url = result.url.toString();
+        //  that.AppUtilities.copyTextToClipboard(url);
+        //  setTimeout(() => {
+        //    $('#shareButton').popover('hide');
+        //  }, 5000);
+        //});
+      });
+      $("#muteButton").click(function () {
+        var vol = 0;
+
+        if (that.MediaPlayer.remotePlayerConnected()) {
+          that.MediaPlayer.remotePlayerController.muteOrUnmute();
+          that.MediaPlayer.isMuted = that.MediaPlayer.remotePlayer.isMuted;
+
+          if (that.MediaPlayer.isMuted) {
+            vol = 0;
+            $('#volumeSlider').val(vol);
+          } else {
+            vol = that.MediaPlayer.remotePlayer.volumeLevel;
+            $('#volumeSlider').val(vol * 100);
+          }
+        } else {
+          that.MediaPlayer.isMuted = !that.MediaPlayer.isMuted;
+
+          if (that.MediaPlayer.isMuted) {
+            that.MediaElement.volume = 0;
+            $('#volumeSlider').val(0);
+          } else {
+            that.MediaElement.volume = that.MediaPlayer.currentVolume;
+            $('#volumeSlider').val(that.MediaPlayer.currentVolume * 100);
+          }
+        }
+
+        this.blur();
+      });
+      $("#skipBackButton").click(function () {
+        that.MediaPlayer.previous();
+        this.blur();
+      });
+      $("#playPauseButton").click(function () {
+        if (that.MediaPlayer.remotePlayerConnected()) {
+          if (!that.MediaPlayer.remotePlayer.isPaused) that.MediaPlayer.pause();else that.MediaPlayer.play();
+        } else {
+          if (that.MediaPlayer.playing) that.MediaPlayer.pause();else that.MediaPlayer.play();
+        }
+
+        this.blur();
+      });
+      $("#skipNextButton").click(function () {
+        that.MediaPlayer.next();
+        this.blur();
+      });
+      $("#repeatButton").click(function () {
+        that.MediaPlayer.repeatEnabled = !that.MediaPlayer.repeatEnabled;
+        $("#repeatButton").toggleClass('button-selected');
+        this.blur();
+      });
+      $("#downloadButton").click(function () {
+        var dlUrl = that.AlloyDbService.download(that.MediaPlayer.selectedTrack().id);
+        window.open(dlUrl, '_blank');
+      });
+      $("#nowPlayingImageHolder").click(function () {
+        that.$location.path('/playing');
+      });
+      $("#likeButton").click(function () {
+        var track = that.MediaPlayer.selectedTrack();
+        that.Backend.info('liking track: ' + track.artist + " - " + track.title);
+
+        if (track.starred === 'true') {
+          that.AlloyDbService.unstar({
+            id: that.MediaPlayer.selectedTrack().id
+          }).then(function (result) {
+            if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
+              that.AlloyDbService.unlove({
+                id: that.MediaPlayer.selectedTrack().id
+              });
+            }
+
+            that.Backend.info('UnStarred');
+            that.Backend.info(result);
+            that.MediaPlayer.selectedTrack().starred = 'false';
+            $("#likeButtonIcon").addClass('fa-star-o');
+            $("#likeButtonIcon").removeClass('fa-star');
+            that.AppUtilities.apply();
+          });
+        } else {
+          that.AlloyDbService.star({
+            id: that.MediaPlayer.selectedTrack().id
+          }).then(function (result) {
+            if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
+              that.AlloyDbService.love({
+                id: that.MediaPlayer.selectedTrack().id
+              });
+            }
+
+            that.Backend.info('starred');
+            that.Backend.info(result);
+            that.MediaPlayer.selectedTrack().starred = 'true';
+            $("#likeButtonIcon").removeClass('fa-star-o');
+            $("#likeButtonIcon").addClass('fa-star');
+            that.AppUtilities.apply();
+          });
+        }
+      });
+    }
+  }]);
+
+  return FooterController;
+}();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
@@ -5910,16 +7953,16 @@ class FooterController {
   templateUrl: '/template/footer.jade',
   selector: 'footer-mediaplayer'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 179 */
+/* 183 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(180);
+var content = __webpack_require__(184);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -5944,7 +7987,7 @@ if(false) {
 }
 
 /***/ }),
-/* 180 */
+/* 184 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -5958,123 +8001,122 @@ exports.push([module.i, "@charset \"UTF-8\";\n@font-face {\n  font-family: \"Lat
 
 
 /***/ }),
-/* 181 */
+/* 185 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genre_scss__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genre_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__genre_scss__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__genre_scss__ = __webpack_require__(186);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__genre_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__genre_scss__);
 
-class GenreController {
-  constructor($scope, $rootScope, $routeParams, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$routeParams = $routeParams;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('genre-controller');
-    this.AppUtilities.showLoader();
-    $scope.artist = {};
-    $scope.albums = [];
-    $scope.genre = { tracks: [] }
-    $scope.artistName = '';
-    $scope.all_expanded = false;
-    $scope.albums_expanded = true;
-    $scope.genre.tracks_expanded = false;
-    $scope.genre = this.$routeParams.id;
-    var that = this;
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
+
+var GenreController = function GenreController($scope, $rootScope, $routeParams, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, GenreController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$routeParams = $routeParams;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('genre-controller');
+  this.AppUtilities.showLoader();
+  $scope.artist = {};
+  $scope.albums = [];
+  $scope.genre = {
+    tracks: []
+  };
+  $scope.artistName = '';
+  $scope.all_expanded = false;
+  $scope.albums_expanded = true;
+  $scope.genre.tracks_expanded = false;
+  $scope.genre = this.$routeParams.id;
+  var that = this;
+
+  $scope.getCoverArt = function (id) {
+    return that.AlloyDbService.getCoverArt(id);
+  };
+
+  $scope.getGenre = function () {
+    if (AlloyDbService.isLoggedIn) {
+      that.AlloyDbService.getGenre(that.$routeParams.id).then(function (result) {
+        $scope.genre = result;
+        var randomTrack = $scope.genre.tracks[Math.floor(Math.random() * $scope.genre.tracks.length)];
+        $scope.genreImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art);
+        var genreInfo = that.AlloyDbService.getGenreInfo($scope.genre.name);
+
+        if (genreInfo) {
+          genreInfo.then(function (result) {
+            $scope.genreInfo = result.genreInfo;
+            $scope.genreInfo.wiki.summary = $scope.genreInfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+            that.AppUtilities.apply();
+          });
+        }
+
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
+      });
     }
+  };
 
-    $scope.getGenre = function () {
-      if (AlloyDbService.isLoggedIn) {
-        that.AlloyDbService.getGenre(that.$routeParams.id).then(function (result) {
-          $scope.genre = result;
+  $scope.toggleAlbums = function () {
+    if ($scope.albums_expanded) $('#albumListContainer').hide();else $('#albumListContainer').show();
+    $scope.albums_expanded = !$scope.albums_expanded;
+  };
 
-          var randomTrack = $scope.genre.tracks[Math.floor(Math.random()*$scope.genre.tracks.length)];
-          $scope.genreImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
-          var genreInfo = that.AlloyDbService.getGenreInfo($scope.genre.name);
-          if (genreInfo) {
-            genreInfo.then(function (result) {
-              $scope.genreInfo = result.genreInfo;
-              $scope.genreInfo.wiki.summary = $scope.genreInfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-              that.AppUtilities.apply();
-            });
-          }
+  $scope.toggleTracks = function () {
+    if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();else $('#trackListContainer').show();
+    $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
+  };
 
+  $scope.toggleAll = function () {
+    $scope.genre.tracks_expanded = $scope.all_expanded;
+    $scope.albums_expanded = $scope.all_expanded;
+    if ($scope.albums_expanded) $('#albumListContainer').hide();else $('#albumListContainer').show();
+    if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();else $('#trackListContainer').show();
+    $scope.all_expanded = !$scope.all_expanded;
+  };
 
-          that.AppUtilities.apply();
-          that.AppUtilities.hideLoader();
-        });
-      }
-    };
-
-    $scope.toggleAlbums = function () {
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
-      $scope.albums_expanded = !$scope.albums_expanded;
-    }
-
-    $scope.toggleTracks = function () {
-      if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
-      $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
-    }
-
-    $scope.toggleAll = function () {
-      $scope.genre.tracks_expanded = $scope.all_expanded;
-      $scope.albums_expanded = $scope.all_expanded;
-
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
-
-      if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
-
-      $scope.all_expanded = !$scope.all_expanded;
-    }
-
-    $scope.refresh = function () {
-      that.Backend.debug('refresh genre');
-      $scope.getGenre();
-    };
-
-    $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
-      $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
-      MediaPlayer.loadTrack(0);
-    };
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Genre reload on loginsatuschange');
-      $scope.getGenre();
-    });
-
+  $scope.refresh = function () {
+    that.Backend.debug('refresh genre');
     $scope.getGenre();
-  }
-}
+  };
 
+  $scope.shuffle = function () {
+    that.Backend.debug('shuffle play');
+    $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
+    MediaPlayer.loadTrack(0);
+  };
+
+  $rootScope.$on('loginStatusChange', function (event, data) {
+    that.Backend.debug('Genre reload on loginsatuschange');
+    $scope.getGenre();
+  });
+  $scope.getGenre();
+};
+
+GenreController.$inject = ["$scope", "$rootScope", "$routeParams", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: GenreController,
   templateUrl: '/template/genre.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 182 */
+/* 186 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(183);
+var content = __webpack_require__(187);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6099,7 +8141,7 @@ if(false) {
 }
 
 /***/ }),
-/* 183 */
+/* 187 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6113,40 +8155,46 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 184 */
+/* 188 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genres_scss__ = __webpack_require__(185);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__genres_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__genres_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__genres_scss__ = __webpack_require__(189);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__genres_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__genres_scss__);
 
-class GenresController {
-  constructor($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$location = $location;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('genres-controller');
-    this.AppUtilities.showLoader();
-    
-    $scope.refresh = function () {
-      AlloyDbService.refreshGenres();
-    };
 
-    $rootScope.$watch('genres', function (newVal, oldVal) {
-      if ($rootScope.genres) {
-        AppUtilities.apply();
-        AppUtilities.hideLoader();
-      }
-    });
-  }
-}
 
+var GenresController = function GenresController($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, GenresController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$location = $location;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('genres-controller');
+  this.AppUtilities.showLoader();
+
+  $scope.refresh = function () {
+    AlloyDbService.refreshGenres();
+  };
+
+  $rootScope.$watch('genres', function (newVal, oldVal) {
+    if ($rootScope.genres) {
+      AppUtilities.apply();
+      AppUtilities.hideLoader();
+    }
+  });
+};
+
+GenresController.$inject = ["$scope", "$rootScope", "$location", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: GenresController,
@@ -6154,13 +8202,13 @@ class GenresController {
 });
 
 /***/ }),
-/* 185 */
+/* 189 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(186);
+var content = __webpack_require__(190);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6185,7 +8233,7 @@ if(false) {
 }
 
 /***/ }),
-/* 186 */
+/* 190 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6199,68 +8247,64 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 187 */
+/* 191 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_scss__ = __webpack_require__(188);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__home_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__home_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_scss__ = __webpack_require__(192);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__home_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__home_scss__);
 
-class HomeController {
-  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$timeout = $timeout;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('home-controller');
-    var that = this;
-    $scope.refreshing = false;
-    AppUtilities.showLoader();
 
-    $scope.refresh = function () {
-      AlloyDbService.refreshFresh();
-      AlloyDbService.refreshRandom();
-    };
 
-    $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
-      if ($rootScope.fresh_albums) {
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+var HomeController = function HomeController($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
 
-        $timeout(function () {
-          $scope.coverflow = coverflow('player').setup({
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, HomeController);
 
-            playlist: $rootScope.fresh_albums,
-            width: '100%',
-            coverwidth: 200,
-            coverheight: 200,
-            fixedsize: true,
-          }).on('ready', function () {
-            this.on('focus', function (index) {
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$timeout = $timeout;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('home-controller');
+  var that = this;
+  $scope.refreshing = false;
+  AppUtilities.showLoader();
 
-            });
+  $scope.refresh = function () {
+    AlloyDbService.refreshFresh();
+    AlloyDbService.refreshRandom();
+  };
 
-            this.on('click', function (index, link) {
-
-            });
-          });
+  $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
+    if ($rootScope.fresh_albums) {
+      that.AppUtilities.apply();
+      that.AppUtilities.hideLoader();
+      $timeout(function () {
+        $scope.coverflow = coverflow('player').setup({
+          playlist: $rootScope.fresh_albums,
+          width: '100%',
+          coverwidth: 200,
+          coverheight: 200,
+          fixedsize: true
+        }).on('ready', function () {
+          this.on('focus', function (index) {});
+          this.on('click', function (index, link) {});
         });
-      }
-    });
+      });
+    }
+  });
+  $rootScope.$watch('random', function (newVal, oldVal) {
+    if ($rootScope.random) {}
+  });
+};
 
-    $rootScope.$watch('random', function (newVal, oldVal) {
-      if ($rootScope.random) {
-
-      }
-    });
-  }
-}
-
+HomeController.$inject = ["$scope", "$rootScope", "$timeout", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: HomeController,
@@ -6268,13 +8312,13 @@ class HomeController {
 });
 
 /***/ }),
-/* 188 */
+/* 192 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(189);
+var content = __webpack_require__(193);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6299,7 +8343,7 @@ if(false) {
 }
 
 /***/ }),
-/* 189 */
+/* 193 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6313,55 +8357,60 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 190 */
+/* 194 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class IndexController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('index-controller');
-    this.AppUtilities.showLoader();
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+
+
+var IndexController = function IndexController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, IndexController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('index-controller');
+  this.AppUtilities.showLoader();
+  $scope.artists = [];
+  var that = this;
+
+  $scope.refresh = function () {
+    AlloyDbService.refreshIndex();
+  };
+
+  $scope.reloadArtists = function () {
     $scope.artists = [];
-    var that = this;
+    var getMusicFoldersIndex = that.AlloyDbService.getMusicFoldersIndex();
 
-    $scope.refresh = function () {
-      AlloyDbService.refreshIndex();
-    };
-
-    $scope.reloadArtists = function () {
-      $scope.artists = [];
-      var getMusicFoldersIndex = that.AlloyDbService.getMusicFoldersIndex();
-      if (getMusicFoldersIndex) {
-        getMusicFoldersIndex.then(function (result) {
-          $scope.artists = result;
-          that.AppUtilities.apply();
-          that.AppUtilities.hideLoader();
-        });
-      }
-    };
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Index reload on loginsatuschange');
-
-    });
-
-    $rootScope.$watch('music_index', function (newVal, oldVal) {
-      if ($rootScope.music_index) {
+    if (getMusicFoldersIndex) {
+      getMusicFoldersIndex.then(function (result) {
+        $scope.artists = result;
         that.AppUtilities.apply();
         that.AppUtilities.hideLoader();
-      }
-    });
-  }
-}
+      });
+    }
+  };
 
+  $rootScope.$on('loginStatusChange', function (event, data) {
+    that.Backend.debug('Index reload on loginsatuschange');
+  });
+  $rootScope.$watch('music_index', function (newVal, oldVal) {
+    if ($rootScope.music_index) {
+      that.AppUtilities.apply();
+      that.AppUtilities.hideLoader();
+    }
+  });
+};
+
+IndexController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: IndexController,
@@ -6369,16 +8418,30 @@ class IndexController {
 });
 
 /***/ }),
-/* 191 */
+/* 195 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar_scss__ = __webpack_require__(192);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__navbar_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__navbar_scss__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navbar_scss__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__navbar_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__navbar_scss__);
 
-class NavbarController {
-  constructor($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService, $http) {
+
+
+
+var NavbarController =
+/*#__PURE__*/
+function () {
+  NavbarController.$inject = ["$scope", "$rootScope", "$location", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService", "$http"];
+
+  function NavbarController($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService, $http) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, NavbarController);
+
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
@@ -6389,13 +8452,10 @@ class NavbarController {
     this.AlloyDbService = AlloyDbService;
     this.Backend.debug('nav-controller');
     var that = this;
-
     $scope.selectedObject = null;
-
     $("#search-box").mouseenter(function () {
       $('#search-box').focus();
     });
-
     var html = '';
     html += '<div class="unselectable card-5" data-instance-id="{{ ctrl.instanceId }} ng-show="ctrl.containerVisible">';
     html += ' <ul class="list-group">';
@@ -6412,10 +8472,8 @@ class NavbarController {
     html += '   </li>';
     html += ' </ul>';
     html += '</div>';
-
     var noMatch = "";
     noMatch += '<li class="list-group-item"/>  ';
-
     $scope.autoCompleteOptions = {
       minimumChars: 1,
       //pagingEnabled: true,
@@ -6425,78 +8483,74 @@ class NavbarController {
       containerTemplate: html,
       //noMatchTemplate: noMatch,
       activateOnFocus: true,
-      itemSelected: function (e) {
-       // that.selectedObject = e.item;
-
-
+      itemSelected: function itemSelected(e) {
+        // that.selectedObject = e.item;
         switch (e.type.title) {
           case "Artists":
             that.$location.path("/artist/" + e.item.base_id);
             break;
+
           case "Songs":
             that.$location.path("/album/" + e.item.album_id + "/" + e.item.id);
             break;
+
           case "Albums":
             that.$location.path("/album/" + e.item.album_id);
             break;
+
           case "Genres":
             that.$location.path("/genre/" + e.item.genre_id);
             break;
         }
-
       },
-      data: function (searchText, pagingParams) {
+      data: function data(searchText, pagingParams) {
         that.loading = true;
-
         return that.AlloyDbService.search(searchText).then(function (result) {
-          searchText = searchText.toUpperCase();
-          // console.log(result)
+          searchText = searchText.toUpperCase(); // console.log(result)
 
-          var results = [
-            {
-              title: "Artists",
-              data: result.artists
-            },
-            {
-              title: "Songs",
-              data: result.tracks
-            },
-            {
-              title: "Albums",
-              data: result.albums
-            },
-            {
-              title: "Genres",
-              data: result.genres
-            }
-          ];
-
+          var results = [{
+            title: "Artists",
+            data: result.artists
+          }, {
+            title: "Songs",
+            data: result.tracks
+          }, {
+            title: "Albums",
+            data: result.albums
+          }, {
+            title: "Genres",
+            data: result.genres
+          }];
           that.loading = false;
           return results;
         });
       }
-    }
+    };
   }
 
-  $onInit() {
-  }
-}
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(NavbarController, [{
+    key: "$onInit",
+    value: function $onInit() {}
+  }]);
+
+  return NavbarController;
+}();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: NavbarController,
   templateUrl: '/template/navbar.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 192 */
+/* 196 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(193);
+var content = __webpack_require__(197);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6521,7 +8575,7 @@ if(false) {
 }
 
 /***/ }),
-/* 193 */
+/* 197 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6535,85 +8589,91 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 194 */
+/* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_scss__ = __webpack_require__(195);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playing_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__playing_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__playing_scss__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__playing_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__playing_scss__);
 
-class PlayingController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('playing-controller');
-    var that = this;
-    $scope.getSong = function () {
-      var track = that.MediaPlayer.selectedTrack();
-      if (track) {
-        $scope.trackTitle = track.title;
-        $scope.artistName = track.artist;
-        $scope.year = track.year;
-        $scope.contentType = track.content_type;
-        $scope.bitrate = track.bitrate;
 
-        that.AlloyDbService.getTrackInfo(track.id).then(function (song) {
-          if (song.trackInfo) {
-            $scope.song = song.trackInfo;
-            $scope.artistName = $scope.song.artist.name;
-            $scope.trackTitle = $scope.song.name;
-          
-            $scope.playCount = $scope.song.playcount;
-          }
-          that.AppUtilities.hideLoader();
-        });
 
-        that.AlloyDbService.getArtistInfo(track.artist).then(function (info) {
-          if (info) {
+var PlayingController = function PlayingController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
 
-            $scope.artistInfo = info.artistInfo;
-            if ($scope.artistInfo.bio) {
-              $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-            }
-            if ($scope.artistInfo.similar) {
-              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-            }
-            if ($scope.artistInfo.image) {
-              $scope.artistInfo.image.forEach(function (image) {
-                if (image['@'].size === 'extralarge') {
-                  that.AppUtilities.setContentBackground(image['#']);
-                }
-              });
-            }
-            that.AppUtilities.apply();          
-          }
-        });
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, PlayingController);
 
-      } else {
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('playing-controller');
+  var that = this;
+
+  $scope.getSong = function () {
+    var track = that.MediaPlayer.selectedTrack();
+
+    if (track) {
+      $scope.trackTitle = track.title;
+      $scope.artistName = track.artist;
+      $scope.year = track.year;
+      $scope.contentType = track.content_type;
+      $scope.bitrate = track.bitrate;
+      that.AlloyDbService.getTrackInfo(track.id).then(function (song) {
+        if (song.trackInfo) {
+          $scope.song = song.trackInfo;
+          $scope.artistName = $scope.song.artist.name;
+          $scope.trackTitle = $scope.song.name;
+          $scope.playCount = $scope.song.playcount;
+        }
+
         that.AppUtilities.hideLoader();
-      }
-    };
+      });
+      that.AlloyDbService.getArtistInfo(track.artist).then(function (info) {
+        if (info) {
+          $scope.artistInfo = info.artistInfo;
 
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      that.Backend.debug('Track Changed reloading now playing');
-      $scope.getSong();
-    });
+          if ($scope.artistInfo.bio) {
+            $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+          }
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('login changed reloading now playing');
-      $scope.getSong();
-    });
+          if ($scope.artistInfo.similar) {
+            $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
+          }
 
+          if ($scope.artistInfo.image) {
+            $scope.artistInfo.image.forEach(function (image) {
+              if (image['@'].size === 'extralarge') {
+                that.AppUtilities.setContentBackground(image['#']);
+              }
+            });
+          }
+
+          that.AppUtilities.apply();
+        }
+      });
+    } else {
+      that.AppUtilities.hideLoader();
+    }
+  };
+
+  $rootScope.$on('trackChangedEvent', function (event, data) {
+    that.Backend.debug('Track Changed reloading now playing');
     $scope.getSong();
-  }
-}
+  });
+  $rootScope.$on('loginStatusChange', function (event, data) {
+    that.Backend.debug('login changed reloading now playing');
+    $scope.getSong();
+  });
+  $scope.getSong();
+};
 
+PlayingController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: PlayingController,
@@ -6621,13 +8681,13 @@ class PlayingController {
 });
 
 /***/ }),
-/* 195 */
+/* 199 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(196);
+var content = __webpack_require__(200);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6652,7 +8712,7 @@ if(false) {
 }
 
 /***/ }),
-/* 196 */
+/* 200 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6666,34 +8726,37 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 197 */
+/* 201 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlist_scss__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__playlist_scss__);
-
-class PlaylistController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.Backend.debug('playlist-controller');
-    var that = this;
-
-    $rootScope.$watch('tracks', function (newVal, oldVal) {
-      AppUtilities.apply();
-      AppUtilities.hideLoader();
-    });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__playlist_scss__ = __webpack_require__(202);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__playlist_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__playlist_scss__);
 
 
-  }
-}
 
+var PlaylistController = function PlaylistController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, PlaylistController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.Backend.debug('playlist-controller');
+  var that = this;
+  $rootScope.$watch('tracks', function (newVal, oldVal) {
+    AppUtilities.apply();
+    AppUtilities.hideLoader();
+  });
+};
+
+PlaylistController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: PlaylistController,
@@ -6701,13 +8764,13 @@ class PlaylistController {
 });
 
 /***/ }),
-/* 198 */
+/* 202 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(199);
+var content = __webpack_require__(203);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6732,7 +8795,7 @@ if(false) {
 }
 
 /***/ }),
-/* 199 */
+/* 203 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6746,27 +8809,33 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 200 */
+/* 204 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlists_scss__ = __webpack_require__(201);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__playlists_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__playlists_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__playlists_scss__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__playlists_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__playlists_scss__);
 
-class PlaylistsController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.Backend.debug('playlists-controller');
-    AppUtilities.hideLoader();
-  }
-}
 
+
+var PlaylistsController = function PlaylistsController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, PlaylistsController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.Backend.debug('playlists-controller');
+  AppUtilities.hideLoader();
+};
+
+PlaylistsController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: PlaylistsController,
@@ -6774,13 +8843,13 @@ class PlaylistsController {
 });
 
 /***/ }),
-/* 201 */
+/* 205 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(202);
+var content = __webpack_require__(206);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6805,7 +8874,7 @@ if(false) {
 }
 
 /***/ }),
-/* 202 */
+/* 206 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6819,27 +8888,33 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 203 */
+/* 207 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__podcasts_scss__ = __webpack_require__(204);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__podcasts_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__podcasts_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__podcasts_scss__ = __webpack_require__(208);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__podcasts_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__podcasts_scss__);
 
-class PodcastsController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.Backend.debug('podcasts-controller');
-    AppUtilities.hideLoader();
-  }
-}
 
+
+var PodcastsController = function PodcastsController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, PodcastsController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.Backend.debug('podcasts-controller');
+  AppUtilities.hideLoader();
+};
+
+PodcastsController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: PodcastsController,
@@ -6847,13 +8922,13 @@ class PodcastsController {
 });
 
 /***/ }),
-/* 204 */
+/* 208 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(205);
+var content = __webpack_require__(209);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -6878,7 +8953,7 @@ if(false) {
 }
 
 /***/ }),
-/* 205 */
+/* 209 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -6892,16 +8967,30 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 206 */
+/* 210 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($, jQuery) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidenav_scss__ = __webpack_require__(207);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sidenav_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__sidenav_scss__);
+/* WEBPACK VAR INJECTION */(function($, jQuery) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidenav_scss__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__sidenav_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__sidenav_scss__);
 
-class SidenavController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+
+
+
+var SidenavController =
+/*#__PURE__*/
+function () {
+  SidenavController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
+
+  function SidenavController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, SidenavController);
+
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.MediaElement = MediaElement;
@@ -6911,77 +9000,74 @@ class SidenavController {
     this.Backend.debug('sidenav-controller');
   }
 
-  $onInit() {
-    var that = this;
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(SidenavController, [{
+    key: "$onInit",
+    value: function $onInit() {
+      var that = this;
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+      });
+      $('#body-row .collapse').collapse('hide'); // Collapse/Expand icon
 
-    $('#sidebarCollapse').on('click', function () {
-      $('#sidebar').toggleClass('active');
-    });
+      $('#collapse-icon').addClass('fa-angle-double-left'); // Collapse click
 
-    $('#body-row .collapse').collapse('hide');
-
-    // Collapse/Expand icon
-    $('#collapse-icon').addClass('fa-angle-double-left');
-
-    // Collapse click
-    $('[data-toggle=sidebar-colapse]').click(function () {
-      that.sidebarCollapse();
-    });
-
-    $('.list-group li').click(function (e) {
-      e.preventDefault();
-
-      $that = $(this);
-
-      $that.parent().find('li').removeClass('active');
-      $that.addClass('active');
-    });
-
-    jQuery(".list-group").hover(function () {
+      $('[data-toggle=sidebar-colapse]').click(function () {
+        that.sidebarCollapse();
+      });
+      $('.list-group li').click(function (e) {
+        e.preventDefault();
+        $that = $(this);
+        $that.parent().find('li').removeClass('active');
+        $that.addClass('active');
+      });
+      jQuery(".list-group").hover(function () {
         jQuery(this).addClass("active");
-      },
-      function () {
+      }, function () {
         jQuery(this).removeClass("active");
       });
-  }
-
-  sidebarCollapse() {
-    this.$rootScope.isMenuCollapsed = !this.$rootScope.isMenuCollapsed;
-    $('.menu-collapsed').toggleClass('d-none');
-    $('.sidebar-submenu').toggleClass('d-none');
-    $('.submenu-icon').toggleClass('d-none');
-    $('#list-tab').toggleClass('card-5');
-    $('.sidebar').toggleClass('sidebar-expanded sidebar-collapsed');
-
-    // Treating d-flex/d-none on separators with title
-    var SeparatorTitle = $('.sidebar-separator-title');
-    if (SeparatorTitle.hasClass('d-flex')) {
-      SeparatorTitle.removeClass('d-flex');
-    } else {
-      SeparatorTitle.addClass('d-flex');
     }
+  }, {
+    key: "sidebarCollapse",
+    value: function sidebarCollapse() {
+      this.$rootScope.isMenuCollapsed = !this.$rootScope.isMenuCollapsed;
+      $('.menu-collapsed').toggleClass('d-none');
+      $('.sidebar-submenu').toggleClass('d-none');
+      $('.submenu-icon').toggleClass('d-none');
+      $('#list-tab').toggleClass('card-5');
+      $('.sidebar').toggleClass('sidebar-expanded sidebar-collapsed'); // Treating d-flex/d-none on separators with title
 
-    // Collapse/Expand icon
-    $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-    this.AppUtilities.broadcast('menuSizeChange');
-  }
-}
+      var SeparatorTitle = $('.sidebar-separator-title');
+
+      if (SeparatorTitle.hasClass('d-flex')) {
+        SeparatorTitle.removeClass('d-flex');
+      } else {
+        SeparatorTitle.addClass('d-flex');
+      } // Collapse/Expand icon
+
+
+      $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
+      this.AppUtilities.broadcast('menuSizeChange');
+    }
+  }]);
+
+  return SidenavController;
+}();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: SidenavController,
   templateUrl: '/template/sidenav.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3), __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4), __webpack_require__(4)))
 
 /***/ }),
-/* 207 */
+/* 211 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(208);
+var content = __webpack_require__(212);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7006,7 +9092,7 @@ if(false) {
 }
 
 /***/ }),
-/* 208 */
+/* 212 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -7020,16 +9106,30 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 209 */
+/* 213 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_scss__ = __webpack_require__(210);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__config_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__config_scss__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_scss__ = __webpack_require__(214);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__config_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__config_scss__);
 
-class ConfigController {
-  constructor($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
+
+
+
+var ConfigController =
+/*#__PURE__*/
+function () {
+  ConfigController.$inject = ["$scope", "$rootScope", "$compile", "$routeParams", "$location", "AppUtilities", "Backend", "MediaPlayer"];
+
+  function ConfigController($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ConfigController);
+
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$compile = $compile;
@@ -7042,7 +9142,6 @@ class ConfigController {
     this.AppUtilities.showLoader();
     var that = this;
 
-
     this.$scope.jumpTo = function (to) {
       that.$location.path('/config/' + to);
     };
@@ -7054,23 +9153,13 @@ class ConfigController {
 
     this.$rootScope.triggerConfigAlert = function (message, type) {
       //$('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
-      setTimeout(() => {
+      setTimeout(function () {
         // $('.config-alert').hide(500);
         $('#saveSettingsButton').popover('hide');
-      }, 3000);
-
-      // $('#saveSettingsButton').popover('show');
+      }, 3000); // $('#saveSettingsButton').popover('show');
     };
 
-
-    var t = '<div class="popover" role="tooltip">' +
-      '<div class="arrow">' +
-      '</div>' +
-      '<h3 class="popover-header"></h3>' +
-      '<div class="popover-body"></div>' +
-      '</div>';
-
-
+    var t = '<div class="popover" role="tooltip">' + '<div class="arrow">' + '</div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div>' + '</div>';
     $('body').popover({
       html: true,
       selector: '[rel=save-settings-popover]',
@@ -7078,40 +9167,40 @@ class ConfigController {
       template: t,
       content: "Success!",
       //container: '.PageContentBody-contentBody',
-      placement: "bottom",
+      placement: "bottom"
     });
-
-
-    
-
-
     AppUtilities.apply();
     AppUtilities.hideLoader();
   }
 
-  $onInit() {
-    if (this.$routeParams.id) {
-      this.Backend.debug('navigating to ' + this.$routeParams.id);
-      this.$scope.navigate(this.$routeParams.id);
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(ConfigController, [{
+    key: "$onInit",
+    value: function $onInit() {
+      if (this.$routeParams.id) {
+        this.Backend.debug('navigating to ' + this.$routeParams.id);
+        this.$scope.navigate(this.$routeParams.id);
+      }
     }
-  }
-}
+  }]);
+
+  return ConfigController;
+}();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ConfigController,
   templateUrl: '/template/config.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 210 */
+/* 214 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(211);
+var content = __webpack_require__(215);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7136,7 +9225,7 @@ if(false) {
 }
 
 /***/ }),
-/* 211 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -7150,90 +9239,88 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 212 */
+/* 216 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
-class ConfigGeneralController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    //this.sabnzbdService = sabnzbdService;
-    this.Backend.debug('general-config-controller');
-    var that = this;
-   
-  }
-}
 
+var ConfigGeneralController = function ConfigGeneralController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ConfigGeneralController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend; //this.sabnzbdService = sabnzbdService;
+
+  this.Backend.debug('general-config-controller');
+  var that = this;
+};
+
+ConfigGeneralController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ConfigGeneralController,
-  templateUrl: '/template/configGeneral.jade',
-
+  templateUrl: '/template/configGeneral.jade'
 });
 
 /***/ }),
-/* 213 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class ConfigAlloyDbController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('config-alloydb-controller');
-    var that = this;
-    $scope.settings = {};
-  
-    $scope.generateConnectionString = function () {
-      var url = 'http://';
-      if ($rootScope.settings.alloydb) {
-        if ($rootScope.settings.alloydb.alloydb_use_ssl)
-          url = 'https://';
-        url += $rootScope.settings.alloydb.alloydb_host;
-        if ($rootScope.settings.alloydb.alloydb_include_port_in_url)
-          url += ':' + $rootScope.settings.alloydb.alloydb_port;
-      }
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
 
-      return url;
-    };
+var ConfigAlloyDbController = function ConfigAlloyDbController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
 
-    $scope.previewConnectionString = function () {
-      $scope.connectionStringPreview = $scope.generateConnectionString();
-    };
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ConfigAlloyDbController);
 
-    Backend.emit('load_settings', 'alloydb_settings');
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('config-alloydb-controller');
+  var that = this;
+  $scope.settings = {};
 
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
+  $scope.generateConnectionString = function () {
+    var url = 'http://';
 
-    });
+    if ($rootScope.settings.alloydb) {
+      if ($rootScope.settings.alloydb.alloydb_use_ssl) url = 'https://';
+      url += $rootScope.settings.alloydb.alloydb_host;
+      if ($rootScope.settings.alloydb.alloydb_include_port_in_url) url += ':' + $rootScope.settings.alloydb.alloydb_port;
+    }
 
-    $rootScope.$on('windowResized', function (event, data) {
+    return url;
+  };
 
-    });
+  $scope.previewConnectionString = function () {
+    $scope.connectionStringPreview = $scope.generateConnectionString();
+  };
 
+  Backend.emit('load_settings', 'alloydb_settings');
+  $rootScope.$on('menuSizeChange', function (event, currentState) {});
+  $rootScope.$on('windowResized', function (event, data) {});
+  AppUtilities.hideLoader();
+  $rootScope.$watch('settings.alloydb ', function (newVal, oldVal) {
+    $scope.previewConnectionString();
+  });
+};
 
-    AppUtilities.hideLoader();
-
-    $rootScope.$watch('settings.alloydb ', function (newVal, oldVal) {
-      $scope.previewConnectionString();
-    });
-  }
-}
-
+ConfigAlloyDbController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ConfigAlloyDbController,
@@ -7241,115 +9328,129 @@ class ConfigAlloyDbController {
 });
 
 /***/ }),
-/* 214 */
+/* 218 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_crypto_js__);
-
-class ConfigSabnzbdController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    //this.sabnzbdService = sabnzbdService;
-    this.Backend.debug('sabnzbd-controller');
-    var that = this;
-    $scope.settings = {};
-
-    $scope.testSettings = function () {
-      Backend.emit('test_sabnzbd_settings', $rootScope.settings.sabnzbd);
-    };
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
 
+var ConfigMediaPathsController = function ConfigMediaPathsController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
 
-    var t = '<div class="popover" role="tooltip">' +
-      '<div class="arrow">' +
-      '</div>' +
-      '<h3 class="popover-header"></h3>' +
-      '<div class="popover-body"></div>' +
-      '</div>';
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ConfigMediaPathsController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('config-mediapaths-controller');
+  var that = this;
+  $scope.settings = {};
+  AppUtilities.hideLoader();
+};
+
+ConfigMediaPathsController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
+/* harmony default export */ __webpack_exports__["a"] = ({
+  bindings: {},
+  controller: ConfigMediaPathsController,
+  templateUrl: '/template/configMediaPaths.jade'
+});
+
+/***/ }),
+/* 219 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_crypto_js__);
 
 
 
-    Backend.socket.on('test_sabnzbd_connection_result', function (data) {
+var ConfigSabnzbdController = function ConfigSabnzbdController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ConfigSabnzbdController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend; //this.sabnzbdService = sabnzbdService;
+
+  this.Backend.debug('sabnzbd-controller');
+  var that = this;
+  $scope.settings = {};
+
+  $scope.testSettings = function () {
+    Backend.emit('test_sabnzbd_settings', $rootScope.settings.sabnzbd);
+  };
+
+  var t = '<div class="popover" role="tooltip">' + '<div class="arrow">' + '</div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div>' + '</div>';
+  Backend.socket.on('test_sabnzbd_connection_result', function (data) {
+    if (data) {
+      that.Backend.debug('sabnzbd connection result');
+      that.Backend.debug(data);
+
       if (data) {
-        that.Backend.debug('sabnzbd connection result');
-        that.Backend.debug(data);
-
-        if (data) {
-          var pop = $('#testSabnzbdConnectionButton').popover({
-            html: true,
-            // selector: '[rel=save-settings-popover]',
-            trigger: 'manual',
-            //template: t,
-            content: data.result,
-            //container: '.PageContentBody-contentBody',
-            placement: "top",
-          });
-
-          pop.popover('show');
-          setTimeout(() => {
-            pop.popover('hide');
-          }, 3000);
-
-        }
+        var pop = $('#testSabnzbdConnectionButton').popover({
+          html: true,
+          // selector: '[rel=save-settings-popover]',
+          trigger: 'manual',
+          //template: t,
+          content: data.result,
+          //container: '.PageContentBody-contentBody',
+          placement: "top"
+        });
+        pop.popover('show');
+        setTimeout(function () {
+          pop.popover('hide');
+        }, 3000);
       }
-    });
+    }
+  });
 
-    $scope.generateConnectionString = function () {
-      var url = 'http://';
-      if ($rootScope.settings.sabnzbd) {
-        if ($rootScope.settings.sabnzbd.sabnzbd_use_ssl)
-          url = 'https://';
-        url += $rootScope.settings.sabnzbd.sabnzbd_host;
-        if ($rootScope.settings.sabnzbd.sabnzbd_include_port_in_url)
-          url += ':' + $rootScope.settings.sabnzbd.sabnzbd_port;
-        if ($rootScope.settings.sabnzbd.sabnzbd_url_base)
-          url += '/' + $rootScope.settings.sabnzbd.sabnzbd_url_base;
-        url += '/api';
-      }
-      return url;
-    };
+  $scope.generateConnectionString = function () {
+    var url = 'http://';
 
-    $scope.previewConnectionString = function () {
-      $scope.connectionStringPreview = $scope.generateConnectionString();
-    };
+    if ($rootScope.settings.sabnzbd) {
+      if ($rootScope.settings.sabnzbd.sabnzbd_use_ssl) url = 'https://';
+      url += $rootScope.settings.sabnzbd.sabnzbd_host;
+      if ($rootScope.settings.sabnzbd.sabnzbd_include_port_in_url) url += ':' + $rootScope.settings.sabnzbd.sabnzbd_port;
+      if ($rootScope.settings.sabnzbd.sabnzbd_url_base) url += '/' + $rootScope.settings.sabnzbd.sabnzbd_url_base;
+      url += '/api';
+    }
 
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
+    return url;
+  };
 
-    });
+  $scope.previewConnectionString = function () {
+    $scope.connectionStringPreview = $scope.generateConnectionString();
+  };
 
-    $rootScope.$on('windowResized', function (event, data) {
+  $rootScope.$on('menuSizeChange', function (event, currentState) {});
+  $rootScope.$on('windowResized', function (event, data) {});
+  $rootScope.$watch('settings.sabnzbd ', function (newVal, oldVal) {
+    $scope.previewConnectionString();
+  });
+};
 
-    });
-
-    $rootScope.$watch('settings.sabnzbd ', function (newVal, oldVal) {
-      $scope.previewConnectionString();
-    });
-
-  }
-}
-
+ConfigSabnzbdController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ConfigSabnzbdController,
-  templateUrl: '/template/configSabnzbd.jade',
-
+  templateUrl: '/template/configSabnzbd.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
 /* 220 */,
 /* 221 */,
 /* 222 */,
@@ -7368,85 +9469,95 @@ class ConfigSabnzbdController {
 /* 235 */,
 /* 236 */,
 /* 237 */,
-/* 238 */
+/* 238 */,
+/* 239 */,
+/* 240 */,
+/* 241 */,
+/* 242 */,
+/* 243 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_crypto_js__);
-
-class ConfigSchedulerController {
-  constructor($scope, $rootScope, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('scheduler-controller');
-    var that = this;
-    $scope.settings = {};
-
-    var that = this;
-
-    $scope.ping = function () {
-      var ping = that.AlloyDbService.getSchedulerStatus();
-      if (ping) {
-        ping.then(function (data) {
-          that.Backend.debug('getSchedulerStatus');
-          that.$scope.schedulerStatus = data;
-          that.AppUtilities.apply();
-        });
-      }
-    };
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_crypto_js__);
 
 
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
 
-    });
+var ConfigSchedulerController = function ConfigSchedulerController($scope, $rootScope, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
 
-    $rootScope.$on('windowResized', function (event, data) {
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ConfigSchedulerController);
 
-    });
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('scheduler-controller');
+  var that = this;
+  $scope.settings = {};
+  var that = this;
 
+  $scope.ping = function () {
+    var ping = that.AlloyDbService.getSchedulerStatus();
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      $scope.ping();
-    });
+    if (ping) {
+      ping.then(function (data) {
+        that.Backend.debug('getSchedulerStatus');
+        that.$scope.schedulerStatus = data;
+        that.AppUtilities.apply();
+      });
+    }
+  };
 
-    $scope.refreshIntereval = setInterval(function () {
-      $scope.ping();
-    }, 5000);
+  $rootScope.$on('menuSizeChange', function (event, currentState) {});
+  $rootScope.$on('windowResized', function (event, data) {});
+  $rootScope.$on('loginStatusChange', function (event, data) {
+    $scope.ping();
+  });
+  $scope.refreshIntereval = setInterval(function () {
+    $scope.ping();
+  }, 5000);
+  $scope.uiRefreshIntereval = setInterval(function () {
+    AppUtilities.apply();
+  }, 1000);
+  $scope.$on('$destroy', function () {
+    clearInterval($scope.refreshIntereval);
+    clearInterval($scope.uiRefreshIntereval);
+  });
+};
 
-    $scope.uiRefreshIntereval = setInterval(function () {
-      AppUtilities.apply();
-    }, 1000);
-
-
-    $scope.$on('$destroy', function () {
-      clearInterval($scope.refreshIntereval);
-      clearInterval($scope.uiRefreshIntereval);
-    });
-
-
-  }
-}
-
+ConfigSchedulerController.$inject = ["$scope", "$rootScope", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ConfigSchedulerController,
   templateUrl: '/template/configScheduler.jade'
-
 });
 
 /***/ }),
-/* 239 */
+/* 244 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {class ActivityController {
-  constructor($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
+/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+
+
+
+var ActivityController =
+/*#__PURE__*/
+function () {
+  ActivityController.$inject = ["$scope", "$rootScope", "$compile", "$routeParams", "$location", "AppUtilities", "Backend", "MediaPlayer"];
+
+  function ActivityController($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ActivityController);
+
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$compile = $compile;
@@ -7457,7 +9568,6 @@ class ConfigSchedulerController {
     this.MediaPlayer = MediaPlayer;
     this.Backend.debug('activity-controller');
     var that = this;
-
 
     this.$scope.jumpTo = function (to) {
       that.$location.path('/activity/' + to);
@@ -7485,92 +9595,100 @@ class ConfigSchedulerController {
 
     AppUtilities.apply();
     AppUtilities.hideLoader();
-
   }
 
-  $onInit() {
-    if (this.$routeParams.id) {
-      this.Backend.debug('navigating to ' + this.$routeParams.id);
-      this.$scope.navigate(this.$routeParams.id);
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(ActivityController, [{
+    key: "$onInit",
+    value: function $onInit() {
+      if (this.$routeParams.id) {
+        this.Backend.debug('navigating to ' + this.$routeParams.id);
+        this.$scope.navigate(this.$routeParams.id);
+      }
     }
-  }
-}
+  }]);
+
+  return ActivityController;
+}();
 
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityController,
   templateUrl: '/template/activity.jade'
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 240 */
+/* 245 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
-class ActivityGeneralController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    //this.sabnzbdService = sabnzbdService;
-    this.Backend.debug('general-activity-controller');
-    var that = this;
-   
-  }
-}
 
+var ActivityGeneralController = function ActivityGeneralController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ActivityGeneralController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend; //this.sabnzbdService = sabnzbdService;
+
+  this.Backend.debug('general-activity-controller');
+  var that = this;
+};
+
+ActivityGeneralController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityGeneralController,
-  templateUrl: '/template/activityGeneral.jade',
-
+  templateUrl: '/template/activityGeneral.jade'
 });
 
 /***/ }),
-/* 241 */
+/* 246 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class ActivityQueueController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.Backend.debug('activity-queue-controller');
-    this.AppUtilities.showLoader();
-    var that = this;
-    this.$scope.queue = [];
-    
-    $scope.$on('$destroy', function () {
-      clearInterval($scope.refreshIntereval);
-    });
-
-    $rootScope.$on('sabnzbdQueueResult', function (event, data) {
-      that.Backend.debug('sabnzbd queue result');
-      $scope.queue = JSON.parse(data);
-      AppUtilities.updateGridRows($scope.gridOptions);
-      that.AppUtilities.apply();
-      that.AppUtilities.hideLoader();
-    });
-
-    $scope.refreshIntereval = setInterval(function () {
-      Backend.emit('get_sabnzbd_queue');
-    }, 1000);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
 
-  }
-}
+var ActivityQueueController = function ActivityQueueController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
 
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ActivityQueueController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.Backend.debug('activity-queue-controller');
+  this.AppUtilities.showLoader();
+  var that = this;
+  this.$scope.queue = [];
+  $scope.$on('$destroy', function () {
+    clearInterval($scope.refreshIntereval);
+  });
+  $rootScope.$on('sabnzbdQueueResult', function (event, data) {
+    that.Backend.debug('sabnzbd queue result');
+    $scope.queue = JSON.parse(data);
+    AppUtilities.updateGridRows($scope.gridOptions);
+    that.AppUtilities.apply();
+    that.AppUtilities.hideLoader();
+  });
+  $scope.refreshIntereval = setInterval(function () {
+    Backend.emit('get_sabnzbd_queue');
+  }, 1000);
+};
+
+ActivityQueueController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityQueueController,
@@ -7578,42 +9696,45 @@ class ActivityQueueController {
 });
 
 /***/ }),
-/* 242 */
+/* 247 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class ActivityHistoryController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    //this.sabnzbdService = sabnzbdService;
-    this.Backend.debug('activity-history-controller');
-    this.AppUtilities.showLoader();
-    var that = this;
-    this.$scope.history = [];
-   
-    $scope.$on('$destroy', function () {
-      clearInterval($scope.refreshIntereval);
-    });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
-    $rootScope.$on('sabnzbdHistoryResult', function (event, data) {
-      that.Backend.debug('sabnzbd history result');
-      $scope.history = JSON.parse(data);
-      that.AppUtilities.apply();
-      that.AppUtilities.hideLoader();
-    });
 
-    $scope.refreshIntereval = setInterval(function () {
-      Backend.emit('get_sabnzbd_history');
-    }, 10000);
-  }
-}
+var ActivityHistoryController = function ActivityHistoryController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
 
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ActivityHistoryController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend; //this.sabnzbdService = sabnzbdService;
+
+  this.Backend.debug('activity-history-controller');
+  this.AppUtilities.showLoader();
+  var that = this;
+  this.$scope.history = [];
+  $scope.$on('$destroy', function () {
+    clearInterval($scope.refreshIntereval);
+  });
+  $rootScope.$on('sabnzbdHistoryResult', function (event, data) {
+    that.Backend.debug('sabnzbd history result');
+    $scope.history = JSON.parse(data);
+    that.AppUtilities.apply();
+    that.AppUtilities.hideLoader();
+  });
+  $scope.refreshIntereval = setInterval(function () {
+    Backend.emit('get_sabnzbd_history');
+  }, 10000);
+};
+
+ActivityHistoryController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityHistoryController,
@@ -7621,26 +9742,31 @@ class ActivityHistoryController {
 });
 
 /***/ }),
-/* 243 */
+/* 248 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-class ActivityBlacklistController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    //this.sabnzbdService = sabnzbdService;
-    this.Backend.debug('activity-blacklist-controller');
-    var that = this;
-   
-  }
-}
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
+
+var ActivityBlacklistController = function ActivityBlacklistController($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, ActivityBlacklistController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend; //this.sabnzbdService = sabnzbdService;
+
+  this.Backend.debug('activity-blacklist-controller');
+  var that = this;
+};
+
+ActivityBlacklistController.$inject = ["$scope", "$rootScope", "MediaElement", "MediaPlayer", "AppUtilities", "Backend"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: ActivityBlacklistController,
@@ -7648,112 +9774,105 @@ class ActivityBlacklistController {
 });
 
 /***/ }),
-/* 244 */
+/* 249 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starred_scss__ = __webpack_require__(245);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__starred_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__starred_scss__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__starred_scss__ = __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__starred_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__starred_scss__);
 
-class StarredController {
-  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$timeout = $timeout;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('starred-controller');
-    this.AppUtilities.showLoader();
-    var that = this;
 
-    $scope.toggleContinousPlay = function () {
-      $scope.continousPlay = !$scope.continousPlay;
-    };
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
+var StarredController = function StarredController($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, StarredController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$timeout = $timeout;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug('starred-controller');
+  this.AppUtilities.showLoader();
+  var that = this;
+
+  $scope.toggleContinousPlay = function () {
+    $scope.continousPlay = !$scope.continousPlay;
+  };
+
+  $scope.getCoverArt = function (id) {
+    return that.AlloyDbService.getCoverArt(id);
+  };
+
+  $scope.findNowPlaying = function (id) {
+    $rootScope.fresh_albums.forEach(function (album) {});
+  };
+
+  $scope.getAlbum = function (album) {
+    that.$scope.tracks = album.tracks;
+
+    if ($scope.play_prev_album) {
+      $rootScope.tracks = $scope.tracks;
+      MediaPlayer.loadTrack($scope.tracks.length - 1);
+      $scope.play_prev_album = false;
     }
 
-    $scope.findNowPlaying = function (id) {
-      $rootScope.fresh_albums.forEach(function (album) {
-
-      });
-    }
-
-    $scope.getAlbum = function (album) {
-      that.$scope.tracks = album.tracks;
-
-      if ($scope.play_prev_album) {
-        $rootScope.tracks = $scope.tracks;
-        MediaPlayer.loadTrack($scope.tracks.length - 1);
-        $scope.play_prev_album = false;
-      }
-
-      if ($scope.play_next_album) {
-        $rootScope.tracks = $scope.tracks;
-        MediaPlayer.loadTrack(0);
-        $scope.play_next_album = false;
-      }
-
-      
-    }
-
-    $scope.refresh = function () {
-      AlloyDbService.refreshStarred();
-    };
-
-    $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
-      $rootScope.tracks = AppUtilities.shuffle($rootScope.starred_tracks);
+    if ($scope.play_next_album) {
+      $rootScope.tracks = $scope.tracks;
       MediaPlayer.loadTrack(0);
-    };
+      $scope.play_next_album = false;
+    }
+  };
 
-    $rootScope.$watch('starred_tracks', function (newVal, oldVal) {
-      if ($rootScope.starred_tracks) {
+  $scope.refresh = function () {
+    AlloyDbService.refreshStarred();
+  };
 
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
-      }
-    });
+  $scope.shuffle = function () {
+    that.Backend.debug('shuffle play');
+    $rootScope.tracks = AppUtilities.shuffle($rootScope.starred_tracks);
+    MediaPlayer.loadTrack(0);
+  };
 
-    $rootScope.$watch('starred_albums', function (newVal, oldVal) {
-      if ($rootScope.starred_albums) {
-
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
-        $timeout(function () {
-          $scope.coverflow = coverflow('player').setup({
-            playlist: $rootScope.starred_albums,
-            width: '100%',
-            coverwidth: 200,
-            coverheight: 200,
-            fixedsize: true,
-          }).on('ready', function () {
-            this.on('focus', function (index) {
-              //if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
-              //  $scope.getAlbum($rootScope.starred_albums[index]);
-              //}
-            });
-
-            this.on('click', function (index, link) {
-              //if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
-              //  $scope.getAlbum($rootScope.starred_albums[index]);
-              //}
-            });
+  $rootScope.$watch('starred_tracks', function (newVal, oldVal) {
+    if ($rootScope.starred_tracks) {
+      that.AppUtilities.apply();
+      that.AppUtilities.hideLoader();
+    }
+  });
+  $rootScope.$watch('starred_albums', function (newVal, oldVal) {
+    if ($rootScope.starred_albums) {
+      that.AppUtilities.apply();
+      that.AppUtilities.hideLoader();
+      $timeout(function () {
+        $scope.coverflow = coverflow('player').setup({
+          playlist: $rootScope.starred_albums,
+          width: '100%',
+          coverwidth: 200,
+          coverheight: 200,
+          fixedsize: true
+        }).on('ready', function () {
+          this.on('focus', function (index) {//if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
+            //  $scope.getAlbum($rootScope.starred_albums[index]);
+            //}
+          });
+          this.on('click', function (index, link) {//if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
+            //  $scope.getAlbum($rootScope.starred_albums[index]);
+            //}
           });
         });
-      }
+      });
+    }
+  });
+};
 
-    });
-
-  }
-
-}
-
+StarredController.$inject = ["$scope", "$rootScope", "$timeout", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: StarredController,
@@ -7761,13 +9880,13 @@ class StarredController {
 });
 
 /***/ }),
-/* 245 */
+/* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(246);
+var content = __webpack_require__(251);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7792,7 +9911,7 @@ if(false) {
 }
 
 /***/ }),
-/* 246 */
+/* 251 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -7806,154 +9925,164 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 247 */
+/* 252 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__status_scss__ = __webpack_require__(248);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__status_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__status_scss__);
-
-class StatusController {
-  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
-    "ngInject";
-    this.$scope = $scope;
-    this.$rootScope = $rootScope;
-    this.$timeout = $timeout;
-    this.MediaElement = MediaElement;
-    this.MediaPlayer = MediaPlayer;
-    this.AppUtilities = AppUtilities;
-    this.Backend = Backend;
-    this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('status-controller');
-    var that = this;
-
-    $scope.ping = function () {
-      var ping = that.AlloyDbService.ping();
-      if (ping) {
-        ping.then(function (data) {
-          $scope.alloydb = data;
-          that.AppUtilities.apply();
-        });
-      }
-
-    };
-
-    $scope.getLibraryInfo = function () {
-      var libraryInfo = that.AlloyDbService.getLibraryInfo();
-      if (libraryInfo) {
-        libraryInfo.then(function (info) {
-          $scope.libraryInfo = info;
-          that.AppUtilities.apply();
-        });
-      }
-    };
-
-    $scope.getMediaPaths = function () {
-      var mediaPaths = that.AlloyDbService.getMediaPaths();
-      if (mediaPaths) {
-        mediaPaths.then(function (paths) {
-          $scope.mediaPaths = paths;
-          that.AppUtilities.apply();
-        });
-      }
-    };
-
-    $scope.scanFullStart = function () {
-      var scanner = that.AlloyDbService.scanFullStart();
-      that.Backend.debug('scanFullStart');
-      $scope.scanStatus = result;
-      that.AppUtilities.apply();
-      $scope.rescanInterval = setInterval(function () {
-        $scope.getScanStatus();
-      }, 500);
-    };
-
-    $scope.scanQuickStart = function () {
-      var scanner = that.AlloyDbService.scanQuickStart();
-      that.Backend.debug('scanQuickStart');
-      $scope.scanStatus = result;
-      that.AppUtilities.apply();
-      $scope.rescanInterval = setInterval(function () {
-        $scope.getScanStatus();
-      }, 500);
-    };
-
-    $scope.getScanStatus = function () {
-      var scanner = that.AlloyDbService.scanStatus();
-      if (scanner) {
-        scanner.then(function (result) {
-          $scope.scanStatus = result;
-          that.AppUtilities.apply();
-          if (!$scope.rescanInterval) {
-            $scope.rescanInterval = setInterval(function () {
-              $scope.getScanStatus();
-            }, 500);
-          }
-        });
-      }
-      $scope.getLibraryInfo();
-    };
-
-    $scope.scanCancel = function () {
-      var scanner = that.AlloyDbService.scanCancel();
-      if (scanner) {
-        scanner.then(function (result) {
-          that.Backend.debug('cancelScan');
-          $scope.scanStatus = result;
-          that.AppUtilities.apply();
-        });
-      }
-    };
-
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      $scope.ping();
-      $scope.getLibraryInfo();
-      $scope.getMediaPaths();
-    });
-
-    $scope.refreshIntereval = setInterval(function () {
-      $scope.ping();
-      $scope.getLibraryInfo();
-      $scope.getMediaPaths();
-    }, 5000);
-
-    $scope.uiRefreshIntereval = setInterval(function () {
-      AppUtilities.apply();
-    }, 1000);
-
-
-    $scope.$on('$destroy', function () {
-      clearInterval($scope.refreshIntereval);
-      clearInterval($scope.uiRefreshIntereval);
-      clearInterval($scope.rescanInterval);
-    });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__status_scss__ = __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__status_scss___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__status_scss__);
 
 
 
-    $timeout(() => {
-      $scope.ping();
-      $scope.getLibraryInfo();
-      $scope.getMediaPaths();
+var StatusController = function StatusController($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  "ngInject";
+
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, StatusController);
+
+  this.$scope = $scope;
+  this.$rootScope = $rootScope;
+  this.$timeout = $timeout;
+  this.MediaElement = MediaElement;
+  this.MediaPlayer = MediaPlayer;
+  this.AppUtilities = AppUtilities;
+  this.Backend = Backend;
+  this.AlloyDbService = AlloyDbService;
+  this.Backend.debug("status-controller");
+  var that = this;
+
+  $scope.ping = function () {
+    var ping = that.AlloyDbService.ping();
+
+    if (ping) {
+      ping.then(function (data) {
+        $scope.alloydb = data;
+        that.AppUtilities.apply();
+      });
+    }
+  };
+
+  $scope.getLibraryInfo = function () {
+    var libraryInfo = that.AlloyDbService.getLibraryInfo();
+
+    if (libraryInfo) {
+      libraryInfo.then(function (info) {
+        $scope.libraryInfo = info;
+        that.AppUtilities.apply();
+      });
+    }
+  };
+
+  $scope.getMediaPaths = function () {
+    var mediaPaths = that.AlloyDbService.getMediaPaths();
+
+    if (mediaPaths) {
+      mediaPaths.then(function (paths) {
+        $scope.mediaPaths = paths;
+        that.AppUtilities.apply();
+      });
+    }
+  };
+
+  $scope.scanFullStart = function () {
+    var scanner = that.AlloyDbService.scanFullStart();
+    that.Backend.debug("scanFullStart");
+    $scope.scanStatus = result;
+    that.AppUtilities.apply();
+    $scope.rescanInterval = setInterval(function () {
       $scope.getScanStatus();
     }, 500);
-    AppUtilities.hideLoader();
-  }
-}
+  };
 
+  $scope.scanQuickStart = function () {
+    var scanner = that.AlloyDbService.scanQuickStart();
+
+    if (scanner) {
+      scanner.then(function (result) {
+        that.Backend.debug("scanQuickStart");
+        $scope.scanStatus = result;
+        that.AppUtilities.apply();
+        $scope.rescanInterval = setInterval(function () {
+          $scope.getScanStatus();
+        }, 500);
+      });
+    }
+  };
+
+  $scope.getScanStatus = function () {
+    var scanner = that.AlloyDbService.scanStatus();
+
+    if (scanner) {
+      scanner.then(function (result) {
+        $scope.scanStatus = result;
+        that.AppUtilities.apply();
+
+        if (!$scope.rescanInterval) {
+          $scope.rescanInterval = setInterval(function () {
+            $scope.getScanStatus();
+          }, 500);
+        }
+      });
+    }
+
+    $scope.getLibraryInfo();
+  };
+
+  $scope.scanCancel = function () {
+    var scanner = that.AlloyDbService.scanCancel();
+
+    if (scanner) {
+      scanner.then(function (result) {
+        that.Backend.debug("cancelScan");
+        $scope.scanStatus = result;
+        that.AppUtilities.apply();
+      });
+    }
+  };
+
+  $rootScope.$on("loginStatusChange", function (event, data) {
+    $scope.ping();
+    $scope.getLibraryInfo();
+    $scope.getMediaPaths();
+  });
+  $scope.refreshIntereval = setInterval(function () {
+    $scope.ping();
+    $scope.getLibraryInfo();
+    $scope.getMediaPaths();
+  }, 5000);
+  $scope.uiRefreshIntereval = setInterval(function () {
+    AppUtilities.apply();
+  }, 1000);
+  $scope.$on("$destroy", function () {
+    clearInterval($scope.refreshIntereval);
+    clearInterval($scope.uiRefreshIntereval);
+    clearInterval($scope.rescanInterval);
+  });
+  $timeout(function () {
+    $scope.ping();
+    $scope.getLibraryInfo();
+    $scope.getMediaPaths();
+    $scope.getScanStatus();
+  }, 500);
+  AppUtilities.hideLoader();
+};
+
+StatusController.$inject = ["$scope", "$rootScope", "$timeout", "MediaElement", "MediaPlayer", "AppUtilities", "Backend", "AlloyDbService"];
 /* harmony default export */ __webpack_exports__["a"] = ({
   bindings: {},
   controller: StatusController,
-  templateUrl: '/template/status.jade'
+  templateUrl: "/template/status.jade"
 });
 
 /***/ }),
-/* 248 */
+/* 253 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(249);
+var content = __webpack_require__(254);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -7978,7 +10107,7 @@ if(false) {
 }
 
 /***/ }),
-/* 249 */
+/* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(0)(false);
@@ -7992,60 +10121,64 @@ exports.push([module.i, "@font-face {\n  font-family: \"Lato-Regular\", sans-ser
 
 
 /***/ }),
-/* 250 */
+/* 255 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__appUtilities_service__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_service__ = __webpack_require__(251);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__alloyDbService_service__ = __webpack_require__(279);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mediaElement_service__ = __webpack_require__(280);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__appUtilities_service__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__backend_service__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__alloyDbService_service__ = __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__mediaElement_service__ = __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__ = __webpack_require__(286);
 
 
 
 
 
 
-
-
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a
-  .module('app.services', [])
-  .service('AppUtilities', __WEBPACK_IMPORTED_MODULE_1__appUtilities_service__["a" /* default */])
-  .service('Backend', __WEBPACK_IMPORTED_MODULE_2__backend_service__["a" /* default */])
-  .service('AlloyDbService', __WEBPACK_IMPORTED_MODULE_3__alloyDbService_service__["a" /* default */])
-  .service('MediaElement', __WEBPACK_IMPORTED_MODULE_4__mediaElement_service__["a" /* default */])
-  .service('MediaPlayer', __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__["a" /* default */]));
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('app.services', []).service('AppUtilities', __WEBPACK_IMPORTED_MODULE_1__appUtilities_service__["a" /* default */]).service('Backend', __WEBPACK_IMPORTED_MODULE_2__backend_service__["a" /* default */]).service('AlloyDbService', __WEBPACK_IMPORTED_MODULE_3__alloyDbService_service__["a" /* default */]).service('MediaElement', __WEBPACK_IMPORTED_MODULE_4__mediaElement_service__["a" /* default */]).service('MediaPlayer', __WEBPACK_IMPORTED_MODULE_5__mediaPlayer_service__["a" /* default */]));
 
 /***/ }),
-/* 251 */
+/* 256 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_socket_io_client__ = __webpack_require__(252);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_socket_io_client__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_crypto_js__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Backend; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_socket_io_client__ = __webpack_require__(257);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_socket_io_client___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_socket_io_client__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_crypto_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_crypto_js__);
 
 
 
-class Backend {
-  constructor($rootScope, AppUtilities, AlloyDbService) {
+
+
+var Backend =
+/*#__PURE__*/
+function () {
+  Backend.$inject = ["$rootScope", "AppUtilities", "AlloyDbService"];
+
+  function Backend($rootScope, AppUtilities, AlloyDbService) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, Backend);
+
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
-    this.socket = __WEBPACK_IMPORTED_MODULE_0_socket_io_client___default()('//' + document.location.hostname + ':' + document.location.port);
+    this.socket = __WEBPACK_IMPORTED_MODULE_2_socket_io_client___default()('//' + document.location.hostname + ':' + document.location.port);
     var that = this;
     this.socket.on('ping', function (data) {
-      if (data)
-        $rootScope.backend_ping = data;
+      if (data) $rootScope.backend_ping = data;
     });
     this.socket.on('sabnzbd_ping', function (data) {
-      if (data)
-        $rootScope.sabnzbd_ping = data;
+      if (data) $rootScope.sabnzbd_ping = data;
     });
     $rootScope.settings = {};
     $rootScope.settings.alloydb = {};
@@ -8053,104 +10186,99 @@ class Backend {
 
     $rootScope.saveSettings = function () {
       var d = JSON.stringify($rootScope.settings);
-
       $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
-      that.emit('save_settings', { key: 'alloydb_settings', data: $rootScope.settings.alloydb });
+      that.emit('save_settings', {
+        key: 'alloydb_settings',
+        data: $rootScope.settings.alloydb
+      });
       $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
-
-      that.emit('save_settings', { key: 'sabnzbd_settings', data: $rootScope.settings.sabnzbd });
+      that.emit('save_settings', {
+        key: 'sabnzbd_settings',
+        data: $rootScope.settings.sabnzbd
+      });
       $rootScope.triggerConfigAlert("Saved!", 'success');
+    };
 
+    $rootScope.loadSettings = function () {};
 
-
-    }
-
-    $rootScope.loadSettings = function () {
-
-    }
-
-    var setup = function () {
-
+    var setup = function setup() {
       if (that.$rootScope.settings.alloydb.alloydb_host && that.$rootScope.settings.alloydb.alloydb_apikey) {
         AlloyDbService.login();
       }
+
       if ($rootScope.settings.alloydb && $rootScope.settings.alloydb.alloydb_lastfm_username && $rootScope.settings.alloydb.alloydb_lastfm_password) {
         AlloyDbService.lastFmLogin($rootScope.settings.alloydb.alloydb_lastfm_username, $rootScope.settings.alloydb.alloydb_lastfm_password);
       }
-    }
+    };
 
     this.socket.on('settings_saved_event', function (settings) {
       setup();
     });
-
     this.socket.on('settings_loaded_event', function (settings) {
       if (settings) {
         if (settings.key === 'sabnzbd_settings') {
           $rootScope.settings.sabnzbd = settings.data;
         }
 
-
         if (settings.key === 'alloydb_settings') {
           $rootScope.settings.alloydb = settings.data;
           $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
           setup();
         }
+
         that.AppUtilities.apply();
       }
     });
-
-
-  
-
     this.socket.on('sabnzbd_history_result', function (data) {
       if (data) {
         that.AppUtilities.broadcast('sabnzbdHistoryResult', data);
       }
     });
-
     this.socket.on('sabnzbd_queue_result', function (data) {
       if (data) {
         that.AppUtilities.broadcast('sabnzbdQueueResult', data);
       }
     });
-
   }
 
-  emit(message, data) {
-    this.socket.emit(message, data);
-  }
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(Backend, [{
+    key: "emit",
+    value: function emit(message, data) {
+      this.socket.emit(message, data);
+    }
+  }, {
+    key: "formMessage",
+    value: function formMessage(type, data) {
+      var message = {
+        message: data,
+        method: type
+      };
+      console.log(data);
+      this.emit('log', message);
+    }
+  }, {
+    key: "info",
+    value: function info(data) {
+      this.formMessage('info', data);
+    }
+  }, {
+    key: "debug",
+    value: function debug(data) {
+      this.formMessage('debug', data);
+    }
+  }, {
+    key: "error",
+    value: function error(data) {
+      this.formMessage('error', data);
+    }
+  }]);
 
-  formMessage(type, data) {
+  return Backend;
+}();
 
-    var message = {
-      message: data,
-      method: type
-    };
-    console.log(data);
-    this.emit('log', message);
-  }
-
-  info(data) {
-    this.formMessage('info', data);
-  }
-
-  debug(data) {
-    this.formMessage('debug', data);
-  }
-
-  error(data) {
-    this.formMessage('error', data);
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = Backend;
 
 
 /***/ }),
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */,
 /* 257 */,
 /* 258 */,
 /* 259 */,
@@ -8170,568 +10298,607 @@ class Backend {
 /* 273 */,
 /* 274 */,
 /* 275 */,
-/* 276 */
+/* 276 */,
+/* 277 */,
+/* 278 */,
+/* 279 */,
+/* 280 */,
+/* 281 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 277 */,
-/* 278 */,
-/* 279 */
+/* 282 */,
+/* 283 */,
+/* 284 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js__ = __webpack_require__(13);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_crypto_js__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AlloyDbService; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_crypto_js__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_crypto_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_crypto_js__);
 
 
-class AlloyDbService {
-  constructor($rootScope, AppUtilities) {
+
+
+var AlloyDbService =
+/*#__PURE__*/
+function () {
+  AlloyDbService.$inject = ["$rootScope", "AppUtilities"];
+
+  function AlloyDbService($rootScope, AppUtilities) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, AlloyDbService);
+
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.isLoggingIn = true;
     this.isLoggedIn = false;
   }
 
-  doLogin() {
-    var that = this;
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(AlloyDbService, [{
+    key: "doLogin",
+    value: function doLogin() {
+      var that = this;
 
-    if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
-      if (!this.isLoggedIn) {
-        console.log('logging into alloydb')
+      if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
+        if (!this.isLoggedIn) {
+          console.log('logging into alloydb');
+          this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
+          this.alloydb.ping().then(function (result) {
+            if (result) {
+              if (result.status == 'success') {
+                that.isLoggedIn = true;
+                that.isLoggingIn = false;
+                that.preload();
+              } else {
+                that.isLoggingIn = false;
+                that.isLoggedIn = false;
+              }
 
-        this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
-
-        this.alloydb.ping().then(function (result) {
-          if (result) {
-            if (result.status == 'success') {
-              that.isLoggedIn = true;
-              that.isLoggingIn = false;
-              that.preload();
-            } else {
-              that.isLoggingIn = false;
-              that.isLoggedIn = false;
+              console.log('logging into alloydb is ' + result.status);
             }
-            console.log('logging into alloydb is ' + result.status);
-          }
 
-          that.AppUtilities.broadcast('loginStatusChange', { service: 'alloydb', isLoggedIn: that.isLoggedIn });
-        });
-
-
+            that.AppUtilities.broadcast('loginStatusChange', {
+              service: 'alloydb',
+              isLoggedIn: that.isLoggedIn
+            });
+          });
+        }
       }
     }
-  }
+  }, {
+    key: "login",
+    value: function login() {
+      this.doLogin();
+    }
+  }, {
+    key: "ping",
+    value: function ping() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.ping();else return false;
+    }
+  }, {
+    key: "getSchedulerStatus",
+    value: function getSchedulerStatus() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getSchedulerStatus();else return false;
+    }
+  }, {
+    key: "getLibraryInfo",
+    value: function getLibraryInfo() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getLibraryInfo();else return false;
+    }
+  }, {
+    key: "getMediaPaths",
+    value: function getMediaPaths() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getMediaPaths();else return false;
+    }
+  }, {
+    key: "getMusicFolders",
+    value: function getMusicFolders() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getMusicFolders();else return false;
+    }
+  }, {
+    key: "getMusicFoldersIndex",
+    value: function getMusicFoldersIndex() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getMusicFoldersIndex();else return false;
+    }
+  }, {
+    key: "getRandomSongs",
+    value: function getRandomSongs() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getRandomSongs();else return false;
+    }
+  }, {
+    key: "getFresh",
+    value: function getFresh(limit) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getFresh(limit);else return false;
+    }
+  }, {
+    key: "getAlbums",
+    value: function getAlbums() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getAlbums();else return false;
+    }
+  }, {
+    key: "getAlbum",
+    value: function getAlbum(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getAlbum(id);else return false;
+    }
+  }, {
+    key: "getGenre",
+    value: function getGenre(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getGenre(id);else return false;
+    }
+  }, {
+    key: "getGenres",
+    value: function getGenres() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getGenres();else return false;
+    }
+  }, {
+    key: "getSongsByGenre",
+    value: function getSongsByGenre(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getSongsByGenre(id);else return false;
+    }
+  }, {
+    key: "getArtist",
+    value: function getArtist(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getArtist(id);else return false;
+    }
+  }, {
+    key: "getArtistInfo",
+    value: function getArtistInfo(artist) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getArtistInfo(artist);else return false;
+    }
+  }, {
+    key: "getAlbumInfo",
+    value: function getAlbumInfo(artist, album) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getAlbumInfo(artist, album);else return false;
+    }
+  }, {
+    key: "getTrackInfo",
+    value: function getTrackInfo(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getTrackInfo(id);else return false;
+    }
+  }, {
+    key: "getGenreInfo",
+    value: function getGenreInfo(genre) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getGenreInfo(genre);else return false;
+    }
+  }, {
+    key: "getStarred",
+    value: function getStarred() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getStarred();else return false;
+    }
+  }, {
+    key: "scanFullStart",
+    value: function scanFullStart() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.scanFullStart();else return false;
+    }
+  }, {
+    key: "scanQuickStart",
+    value: function scanQuickStart() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.scanQuickStart();else return false;
+    }
+  }, {
+    key: "scanStatus",
+    value: function scanStatus() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.scanStatus();else return false;
+    }
+  }, {
+    key: "scanCancel",
+    value: function scanCancel() {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.scanCancel();else return false;
+    }
+  }, {
+    key: "search",
+    value: function search(query) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.search(query);else return false;
+    }
+  }, {
+    key: "addPlay",
+    value: function addPlay(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.addPlay(id);else return false;
+    }
+  }, {
+    key: "love",
+    value: function love(params) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.love(params);else return false;
+    }
+  }, {
+    key: "unlove",
+    value: function unlove(params) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.unlove(params);else return false;
+    }
+  }, {
+    key: "star",
+    value: function star(params) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.star(params);else return false;
+    }
+  }, {
+    key: "unstar",
+    value: function unstar(params) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.unstar(params);else return false;
+    }
+  }, {
+    key: "stream",
+    value: function stream(id, quality) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.stream(id, quality);else return false;
+    }
+  }, {
+    key: "download",
+    value: function download(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.download(id);else return false;
+    }
+  }, {
+    key: "getCoverArt",
+    value: function getCoverArt(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.getCoverArt(id);else return false;
+    }
+  }, {
+    key: "lastFmLogin",
+    value: function lastFmLogin(username, password) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.lastFmLogin(username, password);else return false;
+    }
+  }, {
+    key: "scrobble",
+    value: function scrobble(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.scrobble(id);else return false;
+    }
+  }, {
+    key: "scrobbleNowPlaying",
+    value: function scrobbleNowPlaying(id) {
+      this.doLogin();
+      if (this.isLoggedIn) return this.alloydb.scrobbleNowPlaying(id);else return false;
+    }
+  }, {
+    key: "loadArtists",
+    value: function loadArtists(data) {
+      var that = this;
 
-  login() {
-    this.doLogin();
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.artists) {
+            that.$rootScope.artists = info.artists;
+          }
+        });
+      }
+    }
+  }, {
+    key: "loadFresh",
+    value: function loadFresh(data) {
+      var that = this;
 
-  ping() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.ping();
-    else return false;
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.fresh && info.fresh.albums) {
+            that.$rootScope.fresh_albums = info.fresh.albums;
+            that.$rootScope.fresh_albums.forEach(function (album) {
+              album.image = that.getCoverArt(album.cover_art);
+              album.title = album.album;
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: "loadAlbums",
+    value: function loadAlbums(data) {
+      var that = this;
 
-  getSchedulerStatus() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getSchedulerStatus();
-    else return false;
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.albums) {
+            that.$rootScope.albums = info.albums;
+            that.$rootScope.albums.forEach(function (album) {
+              album.image = that.getCoverArt(album.cover_art);
+              album.title = album.album;
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: "loadGenres",
+    value: function loadGenres(data) {
+      var that = this;
 
-  getLibraryInfo() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getLibraryInfo();
-    else return false;
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.genres) {
+            that.$rootScope.genres = info.genres;
+          }
+        });
+      }
+    }
+  }, {
+    key: "loadStarred",
+    value: function loadStarred(data) {
+      var that = this;
 
-  getMediaPaths() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getMediaPaths();
-    else return false;
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.starred) {
+            that.$rootScope.starred_tracks = info.starred.tracks;
+            that.$rootScope.starred_albums = info.starred.albums;
+            that.$rootScope.starred_albums.forEach(function (album) {
+              album.image = that.getCoverArt(album.cover_art);
+              album.title = album.album;
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: "loadIndex",
+    value: function loadIndex(data) {
+      var that = this;
 
-  getMusicFolders() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getMusicFolders();
-    else return false;
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.index) {
+            that.$rootScope.music_index = info.index;
+          }
+        });
+      }
+    }
+  }, {
+    key: "loadRandom",
+    value: function loadRandom(data) {
+      var that = this;
 
-  getMusicFoldersIndex() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getMusicFoldersIndex();
-    else return false;
-  }
+      if (data) {
+        data.forEach(function (info) {
+          if (info.random) {
+            that.$rootScope.random = info.random;
+            that.$rootScope.random.forEach(function (track) {
+              track.image = that.getCoverArt(track.cover_art);
+            });
+          }
+        });
+      }
+    }
+  }, {
+    key: "refreshArtists",
+    value: function refreshArtists() {
+      var that = this;
+      var artists = this.getMusicFolders();
 
-  getRandomSongs() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getRandomSongs();
-    else return false;
-  }
+      if (artists) {
+        artists.then(function (info) {
+          that.loadArtists([info]);
+        });
+      }
+    }
+  }, {
+    key: "refreshFresh",
+    value: function refreshFresh() {
+      var that = this;
+      var fresh = this.getFresh(50);
 
-  getFresh(limit) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getFresh(limit);
-    else return false;
-  }
+      if (fresh) {
+        fresh.then(function (info) {
+          that.loadFresh([info]);
+        });
+      }
+    }
+  }, {
+    key: "refreshAlbums",
+    value: function refreshAlbums() {
+      var that = this;
+      var albums = this.getAlbums();
 
-  getAlbums() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getAlbums();
-    else return false;
-  }
+      if (albums) {
+        albums.then(function (info) {
+          that.loadAlbums([info]);
+        });
+      }
+    }
+  }, {
+    key: "refreshGenres",
+    value: function refreshGenres() {
+      var that = this;
+      var genres = this.getGenres();
 
-  getAlbum(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getAlbum(id);
-    else return false;
-  }
+      if (genres) {
+        genres.then(function (info) {
+          that.loadGenres([info]);
+        });
+      }
+    }
+  }, {
+    key: "refreshStarred",
+    value: function refreshStarred() {
+      var that = this;
+      var starred = this.getStarred();
 
-  getGenre(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getGenre(id);
-    else return false;
-  }
+      if (starred) {
+        starred.then(function (info) {
+          that.loadStarred([info]);
+        });
+      }
+    }
+  }, {
+    key: "refreshIndex",
+    value: function refreshIndex() {
+      var that = this;
+      var index = this.getMusicFoldersIndex();
 
-  getGenres() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getGenres();
-    else return false;
-  }
+      if (index) {
+        index.then(function (info) {
+          that.loadIndex([info]);
+        });
+      }
+    }
+  }, {
+    key: "refreshRandom",
+    value: function refreshRandom() {
+      var that = this;
+      var random = this.getRandomSongs();
 
-  getSongsByGenre(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getSongsByGenre(id);
-    else return false;
-  }
-
-  getArtist(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getArtist(id);
-    else return false;
-  }
-
-  getArtistInfo(artist) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getArtistInfo(artist);
-    else return false;
-  }
-
-  getAlbumInfo(artist, album) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getAlbumInfo(artist, album);
-    else return false;
-  }
-
-  getTrackInfo(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getTrackInfo(id);
-    else return false;
-  }
-
-  getGenreInfo(genre) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getGenreInfo(genre);
-    else return false;
-  }
-
-  getStarred() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getStarred();
-    else return false;
-  }
-
-  scanFullStart() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scanFullStart();
-    else return false;
-  }
-
-  scanQuickStart() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scanQuickStart();
-    else return false;
-  }
-
-  scanStatus() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scanStatus();
-    else return false;
-  }
-
-  scanCancel() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scanCancel();
-    else return false;
-  }
-
-  search(query) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.search(query);
-    else return false;
-  }
-
-  addPlay(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.addPlay(id);
-    else return false;
-  }
-
-  love(params) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.love(params);
-    else return false;
-  }
-
-  unlove(params) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.unlove(params);
-    else return false;
-  }
-
-  star(params) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.star(params);
-    else return false;
-  }
-
-  unstar(params) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.unstar(params);
-    else return false;
-  }
-
-  stream(id, quality) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.stream(id, quality);
-    else return false;
-  }
-
-  download(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.download(id);
-    else return false;
-  }
-
-  getCoverArt(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getCoverArt(id);
-    else return false;
-  }
-
-  lastFmLogin(username, password) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.lastFmLogin(username, password);
-    else return false;
-  }
-
-  scrobble(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scrobble(id);
-    else return false;
-  }
-
-  scrobbleNowPlaying(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scrobbleNowPlaying(id);
-    else return false;
-  }
-
-  loadArtists(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.artists) {
-          that.$rootScope.artists = info.artists;
-        }
+      if (random) {
+        random.then(function (info) {
+          that.loadRandom([info]);
+        });
+      }
+    }
+  }, {
+    key: "preload",
+    value: function preload() {
+      console.log('preloaing');
+      var that = this;
+      var artists = this.getMusicFolders();
+      var fresh = this.getFresh(50);
+      var albums = this.getAlbums();
+      var genres = this.getGenres();
+      var starred = this.getStarred();
+      var index = this.getMusicFoldersIndex();
+      var random = this.getRandomSongs();
+      Promise.all([artists, fresh, albums, genres, starred, index, random]).then(function (info) {
+        that.loadArtists(info);
+        that.loadFresh(info);
+        that.loadAlbums(info);
+        that.loadGenres(info);
+        that.loadStarred(info);
+        that.loadIndex(info);
+        that.loadRandom(info);
+        that.AppUtilities.apply();
       });
     }
-  }
+  }]);
 
-  loadFresh(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.fresh && info.fresh.albums) {
-          that.$rootScope.fresh_albums = info.fresh.albums;
-          that.$rootScope.fresh_albums.forEach(function (album) {
-            album.image = that.getCoverArt(album.cover_art);
-            album.title = album.album;
-          });
-        }
-      });
-    }
-  }
+  return AlloyDbService;
+}();
 
-  loadAlbums(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.albums) {
-          that.$rootScope.albums = info.albums;
-          that.$rootScope.albums.forEach(function (album) {
-            album.image = that.getCoverArt(album.cover_art);
-            album.title = album.album;
-          });
-        }
-      });
-    }
-  }
-
-  loadGenres(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.genres) {
-          that.$rootScope.genres = info.genres;
-
-        }
-      });
-    }
-  }
-
-  loadStarred(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.starred) {
-          that.$rootScope.starred_tracks = info.starred.tracks;
-          that.$rootScope.starred_albums = info.starred.albums;
-          that.$rootScope.starred_albums.forEach(function (album) {
-            album.image = that.getCoverArt(album.cover_art);
-            album.title = album.album;
-          });
-        }
-      });
-    }
-  }
-
-  loadIndex(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.index) {
-          that.$rootScope.music_index = info.index;
-
-        }
-      });
-    }
-  }
-
-  loadRandom(data) {
-    var that = this;
-    if (data) {
-      data.forEach(function (info) {
-        if (info.random) {
-          that.$rootScope.random = info.random;
-          that.$rootScope.random.forEach(function (track) {
-            track.image = that.getCoverArt(track.cover_art);
-          });
-        }
-      });
-    }
-  }
-
-  refreshArtists(){
-    var that = this;
-    var artists = this.getMusicFolders();
-    if(artists){
-      artists.then(function(info){
-        that.loadArtists([info]);
-      })
-    }
-  };
-  
-  refreshFresh(){
-    var that = this;
-    var fresh = this.getFresh(50);
-    if(fresh){
-      fresh.then(function(info){
-        that.loadFresh([info]);
-      })
-    }
-  }
-
-  refreshAlbums(){
-    var that = this;
-    var albums = this.getAlbums();
-    if(albums){
-      albums.then(function(info){
-        that.loadAlbums([info]);
-      })
-    }
-  }
-
-  refreshGenres(){
-    var that = this;
-    var genres = this.getGenres();
-    if(genres){
-      genres.then(function(info){
-        that.loadGenres([info]);
-      })
-    }
-  }
-
-  refreshStarred(){
-    var that = this;
-    var starred = this.getStarred();
-    if(starred){
-      starred.then(function(info){
-        that.loadStarred([info]);
-      })
-    }
-  }
-
-  refreshIndex(){
-    var that = this;
-    var index = this.getMusicFoldersIndex();
-    if(index){
-      index.then(function(info){
-        that.loadIndex([info]);
-      })
-    }
-  }
-
-  refreshRandom(){
-    var that = this;
-    var random = this.getRandomSongs();
-    if(random){
-      random.then(function(info){
-        that.loadRandom([info]);
-      })
-    }
-  }
-
-  preload() {
-    console.log('preloaing')
-    var that = this;
-    var artists = this.getMusicFolders();
-    var fresh = this.getFresh(50);
-    var albums = this.getAlbums();
-    var genres = this.getGenres();
-    var starred = this.getStarred();
-    var index = this.getMusicFoldersIndex();
-    var random = this.getRandomSongs();
-
-    Promise.all([artists, fresh, albums, genres, starred, index, random]).then(function (info) {
-      that.loadArtists(info);
-      that.loadFresh(info);
-      that.loadAlbums(info);
-      that.loadGenres(info);
-      that.loadStarred(info);
-      that.loadIndex(info);
-      that.loadRandom(info);
-      that.AppUtilities.apply();
-    });
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = AlloyDbService;
 
 
 /***/ }),
-/* 280 */
+/* 285 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {class MediaElement {
-  constructor($document) {
-    "ngInject";
-    var media = $document[0].getElementById('media-player');
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MediaElement; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
 
-    $('#media-player').on('error', function failed(e) {
-      // audio playback failed - show a message saying why
-      // to get the source of the audio element use $(this).src
-      console.log('player error ' + e.target.error);
-      switch (e.target.error.code) {
-        case e.target.error.MEDIA_ERR_ABORTED:
-          alert('You aborted the video playback.');
-          break;
-        case e.target.error.MEDIA_ERR_NETWORK:
-          alert('A network error caused the audio download to fail.');
-          break;
-        case e.target.error.MEDIA_ERR_DECODE:
-          alert('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
-          break;
-        case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-          alert('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
-          break;
-        default:
-          alert('An unknown error occurred.');
-          break;
-      }
-    });
 
-    return media;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = MediaElement;
+var MediaElement = function MediaElement($document) {
+  "ngInject";
 
+  __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, MediaElement);
+
+  var media = $document[0].getElementById('media-player');
+  $('#media-player').on('error', function failed(e) {
+    // audio playback failed - show a message saying why
+    // to get the source of the audio element use $(this).src
+    console.log('player error ' + e.target.error);
+
+    switch (e.target.error.code) {
+      case e.target.error.MEDIA_ERR_ABORTED:
+        alert('You aborted the video playback.');
+        break;
+
+      case e.target.error.MEDIA_ERR_NETWORK:
+        alert('A network error caused the audio download to fail.');
+        break;
+
+      case e.target.error.MEDIA_ERR_DECODE:
+        alert('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
+        break;
+
+      case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
+        alert('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
+        break;
+
+      default:
+        alert('An unknown error occurred.');
+        break;
+    }
+  });
+  return media;
+};
+
+MediaElement.$inject = ["$document"];
 
 Object.defineProperty(HTMLMediaElement.prototype, 'playing', {
-  get: function () {
+  get: function get() {
     return !!(this.currentTime > 0 && !this.paused && !this.ended && this.readyState > 2);
   }
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 281 */
+/* 286 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function($) {/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__appUtilities_service__ = __webpack_require__(44);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__API_cast_framework__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__API_cast_framework___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__API_cast_framework__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__API_cast_v1__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__API_cast_v1___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__API_cast_v1__);
+/* WEBPACK VAR INJECTION */(function($) {/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MediaPlayer; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__appUtilities_service__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__API_cast_framework__ = __webpack_require__(38);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__API_cast_v1__ = __webpack_require__(39);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__API_cast_v1___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__API_cast_v1__);
+
+
 
 
 
 var isCastAvailable = false;
+
 window.__onGCastApiAvailable = function (isAvailable) {
   isCastAvailable = isAvailable;
 };
 
-class MediaPlayer {
-  constructor($rootScope, MediaElement, AppUtilities, Backend, AlloyDbService) {
+var MediaPlayer =
+/*#__PURE__*/
+function () {
+  MediaPlayer.$inject = ["$rootScope", "MediaElement", "AppUtilities", "Backend", "AlloyDbService"];
+
+  function MediaPlayer($rootScope, MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
+
+    __WEBPACK_IMPORTED_MODULE_0__babel_runtime_helpers_classCallCheck___default()(this, MediaPlayer);
+
     this.$rootScope = $rootScope;
     this.MediaElement = MediaElement;
     this.AppUtilities = AppUtilities;
@@ -8750,14 +10917,12 @@ class MediaPlayer {
       that.playing = true;
       that.togglePlayPause();
     });
-
     this.MediaElement.addEventListener('pause', function () {
       that.playing = false;
       that.togglePlayPause();
     });
-
     this.MediaElement.addEventListener('ended', function () {
-      if ((that.selectedIndex + 1) === that.$rootScope.tracks.length) {
+      if (that.selectedIndex + 1 === that.$rootScope.tracks.length) {
         that.playing = false;
         that.selectedIndex = 0;
         that.togglePlayPause();
@@ -8767,35 +10932,29 @@ class MediaPlayer {
         $('#mainTimeDisplay').html("");
         that.Backend.debug('Playlist ended');
         that.AppUtilities.broadcast('playlistEndEvent');
-
       } else {
         that.playing = true;
         that.next();
       }
     });
-
     this.MediaElement.addEventListener('canplaythrough', function () {
       $('#mainTimeDisplay').html("0:00 / " + that.AppUtilities.formatTime(MediaElement.duration));
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
       that.togglePlayPause();
     });
-
     this.MediaElement.addEventListener('timeupdate', function () {
       var duration = MediaElement.duration;
-      if (!isFinite(duration))
-        duration = that.selectedTrack().duration;
-
+      if (!isFinite(duration)) duration = that.selectedTrack().duration;
       var playPercent = 100 * (MediaElement.currentTime / duration);
+
       if (!isNaN(playPercent)) {
         var buffered = MediaElement.buffered;
         var loaded;
 
-
         if (buffered.length) {
           loaded = 100 * buffered.end(0) / duration;
         }
-
 
         $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
         $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
@@ -8804,354 +10963,381 @@ class MediaPlayer {
     });
   }
 
-  castStatus() {
-    return isCastAvailable;
-  }
-
-  initializeCast() {
-    if (isCastAvailable) {
-      var options = {};
-      options.receiverApplicationId = 'DAB06F7C';
-      options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
-      cast.framework.CastContext.getInstance().setOptions(options);
-      this.remotePlayer = new cast.framework.RemotePlayer();
-      this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
-      var that = this;
-      this.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-        function () {
+  __WEBPACK_IMPORTED_MODULE_1__babel_runtime_helpers_createClass___default()(MediaPlayer, [{
+    key: "castStatus",
+    value: function castStatus() {
+      return isCastAvailable;
+    }
+  }, {
+    key: "initializeCast",
+    value: function initializeCast() {
+      if (isCastAvailable) {
+        var options = {};
+        options.receiverApplicationId = 'DAB06F7C';
+        options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+        cast.framework.CastContext.getInstance().setOptions(options);
+        this.remotePlayer = new cast.framework.RemotePlayer();
+        this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
+        var that = this;
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, function () {
           that.Backend.debug('switchPlayer');
+
           if (cast && cast.framework) {
             if (that.remotePlayerConnected()) {
-
               that.setupRemotePlayer();
               return;
             }
           }
+
           that.setupLocalPlayer();
-        }
-      );
-
-      this.castSession = cast.framework.CastContext.getInstance().getCurrentSession();
-    }
-  }
-
-  castSession() {
-    return this.getCurrentSession();
-    //return cast.framework.CastContext.getInstance().getCurrentSession();
-  }
-
-  trackCount() {
-    return this.$rootScope.tracks.length;
-  }
-
-  showTrackCount() {
-    return this.$rootScope.tracks.length > 0;
-  }
-
-  selectedTrack() {
-    return this.$rootScope.tracks[this.selectedIndex];
-  }
-
-  remotePlayerConnected() {
-    if (!this.remotePlayer) return false;
-    return this.remotePlayer.isConnected;
-  }
-
-  checkNowPlayingImage(source) {
-    if (source.cover_art) {
-
-      $('#nowPlayingImageHolder').attr('src', this.AlloyDbService.getCoverArt(source.cover_art));
-    }
-  }
-
-  checkPlaylistBeginning(newIndex) {
-    if (newIndex <= 0) {
-      this.playing = false;
-      this.selectedIndex = 0;
-      this.togglePlayPause();
-      $('#media-player').src = this.selectedTrack();
-      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainTimeDisplay').html("");
-      this.Backend.debug('Playlist ended');
-      this.AppUtilities.broadcast('playlistBeginEvent');
-      return true;
-    } return false;
-  }
-
-  checkPlaylistEnding(newIndex) {
-    if (newIndex >= this.$rootScope.tracks.length) {
-      this.playing = false;
-      this.selectedIndex = 0;
-      this.togglePlayPause();
-      $('#media-player').src = this.selectedTrack();
-      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainTimeDisplay').html("");
-      this.Backend.debug('Playlist ended');
-      this.AppUtilities.broadcast('playlistEndEvent');
-      return true;
-    } return false;
-  }
-
-  generateRemoteMetadata(source) {
-    var that = this;
-    return new Promise(function (resolve, reject) {
-      if (!source) {
-        throw new Error('source required');
-      }
-      if (!source.artistId) {
-        throw new Error('no artist id');
-      }
-      //that.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
-      //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
-      //  mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
-      //  mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-      //  mediaInfo.metadata.customData = JSON.stringify(source);
-      //  mediaInfo.metadata.albumArtist = source.albumArtist;
-      //  mediaInfo.metadata.albumName = source.album;
-      //  mediaInfo.metadata.artist = source.artist;
-      //  mediaInfo.metadata.artistName = source.artist;
-      //  mediaInfo.metadata.composer = source.artist;
-      //  mediaInfo.metadata.discNumber = source.track;
-      //  mediaInfo.metadata.songName = source.title;
-      //  mediaInfo.metadata.title = source.title;
-      //  mediaInfo.metadata.images = [{
-      //    'url': result.largeImageUrl.replace('300x300', '1280x400')
-      //  }];
-      //  resolve(mediaInfo);
-      //});
-    });
-  }
-
-  togglePlayPause() {
-    var playing = false;
-    if (this.remotePlayerConnected()) {
-      playing = this.remotePlayer.playerState === 'PLAYING';
-    } else {
-      playing = this.playing;
-    }
-
-    if (playing) {
-      $("#playPauseIcon").addClass("fa-pause");
-      $("#playPauseIcon").removeClass("fa-play");
-    } else {
-      $("#playPauseIcon").addClass("fa-play");
-      $("#playPauseIcon").removeClass("fa-pause");
-    }
-  }
-
-  toggleCurrentStatus() {
-    var playing = false;
-    if (this.remotePlayerConnected()) {
-      playing = this.remotePlayer.playerState === 'PLAYING';
-    } else {
-      playing = this.playing;
-    }
-    if (playing) {
-      this.pause();
-    } else {
-      this.play();
-    }
-  }
-
-  scrobble(instance, source) {
-    instance.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
-      if (scrobbleResult) instance.Backend.info('scrobble success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
-    });
-    instance.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
-      if (scrobbleResult) instance.Backend.info('scrobbleNowPlaying success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
-    });
-  }
-
-  addPlay(instance, source) {
-    instance.AlloyDbService.addPlay(source.id).then(function (result) {
-      if (result) {
-        instance.Backend.info('addPlay success: ' + result.result + " : " + source.artist + " - " + source.title);
-        source.play_count++;
-        instance.AppUtilities.broadcast('trackChangedEvent', source);
-        instance.AppUtilities.apply();
-      }
-    });
-  }
-
-  loadTrack(index, that) {
-    var t = this;
-    if (that) {
-      t = that;
-    }
-    t.selectedIndex = index;
-    t.Backend.debug('load track');
-    $('#mainTimeDisplay').html("Loading...");
-
-    var source = t.selectedTrack();
-    t.Backend.debug(source.artist + " - " + source.title);
-    source.artistUrl = "/artist/" + source.base_id;
-    source.albumUrl = "/album/" + source.album_id;
-    if (source && source.id) {
-      source.url = t.AlloyDbService.stream(source.id, 320);
-
-      t.checkVolume();
-
-      //if (source.artistId) {
-      t.checkStarred(source);
-      t.checkArtistInfo(source);
-      t.checkNowPlayingImage(source);
-
-      if (t.remotePlayerConnected()) {
-        t.setupRemotePlayer();
-        t.generateRemoteMetadata(source).then(function (mediaInfo) {
-          var request = new chrome.cast.media.LoadRequest(mediaInfo);
-          cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
-          t.scrobble(t, source);
-          t.togglePlayPause();
-          t.startProgressTimer();
         });
-      } else {
+        this.castSession = cast.framework.CastContext.getInstance().getCurrentSession();
+      }
+    }
+  }, {
+    key: "castSession",
+    value: function castSession() {
+      return this.getCurrentSession(); //return cast.framework.CastContext.getInstance().getCurrentSession();
+    }
+  }, {
+    key: "trackCount",
+    value: function trackCount() {
+      return this.$rootScope.tracks.length;
+    }
+  }, {
+    key: "showTrackCount",
+    value: function showTrackCount() {
+      return this.$rootScope.tracks.length > 0;
+    }
+  }, {
+    key: "selectedTrack",
+    value: function selectedTrack() {
+      return this.$rootScope.tracks[this.selectedIndex];
+    }
+  }, {
+    key: "remotePlayerConnected",
+    value: function remotePlayerConnected() {
+      if (!this.remotePlayer) return false;
+      return this.remotePlayer.isConnected;
+    }
+  }, {
+    key: "checkNowPlayingImage",
+    value: function checkNowPlayingImage(source) {
+      if (source.cover_art) {
+        $('#nowPlayingImageHolder').attr('src', this.AlloyDbService.getCoverArt(source.cover_art));
+      }
+    }
+  }, {
+    key: "checkPlaylistBeginning",
+    value: function checkPlaylistBeginning(newIndex) {
+      if (newIndex <= 0) {
+        this.playing = false;
+        this.selectedIndex = 0;
+        this.togglePlayPause();
+        $('#media-player').src = this.selectedTrack();
+        $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+        $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+        $('#mainTimeDisplay').html("");
+        this.Backend.debug('Playlist ended');
+        this.AppUtilities.broadcast('playlistBeginEvent');
+        return true;
+      }
 
-        t.MediaElement.src = source.url;
-        t.MediaElement.load();
-        if (t.shouldSeek) {
-          t.shouldSeek = false;
-          t.MediaElement.currentTime = t.prePlannedSeek;
+      return false;
+    }
+  }, {
+    key: "checkPlaylistEnding",
+    value: function checkPlaylistEnding(newIndex) {
+      if (newIndex >= this.$rootScope.tracks.length) {
+        this.playing = false;
+        this.selectedIndex = 0;
+        this.togglePlayPause();
+        $('#media-player').src = this.selectedTrack();
+        $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+        $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+        $('#mainTimeDisplay').html("");
+        this.Backend.debug('Playlist ended');
+        this.AppUtilities.broadcast('playlistEndEvent');
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: "generateRemoteMetadata",
+    value: function generateRemoteMetadata(source) {
+      var that = this;
+      return new Promise(function (resolve, reject) {
+        if (!source) {
+          throw new Error('source required');
         }
-        var playPromise = t.MediaElement.play();
-        var that2 = t;
-        if (playPromise !== undefined) {
-          playPromise.then(_ => {
-            that2.scrobble(that2, source);
-            that2.addPlay(that2, source);
-            that2.togglePlayPause();
-            that2.AppUtilities.broadcast('trackChangedEvent', source);
-          }).catch(error => {
-            that2.Backend.error('playing failed ' + error);
-            //that2.next();
+
+        if (!source.artistId) {
+          throw new Error('no artist id');
+        } //that.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
+        //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
+        //  mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+        //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
+        //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
+        //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
+        //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
+        //  mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+        //  mediaInfo.metadata.customData = JSON.stringify(source);
+        //  mediaInfo.metadata.albumArtist = source.albumArtist;
+        //  mediaInfo.metadata.albumName = source.album;
+        //  mediaInfo.metadata.artist = source.artist;
+        //  mediaInfo.metadata.artistName = source.artist;
+        //  mediaInfo.metadata.composer = source.artist;
+        //  mediaInfo.metadata.discNumber = source.track;
+        //  mediaInfo.metadata.songName = source.title;
+        //  mediaInfo.metadata.title = source.title;
+        //  mediaInfo.metadata.images = [{
+        //    'url': result.largeImageUrl.replace('300x300', '1280x400')
+        //  }];
+        //  resolve(mediaInfo);
+        //});
+
+      });
+    }
+  }, {
+    key: "togglePlayPause",
+    value: function togglePlayPause() {
+      var playing = false;
+
+      if (this.remotePlayerConnected()) {
+        playing = this.remotePlayer.playerState === 'PLAYING';
+      } else {
+        playing = this.playing;
+      }
+
+      if (playing) {
+        $("#playPauseIcon").addClass("fa-pause");
+        $("#playPauseIcon").removeClass("fa-play");
+      } else {
+        $("#playPauseIcon").addClass("fa-play");
+        $("#playPauseIcon").removeClass("fa-pause");
+      }
+    }
+  }, {
+    key: "toggleCurrentStatus",
+    value: function toggleCurrentStatus() {
+      var playing = false;
+
+      if (this.remotePlayerConnected()) {
+        playing = this.remotePlayer.playerState === 'PLAYING';
+      } else {
+        playing = this.playing;
+      }
+
+      if (playing) {
+        this.pause();
+      } else {
+        this.play();
+      }
+    }
+  }, {
+    key: "scrobble",
+    value: function scrobble(instance, source) {
+      instance.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
+        if (scrobbleResult) instance.Backend.info('scrobble success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+      });
+      instance.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
+        if (scrobbleResult) instance.Backend.info('scrobbleNowPlaying success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+      });
+    }
+  }, {
+    key: "addPlay",
+    value: function addPlay(instance, source) {
+      instance.AlloyDbService.addPlay(source.id).then(function (result) {
+        if (result) {
+          instance.Backend.info('addPlay success: ' + result.result + " : " + source.artist + " - " + source.title);
+          source.play_count++;
+          instance.AppUtilities.broadcast('trackChangedEvent', source);
+          instance.AppUtilities.apply();
+        }
+      });
+    }
+  }, {
+    key: "loadTrack",
+    value: function loadTrack(index, that) {
+      var t = this;
+
+      if (that) {
+        t = that;
+      }
+
+      t.selectedIndex = index;
+      t.Backend.debug('load track');
+      $('#mainTimeDisplay').html("Loading...");
+      var source = t.selectedTrack();
+      t.Backend.debug(source.artist + " - " + source.title);
+      source.artistUrl = "/artist/" + source.base_id;
+      source.albumUrl = "/album/" + source.album_id;
+
+      if (source && source.id) {
+        source.url = t.AlloyDbService.stream(source.id, 320);
+        t.checkVolume(); //if (source.artistId) {
+
+        t.checkStarred(source);
+        t.checkArtistInfo(source);
+        t.checkNowPlayingImage(source);
+
+        if (t.remotePlayerConnected()) {
+          t.setupRemotePlayer();
+          t.generateRemoteMetadata(source).then(function (mediaInfo) {
+            var request = new chrome.cast.media.LoadRequest(mediaInfo);
+            cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
+            t.scrobble(t, source);
+            t.togglePlayPause();
+            t.startProgressTimer();
           });
         } else {
-          //t.next();
+          t.MediaElement.src = source.url;
+          t.MediaElement.load();
+
+          if (t.shouldSeek) {
+            t.shouldSeek = false;
+            t.MediaElement.currentTime = t.prePlannedSeek;
+          }
+
+          var playPromise = t.MediaElement.play();
+          var that2 = t;
+
+          if (playPromise !== undefined) {
+            playPromise.then(function (_) {
+              that2.scrobble(that2, source);
+              that2.addPlay(that2, source);
+              that2.togglePlayPause();
+              that2.AppUtilities.broadcast('trackChangedEvent', source);
+            }).catch(function (error) {
+              that2.Backend.error('playing failed ' + error); //that2.next();
+            });
+          } else {//t.next();
+          }
+        } //} else {
+        //  t.next();
+        //}
+
+      } else {//t.next();
+        }
+    }
+  }, {
+    key: "play",
+    value: function play() {
+      var _this = this;
+
+      if (this.remotePlayerConnected()) {
+        if (this.remotePlayer.isPaused) {
+          this.remotePlayerController.playOrPause();
+        }
+      } else {
+        var playPromise = this.MediaElement.play();
+
+        if (playPromise !== undefined) {
+          playPromise.then(function (_) {
+            _this.Backend.debug('success playing');
+          }).catch(function (error) {
+            _this.Backend.error('playing failed ' + error);
+          });
         }
       }
-      //} else {
-      //  t.next();
-      //}
-    } else {
-      //t.next();
     }
-  }
-
-  play() {
-    if (this.remotePlayerConnected()) {
-      if (this.remotePlayer.isPaused) {
-        this.remotePlayerController.playOrPause();
-      }
-
-    } else {
-      var playPromise = this.MediaElement.play();
-
-      if (playPromise !== undefined) {
-        playPromise.then(_ => {
-          this.Backend.debug('success playing');
-        }).catch(error => {
-          this.Backend.error('playing failed ' + error);
-        });
-      }
-    }
-  }
-
-  pause() {
-    if (this.remotePlayerConnected()) {
-      if (!this.remotePlayer.isPaused) {
-        this.remotePlayerController.playOrPause();
-      }
-    } else {
-      this.MediaElement.pause();
-    }
-  }
-
-  stop() {
-    this.MediaElement.stop();
-  }
-
-  previous() {
-    if (!this.repeatEnabled) this.selectedIndex--;
-    if (!this.checkPlaylistBeginning(this.selectedIndex)) {
-      this.loadTrack(this.selectedIndex);
-    }
-  }
-  next() {
-    if (!this.repeatEnabled) this.selectedIndex++;
-    if (!this.checkPlaylistEnding(this.selectedIndex)) {
-      this.loadTrack(this.selectedIndex);
-    }
-  }
-
-  checkVolume() {
-    $('#volumeSlider').val(this.currentVolume * 100);
-  }
-
-  checkStarred(source) {
-    if (source.starred === 'true') {
-      $("#likeButtonIcon").removeClass('fa-star-o');
-      $("#likeButtonIcon").addClass('fa-star');
-    } else {
-      $("#likeButtonIcon").removeClass('fa-star');
-      $("#likeButtonIcon").addClass('fa-star-o');
-    }
-  }
-
-  checkArtistInfo(source) {
-    $('#artistInfo').html(source.artist);
-    $('#artistInfo').attr("href", source.artistUrl);
-    $('#trackTitle').html(source.title);
-    $('#trackTitle').attr("href", source.albumUrl);
-  }
-
-  startProgressTimer() {
-    this.stopProgressTimer();
-    var that = this;
-    this.timer = setInterval(function () {
-      if (that.remotePlayerConnected()) {
-        var currentMediaTime = that.remotePlayer.currentTime;
-        var currentMediaDuration = that.remotePlayer.duration;
-        var playPercent = 100 * (currentMediaTime / currentMediaDuration);
-        if (!isNaN(playPercent)) {
-          $('#subProgress').attr('aria-valuenow', "100").css('width', "100%");
-          $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
-          $('#mainTimeDisplay').html(that.AppUtilities.formatTime(currentMediaTime) + " / " + that.AppUtilities.formatTime(currentMediaDuration));
+  }, {
+    key: "pause",
+    value: function pause() {
+      if (this.remotePlayerConnected()) {
+        if (!this.remotePlayer.isPaused) {
+          this.remotePlayerController.playOrPause();
         }
+      } else {
+        this.MediaElement.pause();
       }
-    }, 250);
-  }
-
-  stopProgressTimer() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
     }
-  }
+  }, {
+    key: "stop",
+    value: function stop() {
+      this.MediaElement.stop();
+    }
+  }, {
+    key: "previous",
+    value: function previous() {
+      if (!this.repeatEnabled) this.selectedIndex--;
 
+      if (!this.checkPlaylistBeginning(this.selectedIndex)) {
+        this.loadTrack(this.selectedIndex);
+      }
+    }
+  }, {
+    key: "next",
+    value: function next() {
+      if (!this.repeatEnabled) this.selectedIndex++;
 
-
-  setupRemotePlayer() {
-
-    if (!this.remoteConfigured) {
+      if (!this.checkPlaylistEnding(this.selectedIndex)) {
+        this.loadTrack(this.selectedIndex);
+      }
+    }
+  }, {
+    key: "checkVolume",
+    value: function checkVolume() {
+      $('#volumeSlider').val(this.currentVolume * 100);
+    }
+  }, {
+    key: "checkStarred",
+    value: function checkStarred(source) {
+      if (source.starred === 'true') {
+        $("#likeButtonIcon").removeClass('fa-star-o');
+        $("#likeButtonIcon").addClass('fa-star');
+      } else {
+        $("#likeButtonIcon").removeClass('fa-star');
+        $("#likeButtonIcon").addClass('fa-star-o');
+      }
+    }
+  }, {
+    key: "checkArtistInfo",
+    value: function checkArtistInfo(source) {
+      $('#artistInfo').html(source.artist);
+      $('#artistInfo').attr("href", source.artistUrl);
+      $('#trackTitle').html(source.title);
+      $('#trackTitle').attr("href", source.albumUrl);
+    }
+  }, {
+    key: "startProgressTimer",
+    value: function startProgressTimer() {
+      this.stopProgressTimer();
       var that = this;
-      this.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
-        function () {
-          that.togglePlayPause(that.remotePlayer.isPaused);
-        }
-      );
+      this.timer = setInterval(function () {
+        if (that.remotePlayerConnected()) {
+          var currentMediaTime = that.remotePlayer.currentTime;
+          var currentMediaDuration = that.remotePlayer.duration;
+          var playPercent = 100 * (currentMediaTime / currentMediaDuration);
 
-      that.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
-        function () {
+          if (!isNaN(playPercent)) {
+            $('#subProgress').attr('aria-valuenow', "100").css('width', "100%");
+            $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
+            $('#mainTimeDisplay').html(that.AppUtilities.formatTime(currentMediaTime) + " / " + that.AppUtilities.formatTime(currentMediaDuration));
+          }
+        }
+      }, 250);
+    }
+  }, {
+    key: "stopProgressTimer",
+    value: function stopProgressTimer() {
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    }
+  }, {
+    key: "setupRemotePlayer",
+    value: function setupRemotePlayer() {
+      if (!this.remoteConfigured) {
+        var that = this;
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED, function () {
+          that.togglePlayPause(that.remotePlayer.isPaused);
+        });
+        that.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED, function () {
           that.isMuted = that.remotePlayer.isMuted;
+
           if (that.isMuted) {
             vol = 0;
             $('#volumeSlider').val(vol);
@@ -9159,38 +11345,26 @@ class MediaPlayer {
             vol = that.remotePlayer.volumeLevel;
             $('#volumeSlider').val(vol * 100);
           }
-        }
-      );
-
-      this.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
-        function () {
+        });
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED, function () {
           $('#volumeSlider').val(that.remotePlayer.volumeLevel * 100);
-        }
-      );
-
-      this.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-        function () {
+        });
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED, function () {
           that.Backend.debug('media info change');
           that.Backend.debug(that.remotePlayer.mediaInfo);
+
           if (that.remotePlayer && that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
             var customData = that.remotePlayer.mediaInfo.metadata.customData;
-            if (customData) {
-              if (that.$rootScope.tracks.length > 0) {
 
-              } else {
+            if (customData) {
+              if (that.$rootScope.tracks.length > 0) {} else {
                 that.$rootScope.tracks[0] = JSON.parse(customData);
                 that.selectedIndex = 0;
               }
             }
           }
-        }
-      );
-
-      this.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
-        function () {
+        });
+        this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED, function () {
           that.Backend.debug('state change ');
           that.Backend.debug(that.remotePlayer.playerState);
 
@@ -9204,9 +11378,11 @@ class MediaPlayer {
               that.next();
             }
           }
+
           if (that.remotePlayer.playerState === 'BUFFERING') {
             $('#mainTimeDisplay').html("Buffering...");
           }
+
           if (that.remotePlayer.playerState === 'PLAYING' && that.shouldSeek) {
             that.shouldSeek = false;
             that.remotePlayer.currentTime = that.prePlannedSeek;
@@ -9214,41 +11390,35 @@ class MediaPlayer {
             that.AppUtilities.broadcast('trackChangedEvent', that.selectedTrack());
           }
 
-
           if (that.MediaElement.playing) {
             that.shouldSeek = true;
             that.prePlannedSeek = that.MediaElement.currentTime;
             that.MediaElement.pause();
             that.loadTrack(that.selectedIndex);
           }
+
           that.isMuted = that.remotePlayer.isMuted;
+
           if (that.isMuted) {
             $('#volumeSlider').val(0);
           } else {
             $('#volumeSlider').val(that.remotePlayer.volumeLevel * 100);
           }
 
-          that.togglePlayPause();
-          // TODO fix resume support
-          if (that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
-            //id = this.remotePlayer.mediaInfo.contentId;
+          that.togglePlayPause(); // TODO fix resume support
 
+          if (that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {//id = this.remotePlayer.mediaInfo.contentId;
             //id = id.split("&")[6];
             //id = id.substring(3,id.length - 1);
-
             //this.AlloyDbService.getTrack(id).then(function (result) {
             //    this.Backend.debug("getArtistDetails result")
             //    this.Backend.debug(result)
-
             //    if (result) {
-
             //       
-
             //        $('#artistInfo').html(source.artist);
             //        $('#artistInfo').attr("href", source.artistUrl);
             //        $('#trackInfo').html(source.title);
             //        $('#trackInfo').attr("href", source.albumUrl);
-
             //        if (source.starred) {
             //            $("#likeButtonIcon").removeClass('star-o');
             //            $("#likeButtonIcon").addClass('star');
@@ -9256,113 +11426,112 @@ class MediaPlayer {
             //            $("#likeButtonIcon").removeClass('star');
             //            $("#likeButtonIcon").addClass('star-o');
             //        }
-
             //        this.togglePlayPause();
-
-
-
-
             //        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
             //    }
             //});
           }
+        });
+        this.startProgressTimer();
+        this.remoteConfigured = true;
+      }
+
+      if (this.remotePlayerConnected()) {
+        if (this.MediaElement.playing) {
+          this.shouldSeek = true;
+          this.prePlannedSeek = this.MediaElement.currentTime;
+          this.MediaElement.pause();
+          this.loadTrack(this.selectedIndex);
         }
-      );
-      this.startProgressTimer();
-      this.remoteConfigured = true;
-    }
-    if (this.remotePlayerConnected()) {
-      if (this.MediaElement.playing) {
-        this.shouldSeek = true;
-        this.prePlannedSeek = this.MediaElement.currentTime;
-        this.MediaElement.pause();
-        this.loadTrack(this.selectedIndex);
       }
     }
-
-  }
-
-  setupLocalPlayer() {
-    this.stopProgressTimer();
-    this.remoteConfigured = false;
-  }
-
-  checkIfNowPlaying(track) {
-    var selected = this.selectedTrack();
-    if (selected && track) {
-      return track.id === selected.id;
+  }, {
+    key: "setupLocalPlayer",
+    value: function setupLocalPlayer() {
+      this.stopProgressTimer();
+      this.remoteConfigured = false;
     }
-    return false;
-  }
-}
-/* harmony export (immutable) */ __webpack_exports__["a"] = MediaPlayer;
+  }, {
+    key: "checkIfNowPlaying",
+    value: function checkIfNowPlaying(track) {
+      var selected = this.selectedTrack();
 
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+      if (selected && track) {
+        return track.id === selected.id;
+      }
+
+      return false;
+    }
+  }]);
+
+  return MediaPlayer;
+}();
+
+
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ }),
-/* 282 */
+/* 287 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_angular___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_angular__);
 
-
-
-/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a
-  .module('app.factories', []));
+/* harmony default export */ __webpack_exports__["a"] = (__WEBPACK_IMPORTED_MODULE_0_angular___default.a.module('app.factories', []));
 
 /***/ }),
-/* 283 */
+/* 288 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (immutable) */ __webpack_exports__["a"] = ApplicationConfig;
+ApplicationConfig.$inject = ["$routeProvider", "$locationProvider"];
 function ApplicationConfig($routeProvider, $locationProvider) {
-  "ngInject";
-  // adding a new route requires that route to also be added to backend/routes/index.js
+  "ngInject"; // adding a new route requires that route to also be added to backend/routes/index.js
   // this allows the variables to be passed when navigating directly to that page instead of linking to that page. 
+
   $routeProvider.when('/', {
-    template: '<home/>',
+    template: '<home/>'
   }).when('/fresh', {
-    template: '<fresh/>',
+    template: '<fresh/>'
   }).when('/status', {
-    template: '<status/>',
+    template: '<status/>'
   }).when('/index', {
-    template: '<index/>',
+    template: '<index/>'
   }).when('/starred', {
-    template: '<starred/>',
+    template: '<starred/>'
   }).when('/playlist', {
-    template: '<playlist/>',
+    template: '<playlist/>'
   }).when('/playlists', {
-    template: '<playlists/>',
+    template: '<playlists/>'
   }).when('/genres', {
-    template: '<genres/>',
+    template: '<genres/>'
   }).when('/genre/:id', {
-    template: '<genre/>',
+    template: '<genre/>'
   }).when('/podcasts', {
-    template: '<podcasts/>',
+    template: '<podcasts/>'
   }).when('/playing', {
-    template: '<playing/>',
+    template: '<playing/>'
   }).when('/config', {
-    template: '<config/>',
+    template: '<config/>'
   }).when('/config/:id', {
     template: '<config/>'
   }).when('/activity', {
-    template: '<activity/>',
+    template: '<activity/>'
   }).when('/activity/:id', {
     template: '<activity/>'
   }).when('/artists', {
-    template: '<artists/>',
+    template: '<artists/>'
   }).when('/artist/:id', {
-    template: '<artist/>',
+    template: '<artist/>'
   }).when('/albums', {
-    template: '<albums/>',
+    template: '<albums/>'
   }).when('/album/:id', {
-    template: '<album/>',
+    template: '<album/>'
   }).when('/album/:id/:trackid', {
-    template: '<album/>',
-  })
+    template: '<album/>'
+  });
   $locationProvider.html5Mode({
     enabled: true,
     requireBase: false
@@ -9370,31 +11539,29 @@ function ApplicationConfig($routeProvider, $locationProvider) {
 }
 
 /***/ }),
-/* 284 */
+/* 289 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {/* harmony export (immutable) */ __webpack_exports__["a"] = ApplicationRun;
-
-
+ApplicationRun.$inject = ["$window", "$rootScope", "$location", "$timeout", "Backend", "MediaPlayer", "AppUtilities"];
 function ApplicationRun($window, $rootScope, $location, $timeout, Backend, MediaPlayer, AppUtilities) {
   "ngInject";
+
   Backend.debug('starting application');
   $rootScope.settings = [];
   $rootScope.scrollPos = {};
-
   $rootScope.$on('$routeChangeStart', function () {
     $rootScope.okSaveScroll = false;
   });
-
   $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
-    $timeout(function () { // wait for DOM, then restore scroll position
+    $timeout(function () {
+      // wait for DOM, then restore scroll position
       $('#mainContentBody').scrollTop($rootScope.scrollPos[$location.path()] ? $rootScope.scrollPos[$location.path()] : 0);
       $rootScope.okSaveScroll = true;
     }, 0);
     AppUtilities.broadcast('windowResized');
   });
-
   document.addEventListener('scroll', function (event) {
     if ($rootScope.okSaveScroll) {
       $rootScope.scrollPos[$location.path()] = $('#mainContentBody').scrollTop();
@@ -9403,39 +11570,38 @@ function ApplicationRun($window, $rootScope, $location, $timeout, Backend, Media
 
   $rootScope.scrollClear = function (path) {
     $rootScope.scrollPos[path] = 0;
-  }
+  };
 
   var windowResized = AppUtilities.debounce(function () {
     AppUtilities.broadcast('windowResized');
   }, 25);
-
   $(window).on('resize', windowResized);
 
   $window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
+
     if (key === 32) {
       e.preventDefault();
     }
-  }
+  };
 
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
+
     if (key === 32) {
       e.preventDefault();
       MediaPlayer.toggleCurrentStatus();
     }
-  }
-
-  //$window.onbeforeunload = function () {
+  }; //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";
   //}
+
 
   $timeout(function () {
     Backend.debug('loading settings');
     Backend.emit('load_settings', 'alloydb_settings');
     Backend.emit('load_settings', 'sabnzbd_settings');
-
-    setTimeout(() => {
+    setTimeout(function () {
       if (MediaPlayer.castStatus()) {
         Backend.debug('cast status true, initialize cast');
         MediaPlayer.initializeCast();
@@ -9443,8 +11609,8 @@ function ApplicationRun($window, $rootScope, $location, $timeout, Backend, Media
     }, 1000);
   });
 }
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(4)))
 
 /***/ })
-],[57]);
+],[60]);
 //# sourceMappingURL=app.js.map

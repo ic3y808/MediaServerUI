@@ -26,10 +26,10 @@ class NavbarController {
     html += '     <p>{{item.value.title}} - {{item.value.data.length}}</p>';
     html += '     <ul class="list-group">';
     html += '       <li ng-if="item.value.data.length" ng-repeat="renderItem in item.value.data" ng-click="ctrl.selectItem(renderItem, item.value, true)" class="list-group-item" ng-class="ctrl.getSelectedCssClass(renderItem)">';
-    html += '         <p ng-if="renderItem.artist">{{renderItem.artist}}</p>';
-    html += '         <p ng-if="renderItem.title">{{renderItem.title}}</p>';
-    html += '         <p ng-if="renderItem.album">{{renderItem.album}}</p>';
-    html += '         <p ng-if="renderItem.genre">{{renderItem.genre}}</p>';
+    html += '         <p class="search-list-item" ng-if="renderItem.artist">{{renderItem.artist}}</p>';
+    html += '         <p class="search-list-item" ng-if="renderItem.title">{{renderItem.title}}</p>';
+    html += '         <p class="search-list-item" ng-if="renderItem.album">{{renderItem.album}}</p>';
+    html += '         <p class="search-list-item" ng-if="renderItem.genre">{{renderItem.genre}}</p>';
     html += '       </li>';
     html += '     </ul>';
     html += '   </li>';
