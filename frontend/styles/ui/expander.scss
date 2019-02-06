@@ -52,7 +52,7 @@
   padding: 15px 10px;
 }
 
-.ExpanderContainer-right {
+.ExpanderContainer-general {
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
@@ -69,6 +69,12 @@
 }
 
 .ExpanderContainer-sublabel {
+  color: $sub-label-color;
+  font-style: italic;
+  font-size: 18px;
+}
+
+.ExpanderContainer-sublabel:hover {
   color: $sub-label-color;
   font-style: italic;
   font-size: 18px;
