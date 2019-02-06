@@ -21,7 +21,9 @@ include ./../../views/pagecontainer
                     .PageContent-HeaderDetails-title {{trackTitle}}
 
                   .PageContent-HeaderDetails-subtitleContainer
-                    .PageContent-HeaderDetails-subtitle {{artistName}} - {{albumName}}
+                    a.PageContent-HeaderDetails-subtitle(href="/artist/{{artistId}}") {{artistName}} 
+                    .PageContent-HeaderDetails-subtitle(ng-show="albumName", style="padding-left:10px;padding-right:10px;") -
+                    a.PageContent-HeaderDetails-subtitle(href="/album/{{albumId}}") {{albumName}}
                       
                   div
                     div
@@ -42,22 +44,24 @@ include ./../../views/pagecontainer
 
         .PageContent-contentContainer(style="flex:1; height: 100%;")
           .FlexContainer
-            .ExpanderContainer(style="width:250px;")
+            .ExpanderContainer(style="flex:0.4;")
               .ExpanderContainer-header
                 .ExpanderContainer-left
                   div
                     span.ExpanderContainer-label Last Played
               div#trackListContainer
                 .ExpanderContainer-body
+                  tracklist(data='previousTracks', showstar='false', showtracknum='false', showartist='true', showalbum='false', showgenre='false', showplays='false', showduration='false')
 
           
-            .ExpanderContainer(style="width: 250px;")
+            .ExpanderContainer(style="flex:0.4;")
               .ExpanderContainer-header-right
                 .ExpanderContainer-right
                   div
                     span.ExpanderContainer-label Next Up
               div#trackListContainer
                 .ExpanderContainer-body
+                  tracklist(data='upcomingTracks', showstar='false', showtracknum='false', showartist='true', showalbum='false', showgenre='false', showplays='false', showduration='false')
 
 
           

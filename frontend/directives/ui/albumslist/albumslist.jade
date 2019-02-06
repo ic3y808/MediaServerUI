@@ -5,7 +5,7 @@
         th.TableHeaderCell-headerCell
         th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
         th.TableHeaderCell-headerCell.Link-link(label='Album') Album
-        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="showartist") Artist
+        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}") Artist
         th.TableHeaderCell-headerCell.Link-link(label='Release') Release
         th.TableHeaderCell-headerCell.Link-link(label='Rating') Tracks
     tbody
@@ -18,7 +18,7 @@
             i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
         td.TableRowCell-cell
           span.Link-link.ng-binding(ng-click="navToAlbum(album.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.name}}
-        td.TableRowCell-cell(ng-show="showartist")
+        td.TableRowCell-cell(ng-show="showartist == 'true'")
           span.Link-link.ng-binding(ng-click="navToArtist(album.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.artist}}
         td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.created}}
         td.TableRowCell-count.TableRowCell-cell

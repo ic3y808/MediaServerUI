@@ -21,7 +21,9 @@ class PlayingController {
 
         $scope.trackTitle = current.title;
         $scope.artistName = current.artist;
+        $scope.artistId = current.base_id;
         $scope.albumName = current.album;
+        $scope.albumId = current.album_id;
         $scope.year = current.year;
         $scope.contentType = current.content_type;
         $scope.bitrate = current.bitrate;
@@ -70,24 +72,24 @@ class PlayingController {
         return;
       }
 
-      var previous = that.MediaPlayer.previousTrack();
-      var next = that.MediaPlayer.nextTrack();
+      $scope.previousTracks = that.MediaPlayer.previousTracks(5);
+      $scope.upcomingTracks = that.MediaPlayer.upcomingTracks(5);
 
       
      
 
-      if(previous){
-        var previousPromise = AlloyDbService.getTrackInfo(previous.id)      
-        if (previousPromise) {
-          previousPromise.then(function (info) { });
-        }
-      }
-      if(next){
-        var nextPromise = AlloyDbService.getTrackInfo(next.id)
-        if (nextPromise) {
-          nextPromise.then(function (info) { });
-        }
-      }
+      //if(previous){
+      //  var previousPromise = AlloyDbService.getTrackInfo(previous.id)      
+      //  if (previousPromise) {
+      //    previousPromise.then(function (info) { });
+      //  }
+      //}
+      //if(next){
+      //  var nextPromise = AlloyDbService.getTrackInfo(next.id)
+      //  if (nextPromise) {
+      //    nextPromise.then(function (info) { });
+      //  }
+      //}
 
 
 

@@ -3,8 +3,13 @@ module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend
     restrict: 'E',
     scope: {
       data: '=',
+      showstar:'@',
+      showtracknum:'@',
       showartist:'@',
       showalbum:'@',
+      showgenre:'@',
+      showplays:'@',
+      showduration:'@',
       hasjumpbar: '@'
     },
     templateUrl: '/template/tracklist.jade',

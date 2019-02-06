@@ -59,7 +59,7 @@ include ./../../views/pagecontainer
             span  
         div#albumListContainer
           .ExpanderContainer-body
-            albumslist(data="artist.albums")
+            albumslist(data="artist.albums", showArtist='false')
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleAlbums()')
                 expandbutton(ng-show="albums_expanded", mini)
@@ -78,7 +78,7 @@ include ./../../views/pagecontainer
             span  
         div#trackListContainer
           .ExpanderContainer-body
-            tracklist(data='tracks')
+            tracklist(data='tracks', showstar='true', showtracknum='true', showartist='false', showalbum='true', showgenre='true', showplays='true', showduration='true')
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
                 expandbutton(ng-show="albums_expanded", mini)
