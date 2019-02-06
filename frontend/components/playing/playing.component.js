@@ -75,7 +75,8 @@ class PlayingController {
       $scope.previousTracks = that.MediaPlayer.previousTracks(5);
       $scope.upcomingTracks = that.MediaPlayer.upcomingTracks(5);
 
-      
+      $scope.previousTrack = $scope.previousTracks[0];
+      $scope.upcomingTrack = $scope.upcomingTracks[0];
      
 
       //if(previous){

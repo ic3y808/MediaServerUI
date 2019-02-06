@@ -30,6 +30,7 @@ export default class AppUtilities {
   }
 
   getBackgroundStyle(imagepath) {
+    if(imagepath == undefined || imagepath == '' || imagepath == null) return '';
     return {
       'background-image': 'url(' + imagepath + ')'
     }

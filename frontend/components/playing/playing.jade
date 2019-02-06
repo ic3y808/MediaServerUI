@@ -21,9 +21,9 @@ include ./../../views/pagecontainer
                     .PageContent-HeaderDetails-title {{trackTitle}}
 
                   .PageContent-HeaderDetails-subtitleContainer
-                    a.PageContent-HeaderDetails-subtitle(href="/artist/{{artistId}}") {{artistName}} 
+                    a.Link-link.PageContent-HeaderDetails-subtitle(href="/artist/{{artistId}}") {{artistName}} 
                     .PageContent-HeaderDetails-subtitle(ng-show="albumName", style="padding-left:10px;padding-right:10px;") -
-                    a.PageContent-HeaderDetails-subtitle(href="/album/{{albumId}}") {{albumName}}
+                    a.Link-link.PageContent-HeaderDetails-subtitle(href="/album/{{albumId}}") {{albumName}}
                       
                   div
                     div
@@ -44,24 +44,23 @@ include ./../../views/pagecontainer
 
         .PageContent-contentContainer(style="flex:1; height: 100%;")
           .FlexContainer
-            .ExpanderContainer(style="flex:0.4;")
+            .ExpanderContainer(style="flex:0.5;")
               .ExpanderContainer-header
-                .ExpanderContainer-left
+                .ExpanderContainer-general
                   div
                     span.ExpanderContainer-label Last Played
-              div#trackListContainer
-                .ExpanderContainer-body
-                  tracklist(data='previousTracks', showstar='false', showtracknum='false', showartist='true', showalbum='false', showgenre='false', showplays='false', showduration='false')
-
-          
-            .ExpanderContainer(style="flex:0.4;")
-              .ExpanderContainer-header-right
-                .ExpanderContainer-right
                   div
-                    span.ExpanderContainer-label Next Up
-              div#trackListContainer
-                .ExpanderContainer-body
-                  tracklist(data='upcomingTracks', showstar='false', showtracknum='false', showartist='true', showalbum='false', showgenre='false', showplays='false', showduration='false')
-
+                    span
+                      a.ExpanderContainer-sublabel(href="/artist/{{previousTrack.artist_id}}") {{previousTrack.title}}
+                    
+          
+            .ExpanderContainer(style="flex:0.5;")
+              .ExpanderContainer-header-right
+                .ExpanderContainer-general
+                  div
+                    span.ExpanderContainer-label Up Next
+                  div
+                    span
+                      a.ExpanderContainer-sublabel(href="/artist/{{upcomingTrack.artist_id}}")  {{upcomingTrack.title}}
 
           
