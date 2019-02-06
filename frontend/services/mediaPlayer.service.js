@@ -137,12 +137,34 @@ export default class MediaPlayer {
       return null
     }
   }
+
   previousTrack() {
     if (this.selectedIndex - 1 > 0) {
       return this.$rootScope.tracks[this.selectedIndex - 1];
     } else {
       return null
     }
+  }
+
+  upcomingTracks(count) {
+    var tracks = [];
+    if (this.selectedIndex + 1 + count < this.$rootScope.tracks.length) {
+      tracks = this.$rootScope.tracks.slice(this.selectedIndex + 1, this.selectedIndex + 1 + count);
+    } else {
+      tracks = this.$rootScope.tracks.slice(this.selectedIndex + 1, this.$rootScope.tracks.length);
+    }   
+    return tracks;
+  }
+
+  previousTracks(count) {
+    var tracks = [];
+    if (this.selectedIndex - count > 0) {
+      tracks = this.$rootScope.tracks.slice(this.selectedIndex - count, this.selectedIndex);
+    } else {
+      tracks = this.$rootScope.tracks.slice(0, this.selectedIndex);
+    }
+    tracks.reverse();
+    return tracks;
   }
 
   remotePlayerConnected() {
