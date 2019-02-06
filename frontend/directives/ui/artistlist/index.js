@@ -62,7 +62,7 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDb
         if (artist) {
           artist.then(function (artist) {
             Backend.debug('selection changed');
-            $rootScope.tracks = artist.tracks;
+            $rootScope.tracks = AppUtilities.shuffle(artist.tracks);
             MediaPlayer.loadTrack(0);
           });
         }

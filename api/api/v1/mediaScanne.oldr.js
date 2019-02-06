@@ -1,3 +1,4 @@
+'use strict';
 var structures = require('./structures');
 var path = require('path')
 var supportedExtensions = [".mp3", ".wav", ".flac", ".ogg", ".aiff", ".aac"];

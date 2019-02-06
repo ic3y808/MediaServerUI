@@ -1,3 +1,4 @@
+'use strict';
 var mb = require('./musicbrainz');
 
 function MusicbrainzScanner(db) {

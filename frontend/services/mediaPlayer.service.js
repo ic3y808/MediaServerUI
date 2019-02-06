@@ -130,6 +130,21 @@ export default class MediaPlayer {
     return this.$rootScope.tracks[this.selectedIndex];
   }
 
+  nextTrack() {
+    if (this.selectedIndex + 1 < this.$rootScope.tracks.length) {
+      return this.$rootScope.tracks[this.selectedIndex + 1];
+    } else {
+      return null
+    }
+  }
+  previousTrack() {
+    if (this.selectedIndex - 1 > 0) {
+      return this.$rootScope.tracks[this.selectedIndex - 1];
+    } else {
+      return null
+    }
+  }
+
   remotePlayerConnected() {
     if (!this.remotePlayer) return false;
     return this.remotePlayer.isConnected;

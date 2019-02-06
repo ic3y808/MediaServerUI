@@ -56,3 +56,11 @@
   font-weight: 500;
   overflow-y: auto;
 }
+
+
+.FlexContainer{
+  display: flex;
+ height:100%;
+  flex-direction: row;
+  justify-content:space-between;
+}

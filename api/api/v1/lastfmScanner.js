@@ -1,3 +1,4 @@
+'use strict';
 var Lastfm = require('./simple-lastfm');
 
 function LastFMScanner(db) {

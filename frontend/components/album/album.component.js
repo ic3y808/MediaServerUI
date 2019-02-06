@@ -47,8 +47,11 @@ class AlbumController {
             }
             if ($scope.artistInfo.image) {
               $scope.artistInfo.image.forEach(function(image) {
-                if (image["@"].size === "extralarge") {
-                  //that.AppUtilities.setContentBackground(image['#']);
+                if (image['@'].size === 'large') {
+                  $scope.artistImage = image['#'];
+                }
+                if (image['@'].size === 'extralarge') {
+                  $scope.artistImage = image['#'];
                 }
               });
             }
@@ -63,8 +66,11 @@ class AlbumController {
             $scope.albumInfo = info.albumInfo;
             if ($scope.albumInfo.image) {
               $scope.artistInfo.image.forEach(function(image) {
-                if (image["@"].size === "extralarge") {
-                  //that.AppUtilities.setContentBackground(image['#']);
+                if (image['@'].size === 'large') {
+                  $scope.albumImage = image['#'];
+                }
+                if (image['@'].size === 'extralarge') {
+                  $scope.albumImage = image['#'];
                 }
               });
             }
