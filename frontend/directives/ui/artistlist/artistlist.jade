@@ -17,5 +17,5 @@
         td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.base_path)}}')
           span.TableRowCell-artist-text.Link-link.ng-binding(ng-click="navToArtist(artist.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.base_id) == true}") {{artist.base_path}}
         td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium(title='')
-            span {{artist.track_count}}
+          span.Label-label.Label-medium.Label-Page-Body(title='')
+            span(ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.base_id) == true}") {{artist.track_count}}
