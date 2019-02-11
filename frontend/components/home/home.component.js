@@ -22,7 +22,7 @@ class HomeController {
 
     $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
       if ($rootScope.fresh_albums) {
-       
+
 
         $timeout(function () {
           $scope.coverflow = coverflow('player').setup({
@@ -51,8 +51,10 @@ class HomeController {
 
     $rootScope.$watch('random', function (newVal, oldVal) {
       if ($rootScope.random) {
-        var randomTrack = $rootScope.random[Math.floor(Math.random()*$rootScope.random.length)];
-        $scope.artistImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
+        var randomTrack = $rootScope.random[Math.floor(Math.random() * $rootScope.random.length)];
+        if (randomTrack.cover_art) {
+          $scope.artistImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
+        }
         that.AppUtilities.apply();
         that.AppUtilities.hideLoader();
       }
