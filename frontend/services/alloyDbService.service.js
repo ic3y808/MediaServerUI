@@ -64,10 +64,38 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getFileList(path) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getFileList(path);
+    else return false;
+  }
+
+  getFileParent(path) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getFileParent(path);
+    else return false;
+  }
+
   getMediaPaths() {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.getMediaPaths();
+    else return false;
+  }
+
+  addMediaPath(mediaPath) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.addMediaPath(mediaPath);
+    else return false;
+  }
+
+  removeMediaPath(mediaPath) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.removeMediaPath(mediaPath);
     else return false;
   }
 
@@ -267,13 +295,6 @@ export default class AlloyDbService {
     else return false;
   }
 
-  lastFmLogin(username, password) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.lastFmLogin(username, password);
-    else return false;
-  }
-
   scrobble(id) {
     this.doLogin();
     if (this.isLoggedIn)
@@ -294,6 +315,7 @@ export default class AlloyDbService {
       data.forEach(function (info) {
         if (info.artists) {
           that.$rootScope.artists = info.artists;
+          that.AppUtilities.apply();
         }
       });
     }
@@ -309,6 +331,7 @@ export default class AlloyDbService {
             album.image = that.getCoverArt(album.cover_art);
             album.title = album.album;
           });
+          that.AppUtilities.apply();
         }
       });
     }
@@ -324,6 +347,7 @@ export default class AlloyDbService {
             album.image = that.getCoverArt(album.cover_art);
             album.title = album.album;
           });
+          that.AppUtilities.apply();
         }
       });
     }
@@ -335,7 +359,7 @@ export default class AlloyDbService {
       data.forEach(function (info) {
         if (info.genres) {
           that.$rootScope.genres = info.genres;
-
+          that.AppUtilities.apply();
         }
       });
     }
@@ -352,6 +376,7 @@ export default class AlloyDbService {
             album.image = that.getCoverArt(album.cover_art);
             album.title = album.album;
           });
+          that.AppUtilities.apply();
         }
       });
     }
@@ -363,7 +388,7 @@ export default class AlloyDbService {
       data.forEach(function (info) {
         if (info.index) {
           that.$rootScope.music_index = info.index;
-
+          that.AppUtilities.apply();
         }
       });
     }
@@ -378,6 +403,7 @@ export default class AlloyDbService {
           that.$rootScope.random.forEach(function (track) {
             track.image = that.getCoverArt(track.cover_art);
           });
+          that.AppUtilities.apply();
         }
       });
     }

@@ -18,6 +18,9 @@
 * Start_{os_type}.bat|sh
 * navigate to http://localhost:3000
 
+## creating database migrations
+* db-migrate create my-migration-name --config database.json -e dev 
+
 ### Now Playing Preview
 ![Alt text](/media/preview.png?raw=true "Overall interface")
 

@@ -196,8 +196,32 @@ window.AlloyApi = function () {
     },
     {
       key: 'getMediaPaths',
-      value: function getLibraryInfo() {
+      value: function getMediaPaths() {
         return this._get('config/mediapaths');
+      }
+    },
+    {
+      key: 'addMediaPath',
+      value: function addMediaPath(mediaPath) {
+        return this._put('config/mediapaths', mediaPath);
+      }
+    },
+    {
+      key: 'removeMediaPath',
+      value: function removeMediaPath(mediaPath) {
+        return this._delete('config/mediapaths', mediaPath);
+      }
+    },
+    {
+      key: 'getFileList',
+      value: function getFileList(path) {
+        return this._get('config/file_list', { path: path });
+      }
+    },
+    {
+      key: 'getFileParent',
+      value: function getFileParent(path) {
+        return this._get('config/file_parent', { path: path });
       }
     },
     {
@@ -366,12 +390,6 @@ window.AlloyApi = function () {
       key: 'getCoverArt',
       value: function getCoverArt(id) {
         return this._buildUrl('media/cover_art', { api_key: this._settings.alloydb_apikey, id: id })
-      }
-    },
-    {
-      key: 'lastFmLogin',
-      value: function lastFmLogin(username, password) {
-        return this._put('lastfm/lastfm_login', { username: username, password: password });
       }
     },
     {

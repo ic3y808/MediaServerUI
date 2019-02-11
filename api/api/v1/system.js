@@ -64,6 +64,7 @@ router.get('/license', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/start_full_scan', function (req, res) {
+  res.locals.notify('Rescan Requested', 'Full recan requested through API');
   res.send(new structures.StatusResult(res.locals.mediaScanner.startFullScan()));
 });
 
@@ -78,6 +79,7 @@ router.get('/start_full_scan', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/start_quick_scan', function (req, res) {
+  res.locals.notify('Rescan Requested', 'Quick recan requested through API');
   res.send(new structures.StatusResult(res.locals.mediaScanner.startQuickScan()));
 });
 
@@ -107,6 +109,7 @@ router.get('/scan_status', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/cancel_scan', function (req, res) {
+  res.locals.notify('Cancelled Scan', 'Requested scan to be cancelled');
   var status = new structures.StatusResult(res.locals.mediaScanner.cancelScan())
   res.send(status);
 });

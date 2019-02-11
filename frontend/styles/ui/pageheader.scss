@@ -99,6 +99,7 @@
   -webkit-justify-content: start;
   justify-content:start;
   min-height: 30px;
+  color: choose-contrast-color(rgba(0, 0, 0, 0.445));
 }
 
 .PageContent-HeaderDetails-title {
@@ -106,6 +107,7 @@
   font-weight: 300;
   font-size: 50px;
   line-height: 50px;
+  color: choose-contrast-color(rgba(0, 0, 0, 0.445));
 }
 
 .PageContent-HeaderDetails-subtitle {
@@ -114,6 +116,10 @@
   font-weight: 100;
   font-size: 30px;
   line-height: 30px;
+  color: choose-contrast-color(rgba(0, 0, 0, 0.445));
+}
+.PageContent-HeaderDetails-subtitle:hover{
+  color: choose-contrast-color(rgba(0, 0, 0, 0.445));
 }
 
 .PageContent-HeaderDetails-navigation-buttons {

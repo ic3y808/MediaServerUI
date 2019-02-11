@@ -29,6 +29,18 @@
   cursor: default;
 }
 
+.Label-Page-Body {
+  display: inline-block;
+  margin: 2px;
+  border: 1px solid;
+  border-radius: 2px;
+  color: choose-contrast-color($main-background-color);
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1;
+  cursor: default;
+}
+
 .Label-default {
   border-color: $general-border-color;
   background-color: $main-background-color-transparent !important;

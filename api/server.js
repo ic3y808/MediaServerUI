@@ -16,7 +16,6 @@ process.env.COVER_ART = path.join(__dirname, "images");
 process.env.LASTFM_API_KEY = "ed6f8571e2be230fce3b0cc0203c5a27";
 process.env.LASTFM_API_SECRET = "f0fb2b471befe70b265dd72e3e42b545";
 
-
 const db = require("better-sqlite3")(process.env.DATABASE);
 db.prepare("PRAGMA journal_mode = WAL;").run();
 
@@ -34,15 +33,23 @@ var MusicBrainzScanner = require("./api/v1/musicbrainzScanner");
 var Scheduler = require("./scheduler");
 var dbmigrate = require("db-migrate");
 var dbm = dbmigrate.getInstance(true);
+var myTrayApp = {};
 
-dbm.up().then(function() {
+var notify = function (title, message) {
+  if (process.platform === "win32") {
+    if (myTrayApp)
+      myTrayApp.balloon(title, message);
+  }
+};
+
+dbm.up().then(function () {
   console.log("successfully migrated database");
 
   var app = express();
   app.use(express.json());
   app.use(express.urlencoded());
 
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header(
       "Access-Control-Allow-Headers",
@@ -65,7 +72,8 @@ dbm.up().then(function() {
   var musicbrainzScanner = new MusicBrainzScanner(db);
   var scheduler = new Scheduler();
 
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
+    res.locals.notify = notify;
     res.locals.db = db;
     res.locals.mediaScanner = mediaScanner;
     res.locals.lastFMScanner = lastFMScanner;
@@ -86,7 +94,7 @@ dbm.up().then(function() {
     fs.mkdirSync(process.env.COVER_ART);
   }
 
-  app.use("/api/v1", function(req, res, next) {
+  app.use("/api/v1", function (req, res, next) {
     if (req.query.api_key !== process.env.API_KEY) return res.sendStatus(401);
     next();
   });
@@ -120,7 +128,7 @@ dbm.up().then(function() {
 
   app.use("/", routes);
 
-  var setupRoute = function(route) {
+  var setupRoute = function (route) {
     var tempRoute = require(route);
     tempRoute.db = db;
     tempRoute.mediaScanner = mediaScanner;
@@ -141,7 +149,7 @@ dbm.up().then(function() {
   app.use("/api/v1/lastfm", setupRoute("./api/v1/lastfm"));
 
   // catch 404 and forward to error handler
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     var err = new Error("Not Found");
     err.status = 404;
     next(err);
@@ -152,7 +160,7 @@ dbm.up().then(function() {
   // development error handler
   // will print stacktrace
   if (process.env.MODE === "dev") {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
       res.status(err.status || 500);
       console.log(err.message);
     });
@@ -160,118 +168,119 @@ dbm.up().then(function() {
 
   // production error handler
   // no stacktraces leaked to user
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     res.status(err.status || 500);
     console.log(err.message);
   });
 
   app.set("port", process.env.API_PORT || 4000);
 
-  var server = app.listen(app.get("port"), function() {
-    scheduler.createJob("Clean Database", "0 0 * * *", function() {
+
+
+  var configTray = function () {
+    if (process.platform === "win32") {
+      const WindowsTrayicon = require("windows-trayicon");
+      myTrayApp = new WindowsTrayicon({
+        title: "Alloy",
+        icon: path.resolve(__dirname, "icon.ico"),
+        menu: [
+          {
+            id: "item-1-id",
+            caption: "Rescan Libraries"
+          },
+          {
+            id: "item-2-id",
+            caption: "Quick Rescan Libraries"
+          },
+          {
+            id: "get_status",
+            caption: "Get Status"
+          },
+          {
+            id: "cancel_scan",
+            caption: "Cancel Scan"
+          },
+          {
+            id: "item-3-id",
+            caption: "Rescan Last.fm"
+          },
+          {
+            id: "rescanMusicbrainz",
+            caption: "Rescan MusicBrainz"
+          },
+          {
+            id: "item-4-id-exit",
+            caption: "Exit"
+          }
+        ]
+      });
+
+      myTrayApp.item(id => {
+        switch (id) {
+          case "item-1-id": {
+            mediaScanner.startFullScan();
+            notify("Starting Scan", "The library rescan has been started");
+            break;
+          }
+          case "item-2-id": {
+            mediaScanner.startQuickScan();
+            notify("Starting Scan", "The library rescan has been started");
+            break;
+          }
+          case "get_status": {
+            mediaScanner.incrementalCleanup();
+
+            break;
+          }
+          case "cancel_scan": {
+            mediaScanner.cancelScan();
+            notify("Cancelling Scan", "The library rescan has been cancelled");
+            break;
+          }
+          case "item-3-id": {
+            lastFMScanner.startScan();
+            notify(
+              "Starting Scan",
+              "The Last.FM info rescan has been started"
+            );
+            break;
+          }
+          case "rescanMusicbrainz": {
+            musicbrainzScanner.startScan();
+            notify(
+              "Starting Scan",
+              "The MusicBrainz info rescan has been started"
+            );
+            break;
+          }
+          case "item-4-id-exit": {
+            myTrayApp.exit();
+            process.exit(0);
+            break;
+          }
+        }
+      });
+    }
+  }
+
+
+
+  var server = app.listen(app.get("port"), function () {
+    scheduler.createJob("Clean Database", "0 0 * * *", function () {
       console.log("Doing db cleanup");
+      notify("Database Cleanup", "Starting incremental cleanup from scheduler");
       mediaScanner.incrementalCleanup();
     });
 
-    scheduler.createJob("Scan LastFM", "0 0 * * 0", function() {
+    scheduler.createJob("Scan LastFM", "0 0 * * 0", function () {
       console.log("Doing LastFM Scan");
+      notify("Database Scan", "Starting LastFM scan from scheduler");
       lastFMScanner.incrementalScan();
     });
-	
-	if(process.platform === "win32"){
-		const WindowsTrayicon = require("windows-trayicon");
-		const myTrayApp = new WindowsTrayicon({
-		  title: "Alloy",
-		  icon: path.resolve(__dirname, "icon.ico"),
-		  menu: [
-			{
-			  id: "item-1-id",
-			  caption: "Rescan Libraries"
-			},
-			{
-			  id: "item-2-id",
-			  caption: "Quick Rescan Libraries"
-			},
-			{
-			  id: "get_status",
-			  caption: "Get Status"
-			},
-			{
-			  id: "cancel_scan",
-			  caption: "Cancel Scan"
-			},
-			{
-			  id: "item-3-id",
-			  caption: "Rescan Last.fm"
-			},
-			{
-			  id: "rescanMusicbrainz",
-			  caption: "Rescan MusicBrainz"
-			},
-			{
-			  id: "item-4-id-exit",
-			  caption: "Exit"
-			}
-		  ]
-		});
 
-		myTrayApp.item(id => {
-		  switch (id) {
-			case "item-1-id": {
-			  mediaScanner.startFullScan();
-			  myTrayApp
-				.balloon("Starting Scan", "The library rescan has been started")
-				.then(() => {});
-			  break;
-			}
-			case "item-2-id": {
-			  mediaScanner.startQuickScan();
-			  myTrayApp
-				.balloon("Starting Scan", "The library rescan has been started")
-				.then(() => {});
-			  break;
-			}
-			case "get_status": {
-			  mediaScanner.incrementalCleanup();
+    configTray();
 
-			  break;
-			}
-			case "cancel_scan": {
-			  mediaScanner.cancelScan();
-			  myTrayApp
-				.balloon("Cancelling Scan", "The library rescan has been cancelled")
-				.then(() => {});
-			  break;
-			}
-			case "item-3-id": {
-			  lastFMScanner.startScan();
-			  myTrayApp
-				.balloon(
-				  "Starting Scan",
-				  "The Last.FM info rescan has been started"
-				)
-				.then(() => {});
-			  break;
-			}
-			case "rescanMusicbrainz": {
-			  musicbrainzScanner.startScan();
-			  myTrayApp
-				.balloon(
-				  "Starting Scan",
-				  "The MusicBrainz info rescan has been started"
-				)
-				.then(() => {});
-			  break;
-			}
-			case "item-4-id-exit": {
-			  myTrayApp.exit();
-			  process.exit(0);
-			  break;
-			}
-		  }
-		});
-	}
-
+    notify("AlloyDB Started", "AlloyDB is Listening on port " + server.address().port);
     console.log("Express server listening on port " + server.address().port);
   });
 });

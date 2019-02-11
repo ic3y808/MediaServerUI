@@ -63,13 +63,13 @@
 }
 
 .ExpanderContainer-label {
-  color: $label-color;
+  color: choose-contrast-color($main-background-color);
   margin-right: 5px;
   margin-left: 5px;
 }
 
 .ExpanderContainer-sublabel {
-  color: $sub-label-color;
+  color: choose-contrast-color($main-background-color);
   font-style: italic;
   font-size: 18px;
 }

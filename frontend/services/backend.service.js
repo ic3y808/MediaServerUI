@@ -17,22 +17,17 @@ export default class Backend {
       if (data)
         $rootScope.sabnzbd_ping = data;
     });
-    $rootScope.settings = {};
+    $rootScope.settings = { advanced_mode: false };
     $rootScope.settings.alloydb = {};
     $rootScope.settings.sabnzbd = {};
 
     $rootScope.saveSettings = function () {
-      var d = JSON.stringify($rootScope.settings);
-
       $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
       that.emit('save_settings', { key: 'alloydb_settings', data: $rootScope.settings.alloydb });
       $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
 
       that.emit('save_settings', { key: 'sabnzbd_settings', data: $rootScope.settings.sabnzbd });
       $rootScope.triggerConfigAlert("Saved!", 'success');
-
-
-
     }
 
     $rootScope.loadSettings = function () {
@@ -43,9 +38,6 @@ export default class Backend {
 
       if (that.$rootScope.settings.alloydb.alloydb_host && that.$rootScope.settings.alloydb.alloydb_apikey) {
         AlloyDbService.login();
-      }
-      if ($rootScope.settings.alloydb && $rootScope.settings.alloydb.alloydb_lastfm_username && $rootScope.settings.alloydb.alloydb_lastfm_password) {
-        AlloyDbService.lastFmLogin($rootScope.settings.alloydb.alloydb_lastfm_username, $rootScope.settings.alloydb.alloydb_lastfm_password);
       }
     }
 
@@ -62,7 +54,7 @@ export default class Backend {
 
         if (settings.key === 'alloydb_settings') {
           $rootScope.settings.alloydb = settings.data;
-          $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
+          $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.password);
           setup();
         }
         that.AppUtilities.apply();
@@ -70,7 +62,7 @@ export default class Backend {
     });
 
 
-  
+
 
     this.socket.on('sabnzbd_history_result', function (data) {
       if (data) {

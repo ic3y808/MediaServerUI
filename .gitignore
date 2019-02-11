@@ -64,6 +64,9 @@ typings/
 # user data directory
 [Dd]ata/
 
+# dist data directory
+[Dd]ist/
+
 # image cache
 [Ii]mages/
 
