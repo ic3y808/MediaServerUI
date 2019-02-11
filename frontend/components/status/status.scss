@@ -1,16 +1,4 @@
-.statusWrapper {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  padding: 0;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 100%;
-  width: 100%;
-  margin: 0;
-}
-
-.statusBodyWrapper {
-  overflow: auto;
+.status-text{
+  background-color: $main-background-color;
+  color: $main-text-color;
 }

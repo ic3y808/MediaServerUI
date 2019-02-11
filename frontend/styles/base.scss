@@ -1,7 +1,7 @@
 html,
 body {
   height: 100%;
-  background-color: $main-background-color;
+  background-color: $background-alt-color;
   font-family: $main-font;
   font-size: $main-font-size;
   display: flex;
@@ -275,8 +275,8 @@ svg:not(:root).svg-inline--fa {
 }
 
 .btn-dark {
-  background-color: $main-btn-background-color;
-  color: $main-text-color !important;
+  background-color: $dark-color;
+  
 }
 
 .btn-dark:hover,
@@ -284,7 +284,7 @@ svg:not(:root).svg-inline--fa {
 .btn-dark:active,
 .btn-dark.active,
 .open>.dropdown-toggle.btn-dark {
-  color: $main-text-color;
+
   background-color: $main-btn-hover-color;
   border-color: $general-border-color;
   /*set the color you want here*/
@@ -292,6 +292,26 @@ svg:not(:root).svg-inline--fa {
 
 .popover-body{
   background-color: $main-background-color;
+}
+
+.modal-body{
+  background-color: $main-background-color;
+  color: $main-text-color;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.modal-content{
+  background-color: $main-background-color;
+  color: $main-text-color;
+}
+.modal-header{
+  background-color: $main-background-color;
+  color: $main-text-color;
+}
+.modal-footer{
+  background-color: $main-background-color;
+  color: $main-text-color;
 }
 
 .similar-artist-link {
@@ -352,6 +372,7 @@ svg:not(:root).svg-inline--fa {
   border: 0;
   background: none;
   color: $main-text-color;
+  
   text-align: center;
   text-decoration: none;
   cursor: pointer;

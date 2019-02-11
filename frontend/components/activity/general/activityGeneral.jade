@@ -1,7 +1,30 @@
-include ./../../../views/pagecontent
-  a.Settings-link.Link-link.Link-link(href='/activity/queue') Queue
-  .Settings-summary SABnzbd Queue
-  a.Settings-link.Link-link.Link-link(href='/activity/history') History
-  .Settings-summary SABnzbd History
-  a.Settings-link.Link-link.Link-link(href='/activity/blacklist') Blacklist
-  .Settings-summary Blacklisted downloads
+fieldset.FieldSet-fieldSet
+  legend.FieldSet-legend SABnzbd
+  div
+    div
+    .FormGroup-group.FormGroup-large
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+             a.Settings-link.Link-link.Link-link(href='/activity/queue') Queue
+        
+        div
+          .FormInputHelpText-helpText SABnzbd Queue
+    div
+    .FormGroup-group.FormGroup-large
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+            a.Settings-link.Link-link.Link-link(href='/activity/history') History
+        
+        div
+          .FormInputHelpText-helpText SABnzbd History
+    div
+    .FormGroup-group.FormGroup-large
+      .FormInputGroup-inputGroupContainer
+        .FormInputGroup-inputGroup
+          .FormInputGroup-inputContainer
+             a.Settings-link.Link-link.Link-link(href='/activity/blacklist') Blacklist
+        
+        div
+          .FormInputHelpText-helpText Blacklisted downloads

@@ -5,6 +5,8 @@ var _ = require("underscore");
 var express = require("express");
 var router = express.Router();
 var structures = require("./structures");
+const drivelist = require('drivelist');
+var utils = require('./utils');
 
 /**
  * This function comment is parsed by doctrine
@@ -18,7 +20,7 @@ var structures = require("./structures");
  * @returns {MediaPath} Ping - A MediaPath object
  * @security ApiKeyAuth
  */
-router.get("/mediapaths", function(req, res) {
+router.get("/mediapaths", function (req, res) {
   res.json(res.locals.db.prepare("SELECT * FROM MediaPaths").all());
 });
 
@@ -29,15 +31,15 @@ router.get("/mediapaths", function(req, res) {
  * @consumes application/json
  * @group config - Config API
  * @param {string} path.query.required
- * @param {string} displayName.query.required
+ * @param {string} display_name.query.required
  * @returns {MediaPath} 200 - An array of MediaPath objects which represent the library paths
  * @returns {Error}  default - Unexpected error
  * @returns {MediaPath.model}  default - Unexpected error
  * @returns {MediaPath} Ping - A MediaPath object
  * @security ApiKeyAuth
  */
-router.put("/mediapaths", function(req, res) {
-  var displayName = req.query.displayName;
+router.put("/mediapaths", function (req, res) {
+  var displayName = req.query.display_name;
   var path = req.query.path;
   try {
     const stmt = res.locals.db.prepare(
@@ -59,36 +61,25 @@ router.put("/mediapaths", function(req, res) {
  * @consumes application/json
  * @group config - Config API
  * @param {string} path.query
- * @param {string} displayName.query
+ * @param {string} display_name.query
  * @returns {Status} 200 - Returns the status of the delete
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.delete("/mediapaths", function(req, res) {
-  var displayName = req.query.displayName;
+router.delete("/mediapaths", function (req, res) {
+  var displayName = req.query.display_name ? req.query.display_name : '';
   var path = req.query.path;
-  if (displayName) {
-    try {
-      const stmt = res.locals.db.prepare(
-        "DELETE FROM MediaPaths WHERE display_name=?"
-      );
-      const info = stmt.run(displayName);
-      if (info.changes) {
-        res.json(new structures.StatusResult("Deleted media path"));
-      } else res.json(new structures.StatusResult(info));
-    } catch {
-      res.json(new structures.StatusResult("Failed"));
-    }
-  } else if (path) {
-    try {
-      const stmt = res.locals.db.prepare("DELETE FROM MediaPaths WHERE path=?");
-      const info = stmt.run(path);
-      if (info.changes) {
-        res.json(new structures.StatusResult("Deleted media path"));
-      } else res.json(new structures.StatusResult(info));
-    } catch {
-      res.json(new structures.StatusResult("Failed"));
-    }
+
+  try {
+    const stmt = res.locals.db.prepare(
+      "DELETE FROM MediaPaths WHERE display_name=? AND path=?"
+    );
+    const info = stmt.run(displayName, path);
+    if (info.changes) {
+      res.json(new structures.StatusResult("Deleted media path"));
+    } else res.json(new structures.StatusResult(info));
+  } catch {
+    res.json(new structures.StatusResult("Failed"));
   }
 });
 
@@ -103,39 +94,76 @@ router.delete("/mediapaths", function(req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get("/file_list", function(req, res) {
-  var dir =  process.cwd();
-  var currentDir = dir;
-  var query = req.query.path || "";
-  if (query) currentDir = path.join(dir, query);
-  console.log("browsing ", currentDir);
-  fs.readdir(currentDir, function(err, files) {
-    if (err) {
-      throw err;
-    }
-    var data = [];
-    files.forEach(function(file) {
-      try {
-        //console.log("processing ", file);
-        var isDirectory = fs
-          .statSync(path.join(currentDir, file))
-          .isDirectory();
-        if (isDirectory) {
-          data.push({
-            Name: file,
-            IsDirectory: true,
-            Path: path.join(query, file)
+router.get("/file_list", function (req, res) {
+  try {
+    var query = req.query.path || "";
+    if (!query) {
+
+      drivelist.list((error, drives) => {
+        if (error) {
+          res.json(new structures.StatusResult(error));
+        } else {
+          drives.forEach(drive => {
+            drive.path = drive.mountpoints[0].path;
+            drive.size = utils.toHumanReadable(drive.size);
           });
-        } 
-      } catch (e) {
-        console.log(e);
-      }
-    });
-    data = _.sortBy(data, function(f) {
-      return f.Name;
-    });
-    res.json(data);
-  });
+          res.json(drives);
+        }
+      });
+
+    } else {
+      var currentDir = path.normalize(query);
+      console.log("browsing ", currentDir);
+      fs.readdir(currentDir, function (err, files) {
+        if (err) {
+          throw err;
+        }
+        var data = [];
+        files.forEach(function (file) {
+          try {
+            //console.log("processing ", file);
+            var isDirectory = fs
+              .statSync(path.join(currentDir, file))
+              .isDirectory();
+            if (isDirectory) {
+              data.push({
+                Name: file,
+                IsDirectory: true,
+                Path: path.join(query, file)
+              });
+            }
+          } catch (e) {
+            console.log(e);
+          }
+        });
+        data = _.sortBy(data, function (f) {
+          return f.Name;
+        });
+        res.json(data);
+      });
+    }
+  } catch (error) {
+    if (error) console.log(error);
+    res.json(new structures.StatusResult(error));
+  }
+});
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /config/file_parent
+ * @produces application/json
+ * @consumes application/json
+ * @group config - Config API
+ * @param {string} path.query
+ * @returns {Status} 200 - Returns the parent path from the input
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.get("/file_parent", function (req, res) {
+  var query = req.query.path || "";
+  var newPath = path.dirname(query)
+  if (query === newPath) res.json({ path: '' });
+  else res.json({ path: newPath });
 });
 
 module.exports = router;

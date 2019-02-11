@@ -12,7 +12,7 @@
   padding: 0;
   height: $toolbar-height;
   line-height: $toolbar-height;
-  background-color: $sub-background-color !important;
+  background-color: $light-color !important;
   border: 1px solid $general-border-color;
 }
 
@@ -48,12 +48,12 @@
   text-align: center;
   line-height: 0.25em;
   font-size: 21px;
-  color: $main-text-color;
+  color: choose-contrast-color($light-color);
   margin: 5px;
 }
 
 .PageToolbarButton-toolbarButton:hover {
-  color: $label-color;
+  color: choose-contrast-color($light-color);
 }
 
 .PageToolbarButton-labelContainer {
@@ -71,7 +71,7 @@
 
 .PageToolbarButton-label {
   padding: 0 3px;
-  color: $main-text-color;
+  color: choose-contrast-color($light-color);
   font-size: 11px;
   line-height: -webkit-calc(11px + 1px);
   line-height: calc(11px + 1px);

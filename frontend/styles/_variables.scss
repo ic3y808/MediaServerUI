@@ -1,20 +1,23 @@
 //colors
-$primary-color: rgb(36, 36, 36);
-$secondary-color: rgba(2, 158, 197, 0.719);
-$alternate-color: rgb(20, 22, 24);
-$border-color: #ff6600;
+$primary-color: $clr-blue-grey-900;
+$light-color:$clr-blue-grey-300;
+$dark-color: $clr-blue-grey-700;
+$darker-color: $clr-blue-grey-900;
+$background-color: #f5f7fa;
+$background-alt-color: #F5F5F6;
+$border-color: #868686;
 
-$main-background-color: $primary-color;
+$main-background-color: $background-color;
 $main-background-color-transparent: rgba($primary-color, .35);
-$main-text-color:choose-contrast-color($primary-color);
+$main-text-color:choose-contrast-color($background-color);
 $faded-text-color: choose-contrast-color($primary-color);
-$alt-text-color: choose-contrast-color($primary-color);
+$alt-text-color: choose-contrast-color($darker-color);
 $sub-background-color:$primary-color;
-$alt-sub-background-color: $secondary-color;
-$now-playing-track: rgba($secondary-color, 0.904);
-$now-playing-track-text: rgba(choose-contrast-color($secondary-color), 0.904);
-$general-border-color:rgba($alternate-color, 0.904);
-$grid-selection-color:rgba($secondary-color, 0.5);
+$alt-sub-background-color: $light-color;
+$now-playing-track: rgba($light-color, 0.904);
+$now-playing-track-text: rgba(choose-contrast-color($light-color), 0.904);
+$general-border-color:rgba($border-color, 0.904);
+$grid-selection-color:rgba($light-color, 0.5);
 $label-color:rgba(choose-contrast-color($primary-color), 0.904);
 $sub-label-color:#8895aa;
 //page size breaks 
@@ -73,14 +76,14 @@ $extra-font-size: 0.85em;
 }
 
 //buttons
-$main-btn-background-color:rgba($main-background-color, .45);
+
 $main-btn-hover-color:$now-playing-track;
 //navbar
 $navbar-height:40px;
 
 //range
 $track-color: $alt-sub-background-color !default;
-$thumb-color: $sub-background-color !default;
+$thumb-color: $main-background-color !default;
 $thumb-radius: 3px !default;
 $thumb-height: 24px !default;
 $thumb-width: 10px !default;
@@ -88,7 +91,7 @@ $thumb-shadow-size: 4px !default;
 $thumb-shadow-blur: 4px !default;
 $thumb-shadow-color: rgba(0, 0, 0, .2) !default;
 $thumb-border-width: 2px !default;
-$thumb-border-color: $general-border-color !default;
+$thumb-border-color: rgba(choose-contrast-color($general-border-color), .5) !default;
 $track-width: 100% !default;
 $track-height: 8px !default;
 $track-shadow-size: 1px !default;
@@ -102,12 +105,14 @@ $ie-bottom-track-color: darken($track-color, $contrast) !default;
 //footer
 $footer-height:70px;
 $buffer-color: rgba($primary-color, 0.25);
-$progress-color: rgba($secondary-color, 0.728);
+$progress-color: rgba($light-color, 0.728);
 $progress-container-color: rgba($primary-color, 0.25);
 //sidebar
 $sidebar-width: 160px;
 $sidebar-collapsed-width: 50px;
-$sidebar-font-size: .8em;
+$sidebar-font-color: #e1e2e3;
+$sidebar-line-height: .8;
+$sidebar-font-size: .7em;
 $sidebar-font: 'Roboto',
 sans-serif;
 $sidebar-font-weight: bold;
@@ -117,6 +122,7 @@ $slider-thumb-color:rgb(224, 224, 224);
 $slider-thumb-border-color:rgb(25, 24, 24);
 //toolbar 
 $toolbar-height:45px;
+$navbar-background-color:$dark-color;
 //scrollbar
 $scrollbar-track-color: mix($main-background-color, white, 50%);
 $scrollbar-thumb-color: mix($sub-background-color, black, 50%);

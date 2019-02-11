@@ -339,7 +339,7 @@ function processQueue(input, cb) {
   var track = input;
   processMetadata(track.path).then(function (metadata) {
     if (shouldCancel()) return;
-    updateStatus("scanning", true);
+    updateStatus("scanning: " + track.path, true);
     track = checkExistingTrack(track, metadata);
     track = getBaseInformation(track);
     track = getArtistInformation(track);
@@ -418,6 +418,7 @@ function fullScan() {
         track.last_modified = stats.mtime.getTime();
         filteredFiles.push(track);
         q.push(track);
+        updateStatus('Queuing ' + filteredFiles.length, true);
       }
     });
   });
@@ -450,6 +451,7 @@ function quickScan() {
           track.last_modified = stats.mtime.getTime();
           filteredFiles.push(track);
           q.push(track);
+          updateStatus('Queuing ' + filteredFiles.length, true);
         }
       }
     });
@@ -500,6 +502,7 @@ MediaScanner.prototype.startFullScan = function startScan() {
     console.log('scan in progress');
   } else {
     console.log('startFullScan');
+    resetStatus();
     fullScan();
   }
 };
@@ -509,6 +512,7 @@ MediaScanner.prototype.startQuickScan = function startQuickScan() {
     console.log('scan in progress');
   } else {
     console.log('startQuickScan');
+    resetStatus();
     quickScan();
   }
 };

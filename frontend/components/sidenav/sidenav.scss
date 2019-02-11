@@ -1,5 +1,5 @@
 .sidebar {
-  background-color: $main-background-color;
+  background-color: $dark-color;
   max-width: $sidebar-width;
   border: 1px solid $general-border-color !important;
   overflow: auto;
@@ -7,24 +7,25 @@
 }
 
 .list-group-item-dark {
-  color: $main-text-color;
-  background-color: $main-background-color;
+  color: $sidebar-font-color !important;
+  background-color: $darker-color !important;
   font-family: $sidebar-font;
   font-weight: $sidebar-font-weight;
   font-size: $sidebar-font-size;
+  line-height: sidebar-line-height;
 }
 
 .list-group-item-dark .active {
   color: $main-text-color;
-  background-color: $main-background-color;
+  background-color: $dark-color;
   font-family: $sidebar-font;
   font-weight: $sidebar-font-weight;
   font-size: $sidebar-font-size;
 }
 
 .list-group-item-dark-no-select {
-  color: $main-text-color !important;
-  background-color: $main-background-color !important;
+  color: $alt-text-color !important;
+  background-color: $darker-color !important;
   font-family: $sidebar-font;
   font-weight: $sidebar-font-weight;
   font-size: $sidebar-font-size;
@@ -46,7 +47,6 @@
   width: $sidebar-collapsed-width;
 }
 
-.list-group-item {
-  color: $main-text-color !important;
-  cursor: pointer;
+.sidebar-text{
+  color:#e1e2e3 !important;
 }

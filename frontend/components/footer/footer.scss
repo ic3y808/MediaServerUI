@@ -1,6 +1,6 @@
 footer {
   height: $footer-height;
-  background-color: $main-background-color !important;
+  background-color: $primary-color !important;
 }
 
 .sliderContainer {
@@ -62,19 +62,21 @@ footer {
 }
 
 #mainTimeDisplay {
+  background-color: $primary-color;
+  color:$alt-text-color;
   font-size: 0.9em;
   text-align: center;
 }
 
 #artistInfo {
-  color: $faded-text-color !important;
+  color: $alt-text-color !important;
   font-family: $main-font;
   font-size: $sub-font-size;
   font-weight: 400;
 }
 
 #trackTitle {
-  color: $main-text-color !important;
+  color: $alt-text-color !important;
   font-family: $main-font;
   font-size: $sub-font-size;
   font-weight: 500;
@@ -148,7 +150,6 @@ footer {
   -o-transition: transform 180ms linear;
   transition: transform 180ms linear;
   contain: layout style;
-  background-color: $main-background-color !important;
   border: 1px solid $general-border-color;
 }
 

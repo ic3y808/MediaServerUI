@@ -3,7 +3,8 @@ include ./../../views/pagecontainer
     include ./../../views/toolbarsection-left
       toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
       toolbarseperator
-      toolbarbutton(buttontext='Advanced', buttonclick='jumpTo("general")', buttonicon='fa-cog')
+      toolbarbutton(buttontext='Advanced Off', buttonclick='toggleAdvanced()', buttonicon='fa-cog', ng-show='!$root.settings.advanced_mode')
+      toolbarbutton(buttontext='Advanced On', buttonclick='toggleAdvanced()', buttonicon='fa-cogs', ng-show='$root.settings.advanced_mode')
       toolbarbutton(buttontext='Save', buttonclick='$root.saveSettings()', buttonicon='fa-save', buttonid='saveSettingsButton', buttonrel='save-settings-popover')
   
   include ./../../views/pagebody

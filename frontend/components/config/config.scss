@@ -69,6 +69,11 @@
   line-height: normal;
 }
 
+.Page-Body-Button {
+  background-color: $main-background-color !important;
+  color: choose-contrast-color($main-background-color) !important;
+}
+
 .Button-button:hover {
   text-decoration: none;
 }
@@ -80,7 +85,7 @@
 }
 
 .Button-primary:hover {
-  border-color: $secondary-color;
+  border-color: $light-color;
   background-color: $main-background-color;
   color: #fff;
 }
@@ -203,7 +208,7 @@
 
 .CheckInput-primaryIsChecked{
   border-color: $general-border-color;
-  background-color: $secondary-color;
+  background-color: $light-color;
 }
 
 .CheckInput-helpText {
@@ -253,7 +258,7 @@
   display: block;
   margin-bottom: 21px;
   padding-left: 21px;
-  color: $main-text-color;
+  color: choose-contrast-color($background-color);
   width: 100%;
   border: 0;
   border-bottom: 1px solid $general-border-color;

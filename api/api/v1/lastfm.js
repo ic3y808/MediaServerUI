@@ -8,7 +8,7 @@ var getLastFm = function (res, isPublic) {
   if (res.locals.lastfm) {
     return res.locals.lastfm;
   } else {
-    var lastfmSettings = res.locals.db.prepare('SELECT * from Settings WHERE settings_key=?').get('lastfm_config');
+    var lastfmSettings = res.locals.db.prepare('SELECT * from Settings WHERE settings_key=?').get('alloydb_settings');
     if (lastfmSettings && lastfmSettings.settings_value) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
@@ -16,7 +16,7 @@ var getLastFm = function (res, isPublic) {
         return res.locals.lastfm = new Lastfm({
           api_key: process.env.LASTFM_API_KEY,
           api_secret: process.env.LASTFM_API_SECRET,
-          username: settings.username,
+          username: settings.alloydb_lastfm_username,
           password: settings.password 
           //authToken: 'xxx' // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
         });
@@ -33,29 +33,6 @@ var getLastFm = function (res, isPublic) {
 var getLastfmSession = function (res, cb) {
   getLastFm(res).getSessionKey(cb);
 }
-/**
- * This function comment is parsed by doctrine
- * @route PUT /lastfm/lastfm_login
- * @produces application/json
- * @consumes application/json
- * @group lastfm - Last.fm API
- * @param {string} username.query
- * @param {string} password.query
- * @returns {Status} 200 - Returns the status of the delete 
- * @returns {Error}  default - Unexpected error
- * @security ApiKeyAuth
- */
-router.put('/lastfm_login', function (req, res) {
-  var username = req.query.username;
-  var password = req.query.password;
-  const stmt = res.locals.db.prepare('INSERT OR REPLACE INTO Settings (settings_key, settings_value) VALUES (?, ?) ON CONFLICT(settings_key) DO UPDATE SET settings_value=?');
-  var obj = JSON.stringify({ username: username, password: password });
-  const info = stmt.run('lastfm_config', obj, obj);
-
-  res.locals.lastfm = null;
-  getLastFm(res);
-  res.send(new structures.StatusResult("Updated Lastfm Settings"));
-});
 
 /**
  * This function comment is parsed by doctrine

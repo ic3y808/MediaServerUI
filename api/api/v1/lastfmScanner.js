@@ -17,15 +17,15 @@ LastFMScanner.prototype.getLastFm = function getLastFm() {
   if (this.lastfm !== null) {
     return this.lastfm;
   } else {
-    var lastfmSettings = this.db.prepare('SELECT * from Settings WHERE settings_key=?').get('lastfm_config');
+    var lastfmSettings = this.db.prepare('SELECT * from Settings WHERE settings_key=?').get('alloydb_settings');
     if (lastfmSettings && lastfmSettings.settings_value) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
         return this.lastfm = new Lastfm({
           api_key: process.env.LASTFM_API_KEY,
           api_secret: process.env.LASTFM_API_SECRET,
-          username: settings.username,
-          password: settings.password
+          username: settings.alloydb_lastfm_username,
+          password: settings.alloydb_lastfm_password
         });
       } else {
         console.log("Could not parse settings.");

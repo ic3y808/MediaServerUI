@@ -24,6 +24,11 @@ class ConfigController {
       that.AppUtilities.apply();
     };
 
+    this.$scope.toggleAdvanced = function () {
+     $rootScope.settings.advanced_mode = !$rootScope.settings.advanced_mode;
+      that.AppUtilities.apply();
+    };
+
     this.$rootScope.triggerConfigAlert = function (message, type) {
       //$('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
       setTimeout(() => {

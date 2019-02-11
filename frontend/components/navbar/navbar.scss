@@ -1,15 +1,15 @@
 .navbar {
   height: $navbar-height;
-  background-color: $main-background-color !important;
+  background-color: $primary-color !important;
   border: 1px solid $general-border-color;
 }
 
 .navbar-brand{
-  color: $main-text-color !important;
+  color: choose-contrast-color($primary-color) !important;
 }
 
 .nav-link{
-  color: $main-text-color !important;
+  color: $alt-text-color !important;
 }
 
 .autocomplete-container{

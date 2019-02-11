@@ -42,7 +42,7 @@
 
 .TableRow-row:hover {
   background-color: $main-background-color;
-  color: $main-text-color;
+  color: choose-contrast-color($main-background-color) !important;
 }
 
 .TableRowCell-cell {
@@ -55,8 +55,12 @@
   padding-bottom: 2px;
   border-top: 1px solid $general-border-color;
   line-height: 1.52857143;
-  color: $main-text-color;
+  color: choose-contrast-color($main-background-color) !important;
   max-width: 200px;
+}
+
+.TableRowCell-cell-no-border {
+  border-top: 0px !important
 }
 
 .TableRowHeaderCell-Starred {
@@ -127,6 +131,8 @@
   vertical-align: middle;
   align-content: center;
   text-align: right;
+  background-color: $main-background-color;
+  color: choose-contrast-color($main-background-color) !important;
 }
 
 .TableRowCell-count-center {
