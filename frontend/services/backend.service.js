@@ -22,9 +22,16 @@ export default class Backend {
     $rootScope.settings.sabnzbd = {};
 
     $rootScope.saveSettings = function () {
-      $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
+
+      if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
+        $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
+      }
       that.emit('save_settings', { key: 'alloydb_settings', data: $rootScope.settings.alloydb });
-      $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
+
+      if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
+        $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
+      }
+
 
       that.emit('save_settings', { key: 'sabnzbd_settings', data: $rootScope.settings.sabnzbd });
       $rootScope.triggerConfigAlert("Saved!", 'success');
