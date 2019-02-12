@@ -61,8 +61,8 @@ export default class Backend {
 
         if (settings.key === 'alloydb_settings') {
           $rootScope.settings.alloydb = settings.data;
-          if(settings.data.password){
-            $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.password);
+          if(settings.data.alloydb_lastfm_password){
+            $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
           }
 
           setup();

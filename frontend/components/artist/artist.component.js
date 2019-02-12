@@ -67,15 +67,16 @@ class ArtistController {
       if (artist) {
         artist.then(function (artist) {
 
-          $scope.artist = artist;
-          $scope.artistName = artist.name;
+          $scope.artist = JSON.parse(artist);
+          $scope.artistName = $scope.artist.name;
           $scope.artist.albums.forEach(function (album) {
             album.cover_art = $scope.getCoverArt(album.cover_art);
           })
 
-          $scope.tracks = artist.tracks;
+          $scope.tracks = $scope.artist.tracks;
 
-
+          that.AppUtilities.apply();
+          that.AppUtilities.hideLoader();
 
           var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
           if (artistInfo) {

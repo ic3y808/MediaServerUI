@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var structures = require('./structures');
 var Lastfm = require('./simple-lastfm');
+var CryptoJS = require('crypto-js');
 
 var getLastFm = function (res, isPublic) {
   if (res.locals.lastfm) {
@@ -12,12 +13,12 @@ var getLastFm = function (res, isPublic) {
     if (lastfmSettings && lastfmSettings.settings_value) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
-
+        
         return res.locals.lastfm = new Lastfm({
           api_key: process.env.LASTFM_API_KEY,
           api_secret: process.env.LASTFM_API_SECRET,
           username: settings.alloydb_lastfm_username,
-          password: settings.password 
+          password:  CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
           //authToken: 'xxx' // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
         });
       } else {
@@ -93,7 +94,7 @@ router.get('/artist_info', function (req, res) {
         getLastFm(res).getArtistInfo({
           artist: artist,
           callback: function (result) {
-            res.send(result);
+            res.json(result);
           }
         });
       } else {
@@ -128,7 +129,7 @@ router.get('/album_info', function (req, res) {
           artist: artist,
           album: album,
           callback: function (result) {
-            res.send(result);
+            res.json(result);
           }
         });
       } else {
