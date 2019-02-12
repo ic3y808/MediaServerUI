@@ -3,7 +3,7 @@ import Glide from '@glidejs/glide'
 
 
 class ArtistController {
-  constructor($scope, $rootScope, $routeParams, $compile, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, $compile, Cache, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -27,7 +27,7 @@ class ArtistController {
 
 
     var that = this;
-   
+
     $scope.getCoverArt = function (id) {
       return that.AlloyDbService.getCoverArt(id);
     }
@@ -57,69 +57,78 @@ class ArtistController {
       $scope.all_expanded = !$scope.all_expanded;
     }
 
-    $scope.getTags = function(obj){
+    $scope.getTags = function (obj) {
       return obj;
     }
 
     $scope.getArtist = function () {
 
-      var artist = that.AlloyDbService.getArtist($routeParams.id);
-      if (artist) {
-        artist.then(function (artist) {
+      var cache = Cache.get($routeParams.id);
 
-          $scope.artist = artist;
-          $scope.artistName = $scope.artist.name;
-          $scope.artist.albums.forEach(function (album) {
-            album.cover_art = $scope.getCoverArt(album.cover_art);
-          })
+      if (cache) {
+        $scope.artist = cache;
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
+      } else {
+        var artist = that.AlloyDbService.getArtist($routeParams.id);
+        if (artist) {
+          artist.then(function (artist) {
 
-          $scope.tracks = $scope.artist.tracks;
+            $scope.artist = artist
 
-          that.AppUtilities.apply();
-          that.AppUtilities.hideLoader();
-
-          var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
-          if (artistInfo) {
-            artistInfo.then(function (info) {
-              if (info.artistInfo) {
-                $scope.artistInfo = info.artistInfo;
-
-                angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope));
-
-               // $('#linkContainer').append('<popoverbutton buttontext="Tags" buttonicon="fa-tags" data="artistInfo.tags.tag"><popoverbutton>')
-
-
-                if ($scope.artistInfo.bio) {
-                  $scope.artistBio = $scope.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-                }
-                if ($scope.artistInfo.similar) {
-                  $scope.similarArtists = $scope.artistInfo.similar.artist.slice(0, 5);
-                }
-                if ($scope.artistInfo.image) {
-                  $scope.artistInfo.image.forEach(function (image) {
-                    if (image['@'].size === 'large') {
-                      $scope.artistImage = image['#'];
-                    }
-                    if (image['@'].size === 'extralarge') {
-                      $scope.artistImage = image['#'];
-                    }
-                  });
-                }
-                that.AppUtilities.apply();
-                that.AppUtilities.hideLoader();
-              } else {
-                that.AppUtilities.hideLoader();
-              }
+            $scope.artist.albums.forEach(function (album) {
+              album.cover_art = $scope.getCoverArt(album.cover_art);
             });
-          }
 
-          that.AppUtilities.apply();
-        });
+            that.AppUtilities.apply();
+            that.AppUtilities.hideLoader();
+
+            var artistInfo = that.AlloyDbService.getArtistInfo($scope.artist.name);
+            if (artistInfo) {
+              artistInfo.then(function (info) {
+                if (info.artistInfo) {
+                  $scope.artist.artistInfo = info.artistInfo;
+
+                  angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope));
+
+                  if ($scope.artist.artistInfo.bio) {
+                    $scope.artist.artistInfo.bio.summary = $scope.artist.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+                  }
+                  if ($scope.artist.artistInfo.similar) {
+                    $scope.artist.artistInfo.similar.artist = $scope.artist.artistInfo.similar.artist.slice(0, 5);
+                  }
+                  if ($scope.artist.artistInfo.image) {
+                    $scope.artist.artistInfo.image.forEach(function (image) {
+                      if (image['@'].size === 'large') {
+                        $scope.artist.image = image['#'];
+                      }
+                      if (image['@'].size === 'extralarge') {
+                        $scope.artist.image = image['#'];
+                      }
+                    });
+                  }
+                  Cache.put($routeParams.id, artist);
+                  that.AppUtilities.apply();
+                  that.AppUtilities.hideLoader();
+                } else {
+                  that.AppUtilities.hideLoader();
+                }
+              });
+            }
+
+          
+
+            that.AppUtilities.apply();
+          });
+        }
       }
+
+
     };
 
     $scope.refresh = function () {
       that.Backend.debug('refresh artist');
+      Cache.put($routeParams.id, null);
       $scope.getArtist();
     };
 
@@ -156,7 +165,7 @@ class ArtistController {
       }
     };
 
-   
+
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Artist reload on loginsatuschange');

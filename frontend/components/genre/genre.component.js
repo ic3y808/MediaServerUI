@@ -1,6 +1,6 @@
 import './genre.scss';
 class GenreController {
-  constructor($scope, $rootScope, $routeParams, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, Cache, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -27,25 +27,35 @@ class GenreController {
     }
 
     $scope.getGenre = function () {
-      if (AlloyDbService.isLoggedIn) {
-        that.AlloyDbService.getGenre(that.$routeParams.id).then(function (result) {
-          $scope.genre = result;
+      var cache = Cache.get($routeParams.id);
 
-          var randomTrack = $scope.genre.tracks[Math.floor(Math.random()*$scope.genre.tracks.length)];
-          $scope.genreImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
-          var genreInfo = that.AlloyDbService.getGenreInfo($scope.genre.name);
-          if (genreInfo) {
-            genreInfo.then(function (result) {
-              $scope.genreInfo = result.genreInfo;
-              $scope.genreInfo.wiki.summary = $scope.genreInfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-              that.AppUtilities.apply();
-            });
-          }
+      if (cache) {
+        $scope.genre = cache;
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
+      } else {
+        if (AlloyDbService.isLoggedIn) {
+          that.AlloyDbService.getGenre(that.$routeParams.id).then(function (result) {
+            $scope.genre = result;
 
+            var randomTrack = $scope.genre.tracks[Math.floor(Math.random() * $scope.genre.tracks.length)];
+            if (randomTrack) {
+              $scope.genre.image = that.AlloyDbService.getCoverArt(randomTrack.cover_art);
+            }
 
-          that.AppUtilities.apply();
-          that.AppUtilities.hideLoader();
-        });
+            var genreInfo = that.AlloyDbService.getGenreInfo($scope.genre.name);
+            if (genreInfo) {
+              genreInfo.then(function (result) {
+                $scope.genre.genreinfo = result.genreInfo;
+                $scope.genre.genreinfo.wiki.summary = $scope.genre.genreinfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
+                Cache.put($routeParams.id, $scope.genre);
+                that.AppUtilities.apply();
+              });
+            }
+            that.AppUtilities.apply();
+            that.AppUtilities.hideLoader();
+          });
+        }
       }
     };
 
@@ -76,6 +86,7 @@ class GenreController {
 
     $scope.refresh = function () {
       that.Backend.debug('refresh genre');
+      Cache.put($routeParams.id, null);
       $scope.getGenre();
     };
 
@@ -87,7 +98,7 @@ class GenreController {
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       that.Backend.debug('Genre reload on loginsatuschange');
-      $scope.getGenre();
+      $scope.refresh();
     });
 
     $scope.getGenre();

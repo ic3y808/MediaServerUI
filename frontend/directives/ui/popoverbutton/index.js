@@ -2,12 +2,13 @@ module.exports = function () {
   return {
     restrict: 'E',
     scope: {
+      relid: '@',
       buttontext: '@',
       buttonicon: '@',
       data: '='
     },
     // object is passed while making the call
-    templateUrl:'/template/popoverbutton.jade',
+    templateUrl: '/template/popoverbutton.jade',
     replace: true,
 
     link: function (scope, elm, attrs) {
@@ -27,7 +28,7 @@ module.exports = function () {
 
           $('body').popover({
             html: true,
-            selector: '[rel=popover-button-selector]',
+            selector: '[rel=popover-button-' + scope.relid + ']',
             trigger: 'click',
             template: t,
             content: content.join(''),

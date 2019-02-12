@@ -1,14 +1,6 @@
 import "./album.scss";
 class AlbumController {
-  constructor(
-    $scope,
-    $rootScope,
-    $routeParams,
-    AppUtilities,
-    Backend,
-    MediaPlayer,
-    AlloyDbService
-  ) {
+  constructor($scope, $rootScope, $routeParams, Cache, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -19,34 +11,28 @@ class AlbumController {
     this.Backend.debug("artist-controller");
     this.AppUtilities.showLoader();
     $scope.album = {};
-    $scope.tracks = [];
+    $scope.album.tracks = [];
     $scope.albumName = "";
     $scope.artistName = "";
     var that = this;
 
-    $scope.getCoverArt = function(id) {
+    $scope.getCoverArt = function (id) {
       return that.AlloyDbService.getCoverArt(id);
     };
 
-    $scope.getArtistInfo = function(data) {
+    $scope.getArtistInfo = function (data) {
       if (data) {
-        data.forEach(function(info) {
+        data.forEach(function (info) {
           if (info.artistInfo) {
-            $scope.artistInfo = info.artistInfo;
-            if ($scope.artistInfo.bio) {
-              $scope.artistBio = $scope.artistInfo.bio.summary.replace(
-                /<a\b[^>]*>(.*?)<\/a>/i,
-                ""
-              );
+            $scope.album.artistInfo = info.artistInfo;
+            if ($scope.album.artistInfo.bio) {
+              $scope.artistBio = $scope.album.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
             }
-            if ($scope.artistInfo.similar) {
-              $scope.similarArtists = $scope.artistInfo.similar.artist.slice(
-                0,
-                5
-              );
+            if ($scope.album.artistInfo.similar) {
+              $scope.similarArtists = $scope.album.artistInfo.similar.artist.slice(0, 5);
             }
-            if ($scope.artistInfo.image) {
-              $scope.artistInfo.image.forEach(function(image) {
+            if ($scope.album.artistInfo.image) {
+              $scope.album.artistInfo.image.forEach(function (image) {
                 if (image['@'].size === 'large') {
                   $scope.artistImage = image['#'];
                 }
@@ -59,13 +45,14 @@ class AlbumController {
         });
       }
     };
-    $scope.getAlbumInfo = function(data) {
+
+    $scope.getAlbumInfo = function (data) {
       if (data) {
-        data.forEach(function(info) {
+        data.forEach(function (info) {
           if (info.albumInfo) {
-            $scope.albumInfo = info.albumInfo;
+            $scope.album.albumInfo = info.albumInfo;
             if ($scope.albumInfo.image) {
-              $scope.artistInfo.image.forEach(function(image) {
+              $scope.album.artistInfo.image.forEach(function (image) {
                 if (image['@'].size === 'large') {
                   $scope.albumImage = image['#'];
                 }
@@ -79,62 +66,64 @@ class AlbumController {
       }
     };
 
-    $scope.getAlbum = function() {
-      var alb = AlloyDbService.getAlbum($routeParams.id);
-      if (alb) {
-        alb.then(function(album) {
-          if (album) {
-            $scope.album = album;
-            $scope.albumName = $scope.album.name;
-            $scope.albumArt = $scope.getCoverArt($scope.album.tracks[0].cover_art);
-            $scope.artistName = $scope.album.base_path;
-            $scope.tracks = $scope.album.tracks;
+    $scope.getAlbum = function () {
 
-            that.AppUtilities.setContentBackground($scope.albumArt);
+      var cache = Cache.get($routeParams.id);
 
-            var artistInfo = that.AlloyDbService.getArtistInfo(
-              $scope.artistName
-            );
-            var albumInfo = that.AlloyDbService.getAlbumInfo(
-              $scope.artistName,
-              $scope.albumName
-            );
+      if (cache) {
+        $scope.album = cache;
+        that.AppUtilities.apply();
+        that.AppUtilities.hideLoader();
+      } else {
+        var alb = AlloyDbService.getAlbum($routeParams.id);
+        if (alb) {
+          alb.then(function (album) {
+            if (album) {
+              $scope.album = album;
+              $scope.album.albumArt = $scope.getCoverArt($scope.album.tracks[0].cover_art);
+              $scope.album.artist = { name: $scope.album.base_path };
 
-            Promise.all([artistInfo, albumInfo]).then(function(info) {
-              $scope.getArtistInfo(info);
-              $scope.getAlbumInfo(info);
+              var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
+              var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);
 
-              if ($scope.tracks && $scope.tracks.length > 0) {
-                if ($routeParams.trackid) {
-                  $scope.tracks.forEach(function(track) {
-                    if (track.id === $routeParams.trackid) {
-                      track.selected = true;
-                    }
-                  });
+              Promise.all([artistInfo, albumInfo]).then(function (info) {
+                $scope.getArtistInfo(info);
+                $scope.getAlbumInfo(info);
+
+                if ($scope.album.tracks && $scope.album.tracks.length > 0) {
+                  if ($routeParams.trackid) {
+                    $scope.album.tracks.forEach(function (track) {
+                      if (track.id === $routeParams.trackid) {
+                        track.selected = true;
+                      }
+                    });
+                  }
                 }
-              }
 
+                Cache.put($routeParams.id, $scope.album);
+                that.AppUtilities.apply();
+                that.AppUtilities.hideLoader();
+              });
+            } else {
               that.AppUtilities.hideLoader();
-              that.AppUtilities.apply();
-            });
-          } else {
-            that.AppUtilities.hideLoader();
-          }
-        });
+            }
+          });
+        }
       }
     };
 
-    $scope.goToArtist = function(id) {
+    $scope.goToArtist = function (id) {
       window.location.href = "/artist/" + id;
     };
 
-    $scope.refresh = function() {
+    $scope.refresh = function () {
       that.Backend.debug("refresh album");
+      Cache.put($routeParams.id, null);
       $scope.getAlbum();
     };
 
-    $scope.startRadio = function() {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(function(
+    $scope.startRadio = function () {
+      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (
         similarSongs
       ) {
         that.Backend.debug("starting radio");
@@ -143,18 +132,18 @@ class AlbumController {
       });
     };
 
-    $scope.shuffle = function() {
+    $scope.shuffle = function () {
       that.Backend.debug("shuffle play");
-      that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
+      that.$rootScope.tracks = AppUtilities.shuffle($scope.album.tracks);
       that.MediaPlayer.loadTrack(0);
     };
 
-    $scope.shareAlbum = function() {
+    $scope.shareAlbum = function () {
       that.Backend.debug("shareButton");
       that.AlloyDbService.createShare(
         $scope.album.id,
         "Shared from Alloy"
-      ).then(function(result) {
+      ).then(function (result) {
         $("#shareAlbumButton")
           .popover({
             animation: true,
@@ -174,11 +163,11 @@ class AlbumController {
       });
     };
 
-    $scope.starAlbum = function() {
+    $scope.starAlbum = function () {
       that.Backend.info("liking album: " + that.$scope.album.name);
       if ($scope.album.starred === "true") {
         that.AlloyDbService.unstar({ album: that.$scope.album.id }).then(
-          function(result) {
+          function (result) {
             that.Backend.info("UnStarred");
             that.Backend.info(result);
             that.$scope.album.starred = "false";
@@ -186,7 +175,7 @@ class AlbumController {
           }
         );
       } else {
-        that.AlloyDbService.star({ album: that.$scope.album.id }).then(function(
+        that.AlloyDbService.star({ album: that.$scope.album.id }).then(function (
           result
         ) {
           that.Backend.info("starred");
@@ -197,12 +186,12 @@ class AlbumController {
       }
     };
 
-    $rootScope.$on("loginStatusChange", function(event, data) {
+    $rootScope.$on("loginStatusChange", function (event, data) {
       that.Backend.debug("Album reload on loginsatuschange");
       $scope.refresh();
     });
 
-    $scope.refresh();
+    $scope.getAlbum();
   }
 }
 
