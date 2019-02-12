@@ -22,5 +22,5 @@
           span.Link-link.ng-binding(ng-click="navToArtist(album.base_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.artist}}
         td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.created}}
         td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium(title='10 tracks total. 10 tracks with files.', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
+          span.Label-label.Label-medium.Label-Page-Body(title='{{album.track_count}} total tracks', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
             span {{album.track_count}}
