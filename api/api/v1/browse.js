@@ -182,15 +182,15 @@ router.get('/artist', function (req, res) {
     result.path = result.tracks[0].base_path;
   }
 
+//
+  //var totalSize = 0;
+  //result.tracks.forEach(track => {
+  //  totalSize += track.size;
+  //});
+//
+  //result.size = utils.toHumanReadable(totalSize);
 
-  var totalSize = 0;
-  result.tracks.forEach(track => {
-    totalSize += track.size;
-  });
-
-  result.size = utils.toHumanReadable(totalSize);
-
-  res.json(result);
+  res.json(JSON.stringify(result));
 });
 
 /**
@@ -216,7 +216,7 @@ router.get('/album', function (req, res) {
 
   Object.assign(album[0], { tracks: tracks, size: size })
 
-  res.json(album[0]);
+  res.json(JSON.stringify(album[0]));
 });
 
 /**

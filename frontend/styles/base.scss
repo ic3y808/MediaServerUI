@@ -210,6 +210,7 @@ svg:not(:root).svg-inline--fa {
   flex-direction: column;
   margin: 0;
   margin-top: $navbar-height;
+  margin-bottom: $footer-height;
   max-width: none;
   background-attachment: fixed;
   background-position: top;
