@@ -60,9 +60,8 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDb
         console.log(artist);
         var artistRquest = AlloyDbService.getArtist(artist.base_id);
         if (artistRquest) {
-          artistRquest.then(function (data) {
+          artistRquest.then(function (artist) {
             Backend.debug('selection changed');
-            var artist = JSON.parse(data);
             $rootScope.tracks = AppUtilities.shuffle(artist.tracks);
             MediaPlayer.loadTrack(0);
           });
