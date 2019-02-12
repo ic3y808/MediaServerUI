@@ -39,7 +39,7 @@ router.get('/music_folders_index', function (req, res) {
   var basePaths = res.locals.db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
   var result = {};
 
-  var testForLetter = function(character) {
+  var testForLetter = function (character) {
     try {
       //Variable declarations can't start with digits or operators
       //If no error is thrown check for dollar or underscore. Those are the only nonletter characters that are allowed as identifiers
@@ -54,14 +54,14 @@ router.get('/music_folders_index', function (req, res) {
 
   basePaths.forEach(function (basePath) {
     var indexName = basePath.base_path.slice(0, 1).toUpperCase();
-    if(testForLetter(indexName)){
+    if (testForLetter(indexName)) {
       if (!result[indexName]) result[indexName] = [];
       result[indexName].push(basePath);
     } else {
       if (!result['#']) result['#'] = [];
       result['#'].push(basePath);
     }
-    
+
   });
   var finalResult = [];
   for (var key in result) {
@@ -163,12 +163,12 @@ router.get('/artist', function (req, res) {
 
     var albums = res.locals.db.prepare('SELECT DISTINCT album_id FROM Tracks WHERE base_id=?').all(id);
     result.albums = [];
-    albums.forEach(function(album){
+    albums.forEach(function (album) {
       var dbalbum = res.locals.db.prepare('SELECT * FROM Albums WHERE id=?').all(album.album_id)
       result.albums.push(dbalbum[0]);
     })
 
-    
+
 
     result.base_id = currentBase[0].base_id;
     result.name = currentBase[0].base_path;
@@ -182,15 +182,15 @@ router.get('/artist', function (req, res) {
     result.path = result.tracks[0].base_path;
   }
 
-//
-  //var totalSize = 0;
-  //result.tracks.forEach(track => {
-  //  totalSize += track.size;
-  //});
-//
-  //result.size = utils.toHumanReadable(totalSize);
 
-  res.json(JSON.stringify(result));
+  var totalSize = 0;
+  result.tracks.forEach(track => {
+    totalSize += track.size;
+  });
+
+  result.size = utils.toHumanReadable(totalSize);
+
+  res.json(result);
 });
 
 /**
@@ -216,7 +216,7 @@ router.get('/album', function (req, res) {
 
   Object.assign(album[0], { tracks: tracks, size: size })
 
-  res.json(JSON.stringify(album[0]));
+  res.json(album[0]);
 });
 
 /**

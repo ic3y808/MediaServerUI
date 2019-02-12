@@ -67,7 +67,7 @@ class ArtistController {
       if (artist) {
         artist.then(function (artist) {
 
-          $scope.artist = JSON.parse(artist);
+          $scope.artist = artist;
           $scope.artistName = $scope.artist.name;
           $scope.artist.albums.forEach(function (album) {
             album.cover_art = $scope.getCoverArt(album.cover_art);

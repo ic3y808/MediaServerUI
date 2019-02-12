@@ -17,5 +17,5 @@
         td.TableRowCell-title.TableRowCell-cell(id='{{genre.id}}')
           span.Link-link.ng-binding(ng-click="navToGenre(genre.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}") {{genre.name}}
         td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium(title='', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
+          span.Label-label.Label-medium.Label-Page-Body(title='{{genre.track_count}} total tracks', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
             span {{genre.track_count}}

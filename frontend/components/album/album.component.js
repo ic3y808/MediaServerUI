@@ -84,7 +84,7 @@ class AlbumController {
       if (alb) {
         alb.then(function(album) {
           if (album) {
-            $scope.album = JSON.parse(album);
+            $scope.album = album;
             $scope.albumName = $scope.album.name;
             $scope.albumArt = $scope.getCoverArt($scope.album.tracks[0].cover_art);
             $scope.artistName = $scope.album.base_path;
