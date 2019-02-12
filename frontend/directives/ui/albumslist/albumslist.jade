@@ -7,7 +7,7 @@
         th.TableHeaderCell-headerCell.Link-link(label='Album') Album
         th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}") Artist
         th.TableHeaderCell-headerCell.Link-link(label='Release') Release
-        th.TableHeaderCell-headerCell.Link-link(label='Rating') Tracks
+        th.TableHeaderCell-headerCell-Right.Link-link(label='Tracks') Tracks
     tbody
       tr.TableRow-row(ng-repeat='album in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
         td.TableRowCell-star.TableRowCell-cell

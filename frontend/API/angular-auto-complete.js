@@ -669,6 +669,14 @@
     function _updateTarget() {
     
 
+      if(that.selectedItem.genre)
+        _setTargetValue(that.selectedItem.genre);
+      if(that.selectedItem.album)
+        _setTargetValue(that.selectedItem.album);
+      if(that.selectedItem.base_path)
+        _setTargetValue(that.selectedItem.base_path);
+      if(that.selectedItem.artist)
+        _setTargetValue(that.selectedItem.artist);
       if(that.selectedItem.name)
         _setTargetValue(that.selectedItem.name);
       if(that.selectedItem.title)
