@@ -1,7 +1,7 @@
 
 
 $s: 3em;
-$colors: #1FBCD3, rgb(82, 175, 218), rgb(72, 116, 136);
+$colors: $primary-color, $light-color, $dark-color;
 .loader {
   position: absolute;
   z-index: 1000 !important;

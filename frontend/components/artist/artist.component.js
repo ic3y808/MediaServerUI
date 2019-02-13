@@ -19,10 +19,10 @@ class ArtistController {
     $scope.artist = {};
     $scope.artist = {};
     $scope.albums = [];
-    $scope.tracks = [];
+    $scope.artist.tracks = [];
     $scope.all_expanded = false;
     $scope.albums_expanded = true;
-    $scope.tracks_expanded = false;
+    $scope.artist.tracks_expanded = false;
     $('#trackListContainer').hide();
 
 
@@ -39,19 +39,19 @@ class ArtistController {
     }
 
     $scope.toggleTracks = function () {
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      if ($scope.artist.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
-      $scope.tracks_expanded = !$scope.tracks_expanded;
+      $scope.artist.tracks_expanded = !$scope.artist.tracks_expanded;
     }
 
     $scope.toggleAll = function () {
-      $scope.tracks_expanded = $scope.all_expanded;
+      $scope.artist.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
       if ($scope.albums_expanded) $('#albumListContainer').hide();
       else $('#albumListContainer').show();
 
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
+      if ($scope.artist.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
 
       $scope.all_expanded = !$scope.all_expanded;
@@ -142,7 +142,7 @@ class ArtistController {
 
     $scope.shuffle = function () {
       that.Backend.debug('shuffle play');
-      that.$rootScope.tracks = AppUtilities.shuffle($scope.tracks);
+      that.$rootScope.tracks = AppUtilities.shuffle($scope.artist.tracks);
       that.MediaPlayer.loadTrack(0);
     };
 

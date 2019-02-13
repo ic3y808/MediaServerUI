@@ -166,7 +166,7 @@ router.get('/artist', function (req, res) {
     albums.forEach(function (album) {
       var dbalbum = res.locals.db.prepare('SELECT * FROM Albums WHERE id=?').all(album.album_id)
       result.albums.push(dbalbum[0]);
-    })
+    });
 
 
 
@@ -175,11 +175,28 @@ router.get('/artist', function (req, res) {
     result.path = result.tracks[0].base_path;
 
   } else if (id.indexOf('artist_') !== -1) {
+    var artist = res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').all(id);
+    result.name = artist[0].name;
     result.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC').all(id)
-    result.albums = res.locals.db.prepare('SELECT DISTINCT album_id, album, cover_art FROM Tracks WHERE artist_id=?').all(id)
+    var albums = res.locals.db.prepare('SELECT DISTINCT album_id FROM Tracks WHERE artist_id=?').all(id);
+    result.albums = [];
+    albums.forEach(function (album) {
+      var dbalbum = res.locals.db.prepare('SELECT * FROM Albums WHERE id=?').all(album.album_id)
+      result.albums.push(dbalbum[0]);
+    });
 
-    result.name = result.tracks[0].base_path;
-    result.path = result.tracks[0].base_path;
+    var currentBase = res.locals.db.prepare('SELECT * FROM BasePaths WHERE base_id=?').all(result.tracks[0].base_id)
+
+    var prev = res.locals.db.prepare('SELECT base_id, base_path FROM BasePaths WHERE sort_order=?').all(currentBase[0].sort_order - 1);
+    var next = res.locals.db.prepare('SELECT base_id, base_path FROM BasePaths WHERE sort_order=?').all(currentBase[0].sort_order + 1)
+
+    if (prev && prev.length > 0) result.previous_artist = prev[0];
+    else result.previous_artist = { base_id: id, base_path: "" };
+    if (next && next.length > 0) result.next_artist = next[0];
+    else result.next_artist = { base_id: id, base_path: "" };
+    
+    result.base_id = currentBase[0].base_id;
+    result.path = currentBase[0].base_path;
   }
 
 

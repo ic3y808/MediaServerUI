@@ -5,7 +5,7 @@
         th.TableRowHeaderCell-Starred.TableHeaderCell-headerCell
         th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
         th.TableHeaderCell-headerCell.Link-link(label='Artist Name') Artist Name
-        th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Tracks') Tracks
+        th.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks') Tracks
     tbody
       tr.TableRow-row(ng-repeat='genre in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(genre.id) == true}")
         td.TableRowCell-star.TableRowCell-cell
@@ -16,6 +16,7 @@
             i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
         td.TableRowCell-title.TableRowCell-cell(id='{{genre.id}}')
           span.Link-link.ng-binding(ng-click="navToGenre(genre.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}") {{genre.name}}
-        td.TableRowCell-count.TableRowCell-cell
+        td.
+        .TableRowCell-cell
           span.Label-label.Label-medium.Label-Page-Body(title='{{genre.track_count}} total tracks', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
             span {{genre.track_count}}
