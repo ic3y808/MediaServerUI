@@ -15,7 +15,8 @@
     "start": "node backend/server.js",
     "start_backend": "cross-env MODE=prod node backend/server.js",
     "start_api": "cross-env MODE=prod node api/server.js",
-    "prod": "concurrently --kill-others \"npm run start_backend\" \"npm run start_api\""
+    "prod": "concurrently --kill-others \"npm run start_backend\" \"npm run start_api\"",
+    "prod_ui_only": "concurrently --kill-others \"npm run start_backend\""
   },
   "dependencies": {
     "@babel/runtime": "^7.1.2",
