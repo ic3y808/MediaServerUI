@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
+module.exports = function ($rootScope, $location, Logger, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
   return {
     restrict: 'E',
     scope: {
@@ -38,18 +38,18 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDb
       }
 
       scope.starArtist = function (artist) {
-        Backend.info('starring artist: ' + artist.base_path);
+        Logger.info('starring artist: ' + artist.base_path);
         if (artist.starred === 'true') {
           AlloyDbService.unstar({ artist: artist.base_id }).then(function (result) {
-            Backend.info('UnStarred');
-            Backend.info(result);
+            Logger.info('UnStarred');
+            Logger.info(result);
             artist.starred = 'false';
             AppUtilities.apply();
           });
         } else {
           AlloyDbService.star({ artist: artist.base_id }).then(function (result) {
-            Backend.info('starred');
-            Backend.info(result);
+            Logger.info('starred');
+            Logger.info(result);
             artist.starred = 'true';
             AppUtilities.apply();
           });
@@ -57,11 +57,10 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, AlloyDb
       }
 
       scope.playArtist = function (artist) {
-        console.log(artist);
         var artistRquest = AlloyDbService.getArtist(artist.base_id);
         if (artistRquest) {
           artistRquest.then(function (artist) {
-            Backend.debug('selection changed');
+            Logger.debug('selection changed');
             $rootScope.tracks = AppUtilities.shuffle(artist.tracks);
             MediaPlayer.loadTrack(0);
           });

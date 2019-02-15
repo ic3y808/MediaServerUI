@@ -1,20 +1,22 @@
 import CryptoJS from 'crypto-js';
 class ConfigSabnzbdController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
-    this.Backend.debug('sabnzbd-controller');
+    this.Logger.debug('sabnzbd-controller');
     var that = this;
     $scope.settings = {};
 
     $scope.testSettings = function () {
-      Backend.emit('test_sabnzbd_settings', $rootScope.settings.sabnzbd);
+      if(this.$rootScope.socket)
+       this.$rootScope.socket.emit('test_sabnzbd_settings', $rootScope.settings.sabnzbd);
     };
 
 
@@ -28,10 +30,10 @@ class ConfigSabnzbdController {
 
 
 
-    Backend.socket.on('test_sabnzbd_connection_result', function (data) {
+    $rootScope.socket.on('test_sabnzbd_connection_result', function (data) {
       if (data) {
-        that.Backend.debug('sabnzbd connection result');
-        that.Backend.debug(data);
+        that.Logger.debug('sabnzbd connection result');
+        that.Logger.debug(data);
 
         if (data) {
           var pop = $('#testSabnzbdConnectionButton').popover({

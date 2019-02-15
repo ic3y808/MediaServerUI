@@ -7,6 +7,8 @@ const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const app = express();
 var server = require('http').Server(app);
+var config = require("../common/config");
+var logger = require("../common/logger");
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -29,11 +31,11 @@ function onError(error) {
 
   switch (error.code) {
     case 'EACCES':
-      console.log(process.env.PORT + ' requires elevated privileges');
+      logger.error("receiver", process.env.PORT + ' requires elevated privileges');
       process.exit(1);
       break;
     case 'EADDRINUSE':
-      console.log(process.env.PORT + ' is already in use');
+      logger.error("receiver", process.env.PORT + ' is already in use');
       process.exit(1);
       break;
     default:
@@ -44,13 +46,13 @@ function onError(error) {
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  console.log('Listening on ' + bind);
+  logger.info("receiver", 'Listening on ' + bind);
 }
 
 app.get('/', function (req, res) {
   res.render('index', {
     title: 'Unity',
-	dev_mode: process.env.MODE === 'dev'
+    dev_mode: process.env.MODE === 'dev'
   });
 });
 
@@ -71,7 +73,7 @@ if (process.env.MODE === 'dev') {
 
 server.listen(normalizePort(process.env.PORT || '1226'));
 server.on('error', onError);
-server.on('listening', onListening);  
+server.on('listening', onListening);
 
 if (process.env.MODE === 'dev') {
 

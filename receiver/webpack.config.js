@@ -2,6 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const dist = path.resolve(__dirname, 'dist');
 const nodePath = path.resolve(__dirname, 'node_modules');
+var config = require("../common/config");
+var logger = require("../common/logger");
 
 var profile = {};
 profile.plugins = [];
@@ -13,13 +15,13 @@ if (process.env.MODE === 'dev') {
     app: ['./frontend/app.js', 'webpack-hot-middleware/client']
   };
   profile.devtool = 'inline-source-map';
-  console.log('packing dev mode source');
+  logger.info("receiver", 'packing dev mode source');
 } else {
   profile.devtool = 'cheap-module-source-map';
   profile.entry = {
     app: ['./frontend/app.js']
   };
-  console.log('packing release mode source');
+  logger.info("receiver", 'packing release mode source');
 }
 
 // Required plugins 
@@ -75,25 +77,25 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.(scss|sass)$/,
   use: [{
-      loader: 'style-loader'
-    },
-    {
-      loader: 'css-loader'
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        plugins: function () { // post css plugins, can be exported to postcss.config.js
-          return [
-            require('precss'),
-            require('autoprefixer')
-          ];
-        }
+    loader: 'style-loader'
+  },
+  {
+    loader: 'css-loader'
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: function () { // post css plugins, can be exported to postcss.config.js
+        return [
+          require('precss'),
+          require('autoprefixer')
+        ];
       }
-    },
-    {
-      loader: 'sass-loader'
     }
+  },
+  {
+    loader: 'sass-loader'
+  }
   ]
 });
 
@@ -115,7 +117,7 @@ if (process.env.MODE === 'dev') {
     port: 1908
   }));
   profile.plugins.push(new webpack.HotModuleReplacementPlugin());
-  
-}  
+
+}
 
 module.exports = profile;

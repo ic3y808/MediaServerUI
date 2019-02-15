@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
+module.exports = function ($rootScope, $location,Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   return {
     restrict: 'E',
     scope: {
@@ -23,29 +23,28 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPl
         return false;
       }
       scope.starAlbum = function (album) {
-        Backend.info('starring album: ' + album.artist + " - " + album.name);
+        Logger.info('starring album: ' + album.artist + " - " + album.name);
         if (album.starred === 'true') {
           AlloyDbService.unstar({ album: album.id }).then(function (result) {
-            Backend.info('UnStarred');
-            Backend.info(result);
+            Logger.info('UnStarred');
+            Logger.info(result);
             album.starred = 'false';
             AppUtilities.apply();
           });
         } else {
           AlloyDbService.star({ album: album.id }).then(function (result) {
-            Backend.info('starred');
-            Backend.info(result);
+            Logger.info('starred');
+            Logger.info(result);
             album.starred = 'true';
             AppUtilities.apply();
           });
         }
       }
       scope.playAlbum = function (album) {
-        console.log(album);
         var album = AlloyDbService.getAlbum(album.id);
         if (album) {
           album.then(function (data) {
-            Backend.debug('selection changed');
+            Logger.debug('selection changed');
             $rootScope.tracks = data.tracks;
             MediaPlayer.loadTrack(0);
           });

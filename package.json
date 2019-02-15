@@ -57,6 +57,7 @@
     "jquery-listnav": "^2.4.10",
     "jquery-ui": "^1.12.1",
     "jquery.flipster": "^1.1.2",
+    "js-md5": "^0.7.3",
     "jsdom": "^13.2.0",
     "jssoup": "0.0.10",
     "klaw-sync": "^6.0.0",

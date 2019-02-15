@@ -1,7 +1,7 @@
 const _ = require("underscore");
 const fs = require("fs");
 const path = require("path");
-const shell = require("shelljs");
+
 const moment = require("moment");
 const express = require("express");
 const webpack = require("webpack");
@@ -11,68 +11,31 @@ const webpackconfig = require("../webpack.config");
 const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 
-process.env.DATA_DIR = path.join(__dirname, "..", "data");
 
-if (!fs.existsSync(process.env.DATA_DIR))
-  shell.mkdir("-p", process.env.DATA_DIR);
-
-var log = require("./core/logger");
+var config = require("../common/config");
+var logger = require("../common/logger");
+var utils = require("./core/utils");
 var index = require("./routes/index");
 
+var timer = {};
+
+logger.info('alloyui', 'Starting up Alloy');
+
 var db = require("./core/database");
-db.init().then(function() {
-  log.info("Starting up server");
-  log.info("Loading Plugins");
+db.init().then(function () {
+  logger.info('alloyui', 'DB Initialized');
+
+  logger.info('alloyui', "Loading Plugins");
   var sabnzbd = require("./core/plugins/sabnzbd");
+  var musicbrainz = require("./core/plugins/musicbrainz");
+  logger.info('alloyui', "Finished Loading Plugins");
 
   const app = express();
   var server = require("http").Server(app);
   var io = require("socket.io")(server);
   db.io = io;
   sabnzbd.io = io;
-
-  function normalizePort(val) {
-    var port = parseInt(val, 10);
-
-    if (isNaN(port)) {
-      return val;
-    }
-
-    if (port >= 0) {
-      return port;
-    }
-
-    return false;
-  }
-
-  function onError(error) {
-    if (error.syscall !== "listen") {
-      throw error;
-    }
-
-    var addr = server.address();
-    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-
-    switch (error.code) {
-      case "EACCES":
-        log.error("requires elevated privileges");
-        process.exit(1);
-        break;
-      case "EADDRINUSE":
-        log.error("is already in use");
-        process.exit(1);
-        break;
-      default:
-        throw error;
-    }
-  }
-
-  function onListening() {
-    var addr = server.address();
-    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-    sabnzbd.login();
-    log.info("Listening on " + bind);
-  }
+  musicbrainz.io = io;
 
   app.use(
     "/content",
@@ -121,7 +84,7 @@ db.init().then(function() {
 
   app.set("views", viewdirs.concat(componentdirs, directivedirs));
   app.set("view engine", "jade");
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     res.io = io;
     next();
   });
@@ -157,24 +120,29 @@ db.init().then(function() {
   );
 
   // catch 404 and forward to error handler
-  app.use(function(req, res, next) {
+  app.use(function (req, res, next) {
     var err = new Error("Not Found");
     err.status = 404;
+    err.url = req.path;
+    logger.error('alloyui', JSON.stringify(err));
     next(err);
   });
 
   if (process.env.MODE === "dev") {
     app.locals.pretty = true;
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
       res.status(err.status || 500);
+      err.url = req.path;
+      logger.error('alloyui', JSON.stringify(err));
       res.render("error", {
         message: err.message,
         error: err
       });
     });
   } else {
-    app.use(function(err, req, res, next) {
+    app.use(function (err, req, res, next) {
       res.status(err.status || 500);
+      logger.error('alloyui', JSON.stringify(err));
       res.render("error", {
         message: err.message,
         error: {}
@@ -182,34 +150,41 @@ db.init().then(function() {
     });
   }
 
-  io.on("connection", function(socket) {
+  io.on("connection", function (socket) {
     db.socketConnect(socket);
     sabnzbd.socketConnect(socket);
-    log.debug("Client connected");
-    socket.on("log", function(data) {
-      log.log(data.method, data.message);
+    musicbrainz.socketConnect(socket);
+    logger.debug('alloyui', "Client connected");
+    socket.on("log", function (data) {
+      var obj = {};
+      obj.level = data.method;
+      obj.label = "clientui";
+      obj.message = data.message;
+      logger.log(data.method, obj);
     });
   });
 
-  setInterval(function() {
-    var dt = {
-      date: moment().format("hh:mm:ss a")
-    };
-    io.emit("ping", { status: "success", server_time: dt.date });
-  }, 1000);
+  clearInterval(timer);
+  timer = setInterval(function () {
+    io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
+  }, 500);
 
-  server.listen(normalizePort(process.env.PORT || "3000"));
+  server.listen(utils.normalizePort(process.env.PORT || "3000"));
 
-  server.on("error", onError);
-  server.on("listening", onListening);
+  server.on("error", utils.onError);
+  server.on("listening", function () {
+    var addr = server.address();
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    sabnzbd.login();
+    logger.info('alloyui', "Listening on " + bind);
+  });
 
   if (process.env.MODE === "dev") {
-    process.env.JADE_PORT = normalizePort(process.env.JADE_PORT || "4567");
+    process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
     var livereload = require("livereload").createServer({
       exts: ["jade"],
       port: process.env.JADE_PORT
     });
-
     livereload.watch(path.join(__dirname, "..", "frontend"));
   }
 });

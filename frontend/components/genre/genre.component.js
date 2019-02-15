@@ -1,16 +1,18 @@
 import './genre.scss';
 class GenreController {
-  constructor($scope, $rootScope, $routeParams, Cache, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, Cache, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$routeParams = $routeParams;
+    this.Cache = Cache;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('genre-controller');
+    this.Logger.debug('genre-controller');
     this.AppUtilities.showLoader();
     $scope.artist = {};
     $scope.albums = [];
@@ -85,19 +87,19 @@ class GenreController {
     }
 
     $scope.refresh = function () {
-      that.Backend.debug('refresh genre');
+      that.Logger.debug('refresh genre');
       Cache.put($routeParams.id, null);
       $scope.getGenre();
     };
 
     $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
+      that.Logger.debug('shuffle play');
       $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
       MediaPlayer.loadTrack(0);
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Genre reload on loginsatuschange');
+      that.Logger.debug('Genre reload on loginsatuschange');
       $scope.refresh();
     });
 

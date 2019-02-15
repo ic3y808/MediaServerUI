@@ -1,8 +1,8 @@
 
 
-export default function ApplicationRun($window, $rootScope, $location, $timeout, Backend, MediaPlayer, AppUtilities) {
+export default function ApplicationRun($window, $rootScope, $location, $timeout, Logger, Backend, MediaPlayer, AppUtilities) {
   "ngInject";
-  Backend.debug('starting application');
+  Logger.info('starting application');
   $rootScope.settings = [];
   $rootScope.scrollPos = {};
 
@@ -37,7 +37,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     var focus = $("#search-box").val();
-    if(!focus){
+    if (!focus) {
       if (key === 32) {
         e.preventDefault();
       }
@@ -47,13 +47,13 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     var focus = $("#search-box").val();
-    if(!focus){
+    if (!focus) {
       if (key === 32) {
         e.preventDefault();
         MediaPlayer.toggleCurrentStatus();
       }
     }
-    
+
   }
 
   //$window.onbeforeunload = function () {
@@ -61,15 +61,19 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   //}
 
   $timeout(function () {
-    Backend.debug('loading settings');
-    Backend.emit('load_settings', 'alloydb_settings');
-    Backend.emit('load_settings', 'sabnzbd_settings');
+    Logger.debug('loading settings');
+    if ($rootScope)
+      $rootScope.socket.emit('load_settings', 'alloydb_settings');
+    if ($rootScope)
+      $rootScope.socket.emit('load_settings', 'sabnzbd_settings');
 
     setTimeout(() => {
       if (MediaPlayer.castStatus()) {
-        Backend.debug('cast status true, initialize cast');
+        Logger.debug('cast status true, initialize cast');
         MediaPlayer.initializeCast();
       }
     }, 1000);
   });
+
+  Logger.info('Application Loaded');
 }

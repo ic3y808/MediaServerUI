@@ -1,89 +1,81 @@
 import "./status.scss";
 class StatusController {
-  constructor(
-    $scope,
-    $rootScope,
-    $timeout,
-    MediaElement,
-    MediaPlayer,
-    AppUtilities,
-    Backend,
-    AlloyDbService
-  ) {
+  constructor($scope, $rootScope, $timeout, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug("status-controller");
+    this.Logger.debug("status-controller");
     var that = this;
 
-    $scope.ping = function() {
+    $scope.ping = function () {
       var ping = that.AlloyDbService.ping();
       if (ping) {
-        ping.then(function(data) {
+        ping.then(function (data) {
           $scope.alloydb = data;
           that.AppUtilities.apply();
         });
       }
     };
 
-    $scope.getLibraryInfo = function() {
+    $scope.getLibraryInfo = function () {
       var libraryInfo = that.AlloyDbService.getLibraryInfo();
       if (libraryInfo) {
-        libraryInfo.then(function(info) {
+        libraryInfo.then(function (info) {
           $scope.libraryInfo = info;
           that.AppUtilities.apply();
         });
       }
     };
 
-    $scope.getMediaPaths = function() {
+    $scope.getMediaPaths = function () {
       var mediaPaths = that.AlloyDbService.getMediaPaths();
       if (mediaPaths) {
-        mediaPaths.then(function(paths) {
+        mediaPaths.then(function (paths) {
           $scope.mediaPaths = paths;
           that.AppUtilities.apply();
         });
       }
     };
 
-    $scope.scanFullStart = function() {
+    $scope.scanFullStart = function () {
       var scanner = that.AlloyDbService.scanFullStart();
-      that.Backend.debug("scanFullStart");
+      that.Logger.debug("scanFullStart");
       $scope.scanStatus = result;
       that.AppUtilities.apply();
-      $scope.rescanInterval = setInterval(function() {
+      $scope.rescanInterval = setInterval(function () {
         $scope.getScanStatus();
       }, 500);
     };
 
-    $scope.scanQuickStart = function() {
+    $scope.scanQuickStart = function () {
       var scanner = that.AlloyDbService.scanQuickStart();
       if (scanner) {
-        scanner.then(function(result) {
-          that.Backend.debug("scanQuickStart");
+        scanner.then(function (result) {
+          that.Logger.debug("scanQuickStart");
           $scope.scanStatus = result;
           that.AppUtilities.apply();
-          $scope.rescanInterval = setInterval(function() {
+          $scope.rescanInterval = setInterval(function () {
             $scope.getScanStatus();
           }, 500);
         });
       }
     };
 
-    $scope.getScanStatus = function() {
+    $scope.getScanStatus = function () {
       var scanner = that.AlloyDbService.scanStatus();
       if (scanner) {
-        scanner.then(function(result) {
+        scanner.then(function (result) {
           $scope.scanStatus = result;
           that.AppUtilities.apply();
           if (!$scope.rescanInterval) {
-            $scope.rescanInterval = setInterval(function() {
+            $scope.rescanInterval = setInterval(function () {
               $scope.getScanStatus();
             }, 500);
           }
@@ -92,34 +84,34 @@ class StatusController {
       $scope.getLibraryInfo();
     };
 
-    $scope.scanCancel = function() {
+    $scope.scanCancel = function () {
       var scanner = that.AlloyDbService.scanCancel();
       if (scanner) {
-        scanner.then(function(result) {
-          that.Backend.debug("cancelScan");
+        scanner.then(function (result) {
+          that.Logger.debug("cancelScan");
           $scope.scanStatus = result;
           that.AppUtilities.apply();
         });
       }
     };
 
-    $rootScope.$on("loginStatusChange", function(event, data) {
+    $rootScope.$on("loginStatusChange", function (event, data) {
       $scope.ping();
       $scope.getLibraryInfo();
       $scope.getMediaPaths();
     });
 
-    $scope.refreshIntereval = setInterval(function() {
+    $scope.refreshIntereval = setInterval(function () {
       $scope.ping();
       $scope.getLibraryInfo();
       $scope.getMediaPaths();
     }, 5000);
 
-    $scope.uiRefreshIntereval = setInterval(function() {
+    $scope.uiRefreshIntereval = setInterval(function () {
       AppUtilities.apply();
     }, 1000);
 
-    $scope.$on("$destroy", function() {
+    $scope.$on("$destroy", function () {
       clearInterval($scope.refreshIntereval);
       clearInterval($scope.uiRefreshIntereval);
       clearInterval($scope.rescanInterval);

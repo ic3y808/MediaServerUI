@@ -1,5 +1,6 @@
 'use strict';
 var mb = require('./musicbrainz');
+var logger = require('../../../common/logger');
 
 function MusicbrainzScanner(db) {
   this.db = db;
@@ -54,14 +55,14 @@ MusicbrainzScanner.prototype.writeQueue = function writeQueue(force) {
           insert.run(t);
         } catch (err) {
           //if (!this.db.inTransaction) throw err; // (transaction was forcefully rolled back)
-          console.log(err);
-          console.log(sql);
+          logger.error("alloydb", JSON.stringify(err));
+          logger.error("alloydb", sql);
 
         }
 
       }
       this.currentQueue = [];
-      console.log('writing writing database');
+      logger.info("alloydb", 'writing database');
     });
     insertMany(this.currentQueue);
   }
@@ -77,7 +78,6 @@ MusicbrainzScanner.prototype.step = function step() {
     try {
 
 
-      console.log(track.path)
 
       mb.searchReleases(track.album, { country: 'US' }, function (err, releases) {
         console.log(releases);

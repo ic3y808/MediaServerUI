@@ -3,18 +3,9 @@ const fs = require("fs");
 const path = require("path");
 const shell = require("shelljs");
 const express = require("express");
+const config = require("../common/config");
+const logger = require("../common/logger");
 
-process.env.DATA_DIR = path.join(__dirname, "..", "data");
-
-if (!fs.existsSync(process.env.DATA_DIR))
-  shell.mkdir("-p", process.env.DATA_DIR);
-
-process.env.API_KEY = "123456";
-process.env.BASE_DIR = __dirname;
-process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
-process.env.COVER_ART = path.join(__dirname, "images");
-process.env.LASTFM_API_KEY = "ed6f8571e2be230fce3b0cc0203c5a27";
-process.env.LASTFM_API_SECRET = "f0fb2b471befe70b265dd72e3e42b545";
 
 const db = require("better-sqlite3")(process.env.DATABASE);
 db.prepare("PRAGMA journal_mode = WAL;").run();
@@ -43,7 +34,7 @@ var notify = function (title, message) {
 };
 
 dbm.up().then(function () {
-  console.log("successfully migrated database");
+  logger.debug("alloydb","successfully migrated database");
 
   var app = express();
   app.use(express.json());
@@ -162,7 +153,7 @@ dbm.up().then(function () {
   if (process.env.MODE === "dev") {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
-      console.log(err.message);
+      logger.error('alloyui', JSON.stringify(err))
     });
   }
 
@@ -170,7 +161,7 @@ dbm.up().then(function () {
   // no stacktraces leaked to user
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    console.log(err.message);
+    logger.error('alloyui', JSON.stringify(err))
   });
 
   app.set("port", process.env.API_PORT || 4000);
@@ -263,17 +254,15 @@ dbm.up().then(function () {
     }
   }
 
-
-
   var server = app.listen(app.get("port"), function () {
     scheduler.createJob("Clean Database", "0 0 * * *", function () {
-      console.log("Doing db cleanup");
+      logger.info("alloydb","Doing db cleanup");
       notify("Database Cleanup", "Starting incremental cleanup from scheduler");
       mediaScanner.incrementalCleanup();
     });
 
     scheduler.createJob("Scan LastFM", "0 0 * * 0", function () {
-      console.log("Doing LastFM Scan");
+      logger.info("alloydb","Doing LastFM Scan");
       notify("Database Scan", "Starting LastFM scan from scheduler");
       lastFMScanner.incrementalScan();
     });
@@ -281,6 +270,6 @@ dbm.up().then(function () {
     configTray();
 
     notify("AlloyDB Started", "AlloyDB is Listening on port " + server.address().port);
-    console.log("Express server listening on port " + server.address().port);
+    logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + server.address().port);
   });
 });

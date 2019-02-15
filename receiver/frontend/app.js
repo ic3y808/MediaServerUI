@@ -7,7 +7,6 @@ var h = $( window ).height();
 
 var url = 'https://source.unsplash.com/random/' + w + 'x' + h;
 
-console.log(url);
 $("#player").css("--splash-image", "url('" + url + "')");
 $("#player").css("background-image", "url('" + url + "')");
 $("#player").css("--slideshow-image-1", "url('" + url + "')");
@@ -50,7 +49,7 @@ const playerData = {};
 // listen to all Core Events
 playerManager.addEventListener(cast.framework.events.category.CORE,
 	event => {
-		console.log(event);
+
 	});
 
 const playbackConfig = new cast.framework.PlaybackConfig();

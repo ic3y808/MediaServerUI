@@ -1,16 +1,17 @@
 import './navbar.scss';
 class NavbarController {
-  constructor($scope, $rootScope, $location, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService, $http) {
+  constructor($scope, $rootScope, $location, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService, $http) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('nav-controller');
+    this.Logger.debug('nav-controller');
     var that = this;
 
     $scope.selectedObject = null;
@@ -73,7 +74,6 @@ class NavbarController {
 
         return that.AlloyDbService.search(searchText).then(function (result) {
           searchText = searchText.toUpperCase();
-          // console.log(result)
 
           var results = [
             {

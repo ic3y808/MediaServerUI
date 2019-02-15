@@ -7,14 +7,15 @@ window.__onGCastApiAvailable = function (isAvailable) {
 };
 
 export default class MediaPlayer {
-  constructor($rootScope, MediaElement, AppUtilities, Backend, AlloyDbService) {
+  constructor($rootScope, Logger, MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('init media player');
+    this.Logger.debug('init media player');
     this.activeSong = "";
     this.playing = false;
     this.currentVolume = this.MediaElement.volume;
@@ -42,7 +43,7 @@ export default class MediaPlayer {
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainTimeDisplay').html("");
-        that.Backend.debug('Playlist ended');
+        that.Logger.debug('Playlist ended');
         that.AppUtilities.broadcast('playlistEndEvent');
 
       } else {
@@ -97,7 +98,7 @@ export default class MediaPlayer {
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
         function () {
-          that.Backend.debug('switchPlayer');
+          that.Logger.debug('switchPlayer');
           if (cast && cast.framework) {
             if (that.remotePlayerConnected()) {
 
@@ -188,7 +189,7 @@ export default class MediaPlayer {
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainTimeDisplay').html("");
-      this.Backend.debug('Playlist ended');
+      this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistBeginEvent');
       return true;
     } return false;
@@ -203,7 +204,7 @@ export default class MediaPlayer {
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainTimeDisplay').html("");
-      this.Backend.debug('Playlist ended');
+      this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistEndEvent');
       return true;
     } return false;
@@ -276,17 +277,17 @@ export default class MediaPlayer {
 
   scrobble(instance, source) {
     instance.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
-      if (scrobbleResult) instance.Backend.info('scrobble success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+      if (scrobbleResult) instance.Logger.info('scrobble result: ' + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
     });
     instance.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
-      if (scrobbleResult) instance.Backend.info('scrobbleNowPlaying success: ' + scrobbleResult.result + " : " + source.artist + " - " + source.title);
+      if (scrobbleResult) instance.Logger.info('scrobbleNowPlaying result: ' + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
     });
   }
 
   addPlay(instance, source) {
     instance.AlloyDbService.addPlay(source.id).then(function (result) {
       if (result) {
-        instance.Backend.info('addPlay success: ' + result.result + " : " + source.artist + " - " + source.title);
+        instance.Logger.info('addPlay resut: ' + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         source.play_count++;
         instance.AppUtilities.broadcast('trackChangedEvent', source);
         instance.AppUtilities.apply();
@@ -300,11 +301,11 @@ export default class MediaPlayer {
       t = that;
     }
     t.selectedIndex = index;
-    t.Backend.debug('load track');
+    t.Logger.debug('load track');
     $('#mainTimeDisplay').html("Loading...");
 
     var source = t.selectedTrack();
-    t.Backend.debug(source.artist + " - " + source.title);
+    t.Logger.debug(source.artist + " - " + source.title);
     source.artistUrl = "/artist/" + source.base_id;
     source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {
@@ -343,7 +344,7 @@ export default class MediaPlayer {
             that2.togglePlayPause();
             that2.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {
-            that2.Backend.error('playing failed ' + error);
+            that2.Logger.error('playing failed ' + error);
             //that2.next();
           });
         } else {
@@ -369,9 +370,9 @@ export default class MediaPlayer {
 
       if (playPromise !== undefined) {
         playPromise.then(_ => {
-          this.Backend.debug('success playing');
+          this.Logger.debug('success playing');
         }).catch(error => {
-          this.Backend.error('playing failed ' + error);
+          this.Logger.error('playing failed ' + error);
         });
       }
     }
@@ -486,8 +487,8 @@ export default class MediaPlayer {
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         function () {
-          that.Backend.debug('media info change');
-          that.Backend.debug(that.remotePlayer.mediaInfo);
+          that.Logger.debug('media info change');
+          that.Logger.debug(that.remotePlayer.mediaInfo);
           if (that.remotePlayer && that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
             var customData = that.remotePlayer.mediaInfo.metadata.customData;
             if (customData) {
@@ -505,15 +506,15 @@ export default class MediaPlayer {
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
         function () {
-          that.Backend.debug('state change ');
-          that.Backend.debug(that.remotePlayer.playerState);
+          that.Logger.debug('state change ');
+          that.Logger.debug(that.remotePlayer.playerState);
 
           if (that.remotePlayer.playerState === null) {
             if (that.remotePlayer.savedPlayerState) {
               that.shouldSeek = true;
               that.prePlannedSeek = that.remotePlayer.savedPlayerState.currentTime;
               that.loadTrack(that.selectedIndex, that);
-              that.Backend.debug('saved state');
+              that.Logger.debug('saved state');
             } else {
               that.next();
             }
@@ -551,8 +552,8 @@ export default class MediaPlayer {
             //id = id.substring(3,id.length - 1);
 
             //this.AlloyDbService.getTrack(id).then(function (result) {
-            //    this.Backend.debug("getArtistDetails result")
-            //    this.Backend.debug(result)
+            //    this.Logger.debug("getArtistDetails result")
+            //    this.Logger.debug(result)
 
             //    if (result) {
 

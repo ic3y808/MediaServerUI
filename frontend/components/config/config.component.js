@@ -1,16 +1,17 @@
 import './config.scss';
 class ConfigController {
-  constructor($scope, $rootScope, $compile, $routeParams, $location, AppUtilities, Backend, MediaPlayer) {
+  constructor($scope, $rootScope, $compile, $routeParams, $location, Logger, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$compile = $compile;
     this.$routeParams = $routeParams;
     this.$location = $location;
+    this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.Backend.debug('config-controller');
+    this.Logger.debug('config-controller');
     this.AppUtilities.showLoader();
     var that = this;
 
@@ -56,10 +57,13 @@ class ConfigController {
       content: "Success!",
       //container: '.PageContentBody-contentBody',
       placement: "bottom",
-    });
-
-
-    
+    })
+    //.on('shown.bs.popover', function () {
+    //  var $pop = $(this);
+    //  setTimeout(function () {
+    //      $pop.popover('hide');
+    //  }, 2000);
+    //});;
 
 
     AppUtilities.apply();
@@ -68,7 +72,7 @@ class ConfigController {
 
   $onInit() {
     if (this.$routeParams.id) {
-      this.Backend.debug('navigating to ' + this.$routeParams.id);
+      this.Logger.debug('navigating to ' + this.$routeParams.id);
       this.$scope.navigate(this.$routeParams.id);
     }
   }

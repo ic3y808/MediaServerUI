@@ -1,5 +1,5 @@
 const got = require('got');
-const log = require('../../logger');
+const log = require('../../../../common/logger');
 const qs = require('querystring');
 const dateutil = require('dateutil');
 

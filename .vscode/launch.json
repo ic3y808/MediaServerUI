@@ -6,6 +6,7 @@
       "request": "launch",
       "name": "UI-ServerDebug",
       "program": "${workspaceFolder}/backend/server.js",
+      "outputCapture": "std",
       "env": {
         "MODE": "dev",
         "PORT": "3000",
@@ -18,6 +19,7 @@
       "type": "node",
       "request": "launch",
       "name": "UI-ServerRelease",
+      "outputCapture": "std",
       "program": "${workspaceFolder}/backend/server.js",
       "env": {
         "MODE": "prod",
@@ -28,6 +30,7 @@
       "type": "node",
       "request": "launch",
       "name": "Backend-ServerDebug",
+      "outputCapture": "std",
       "program": "${workspaceFolder}/api/server.js",
       "env": {
         "MODE": "dev",
@@ -39,6 +42,7 @@
       "type": "node",
       "request": "launch",
       "name": "Backend-ServerRelease",
+      "outputCapture": "std",
       "program": "${workspaceFolder}/api/server.js",
       "env": {
         "MODE": "prod",

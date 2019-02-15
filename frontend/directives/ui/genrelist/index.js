@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
+module.exports = function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   return {
     restrict: 'E',
     scope: {
@@ -20,11 +20,10 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPl
         return false;
       }
       scope.playGenre = function (genre) {
-        console.log(genre);
         var genre = AlloyDbService.getGenre(genre.id);
         if (genre) {
           genre.then(function (data) {
-            Backend.debug('selection changed');
+            Logger.debug('selection changed');
             $rootScope.tracks = AppUtilities.shuffle(data.tracks);
             MediaPlayer.loadTrack(0);
           });

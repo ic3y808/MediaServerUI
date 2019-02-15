@@ -1,4 +1,5 @@
 (function (global, factory) {
+  "ngInject";
   'use strict';
 
   if (typeof exports === 'object' && typeof module !== 'undefined') {
@@ -14,7 +15,10 @@
   else {
     factory(global.angular);
   }
-}(this, function (angular) {
+}
+
+(this, function (angular) {
+  "ngInject";
   var helperService = new HelperService();
 
   angular
@@ -1176,4 +1180,6 @@
     dropdownHidden: angular.noop
   };
 
-}));
+})
+
+);

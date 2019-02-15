@@ -3,6 +3,9 @@ const webpack = require('webpack');
 const dist = path.resolve(__dirname, 'dist');
 const nodePath = path.resolve(__dirname, 'node_modules');
 
+var config = require("./common/config");
+var logger = require("./common/logger");
+
 var profile = {};
 profile.plugins = [];
 profile.module = {};
@@ -13,13 +16,13 @@ if (process.env.MODE === 'dev') {
     app: ['./frontend/app.js', 'webpack-hot-middleware/client']
   };
   profile.devtool = 'inline-source-map';
-  console.log('packing dev mode source');
+  logger.info('webpack', 'packing dev mode source');
 } else {
   profile.devtool = 'cheap-module-source-map';
   profile.entry = {
     app: ['./frontend/app.js']
   };
-  console.log('packing release mode source');
+  logger.info('webpack', 'packing release mode source');
 }
 
 // Required plugins 
@@ -132,6 +135,34 @@ profile.output = {
   path: path.resolve(__dirname, dist)
 };
 
+  profile.module.rules.push({
+    test: /\.js$/,
+    use: [{
+      loader: 'strip-loader?strip[]=debug'
+    },
+    {
+      loader: 'babel-loader',
+      options: {
+        plugins: [
+          '@babel/plugin-transform-runtime',
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true,
+            }
+          ],
+          "@babel/plugin-proposal-class-properties",
+          ["angularjs-annotate", {
+            explicitOnly: true
+          }]
+        ],
+        presets: ['@babel/preset-env']
+      }
+    }
+    ],
+    exclude: /(node_modules|bower_components|coverflow|modernizr\.js|angular-auto-complete\.js)/
+  });
+
 // Dev - Production specific
 
 if (process.env.MODE === 'dev') {
@@ -140,28 +171,6 @@ if (process.env.MODE === 'dev') {
     const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
     profile.plugins.push(new BundleAnalyzerPlugin());
   }
-
-  const ControllerHotLoader = require.resolve('./loaders/controller-loader');
-  const ServiceHotLoader = require.resolve('./loaders/service-loader');
-  const JadeHotLoader = require.resolve('./loaders/jade-loader');
-  profile.module.rules.push({
-    test: /\.pug$/,
-    enforce: "post",
-    loader: JadeHotLoader,
-    exclude: [nodePath]
-  });
-  profile.module.rules.push({
-    test: /\.component.js$/,
-    enforce: "pre",
-    loader: ControllerHotLoader,
-    exclude: [nodePath]
-  });
-  profile.module.rules.push({
-    test: /\.service.js$/,
-    enforce: "pre",
-    loader: ServiceHotLoader,
-    exclude: [nodePath]
-  });
 
   const LiveReloadPlugin = require('webpack-livereload-plugin');
   profile.plugins.push(new LiveReloadPlugin({
@@ -173,33 +182,7 @@ if (process.env.MODE === 'dev') {
   const CleanWebpackPlugin = require('clean-webpack-plugin');
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 
-  //profile.module.rules.push({
-  //  test: /\.js$/,
-  //  use: [{
-  //    loader: 'strip-loader?strip[]=debug'
-  //  },
-  //  {
-  //    loader: 'babel-loader',
-  //    options: {
-  //      plugins: [
-  //        '@babel/plugin-transform-runtime',
-  //        [
-  //          "@babel/plugin-proposal-decorators",
-  //          {
-  //            "legacy": true,
-  //          }
-  //        ],
-  //        "@babel/plugin-proposal-class-properties",
-  //        ["angularjs-annotate", {
-  //          explicitOnly: true
-  //        }]
-  //      ],
-  //      presets: ['@babel/preset-env']
-  //    }
-  //  }
-  //  ],
-  //  exclude: /(node_modules|bower_components|modernizr.js)/
-  //});
+
 
   profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',

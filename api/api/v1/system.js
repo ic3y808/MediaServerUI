@@ -5,6 +5,8 @@ var structures = require('./structures');
 
 var fs = require('fs');
 var klawSync = require('klaw-sync');
+var logger = require('../../../common/logger');
+
 /**
  * This function comment is parsed by doctrine
  * @route GET /system/ping

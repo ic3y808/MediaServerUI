@@ -3,6 +3,7 @@ var http = require('http');
 var crypto = require('crypto');
 var xml2js = require('xml2js');
 var querystring = require('querystring');
+var logger = require('../../../common/logger');
 
 var Lastfm = function (options) {
   options = options || {};

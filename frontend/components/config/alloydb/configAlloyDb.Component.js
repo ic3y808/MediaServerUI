@@ -1,14 +1,15 @@
 class ConfigAlloyDbController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('config-alloydb-controller');
+    this.Logger.debug('config-alloydb-controller');
     var that = this;
     $scope.settings = {};
   
@@ -30,7 +31,8 @@ class ConfigAlloyDbController {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
 
-    Backend.emit('load_settings', 'alloydb_settings');
+    if(this.$rootScope.socket)
+       this.$rootScope.socket.emit('load_settings', 'alloydb_settings');
 
     $rootScope.$on('menuSizeChange', function (event, currentState) {
 

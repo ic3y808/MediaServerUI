@@ -1,13 +1,14 @@
 import CryptoJS from 'crypto-js';
 class ConfigSchedulerController {
-  constructor($scope, $rootScope, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, Logger, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('scheduler-controller');
+    this.Logger.debug('scheduler-controller');
     var that = this;
     $scope.settings = {};
 
@@ -17,7 +18,7 @@ class ConfigSchedulerController {
       var ping = that.AlloyDbService.getSchedulerStatus();
       if (ping) {
         ping.then(function (data) {
-          that.Backend.debug('getSchedulerStatus');
+          that.Logger.debug('getSchedulerStatus');
           that.$scope.schedulerStatus = data;
           that.AppUtilities.apply();
         });

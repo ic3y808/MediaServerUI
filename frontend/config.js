@@ -10,6 +10,8 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<status/>',
   }).when('/index', {
     template: '<index/>',
+  }).when('/database', {
+    template: '<database/>',
   }).when('/starred', {
     template: '<starred/>',
   }).when('/playlist', {

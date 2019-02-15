@@ -1,4 +1,4 @@
-﻿var log = require('./logger');
+﻿var log = require('../../common/logger');
 var path = require("path");
 const db = require('better-sqlite3')(path.join(process.env.DATA_DIR, "database.db"));
 var dbmigrate = require('db-migrate');
@@ -32,7 +32,7 @@ module.exports.saveSettings = function (key, value, callback) {
     const info = stmt.run(key, obj, obj);
   } catch (error) {
     if (error) {
-      console.log(error);
+      log.error("alloyui",  JSON.stringify(error));
     }
   }
   callback();
@@ -40,16 +40,16 @@ module.exports.saveSettings = function (key, value, callback) {
 
 module.exports.socketConnect = function (socket) {
   socket.on('load_settings', function (key) {
-    log.debug('Load settings requested for key: ' + key);
+    log.debug('alloyui', 'Load settings requested for key: ' + key);
     module.exports.loadSettings(key, function (result) {
-      log.debug('Settings Loaded');
+      log.debug('alloyui', 'Settings Loaded');
       socket.emit('settings_loaded_event', result);
     });
   });
   socket.on('save_settings', function (settings) {
-    log.debug('Save settings requested for key: ' + settings.key);
+    log.debug('alloyui', 'Save settings requested for key: ' + settings.key);
     module.exports.saveSettings(settings.key, settings.data, function () {
-      log.debug('Settings Saved');
+      log.debug('alloyui', 'Settings Saved');
       socket.emit('settings_saved_event');
     });
   });
