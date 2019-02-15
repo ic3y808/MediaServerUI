@@ -1,14 +1,16 @@
 import "./album.scss";
 class AlbumController {
-  constructor($scope, $rootScope, $routeParams, Cache, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Cache = Cache;
+    this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug("artist-controller");
+    this.Logger.debug("artist-controller");
     this.AppUtilities.showLoader();
     $scope.album = {};
     $scope.album.tracks = [];
@@ -117,7 +119,7 @@ class AlbumController {
     };
 
     $scope.refresh = function () {
-      that.Backend.debug("refresh album");
+      that.Logger.debug("refresh album");
       Cache.put($routeParams.id, null);
       $scope.getAlbum();
     };
@@ -126,20 +128,20 @@ class AlbumController {
       AlloyDbService.getSimilarSongs2($routeParams.id).then(function (
         similarSongs
       ) {
-        that.Backend.debug("starting radio");
+        that.Logger.debug("starting radio");
         $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
       });
     };
 
     $scope.shuffle = function () {
-      that.Backend.debug("shuffle play");
+      that.Logger.debug("shuffle play");
       that.$rootScope.tracks = AppUtilities.shuffle($scope.album.tracks);
       that.MediaPlayer.loadTrack(0);
     };
 
     $scope.shareAlbum = function () {
-      that.Backend.debug("shareButton");
+      that.Logger.debug("shareButton");
       that.AlloyDbService.createShare(
         $scope.album.id,
         "Shared from Alloy"
@@ -164,12 +166,12 @@ class AlbumController {
     };
 
     $scope.starAlbum = function () {
-      that.Backend.info("liking album: " + that.$scope.album.name);
+      that.Logger.info("liking album: " + that.$scope.album.name);
       if ($scope.album.starred === "true") {
         that.AlloyDbService.unstar({ album: that.$scope.album.id }).then(
           function (result) {
-            that.Backend.info("UnStarred");
-            that.Backend.info(result);
+            that.Logger.info("UnStarred");
+            that.Logger.info(result);
             that.$scope.album.starred = "false";
             that.AppUtilities.apply();
           }
@@ -178,8 +180,8 @@ class AlbumController {
         that.AlloyDbService.star({ album: that.$scope.album.id }).then(function (
           result
         ) {
-          that.Backend.info("starred");
-          that.Backend.info(result);
+          that.Logger.info("starred");
+          that.Logger.info(result);
           that.$scope.album.starred = "true";
           that.AppUtilities.apply();
         });
@@ -187,7 +189,7 @@ class AlbumController {
     };
 
     $rootScope.$on("loginStatusChange", function (event, data) {
-      that.Backend.debug("Album reload on loginsatuschange");
+      that.Logger.debug("Album reload on loginsatuschange");
       $scope.refresh();
     });
 

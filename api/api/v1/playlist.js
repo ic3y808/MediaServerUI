@@ -2,6 +2,7 @@
 var express = require('express');
 var router = express.Router();
 var structures = require('./structures');
+var logger = require('../../../common/logger');
 
 /**
  * This function comment is parsed by doctrine

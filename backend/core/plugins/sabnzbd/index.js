@@ -1,5 +1,5 @@
 const SABnzbd = require('./plugin')
-var log = require('../../logger');
+var log = require('../../../../common/logger');
 var db = require('../../database');
 var sabnzbd = null;
 var timer = {};
@@ -7,7 +7,7 @@ module.exports.io = {};
 module.exports.isLoggedIn = false;
 
 module.exports.socketConnect = function (socket) {
-  log.debug('sabnzbd plugin socketConnect');
+  log.debug('alloyui', 'sabnzbd plugin socketConnect');
 
   socket.on('sabnzbd_reset_settings', function (settings) {
     sabnzbd = null;
@@ -15,7 +15,7 @@ module.exports.socketConnect = function (socket) {
   });
 
   socket.on('test_sabnzbd_settings', function (settings) {
-    log.debug('test_sabnzbd_settings');
+    log.debug('alloyui', 'test_sabnzbd_settings');
     if (settings.sabnzbd_host && settings.sabnzbd_apikey) {
       module.exports.login();
       var url = 'http://'
@@ -51,7 +51,7 @@ module.exports.socketConnect = function (socket) {
   });
 
   socket.on('get_sabnzbd_history', function () {
-    log.debug('get_sabnzbd_history');
+    log.debug('alloyui', 'get_sabnzbd_history');
     module.exports.login();
     if (sabnzbd) {
       sabnzbd.entries().then(function (entries) {
@@ -63,13 +63,13 @@ module.exports.socketConnect = function (socket) {
         });
         module.exports.io.emit("sabnzbd_history_result", JSON.stringify(result));
       }).catch(function (error) {
-        log.error('sabnzbd status  : ' + error);
+        log.error('alloyui', 'sabnzbd status  : ' + error);
       });
     }
   });
   
   socket.on('get_sabnzbd_queue', function () {
-    log.debug('get_sabnzbd_queue');
+    log.debug('alloyui', 'get_sabnzbd_queue');
     module.exports.login();
     if (sabnzbd) {
       sabnzbd.entries().then(function (entries) {
@@ -81,7 +81,7 @@ module.exports.socketConnect = function (socket) {
         });
         module.exports.io.emit("sabnzbd_queue_result", JSON.stringify(result));
       }).catch(function (error) {
-        log.error('sabnzbd status  : ' + error);
+        log.error('alloyui', 'sabnzbd status  : ' + error);
       });
     }
   });
@@ -94,7 +94,7 @@ module.exports.ping = function () {
       sabnzbd.version().then(function (version) {
         module.exports.io.emit("sabnzbd_ping", { status: 'success', version: version });
       }).catch(function (error) {
-        log.error('sabnzbd status  : ' + error);
+        log.error('alloyui', 'sabnzbd status  : ' + error);
       });
     }
   }, 1000);
@@ -105,11 +105,11 @@ module.exports.login = function () {
     if (settings) {
       if (sabnzbd) {
         sabnzbd.status().then(function (status) {
-          log.debug('sabnzbd status  : ' + status.result);
+          log.debug('alloyui', 'sabnzbd status  : ' + status.result);
           module.exports.isLoggedIn = true;
           module.exports.ping();
         }).catch(function (error) {
-          log.error('sabnzbd status  : ' + error);
+          log.error('alloyui', 'sabnzbd status  : ' + error);
         });
       } else {
         if (settings.data) {
@@ -128,11 +128,11 @@ module.exports.login = function () {
 
             if (sabnzbd) {
               sabnzbd.status().then(function (status) {
-                log.debug('sabnzbd status  : ' + status.result);
+                log.debug('alloyui', 'sabnzbd status  : ' + status.result);
                 module.exports.isLoggedIn = true;
                 module.exports.ping();
               }).catch(function (error) {
-                log.error('sabnzbd status  : ' + error);
+                log.error('alloyui', 'sabnzbd status  : ' + error);
               });
             }
           }
@@ -146,4 +146,4 @@ module.exports.login = function () {
 // var version = sabnzbd.version();
 //log.debug('version version: ' + version);
 
-log.info('sabnzbd plugin loaded');
+log.info('alloyui', 'sabnzbd plugin loaded');

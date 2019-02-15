@@ -43,7 +43,6 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPl
           var parent = AlloyDbService.getFileParent(scope.currentpath);
           if (parent) {
             parent.then(function (result) {
-              console.log(result);
               if (result.path === '') {
                 scope.currentpath = '';
                 scope.folderlist = null;
@@ -57,7 +56,6 @@ module.exports = function ($rootScope, $location, Backend, AppUtilities, MediaPl
           }
         } else {
           scope.currentpath = path;
-          console.log(path);
           reload();
         }
 

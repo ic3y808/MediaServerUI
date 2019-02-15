@@ -12,6 +12,7 @@ const structures = require('./structures');
 const mm = require('../../music-metadata');
 const execSync = require('child_process').execSync;
 const uuid_base = '1b671a64-40d5-491e-99b0-da01ff1f3341';
+var logger = require('../../../common/logger');
 
 var db = null;
 var totalFiles = 0;
@@ -143,7 +144,7 @@ function getGenreInformation(track) {
       track.genre_id = existingGenre[0].id;
     }
   } catch (err) {
-    console.log(err);
+    logger.error("alloydb", JSON.stringify(err));
   }
   return track;
 };
@@ -183,7 +184,7 @@ function getMediaInfo(track, metadata) {
     if (!fs.existsSync(coverFile)) {
       fs.writeFile(coverFile, metadata.common.picture[0].data, function (err) {
         if (err) {
-          console.log(err);
+          logger.error("alloydb", JSON.stringify(err));
         }
       });
     }
@@ -230,7 +231,7 @@ function writeTrack(track) {
 };
 
 function checkEmptyAlbums() {
-  console.log('checking empty albums')
+  logger.info("alloydb", 'checking empty albums');
   var allMedia = db.prepare('SELECT * FROM Albums').all();
   allMedia.forEach(function (album) {
     var anyAlbums = db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
@@ -241,7 +242,7 @@ function checkEmptyAlbums() {
 };
 
 function checkEmptyArtists() {
-  console.log('checking empty artists')
+  logger.info("alloydb", 'checking empty artists');
   var allMedia = db.prepare('SELECT * FROM Artists').all();
   allMedia.forEach(function (artist) {
     var anyArtists = db.prepare('SELECT * FROM Tracks WHERE artist_id=?').all(artist.id);
@@ -252,7 +253,7 @@ function checkEmptyArtists() {
 };
 
 function checkEmptyGenres() {
-  console.log('checking empty genres')
+  logger.info("alloydb", 'checking empty genres');
   var allMedia = db.prepare('SELECT * FROM Genres').all();
   allMedia.forEach(function (genre) {
     var anyGenres = db.prepare('SELECT * FROM Tracks WHERE genre_id=?').all(genre.id);
@@ -263,7 +264,7 @@ function checkEmptyGenres() {
 };
 
 function checkEmptyPlaylists() {
-  console.log('checking empty playlists')
+  logger.info("alloydb", 'checking empty playlists');
   var allPlayslits = db.prepare('SELECT * FROM Playlists').all();
   allPlayslits.forEach(function (playlist) {
     var anyTracks = db.prepare('SELECT * FROM PlaylistTracks WHERE id=?').all(playlist.id);
@@ -274,7 +275,7 @@ function checkEmptyPlaylists() {
 };
 
 function checkExtraAlbumArt() {
-  console.log('checking extra art')
+  logger.info("alloydb", 'checking extra art');
   if (!fs.existsSync(process.env.COVER_ART)) {
     fs.mkdirSync(process.env.COVER_ART);
   }
@@ -299,7 +300,7 @@ function checkExtraAlbumArt() {
 };
 
 function checkBasePathSortOrder() {
-  console.log('checking base sort order')
+  logger.info("alloydb", 'checking base sort order');
   var allBasePaths = db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
   for (var i = 0; i < allBasePaths.length; ++i) {
     db.prepare("UPDATE BasePaths SET sort_order=? WHERE base_id=?").run(i, allBasePaths[i].base_id);
@@ -307,7 +308,7 @@ function checkBasePathSortOrder() {
 };
 
 function checkCounts() {
-  console.log('checking counts')
+  logger.info("alloydb", 'checking counts');
   var bases = db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
   bases.forEach(b => {
     var tracks = db.prepare('SELECT * FROM Tracks WHERE base_id=?').all(b.base_id);
@@ -385,7 +386,7 @@ function resetStatus() {
 };
 
 function checkMissingMedia() {
-  console.log('checking missing media')
+  logger.info("alloydb", 'checking missing media');
   var allMedia = db.prepare('SELECT * FROM Tracks').all();
   allMedia.forEach(function (track) {
     if (!fs.existsSync(track.path)) {
@@ -480,28 +481,28 @@ function cleanup() {
   checkExtraAlbumArt();
   checkBasePathSortOrder();
   checkCounts();
-  console.log('incremental cleanup complete');
+  logger.info("alloydb", 'incremental cleanup complete');
 };
 
 MediaScanner.prototype.cancelScan = function cancelScan() {
-  console.log('cancelScan');
+  logger.info("alloydb", 'cancelScan');
   cancel();
 };
 
 MediaScanner.prototype.incrementalCleanup = function incrementalCleanup() {
   if (isScanning()) {
-    console.log('scan in progress');
+    logger.debug("alloydb", 'scan in progress');
   } else {
-    console.log('incrementalCleanup');
+    logger.info("alloydb", 'incrementalCleanup');
     cleanup();
   }
 };
 
 MediaScanner.prototype.startFullScan = function startScan() {
   if (isScanning()) {
-    console.log('scan in progress');
+    logger.debug("alloydb", 'scan in progress');
   } else {
-    console.log('startFullScan');
+    logger.info("alloydb", 'startFullScan');
     resetStatus();
     fullScan();
   }
@@ -509,9 +510,9 @@ MediaScanner.prototype.startFullScan = function startScan() {
 
 MediaScanner.prototype.startQuickScan = function startQuickScan() {
   if (isScanning()) {
-    console.log('scan in progress');
+    logger.debug("alloydb", 'scan in progress');
   } else {
-    console.log('startQuickScan');
+    logger.info("alloydb", 'startQuickScan');
     resetStatus();
     quickScan();
   }

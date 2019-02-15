@@ -1,9 +1,10 @@
 import CryptoJS from 'crypto-js';
 
 export default class AlloyDbService {
-  constructor($rootScope, AppUtilities) {
+  constructor($rootScope, Logger, AppUtilities) {
     "ngInject";
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.isLoggingIn = true;
     this.isLoggedIn = false;
@@ -14,7 +15,7 @@ export default class AlloyDbService {
 
     if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
       if (!this.isLoggedIn) {
-        console.log('logging into alloydb')
+        this.Logger.info('logging into alloydb')
 
         this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
 
@@ -28,7 +29,7 @@ export default class AlloyDbService {
               that.isLoggingIn = false;
               that.isLoggedIn = false;
             }
-            console.log('logging into alloydb is ' + result.status);
+            that.Logger.info('logging into alloydb is ' + JSON.stringify(result));
           }
 
           that.AppUtilities.broadcast('loginStatusChange', { service: 'alloydb', isLoggedIn: that.isLoggedIn });
@@ -409,78 +410,77 @@ export default class AlloyDbService {
     }
   }
 
-  refreshArtists(){
+  refreshArtists() {
     var that = this;
     var artists = this.getMusicFolders();
-    if(artists){
-      artists.then(function(info){
+    if (artists) {
+      artists.then(function (info) {
         that.loadArtists([info]);
       })
     }
   };
-  
-  refreshFresh(){
+
+  refreshFresh() {
     var that = this;
     var fresh = this.getFresh(50);
-    if(fresh){
-      fresh.then(function(info){
+    if (fresh) {
+      fresh.then(function (info) {
         that.loadFresh([info]);
       })
     }
   }
 
-  refreshAlbums(){
+  refreshAlbums() {
     var that = this;
     var albums = this.getAlbums();
-    if(albums){
-      albums.then(function(info){
+    if (albums) {
+      albums.then(function (info) {
         that.loadAlbums([info]);
       })
     }
   }
 
-  refreshGenres(){
+  refreshGenres() {
     var that = this;
     var genres = this.getGenres();
-    if(genres){
-      genres.then(function(info){
+    if (genres) {
+      genres.then(function (info) {
         that.loadGenres([info]);
       })
     }
   }
 
-  refreshStarred(){
+  refreshStarred() {
     var that = this;
     var starred = this.getStarred();
-    if(starred){
-      starred.then(function(info){
+    if (starred) {
+      starred.then(function (info) {
         that.loadStarred([info]);
       })
     }
   }
 
-  refreshIndex(){
+  refreshIndex() {
     var that = this;
     var index = this.getMusicFoldersIndex();
-    if(index){
-      index.then(function(info){
+    if (index) {
+      index.then(function (info) {
         that.loadIndex([info]);
       })
     }
   }
 
-  refreshRandom(){
+  refreshRandom() {
     var that = this;
     var random = this.getRandomSongs();
-    if(random){
-      random.then(function(info){
+    if (random) {
+      random.then(function (info) {
         that.loadRandom([info]);
       })
     }
   }
 
   preload() {
-    console.log('preloaing')
     var that = this;
     var artists = this.getMusicFolders();
     var fresh = this.getFresh(50);

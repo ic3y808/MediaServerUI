@@ -3,7 +3,7 @@ var express = require('express');
 var router = express.Router();
 var structures = require('./structures');
 var Lastfm = require('./simple-lastfm');
-
+var logger = require('../../../common/logger');
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/star

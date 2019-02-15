@@ -1,16 +1,17 @@
 import './starred.scss';
 class StarredController {
-  constructor($scope, $rootScope, $timeout, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $timeout, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('starred-controller');
+    this.Logger.debug('starred-controller');
     this.AppUtilities.showLoader();
     var that = this;
 
@@ -51,7 +52,7 @@ class StarredController {
     };
 
     $scope.shuffle = function () {
-      that.Backend.debug('shuffle play');
+      that.Logger.debug('shuffle play');
       $rootScope.tracks = AppUtilities.shuffle($rootScope.starred_tracks);
       MediaPlayer.loadTrack(0);
     };

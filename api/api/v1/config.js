@@ -7,6 +7,7 @@ var router = express.Router();
 var structures = require("./structures");
 const drivelist = require('drivelist');
 var utils = require('./utils');
+var logger = require('../../../common/logger');
 
 /**
  * This function comment is parsed by doctrine
@@ -113,7 +114,6 @@ router.get("/file_list", function (req, res) {
 
     } else {
       var currentDir = path.normalize(query);
-      console.log("browsing ", currentDir);
       fs.readdir(currentDir, function (err, files) {
         if (err) {
           throw err;
@@ -121,7 +121,6 @@ router.get("/file_list", function (req, res) {
         var data = [];
         files.forEach(function (file) {
           try {
-            //console.log("processing ", file);
             var isDirectory = fs
               .statSync(path.join(currentDir, file))
               .isDirectory();
@@ -133,7 +132,7 @@ router.get("/file_list", function (req, res) {
               });
             }
           } catch (e) {
-            console.log(e);
+            if (e) logger.error("alloydb", JSON.stringify(e));
           }
         });
         data = _.sortBy(data, function (f) {
@@ -142,9 +141,9 @@ router.get("/file_list", function (req, res) {
         res.json(data);
       });
     }
-  } catch (error) {
-    if (error) console.log(error);
-    res.json(new structures.StatusResult(error));
+  } catch (e) {
+    if (e) logger.error("alloydb", JSON.stringify(e));
+    res.json(new structures.StatusResult(JSON.stringify(e)));
   }
 });
 

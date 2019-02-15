@@ -2,21 +2,22 @@
   table.Table-table
     thead
       tr
-        th.TableRowHeaderCell-Starred.TableHeaderCell-headerCell
+        th.TableHeaderCell-headerCell
         th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
-        th.TableHeaderCell-headerCell.Link-link(label='Artist Name') Artist Name
-        th.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks') Tracks
+        th.TableHeaderCell-headerCell.Link-link(label='Genre') Genre
+        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks') Tracks
+
     tbody
       tr.TableRow-row(ng-repeat='genre in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(genre.id) == true}")
         td.TableRowCell-star.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starGenre(genre)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
+          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starGenre(genre)")
             i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="genre.starred == 'true' ? 'fa-star' : 'fa-star-o'")
         td.TableRowCell-play.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button', ng-click="playGenre(genre)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
             i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
-        td.TableRowCell-title.TableRowCell-cell(id='{{genre.id}}')
+        td.TableRowCell-cell
           span.Link-link.ng-binding(ng-click="navToGenre(genre.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}") {{genre.name}}
-        td.
-        .TableRowCell-cell
+
+        td.TableRowCell-count.TableRowCell-cell
           span.Label-label.Label-medium.Label-Page-Body(title='{{genre.track_count}} total tracks', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(genre.id) == true}")
-            span {{genre.track_count}}
+            span {{album.track_count}}

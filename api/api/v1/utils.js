@@ -1,4 +1,5 @@
 'use strict';
+var logger = require('../../../common/logger');
 
 const supportedExtensions = [".mp3", ".wav", ".flac", ".ogg", ".aiff", ".aac"];
 

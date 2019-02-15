@@ -1,10 +1,11 @@
 import CryptoJS from 'crypto-js';
 
 export default class AppUtilities {
-  constructor($rootScope, $timeout) {
+  constructor($rootScope, $timeout, Logger) {
     "ngInject";
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
+    this.Logger = Logger;
     this.$rootScope.goBack = this.goBack;
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
@@ -101,9 +102,9 @@ export default class AppUtilities {
     try {
       var successful = document.execCommand('copy');
       var msg = successful ? 'successful' : 'unsuccessful';
-      console.log('Fallback: Copying text command was ' + msg);
+      Logger.info('Fallback: Copying text command was ' + msg);
     } catch (err) {
-      console.error('Fallback: Oops, unable to copy', err);
+      Logger.error('Fallback: Oops, unable to copy' + JSON.stringify(err));
     }
 
     document.body.removeChild(textArea);
@@ -115,7 +116,7 @@ export default class AppUtilities {
       return;
     }
     navigator.clipboard.writeText(text).then(function () {
-      console.log('Async: Copying to clipboard was successful!');
+      
     }, function (err) {
       console.error('Async: Could not copy text: ', err);
     });

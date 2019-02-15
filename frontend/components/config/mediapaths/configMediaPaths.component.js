@@ -1,14 +1,15 @@
 class ConfigMediaPathsController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('config-mediapaths-controller');
+    this.Logger.debug('config-mediapaths-controller');
     var that = this;
     $scope.settings = {};
     $scope.currentpath = '';

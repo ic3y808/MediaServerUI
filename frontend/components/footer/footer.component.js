@@ -1,17 +1,18 @@
 import './footer.scss';
 class FooterController {
-  constructor($scope, $rootScope, $location, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $location, Logger, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
 
-    this.Backend.debug('footer-controller');
+    this.Logger.debug('footer-controller');
   }
 
   updateVolume(val) {
@@ -26,7 +27,7 @@ class FooterController {
 
   $onInit() {
     var that = this;
-    that.Backend.debug('footer-init');
+    that.Logger.debug('footer-init');
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
     $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
@@ -80,7 +81,7 @@ class FooterController {
     });
 
     $("#shareButton").click(function () {
-      that.Backend.debug('shareButton');
+      that.Logger.debug('shareButton');
       //that.AlloyDbService.createShare(that.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
       //  $('#shareButton').popover({
       //    animation: true,
@@ -164,14 +165,14 @@ class FooterController {
 
     $("#likeButton").click(function () {
       var track = that.MediaPlayer.selectedTrack();
-      that.Backend.info('liking track: ' + track.artist + " - " + track.title);
+      that.Logger.info('liking track: ' + track.artist + " - " + track.title);
       if (track.starred === 'true') {
         that.AlloyDbService.unstar({ id: that.MediaPlayer.selectedTrack().id }).then(function (result) {
           if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
             that.AlloyDbService.unlove({ id: that.MediaPlayer.selectedTrack().id })
           }
-          that.Backend.info('UnStarred');
-          that.Backend.info(result);
+          that.Logger.info('UnStarred');
+          that.Logger.info(result);
           that.MediaPlayer.selectedTrack().starred = 'false';
           $("#likeButtonIcon").addClass('fa-star-o');
           $("#likeButtonIcon").removeClass('fa-star');
@@ -182,8 +183,8 @@ class FooterController {
           if (that.$rootScope.settings.alloydb.alloydb_love_tracks === true) {
             that.AlloyDbService.love({ id: that.MediaPlayer.selectedTrack().id })
           }
-          that.Backend.info('starred');
-          that.Backend.info(result);
+          that.Logger.info('starred');
+          that.Logger.info(result);
           that.MediaPlayer.selectedTrack().starred = 'true';
           $("#likeButtonIcon").removeClass('fa-star-o');
           $("#likeButtonIcon").addClass('fa-star');

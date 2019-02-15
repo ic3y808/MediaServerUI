@@ -1,14 +1,15 @@
 class IndexController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('index-controller');
+    this.Logger.debug('index-controller');
     this.AppUtilities.showLoader();
     $scope.artists = [];
     var that = this;
@@ -30,7 +31,7 @@ class IndexController {
     };
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('Index reload on loginsatuschange');
+      that.Logger.debug('Index reload on loginsatuschange');
 
     });
 

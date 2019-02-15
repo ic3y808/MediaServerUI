@@ -291,8 +291,21 @@ svg:not(:root).svg-inline--fa {
   /*set the color you want here*/
 }
 
+.bs-popover-bottom .arrow:after {
+  border-bottom-color: $dark-color;
+}
+.bs-popover-top .arrow:after {
+  border-top-color: $dark-color;
+}
+.bs-popover-left .arrow:after {
+  border-left-color: $dark-color;
+}
+.bs-popover-right .arrow:after {
+  border-right-color: $dark-color;
+}
 .popover-body{
   background-color: $dark-color;
+  color: choose-contrast-color($dark-color);
 }
 
 .modal-body{

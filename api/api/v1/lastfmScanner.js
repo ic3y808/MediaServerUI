@@ -1,5 +1,6 @@
 'use strict';
 var Lastfm = require('./simple-lastfm');
+var logger = require('../../../common/logger');
 
 function LastFMScanner(db) {
   this.db = db;
@@ -28,11 +29,11 @@ LastFMScanner.prototype.getLastFm = function getLastFm() {
           password: settings.alloydb_lastfm_password
         });
       } else {
-        console.log("Could not parse settings.");
+        logger.error("alloydb", "Could not parse settings.");
         updateStatus("Could not parse settings.", false);
       }
     } else {
-      console.log("Could not load lastfm settings.");
+      logger.error("alloydb", "Could not load lastfm settings.");
       updateStatus("Could not load lastfm settings.", false);
     }
   }
@@ -84,14 +85,14 @@ LastFMScanner.prototype.writeQueue = function writeQueue(force) {
           insert.run(t);
         } catch (err) {
           //if (!this.db.inTransaction) throw err; // (transaction was forcefully rolled back)
-          console.log(err);
-          console.log(sql);
+          logger.error("alloydb", JSON.stringify(err));
+          logger.error("alloydb", sql);
 
         }
 
       }
       this.currentQueue = [];
-      console.log('writing writing database');
+      logger.info("alloydb", 'Writing Database');
     });
     insertMany(this.currentQueue);
   }

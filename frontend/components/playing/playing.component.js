@@ -1,15 +1,16 @@
 import './playing.scss';
 class PlayingController {
-  constructor($scope, $rootScope, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Backend.debug('playing-controller');
+    this.Logger.debug('playing-controller');
     var that = this;
     $scope.getSong = function () {
     
@@ -97,12 +98,12 @@ class PlayingController {
     };
 
     $rootScope.$on('trackChangedEvent', function (event, data) {
-      that.Backend.debug('Track Changed reloading now playing');
+      that.Logger.debug('Track Changed reloading now playing');
       $scope.getSong();
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Backend.debug('login changed reloading now playing');
+      that.Logger.debug('login changed reloading now playing');
       $scope.getSong();
     });
 

@@ -1,4 +1,4 @@
-module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
+module.exports = function ($rootScope, $timeout, $location, Logger, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
   return {
     restrict: 'E',
     scope: {
@@ -27,7 +27,7 @@ module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend
       }
 
       scope.requestPlay = function (id) {
-        Backend.debug('selection changed');
+        Logger.debug('selection changed');
         scope.data.forEach(function(track){track.selected = null})
         $rootScope.tracks = scope.data;
         var index = _.findIndex($rootScope.tracks, function (track) {
@@ -45,14 +45,14 @@ module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend
       }
 
       scope.starTrack = function (track) {
-        Backend.info('starring track: ' + track.artist + " - " + track.title);
+        Logger.info('starring track: ' + track.artist + " - " + track.title);
         if (track.starred === 'true') {
           AlloyDbService.unstar({ id: track.id }).then(function (result) {
             if ($rootScope.settings.alloydb.alloydb_love_tracks === true) {
               AlloyDbService.unlove({ id: track.id })
             }
-            Backend.info('UnStarred');
-            Backend.info(result);
+            Logger.info('UnStarred');
+            Logger.info(result);
             track.starred = 'false';
             $timeout(function () {
               AppUtilities.apply();
@@ -63,8 +63,8 @@ module.exports = function ($rootScope, $timeout, $location, MediaPlayer, Backend
             if ($rootScope.settings.alloydb.alloydb_love_tracks === true) {
               AlloyDbService.love({ id: track.id })
             }
-            Backend.info('starred');
-            Backend.info(result);
+            Logger.info('starred');
+            Logger.info(result);
             track.starred = 'true';
             $timeout(function () {
               AppUtilities.apply();

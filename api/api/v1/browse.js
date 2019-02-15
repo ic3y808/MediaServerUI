@@ -4,6 +4,7 @@ var router = express.Router();
 var structures = require('./structures');
 var path = require('path');
 var utils = require('./utils');
+var logger = require('../../../common/logger');
 
 var onlyUnique = function (value, index, self) {
   return self.indexOf(value) === index;
