@@ -34,8 +34,7 @@
       "program": "${workspaceFolder}/api/server.js",
       "env": {
         "MODE": "dev",
-        "API_PORT": "4000",
-        "API_KEY": "123456"
+        "API_PORT": "4000"
       }
     },
     {
@@ -46,8 +45,7 @@
       "program": "${workspaceFolder}/api/server.js",
       "env": {
         "MODE": "prod",
-        "API_PORT": "4000",
-        "API_KEY": "123456"
+        "API_PORT": "4000"
       }
     },
     {
