@@ -311,11 +311,7 @@ footer {
 @media all and (max-width:$break-xxxmed) { }
 @media all and (max-width:$break-xxmed) { }
 @media all and (max-width:$break-xmed) { }
-@media all and (max-width:$break-med) { 
-  .nowPlayingBarVolumeSliderContainer {
-    display: none !important
-  }
-}
+@media all and (max-width:$break-med) { }
 @media all and (max-width:$break-large) { }
 @media all and (max-width:$break-xlarge) { }
 @media all and (max-width:$break-xxlarge) { }
@@ -332,11 +328,7 @@ footer {
   }
 }
 
-@media all and (max-width: 68.75em) {
-  .nowPlayingBarVolumeSliderContainer {
-    display: none !important
-  }
-}
+@media all and (max-width: 68.75em) {}
 
 @media all and (max-width: 50em) {
   #downloadButton {
