@@ -1,4 +1,8 @@
 'use strict';
+const fs = require("fs");
+const mime = require('mime-types');
+const ffmpeg = require('ffprobe-static');
+const execSync = require('child_process').execSync;
 
 /**
  * @typedef MediaPath
@@ -194,8 +198,6 @@ module.exports.Song = class Song {
   constructor() {
     this.id = '';
     this.path = '';
-    this.base_path = '';
-    this.base_id = '';
     this.title = '';
     this.artist = '';
     this.artist_id = '';
@@ -203,7 +205,6 @@ module.exports.Song = class Song {
     this.album_id = '';
     this.album_path = '';
     this.genre = '';
-    this.genre_id = '';
     this.cover_art = '';
     this.starred = 'false';
     this.rating = '';
@@ -219,18 +220,24 @@ module.exports.Song = class Song {
     this.suffix = '';
     this.no = 0;
     this.of = 0;
-    this.musicbrainz_trackid = null;
-    this.musicbrainz_albumid = null;
-    this.musicbrainz_artistid = null;
-    this.musicbrainz_albumartistid = null;
-    this.musicbrainz_releasegroupid = null;
-    this.musicbrainz_workid = null;
-    this.musicbrainz_trmid = null;
-    this.musicbrainz_discid = null;
-    this.acoustid_id = null;
-    this.acoustid_fingerprint = null;
-    this.musicip_puid = null;
-    this.musicip_fingerprint = null;
+  }
+
+  getStats() {
+    var stats = fs.statSync(this.path);
+    this.content_type = mime.lookup(this.path);
+    this.size = stats.size;
+    this.created = stats.ctime.getTime();
+    this.last_modified = stats.mtime.getTime();
+    var params = ' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  "' + this.path + '"';
+
+    var duration_out;
+    try {
+      duration_out = execSync(ffmpeg.path + params);
+    } catch (ex) {
+      duration_out = ex.stdout;
+    }
+
+    this.duration = parseInt(duration_out.toString())
   }
 };
 

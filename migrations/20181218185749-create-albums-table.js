@@ -18,16 +18,15 @@ exports.up = function(db) {
   return db.createTable('Albums', {
     columns:{
       id: { type: 'string', defaultValue: '', unique: true },
-      base_path: { type: 'string', defaultValue: '' },
-      base_id: { type: 'string', defaultValue: '' },
       name: { type: 'string', defaultValue: '' },
       path: { type: 'string', defaultValue: '' },
       created: {type: 'string', defaultValue: ''},
       artist: { type: 'string', defaultValue: '' },
       artist_id: { type: 'string', defaultValue: '' },
       genre: { type: 'string', defaultValue: '' },
-      genre_id: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
+      rating: { type: 'int', defaultValue: 0 },
+      type: { type: 'string', defaultValue: '' },
       track_count: { type: 'int', defaultValue: 0 },
     },
     ifNotExists: true

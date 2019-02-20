@@ -155,6 +155,15 @@
   color: choose-contrast-color($main-background-color) !important;
 }
 
+.TableRowCell-type {
+  padding-left: 0px;
+  padding-right: 5px;
+  width:1px;  
+  vertical-align: middle;
+  align-content: center;
+  text-align: right;
+}
+
 .TableRowCell-count-center {
   width: 30px;
   vertical-align: middle;

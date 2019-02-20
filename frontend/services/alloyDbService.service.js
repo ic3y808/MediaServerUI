@@ -128,6 +128,13 @@ export default class AlloyDbService {
     else return false;
   }
 
+  getArtists() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.getArtists();
+    else return false;
+  }
+
   getAlbums() {
     this.doLogin();
     if (this.isLoggedIn)
@@ -412,7 +419,7 @@ export default class AlloyDbService {
 
   refreshArtists() {
     var that = this;
-    var artists = this.getMusicFolders();
+    var artists = this.getArtists();
     if (artists) {
       artists.then(function (info) {
         that.loadArtists([info]);
@@ -482,7 +489,7 @@ export default class AlloyDbService {
 
   preload() {
     var that = this;
-    var artists = this.getMusicFolders();
+    var artists = this.getArtists();
     var fresh = this.getFresh(50);
     var albums = this.getAlbums();
     var genres = this.getGenres();
@@ -491,14 +498,16 @@ export default class AlloyDbService {
     var random = this.getRandomSongs();
 
     Promise.all([artists, fresh, albums, genres, starred, index, random]).then(function (info) {
-      that.loadArtists(info);
-      that.loadFresh(info);
-      that.loadAlbums(info);
-      that.loadGenres(info);
-      that.loadStarred(info);
-      that.loadIndex(info);
-      that.loadRandom(info);
-      that.AppUtilities.apply();
+      if(info){
+        that.loadArtists(info);
+        that.loadFresh(info);
+        that.loadAlbums(info);
+        that.loadGenres(info);
+        that.loadStarred(info);
+        that.loadIndex(info);
+        that.loadRandom(info);
+        that.AppUtilities.apply();
+      }
     });
   }
 }

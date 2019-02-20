@@ -22,7 +22,7 @@ include ./../../views/pagecontainer
             img.PageContent-HeaderDetails-poster(ng-show="artist.image", src='{{artist.image}}')
             .PageContent-HeaderDetails-info
               .PageContent-HeaderDetails-titleContainer
-                .PageContent-HeaderDetails-title {{artist.name}}
+                .PageContent-HeaderDetails-title {{info.artist.name}}
                 .PageContent-HeaderDetails-navigation-buttons
                   navbutton(buttontext="Go to {{artist.previous_artist.base_path}}", href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path", direction="left")
                   navbutton(buttontext="Go to {{artist.next_artist.base_path}}", href='/artist/{{artist.next_artist.base_id}}', ng-show="artist.next_artist.base_path", direction="right")
@@ -34,7 +34,9 @@ include ./../../views/pagecontainer
                       path(fill='currentColor', d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z')
                     | 0%
               div
-                detaillabel(buttontext="{{artist.size}}", buttonicon="fa-hdd-o")
+                detaillabel(buttontext="{{info.size}}", buttonicon="fa-hdd-o")
+                detaillabel(buttontext="{{info.artist.type}}", buttonicon="fa-hdd-o")
+                detaillabel(buttontext="{{info.artist.status}}", buttonicon="fa-hdd-o")
               div
                 //popoverbutton(buttontext="Links", buttonicon="fa-external-link", data="artist.artistInfo.bio.links")
                 popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artist.artistInfo.tags.tag", relid='tags')
@@ -43,7 +45,7 @@ include ./../../views/pagecontainer
               .PageContent-HeaderDetails-overview 
                 div(style='overflow: hidden;')
                   span
-                  | {{artist.artistInfo.bio.summary}}
+                  | {{info.artist.biography}}
                 
     include ./../../views/pagecontent
       .ExpanderContainer
@@ -52,14 +54,14 @@ include ./../../views/pagecontainer
             .ExpanderContainer-left
               div
                 span.ExpanderContainer-label Album
-                span.ExpanderContainer-sublabel {{artist.albums.length}} {{artist.albums.length > 1 ? 'Releases' : 'Release'}}
+                span.ExpanderContainer-sublabel {{info.albums.length}} {{info.albums.length > 1 ? 'Releases' : 'Release'}}
             span(title='Hide albums')
               expandbutton(direction="up", ng-show="albums_expanded")
               expandbutton(direction="down", ng-show="!albums_expanded")
             span  
         div#albumListContainer
           .ExpanderContainer-body
-            albumslist(data="artist.albums", showArtist='false')
+            albumslist(data="info.albums", showArtist='false')
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleAlbums()')
                 expandbutton(ng-show="albums_expanded", mini)
@@ -70,7 +72,7 @@ include ./../../views/pagecontainer
             .ExpanderContainer-left
               div
                 span.ExpanderContainer-label All Tracks
-                span.ExpanderContainer-sublabel {{artist.tracks.length}} {{artist.tracks.length > 1 ? 'Tracks' : 'Track'}}
+                span.ExpanderContainer-sublabel {{info.tracks.length}} {{info.tracks.length > 1 ? 'Tracks' : 'Track'}}
             span(title='Hide albums')
               expandbutton(direction="up", ng-show="tracks_expanded")
               expandbutton(direction="down", ng-show="!tracks_expanded")
@@ -78,7 +80,7 @@ include ./../../views/pagecontainer
             span  
         div#trackListContainer
           .ExpanderContainer-body
-            tracklist(data='artist.tracks', showstar='true', showtracknum='true', showartist='false', showalbum='true', showgenre='true', showplays='true', showduration='true')
+            tracklist(data='info.tracks', showstar='true', showtracknum='true', showartist='false', showalbum='true', showgenre='true', showplays='true', showduration='true')
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
                 expandbutton(ng-show="albums_expanded", mini)

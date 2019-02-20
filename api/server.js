@@ -8,7 +8,7 @@ const logger = require("../common/logger");
 
 
 const db = require("better-sqlite3")(process.env.DATABASE);
-db.prepare("PRAGMA journal_mode = WAL;").run();
+db.pragma('journal_mode = WAL');
 
 process.on('exit', () => db.close());
 process.on('SIGHUP', () => process.exit(128 + 1));
@@ -34,7 +34,7 @@ var notify = function (title, message) {
 };
 
 dbm.up().then(function () {
-  logger.debug("alloydb","successfully migrated database");
+  logger.debug("alloydb", "successfully migrated database");
 
   var app = express();
   app.use(express.json());
@@ -143,6 +143,8 @@ dbm.up().then(function () {
   app.use(function (req, res, next) {
     var err = new Error("Not Found");
     err.status = 404;
+    var error = req.path + " - " + err.status + " - " + err.message;
+    logger.error('alloyui', error);
     next(err);
   });
 
@@ -153,7 +155,8 @@ dbm.up().then(function () {
   if (process.env.MODE === "dev") {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
-      logger.error('alloyui', JSON.stringify(err))
+      var error = req.path + " - " + err.status + " - " + err.message;
+      logger.error('alloyui', error);
     });
   }
 
@@ -161,7 +164,8 @@ dbm.up().then(function () {
   // no stacktraces leaked to user
   app.use(function (err, req, res, next) {
     res.status(err.status || 500);
-    logger.error('alloyui', JSON.stringify(err))
+    var error = req.path + " - " + err.status + " - " + err.message;
+    logger.error('alloyui', error);
   });
 
   app.set("port", process.env.API_PORT || 4000);
@@ -184,10 +188,6 @@ dbm.up().then(function () {
             caption: "Quick Rescan Libraries"
           },
           {
-            id: "get_status",
-            caption: "Get Status"
-          },
-          {
             id: "cancel_scan",
             caption: "Cancel Scan"
           },
@@ -198,6 +198,10 @@ dbm.up().then(function () {
           {
             id: "rescanMusicbrainz",
             caption: "Rescan MusicBrainz"
+          },
+          {
+            id: "cleanup",
+            caption: "Cleanup"
           },
           {
             id: "item-4-id-exit",
@@ -218,13 +222,15 @@ dbm.up().then(function () {
             notify("Starting Scan", "The library rescan has been started");
             break;
           }
-          case "get_status": {
+          case "cleanup": {
             mediaScanner.incrementalCleanup();
 
             break;
           }
           case "cancel_scan": {
             mediaScanner.cancelScan();
+            musicbrainzScanner.cancelScan();
+            lastFMScanner.cancelScan();
             notify("Cancelling Scan", "The library rescan has been cancelled");
             break;
           }
@@ -256,15 +262,20 @@ dbm.up().then(function () {
 
   var server = app.listen(app.get("port"), function () {
     scheduler.createJob("Clean Database", "0 0 * * *", function () {
-      logger.info("alloydb","Doing db cleanup");
+      logger.info("alloydb", "Doing db cleanup");
       notify("Database Cleanup", "Starting incremental cleanup from scheduler");
       mediaScanner.incrementalCleanup();
     });
 
     scheduler.createJob("Scan LastFM", "0 0 * * 0", function () {
-      logger.info("alloydb","Doing LastFM Scan");
+      logger.info("alloydb", "Doing LastFM Scan");
       notify("Database Scan", "Starting LastFM scan from scheduler");
       lastFMScanner.incrementalScan();
+    });
+
+    scheduler.createJob("DB Checkpoint", "0 */6 * * *", function () {
+      logger.info("alloydb", "Doing db checkpoint");
+      db.checkpoint();
     });
 
     configTray();

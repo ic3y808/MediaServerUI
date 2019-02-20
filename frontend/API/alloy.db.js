@@ -255,6 +255,12 @@ window.AlloyApi = function () {
       }
     },
     {
+      key: 'getArtists',
+      value: function getArtists() {
+        return this._get('browse/artists');
+      }
+    },
+    {
       key: 'getAlbums',
       value: function getAlbums() {
         return this._get('list/album_list');
