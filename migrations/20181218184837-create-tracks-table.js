@@ -19,16 +19,14 @@ exports.up = function (db) {
     columns: {
       id: { type: 'string', unique: true },
       path: { type: 'string', defaultValue: '', unique: true },
-      base_path: { type: 'string', defaultValue: '' },
-      base_id: { type: 'string', defaultValue: 0 },
+     
       title: { type: 'string', defaultValue: '' },
       artist: { type: 'string', defaultValue: '' },
-      artist_id: { type: 'string', defaultValue: 0 },
+      artist_id: { type: 'string', defaultValue: '' },
       album: { type: 'string', defaultValue: '' },
-      album_id: { type: 'string', defaultValue: 0 },
+      album_id: { type: 'string', defaultValue: '' },
       album_path: { type: 'string', defaultValue: '' },
       genre: { type: 'string', defaultValue: '' },
-      genre_id: { type: 'string', defaultValue: 0 },
       cover_art: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
       rating: { type: 'string', defaultValue: '' },
@@ -43,20 +41,7 @@ exports.up = function (db) {
       bitrate: { type: 'string', defaultValue: '' },
       suffix: { type: 'string', defaultValue: '' },
       no: { type: 'int', defaultValue: 0 },
-      of: { type: 'int', defaultValue: 0 },
-      musicbrainz_trackid: { type: 'string' },
-      musicbrainz_albumid: { type: 'string' },
-      musicbrainz_artistid: { type: 'string' },
-      musicbrainz_albumartistid: { type: 'string' },
-      musicbrainz_releasegroupid: { type: 'string' },
-      musicbrainz_workid: { type: 'string' },
-      musicbrainz_trmid: { type: 'string' },
-      musicbrainz_discid: { type: 'string' },
-      acoustid_id: { type: 'string' },
-      acoustid_fingerprint: { type: 'string' },
-      musicip_puid: { type: 'string' },
-      musicip_fingerprint: { type: 'string' },
-      last_fm_info: { type: 'string' }
+      of: { type: 'int', defaultValue: 0 }
     },
     ifNotExists: true
   });

@@ -1,171 +1,156 @@
 'use strict';
 const fs = require("fs");
-const del = require('del');
 const path = require('path');
 const utils = require('./utils');
-const uuidv3 = require('uuid/v3');
-const mime = require('mime-types');
-const Queue = require('better-queue');
+const parser = require('xml2json');
 const klawSync = require('klaw-sync');
-const ffmpeg = require('ffprobe-static');
 const structures = require('./structures');
 const mm = require('../../music-metadata');
-const execSync = require('child_process').execSync;
-const uuid_base = '1b671a64-40d5-491e-99b0-da01ff1f3341';
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var logger = require('../../../common/logger');
 
 var db = null;
-var totalFiles = 0;
-var filteredFiles = [];
-var scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
 
-var q = new Queue(processQueue)
-q.on('drain', cleanup);
+var scanStatus = {
+  status: '',
+  isScanning: false,
+  shouldCancel: false
+};
+
 
 function MediaScanner(database) {
   db = database;
-  this.filteredFiles = [];
   resetStatus();
 };
 
-function processMetadata(file) {
-  return mm.parseFile(file, { native: false, skipCovers: false });
+function downloadPage(url) {
+  var request = new XMLHttpRequest();
+  request.open('GET', url, false); // `false` makes the request synchronous
+  request.send(null);
+
+  if (request.status === 200) {
+    return JSON.parse(request.responseText);
+  } else return null;
+}
+
+function updateStatus(status, isScanning) {
+  scanStatus.status = status;
+  scanStatus.isScanning = isScanning;
+  logger.info("alloydb", JSON.stringify(scanStatus));
+};
+
+function isScanning() {
+  return scanStatus.isScanning;
+};
+
+function shouldCancel() {
+  if (scanStatus.shouldCancel) {
+    updateStatus("Scanning Cacelled", false);
+    return true;
+  }
+  return false;
+};
+
+function resetStatus() {
+  scanStatus = {
+    status: '',
+    isScanning: false,
+    shouldCancel: false
+  };
+};
+
+function writeDb(data, table) {
+  var sql = 'INSERT OR REPLACE INTO ' + table + ' (';
+  var values = {};
+  Object.keys(data).forEach(function (key, index) {
+    if (index == Object.keys(data).length - 1)
+      sql += key;
+    else
+      sql += key + ', ';
+  });
+
+
+
+  sql += ') VALUES (';
+
+
+  Object.keys(data).forEach(function (key, index) {
+    if (index == Object.keys(data).length - 1)
+      sql += '@' + key;
+    else
+      sql += '@' + key + ', ';
+  });
+
+  sql += ')';
+
+  try {
+    var insert = db.prepare(sql);
+
+
+    Object.keys(data).forEach(function (key, index) {
+      var a = {};
+      a[key] = data[key];
+      Object.assign(values, a);
+    });
+
+    insert.run(values);
+  } catch (err) {
+    if (err) logger.error("alloydb", JSON.stringify(err));
+    logger.info("alloydb", sql);
+    logger.info("alloydb", values);
+  }
+
+};
+
+function checkDBLinks(artist) {
+  if (artist.Links) {
+    artist.Links.forEach(function (link) {
+      var existingLink = db.prepare('SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?').all(link.type, link.target, artist.Id);
+      if (existingLink.length === 0) {
+        link.artist_id = artist.Id;
+        writeDb(link, "Links")
+      }
+    });
+  }
+}
+
+function checkDBArtistExists(artist) {
+  var stmt = db.prepare('SELECT * FROM Artists WHERE id = ?');
+  var existingArtist = stmt.all(artist.id);
+  if (existingArtist.length === 0) {
+
+    const artistTracks = klawSync(artist.path, {
+      nodir: true
+    });
+    var validTracks = [];
+    artistTracks.forEach(function (track) {
+      if (utils.isFileValid(track.path)) {
+        validTracks.push(track);
+      }
+    });
+    artist.track_count = validTracks.length;
+
+    writeDb(artist, "Artists");
+    updateStatus("Inserted mapped artist " + artist.name, true);
+  }
+
 };
 
 function checkExistingTrack(track, metadata) {
-  var stmt = db.prepare('SELECT * FROM Tracks WHERE path = ?');
-  var existingTrack = stmt.all(track.path);
-  var newTrack = {};
-  Object.assign(newTrack, existingTrack[0]);
-  newTrack.path = track.path;
-  newTrack.content_type = track.content_type;
-  newTrack.size = track.size;
-  newTrack.last_modified = track.last_modified;
-  newTrack.created = utils.isStringValid(metadata.common.originaldate, "");
-  newTrack.artist = utils.isStringValid(metadata.common.artist, "No Artist");
-  newTrack.title = utils.isStringValid(metadata.common.title, "");
-  newTrack.album = utils.isStringValid(metadata.common.album, "No Album");
-  newTrack.genre = utils.isStringValid((metadata.common.genre !== undefined && metadata.common.genre[0] !== undefined && metadata.common.genre[0] !== '') ? metadata.common.genre[0] : "No Genre");
-  newTrack.bpm = utils.isStringValid(metadata.common.bpm, "");
-  newTrack.rating = utils.isStringValid((metadata.common.rating !== undefined && metadata.common.rating.rating !== undefined && metadata.common.rating.rating !== '') ? metadata.common.rating.rating : "");
-  newTrack.year = metadata.common.year;
-  newTrack.suffix = utils.isStringValid(metadata.common.suffix, "");;
-  newTrack.no = metadata.common.track.no;
-  newTrack.of = metadata.common.track.of;
-  newTrack.musicbrainz_trackid = utils.isStringValid(metadata.common.musicbrainz_trackid, null);
-  newTrack.musicbrainz_albumid = utils.isStringValid(metadata.common.musicbrainz_albumid, null);
-  newTrack.musicbrainz_artistid = utils.isStringValid(metadata.common.musicbrainz_artistid, null);
-  newTrack.musicbrainz_albumartistid = utils.isStringValid(metadata.common.musicbrainz_albumartistid, null);
-  newTrack.musicbrainz_releasegroupid = utils.isStringValid(metadata.common.musicbrainz_releasegroupid, null);
-  newTrack.musicbrainz_workid = utils.isStringValid(metadata.common.musicbrainz_workid, null);
-  newTrack.musicbrainz_trmid = utils.isStringValid(metadata.common.musicbrainz_trmid, null);
-  newTrack.musicbrainz_discid = utils.isStringValid(metadata.common.musicbrainz_discid, null);
-  newTrack.acoustid_id = utils.isStringValid(metadata.common.acoustid_id, null);
-  newTrack.acoustid_fingerprint = utils.isStringValid(metadata.common.acoustid_fingerprint, null);
-  newTrack.musicip_puid = utils.isStringValid(metadata.common.musicip_puid, null);
-  newTrack.musicip_fingerprint = utils.isStringValid(metadata.common.musicip_fingerprint, null);
-
-  const params = ' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  "' + newTrack.path + '"';
-
-  var duration_out;
-  try {
-    duration_out = execSync(ffmpeg.path + params);
-  } catch (ex) {
-    duration_out = ex.stdout;
-  }
-
-  newTrack.duration = duration_out.toString()
-
-  if (existingTrack.length === 0) {
-    newTrack.id = uuidv3(track.path, uuid_base).split('-')[0];
-  } else {
-    newTrack.id = existingTrack[0].id;
-  }
-  return newTrack;
-};
-
-function getBaseInformation(track) {
-  var mediaPaths = db.prepare('SELECT * FROM MediaPaths').all();
-
-  track.base_path = path.normalize(track.path);
-  mediaPaths.forEach(mediaPath => {
-    mediaPath.path = path.normalize(mediaPath.path);
-    track.base_path = track.base_path.replace(mediaPath.path, '');
-  });
-  track.base_path = track.base_path.substring(1, track.base_path.length)
-  track.base_path = track.base_path.split(path.sep);
-  track.base_path = track.base_path[0];
-
-  var stmt = db.prepare('SELECT * FROM BasePaths WHERE base_path = ?');
-  var existingBasePath = stmt.all(track.base_path);
-  if (existingBasePath.length === 0) {
-    track.base_id = 'base_' + uuidv3(track.path, uuid_base).split('-')[0];
-    var stmt = db.prepare('INSERT INTO BasePaths (base_id, base_path) VALUES (?,?)');
-    var info = stmt.run(track.base_id, track.base_path);
-  } else {
-    track.base_id = existingBasePath[0].base_id;
-  }
+  track.id = utils.isStringValid(metadata.common.musicbrainz_recordingid, "");
+  track.artist = utils.isStringValid(metadata.common.artist, "No Artist");
+  track.title = utils.isStringValid(metadata.common.title, "");
+  track.album = utils.isStringValid(metadata.common.album, "No Album");
+  track.genre = utils.isStringValid((metadata.common.genre !== undefined && metadata.common.genre[0] !== undefined && metadata.common.genre[0] !== '') ? metadata.common.genre[0] : "No Genre");
+  track.bpm = utils.isStringValid(metadata.common.bpm, "");
+  track.year = metadata.common.year;
+  track.suffix = utils.isStringValid(metadata.common.suffix, "");;
+  track.no = metadata.common.track.no;
+  track.of = metadata.common.track.of;
   return track;
-};
+}
 
-function getArtistInformation(track) {
-  var tempArtistId = 'artist_' + uuidv3(track.path, uuid_base).split('-')[0];
-  var stmt = db.prepare('SELECT * FROM Artists WHERE id = ? OR name = ? OR musicbrainz_artistid = ? OR musicbrainz_albumartistid = ?');
-  var existingArtist = stmt.all(tempArtistId, track.artist, track.musicbrainz_artistid, track.musicbrainz_albumartistid);
-
-  if (existingArtist.length === 0) {
-    track.artist_id = tempArtistId;
-    var stmt = db.prepare('INSERT INTO Artists (id, name, base_path, base_id, musicbrainz_artistid, musicbrainz_albumartistid) VALUES (?, ?, ?, ?, ?, ?)');
-    var info = stmt.run(track.artist_id, track.artist, track.base_path, track.base_id, track.musicbrainz_artistid, track.musicbrainz_albumartistid);
-  } else {
-    track.artist_id = existingArtist[0].id;
-    track.musicbrainz_artistid = existingArtist[0].musicbrainz_artistid;
-    track.musicbrainz_albumartistid = existingArtist[0].musicbrainz_albumartistid;
-  }
-  return track;
-};
-
-function getGenreInformation(track) {
-  try {
-
-    var genre = track.genre.split('/');
-    if (genre.length > 0) {
-      track.genre = genre[0];
-    }
-
-    var tempGenreId = 'genre_' + uuidv3(track.genre, uuid_base).split('-')[0];
-    var stmt = db.prepare('SELECT * FROM Genres WHERE id = ? OR name = ?');
-    var existingGenre = stmt.all(tempGenreId, track.genre);
-    if (existingGenre.length === 0) {
-      track.genre_id = tempGenreId;
-      var stmt = db.prepare('INSERT INTO Genres (id, name) VALUES (?,?)');
-      var info = stmt.run(track.genre_id, track.genre);
-    } else {
-      track.genre_id = existingGenre[0].id;
-    }
-  } catch (err) {
-    logger.error("alloydb", JSON.stringify(err));
-  }
-  return track;
-};
-
-function getAlbumInformation(track) {
-  track.album_path = path.dirname(track.path);
-
-  var tempAlbumId = 'album_' + uuidv3(track.album_path, uuid_base).split('-')[0];
-  var stmt = db.prepare('SELECT * FROM Albums WHERE id = ?');
-  var existingAlbum = stmt.all(tempAlbumId);
-  if (existingAlbum.length === 0) {
-    track.album_id = tempAlbumId;
-    var stmt = db.prepare('INSERT INTO Albums (id, name, base_path, base_id, path, created, artist, artist_id, genre, genre_id) VALUES (?,?,?,?,?,?,?,?,?,?)');
-    var info = stmt.run(track.album_id, track.album, track.base_path, track.base_id, track.album_path, track.created, track.artist, track.artist_id, track.genre, track.genre_id);
-  } else {
-    track.album_id = existingAlbum[0].id;
-  }
-  return track;
-};
-
-function getMediaInfo(track, metadata) {
+function checkAlbumArt(track, metadata) {
   if (metadata.common.picture) {
 
     var coverId = 'cvr_' + track.album_id;
@@ -190,298 +175,206 @@ function getMediaInfo(track, metadata) {
     }
   }
   return track;
-};
+}
 
-function writeTrack(track) {
-  var sql = 'INSERT OR REPLACE INTO Tracks (';
-
-  Object.keys(track).forEach(function (key, index) {
-    if (index == Object.keys(track).length - 1)
-      sql += key;
-    else
-      sql += key + ', ';
+function checkDBAlbumsExist(artist) {
+  const albumDirs = klawSync(artist.path, {
+    nofile: true
   });
+  var mappedAlbums = [];
+  albumDirs.forEach(function (dir) {
+    if (fs.existsSync(path.join(dir.path, process.env.ALBUM_NFO))) {
+
+      var json = JSON.parse(parser.toJson(fs.readFileSync(path.join(dir.path, process.env.ALBUM_NFO))));
 
 
+      var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.3/album/" + json.album.musicbrainzalbumid;
 
-  sql += ') VALUES (';
-
-
-  Object.keys(track).forEach(function (key, index) {
-    if (index == Object.keys(track).length - 1)
-      sql += '@' + key;
-    else
-      sql += '@' + key + ', ';
-  });
-
-  sql += ')';
-
+      const albumTracks = klawSync(dir.path, {
+        nodir: true
+      });
+      var validTracks = [];
+      albumTracks.forEach(function (track) {
+        if (utils.isFileValid(track.path)) {
+          validTracks.push(track);
+        }
+      });
 
 
-  var insert = db.prepare(sql);
+      var albumInfo = downloadPage(albumUrl);
+      if (albumInfo) {
+        var mappedAlbum = {
+          id: json.album.musicbrainzalbumid,
+          artist: utils.isStringValid(artist.name, ''),
+          artist_id: artist.id,
+          name: utils.isStringValid(albumInfo.Title, ''),
+          path: dir.path,
+          created: json.album.releasedate,
+          type: utils.isStringValid(albumInfo.Type, ''),
+          rating: albumInfo.Rating.Count,
+          track_count: validTracks.length
+          //has_coverart: fs.existsSync(path.join(dir.path, process.env.COVERART_IMAGE)),
+        };
 
-  var t = {};
-  Object.keys(track).forEach(function (key, index) {
-    var a = {};
-    a[key] = track[key];
-    Object.assign(t, a);
-  });
+        var stmt = db.prepare('SELECT * FROM Albums WHERE id = ?');
+        var existingAlbum = stmt.all(mappedAlbum.id);
+        if (existingAlbum.length === 0) {
+          writeDb(mappedAlbum, "Albums")
+          updateStatus("Inserted mapped album " + mappedAlbum.name, true);
+        }
+        mappedAlbum.releases = [];
+        albumInfo.Releases.forEach(function (release) {
+          mappedAlbum.releases.push(release);
+        })
+        mappedAlbums.push(mappedAlbum);
+      }
 
-  insert.run(t);
-};
-
-function checkEmptyAlbums() {
-  logger.info("alloydb", 'checking empty albums');
-  var allMedia = db.prepare('SELECT * FROM Albums').all();
-  allMedia.forEach(function (album) {
-    var anyAlbums = db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
-    if (anyAlbums.length === 0) {
-      db.prepare("DELETE FROM Albums WHERE id=?").run(album.id);
     }
   });
-};
+  return mappedAlbums;
+}
 
-function checkEmptyArtists() {
-  logger.info("alloydb", 'checking empty artists');
-  var allMedia = db.prepare('SELECT * FROM Artists').all();
-  allMedia.forEach(function (artist) {
-    var anyArtists = db.prepare('SELECT * FROM Tracks WHERE artist_id=?').all(artist.id);
-    if (anyArtists.length === 0) {
-      db.prepare("DELETE FROM Artists WHERE id=?").run(artist.id);
+function collectArtists() {
+  return new Promise(function (resolve, reject) {
+    var mediaPaths = db.prepare('SELECT * FROM MediaPaths').all();
+
+    if (mediaPaths.length === 0) {
+      updateStatus('No Media Path Defined ', false);
+      return;
     }
-  });
-};
+    updateStatus('Collecting mapped and unmapped artist folders', true);
 
-function checkEmptyGenres() {
-  logger.info("alloydb", 'checking empty genres');
-  var allMedia = db.prepare('SELECT * FROM Genres').all();
-  allMedia.forEach(function (genre) {
-    var anyGenres = db.prepare('SELECT * FROM Tracks WHERE genre_id=?').all(genre.id);
-    if (anyGenres.length === 0) {
-      db.prepare("DELETE FROM Genres WHERE id=?").run(genre.id);
-    }
-  });
-};
+    var mappedArtistDirectories = [];
 
-function checkEmptyPlaylists() {
-  logger.info("alloydb", 'checking empty playlists');
-  var allPlayslits = db.prepare('SELECT * FROM Playlists').all();
-  allPlayslits.forEach(function (playlist) {
-    var anyTracks = db.prepare('SELECT * FROM PlaylistTracks WHERE id=?').all(playlist.id);
-    if (anyTracks.length === 0) {
-      db.prepare("DELETE FROM Playlists WHERE id=?").run(playlist.id);
-    }
-  });
-};
+    mediaPaths.forEach(mediaPath => {
+      if (shouldCancel()) reject("cancelled");
 
-function checkExtraAlbumArt() {
-  logger.info("alloydb", 'checking extra art');
-  if (!fs.existsSync(process.env.COVER_ART)) {
-    fs.mkdirSync(process.env.COVER_ART);
-  }
+      const artistDirs = klawSync(mediaPath.path, {
+        nofile: true,
+        depthLimit: 0
+      });
 
-  fs.readdir(process.env.COVER_ART, function (err, items) {
-    items.forEach(function (file) {
-      var anyArt = db.prepare('SELECT * FROM CoverArt WHERE id=?').all(file.replace('.jpg', ''));
-      if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART, file));
+      artistDirs.forEach(function (dir) {
+        if (fs.existsSync(path.join(dir.path, process.env.ARTIST_NFO))) {
+          var mappedArtist = {
+            path: dir.path
+          };
+          mappedArtistDirectories.push(mappedArtist);
+        }
+      });
     });
+    resolve(mappedArtistDirectories);
   });
+}
 
-  var allCoverArt = db.prepare('SELECT * FROM CoverArt').all();
-  allCoverArt.forEach(function (art) {
-    var anyArt = db.prepare('SELECT * FROM Tracks WHERE cover_art=?').all(art.id);
-    if (anyArt.length === 0) {
-      db.prepare("DELETE FROM CoverArt WHERE id=?").run(art.id);
-      var coverId = 'cvr_' + art.album_id;
-      var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
-      del.sync(coverFile);
-    }
-  });
-};
+function scanArtists(artists) {
+  const artist = artists.shift();
 
-function checkBasePathSortOrder() {
-  logger.info("alloydb", 'checking base sort order');
-  var allBasePaths = db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
-  for (var i = 0; i < allBasePaths.length; ++i) {
-    db.prepare("UPDATE BasePaths SET sort_order=? WHERE base_id=?").run(i, allBasePaths[i].base_id);
+  if (artist) {
+    updateStatus('Scanning artist ' + artist.path, true);
+    var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
+    var json = JSON.parse(parser.toJson(data));
+    var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.3/artist/" + json.artist.musicbrainzartistid;
+    var artistInfo = downloadPage(artistUrl);
+    checkDBLinks(artistInfo);
+    var mappedArtist = {
+      id: json.artist.musicbrainzartistid,
+      name: utils.isStringValid(json.artist.title, ''),
+      sort_name: utils.isStringValid(artistInfo.SortName, ''),
+      biography: utils.isStringValid(json.artist.biography, ''),
+      status: utils.isStringValid(artistInfo.Status, ''),
+      rating: artistInfo.Rating.Count,
+      type: utils.isStringValid(artistInfo.Type, ''),
+      disambiguation: utils.isStringValid(artistInfo.Disambiguation, ''),
+      overview: utils.isStringValid(artistInfo.Overview, ''),
+      //has_fanart: fs.existsSync(path.join(dir.path, process.env.FANART_IMAGE)),
+      //has_folderart: fs.existsSync(path.join(dir.path, process.env.FOLDER_IMAGE)),
+      //has_logoart: fs.existsSync(path.join(dir.path, process.env.LOGO_IMAGE))
+    };
+
+    Object.assign(artist, mappedArtist);
+    checkDBArtistExists(artist);
+    var albums = checkDBAlbumsExist(artist);
+    var allMetaPromises = [];
+    albums.forEach(function (album) {
+      const albumTracks = klawSync(album.path, {
+        nodir: true
+      });
+
+
+      albumTracks.forEach(function (track) {
+        if (utils.isFileValid(track.path)) {
+          allMetaPromises.push(mm.parseFile(track.path).then(function (metadata) {
+            var processed_track = new structures.Song();
+            processed_track.path = track.path;
+            processed_track.artist = utils.isStringValid(artist.name, '');
+            processed_track.artist_id = artist.id;
+            processed_track.album = utils.isStringValid(album.name, '');
+
+            processed_track.album_path = album.path;
+            processed_track.getStats();
+            processed_track = checkExistingTrack(processed_track, metadata);
+            processed_track.album_id = album.id;
+
+            album.releases.forEach(function (release) {
+              release.Tracks.forEach(albumTrack => {
+                if (!processed_track.id) {
+                  var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000);
+                  var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
+                  var mediumCompare = processed_track.of == release.TrackCount;
+
+                  if (msCompare && tracknumCompare && mediumCompare) {
+                    processed_track.id = albumTrack.RecordingId;
+                    processed_track.title = albumTrack.TrackName;
+                  }
+                } else {
+                  if (processed_track.id === albumTrack.RecordingId) {
+                    processed_track.title = albumTrack.TrackName;
+                  }
+                }
+              });
+            });
+
+            processed_track = checkAlbumArt(processed_track, metadata);
+
+            writeDb(processed_track, "Tracks");
+            updateStatus('Scanning track ' + track.path, true);
+          }));
+        }
+      });
+    });
+
+    Promise.all(allMetaPromises).then(function () {
+      updateStatus('finished scanning albums from ' + artist.name, true);
+      return scanArtists(artists);
+    })
+
+  } else {
+    db.checkpoint();
+    updateStatus('Scan Complete', false);
   }
-};
-
-function checkCounts() {
-  logger.info("alloydb", 'checking counts');
-  var bases = db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
-  bases.forEach(b => {
-    var tracks = db.prepare('SELECT * FROM Tracks WHERE base_id=?').all(b.base_id);
-    db.prepare("UPDATE BasePaths SET track_count=? WHERE base_id=?").run(tracks.length, b.base_id);
-  });
-
-  var artists = db.prepare('SELECT * FROM Artists').all();
-  artists.forEach(a => {
-    var tracks = db.prepare('SELECT * FROM Tracks WHERE base_id=?').all(a.base_id);
-    db.prepare("UPDATE Artists SET track_count=? WHERE id=?").run(tracks.length, a.id);
-  });
-
-  var albums = db.prepare('SELECT * FROM Albums').all();
-  albums.forEach(a => {
-    var tracks = db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(a.id);
-    db.prepare("UPDATE Albums SET track_count=? WHERE id=?").run(tracks.length, a.id);
-  });
-
-  var genres = db.prepare('SELECT * FROM Genres').all();
-  genres.forEach(g => {
-    var tracks = db.prepare('SELECT * FROM Tracks WHERE genre_id=?').all(g.id);
-    db.prepare("UPDATE Genres SET track_count=? WHERE id=?").run(tracks.length, g.id);
-  });
-};
-
-function processQueue(input, cb) {
-
-  if (shouldCancel()) return;
-  var track = input;
-  processMetadata(track.path).then(function (metadata) {
-    if (shouldCancel()) return;
-    updateStatus("scanning: " + track.path, true);
-    track = checkExistingTrack(track, metadata);
-    track = getBaseInformation(track);
-    track = getArtistInformation(track);
-    track = getGenreInformation(track);
-    track = getAlbumInformation(track);
-    track = getMediaInfo(track, metadata);
-    writeTrack(track);
-    cb(null, track);
-  });
-
-
-
-
-
-
-};
-
-function processMetadata(file) {
-  return mm.parseFile(file, { native: false, skipCovers: false });
-};
-
-function updateStatus(status, isScanning) {
-  scanStatus.status = status;
-  scanStatus.isScanning = isScanning;
-  scanStatus.totalFiles = totalFiles;
-  scanStatus.currentlyScanned = totalFiles - filteredFiles.length;
-};
-
-function isScanning() {
-  return scanStatus.isScanning;
-};
-
-function shouldCancel() {
-  if (scanStatus.shouldCancel) {
-    updateStatus("Scanning Cacelled", false);
-    return true;
-  }
-  return false;
-};
-
-function resetStatus() {
-  scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
-};
-
-function checkMissingMedia() {
-  logger.info("alloydb", 'checking missing media');
-  var allMedia = db.prepare('SELECT * FROM Tracks').all();
-  allMedia.forEach(function (track) {
-    if (!fs.existsSync(track.path)) {
-      db.prepare("DELETE FROM Tracks WHERE id=?").run(track.id);
-    }
-  });
-};
+}
 
 function fullScan() {
-  updateStatus('Starting full rescan', true);
-  cleanup();
-
-  var mediaPaths = db.prepare('SELECT * FROM MediaPaths').all();
-
-  filteredFiles = [];
-
-
-  mediaPaths.forEach(mediaPath => {
-    if (shouldCancel()) return;
-    const files = klawSync(mediaPath.path, { nodir: true })
-    files.forEach(function (file) {
-      if (shouldCancel()) return;
-      if (utils.isFileValid(file.path)) {
-        var track = new structures.Song();
-        track.path = file.path;
-        var stats = fs.statSync(track.path);
-        track.content_type = mime.lookup(track.path);
-        track.size = stats.size;
-        track.created = stats.ctime.getTime();
-        track.last_modified = stats.mtime.getTime();
-        filteredFiles.push(track);
-        q.push(track);
-        updateStatus('Queuing ' + filteredFiles.length, true);
-      }
-    });
+  collectArtists().then(function (mappedArtists) {
+    updateStatus('found mapped artists ' + mappedArtists.length, true);
+    scanArtists(mappedArtists);
   });
-
-  totalFiles = filteredFiles.length;
-
-  updateStatus('Starting scan of ' + totalFiles, true);
-};
-
-function quickScan() {
-  updateStatus('Starting quick rescan', true);
-  var mediaPaths = db.prepare('SELECT * FROM MediaPaths').all();
-
-  filteredFiles = [];
-
-  mediaPaths.forEach(mediaPath => {
-    if (shouldCancel()) return;
-    const files = klawSync(mediaPath.path, { nodir: true })
-    files.forEach(function (file) {
-      if (shouldCancel()) return;
-      if (utils.isFileValid(file.path)) {
-        var anyTracks = db.prepare('SELECT * FROM Tracks WHERE path=?').all(file.path);
-        if (anyTracks.length === 0) {
-          var track = new structures.Song();
-          track.path = file.path;
-          var stats = fs.statSync(track.path);
-          track.content_type = mime.lookup(track.path);
-          track.size = stats.size;
-          track.created = stats.ctime.getTime();
-          track.last_modified = stats.mtime.getTime();
-          filteredFiles.push(track);
-          q.push(track);
-          updateStatus('Queuing ' + filteredFiles.length, true);
-        }
-      }
-    });
-  });
-
-  totalFiles = filteredFiles.length;
-  updateStatus('Starting scan of ' + totalFiles, true);
 };
 
 function cancel() {
   if (isScanning()) {
     scanStatus.shouldCancel = true;
     updateStatus('Starting cancel', false);
-  }
-  else {
+  } else {
     updateStatus("Cancelled scanning", false);
   }
 };
 
 function cleanup() {
-  checkMissingMedia();
-  checkEmptyAlbums();
-  checkEmptyArtists();
-  checkEmptyGenres();
-  checkEmptyPlaylists();
-  checkExtraAlbumArt();
-  checkBasePathSortOrder();
-  checkCounts();
+
   logger.info("alloydb", 'incremental cleanup complete');
+  updateStatus('Scan Complete', false);
 };
 
 MediaScanner.prototype.cancelScan = function cancelScan() {
@@ -500,10 +393,9 @@ MediaScanner.prototype.incrementalCleanup = function incrementalCleanup() {
 
 MediaScanner.prototype.startFullScan = function startScan() {
   if (isScanning()) {
-    logger.debug("alloydb", 'scan in progress');
+    updateStatus("Scan in progress", true);
   } else {
-    logger.info("alloydb", 'startFullScan');
-    resetStatus();
+    updateStatus("Start full Scan", true);
     fullScan();
   }
 };
@@ -514,7 +406,7 @@ MediaScanner.prototype.startQuickScan = function startQuickScan() {
   } else {
     logger.info("alloydb", 'startQuickScan');
     resetStatus();
-    quickScan();
+
   }
 };
 

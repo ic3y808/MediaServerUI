@@ -46,12 +46,16 @@ class StatusController {
 
     $scope.scanFullStart = function () {
       var scanner = that.AlloyDbService.scanFullStart();
-      that.Logger.debug("scanFullStart");
-      $scope.scanStatus = result;
-      that.AppUtilities.apply();
-      $scope.rescanInterval = setInterval(function () {
-        $scope.getScanStatus();
-      }, 500);
+      if (scanner) {
+        scanner.then(function (result) {
+          that.Logger.debug("scanFullStart");
+          $scope.scanStatus = result;
+          that.AppUtilities.apply();
+          $scope.rescanInterval = setInterval(function () {
+            $scope.getScanStatus();
+          }, 500);
+        });
+      }
     };
 
     $scope.scanQuickStart = function () {

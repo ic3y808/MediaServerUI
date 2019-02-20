@@ -82,8 +82,9 @@ class AlbumController {
           alb.then(function (album) {
             if (album) {
               $scope.album = album;
-              $scope.album.albumArt = $scope.getCoverArt($scope.album.tracks[0].cover_art);
-              $scope.album.artist = { name: $scope.album.base_path };
+              if($scope.album.tracks && $scope.album.tracks.length > 0)
+                $scope.album.albumArt = $scope.getCoverArt($scope.album.tracks[0].cover_art);
+              $scope.album.artist = { name: $scope.album.artist };
 
               var artistInfo = that.AlloyDbService.getArtistInfo($scope.artistName);
               var albumInfo = that.AlloyDbService.getAlbumInfo($scope.artistName, $scope.albumName);

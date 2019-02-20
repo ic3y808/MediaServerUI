@@ -24,6 +24,8 @@
 ### Now Playing Preview
 ![Alt text](/media/preview.png?raw=true "Overall interface")
 
+## Media Structure
+* Alloy DB expects a structure of {{media path}}\\{{artist}}\\{{release name}}\\{{media_name}}.{{format}}
 
 ### GIF Preview
 ![Alt Text](/media/preview.gif)
