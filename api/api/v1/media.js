@@ -45,11 +45,15 @@ router.get('/stream', function (req, res) {
           const start = parseInt(partialStart, 10);
           const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
           const chunksize = (end - start) + 1;
-          const rstream = fs.createReadStream(track[0].path, { start: start, end: end });
+          const rstream = fs.createReadStream(track[0].path, {
+            start: start,
+            end: end
+          });
 
           res.writeHead(206, {
             'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
-            'Accept-Ranges': 'bytes', 'Content-Length': chunksize,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': chunksize,
             'Content-Type': track[0].content_type
           });
           rstream.pipe(res);
@@ -95,28 +99,86 @@ router.get('/download', function (req, res) {
  * @produces application/json 
  * @consumes application/json 
  * @group media - Media API
- * @param {string} id.query.required The ID of a song, album or artist.
+ * @param {string} artist_id.query The ID of a song, album or artist.
+ * @param {string} track_id.query The ID of a song, album or artist.
+ * @param {string} album_id.query The ID of a song, album or artist.
  * @param {string} size.query If specified, scale image to this size.
  * @returns {BinaryType} 200 - Returns the cover art image in binary form.
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
 router.get('/cover_art', function (req, res) {
-  var id = req.query.id;
-  var noArt = path.join(__dirname, 'images', 'no_art.jpg');
-  var art = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=? OR cover_art=?').all(id, id);
-  if (art.length !== 0) {
-    var coverId = 'cvr_' + art[0].album_id;
-    var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
-    if (fs.existsSync(coverFile)) {
-      res.sendFile(coverFile);
-    } else {
-      res.sendFile(noArt);
-    }
+  var artist_id = req.query.artist_id;
+  var track_id = req.query.track_id;
+  var album_id = req.query.album_id;
+  var coverFile = '';
 
-  } else {
-    res.sendFile(noArt);
+  var shuffle = a => {
+    for (var i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
   }
+
+  if (artist_id) {
+    var artist = res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(artist_id);
+    if (artist && artist.path) {
+      if (fs.existsSync(path.join(artist.path, process.env.LOGO_IMAGE))) {
+        coverFile = path.join(artist.path, process.env.LOGO_IMAGE);
+      }
+      if (!coverFile) {
+        var artistAlbums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(artist_id);
+        artistAlbums = shuffle(artistAlbums)
+        artistAlbums.forEach(album => {
+          if (!coverFile) {
+            if (fs.existsSync(path.join(album.path, process.env.COVERART_IMAGE))) {
+              coverFile = path.join(album.path, process.env.COVERART_IMAGE);
+            } else {
+              var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+              albumTracks = shuffle(albumTracks)
+              albumTracks.forEach(albumTrack => {
+                if (!coverFile) {
+                  if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
+                    coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
+                  }
+                }
+              });
+            }
+          }
+        });
+      }
+    }
+  } else if (track_id) {
+    var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(track_id);
+    if (fs.existsSync(path.join(process.env.COVER_ART_DIR, track.cover_art + ".jpg"))) {
+      coverFile = path.join(process.env.COVER_ART_DIR, track.cover_art + ".jpg");
+    }
+    if (!coverFile) {
+      var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(track.album_id);
+      albumTracks = shuffle(albumTracks)
+      albumTracks.forEach(albumTrack => {
+        if (!coverFile) {
+          if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
+            coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
+          }
+        }
+      });
+    }
+  } else if (album_id) {
+    var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(track.album_id);
+    albumTracks = shuffle(albumTracks)
+    albumTracks.forEach(albumTrack => {
+      if (!coverFile) {
+        if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
+          coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
+        }
+      }
+    });
+  }
+
+  if (!coverFile) res.sendfile(process.env.COVER_ART_NO_ART);
+  else res.sendFile(coverFile);
 
 });
 

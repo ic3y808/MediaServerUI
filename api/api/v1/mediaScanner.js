@@ -146,7 +146,7 @@ class MediaScanner extends MediaScannerBase {
     if (metadata.common.picture) {
 
       var coverId = 'cvr_' + track.album_id;
-      var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
+      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
 
       var stmt = this.db.prepare('SELECT * FROM CoverArt WHERE id = ?');
       var existingCover = stmt.all(coverId);

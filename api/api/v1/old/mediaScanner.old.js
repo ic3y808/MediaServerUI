@@ -117,14 +117,14 @@ MediaScanner.prototype.allPlaylistTracks = function allPlaylistTracks() {
 
 MediaScanner.prototype.checkExtraAlbumArt = function checkExtraAlbumArt() {
   var that = this;
-  if (!fs.existsSync(process.env.COVER_ART)) {
-    fs.mkdirSync(process.env.COVER_ART);
+  if (!fs.existsSync(process.env.COVER_ART_DIR)) {
+    fs.mkdirSync(process.env.COVER_ART_DIR);
   }
 
-  fs.readdir(process.env.COVER_ART, function (err, items) {
+  fs.readdir(process.env.COVER_ART_DIR, function (err, items) {
     items.forEach(function (file) {
       var anyArt = that.db.prepare('SELECT * FROM CoverArt WHERE id=?').all(file.replace('.jpg', ''));
-      if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART, file));
+      if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART_DIR, file));
     });
   });
 
@@ -134,7 +134,7 @@ MediaScanner.prototype.checkExtraAlbumArt = function checkExtraAlbumArt() {
     if (anyArt.length === 0) {
       that.db.prepare("DELETE FROM CoverArt WHERE id=?").run(art.id);
       var coverId = 'cvr_' + art.album_id;
-      var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
+      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
       del.sync(coverFile);
     }
   });
@@ -276,7 +276,7 @@ MediaScanner.prototype.getMediaInfo = function getMediaInfo(track, metadata) {
   if (metadata.common.picture) {
 
     var coverId = 'cvr_' + track.album_id;
-    var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
+    var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
 
     var stmt = this.db.prepare('SELECT * FROM CoverArt WHERE id = ?');
     var existingCover = stmt.all(coverId);

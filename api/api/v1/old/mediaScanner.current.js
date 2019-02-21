@@ -46,13 +46,13 @@ MediaScannerWrapper.prototype.sendMessage = function sendMessage(message) {
 MediaScannerWrapper.prototype.startFullScan = function startFullScan() {
   console.log('starting media scanner worker for full scan')
   this.runScript();
-  this.sendMessage({ status: 'full_rescan', db_path: process.env.DATABASE, image_dir: process.env.COVER_ART });
+  this.sendMessage({ status: 'full_rescan', db_path: process.env.DATABASE, image_dir: process.env.COVER_ART_DIR });
 }
 
 MediaScannerWrapper.prototype.startQuickScan = function startQuickScan() {
   console.log('starting media scanner worker for quick scan')
   this.runScript();
-  this.sendMessage({ status: 'quick_rescan', db_path: process.env.DATABASE, image_dir: process.env.COVER_ART });
+  this.sendMessage({ status: 'quick_rescan', db_path: process.env.DATABASE, image_dir: process.env.COVER_ART_DIR });
 }
 
 MediaScannerWrapper.prototype.getStatus = function getStatus() {
@@ -68,7 +68,7 @@ MediaScannerWrapper.prototype.cancelScan = function cancelScan() {
 MediaScannerWrapper.prototype.incrementalCleanup = function incrementalCleanup() {
   console.log('Starting worker Incremental Cleanup')
   this.runScript();
-  this.sendMessage({ status: 'incremental_cleanup', db_path: process.env.DATABASE, image_dir: process.env.COVER_ART });
+  this.sendMessage({ status: 'incremental_cleanup', db_path: process.env.DATABASE, image_dir: process.env.COVER_ART_DIR });
 }
 
 

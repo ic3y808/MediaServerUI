@@ -192,7 +192,7 @@ function getMediaInfo(track, metadata) {
   if (metadata.common.picture) {
 
     var coverId = 'cvr_' + track.album_id;
-    var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
+    var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
 
     var stmt = db.prepare('SELECT * FROM CoverArt WHERE id = ?');
     var existingCover = stmt.all(coverId);
@@ -292,14 +292,14 @@ function checkEmptyPlaylists() {
 function checkExtraAlbumArt() {
   logger.info("alloydb", 'checking extra art');
   updateStatus('checking extra art', true);
-  if (!fs.existsSync(process.env.COVER_ART)) {
-    fs.mkdirSync(process.env.COVER_ART);
+  if (!fs.existsSync(process.env.COVER_ART_DIR)) {
+    fs.mkdirSync(process.env.COVER_ART_DIR);
   }
 
-  fs.readdir(process.env.COVER_ART, function (err, items) {
+  fs.readdir(process.env.COVER_ART_DIR, function (err, items) {
     items.forEach(function (file) {
       var anyArt = db.prepare('SELECT * FROM CoverArt WHERE id=?').all(file.replace('.jpg', ''));
-      if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART, file));
+      if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART_DIR, file));
     });
   });
 
@@ -309,7 +309,7 @@ function checkExtraAlbumArt() {
     if (anyArt.length === 0) {
       db.prepare("DELETE FROM CoverArt WHERE id=?").run(art.id);
       var coverId = 'cvr_' + art.album_id;
-      var coverFile = path.join(process.env.COVER_ART, coverId + '.jpg');
+      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
       del.sync(coverFile);
     }
   });

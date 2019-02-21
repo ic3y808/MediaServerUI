@@ -29,8 +29,8 @@ class ArtistController {
 
 
 
-    $scope.getCoverArt = id => {
-      return this.AlloyDbService.getCoverArt(id);
+    $scope.getCoverArt = params => {
+      return this.AlloyDbService.getCoverArt(params);
     }
 
     $scope.toggleAlbums = () => {
@@ -67,7 +67,7 @@ class ArtistController {
       var cache = Cache.get($routeParams.id);
 
       if (cache) {
-        $scope.artist = cache;
+        $scope.info = cache;
         this.AppUtilities.apply();
         this.AppUtilities.hideLoader();
       } else {
@@ -76,6 +76,17 @@ class ArtistController {
           artist.then(info => {
 
             $scope.info = info;
+            var coverArt = this.AlloyDbService.getCoverArt({
+              artist_id: $routeParams.id
+            });
+
+
+            if (coverArt) {
+              $scope.info.artist.image = coverArt;
+              this.AppUtilities.apply();
+            }
+
+
 
             this.AppUtilities.apply();
             this.AppUtilities.hideLoader();
@@ -115,7 +126,6 @@ class ArtistController {
             //
             //
 
-            this.AppUtilities.apply();
           });
         }
       }

@@ -304,7 +304,7 @@ export default class MediaPlayer {
 
     var source = this.selectedTrack();
     this.Logger.debug(source.artist + " - " + source.title);
-    source.artistUrl = "/artist/" + source.base_id;
+    source.artistUrl = "/artist/" + source.artist_id;
     source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {
       source.url = this.AlloyDbService.stream(source.id, 320);
