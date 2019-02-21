@@ -15,6 +15,7 @@ import JumpBar from './ui/jumpbar';
 import DetailLabel from './ui/detaillabel';
 import ExpandButton from './ui/expandbutton';
 import PopoverButton from './ui/popoverbutton';
+import LinkButton from './ui/linkbutton';
 import CoverFlow from './ui/coverflow';
 
 export default angular
@@ -34,5 +35,6 @@ export default angular
   .directive('detaillabel', DetailLabel)
   .directive('expandbutton', ExpandButton)
   .directive('popoverbutton', PopoverButton)
+  .directive('linkbutton', LinkButton)
   .directive('coverflow', CoverFlow)
 ;

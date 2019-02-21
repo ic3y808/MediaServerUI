@@ -15,7 +15,8 @@ process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
 process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "database.db-wal");
 process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "database.db-shm");
 process.env.TEST_DATABASE = path.join(process.env.DATA_DIR, "testdb.db");
-process.env.COVER_ART = path.join(process.env.DATA_DIR, "images");
+process.env.COVER_ART_DIR = path.join(process.env.DATA_DIR, "images");
+process.env.COVER_ART_NO_ART = path.join(process.env.BASE_DIR, "..", "common", "images", "no_art.jpg");
 
 process.env.UUID_BASE = '1b671a64-40d5-491e-99b0-da01ff1f3341';
 process.env.ARTIST_NFO = 'artist.nfo';
@@ -35,7 +36,7 @@ var config = {
 
 if (!fs.existsSync(process.env.DATA_DIR)) shell.mkdir("-p", process.env.DATA_DIR);
 if (!fs.existsSync(process.env.LOGS_DIR)) shell.mkdir("-p", process.env.LOGS_DIR);
-if (!fs.existsSync(process.env.COVER_ART)) shell.mkdir("-p", process.env.COVER_ART);
+if (!fs.existsSync(process.env.COVER_ART_DIR)) shell.mkdir("-p", process.env.COVER_ART_DIR);
 
 /// remove db debug
 //if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);

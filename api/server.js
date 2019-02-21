@@ -81,8 +81,8 @@ dbm.up().then(function () {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(express.static(path.join(__dirname, "public")));
 
-  if (!fs.existsSync(process.env.COVER_ART)) {
-    fs.mkdirSync(process.env.COVER_ART);
+  if (!fs.existsSync(process.env.COVER_ART_DIR)) {
+    fs.mkdirSync(process.env.COVER_ART_DIR);
   }
 
   app.use("/api/v1", function (req, res, next) {

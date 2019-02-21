@@ -310,11 +310,10 @@ export default class AlloyApi {
     })
   }
 
-  getCoverArt(id) {
-    return this._buildUrl('media/cover_art', {
-      api_key: this._settings.alloydb_apikey,
-      id: id
-    })
+  getCoverArt(params) {
+    Object.assign(params, {api_key: this._settings.alloydb_apikey});
+    return this._buildUrl('media/cover_art', params)
+   
   }
 
   scrobble(id) {

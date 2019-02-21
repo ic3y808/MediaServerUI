@@ -295,10 +295,10 @@ export default class AlloyDbService {
     else return false;
   }
 
-  getCoverArt(id) {
+  getCoverArt(params) {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.getCoverArt(id);
+      return this.alloydb.getCoverArt(params);
     else return false;
   }
 
@@ -334,10 +334,10 @@ export default class AlloyDbService {
       data.forEach(info => {
         if (info.fresh && info.fresh.albums) {
           this.$rootScope.fresh_albums = info.fresh.albums;
-          this.$rootScope.fresh_albums.forEach(album => {
-            album.image = this.getCoverArt(album.cover_art);
-            album.title = album.album;
-          });
+          //this.$rootScope.fresh_albums.forEach(album => {
+          //  album.image = this.getCoverArt(album.cover_art);
+          //  album.title = album.album;
+          //});
           this.AppUtilities.apply();
         }
       });
@@ -350,10 +350,10 @@ export default class AlloyDbService {
       data.forEach(info=> {
         if (info.albums) {
           this.$rootScope.albums = info.albums;
-          this.$rootScope.albums.forEach(album =>  {
-            album.image = this.getCoverArt(album.cover_art);
-            album.title = album.album;
-          });
+          //this.$rootScope.albums.forEach(album =>  {
+          //  album.image = this.getCoverArt(album.cover_art);
+          //  album.title = album.album;
+          //});
           this.AppUtilities.apply();
         }
       });
@@ -407,9 +407,9 @@ export default class AlloyDbService {
       data.forEach(info=>{
         if (info.random) {
           this.$rootScope.random = info.random;
-          this.$rootScope.random.forEach(track=> {
-            track.image = this.getCoverArt(track.cover_art);
-          });
+          //this.$rootScope.random.forEach(track=> {
+          //  track.image = this.getCoverArt(track.cover_art);
+          //});
           this.AppUtilities.apply();
         }
       });

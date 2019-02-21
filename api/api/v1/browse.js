@@ -155,7 +155,8 @@ router.get('/artist', function (req, res) {
   var result = {
     artist: res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(id),
     tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC').all(id),
-    albums: res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(id)
+    albums: res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(id),
+    links: res.locals.db.prepare('SELECT * FROM Links WHERE artist_id=?').all(id)
   };
 
   
