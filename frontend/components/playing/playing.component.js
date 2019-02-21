@@ -11,10 +11,10 @@ class PlayingController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('playing-controller');
-    var that = this;
-    $scope.getSong = function () {
+
+    $scope.getSong = () => {
     
-      var current = that.MediaPlayer.selectedTrack();
+      var current = this.MediaPlayer.selectedTrack();
 
       if (current) {
         var currentPromise = AlloyDbService.getTrackInfo(current.id)
@@ -29,7 +29,7 @@ class PlayingController {
         $scope.contentType = current.content_type;
         $scope.bitrate = current.bitrate;
         if (currentPromise) {
-          currentPromise.then(function (song) {
+          currentPromise.then(song => {
             if (song.trackInfo) {
               $scope.song = song.trackInfo;
               $scope.artistName = $scope.song.artist.name;
@@ -41,7 +41,7 @@ class PlayingController {
           });
         }
         if (currentArtistPromise) {
-          currentArtistPromise.then(function (info) {
+          currentArtistPromise.then(info => {
             if (info) {
 
               $scope.artistInfo = info.artistInfo;
@@ -61,20 +61,20 @@ class PlayingController {
                   }
                 });
               }
-              that.AppUtilities.apply();
+              this.AppUtilities.apply();
             }
           });
 
         }
 
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.hideLoader();
       } else {
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.hideLoader();
         return;
       }
 
-      $scope.previousTracks = that.MediaPlayer.previousTracks(5);
-      $scope.upcomingTracks = that.MediaPlayer.upcomingTracks(5);
+      $scope.previousTracks = this.MediaPlayer.previousTracks(5);
+      $scope.upcomingTracks = this.MediaPlayer.upcomingTracks(5);
 
       $scope.previousTrack = $scope.previousTracks[0];
       $scope.upcomingTrack = $scope.upcomingTracks[0];
@@ -97,13 +97,13 @@ class PlayingController {
 
     };
 
-    $rootScope.$on('trackChangedEvent', function (event, data) {
-      that.Logger.debug('Track Changed reloading now playing');
+    $rootScope.$on('trackChangedEvent', (event, data) =>  {
+      this.Logger.debug('Track Changed reloading now playing');
       $scope.getSong();
     });
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Logger.debug('login changed reloading now playing');
+    $rootScope.$on('loginStatusChange', (event, data) =>  {
+      this.Logger.debug('login changed reloading now playing');
       $scope.getSong();
     });
 

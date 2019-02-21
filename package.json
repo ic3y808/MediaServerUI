@@ -107,6 +107,7 @@
     "autoprefixer-core": "^6.0.1",
     "babel-loader": "^8.0.4",
     "babel-plugin-angularjs-annotate": "^0.9.0",
+    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
     "clean-webpack-plugin": "^0.1.17",
     "compression-webpack-plugin": "^2.0.0",
     "concurrently": "^4.1.0",

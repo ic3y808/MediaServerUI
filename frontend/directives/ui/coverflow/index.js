@@ -1,4 +1,5 @@
-module.exports = function ($timeout) {
+export default function ($timeout) {
+  "ngInject";
   return {
     restrict: 'E',
     scope: {

@@ -1,4 +1,5 @@
-module.exports = function () {
+export default function () {
+  "ngInject";
   return {
     restrict: 'E',
     scope: {

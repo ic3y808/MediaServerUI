@@ -1,38 +1,37 @@
 import CryptoJS from 'crypto-js';
-
+import AlloyApi from '../API/alloy.db'
 export default class AlloyDbService {
   constructor($rootScope, Logger, AppUtilities) {
     "ngInject";
+    this.isLoggingIn = true;
+    this.isLoggedIn = false;
     this.$rootScope = $rootScope;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
-    this.isLoggingIn = true;
-    this.isLoggedIn = false;
+
   }
 
   doLogin() {
-    var that = this;
-
     if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
       if (!this.isLoggedIn) {
         this.Logger.info('logging into alloydb')
 
         this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
 
-        this.alloydb.ping().then(function (result) {
+        this.alloydb.ping().then(result => {
           if (result) {
             if (result.status == 'success') {
-              that.isLoggedIn = true;
-              that.isLoggingIn = false;
-              that.preload();
+              this.isLoggedIn = true;
+              this.isLoggingIn = false;
+              this.preload();
             } else {
-              that.isLoggingIn = false;
-              that.isLoggedIn = false;
+              this.isLoggingIn = false;
+              this.isLoggedIn = false;
             }
-            that.Logger.info('logging into alloydb is ' + JSON.stringify(result));
+            this.Logger.info('logging into alloydb is ' + JSON.stringify(result));
           }
 
-          that.AppUtilities.broadcast('loginStatusChange', { service: 'alloydb', isLoggedIn: that.isLoggedIn });
+          this.AppUtilities.broadcast('loginStatusChange', { service: 'alloydb', isLoggedIn: this.isLoggedIn });
         });
 
 
@@ -318,196 +317,197 @@ export default class AlloyDbService {
   }
 
   loadArtists(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info => {
         if (info.artists) {
-          that.$rootScope.artists = info.artists;
-          that.AppUtilities.apply();
+          this.$rootScope.artists = info.artists;
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   loadFresh(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info => {
         if (info.fresh && info.fresh.albums) {
-          that.$rootScope.fresh_albums = info.fresh.albums;
-          that.$rootScope.fresh_albums.forEach(function (album) {
-            album.image = that.getCoverArt(album.cover_art);
+          this.$rootScope.fresh_albums = info.fresh.albums;
+          this.$rootScope.fresh_albums.forEach(album => {
+            album.image = this.getCoverArt(album.cover_art);
             album.title = album.album;
           });
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   loadAlbums(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info=> {
         if (info.albums) {
-          that.$rootScope.albums = info.albums;
-          that.$rootScope.albums.forEach(function (album) {
-            album.image = that.getCoverArt(album.cover_art);
+          this.$rootScope.albums = info.albums;
+          this.$rootScope.albums.forEach(album =>  {
+            album.image = this.getCoverArt(album.cover_art);
             album.title = album.album;
           });
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   loadGenres(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info=> {
         if (info.genres) {
-          that.$rootScope.genres = info.genres;
-          that.AppUtilities.apply();
+          this.$rootScope.genres = info.genres;
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   loadStarred(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info=> {
         if (info.starred) {
-          that.$rootScope.starred_tracks = info.starred.tracks;
-          that.$rootScope.starred_albums = info.starred.albums;
-          that.$rootScope.starred_albums.forEach(function (album) {
-            album.image = that.getCoverArt(album.cover_art);
+          this.$rootScope.starred_tracks = info.starred.tracks;
+          this.$rootScope.starred_albums = info.starred.albums;
+          this.$rootScope.starred_albums.forEach(album=> {
+            album.image = this.getCoverArt(album.cover_art);
             album.title = album.album;
           });
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   loadIndex(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info=> {
         if (info.index) {
-          that.$rootScope.music_index = info.index;
-          that.AppUtilities.apply();
+          this.$rootScope.music_index = info.index;
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   loadRandom(data) {
-    var that = this;
+    
     if (data) {
-      data.forEach(function (info) {
+      data.forEach(info=>{
         if (info.random) {
-          that.$rootScope.random = info.random;
-          that.$rootScope.random.forEach(function (track) {
-            track.image = that.getCoverArt(track.cover_art);
+          this.$rootScope.random = info.random;
+          this.$rootScope.random.forEach(track=> {
+            track.image = this.getCoverArt(track.cover_art);
           });
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         }
       });
     }
   }
 
   refreshArtists() {
-    var that = this;
+    
     var artists = this.getArtists();
     if (artists) {
-      artists.then(function (info) {
-        that.loadArtists([info]);
+      artists.then(info=>{
+        this.loadArtists([info]);
       })
     }
   };
 
   refreshFresh() {
-    var that = this;
+    
     var fresh = this.getFresh(50);
     if (fresh) {
-      fresh.then(function (info) {
-        that.loadFresh([info]);
+      fresh.then(info=>{
+        this.loadFresh([info]);
       })
     }
   }
 
   refreshAlbums() {
-    var that = this;
+    
     var albums = this.getAlbums();
     if (albums) {
-      albums.then(function (info) {
-        that.loadAlbums([info]);
+      albums.then(info=>{
+        this.loadAlbums([info]);
       })
     }
   }
 
   refreshGenres() {
-    var that = this;
+    
     var genres = this.getGenres();
     if (genres) {
-      genres.then(function (info) {
-        that.loadGenres([info]);
+      genres.then(info=>{
+        this.loadGenres([info]);
       })
     }
   }
 
   refreshStarred() {
-    var that = this;
+    
     var starred = this.getStarred();
     if (starred) {
-      starred.then(function (info) {
-        that.loadStarred([info]);
+      starred.then(info=>{
+        this.loadStarred([info]);
       })
     }
   }
 
   refreshIndex() {
-    var that = this;
+    
     var index = this.getMusicFoldersIndex();
     if (index) {
-      index.then(function (info) {
-        that.loadIndex([info]);
+      index.then(info=>{
+        this.loadIndex([info]);
       })
     }
   }
 
   refreshRandom() {
-    var that = this;
+    
     var random = this.getRandomSongs();
     if (random) {
-      random.then(function (info) {
-        that.loadRandom([info]);
+      random.then(info=>{
+        this.loadRandom([info]);
       })
     }
   }
 
   preload() {
-    var that = this;
+    
     var artists = this.getArtists();
     var fresh = this.getFresh(50);
     var albums = this.getAlbums();
     var genres = this.getGenres();
     var starred = this.getStarred();
-    var index = this.getMusicFoldersIndex();
+   // var index = this.getMusicFoldersIndex();
     var random = this.getRandomSongs();
 
-    Promise.all([artists, fresh, albums, genres, starred, index, random]).then(function (info) {
+    Promise.all([artists, fresh, albums, genres, starred, random]).then(info=>{
       if(info){
-        that.loadArtists(info);
-        that.loadFresh(info);
-        that.loadAlbums(info);
-        that.loadGenres(info);
-        that.loadStarred(info);
-        that.loadIndex(info);
-        that.loadRandom(info);
-        that.AppUtilities.apply();
+        this.loadArtists(info);
+        this.loadFresh(info);
+        this.loadAlbums(info);
+        this.loadGenres(info);
+        this.loadStarred(info);
+        this.loadIndex(info);
+        this.loadRandom(info);
+        this.AppUtilities.apply();
       }
     });
   }
 }
+

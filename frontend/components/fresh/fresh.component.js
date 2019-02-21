@@ -14,7 +14,6 @@ class FreshController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("fresh-controller");
     this.AppUtilities.showLoader();
-    var that = this;
 
     $scope.refreshing = false;
 
@@ -22,21 +21,21 @@ class FreshController {
 
     $scope.continousPlay = true;
 
-    $scope.toggleContinousPlay = function () {
+    $scope.toggleContinousPlay = () => {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
+    $scope.getCoverArt =  id => {
+      return this.AlloyDbService.getCoverArt(id);
     };
 
-    $scope.findNowPlaying = function (id) {
-      $rootScope.fresh_albums.forEach(function (album) { });
+    $scope.findNowPlaying = fid =>  {
+      $rootScope.fresh_albums.forEach(album => { });
     };
 
-    $scope.getAlbum = function (album) {
-      that.$scope.tracks = album.tracks;
-      $timeout(function () {
+    $scope.getAlbum = album => {
+      this.$scope.tracks = album.tracks;
+      $timeout(() => {
         if ($scope.play_prev_album) {
           $rootScope.tracks = $scope.tracks;
           MediaPlayer.loadTrack($scope.tracks.length - 1);
@@ -49,11 +48,11 @@ class FreshController {
           $scope.play_next_album = false;
         }
 
-        that.AppUtilities.apply();
+        this.AppUtilities.apply();
       });
     };
 
-    $scope.findNowPlaying = function () {
+    $scope.findNowPlaying = () => {
       var found = false;
       for (var i = 0; i < $rootScope.fresh_albums.length; i++) {
         if (found) return;
@@ -68,20 +67,18 @@ class FreshController {
       }
     };
 
-    $scope.refresh = function () {
+    $scope.refresh = () => {
       AlloyDbService.refreshFresh();
     };
 
-    $scope.startRadio = function () {
-      var track = that.MediaPlayer.selectedTrack();
+    $scope.startRadio = () => {
+      var track = this.MediaPlayer.selectedTrack();
       if (!track || !track.artistId) {
         track = $scope.tracks[0];
       }
 
-      AlloyDbService.getSimilarSongs2(track.artistId).then(function (
-        similarSongs
-      ) {
-        that.Logger.debug("starting radio");
+      AlloyDbService.getSimilarSongs2(track.artistId).then( similarSongs => {
+        this.Logger.debug("starting radio");
         if (similarSongs && similarSongs.song) {
           $rootScope.tracks = similarSongs.song;
           MediaPlayer.loadTrack(0);
@@ -89,31 +86,31 @@ class FreshController {
       });
     };
 
-    $scope.shuffle = function () {
-      that.Logger.debug("shuffle play");
+    $scope.shuffle = () => {
+      this.Logger.debug("shuffle play");
       $rootScope.tracks = AppUtilities.shuffle($scope.tracks);
       MediaPlayer.loadTrack(0);
     };
 
-    $rootScope.$on("playlistBeginEvent", function (event, data) {
+    $rootScope.$on("playlistBeginEvent", (event, data) =>  {
       if ($scope.continousPlay) {
         $scope.play_prev_album = true;
         $scope.coverflow.prev();
       }
     });
 
-    $rootScope.$on("playlistEndEvent", function (event, data) {
+    $rootScope.$on("playlistEndEvent", (event, data) =>  {
       if ($scope.continousPlay) {
         $scope.play_next_album = true;
         $scope.coverflow.next();
       }
     });
 
-    $rootScope.$watch("fresh_albums", function (newVal, oldVal) {
+    $rootScope.$watch("fresh_albums", (newVal, oldVal) =>  {
       if ($rootScope.fresh_albums) {
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
-        $timeout(function () {
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
+        $timeout(() => {
           $scope.coverflow = coverflow("player")
             .setup({
               playlist: $rootScope.fresh_albums,
@@ -122,8 +119,8 @@ class FreshController {
               coverheight: 200,
               fixedsize: true
             })
-            .on("ready", function () {
-              this.on("focus", function (index) {
+            .on("ready", function() {
+              this.on("focus", index =>{
                 if (
                   $rootScope.fresh_albums &&
                   $rootScope.fresh_albums.length > 0
@@ -132,7 +129,7 @@ class FreshController {
                 }
               });
 
-              this.on("click", function (index, link) {
+              this.on("click", (index, link) =>  {
                 if (
                   $rootScope.fresh_albums &&
                   $rootScope.fresh_albums.length > 0

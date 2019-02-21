@@ -11,7 +11,7 @@ class ConfigGeneralController {
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
     this.Logger.debug('general-config-controller');
-    var that = this;
+
    
   }
 }

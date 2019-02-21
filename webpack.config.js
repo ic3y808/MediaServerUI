@@ -86,34 +86,34 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.(scss|sass)$/,
   use: [{
-    loader: 'style-loader'
-  },
-  {
-    loader: 'css-loader'
-  },
-  {
-    loader: 'postcss-loader',
-    options: {
-      plugins: function () { // post css plugins, can be exported to postcss.config.js
-        return [
-          require('precss'),
-          require('autoprefixer')
-        ];
+      loader: 'style-loader'
+    },
+    {
+      loader: 'css-loader'
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        plugins: function () { // post css plugins, can be exported to postcss.config.js
+          return [
+            require('precss'),
+            require('autoprefixer')
+          ];
+        }
+      }
+    },
+    {
+      loader: "sass-loader",
+      options: {
+        includePaths: [path.join(nodePath, 'compass-mixins', 'lib')]
+      }
+    },
+    {
+      loader: 'sass-resources-loader',
+      options: {
+        resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss', './frontend/styles/_variables.scss']
       }
     }
-  },
-  {
-    loader: "sass-loader",
-    options: {
-      includePaths: [path.join(nodePath, 'compass-mixins','lib')]
-    }
-  },
-  {
-    loader: 'sass-resources-loader',
-    options: {
-      resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss','./frontend/styles/_variables.scss']
-    }
-  }
   ]
 });
 
@@ -122,11 +122,10 @@ profile.module.rules.push({
   use: ['style-loader', 'css-loader', 'less-loader']
 });
 
-profile.module.rules.push(
-  {
-    test: /modernizr\.js$/,
-    loader: "imports-loader?this=>window!exports-loader?window.Modernizr"
-  });
+profile.module.rules.push({
+  test: /modernizr\.js$/,
+  loader: "imports-loader?this=>window!exports-loader?window.Modernizr"
+});
 
 // Output
 profile.output = {
@@ -135,33 +134,7 @@ profile.output = {
   path: path.resolve(__dirname, dist)
 };
 
-  profile.module.rules.push({
-    test: /\.js$/,
-    use: [{
-      loader: 'strip-loader?strip[]=debug'
-    },
-    {
-      loader: 'babel-loader',
-      options: {
-        plugins: [
-          '@babel/plugin-transform-runtime',
-          [
-            "@babel/plugin-proposal-decorators",
-            {
-              "legacy": true,
-            }
-          ],
-          "@babel/plugin-proposal-class-properties",
-          ["angularjs-annotate", {
-            explicitOnly: true
-          }]
-        ],
-        presets: ['@babel/preset-env']
-      }
-    }
-    ],
-    exclude: /(node_modules|bower_components|coverflow|modernizr\.js|angular-auto-complete\.js)/
-  });
+
 
 // Dev - Production specific
 
@@ -182,7 +155,36 @@ if (process.env.MODE === 'dev') {
   const CleanWebpackPlugin = require('clean-webpack-plugin');
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 
-
+  profile.module.rules.push({
+    test: /\.js$/,
+    use: [{
+        loader: 'strip-loader?strip[]=debug'
+      },
+      {
+        loader: 'babel-loader',
+        options: {
+          plugins: [
+            '@babel/plugin-transform-runtime',
+            [
+              "@babel/plugin-proposal-decorators",
+              {
+                "legacy": true,
+              }
+            ],
+            "@babel/plugin-proposal-class-properties",
+            ["angularjs-annotate", {
+              explicitOnly: true
+            }],
+            ["transform-es2015-arrow-functions", {
+              "spec": true
+            }]
+          ],
+          presets: ['@babel/preset-env']
+        }
+      }
+    ],
+    exclude: /(node_modules|bower_components|coverflow|modernizr\.js|angular-auto-complete\.js)/
+  });
 
   profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
     name: 'vendor',
@@ -191,20 +193,20 @@ if (process.env.MODE === 'dev') {
     }) => /node_modules/.test(resource),
   }));
 
-  //profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
-  //  mangle: true,
-  //  compress: {
-  //    warnings: false, // Suppress uglification warnings
-  //    pure_getters: true,
-  //    unsafe: true,
-  //    unsafe_comps: true,
-  //    screw_ie8: true
-  //  },
-  //  output: {
-  //    comments: false,
-  //  },
-  //  exclude: [/\.min\.js$/gi] // skip pre-minified libs
-  //}));
+  profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    mangle: true,
+    compress: {
+      warnings: false, // Suppress uglification warnings
+      pure_getters: true,
+      unsafe: true,
+      unsafe_comps: true,
+      screw_ie8: true
+    },
+    output: {
+      comments: false,
+    },
+    exclude: [/\.min\.js$/gi] // skip pre-minified libs
+  }));
 
 }
 

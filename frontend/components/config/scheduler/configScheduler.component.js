@@ -9,46 +9,46 @@ class ConfigSchedulerController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('scheduler-controller');
-    var that = this;
+
     $scope.settings = {};
 
-    var that = this;
 
-    $scope.ping = function () {
-      var ping = that.AlloyDbService.getSchedulerStatus();
+
+    $scope.ping = () => {
+      var ping = this.AlloyDbService.getSchedulerStatus();
       if (ping) {
-        ping.then(function (data) {
-          that.Logger.debug('getSchedulerStatus');
-          that.$scope.schedulerStatus = data;
-          that.AppUtilities.apply();
+        ping.then(data => {
+          this.Logger.debug('getSchedulerStatus');
+          this.$scope.schedulerStatus = data;
+          this.AppUtilities.apply();
         });
       }
     };
 
 
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
+    $rootScope.$on('menuSizeChange', (event, currentState) => {
 
     });
 
-    $rootScope.$on('windowResized', function (event, data) {
+    $rootScope.$on('windowResized', (event, data) => {
 
     });
 
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
+    $rootScope.$on('loginStatusChange', (event, data) => {
       $scope.ping();
     });
 
-    $scope.refreshIntereval = setInterval(function () {
+    $scope.refreshIntereval = setInterval(() => {
       $scope.ping();
     }, 5000);
 
-    $scope.uiRefreshIntereval = setInterval(function () {
+    $scope.uiRefreshIntereval = setInterval(() => {
       AppUtilities.apply();
     }, 1000);
 
 
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', () => {
       clearInterval($scope.refreshIntereval);
       clearInterval($scope.uiRefreshIntereval);
     });

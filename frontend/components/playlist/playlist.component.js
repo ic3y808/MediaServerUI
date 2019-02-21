@@ -10,9 +10,8 @@ class PlaylistController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.Logger.debug('playlist-controller');
-    var that = this;
 
-    $rootScope.$watch('tracks', function (newVal, oldVal) {
+    $rootScope.$watch('tracks', (newVal, oldVal) =>  {
       AppUtilities.apply();
       AppUtilities.hideLoader();
     });

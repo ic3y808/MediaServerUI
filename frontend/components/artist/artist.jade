@@ -6,7 +6,10 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
       toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
       toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
-      toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
+      toolbarbutton(buttontext='Share', buttonclick='shareArtist()', buttonicon='fa-bullhorn')
+      toolbarseperator
+      toolbarbutton(buttontext='Edit', buttonclick='Artist()', buttonicon='fa-wrench')
+      toolbarbutton(buttontext='Delete', buttonclick='deleteArtist()', buttonicon='fa-trash')
     include ./../../views/toolbarsection-right
       toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
       toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")

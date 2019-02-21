@@ -10,8 +10,7 @@ class ActivityBlacklistController {
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
     this.Logger.debug('activity-blacklist-controller');
-    var that = this;
-   
+
   }
 }
 

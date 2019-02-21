@@ -11,7 +11,6 @@ class ActivityGeneralController {
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
     this.Logger.debug('general-activity-controller');
-    var that = this;
    
   }
 }

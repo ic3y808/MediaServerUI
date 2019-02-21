@@ -10,16 +10,16 @@ class ConfigMediaPathsController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('config-mediapaths-controller');
-    var that = this;
+
     $scope.settings = {};
     $scope.currentpath = '';
     $scope.display_name = '';
 
-    $scope.reload = function () {
+    $scope.reload = () =>  {
       if (AlloyDbService.isLoggedIn) {
         var mediaPaths = AlloyDbService.getMediaPaths();
         if (mediaPaths) {
-          mediaPaths.then(function (paths) {
+          mediaPaths.then(paths => {
             $scope.mediaPaths = paths;
             AppUtilities.apply();
             AppUtilities.hideLoader();
@@ -28,7 +28,7 @@ class ConfigMediaPathsController {
       }
     }
 
-    $scope.removePath = function (mediaPath) {
+    $scope.removePath = mediaPath => {
       var removeMediaPath = AlloyDbService.removeMediaPath(mediaPath);
       if(removeMediaPath){
         removeMediaPath.then(function(result){
@@ -37,17 +37,17 @@ class ConfigMediaPathsController {
       }
     }
 
-    $scope.browsePaths = function () {
+    $scope.browsePaths = () =>  {
       $scope.currentpath = '';
       $scope.display_name = '';
       AppUtilities.apply();
       $('#addMediaPathModal').modal()
     }
 
-    $scope.addCurrentPath = function () {
+    $scope.addCurrentPath = () =>  {
       var addMediaPath = AlloyDbService.addMediaPath({ display_name: $scope.display_name, path: $scope.currentpath });
       if(addMediaPath){
-        addMediaPath.then(function(result){
+        addMediaPath.then(result => {
 
           $scope.reload();
         });

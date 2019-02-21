@@ -11,10 +11,10 @@ class ConfigSabnzbdController {
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
     this.Logger.debug('sabnzbd-controller');
-    var that = this;
+  
     $scope.settings = {};
 
-    $scope.testSettings = function () {
+    $scope.testSettings = () => {
       if(this.$rootScope.socket)
        this.$rootScope.socket.emit('test_sabnzbd_settings', $rootScope.settings.sabnzbd);
     };
@@ -30,10 +30,10 @@ class ConfigSabnzbdController {
 
 
 
-    $rootScope.socket.on('test_sabnzbd_connection_result', function (data) {
+    $rootScope.socket.on('test_sabnzbd_connection_result', data => {
       if (data) {
-        that.Logger.debug('sabnzbd connection result');
-        that.Logger.debug(data);
+        this.Logger.debug('sabnzbd connection result');
+        this.Logger.debug(data);
 
         if (data) {
           var pop = $('#testSabnzbdConnectionButton').popover({
@@ -55,7 +55,7 @@ class ConfigSabnzbdController {
       }
     });
 
-    $scope.generateConnectionString = function () {
+    $scope.generateConnectionString = () => {
       var url = 'http://';
       if ($rootScope.settings.sabnzbd) {
         if ($rootScope.settings.sabnzbd.sabnzbd_use_ssl)
@@ -70,19 +70,11 @@ class ConfigSabnzbdController {
       return url;
     };
 
-    $scope.previewConnectionString = function () {
+    $scope.previewConnectionString = () => {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
 
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
-
-    });
-
-    $rootScope.$on('windowResized', function (event, data) {
-
-    });
-
-    $rootScope.$watch('settings.sabnzbd ', function (newVal, oldVal) {
+    $rootScope.$watch('settings.sabnzbd ', (newVal, oldVal) =>  {
       $scope.previewConnectionString();
     });
 

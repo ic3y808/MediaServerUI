@@ -10,7 +10,7 @@ class DatabaseController {
   }
 
   $onInit() {
-    var that = this;
+
  
   }
 }

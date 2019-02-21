@@ -13,9 +13,8 @@ class SidenavController {
   }
 
   $onInit() {
-    var that = this;
 
-    $('#sidebarCollapse').on('click', function () {
+    $('#sidebarCollapse').on('click', () =>  {
       $('#sidebar').toggleClass('active');
     });
 
@@ -25,8 +24,8 @@ class SidenavController {
     $('#collapse-icon').addClass('fa-angle-double-left');
 
     // Collapse click
-    $('[data-toggle=sidebar-colapse]').click(function () {
-      that.sidebarCollapse();
+    $('[data-toggle=sidebar-colapse]').click(() => {
+      this.sidebarCollapse();
     });
 
     $('.list-group li').click(function (e) {
@@ -38,10 +37,10 @@ class SidenavController {
       $that.addClass('active');
     });
 
-    jQuery(".list-group").hover(function () {
+    jQuery(".list-group").hover(() =>  {
         jQuery(this).addClass("active");
       },
-      function () {
+      () =>  {
         jQuery(this).removeClass("active");
       });
   }

@@ -15,7 +15,8 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return null;
+  return db.runSql('INSERT OR REPLACE INTO `MediaPaths`(`display_name`,`path`) VALUES (?,?);', ['TestMedia', 'D:\\Users\\ic3y8\\Desktop\\TestMedia'], function (err) {
+  });
   
 };
 

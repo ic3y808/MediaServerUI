@@ -1,4 +1,5 @@
-module.exports = function (Backend, AppUtilities, AlloyDbService) {
+export default function (Backend, AppUtilities, AlloyDbService) {
+  "ngInject";
   return {
     restrict: 'E',
     scope: {

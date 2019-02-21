@@ -99,81 +99,78 @@ LastFMScanner.prototype.writeQueue = function writeQueue(force) {
 };
 
 LastFMScanner.prototype.step = function step() {
-  var that = this;
-  //if (that.scanStatus.shouldCancel) return;
-  var track = that.filteredFiles.shift();
+
+  //if (this.scanStatus.shouldCancel) return;
+  var track = this.filteredFiles.shift();
   if (!track || !track.path) {
-    that.updateStatus("Scanning Complete", false);
+    this.updateStatus("Scanning Complete", false);
   } else {
     try {
-      that.getLastfmSession(() => {
-        that.getLastFm().getTrackInfo({
+      this.getLastfmSession(() => {
+        this.getLastFm().getTrackInfo({
           artist: track.artist === 'No Artist' ? track.base_path : track.artist,
           track: track.title,
           mbid: track.musicbrainz_artistid,
-          callback: function (result) {
+          callback: result => {
             track.last_fm_info = JSON.stringify(result.trackInfo);
-            that.currentQueue.push(track);
+            this.currentQueue.push(track);
 
-            if (that.scanStatus.currentlyScanned === that.totalFiles) {
-              that.writeQueue(true);
-              that.updateStatus("Scanning Complete", false);
+            if (this.scanStatus.currentlyScanned === this.totalFiles) {
+              this.writeQueue(true);
+              this.updateStatus("Scanning Complete", false);
               setTimeout(function () {
-                that.resetStatus();
+                this.resetStatus();
               }, 5000)
             }
             else {
-              that.writeQueue(false);
-              if (that.filteredFiles.length > 0) { that.step(); }
+              this.writeQueue(false);
+              if (this.filteredFiles.length > 0) { this.step(); }
               else {
-                that.updateStatus("Scanning Complete", false);
+                this.updateStatus("Scanning Complete", false);
               }
             }
           }
         });
       });
     } catch (err) {
-      that.updateStatus("Scanning Error " + err.message, false);
-      if (that.filteredFiles.length > 0) { that.step(); }
+      this.updateStatus("Scanning Error " + err.message, false);
+      if (this.filteredFiles.length > 0) { this.step(); }
       else {
-        that.updateStatus("Scanning Complete", false);
+        this.updateStatus("Scanning Complete", false);
       }
     }
   }
 };
 
 LastFMScanner.prototype.rescan = function rescan() {
-  var that = this;
+  this.filteredFiles = [];
+  this.currentQueue = [];
 
-  that.filteredFiles = [];
-  that.currentQueue = [];
+  this.filteredFiles = this.db.prepare('SELECT * from Tracks WHERE last_fm_info IS NULL').all();
 
-  that.filteredFiles = that.db.prepare('SELECT * from Tracks WHERE last_fm_info IS NULL').all();
+  this.totalFiles = this.filteredFiles.length;
 
-  that.totalFiles = that.filteredFiles.length;
-
-  if (that.totalFiles < that.maxFilesProcessing) {
-    for (var i = 0; i < that.totalFiles; i++) {
-      that.step();
+  if (this.totalFiles < this.maxFilesProcessing) {
+    for (var i = 0; i < this.totalFiles; i++) {
+      this.step();
     }
   }
   else {
-    for (var i = 0; i < that.maxFilesProcessing; i++) {
-      that.step();
+    for (var i = 0; i < this.maxFilesProcessing; i++) {
+      this.step();
     }
   }
 }
 
 LastFMScanner.prototype.startScan = function startScan() {
-  var that = this;
-  if (that.scanStatus && that.scanStatus.isScanning) {
+  if (this.scanStatus && this.scanStatus.isScanning) {
     return "Scan already in progress, use cancel_scan first";
   }
 
-  that.updateStatus('Starting Scan', true);
+  this.updateStatus('Starting Scan', true);
 
-  new Promise(function (resolve, reject) {
-    that.rescan();
+  new Promise((resolve, reject) => {
+    this.rescan();
   });
 
   return "Scan started";

@@ -12,74 +12,73 @@ class StatusController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("status-controller");
-    var that = this;
 
-    $scope.ping = function () {
-      var ping = that.AlloyDbService.ping();
+    $scope.ping = () => {
+      var ping = this.AlloyDbService.ping();
       if (ping) {
-        ping.then(function (data) {
+        ping.then( data => {
           $scope.alloydb = data;
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         });
       }
     };
 
-    $scope.getLibraryInfo = function () {
-      var libraryInfo = that.AlloyDbService.getLibraryInfo();
+    $scope.getLibraryInfo = () => {
+      var libraryInfo = this.AlloyDbService.getLibraryInfo();
       if (libraryInfo) {
-        libraryInfo.then(function (info) {
+        libraryInfo.then(info => {
           $scope.libraryInfo = info;
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         });
       }
     };
 
-    $scope.getMediaPaths = function () {
-      var mediaPaths = that.AlloyDbService.getMediaPaths();
+    $scope.getMediaPaths = () => {
+      var mediaPaths = this.AlloyDbService.getMediaPaths();
       if (mediaPaths) {
-        mediaPaths.then(function (paths) {
+        mediaPaths.then(paths => {
           $scope.mediaPaths = paths;
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         });
       }
     };
 
-    $scope.scanFullStart = function () {
-      var scanner = that.AlloyDbService.scanFullStart();
+    $scope.scanFullStart = () => {
+      var scanner = this.AlloyDbService.scanFullStart();
       if (scanner) {
-        scanner.then(function (result) {
-          that.Logger.debug("scanFullStart");
+        scanner.then(result => {
+          this.Logger.debug("scanFullStart");
           $scope.scanStatus = result;
-          that.AppUtilities.apply();
-          $scope.rescanInterval = setInterval(function () {
+          this.AppUtilities.apply();
+          $scope.rescanInterval = setInterval(() => {
             $scope.getScanStatus();
           }, 500);
         });
       }
     };
 
-    $scope.scanQuickStart = function () {
-      var scanner = that.AlloyDbService.scanQuickStart();
+    $scope.scanQuickStart = () => {
+      var scanner = this.AlloyDbService.scanQuickStart();
       if (scanner) {
-        scanner.then(function (result) {
-          that.Logger.debug("scanQuickStart");
+        scanner.then(result =>{
+          this.Logger.debug("scanQuickStart");
           $scope.scanStatus = result;
-          that.AppUtilities.apply();
-          $scope.rescanInterval = setInterval(function () {
+          this.AppUtilities.apply();
+          $scope.rescanInterval = setInterval(() => {
             $scope.getScanStatus();
           }, 500);
         });
       }
     };
 
-    $scope.getScanStatus = function () {
-      var scanner = that.AlloyDbService.scanStatus();
+    $scope.getScanStatus = () => {
+      var scanner = this.AlloyDbService.scanStatus();
       if (scanner) {
-        scanner.then(function (result) {
+        scanner.then(result => {
           $scope.scanStatus = result;
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
           if (!$scope.rescanInterval) {
-            $scope.rescanInterval = setInterval(function () {
+            $scope.rescanInterval = setInterval(() => {
               $scope.getScanStatus();
             }, 500);
           }
@@ -88,34 +87,34 @@ class StatusController {
       $scope.getLibraryInfo();
     };
 
-    $scope.scanCancel = function () {
-      var scanner = that.AlloyDbService.scanCancel();
+    $scope.scanCancel = () => {
+      var scanner = this.AlloyDbService.scanCancel();
       if (scanner) {
-        scanner.then(function (result) {
-          that.Logger.debug("cancelScan");
+        scanner.then(result => {
+          this.Logger.debug("cancelScan");
           $scope.scanStatus = result;
-          that.AppUtilities.apply();
+          this.AppUtilities.apply();
         });
       }
     };
 
-    $rootScope.$on("loginStatusChange", function (event, data) {
+    $rootScope.$on("loginStatusChange", (event, data) =>  {
       $scope.ping();
       $scope.getLibraryInfo();
       $scope.getMediaPaths();
     });
 
-    $scope.refreshIntereval = setInterval(function () {
+    $scope.refreshIntereval = setInterval(() => {
       $scope.ping();
       $scope.getLibraryInfo();
       $scope.getMediaPaths();
     }, 5000);
 
-    $scope.uiRefreshIntereval = setInterval(function () {
+    $scope.uiRefreshIntereval = setInterval(() => {
       AppUtilities.apply();
     }, 1000);
 
-    $scope.$on("$destroy", function () {
+    $scope.$on("$destroy", () => {
       clearInterval($scope.refreshIntereval);
       clearInterval($scope.uiRefreshIntereval);
       clearInterval($scope.rescanInterval);

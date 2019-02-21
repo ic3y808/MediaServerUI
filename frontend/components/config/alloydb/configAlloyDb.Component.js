@@ -10,10 +10,10 @@ class ConfigAlloyDbController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('config-alloydb-controller');
-    var that = this;
+
     $scope.settings = {};
   
-    $scope.generateConnectionString = function () {
+    $scope.generateConnectionString = () =>  {
       var url = 'http://';
       if ($rootScope.settings.alloydb) {
         if ($rootScope.settings.alloydb.alloydb_use_ssl)
@@ -27,25 +27,25 @@ class ConfigAlloyDbController {
       return url;
     };
 
-    $scope.previewConnectionString = function () {
+    $scope.previewConnectionString = () =>  {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
 
     if(this.$rootScope.socket)
        this.$rootScope.socket.emit('load_settings', 'alloydb_settings');
 
-    $rootScope.$on('menuSizeChange', function (event, currentState) {
+    $rootScope.$on('menuSizeChange', (event, currentState) =>  {
 
     });
 
-    $rootScope.$on('windowResized', function (event, data) {
+    $rootScope.$on('windowResized', (event, data) =>  {
 
     });
 
 
     AppUtilities.hideLoader();
 
-    $rootScope.$watch('settings.alloydb ', function (newVal, oldVal) {
+    $rootScope.$watch('settings.alloydb ', (newVal, oldVal) =>  {
       $scope.previewConnectionString();
     });
   }

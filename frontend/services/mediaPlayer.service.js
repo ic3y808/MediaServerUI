@@ -23,46 +23,46 @@ export default class MediaPlayer {
     this.repeatEnabled = false;
     this.$rootScope.checkIfNowPlaying = this.checkIfNowPlaying;
     this.$rootScope.tracks = [];
-    var that = this;
-    this.MediaElement.addEventListener('play', function () {
-      that.playing = true;
-      that.togglePlayPause();
+
+    this.MediaElement.addEventListener('play', () => {
+      this.playing = true;
+      this.togglePlayPause();
     });
 
-    this.MediaElement.addEventListener('pause', function () {
-      that.playing = false;
-      that.togglePlayPause();
+    this.MediaElement.addEventListener('pause', () => {
+      this.playing = false;
+      this.togglePlayPause();
     });
 
-    this.MediaElement.addEventListener('ended', function () {
-      if ((that.selectedIndex + 1) === that.$rootScope.tracks.length) {
-        that.playing = false;
-        that.selectedIndex = 0;
-        that.togglePlayPause();
-        $('#media-player').src = that.selectedTrack();
+    this.MediaElement.addEventListener('ended', () => {
+      if ((this.selectedIndex + 1) === this.$rootScope.tracks.length) {
+        this.playing = false;
+        this.selectedIndex = 0;
+        this.togglePlayPause();
+        $('#media-player').src = this.selectedTrack();
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainTimeDisplay').html("");
-        that.Logger.debug('Playlist ended');
-        that.AppUtilities.broadcast('playlistEndEvent');
+        this.Logger.debug('Playlist ended');
+        this.AppUtilities.broadcast('playlistEndEvent');
 
       } else {
-        that.playing = true;
-        that.next();
+        this.playing = true;
+        this.next();
       }
     });
 
-    this.MediaElement.addEventListener('canplaythrough', function () {
-      $('#mainTimeDisplay').html("0:00 / " + that.AppUtilities.formatTime(MediaElement.duration));
+    this.MediaElement.addEventListener('canplaythrough', () => {
+      $('#mainTimeDisplay').html("0:00 / " + this.AppUtilities.formatTime(MediaElement.duration));
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
-      that.togglePlayPause();
+      this.togglePlayPause();
     });
 
-    this.MediaElement.addEventListener('timeupdate', function () {
+    this.MediaElement.addEventListener('timeupdate', () => {
       var duration = MediaElement.duration;
       if (!isFinite(duration))
-        duration = that.selectedTrack().duration;
+        duration = this.selectedTrack().duration;
 
       var playPercent = 100 * (MediaElement.currentTime / duration);
       if (!isNaN(playPercent)) {
@@ -77,7 +77,7 @@ export default class MediaPlayer {
 
         $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
         $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
-        $('#mainTimeDisplay').html(that.AppUtilities.formatTime(MediaElement.currentTime) + " / " + that.AppUtilities.formatTime(duration));
+        $('#mainTimeDisplay').html(this.AppUtilities.formatTime(MediaElement.currentTime) + " / " + this.AppUtilities.formatTime(duration));
       }
     });
   }
@@ -94,19 +94,18 @@ export default class MediaPlayer {
       cast.framework.CastContext.getInstance().setOptions(options);
       this.remotePlayer = new cast.framework.RemotePlayer();
       this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
-      var that = this;
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-        function () {
-          that.Logger.debug('switchPlayer');
+        () => {
+          this.Logger.debug('switchPlayer');
           if (cast && cast.framework) {
-            if (that.remotePlayerConnected()) {
+            if (this.remotePlayerConnected()) {
 
-              that.setupRemotePlayer();
+              this.setupRemotePlayer();
               return;
             }
           }
-          that.setupLocalPlayer();
+          this.setupLocalPlayer();
         }
       );
 
@@ -153,7 +152,7 @@ export default class MediaPlayer {
       tracks = this.$rootScope.tracks.slice(this.selectedIndex + 1, this.selectedIndex + 1 + count);
     } else {
       tracks = this.$rootScope.tracks.slice(this.selectedIndex + 1, this.$rootScope.tracks.length);
-    }   
+    }
     return tracks;
   }
 
@@ -192,7 +191,8 @@ export default class MediaPlayer {
       this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistBeginEvent');
       return true;
-    } return false;
+    }
+    return false;
   }
 
   checkPlaylistEnding(newIndex) {
@@ -207,19 +207,20 @@ export default class MediaPlayer {
       this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistEndEvent');
       return true;
-    } return false;
+    }
+    return false;
   }
 
   generateRemoteMetadata(source) {
-    var that = this;
-    return new Promise(function (resolve, reject) {
+
+    return new Promise((resolve, reject) => {
       if (!source) {
         throw new Error('source required');
       }
       if (!source.artistId) {
         throw new Error('no artist id');
       }
-      //that.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
+      //this.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
       //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
       //  mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
       //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
@@ -276,16 +277,16 @@ export default class MediaPlayer {
   }
 
   scrobble(instance, source) {
-    instance.AlloyDbService.scrobble(source.id).then(function (scrobbleResult) {
+    instance.AlloyDbService.scrobble(source.id).then(scrobbleResult => {
       if (scrobbleResult) instance.Logger.info('scrobble result: ' + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
     });
-    instance.AlloyDbService.scrobbleNowPlaying(source.id).then(function (scrobbleResult) {
+    instance.AlloyDbService.scrobbleNowPlaying(source.id).then(scrobbleResult => {
       if (scrobbleResult) instance.Logger.info('scrobbleNowPlaying result: ' + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
     });
   }
 
   addPlay(instance, source) {
-    instance.AlloyDbService.addPlay(source.id).then(function (result) {
+    instance.AlloyDbService.addPlay(source.id).then(result => {
       if (result) {
         instance.Logger.info('addPlay resut: ' + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         source.play_count++;
@@ -295,67 +296,64 @@ export default class MediaPlayer {
     });
   }
 
-  loadTrack(index, that) {
-    var t = this;
-    if (that) {
-      t = that;
-    }
-    t.selectedIndex = index;
-    t.Logger.debug('load track');
+  loadTrack(index) {
+
+    this.selectedIndex = index;
+    this.Logger.debug('load track');
     $('#mainTimeDisplay').html("Loading...");
 
-    var source = t.selectedTrack();
-    t.Logger.debug(source.artist + " - " + source.title);
+    var source = this.selectedTrack();
+    this.Logger.debug(source.artist + " - " + source.title);
     source.artistUrl = "/artist/" + source.base_id;
     source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {
-      source.url = t.AlloyDbService.stream(source.id, 320);
+      source.url = this.AlloyDbService.stream(source.id, 320);
 
-      t.checkVolume();
+      this.checkVolume();
 
       //if (source.artistId) {
-      t.checkStarred(source);
-      t.checkArtistInfo(source);
-      t.checkNowPlayingImage(source);
+      this.checkStarred(source);
+      this.checkArtistInfo(source);
+      this.checkNowPlayingImage(source);
 
-      if (t.remotePlayerConnected()) {
-        t.setupRemotePlayer();
-        t.generateRemoteMetadata(source).then(function (mediaInfo) {
+      if (this.remotePlayerConnected()) {
+        this.setupRemotePlayer();
+        this.generateRemoteMetadata(source).then(mediaInfo => {
           var request = new chrome.cast.media.LoadRequest(mediaInfo);
           cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
-          t.scrobble(t, source);
-          t.togglePlayPause();
-          t.startProgressTimer();
+          this.scrobble(t, source);
+          this.togglePlayPause();
+          this.startProgressTimer();
         });
       } else {
 
-        t.MediaElement.src = source.url;
-        t.MediaElement.load();
-        if (t.shouldSeek) {
-          t.shouldSeek = false;
-          t.MediaElement.currentTime = t.prePlannedSeek;
+        this.MediaElement.src = source.url;
+        this.MediaElement.load();
+        if (this.shouldSeek) {
+          this.shouldSeek = false;
+          this.MediaElement.currentTime = prePlannedSeek;
         }
-        var playPromise = t.MediaElement.play();
-        var that2 = t;
+        var playPromise = this.MediaElement.play();
+
         if (playPromise !== undefined) {
           playPromise.then(_ => {
-            that2.scrobble(that2, source);
-            that2.addPlay(that2, source);
-            that2.togglePlayPause();
-            that2.AppUtilities.broadcast('trackChangedEvent', source);
+            this.scrobble(this, source);
+            this.addPlay(this, source);
+            this.togglePlayPause();
+            this.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {
-            that2.Logger.error('playing failed ' + error);
-            //that2.next();
+            this.Logger.error('playing failed ' + error);
+            //this.next();
           });
         } else {
-          //t.next();
+          //next();
         }
       }
       //} else {
-      //  t.next();
+      //  next();
       //}
     } else {
-      //t.next();
+      //next();
     }
   }
 
@@ -428,16 +426,15 @@ export default class MediaPlayer {
 
   startProgressTimer() {
     this.stopProgressTimer();
-    var that = this;
-    this.timer = setInterval(function () {
-      if (that.remotePlayerConnected()) {
-        var currentMediaTime = that.remotePlayer.currentTime;
-        var currentMediaDuration = that.remotePlayer.duration;
+    this.timer = setInterval(() => {
+      if (this.remotePlayerConnected()) {
+        var currentMediaTime = this.remotePlayer.currentTime;
+        var currentMediaDuration = this.remotePlayer.duration;
         var playPercent = 100 * (currentMediaTime / currentMediaDuration);
         if (!isNaN(playPercent)) {
           $('#subProgress').attr('aria-valuenow', "100").css('width', "100%");
           $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
-          $('#mainTimeDisplay').html(that.AppUtilities.formatTime(currentMediaTime) + " / " + that.AppUtilities.formatTime(currentMediaDuration));
+          $('#mainTimeDisplay').html(this.AppUtilities.formatTime(currentMediaTime) + " / " + this.AppUtilities.formatTime(currentMediaDuration));
         }
       }
     }, 250);
@@ -455,23 +452,22 @@ export default class MediaPlayer {
   setupRemotePlayer() {
 
     if (!this.remoteConfigured) {
-      var that = this;
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_PAUSED_CHANGED,
-        function () {
-          that.togglePlayPause(that.remotePlayer.isPaused);
+        () => {
+          this.togglePlayPause(this.remotePlayer.isPaused);
         }
       );
 
-      that.remotePlayerController.addEventListener(
+      this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_MUTED_CHANGED,
-        function () {
-          that.isMuted = that.remotePlayer.isMuted;
-          if (that.isMuted) {
+        () => {
+          this.isMuted = this.remotePlayer.isMuted;
+          if (this.isMuted) {
             vol = 0;
             $('#volumeSlider').val(vol);
           } else {
-            vol = that.remotePlayer.volumeLevel;
+            vol = this.remotePlayer.volumeLevel;
             $('#volumeSlider').val(vol * 100);
           }
         }
@@ -479,24 +475,24 @@ export default class MediaPlayer {
 
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
-        function () {
-          $('#volumeSlider').val(that.remotePlayer.volumeLevel * 100);
+        () => {
+          $('#volumeSlider').val(this.remotePlayer.volumeLevel * 100);
         }
       );
 
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
-        function () {
-          that.Logger.debug('media info change');
-          that.Logger.debug(that.remotePlayer.mediaInfo);
-          if (that.remotePlayer && that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
-            var customData = that.remotePlayer.mediaInfo.metadata.customData;
+        () => {
+          this.Logger.debug('media info change');
+          this.Logger.debug(this.remotePlayer.mediaInfo);
+          if (this.remotePlayer && this.remotePlayer.mediaInfo && this.remotePlayer.mediaInfo.metadata) {
+            var customData = this.remotePlayer.mediaInfo.metadata.customData;
             if (customData) {
-              if (that.$rootScope.tracks.length > 0) {
+              if (this.$rootScope.tracks.length > 0) {
 
               } else {
-                that.$rootScope.tracks[0] = JSON.parse(customData);
-                that.selectedIndex = 0;
+                this.$rootScope.tracks[0] = JSON.parse(customData);
+                this.selectedIndex = 0;
               }
             }
           }
@@ -505,47 +501,47 @@ export default class MediaPlayer {
 
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
-        function () {
-          that.Logger.debug('state change ');
-          that.Logger.debug(that.remotePlayer.playerState);
+        () => {
+          this.Logger.debug('state change ');
+          this.Logger.debug(this.remotePlayer.playerState);
 
-          if (that.remotePlayer.playerState === null) {
-            if (that.remotePlayer.savedPlayerState) {
-              that.shouldSeek = true;
-              that.prePlannedSeek = that.remotePlayer.savedPlayerState.currentTime;
-              that.loadTrack(that.selectedIndex, that);
-              that.Logger.debug('saved state');
+          if (this.remotePlayer.playerState === null) {
+            if (this.remotePlayer.savedPlayerState) {
+              this.shouldSeek = true;
+              this.prePlannedSeek = this.remotePlayer.savedPlayerState.currentTime;
+              this.loadTrack(this.selectedIndex);
+              this.Logger.debug('saved state');
             } else {
-              that.next();
+              this.next();
             }
           }
-          if (that.remotePlayer.playerState === 'BUFFERING') {
+          if (this.remotePlayer.playerState === 'BUFFERING') {
             $('#mainTimeDisplay').html("Buffering...");
           }
-          if (that.remotePlayer.playerState === 'PLAYING' && that.shouldSeek) {
-            that.shouldSeek = false;
-            that.remotePlayer.currentTime = that.prePlannedSeek;
-            that.remotePlayerController.seek();
-            that.AppUtilities.broadcast('trackChangedEvent', that.selectedTrack());
+          if (this.remotePlayer.playerState === 'PLAYING' && this.shouldSeek) {
+            this.shouldSeek = false;
+            this.remotePlayer.currentTime = this.prePlannedSeek;
+            this.remotePlayerController.seek();
+            this.AppUtilities.broadcast('trackChangedEvent', this.selectedTrack());
           }
 
 
-          if (that.MediaElement.playing) {
-            that.shouldSeek = true;
-            that.prePlannedSeek = that.MediaElement.currentTime;
-            that.MediaElement.pause();
-            that.loadTrack(that.selectedIndex);
+          if (this.MediaElement.playing) {
+            this.shouldSeek = true;
+            this.prePlannedSeek = this.MediaElement.currentTime;
+            this.MediaElement.pause();
+            this.loadTrack(this.selectedIndex);
           }
-          that.isMuted = that.remotePlayer.isMuted;
-          if (that.isMuted) {
+          this.isMuted = this.remotePlayer.isMuted;
+          if (this.isMuted) {
             $('#volumeSlider').val(0);
           } else {
-            $('#volumeSlider').val(that.remotePlayer.volumeLevel * 100);
+            $('#volumeSlider').val(this.remotePlayer.volumeLevel * 100);
           }
 
-          that.togglePlayPause();
+          this.togglePlayPause();
           // TODO fix resume support
-          if (that.remotePlayer.mediaInfo && that.remotePlayer.mediaInfo.metadata) {
+          if (this.remotePlayer.mediaInfo && this.remotePlayer.mediaInfo.metadata) {
             //id = this.remotePlayer.mediaInfo.contentId;
 
             //id = id.split("&")[6];
