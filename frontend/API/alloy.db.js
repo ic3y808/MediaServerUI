@@ -1,419 +1,333 @@
-var _createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
+export default class AlloyApi {
+  constructor(obj) {
+    if (typeof obj !== 'object') {
+      throw new Error('Input must be an object & contain url & apikey');
+      return;
     }
-  }
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-}();
+    if (obj.hasOwnProperty('alloydb_host') && obj.hasOwnProperty('alloydb_port') && obj.hasOwnProperty('alloydb_apikey')) {
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
+    } else {
+      throw new TypeError('Input must be an object & contain url and apikey fields');
+      return;
+    }
+
+    this._settings = obj;
+  }
+
+  _toQueryString(params) {
+    var r = [];
+    for (var n in params) {
+      n = encodeURIComponent(n);
+      r.push(params[n] === null ? n : n + '=' + encodeURIComponent(params[n]));
+    }
+    return r.join('&');
+  }
+
+  _buildUrl(method, options) {
+    if (options !== null && typeof options === 'object') {
+      options = '&' + this._toQueryString(options);
+    }
+    if (!options) {
+      options = '';
+    }
+
+    if (this._settings.alloydb_use_ssl)
+      this._url = "https://";
+    else
+      this._url = "http://";
+
+    this._url += this._settings.alloydb_host;
+    if (this._settings.alloydb_include_port_in_url)
+      this._url += ":" + this._settings.alloydb_port;
+    return this._url + '/api/v1/' + method + '?' + this._toQueryString(this.params) + options;
+
+  }
+
+  _xhr(url, dataType) {
+    var _this2 = this;
+
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.responseType = dataType || 'json';
+      xhr.onload = resolve;
+      xhr.onerror = reject;
+      xhr.send();
+      _this2._lastXhr = xhr;
+    });
+  }
+
+  _xhrput(url, dataType) {
+    var _this2 = this;
+
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open("PUT", url, true);
+      xhr.responseType = dataType || 'json';
+      xhr.onload = resolve;
+      xhr.onerror = reject;
+      xhr.send();
+      _this2._lastXhr = xhr;
+    });
+  }
+
+  _xhrdel(url, dataType) {
+    var _this2 = this;
+
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open("DELETE", url, true);
+      xhr.responseType = dataType || 'json';
+      xhr.onload = resolve;
+      xhr.onerror = reject;
+      xhr.send();
+      _this2._lastXhr = xhr;
+    });
+  }
+
+  _get(method, options) {
+    var opt = {};
+    Object.assign(opt, {
+      api_key: this._settings.alloydb_apikey
+    }, options);
+    return new Promise((resolve, reject) => {
+      var url = this._buildUrl(method, opt);
+      this._xhr(url).then(e => {
+        var res = e.target.response;
+        resolve(res);
+      }, e => {
+        reject(e);
+      });
+    });
+  }
+
+  _put(method, options) {
+    var opt = {};
+    Object.assign(opt, {
+      api_key: this._settings.alloydb_apikey
+    }, options);
+    return new Promise((resolve, reject) => {
+      var url = this._buildUrl(method, opt);
+      this._xhrput(url).then(e => {
+        var res = e.target.response;
+        resolve(res);
+      }, fe => {
+        reject(e);
+      });
+    });
+  }
+  _delete(method, options) {
+    var opt = {};
+    Object.assign(opt, {
+      api_key: this._settings.alloydb_apikey
+    }, options);
+    return new Promise((resolve, reject) => {
+      var url = this._buildUrl(method, opt);
+      this._xhrdel(url).then(e => {
+        var res = e.target.response;
+        resolve(res);
+      }, e => {
+        reject(e);
+      });
+    });
+  }
+
+  ping() {
+    return this._get('system/ping');
+  }
+
+  getSchedulerStatus() {
+    return this._get('system/scheduler');
+  }
+
+  getLibraryInfo() {
+    return this._get('system/stats');
+  }
+
+  getMediaPaths() {
+    return this._get('config/mediapaths');
+  }
+
+  addMediaPath(mediaPath) {
+    return this._put('config/mediapaths', mediaPath);
+  }
+
+  removeMediaPath(mediaPath) {
+    return this._delete('config/mediapaths', mediaPath);
+  }
+
+  getFileList(path) {
+    return this._get('config/file_list', {
+      path: path
+    });
+  }
+
+  getFileParent(path) {
+    return this._get('config/file_parent', {
+      path: path
+    });
+  }
+
+  getMusicFolders() {
+    return this._get('browse/music_folders');
+  }
+
+  getMusicFoldersIndex() {
+    return this._get('browse/music_folders_index');
+  }
+
+  getRandomSongs() {
+    return this._get('list/random_songs');
+  }
+
+  getFresh(limit) {
+    return this._get('browse/fresh', {
+      limit: limit
+    });
+  }
+
+  getStarred() {
+    return this._get('list/starred');
+  }
+
+  getArtists() {
+    return this._get('browse/artists');
+  }
+
+  getAlbums() {
+    return this._get('list/album_list');
+  }
+
+  getAlbum(id)  {
+    return this._get('browse/album', {
+      id: id
+    });
+  }
+
+  getGenre(id) {
+    return this._get('browse/genre', {
+      id: id
+    });
+  }
+
+  getGenres() {
+    return this._get('browse/genres');
+  }
+
+  getSongsByGenre(id) {
+    return this._get('list/songs_by_genre', {
+      id: id
+    });
+  }
+
+  getArtist(id) {
+    return this._get('browse/artist', {
+      id: id
+    });
+  }
+
+  getArtistInfo(artist) {
+    return this._get('lastfm/artist_info', {
+      artist: artist
+    });
+  }
+
+  getAlbumInfo(artist, album) {
+    return this._get('lastfm/album_info', {
+      artist: artist,
+      album: album
+    });
+  }
+
+  getTrackInfo(id) {
+    return this._get('lastfm/track_info', {
+      id: id
+    });
+  }
+
+  getGenreInfo(genre) {
+    return this._get('lastfm/genre_info', {
+      genre: genre
+    });
+  }
+
+  scanFullStart() {
+    return this._get('system/start_full_scan');
+  }
+
+  scanQuickStart() {
+    return this._get('system/start_quick_scan');
+  }
+
+  scanStatus() {
+    return this._get('system/scan_status');
+  }
+
+  scanCancel() {
+    return this._get('system/cancel_scan');
+  }
+
+  search(query) {
+    return this._get('search', {
+      any: query
+    });
+  }
+
+  addPlay(id) {
+    return this._put('annotation/add_play', {
+      id: id
+    });
+  }
+
+  love(params) {
+    return this._put('lastfm/love', params);
+  }
+
+  unlove(params) {
+    return this._delete('lastfm/love', params);
+  }
+
+  star(params) {
+    return this._put('annotation/star', params);
+  }
+
+  unstar(params) {
+    return this._put('annotation/unstar', params);
+  }
+
+  stream(id, quality) {
+    return this._buildUrl('media/stream', {
+      api_key: this._settings.alloydb_apikey,
+      id: id,
+      quality: quality
+    })
+  }
+
+  download(id, quality) {
+    return this._buildUrl('media/download', {
+      api_key: this._settings.alloydb_apikey,
+      id: id
+    })
+  }
+
+  getCoverArt(id) {
+    return this._buildUrl('media/cover_art', {
+      api_key: this._settings.alloydb_apikey,
+      id: id
+    })
+  }
+
+  scrobble(id) {
+    return this._put('lastfm/scrobble', {
+      id: id,
+      submission: 'true'
+    });
+  }
+
+  scrobbleNowPlaying(id) {
+    return this._put('lastfm/scrobble', {
+      id: id,
+      submission: 'false'
+    });
   }
 }
-
-window.AlloyApi = function () {
-
-  var AlloyApi = function () {
-    function AlloyApi(obj) {
-      var _this = this;
-
-      _classCallCheck(this, AlloyApi);
-
-      if (typeof obj !== 'object') {
-        throw new Error('Input must be an object & contain url & apikey');
-        return;
-      }
-      if (obj.hasOwnProperty('alloydb_host') && obj.hasOwnProperty('alloydb_port') && obj.hasOwnProperty('alloydb_apikey')) {
-
-      } else {
-        throw new TypeError('Input must be an object & contain url and apikey fields');
-        return;
-      }
-
-      this._settings = obj;
-    }
-
-
-    _createClass(AlloyApi, [{
-      key: '_toQueryString',
-      value: function _toQueryString(params) {
-        var r = [];
-        for (var n in params) {
-          n = encodeURIComponent(n);
-          r.push(params[n] === null ? n : n + '=' + encodeURIComponent(params[n]));
-        }
-        return r.join('&');
-      }
-    },
-    {
-      key: '_buildUrl',
-      value: function _buildUrl(method, options) {
-        if (options !== null && typeof options === 'object') {
-          options = '&' + this._toQueryString(options);
-        }
-        if (!options) {
-          options = '';
-        }
-
-        if (this._settings.alloydb_use_ssl)
-          this._url = "https://";
-        else
-          this._url = "http://";
-
-        this._url += this._settings.alloydb_host;
-        if (this._settings.alloydb_include_port_in_url)
-          this._url += ":" + this._settings.alloydb_port;
-        return this._url + '/api/v1/' + method + '?' + this._toQueryString(this.params) + options;
-
-      }
-    },
-    {
-      key: '_xhr',
-      value: function _xhr(url, dataType) {
-        var _this2 = this;
-
-        return new Promise(function (resolve, reject) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("GET", url, true);
-          xhr.responseType = dataType || 'json';
-          xhr.onload = resolve;
-          xhr.onerror = reject;
-          xhr.send();
-          _this2._lastXhr = xhr;
-        });
-      }
-    },
-    {
-      key: '_xhrput',
-      value: function _xhrput(url, dataType) {
-        var _this2 = this;
-
-        return new Promise(function (resolve, reject) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("PUT", url, true);
-          xhr.responseType = dataType || 'json';
-          xhr.onload = resolve;
-          xhr.onerror = reject;
-          xhr.send();
-          _this2._lastXhr = xhr;
-        });
-      }
-    },
-    {
-      key: '_xhrdel',
-      value: function _xhrput(url, dataType) {
-        var _this2 = this;
-
-        return new Promise(function (resolve, reject) {
-          var xhr = new XMLHttpRequest();
-          xhr.open("DELETE", url, true);
-          xhr.responseType = dataType || 'json';
-          xhr.onload = resolve;
-          xhr.onerror = reject;
-          xhr.send();
-          _this2._lastXhr = xhr;
-        });
-      }
-    },
-    {
-      key: '_get',
-      value: function _get(method, options) {
-        var _that = this;
-        var opt = {};
-        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl(method, opt);
-          _that._xhr(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
-      }
-    },
-    {
-      key: '_put',
-      value: function _put(method, options) {
-        var _that = this;
-        var opt = {};
-        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl(method, opt);
-          _that._xhrput(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
-      }
-    },
-    {
-      key: '_delete',
-      value: function _delete(method, options) {
-        var _that = this;
-        var opt = {};
-        Object.assign(opt, { api_key: _that._settings.alloydb_apikey }, options);
-        return new Promise(function (resolve, reject) {
-          var url = _that._buildUrl(method, opt);
-          _that._xhrdel(url).then(function (e) {
-            var res = e.target.response;
-            resolve(res);
-          }, function (e) {
-            reject(e);
-          });
-        });
-      }
-    },
-    {
-      key: 'ping',
-      value: function ping() {
-        return this._get('system/ping');
-      }
-    },
-    {
-      key: 'getSchedulerStatus',
-      value: function getSchedulerStatus() {
-        return this._get('system/scheduler');
-      }
-    },
-    {
-      key: 'getLibraryInfo',
-      value: function getLibraryInfo() {
-        return this._get('system/stats');
-      }
-    },
-    {
-      key: 'getMediaPaths',
-      value: function getMediaPaths() {
-        return this._get('config/mediapaths');
-      }
-    },
-    {
-      key: 'addMediaPath',
-      value: function addMediaPath(mediaPath) {
-        return this._put('config/mediapaths', mediaPath);
-      }
-    },
-    {
-      key: 'removeMediaPath',
-      value: function removeMediaPath(mediaPath) {
-        return this._delete('config/mediapaths', mediaPath);
-      }
-    },
-    {
-      key: 'getFileList',
-      value: function getFileList(path) {
-        return this._get('config/file_list', { path: path });
-      }
-    },
-    {
-      key: 'getFileParent',
-      value: function getFileParent(path) {
-        return this._get('config/file_parent', { path: path });
-      }
-    },
-    {
-      key: 'getMusicFolders',
-      value: function getMusicFolders() {
-        return this._get('browse/music_folders');
-      }
-    },
-    {
-      key: 'getMusicFoldersIndex',
-      value: function getMusicFoldersIndex() {
-        return this._get('browse/music_folders_index');
-      }
-    },
-    {
-      key: 'getRandomSongs',
-      value: function getRandomSongs() {
-        return this._get('list/random_songs');
-      }
-    },
-    {
-      key: 'getFresh',
-      value: function getFresh(limit) {
-        return this._get('browse/fresh', { limit: limit });
-      }
-    },
-    {
-      key: 'getStarred',
-      value: function getStarred() {
-        return this._get('list/starred');
-      }
-    },
-    {
-      key: 'getArtists',
-      value: function getArtists() {
-        return this._get('browse/artists');
-      }
-    },
-    {
-      key: 'getAlbums',
-      value: function getAlbums() {
-        return this._get('list/album_list');
-      }
-    },
-    {
-      key: 'getAlbum',
-      value: function id(id) {
-        return this._get('browse/album', { id: id });
-      }
-    },
-    {
-      key: 'getGenre',
-      value: function getGenre(id) {
-        return this._get('browse/genre', { id: id });
-      }
-    },
-    {
-      key: 'getGenres',
-      value: function getGenres() {
-        return this._get('browse/genres');
-      }
-    },
-    {
-      key: 'getSongsByGenre',
-      value: function getSongsByGenre(id) {
-        return this._get('list/songs_by_genre', { id: id });
-      }
-    },
-    {
-      key: 'getArtist',
-      value: function getArtist(id) {
-        return this._get('browse/artist', { id: id });
-      }
-    },
-    {
-      key: 'getArtistInfo',
-      value: function getArtistInfo(artist) {
-        return this._get('lastfm/artist_info', { artist: artist });
-      }
-    },
-    {
-      key: 'getAlbumInfo',
-      value: function getAlbumInfo(artist, album) {
-        return this._get('lastfm/album_info', { artist: artist, album: album });
-      }
-    },
-    {
-      key: 'getTrackInfo',
-      value: function getTrackInfo(id) {
-        return this._get('lastfm/track_info', { id: id });
-      }
-    },
-    {
-      key: 'getGenreInfo',
-      value: function getGenreInfo(genre) {
-        return this._get('lastfm/genre_info', { genre: genre });
-      }
-    },
-    {
-      key: 'scanFullStart',
-      value: function scanFullStart() {
-        return this._get('system/start_full_scan');
-      }
-    },
-    {
-      key: 'scanQuickStart',
-      value: function scanQuickStart() {
-        return this._get('system/start_quick_scan');
-      }
-    },
-    {
-      key: 'scanStatus',
-      value: function scanStatus() {
-        return this._get('system/scan_status');
-      }
-    },
-    {
-      key: 'scanCancel',
-      value: function scanCancel() {
-        return this._get('system/cancel_scan');
-      }
-    },
-    {
-      key: 'search',
-      value: function search(query) {
-        return this._get('search', { any: query });
-      }
-    },
-    {
-      key: 'addPlay',
-      value: function addPlay(id) {
-        return this._put('annotation/add_play', { id: id });
-      }
-    },
-    {
-      key: 'love',
-      value: function love(params) {
-        return this._put('lastfm/love', params);
-      }
-    },
-    {
-      key: 'unlove',
-      value: function unlove(params) {
-        return this._delete('lastfm/love', params);
-      }
-    },
-    {
-      key: 'star',
-      value: function star(params) {
-        return this._put('annotation/star', params);
-      }
-    },
-    {
-      key: 'unstar',
-      value: function unstar(params) {
-        return this._put('annotation/unstar', params);
-      }
-    },
-    {
-      key: 'stream',
-      value: function stream(id, quality) {
-        return this._buildUrl('media/stream', { api_key: this._settings.alloydb_apikey, id: id, quality: quality })
-      }
-    },
-    {
-      key: 'download',
-      value: function download(id, quality) {
-        return this._buildUrl('media/download', { api_key: this._settings.alloydb_apikey, id: id })
-      }
-    },
-    {
-      key: 'getCoverArt',
-      value: function getCoverArt(id) {
-        return this._buildUrl('media/cover_art', { api_key: this._settings.alloydb_apikey, id: id })
-      }
-    },
-    {
-      key: 'scrobble',
-      value: function scrobble(id) {
-        return this._put('lastfm/scrobble', { id: id, submission: 'true' });
-      }
-    },
-    {
-      key: 'scrobbleNowPlaying',
-      value: function scrobbleNowPlaying(id) {
-        return this._put('lastfm/scrobble', { id: id, submission: 'false' });
-      }
-    },
-    ]);
-
-    return AlloyApi;
-  }();
-
-  return AlloyApi;
-}();

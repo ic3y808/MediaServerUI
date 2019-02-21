@@ -13,24 +13,24 @@ class ConfigController {
     this.MediaPlayer = MediaPlayer;
     this.Logger.debug('config-controller');
     this.AppUtilities.showLoader();
-    var that = this;
 
 
-    this.$scope.jumpTo = function (to) {
-      that.$location.path('/config/' + to);
+
+    this.$scope.jumpTo = to => {
+      this.$location.path('/config/' + to);
     };
 
-    this.$scope.navigate = function (to) {
-      $('.PageContentBody-contentBody').append(that.$compile("<config" + to + "/>")(that.$scope));
-      that.AppUtilities.apply();
+    this.$scope.navigate = to => {
+      $('.PageContentBody-contentBody').append(this.$compile("<config" + to + "/>")(this.$scope));
+      this.AppUtilities.apply();
     };
 
-    this.$scope.toggleAdvanced = function () {
+    this.$scope.toggleAdvanced = () =>  {
      $rootScope.settings.advanced_mode = !$rootScope.settings.advanced_mode;
-      that.AppUtilities.apply();
+      this.AppUtilities.apply();
     };
 
-    this.$rootScope.triggerConfigAlert = function (message, type) {
+    this.$rootScope.triggerConfigAlert = (message, type) =>  {
       //$('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
       setTimeout(() => {
         // $('.config-alert').hide(500);
@@ -58,9 +58,9 @@ class ConfigController {
       //container: '.PageContentBody-contentBody',
       placement: "bottom",
     })
-    //.on('shown.bs.popover', function () {
+    //.on('shown.bs.popover', () =>  {
     //  var $pop = $(this);
-    //  setTimeout(function () {
+    //  setTimeout(() =>  {
     //      $pop.popover('hide');
     //  }, 2000);
     //});;

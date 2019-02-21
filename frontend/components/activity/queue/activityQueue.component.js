@@ -10,24 +10,24 @@ class ActivityQueueController {
     this.Backend = Backend;
     this.Logger.debug('activity-queue-controller');
     this.AppUtilities.showLoader();
-    var that = this;
+
     this.$scope.queue = [];
-    
-    $scope.$on('$destroy', function () {
+
+    $scope.$on('$destroy', () => {
       clearInterval($scope.refreshIntereval);
     });
 
-    $rootScope.$on('sabnzbdQueueResult', function (event, data) {
-      that.Logger.debug('sabnzbd queue result');
+    $rootScope.$on('sabnzbdQueueResult', (event, data) => {
+      this.Logger.debug('sabnzbd queue result');
       $scope.queue = JSON.parse(data);
       AppUtilities.updateGridRows($scope.gridOptions);
-      that.AppUtilities.apply();
-      that.AppUtilities.hideLoader();
+      this.AppUtilities.apply();
+      this.AppUtilities.hideLoader();
     });
 
-    $scope.refreshIntereval = setInterval(function () {
-      if(this.$rootScope.socket)
-       this.$rootScope.socket.emit('get_sabnzbd_queue');
+    $scope.refreshIntereval = setInterval(() => {
+      if (this.$rootScope.socket)
+        this.$rootScope.socket.emit('get_sabnzbd_queue');
     }, 1000);
 
 

@@ -1,4 +1,5 @@
-module.exports = function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
+export default function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
+  "ngInject";
   return {
     restrict: 'E',
     scope: {

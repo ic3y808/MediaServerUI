@@ -22,58 +22,57 @@ class GenreController {
     $scope.albums_expanded = true;
     $scope.genre.tracks_expanded = false;
     $scope.genre = this.$routeParams.id;
-    var that = this;
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
+    $scope.getCoverArt = id => {
+      return this.AlloyDbService.getCoverArt(id);
     }
 
-    $scope.getGenre = function () {
+    $scope.getGenre = () => {
       var cache = Cache.get($routeParams.id);
 
       if (cache) {
         $scope.genre = cache;
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
       } else {
         if (AlloyDbService.isLoggedIn) {
-          that.AlloyDbService.getGenre(that.$routeParams.id).then(function (result) {
+          this.AlloyDbService.getGenre(this.$routeParams.id).then(result => {
             $scope.genre = result;
 
             var randomTrack = $scope.genre.tracks[Math.floor(Math.random() * $scope.genre.tracks.length)];
             if (randomTrack) {
-              $scope.genre.image = that.AlloyDbService.getCoverArt(randomTrack.cover_art);
+              $scope.genre.image = this.AlloyDbService.getCoverArt(randomTrack.cover_art);
             }
 
-            var genreInfo = that.AlloyDbService.getGenreInfo($scope.genre.name);
+            var genreInfo = this.AlloyDbService.getGenreInfo($scope.genre.name);
             if (genreInfo) {
-              genreInfo.then(function (result) {
+              genreInfo.then(result => {
                 $scope.genre.genreinfo = result.genreInfo;
                 $scope.genre.genreinfo.wiki.summary = $scope.genre.genreinfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
                 Cache.put($routeParams.id, $scope.genre);
-                that.AppUtilities.apply();
+                this.AppUtilities.apply();
               });
             }
-            that.AppUtilities.apply();
-            that.AppUtilities.hideLoader();
+            this.AppUtilities.apply();
+            this.AppUtilities.hideLoader();
           });
         }
       }
     };
 
-    $scope.toggleAlbums = function () {
+    $scope.toggleAlbums = () => {
       if ($scope.albums_expanded) $('#albumListContainer').hide();
       else $('#albumListContainer').show();
       $scope.albums_expanded = !$scope.albums_expanded;
     }
 
-    $scope.toggleTracks = function () {
+    $scope.toggleTracks = () => {
       if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
       $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
     }
 
-    $scope.toggleAll = function () {
+    $scope.toggleAll = () => {
       $scope.genre.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
@@ -86,20 +85,20 @@ class GenreController {
       $scope.all_expanded = !$scope.all_expanded;
     }
 
-    $scope.refresh = function () {
-      that.Logger.debug('refresh genre');
+    $scope.refresh = () => {
+      this.Logger.debug('refresh genre');
       Cache.put($routeParams.id, null);
       $scope.getGenre();
     };
 
-    $scope.shuffle = function () {
-      that.Logger.debug('shuffle play');
+    $scope.shuffle = () => {
+      this.Logger.debug('shuffle play');
       $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
       MediaPlayer.loadTrack(0);
     };
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Logger.debug('Genre reload on loginsatuschange');
+    $rootScope.$on('loginStatusChange', (event, data) =>  {
+      this.Logger.debug('Genre reload on loginsatuschange');
       $scope.refresh();
     });
 

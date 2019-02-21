@@ -28,25 +28,24 @@ class ArtistController {
     $('#trackListContainer').hide();
 
 
-    var that = this;
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
+    $scope.getCoverArt = id => {
+      return this.AlloyDbService.getCoverArt(id);
     }
 
-    $scope.toggleAlbums = function () {
+    $scope.toggleAlbums = () => {
       if ($scope.albums_expanded) $('#albumListContainer').hide();
       else $('#albumListContainer').show();
       $scope.albums_expanded = !$scope.albums_expanded;
     }
 
-    $scope.toggleTracks = function () {
+    $scope.toggleTracks = () => {
       if ($scope.artist.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
       $scope.artist.tracks_expanded = !$scope.artist.tracks_expanded;
     }
 
-    $scope.toggleAll = function () {
+    $scope.toggleAll = () => {
       $scope.artist.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
@@ -59,36 +58,36 @@ class ArtistController {
       $scope.all_expanded = !$scope.all_expanded;
     }
 
-    $scope.getTags = function (obj) {
+    $scope.getTags = obj => {
       return obj;
     }
 
-    $scope.getArtist = function () {
+    $scope.getArtist = () => {
 
       var cache = Cache.get($routeParams.id);
 
       if (cache) {
         $scope.artist = cache;
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
       } else {
-        var artist = that.AlloyDbService.getArtist($routeParams.id);
+        var artist = this.AlloyDbService.getArtist($routeParams.id);
         if (artist) {
-          artist.then(function (info) {
+          artist.then(info => {
 
             $scope.info = info;
 
-            that.AppUtilities.apply();
-            that.AppUtilities.hideLoader();
+            this.AppUtilities.apply();
+            this.AppUtilities.hideLoader();
 
-            //var artistInfo = that.AlloyDbService.getArtistInfo($scope.artist.name);
+            //var artistInfo = this.AlloyDbService.getArtistInfo($scope.artist.name);
             //if (artistInfo) {
             //  artistInfo.then(function (info) {
             //    if (info.artistInfo) {
             //      $scope.artist.artistInfo = info.artistInfo;
-//
+            //
             //      angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope));
-//
+            //
             //      if ($scope.artist.artistInfo.bio) {
             //        $scope.artist.artistInfo.bio.summary = $scope.artist.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
             //      }
@@ -106,17 +105,17 @@ class ArtistController {
             //        });
             //      }
             //      Cache.put($routeParams.id, artist);
-            //      that.AppUtilities.apply();
-            //      that.AppUtilities.hideLoader();
+            //      this.AppUtilities.apply();
+            //      this.AppUtilities.hideLoader();
             //    } else {
-            //      that.AppUtilities.hideLoader();
+            //      this.AppUtilities.hideLoader();
             //    }
             //  });
             //}
-//
-          //
+            //
+            //
 
-            that.AppUtilities.apply();
+            this.AppUtilities.apply();
           });
         }
       }
@@ -124,47 +123,51 @@ class ArtistController {
 
     };
 
-    $scope.refresh = function () {
-      that.Logger.debug('refresh artist');
+    $scope.refresh = () => {
+      this.Logger.debug('refresh artist');
       Cache.put($routeParams.id, null);
       $scope.getArtist();
     };
 
-    $scope.startRadio = function () {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (similarSongs) {
-        that.Logger.debug('starting radio');
+    $scope.startRadio = () => {
+      AlloyDbService.getSimilarSongs2($routeParams.id).then(similarSongs => {
+        this.Logger.debug('starting radio');
         $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
       });
     };
 
-    $scope.shuffle = function () {
-      that.Logger.debug('shuffle play');
-      that.$rootScope.tracks = AppUtilities.shuffle($scope.artist.tracks);
-      that.MediaPlayer.loadTrack(0);
+    $scope.shuffle = () => {
+      this.Logger.debug('shuffle play');
+      this.$rootScope.tracks = AppUtilities.shuffle($scope.info.tracks);
+      this.MediaPlayer.loadTrack(0);
     };
 
-    $scope.starArtist = function () {
-      that.Logger.info('Trying to star artist: ' + $scope.artist.name);
+    $scope.starArtist = () => {
+      this.Logger.info('Trying to star artist: ' + $scope.info.name);
       if ($scope.artist.starred === 'true') {
-        that.AlloyDbService.unstar({ artist: that.$routeParams.id }).then(function (result) {
-          that.Logger.info('UnStarred '  + $scope.artist.name + ' ' + JSON.stringify(result));
-          that.$scope.artist.starred = 'false'
-          that.AppUtilities.apply();
+        this.AlloyDbService.unstar({
+          artist: this.$routeParams.id
+        }).then(result => {
+          this.Logger.info('UnStarred ' + $scope.info.name + ' ' + JSON.stringify(result));
+          this.$scope.info.starred = 'false'
+          this.AppUtilities.apply();
         });
       } else {
-        that.AlloyDbService.star({ artist: that.$routeParams.id }).then(function (result) {
-          that.Logger.info('Starred '  + $scope.artist.name + ' ' + JSON.stringify(result));
-          that.$scope.artist.starred = 'true'
-          that.AppUtilities.apply();
+        this.AlloyDbService.star({
+          artist: this.$routeParams.id
+        }).then(result => {
+          this.Logger.info('Starred ' + $scope.info.name + ' ' + JSON.stringify(result));
+          this.$scope.info.starred = 'true'
+          this.AppUtilities.apply();
         });
       }
     };
 
 
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Logger.debug('Artist reload on loginsatuschange');
+    $rootScope.$on('loginStatusChange', (event, data) => {
+      this.Logger.debug('Artist reload on loginsatuschange');
       $scope.getArtist();
     });
 

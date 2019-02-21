@@ -12,33 +12,32 @@ class IndexController {
     this.Logger.debug('index-controller');
     this.AppUtilities.showLoader();
     $scope.artists = [];
-    var that = this;
 
-    $scope.refresh = function () {
+    $scope.refresh = () => {
       AlloyDbService.refreshIndex();
     };
 
-    $scope.reloadArtists = function () {
+    $scope.reloadArtists = () => {
       $scope.artists = [];
-      var getMusicFoldersIndex = that.AlloyDbService.getMusicFoldersIndex();
+      var getMusicFoldersIndex = this.AlloyDbService.getMusicFoldersIndex();
       if (getMusicFoldersIndex) {
-        getMusicFoldersIndex.then(function (result) {
+        getMusicFoldersIndex.then(result => {
           $scope.artists = result;
-          that.AppUtilities.apply();
-          that.AppUtilities.hideLoader();
+          this.AppUtilities.apply();
+          this.AppUtilities.hideLoader();
         });
       }
     };
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
-      that.Logger.debug('Index reload on loginsatuschange');
+    $rootScope.$on('loginStatusChange', (event, data) =>  {
+      this.Logger.debug('Index reload on loginsatuschange');
 
     });
 
-    $rootScope.$watch('music_index', function (newVal, oldVal) {
+    $rootScope.$watch('music_index',  (newVal, oldVal) => {
       if ($rootScope.music_index) {
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
       }
     });
   }

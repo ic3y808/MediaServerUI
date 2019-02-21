@@ -13,24 +13,23 @@ class StarredController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('starred-controller');
     this.AppUtilities.showLoader();
-    var that = this;
 
-    $scope.toggleContinousPlay = function () {
+    $scope.toggleContinousPlay = () => {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
-    $scope.getCoverArt = function (id) {
-      return that.AlloyDbService.getCoverArt(id);
+    $scope.getCoverArt = id => {
+      return this.AlloyDbService.getCoverArt(id);
     }
 
-    $scope.findNowPlaying = function (id) {
-      $rootScope.fresh_albums.forEach(function (album) {
+    $scope.findNowPlaying = id => {
+      $rootScope.fresh_albums.forEach(album => {
 
       });
     }
 
-    $scope.getAlbum = function (album) {
-      that.$scope.tracks = album.tracks;
+    $scope.getAlbum = album => {
+      this.$scope.tracks = album.tracks;
 
       if ($scope.play_prev_album) {
         $rootScope.tracks = $scope.tracks;
@@ -47,44 +46,44 @@ class StarredController {
       
     }
 
-    $scope.refresh = function () {
+    $scope.refresh = () => {
       AlloyDbService.refreshStarred();
     };
 
-    $scope.shuffle = function () {
-      that.Logger.debug('shuffle play');
+    $scope.shuffle = () => {
+      this.Logger.debug('shuffle play');
       $rootScope.tracks = AppUtilities.shuffle($rootScope.starred_tracks);
       MediaPlayer.loadTrack(0);
     };
 
-    $rootScope.$watch('starred_tracks', function (newVal, oldVal) {
+    $rootScope.$watch('starred_tracks', (newVal, oldVal) =>  {
       if ($rootScope.starred_tracks) {
 
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
       }
     });
 
-    $rootScope.$watch('starred_albums', function (newVal, oldVal) {
+    $rootScope.$watch('starred_albums', (newVal, oldVal) =>  {
       if ($rootScope.starred_albums) {
 
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
-        $timeout(function () {
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
+        $timeout(() => {
           $scope.coverflow = coverflow('player').setup({
             playlist: $rootScope.starred_albums,
             width: '100%',
             coverwidth: 200,
             coverheight: 200,
             fixedsize: true,
-          }).on('ready', function () {
-            this.on('focus', function (index) {
+          }).on('ready', function() {
+            this.on('focus', index => {
               //if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
               //  $scope.getAlbum($rootScope.starred_albums[index]);
               //}
             });
 
-            this.on('click', function (index, link) {
+            this.on('click', (index, link) =>  {
               //if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
               //  $scope.getAlbum($rootScope.starred_albums[index]);
               //}

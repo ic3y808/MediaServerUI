@@ -11,21 +11,21 @@ class ActivityHistoryController {
     //this.sabnzbdService = sabnzbdService;
     this.Logger.debug('activity-history-controller');
     this.AppUtilities.showLoader();
-    var that = this;
+
     this.$scope.history = [];
    
-    $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', () =>  {
       clearInterval($scope.refreshIntereval);
     });
 
     $rootScope.$on('sabnzbdHistoryResult', function (event, data) {
-      that.Logger.debug('sabnzbd history result');
+      this.Logger.debug('sabnzbd history result');
       $scope.history = JSON.parse(data);
-      that.AppUtilities.apply();
-      that.AppUtilities.hideLoader();
+      this.AppUtilities.apply();
+      this.AppUtilities.hideLoader();
     });
 
-    $scope.refreshIntereval = setInterval(function () {
+    $scope.refreshIntereval = setInterval(() =>  {
       if(this.$rootScope.socket)
        this.$rootScope.socket.emit('get_sabnzbd_history');
     }, 10000);

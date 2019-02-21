@@ -11,35 +11,33 @@ class ActivityController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.Logger.debug('activity-controller');
-    var that = this;
 
-
-    this.$scope.jumpTo = function (to) {
-      that.$location.path('/activity/' + to);
+    this.$scope.jumpTo = to => {
+      $location.path('/activity/' + to);
     };
 
-    this.$scope.navigate = function (to) {
-      $('.PageContentBody-contentBody').append(that.$compile("<activity" + to + "/>")(that.$scope));
-      that.AppUtilities.apply();
+    this.$scope.navigate = to => {
+      $('.PageContentBody-contentBody').append(this.$compile("<activity" + to + "/>")(this.$scope));
+      this.AppUtilities.apply();
     };
 
-    this.$scope.configQueue = function () {
-      that.Logger.debug('activityQueue');
-      that.$scope.navigate('queue');
+    this.$scope.configQueue = () =>  {
+      this.Logger.debug('activityQueue');
+      this.$scope.navigate('queue');
     };
 
-    this.$scope.configHistory = function () {
-      that.Logger.debug('activityHistory');
-      that.$scope.navigate('history');
+    this.$scope.configHistory = () =>  {
+      this.Logger.debug('activityHistory');
+      this.$scope.navigate('history');
     };
 
-    this.$scope.configBlacklist = function () {
-      that.Logger.debug('activityBlacklist');
-      that.$scope.navigate('blacklist');
+    this.$scope.configBlacklist = () => {
+      this.Logger.debug('activityBlacklist');
+      this.$scope.navigate('blacklist');
     };
 
-    AppUtilities.apply();
-    AppUtilities.hideLoader();
+    this.AppUtilities.apply();
+    this.AppUtilities.hideLoader();
 
   }
 

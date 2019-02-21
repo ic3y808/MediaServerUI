@@ -1,6 +1,6 @@
 
-
-module.exports = function () {
+export default function () {
+  "ngInject";
   return {
     restrict: 'E',
     // object is passed while making the call

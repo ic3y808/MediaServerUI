@@ -12,11 +12,11 @@ class NavbarController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('nav-controller');
-    var that = this;
+
 
     $scope.selectedObject = null;
 
-    $("#search-box").mouseenter(function () {
+    $("#search-box").mouseenter(() => {
       $('#search-box').focus();
     });
 
@@ -49,30 +49,30 @@ class NavbarController {
       containerTemplate: html,
       //noMatchTemplate: noMatch,
       activateOnFocus: true,
-      itemSelected: function (e) {
-       // that.selectedObject = e.item;
+      itemSelected: e => {
+       // this.selectedObject = e.item;
 
 
         switch (e.type.title) {
           case "Artists":
-            that.$location.path("/artist/" + e.item.base_id);
+            this.$location.path("/artist/" + e.item.base_id);
             break;
           case "Songs":
-            that.$location.path("/album/" + e.item.album_id + "/" + e.item.id);
+            this.$location.path("/album/" + e.item.album_id + "/" + e.item.id);
             break;
           case "Albums":
-            that.$location.path("/album/" + e.item.album_id);
+            this.$location.path("/album/" + e.item.album_id);
             break;
           case "Genres":
-            that.$location.path("/genre/" + e.item.genre_id);
+            this.$location.path("/genre/" + e.item.genre_id);
             break;
         }
 
       },
-      data: function (searchText, pagingParams) {
-        that.loading = true;
+      data: (searchText, pagingParams) =>  {
+        this.loading = true;
 
-        return that.AlloyDbService.search(searchText).then(function (result) {
+        return this.AlloyDbService.search(searchText).then(result => {
           searchText = searchText.toUpperCase();
 
           var results = [
@@ -94,7 +94,7 @@ class NavbarController {
             }
           ];
 
-          that.loading = false;
+          this.loading = false;
           return results;
         });
       }

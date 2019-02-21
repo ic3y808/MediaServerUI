@@ -1,4 +1,5 @@
-module.exports = function ($rootScope, $location, Logger, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
+export default function ($rootScope, $location, Logger, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
+  "ngInject";
   return {
     restrict: 'E',
     scope: {
@@ -57,7 +58,7 @@ module.exports = function ($rootScope, $location, Logger, Backend, AppUtilities,
       }
 
       scope.playArtist = function (artist) {
-        var artistRquest = AlloyDbService.getArtist(artist.base_id);
+        var artistRquest = AlloyDbService.getArtist(artist.id);
         if (artistRquest) {
           artistRquest.then(function (artist) {
             Logger.debug('selection changed');

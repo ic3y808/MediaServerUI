@@ -12,20 +12,20 @@ class HomeController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('home-controller');
-    var that = this;
+
     $scope.refreshing = false;
     AppUtilities.showLoader();
 
-    $scope.refresh = function () {
+    $scope.refresh = () => {
       AlloyDbService.refreshFresh();
       AlloyDbService.refreshRandom();
     };
 
-    $rootScope.$watch('fresh_albums', function (newVal, oldVal) {
+    $rootScope.$watch('fresh_albums', (newVal, oldVal) =>  {
       if ($rootScope.fresh_albums) {
 
 
-        $timeout(function () {
+        $timeout(() => {
           $scope.coverflow = coverflow('player').setup({
 
             playlist: $rootScope.fresh_albums,
@@ -35,29 +35,29 @@ class HomeController {
             coverheight: 100,
             //reflectionoffset: -10,
             //fixedsize: true,
-          }).on('ready', function () {
-            this.on('focus', function (index) {
+          }).on('ready', function() {
+            this.on('focus', index => {
 
             });
 
-            this.on('click', function (index, link) {
+            this.on('click', (index, link) =>  {
 
             });
-          });
-          that.AppUtilities.apply();
-          that.AppUtilities.hideLoader();
+          })
+          this.AppUtilities.apply();
+          this.AppUtilities.hideLoader();
         });
       }
     });
 
-    $rootScope.$watch('random', function (newVal, oldVal) {
+    $rootScope.$watch('random', (newVal, oldVal) =>  {
       if ($rootScope.random) {
         var randomTrack = $rootScope.random[Math.floor(Math.random() * $rootScope.random.length)];
         if (randomTrack.cover_art) {
-          $scope.artistImage = that.AlloyDbService.getCoverArt(randomTrack.cover_art)
+          $scope.artistImage = this.AlloyDbService.getCoverArt(randomTrack.cover_art)
         }
-        that.AppUtilities.apply();
-        that.AppUtilities.hideLoader();
+        this.AppUtilities.apply();
+        this.AppUtilities.hideLoader();
       }
     });
   }
