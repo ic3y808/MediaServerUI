@@ -16,17 +16,10 @@ nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top
       li.nav-item
         a.nav-link(href='/starred') Starred
       li.nav-item
+        a.nav-link(href='/starred') Charts
+      li.nav-item
         a.nav-link(href='/playlists') Playlists
-      li.nav-item.dropdown.d-sm-block.d-md-none
-        a#smallerscreenmenu.nav-link.dropdown-toggle(href='#', data-toggle='dropdown', aria-haspopup='true', aria-expanded='false')
-          | Menu
-        .dropdown-menu(aria-labelledby='smallerscreenmenu')
-          a.dropdown-item(href='#') Dashboard
-          a.dropdown-item(href='#') Profile
-          a.dropdown-item(href='#') Tasks
-          a.dropdown-item(href='#') Etc ...
+
     form.form-inline
-      //input#search-box.form-control.form-control-sm.mr-sm-2(type='text', placeholder='Search')
-      
       input#search-box.form-control.form-control-sm.mr-sm-2(type='text', ng-model='searchText', placeholder="Search...", auto-complete='autoCompleteOptions', autocomplete="off")
 
