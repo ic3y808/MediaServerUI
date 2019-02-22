@@ -31,7 +31,10 @@ export default class AlloyDbService {
             this.Logger.info('logging into alloydb is ' + JSON.stringify(result));
           }
 
-          this.AppUtilities.broadcast('loginStatusChange', { service: 'alloydb', isLoggedIn: this.isLoggedIn });
+          this.AppUtilities.broadcast('loginStatusChange', {
+            service: 'alloydb',
+            isLoggedIn: this.isLoggedIn
+          });
         });
 
 
@@ -281,6 +284,13 @@ export default class AlloyDbService {
     else return false;
   }
 
+  setRating(params) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.setRating(params);
+    else return false;
+  }
+
   stream(id, quality) {
     this.doLogin();
     if (this.isLoggedIn)
@@ -317,7 +327,7 @@ export default class AlloyDbService {
   }
 
   loadArtists(data) {
-    
+
     if (data) {
       data.forEach(info => {
         if (info.artists) {
@@ -329,7 +339,7 @@ export default class AlloyDbService {
   }
 
   loadFresh(data) {
-    
+
     if (data) {
       data.forEach(info => {
         if (info.fresh && info.fresh.albums) {
@@ -345,9 +355,9 @@ export default class AlloyDbService {
   }
 
   loadAlbums(data) {
-    
+
     if (data) {
-      data.forEach(info=> {
+      data.forEach(info => {
         if (info.albums) {
           this.$rootScope.albums = info.albums;
           //this.$rootScope.albums.forEach(album =>  {
@@ -361,9 +371,9 @@ export default class AlloyDbService {
   }
 
   loadGenres(data) {
-    
+
     if (data) {
-      data.forEach(info=> {
+      data.forEach(info => {
         if (info.genres) {
           this.$rootScope.genres = info.genres;
           this.AppUtilities.apply();
@@ -373,14 +383,14 @@ export default class AlloyDbService {
   }
 
   loadStarred(data) {
-    
+
     if (data) {
-      data.forEach(info=> {
+      data.forEach(info => {
         if (info.starred) {
           this.$rootScope.starred_tracks = info.starred.tracks;
           this.$rootScope.starred_albums = info.starred.albums;
-          this.$rootScope.starred_albums.forEach(album=> {
-            album.image = this.getCoverArt(album.cover_art);
+          this.$rootScope.starred_albums.forEach(album => {
+            album.image = this.getCoverArt({ album_id: album.id });
             album.title = album.album;
           });
           this.AppUtilities.apply();
@@ -390,9 +400,9 @@ export default class AlloyDbService {
   }
 
   loadIndex(data) {
-    
+
     if (data) {
-      data.forEach(info=> {
+      data.forEach(info => {
         if (info.index) {
           this.$rootScope.music_index = info.index;
           this.AppUtilities.apply();
@@ -402,9 +412,9 @@ export default class AlloyDbService {
   }
 
   loadRandom(data) {
-    
+
     if (data) {
-      data.forEach(info=>{
+      data.forEach(info => {
         if (info.random) {
           this.$rootScope.random = info.random;
           //this.$rootScope.random.forEach(track=> {
@@ -417,97 +427,97 @@ export default class AlloyDbService {
   }
 
   refreshArtists() {
-    
+
     var artists = this.getArtists();
     if (artists) {
-      artists.then(info=>{
+      artists.then(info => {
         this.loadArtists([info]);
       })
     }
   };
 
   refreshFresh() {
-    
+
     var fresh = this.getFresh(50);
     if (fresh) {
-      fresh.then(info=>{
+      fresh.then(info => {
         this.loadFresh([info]);
       })
     }
   }
 
   refreshAlbums() {
-    
+
     var albums = this.getAlbums();
     if (albums) {
-      albums.then(info=>{
+      albums.then(info => {
         this.loadAlbums([info]);
       })
     }
   }
 
   refreshGenres() {
-    
+
     var genres = this.getGenres();
     if (genres) {
-      genres.then(info=>{
+      genres.then(info => {
         this.loadGenres([info]);
       })
     }
   }
 
   refreshStarred() {
-    
+
     var starred = this.getStarred();
     if (starred) {
-      starred.then(info=>{
+      starred.then(info => {
         this.loadStarred([info]);
       })
     }
   }
 
   refreshIndex() {
-    
+
     var index = this.getMusicFoldersIndex();
     if (index) {
-      index.then(info=>{
+      index.then(info => {
         this.loadIndex([info]);
       })
     }
   }
 
   refreshRandom() {
-    
+
     var random = this.getRandomSongs();
     if (random) {
-      random.then(info=>{
+      random.then(info => {
         this.loadRandom([info]);
       })
     }
   }
 
   preload() {
-    
+
+    var index = this.getMusicFoldersIndex();
     var artists = this.getArtists();
     var fresh = this.getFresh(50);
     var albums = this.getAlbums();
     var genres = this.getGenres();
     var starred = this.getStarred();
-   // var index = this.getMusicFoldersIndex();
+
     var random = this.getRandomSongs();
 
-    Promise.all([artists, fresh, albums, genres, starred, random]).then(info=>{
-      if(info){
+    Promise.all([index, artists, fresh, albums, genres, starred, random]).then(info => {
+      if (info) {
+        this.loadIndex(info);
         this.loadArtists(info);
         this.loadFresh(info);
         this.loadAlbums(info);
         this.loadGenres(info);
         this.loadStarred(info);
-        this.loadIndex(info);
         this.loadRandom(info);
         this.AppUtilities.apply();
       }
     });
   }
 }
-

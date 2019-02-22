@@ -24,14 +24,8 @@ class ArtistController {
     $scope.artist.tracks = [];
     $scope.all_expanded = false;
     $scope.albums_expanded = true;
-    $scope.artist.tracks_expanded = false;
+    $scope.tracks_expanded = false;
     $('#trackListContainer').hide();
-
-
-
-    $scope.getCoverArt = params => {
-      return this.AlloyDbService.getCoverArt(params);
-    }
 
     $scope.toggleAlbums = () => {
       if ($scope.albums_expanded) $('#albumListContainer').hide();
@@ -40,22 +34,25 @@ class ArtistController {
     }
 
     $scope.toggleTracks = () => {
-      if ($scope.artist.tracks_expanded) $('#trackListContainer').hide();
+      if ($scope.tracks_expanded) $('#trackListContainer').hide();
       else $('#trackListContainer').show();
-      $scope.artist.tracks_expanded = !$scope.artist.tracks_expanded;
+      $scope.tracks_expanded = !$scope.tracks_expanded;
     }
 
-    $scope.toggleAll = () => {
-      $scope.artist.tracks_expanded = $scope.all_expanded;
-      $scope.albums_expanded = $scope.all_expanded;
+    $scope.expandAll = () => {
+      $scope.tracks_expanded = true;
+      $scope.albums_expanded = true;
+      $('#albumListContainer').show();
+      $('#trackListContainer').show();
+      this.AppUtilities.apply();
+    }
 
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
-
-      if ($scope.artist.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
-
-      $scope.all_expanded = !$scope.all_expanded;
+    $scope.collapseAll = () => {
+      $scope.tracks_expanded = false;
+      $scope.albums_expanded = false;
+      $('#albumListContainer').hide();
+      $('#trackListContainer').hide();
+      this.AppUtilities.apply();
     }
 
     $scope.getTags = obj => {
@@ -63,7 +60,6 @@ class ArtistController {
     }
 
     $scope.getArtist = () => {
-
       var cache = Cache.get($routeParams.id);
 
       if (cache) {
@@ -80,57 +76,17 @@ class ArtistController {
               artist_id: $routeParams.id
             });
 
-
             if (coverArt) {
               $scope.info.artist.image = coverArt;
               this.AppUtilities.apply();
             }
 
-
-
+            Cache.put($routeParams.id, $scope.info);
             this.AppUtilities.apply();
             this.AppUtilities.hideLoader();
-
-            //var artistInfo = this.AlloyDbService.getArtistInfo($scope.artist.name);
-            //if (artistInfo) {
-            //  artistInfo.then(function (info) {
-            //    if (info.artistInfo) {
-            //      $scope.artist.artistInfo = info.artistInfo;
-            //
-            //      angular.element(document.getElementById('linkContainer')).append($compile("<div> <p>test</p></div>")($scope));
-            //
-            //      if ($scope.artist.artistInfo.bio) {
-            //        $scope.artist.artistInfo.bio.summary = $scope.artist.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-            //      }
-            //      if ($scope.artist.artistInfo.similar) {
-            //        $scope.artist.artistInfo.similar.artist = $scope.artist.artistInfo.similar.artist.slice(0, 5);
-            //      }
-            //      if ($scope.artist.artistInfo.image) {
-            //        $scope.artist.artistInfo.image.forEach(function (image) {
-            //          if (image['@'].size === 'large') {
-            //            $scope.artist.image = image['#'];
-            //          }
-            //          if (image['@'].size === 'extralarge') {
-            //            $scope.artist.image = image['#'];
-            //          }
-            //        });
-            //      }
-            //      Cache.put($routeParams.id, artist);
-            //      this.AppUtilities.apply();
-            //      this.AppUtilities.hideLoader();
-            //    } else {
-            //      this.AppUtilities.hideLoader();
-            //    }
-            //  });
-            //}
-            //
-            //
-
           });
         }
       }
-
-
     };
 
     $scope.refresh = () => {
@@ -148,18 +104,18 @@ class ArtistController {
     };
 
     $scope.shuffle = () => {
-      this.Logger.debug('shuffle play');
-      this.$rootScope.tracks = AppUtilities.shuffle($scope.info.tracks);
-      this.MediaPlayer.loadTrack(0);
+      this.Logger.debug('shuffle play artist ' + $scope.info.artist.name);
+      this.$rootScope.tracks = $scope.info.tracks
+      this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
     };
 
     $scope.starArtist = () => {
-      this.Logger.info('Trying to star artist: ' + $scope.info.name);
+      this.Logger.info('Trying to star artist: ' + $scope.info.artist.name);
       if ($scope.artist.starred === 'true') {
         this.AlloyDbService.unstar({
           artist: this.$routeParams.id
         }).then(result => {
-          this.Logger.info('UnStarred ' + $scope.info.name + ' ' + JSON.stringify(result));
+          this.Logger.info('UnStarred ' + $scope.info.artist.name + ' ' + JSON.stringify(result));
           this.$scope.info.starred = 'false'
           this.AppUtilities.apply();
         });
@@ -167,7 +123,7 @@ class ArtistController {
         this.AlloyDbService.star({
           artist: this.$routeParams.id
         }).then(result => {
-          this.Logger.info('Starred ' + $scope.info.name + ' ' + JSON.stringify(result));
+          this.Logger.info('Starred ' + $scope.info.artist.name + ' ' + JSON.stringify(result));
           this.$scope.info.starred = 'true'
           this.AppUtilities.apply();
         });

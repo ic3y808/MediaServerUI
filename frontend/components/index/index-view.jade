@@ -8,9 +8,9 @@ include ./../../views/pagecontainer
     include ./../../views/pagecontent
       div(ng-repeat='container in $root.music_index')
         a.Settings-link.Link-link.Link-link(href='/config/alloydb') {{container.name}}
-        .Settings-summary(ng-repeat='artist in container.value') {{artist.base_path}}
+        .Settings-summary(ng-repeat='artist in container.value') {{artist.name}}
       
 
      //div(ng-repeat='container in $root.music_index')
      //   a(href='/config/alloydb') {{container.name}}
-     //   a(ng-repeat='artist in container.value') {{artist.base_path}}
+     //   a(ng-repeat='artist in container.value') {{artist.name}}

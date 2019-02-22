@@ -37,7 +37,7 @@ router.get('/music_folders', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/music_folders_index', function (req, res) {
-  var basePaths = res.locals.db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
+  var artists = res.locals.db.prepare('SELECT DISTINCT * FROM Artists ORDER BY name COLLATE NOCASE ASC').all();
   var result = {};
 
   var testForLetter = function (character) {
@@ -52,14 +52,14 @@ router.get('/music_folders_index', function (req, res) {
     }
   }
 
-  basePaths.forEach(function (basePath) {
-    var indexName = basePath.base_path.slice(0, 1).toUpperCase();
+  artists.forEach(function (artist) {
+    var indexName = artist.name.slice(0, 1).toUpperCase();
     if (testForLetter(indexName)) {
       if (!result[indexName]) result[indexName] = [];
-      result[indexName].push(basePath);
+      result[indexName].push(artist);
     } else {
       if (!result['#']) result['#'] = [];
-      result['#'].push(basePath);
+      result['#'].push(artist);
     }
 
   });
@@ -159,23 +159,9 @@ router.get('/artist', function (req, res) {
     links: res.locals.db.prepare('SELECT * FROM Links WHERE artist_id=?').all(id)
   };
 
+  result.prev = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order - 1);
+  result.next = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order + 1);
   
-
-    // var prev = res.locals.db.prepare('SELECT base_id, base_path FROM BasePaths WHERE sort_order=?').all(currentBase[0].sort_order - 1);
-    // var next = res.locals.db.prepare('SELECT base_id, base_path FROM BasePaths WHERE sort_order=?').all(currentBase[0].sort_order + 1)
-
-    //if (prev && prev.length > 0) result.previous_artist = prev[0];
-    //else result.previous_artist = {
-    //  base_id: id,
-    //  base_path: ""
-    //};
-    //if (next && next.length > 0) result.next_artist = next[0];
-    //else result.next_artist = {
-    //  base_id: id,
-    //  base_path: ""
-    //};
-
-
   var totalSize = 0;
   result.tracks.forEach(track => {
     totalSize += track.size;
@@ -198,21 +184,19 @@ router.get('/artist', function (req, res) {
  */
 router.get('/album', function (req, res) {
   var id = req.query.id;
-  var album = res.locals.db.prepare('SELECT * FROM Albums WHERE id=?').all(id)
-  var tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(id)
+  var result = {
+    album: res.locals.db.prepare('SELECT * FROM Albums WHERE id=?').get(id),
+    tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(id),
+  }
+  result.artist = res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(result.album.artist_id);
 
   var totalSize = 0;
-  tracks.forEach(track => {
+  result.tracks.forEach(track => {
     totalSize += track.size;
   });
-  var size = utils.toHumanReadable(totalSize);
+  result.size = utils.toHumanReadable(totalSize);
 
-  Object.assign(album[0], {
-    tracks: tracks,
-    size: size
-  })
-
-  res.json(album[0]);
+  res.json(result);
 });
 
 /**

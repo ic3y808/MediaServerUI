@@ -270,12 +270,17 @@ dbm.up().then(function () {
     scheduler.createJob("Scan LastFM", "0 0 * * 0", function () {
       logger.info("alloydb", "Doing LastFM Scan");
       notify("Database Scan", "Starting LastFM scan from scheduler");
-      lastFMScanner.incrementalScan();
+      //lastFMScanner.incrementalScan();
     });
 
     scheduler.createJob("DB Checkpoint", "0 */6 * * *", function () {
       logger.info("alloydb", "Doing db checkpoint");
       db.checkpoint();
+    });
+
+    scheduler.createJob("Rescan Library", "0 0 * * 0", function () {
+      logger.info("alloydb", "Doing full rescan");
+      mediaScanner.startFullScan();
     });
 
     configTray();

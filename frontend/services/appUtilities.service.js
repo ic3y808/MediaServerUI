@@ -13,6 +13,7 @@ export default class AppUtilities {
 
     this.$rootScope.decryptPassword = this.decryptPassword;
     this.$rootScope.formatTime = this.formatTime;
+    this.$rootScope.humanFileSize = this.humanFileSize;
   }
 
   broadcast(e, d) {
@@ -121,6 +122,15 @@ export default class AppUtilities {
       console.error('Async: Could not copy text: ', err);
     });
   }
+
+  humanFileSize(size) {
+    var i = Math.floor(Math.log(size) / Math.log(1024));
+    return (
+      (size / Math.pow(1024, i)).toFixed(2) * 1 +
+      " " +
+      ["B", "kB", "MB", "GB", "TB"][i]
+    );
+  };
 
   formatTime(seconds) {
     var minutes = Math.floor(seconds / 60);

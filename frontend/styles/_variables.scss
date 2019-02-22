@@ -6,10 +6,9 @@ $darker-color: $clr-blue-grey-900;
 $background-color: #f5f7fa;
 $background-alt-color: #F5F5F6;
 $border-color: #868686;
-
 $main-background-color: $background-color;
 $main-background-color-transparent: rgba($primary-color, .35);
-$main-text-color:choose-contrast-color($background-color);
+$main-text-color: choose-contrast-color($background-color);
 $faded-text-color: choose-contrast-color($primary-color);
 $alt-text-color: choose-contrast-color($darker-color);
 $sub-background-color:$primary-color;
@@ -76,11 +75,9 @@ $extra-font-size: 0.85em;
 }
 
 //buttons
-
 $main-btn-hover-color:$now-playing-track;
 //navbar
 $navbar-height:40px;
-
 //range
 $track-color: $alt-sub-background-color !default;
 $thumb-color: $main-background-color !default;
@@ -127,9 +124,3 @@ $navbar-background-color:$dark-color;
 $scrollbar-track-color: mix($main-background-color, white, 50%);
 $scrollbar-thumb-color: mix($sub-background-color, black, 50%);
 $scrollbar-thickness: 0.5em;
-
-
-
-
-
-

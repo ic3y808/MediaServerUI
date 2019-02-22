@@ -141,9 +141,6 @@ router.get('/stats', function (req, res) {
   var genres = res.locals.db.prepare('SELECT * FROM Genres').all();
   libraryStats.genre_count = genres.length;
 
-  var dirs = res.locals.db.prepare('SELECT * FROM BasePaths').all();
-  libraryStats.folder_count = dirs.length;
-
   var stmt = res.locals.db.prepare('SELECT SUM(size) FROM Tracks');
   stmt.columns().map(column => column.name);
   for (var row of stmt.iterate()) {

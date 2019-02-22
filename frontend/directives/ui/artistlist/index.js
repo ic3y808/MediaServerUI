@@ -25,7 +25,6 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
         }
       }
       scope.getId = function (name) {
-
         if (!testForLetter(name.charAt(0).toUpperCase())) return 'symbol';
         return name.charAt(0).toUpperCase()
       }
@@ -39,18 +38,17 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
       }
 
       scope.starArtist = function (artist) {
-        Logger.info('starring artist: ' + artist.base_path);
         if (artist.starred === 'true') {
-          AlloyDbService.unstar({ artist: artist.base_id }).then(function (result) {
-            Logger.info('UnStarred');
-            Logger.info(result);
+          Logger.info('un-starring artist: ' + artist.name);
+          AlloyDbService.unstar({ artist: artist.id }).then(function (result) {
+            Logger.info(JSON.stringify(result));
             artist.starred = 'false';
             AppUtilities.apply();
           });
         } else {
-          AlloyDbService.star({ artist: artist.base_id }).then(function (result) {
-            Logger.info('starred');
-            Logger.info(result);
+          Logger.info('starring artist: ' + artist.name);
+          AlloyDbService.star({ artist: artist.id }).then(function (result) {
+            Logger.info(JSON.stringify(result));
             artist.starred = 'true';
             AppUtilities.apply();
           });

@@ -15,21 +15,11 @@ include ./../../views/pagecontainer
   include ./../../views/pagebody                
     include ./../../views/pagecontent
       .ExpanderContainer
-        button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleTracks()')
           .ExpanderContainer-header
             .ExpanderContainer-left
               div
                 span.ExpanderContainer-label Current Playlist
                 span.ExpanderContainer-sublabel
-            span(title='Hide albums')
-              expandbutton(direction="up", ng-show="tracks_expanded")
-              expandbutton(direction="down", ng-show="!tracks_expanded")
-            
-            span  
         div#trackListContainer
           .ExpanderContainer-body
             tracklist(data="$root.tracks")
-            .ExpanderContainer-collapseButtonContainer
-              button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
-                expandbutton(ng-show="albums_expanded", mini)
-                expandbutton(ng-show="!albums_expanded", mini)

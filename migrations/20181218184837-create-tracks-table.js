@@ -19,7 +19,6 @@ exports.up = function (db) {
     columns: {
       id: { type: 'string', unique: true },
       path: { type: 'string', defaultValue: '', unique: true },
-     
       title: { type: 'string', defaultValue: '' },
       artist: { type: 'string', defaultValue: '' },
       artist_id: { type: 'string', defaultValue: '' },
@@ -29,7 +28,7 @@ exports.up = function (db) {
       genre: { type: 'string', defaultValue: '' },
       cover_art: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
-      rating: { type: 'string', defaultValue: '' },
+      rating: { type: 'int', defaultValue: 0 },
       bpm: { type: 'string', defaultValue: '' },
       year: { type: 'int', defaultValue: 0 },
       play_count: { type: 'int', defaultValue: 0 },

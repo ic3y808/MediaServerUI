@@ -12,8 +12,9 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Delete', buttonclick='deleteArtist()', buttonicon='fa-trash')
     include ./../../views/toolbarsection-right
       toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
-      toolbarbutton(buttontext='Show All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-down', ng-show="!all_expanded")
-      toolbarbutton(buttontext='Hide All', buttonclick='toggleAll()', buttonicon='fa-chevron-circle-up', ng-show="all_expanded")
+      toolbarbutton(buttontext='Show All', buttonclick='expandAll()', buttonicon='fa-chevron-circle-down', ng-show="!tracks_expanded && !albums_expanded")
+      toolbarbutton(buttontext='Show All', buttonclick='expandAll()', buttonicon='fa-chevron-circle-right', ng-show="(tracks_expanded && !albums_expanded) || (!tracks_expanded && albums_expanded)")
+      toolbarbutton(buttontext='Hide All', buttonclick='collapseAll()', buttonicon='fa-chevron-circle-up', ng-show="tracks_expanded && albums_expanded")
   
   include ./../../views/pagebody
     include ./../../views/pageheader
@@ -27,23 +28,23 @@ include ./../../views/pagecontainer
               .PageContent-HeaderDetails-titleContainer
                 .PageContent-HeaderDetails-title {{info.artist.name}}
                 .PageContent-HeaderDetails-navigation-buttons
-                  navbutton(buttontext="Go to {{artist.previous_artist.base_path}}", href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path", direction="left")
-                  navbutton(buttontext="Go to {{artist.next_artist.base_path}}", href='/artist/{{artist.next_artist.base_id}}', ng-show="artist.next_artist.base_path", direction="right")
+                  navbutton(buttontext="Go to {{info.prev.name}}", href='/artist/{{info.prev.id}}', ng-show="info.prev", direction="left")
+                  navbutton(buttontext="Go to {{info.next.name}}", href='/artist/{{info.next.id}}', ng-show="info.next", direction="right")
                   
               div
                 div
-                  span
-                    svg.svg-inline--fa.fa-heart.fa-w-16.HeartRating-heart.Icon-default(aria-hidden='true', data-prefix='fas', data-icon='heart', role='img', xmlns='http://www.w3.org/2000/svg', viewBox='0 0 512 512', style='font-size: 20px;')
-                      path(fill='currentColor', d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z')
-                    | 0%
+                starratinglabel(artist="info.artist")
+               div
+                detaillabel(buttontext="{{info.artist.path}}", buttonicon="fa-folder")
               div
                 detaillabel(buttontext="{{info.size}}", buttonicon="fa-hdd-o")
                 detaillabel(buttontext="{{info.artist.type}}", buttonicon="fa-hdd-o")
                 detaillabel(buttontext="{{info.artist.status}}", buttonicon="fa-hdd-o")
-              div
+                detaillabel(buttontext="{{info.artist.track_count}} {{info.tracks.length > 1 ? 'Tracks' : 'Track'}}", buttonicon="fa-hdd-o")
                 linkbutton(buttontext="Links", buttonicon="fa-external-link", data="info.links", relid='{{info.artist.id}}-links')
                 popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="artist.artistInfo.tags.tag", relid='tags')
                 popoverbutton(buttontext="Similar", buttonicon="fa-clone", data="artist.artistInfo.similar.artist", relid='similar')
+
 
               .PageContent-HeaderDetails-overview 
                 div(style='overflow: hidden;')
@@ -76,7 +77,7 @@ include ./../../views/pagecontainer
               div
                 span.ExpanderContainer-label All Tracks
                 span.ExpanderContainer-sublabel {{info.tracks.length}} {{info.tracks.length > 1 ? 'Tracks' : 'Track'}}
-            span(title='Hide albums')
+            span(title='Hide tracks')
               expandbutton(direction="up", ng-show="tracks_expanded")
               expandbutton(direction="down", ng-show="!tracks_expanded")
             
@@ -86,5 +87,5 @@ include ./../../views/pagecontainer
             tracklist(data='info.tracks', showstar='true', showtracknum='true', showartist='false', showalbum='true', showgenre='true', showplays='true', showduration='true')
             .ExpanderContainer-collapseButtonContainer
               button.IconButton-button.Link-link.Link-link(title='Hide albums', type='button', ng-click='toggleTracks()')
-                expandbutton(ng-show="albums_expanded", mini)
-                expandbutton(ng-show="!albums_expanded", mini)
+                expandbutton(ng-show="tracks_expanded", mini)
+                expandbutton(ng-show="!tracks_expanded", mini)

@@ -17,6 +17,7 @@ import ExpandButton from './ui/expandbutton';
 import PopoverButton from './ui/popoverbutton';
 import LinkButton from './ui/linkbutton';
 import CoverFlow from './ui/coverflow';
+import StarRatingLabel from './ui/starratinglabel';
 
 export default angular
   .module('app.directives', [])
@@ -36,5 +37,6 @@ export default angular
   .directive('expandbutton', ExpandButton)
   .directive('popoverbutton', PopoverButton)
   .directive('linkbutton', LinkButton)
+  .directive('starratinglabel', StarRatingLabel)
   .directive('coverflow', CoverFlow)
 ;

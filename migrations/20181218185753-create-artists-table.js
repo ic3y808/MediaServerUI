@@ -18,10 +18,11 @@ exports.up = function (db) {
   return db.createTable('Artists', {
     columns: {
       id: { type: 'string', defaultValue: '', unique: true },
-      name: { type: 'string', defaultValue: ''},
-      sort_name: { type: 'string', defaultValue: ''},
-      disambiguation: { type: 'string', defaultValue: ''},
-      overview: { type: 'string', defaultValue: ''},
+      name: { type: 'string', defaultValue: '' },
+      sort_name: { type: 'string', defaultValue: '' },
+      sort_order: { type: 'int', defaultValue: 99999999 },
+      disambiguation: { type: 'string', defaultValue: '' },
+      overview: { type: 'string', defaultValue: '' },
       biography: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
       status: { type: 'string', defaultValue: '' },

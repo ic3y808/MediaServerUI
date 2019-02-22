@@ -14,7 +14,7 @@
         td.TableRowCell-play.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button', ng-click="playArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}")
             i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
-        td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.id)}}')
+        td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.name)}}')
           span.TableRowCell-artist-text.Link-link.ng-binding(ng-click="navToArtist(artist.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}") {{artist.name}}
         td.TableRowCell-count.TableRowCell-cell
           span.Label-label.Label-medium.Label-Page-Body(title='')

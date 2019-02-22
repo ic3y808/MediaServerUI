@@ -21,6 +21,7 @@ export default function ($window) {
         })
 
         $scope.init = function () {
+          $scope.isOpen = false;
           $scope.template = '<div class="popover" role="tooltip">' +
             '<div class="arrow">' +
             '</div>' +
@@ -49,21 +50,25 @@ export default function ($window) {
           });
 
           $element.on('click', function (e) {
-            $scope.showLinks();
+            if ($scope.isOpen === true)
+              $scope.closePopup();
+            else
+              $scope.showLinks();
           });
         };
 
         $scope.showLinks = function () {
+          $scope.isOpen = true;
           $element.popover('show');
         };
 
         $scope.closePopup = function () {
-          $scope.showPopup = false;
+          $scope.isOpen = false;
           $element.popover('hide')
         };
 
         $scope.linkClick = function (link) {
-          $window.open(link.replace("\"",""), '_blank');
+          $window.open(link.replace("\"", ""), '_blank');
         }
       }
     ]
