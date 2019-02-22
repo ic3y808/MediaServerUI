@@ -21,7 +21,7 @@ class HomeController {
       AlloyDbService.refreshRandom();
     };
 
-    $rootScope.$watch('fresh_albums', (newVal, oldVal) =>  {
+    $rootScope.$watch('fresh_albums', (newVal, oldVal) => {
       if ($rootScope.fresh_albums) {
 
 
@@ -35,12 +35,12 @@ class HomeController {
             coverheight: 100,
             //reflectionoffset: -10,
             //fixedsize: true,
-          }).on('ready', function() {
+          }).on('ready', function () {
             this.on('focus', index => {
 
             });
 
-            this.on('click', (index, link) =>  {
+            this.on('click', (index, link) => {
 
             });
           })
@@ -50,11 +50,11 @@ class HomeController {
       }
     });
 
-    $rootScope.$watch('random', (newVal, oldVal) =>  {
+    $rootScope.$watch('random', (newVal, oldVal) => {
       if ($rootScope.random) {
-        var randomTrack = $rootScope.random[Math.floor(Math.random() * $rootScope.random.length)];
+        var randomTrack = $rootScope.random[~~($rootScope.random.length * Math.random())];
         if (randomTrack.cover_art) {
-          $scope.artistImage = this.AlloyDbService.getCoverArt(randomTrack.cover_art)
+          $scope.artistImage = this.AlloyDbService.getCoverArt({ track_id: randomTrack.cover_art })
         }
         this.AppUtilities.apply();
         this.AppUtilities.hideLoader();

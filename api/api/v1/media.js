@@ -151,8 +151,8 @@ router.get('/cover_art', function (req, res) {
     }
   } else if (track_id) {
     var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(track_id);
-    if (fs.existsSync(path.join(process.env.COVER_ART_DIR, track.cover_art + ".jpg"))) {
-      coverFile = path.join(process.env.COVER_ART_DIR, track.cover_art + ".jpg");
+    if (fs.existsSync(path.join(process.env.COVER_ART_DIR, track_id + ".jpg"))) {
+      coverFile = path.join(process.env.COVER_ART_DIR, track_id + ".jpg");
     }
     if (!coverFile) {
       var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(track.album_id);
@@ -166,7 +166,7 @@ router.get('/cover_art', function (req, res) {
       });
     }
   } else if (album_id) {
-    var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(track.album_id);
+    var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album_id);
     albumTracks = shuffle(albumTracks)
     albumTracks.forEach(albumTrack => {
       if (!coverFile) {

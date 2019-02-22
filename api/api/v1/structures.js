@@ -156,8 +156,6 @@ module.exports.Artist = class Artist {
  * @typedef Song 
  * @property {string} id
  * @property {string} path
- * @property {string} base_path
- * @property {string} base_id
  * @property {string} title
  * @property {string} artist
  * @property {string} artist_id
@@ -165,7 +163,6 @@ module.exports.Artist = class Artist {
  * @property {string} album_id
  * @property {string} album_path
  * @property {string} genre
- * @property {string} genre_id
  * @property {string} cover_art
  * @property {string} starred
  * @property {string} rating
@@ -181,18 +178,6 @@ module.exports.Artist = class Artist {
  * @property {string} suffix
  * @property {integer} no
  * @property {integer} of
- * @property {string} musicbrainz_trackid
- * @property {string} musicbrainz_albumid
- * @property {string} musicbrainz_artistid
- * @property {string} musicbrainz_albumartistid
- * @property {string} musicbrainz_releasegroupid
- * @property {string} musicbrainz_workid
- * @property {string} musicbrainz_trmid
- * @property {string} musicbrainz_discid
- * @property {string} acoustid_id
- * @property {string} acoustid_fingerprint
- * @property {string} musicip_puid
- * @property {string} musicip_fingerprint
  */
 module.exports.Song = class Song {
   constructor() {
@@ -353,7 +338,6 @@ module.exports.Share = class Share {
  * @property {integer} artist_count
  * @property {integer} album_count
  * @property {integer} genre_count
- * @property {integer} folder_count
  * @property {integer} memory_used
 
  */
@@ -363,7 +347,6 @@ module.exports.LibraryStats = class LibraryStats {
     this.artist_count = 0;
     this.album_count = 0;
     this.album_count = 0;
-    this.folder_count = 0;
     this.memory_used = 0;
   }
 }

@@ -295,6 +295,10 @@ export default class AlloyApi {
     return this._put('annotation/unstar', params);
   }
 
+  setRating(params) {
+    return this._put('annotation/set_rating', params);
+  }
+
   stream(id, quality) {
     return this._buildUrl('media/stream', {
       api_key: this._settings.alloydb_apikey,

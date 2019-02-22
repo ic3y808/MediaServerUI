@@ -24,8 +24,8 @@ include ./../../views/pagecontainer
               .PageContent-HeaderDetails-titleContainer
                 .PageContent-HeaderDetails-title {{genre.name}}
                 .PageContent-HeaderDetails-navigation-buttons
-                  navbutton(buttontext="Go to {{artist.previous_artist.base_path}}", href='/artist/{{artist.previous_artist.base_id}}', ng-show="artist.previous_artist.base_path", direction="left")
-                  navbutton(buttontext="Go to {{artist.next_artist.base_path}}", href='/artist/{{artist.next_artist.base_id}}', ng-show="artist.next_artist.base_path", direction="right")
+                  navbutton(buttontext="Go to {{artist.previous_artist.name}}", href='/artist/{{artist.previous_artist.id}}', ng-show="artist.previous_artist.id", direction="left")
+                  navbutton(buttontext="Go to {{artist.next_artist.name}}", href='/artist/{{artist.next_artist.id}}', ng-show="artist.next_artist.id", direction="right")
                   
               div
                 div

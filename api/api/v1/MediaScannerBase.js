@@ -59,13 +59,23 @@ class MediaScannerBase {
     } else return null;
   }
 
+  checkSortOrder() {
+    logger.info("alloydb", 'checking table sort orders');
+    this.updateStatus('checking base sort order', true);
+    var allArtists = this.db.prepare('SELECT * FROM Artists ORDER BY name COLLATE NOCASE ASC').all();
+    for (var i = 0; i < allArtists.length; ++i) {
+      this.db.prepare("UPDATE Artists SET sort_order=? WHERE id=?").run(i, allArtists[i].id);
+    }
+  };
+
   cleanup() {
     logger.info("alloydb", 'cleanup complete');
-    updateStatus('Scan Complete', false);
+    this.checkSortOrder();
+    this.updateStatus('Scan Complete', false);
   }
 
   incrementalCleanup() {
-    if (isScanning()) {
+    if (this.isScanning()) {
       logger.debug("alloydb", 'scan in progress');
     } else {
       logger.info("alloydb", 'incrementalCleanup');

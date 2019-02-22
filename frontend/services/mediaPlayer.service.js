@@ -174,8 +174,15 @@ export default class MediaPlayer {
 
   checkNowPlayingImage(source) {
     if (source.cover_art) {
+      var coverArt = this.AlloyDbService.getCoverArt({
+        track_id: source.cover_art
+      });
 
-      $('#nowPlayingImageHolder').attr('src', this.AlloyDbService.getCoverArt(source.cover_art));
+      if (coverArt) {
+        $('#nowPlayingImageHolder').attr('src', coverArt);
+        this.AppUtilities.apply();
+      }
+      
     }
   }
 

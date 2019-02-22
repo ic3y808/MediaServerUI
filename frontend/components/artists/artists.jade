@@ -5,6 +5,8 @@ include ./../../views/pagecontainer
       toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
       toolbarseperator
       toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
+    include ./../../views/toolbarsection-right
+      toolbarbutton(buttontext='Add', buttonclick='refresh()', buttonicon='fa-plus')
   jumpbar(data="$root.music_index", buttonclick='jumpBarClick()')
   include ./../../views/pagebody   
                  
