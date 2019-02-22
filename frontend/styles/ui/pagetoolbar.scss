@@ -41,6 +41,17 @@
   -webkit-box-pack: start;
   -webkit-justify-content: flex-start;
   justify-content: flex-start;
+  -webkit-flex-shrink: 0 !important;
+  flex-shrink: 0 !important;
+  -webkit-flex-grow: 0 !important;
+  flex-grow: 0 !important;
+}
+.PageToolbarSection-less-important {
+  -webkit-box-pack: start;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  -webkit-flex-shrink: 0 !important;
+  flex-shrink: 0 !important;
 }
 
 .PageToolbarButton-toolbarButton {
@@ -78,7 +89,7 @@
 }
 
 .PageToolbarSeparator-separator {
-  margin: 10px 20px;
+  margin: 6px 10px;
   height: 40px;
   border-right: 1px solid $general-border-color;
   opacity: 0.35;
@@ -95,18 +106,18 @@
 //@media screen and (max-width:$break-xsmall) { } //384px;
 //@media screen and (max-width:$break-small) { } //414px;
 //@media screen and (max-width:$break-xxxmed) { } //480px;
-//@media screen and (max-width:$break-xxmed) { } //568px;
+@media screen and (max-width:$break-xxmed) { 
+
+} //568px;
 //@media screen and (max-width:$break-xmed) { } //600px;
 //@media screen and (max-width:$break-med) { } //640px;
 //@media screen and (max-width:$break-large) { } //667px;
 @media screen and (max-width:$break-xlarge) {
-  @media only screen and (max-width: 768px) {
-    .PageToolbar-toolbar {
-      padding: 0 10px;
-    }
-    .PageToolbarSeparator-separator {
-      margin: 10px 5px;
-    }
+  .PageToolbarSeparator-separator {
+    margin: 2px 2px !important;
+  }
+  .PageToolbarSection-less-important {
+    display: none;
   }
 } //768px;
 //@media screen and (max-width:$break-xxlarge) { } //800px;

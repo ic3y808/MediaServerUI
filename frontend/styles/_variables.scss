@@ -25,7 +25,7 @@ $break-xxsmall: 375px;
 $break-xsmall: 384px;
 $break-small: 414px;
 $break-xxxmed: 480px;
-$break-xxmed: 568px;
+$break-xxmed: 575px;
 $break-xmed: 600px;
 $break-med: 640px;
 $break-large: 667px;
@@ -37,6 +37,7 @@ $break-xhuge: 1280px;
 $break-xxhuge: 1366px;
 $break-xxxhuge: 1440px;
 $break-maximum: 1600px;
+
 //@media screen and (max-width:$break-xxxsmall) { } //320px;
 //@media screen and (max-width:$break-xxsmall) { } //375px;
 //@media screen and (max-width:$break-xsmall) { } //384px;
@@ -124,3 +125,32 @@ $navbar-background-color:$dark-color;
 $scrollbar-track-color: mix($main-background-color, white, 50%);
 $scrollbar-thumb-color: mix($sub-background-color, black, 50%);
 $scrollbar-thickness: 0.5em;
+
+
+
+:export {
+  xxxsmall: $break-xxxsmall;
+  xxsmall: $break-xxsmall;
+  xsmall: $break-xsmall;
+  smalls: $break-small;
+  xxxmed: $break-xxxmed;
+  xxmed: $break-xxmed;
+  xmed: $break-xmed;
+  med: $break-med;
+  large: $break-large;
+  xlarge: $break-xlarge;
+  xxlarge: $break-xxlarge;
+  xxxlarge: $break-xxxlarge;
+  huge: $break-huge;
+  xhuge: $break-xhuge;
+  xxhuge: $break-xxhuge;
+  xxxhuge: $break-xxxhuge;
+  maximum: $break-maximum;
+  primaryColor: $primary-color;
+  lightColor: $light-color;
+  darkColor: $dark-color;
+  darkerColor: $darker-color;
+  backgroundColor: $background-color;
+  backgroundAltColor: $background-alt-color;
+  borderColor: $border-color;
+}

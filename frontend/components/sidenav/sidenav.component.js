@@ -1,4 +1,4 @@
-import './sidenav.scss';
+import styles from './sidenav.scss';
 class SidenavController {
   constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -14,7 +14,7 @@ class SidenavController {
 
   $onInit() {
 
-    $('#sidebarCollapse').on('click', () =>  {
+    $('#sidebarCollapse').on('click', () => {
       $('#sidebar').toggleClass('active');
     });
 
@@ -30,19 +30,31 @@ class SidenavController {
 
     $('.list-group li').click(function (e) {
       e.preventDefault();
-
       $that = $(this);
-
       $that.parent().find('li').removeClass('active');
       $that.addClass('active');
     });
 
-    jQuery(".list-group").hover(() =>  {
-        jQuery(this).addClass("active");
-      },
-      () =>  {
+    jQuery(".list-group").hover(() => {
+      jQuery(this).addClass("active");
+    },
+      () => {
         jQuery(this).removeClass("active");
       });
+
+    $(window).on('resize', () => {
+      const breakWidth = parseInt(styles.xxmed);
+      if ($(window).width() < breakWidth && !this.$rootScope.isMenuCollapsed) {
+        this.sidebarCollapse();
+      } else if ($(window).width() > breakWidth && this.$rootScope.isMenuCollapsed) {
+        this.sidebarCollapse();
+      }
+    });
+
+    if ($(window).width() < 500) {
+      this.sidebarCollapse();
+    }
+
   }
 
   sidebarCollapse() {
