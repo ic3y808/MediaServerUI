@@ -26,9 +26,26 @@
   white-space: nowrap;
 }
 
-.TableHeaderCell-sortIcon {
-  margin-left: 10px;
-}
+.TableHeaderCell-sortIcon-Down:after,.TableHeaderCell-sortIcon-Up:after{
+  content: ' ';
+  position: relative;
+  left: 2px;
+  border: 8px solid transparent;
+ }
+ 
+ .TableHeaderCell-sortIcon-Down:after{
+  top: 10px;
+  border-top-color: black;
+ }
+ 
+ .TableHeaderCell-sortIcon-Up:after{
+  bottom: 15px;
+  border-bottom-color: black;
+ }
+ 
+ .TableHeaderCell-sortIcon-Down,.TableHeaderCell-sortIcon-Up{
+  padding-right: 10px;
+ }
 
 .TableRow-row {
   -webkit-transition: background-color 500ms;

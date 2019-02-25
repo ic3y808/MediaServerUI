@@ -344,10 +344,10 @@ export default class AlloyDbService {
       data.forEach(info => {
         if (info.fresh && info.fresh.albums) {
           this.$rootScope.fresh_albums = info.fresh.albums;
-          //this.$rootScope.fresh_albums.forEach(album => {
-          //  album.image = this.getCoverArt(album.cover_art);
-          //  album.title = album.album;
-          //});
+          this.$rootScope.fresh_albums.forEach(album => {
+            album.image = this.getCoverArt({album_id: album.album_id});
+            album.title = album.album;
+          });
           this.AppUtilities.apply();
         }
       });

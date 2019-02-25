@@ -48,6 +48,7 @@ router.put("/mediapaths", function (req, res) {
     );
     const info = stmt.run(displayName, path, path);
     if (info.changes) {
+      res.locals.watcher.configFileWatcher();
       res.json(new structures.StatusResult("Added media path"));
     } else res.json(new structures.StatusResult(info));
   } catch {
@@ -77,6 +78,7 @@ router.delete("/mediapaths", function (req, res) {
     );
     const info = stmt.run(displayName, path);
     if (info.changes) {
+      res.locals.watcher.configFileWatcher();
       res.json(new structures.StatusResult("Deleted media path"));
     } else res.json(new structures.StatusResult(info));
   } catch {

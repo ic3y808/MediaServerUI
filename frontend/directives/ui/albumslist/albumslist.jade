@@ -4,13 +4,13 @@
       tr
         th.TableHeaderCell-headerCell
         th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
-        th.TableHeaderCell-headerCell.Link-link(label='Album') Album
-        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}") Artist
-        th.TableHeaderCell-headerCell.Link-link(label='Release') Release
-        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.Link-link(label='Type') Type
-        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks') Tracks
+        th.TableHeaderCell-headerCell.Link-link(label='Album', ng-click='sortColumn("album")' ng-class='sortClass("album")') Album
+        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}", ng-click='sortColumn("artist")' ng-class='sortClass("artist")') Artist
+        th.TableHeaderCell-headerCell.Link-link(label='Release', ng-click='sortColumn("created")' ng-class='sortClass("created")') Release
+        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.Link-link(label='Type', ng-click='sortColumn("type")' ng-class='sortClass("type")') Type
+        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks', ng-click='sortColumn("track_count")' ng-class='sortClass("track_count")') Tracks
     tbody
-      tr.TableRow-row(ng-repeat='album in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
+      tr.TableRow-row(ng-repeat='album in data|orderBy:column:reverse', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
         td.TableRowCell-star.TableRowCell-cell
           button.IconButton-button.Link-link.Link-link(type='button', ng-click="starAlbum(album)")
             i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="album.starred == 'true' ? 'fa-star' : 'fa-star-o'")

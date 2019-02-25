@@ -88,6 +88,17 @@ class AlbumController {
                 $scope.info.album.image = coverArt;
                 this.AppUtilities.apply();
               }
+
+              if ($scope.info.tracks && $scope.info.tracks.length > 0) {
+                if ($routeParams.trackid) {
+                  $scope.info.tracks.forEach(function(track) {
+                    if (track.id === $routeParams.trackid) {
+                      track.selected = true;
+                      AppUtilities.apply();
+                    }
+                  });
+                }
+              }
               
               Cache.put($routeParams.id, $scope.info);
               this.AppUtilities.apply();
