@@ -10,6 +10,8 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
     templateUrl: '/template/albumslist.jade',
     replace: true,
     link: function (scope, elm, attrs) {
+      scope.column = 'album';
+      scope.reverse = false;
       scope.navToAlbum = function (id) {
         $location.path('/album/' + id);
       };
@@ -48,6 +50,27 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
             $rootScope.tracks = data.tracks;
             MediaPlayer.loadTrack(0);
           });
+        }
+      }
+      scope.sortColumn = function (col) {
+        scope.column = col;
+        if (scope.reverse) {
+          scope.reverse = false;
+          scope.reverseclass = 'TableHeaderCell-sortIcon-Up';
+        } else {
+          scope.reverse = true;
+          scope.reverseclass = 'TableHeaderCell-sortIcon-Down';
+        }
+      };
+      scope.sortClass = function (col) {
+        if (scope.column == col) {
+          if (scope.reverse) {
+            return 'TableHeaderCell-sortIcon-Down';
+          } else {
+            return 'TableHeaderCell-sortIcon-Up';
+          }
+        } else {
+          return '';
         }
       }
     }

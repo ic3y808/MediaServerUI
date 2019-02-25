@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const shell = require("shelljs");
+
 const express = require("express");
 const config = require("../common/config");
 const logger = require("../common/logger");
@@ -17,7 +18,7 @@ process.on('SIGTERM', () => process.exit(128 + 15));
 
 var bodyParser = require("body-parser");
 var routes = require("./routes/index");
-var scheduler = require("./scheduler");
+var Watcher = require("./watcher");
 var MediaScanner = require("./api/v1/mediaScanner");
 var LastFMScanner = require("./api/v1/lastfmScanner");
 var MusicBrainzScanner = require("./api/v1/musicbrainzScanner");
@@ -61,6 +62,7 @@ dbm.up().then(function () {
   var mediaScanner = new MediaScanner(db);
   var lastFMScanner = new LastFMScanner(db);
   var musicbrainzScanner = new MusicBrainzScanner(db);
+  var watcher = new Watcher(db, mediaScanner);
   var scheduler = new Scheduler();
 
   app.use(function (req, res, next) {
@@ -70,6 +72,7 @@ dbm.up().then(function () {
     res.locals.lastFMScanner = lastFMScanner;
     res.locals.musicbrainzScanner = musicbrainzScanner;
     res.locals.scheduler = scheduler;
+    res.locals.watcher = watcher;
     next();
   });
 
@@ -124,6 +127,7 @@ dbm.up().then(function () {
     tempRoute.db = db;
     tempRoute.mediaScanner = mediaScanner;
     tempRoute.scheduler = scheduler;
+    tempRoute.watcher = watcher;
     return tempRoute;
   };
   // V1 API
@@ -171,6 +175,27 @@ dbm.up().then(function () {
   app.set("port", process.env.API_PORT || 4000);
 
 
+  function debounce(func, wait, immediate) {
+    var timeout;
+
+    return function executedFunction() {
+      var context = this;
+      var args = arguments;
+
+      var later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+
+      var callNow = immediate && !timeout;
+
+      clearTimeout(timeout);
+
+      timeout = setTimeout(later, wait);
+
+      if (callNow) func.apply(context, args);
+    };
+  };
 
   var configTray = function () {
     if (process.platform === "win32") {
@@ -258,7 +283,10 @@ dbm.up().then(function () {
         }
       });
     }
-  }
+  };
+
+
+
 
   var server = app.listen(app.get("port"), function () {
     scheduler.createJob("Clean Database", "0 0 * * *", function () {
@@ -284,6 +312,7 @@ dbm.up().then(function () {
     });
 
     configTray();
+    watcher.configFileWatcher();
 
     notify("AlloyDB Started", "AlloyDB is Listening on port " + server.address().port);
     logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + server.address().port);

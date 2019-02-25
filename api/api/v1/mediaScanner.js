@@ -211,10 +211,8 @@ class MediaScanner extends MediaScannerBase {
 
   }
 
-  scanArtists(artists) {
-    const artist = artists.shift();
-
-    if (artist) {
+  scanArtist(artist) {
+    return new Promise((resolve, reject) => {
       this.updateStatus('Scanning artist ' + artist.path, true);
       var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
       var json = JSON.parse(parser.toJson(data));
@@ -290,7 +288,18 @@ class MediaScanner extends MediaScannerBase {
 
       Promise.all(allMetaPromises).then(() => {
         this.updateStatus('finished scanning albums from ' + artist.name, true);
-        return this.scanArtists(artists);
+        resolve();
+      })
+    });
+  }
+
+  scanArtists(artists) {
+    const artist = artists.shift();
+
+    if (artist) {
+
+      this.scanArtist(artist).then(() => {
+        this.scanArtists(artists);
       })
 
     } else {
@@ -298,6 +307,46 @@ class MediaScanner extends MediaScannerBase {
       this.updateStatus('Scan Complete', false);
     }
   }
+
+  scanPath(dir) {
+    if (this.isScanning()) {
+      this.updateStatus("Scan in progress", true);
+      logger.debug("alloydb", 'scan in progress');
+    } else {
+      if (fs.lstatSync(dir).isDirectory()) {
+        if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
+          this.scanArtist({ path: dir }).then(() => {
+            this.db.checkpoint();
+            this.updateStatus('Scan Complete', false);
+          })
+        }
+      } else {
+        var root = path.dirname(dir)
+
+        const artistDirs = klawSync(root, {
+          nofile: true,
+          depthLimit: 0
+        });
+
+        if (artistDirs.length > 0) {
+          artistDirs.forEach(dir => {
+            if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
+              this.scanArtist({ path: dir }).then(() => {
+                this.db.checkpoint();
+                this.updateStatus('Scan Complete', false);
+              })
+            }
+          });
+        } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
+          this.scanArtist({ path: path.dirname(root) }).then(() => {
+            this.db.checkpoint();
+            this.updateStatus('Scan Complete', false);
+          })
+        }
+      }
+    }
+  }
 }
+
 module.exports = MediaScanner;
 1

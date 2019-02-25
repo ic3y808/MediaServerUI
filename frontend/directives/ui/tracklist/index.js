@@ -4,37 +4,52 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
     restrict: 'E',
     scope: {
       data: '=',
-      showstar:'@',
-      showtracknum:'@',
-      showartist:'@',
-      showalbum:'@',
-      showgenre:'@',
-      showplays:'@',
-      showduration:'@',
+      showstar: '@',
+      showtracknum: '@',
+      showartist: '@',
+      showalbum: '@',
+      showgenre: '@',
+      showplays: '@',
+      showduration: '@',
       hasjumpbar: '@'
     },
     templateUrl: '/template/tracklist.jade',
 
     replace: true,
     link: function (scope, elm, attrs) {
-      scope.navToAlbum = function(id){
+      scope.column = 'album';
+      scope.reverse = false;
+
+      scope.navToAlbum = function (id) {
         $location.path('/album/' + id);
       }
-      scope.navToArtist = function(id){
+      scope.navToArtist = function (id) {
         $location.path('/artist/' + id);
       }
-      scope.navToGenre = function(id){
+      scope.navToGenre = function (id) {
         $location.path('/genre/' + id);
       }
 
       scope.requestPlay = function (id) {
         Logger.debug('selection changed');
-        scope.data.forEach(function(track){track.selected = null})
+        scope.data.forEach(function (track) { track.selected = null })
         $rootScope.tracks = scope.data;
         var index = _.findIndex($rootScope.tracks, function (track) {
           return track.id === id;
         });
         MediaPlayer.loadTrack(index);
+      }
+
+      scope.getClass = (id) => {
+        if (scope.checkIfNowPlaying(id))
+          return 'TableRowCell-now-playing';
+
+        scope.data.forEach(function (track) {
+          if (id === track.id && track.selected === true) {
+            return 'TableRow-row-selected';
+          }
+        })
+        return '';
       }
 
       scope.checkIfNowPlaying = function (id) {
@@ -73,10 +88,29 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
 
           });
         }
+      }
 
+      scope.sortColumn = function (col) {
+        scope.column = col;
+        if (scope.reverse) {
+          scope.reverse = false;
+          scope.reverseclass = 'TableHeaderCell-sortIcon-Up';
+        } else {
+          scope.reverse = true;
+          scope.reverseclass = 'TableHeaderCell-sortIcon-Down';
+        }
+      };
 
-
-
+      scope.sortClass = function (col) {
+        if (scope.column == col) {
+          if (scope.reverse) {
+            return 'TableHeaderCell-sortIcon-Down';
+          } else {
+            return 'TableHeaderCell-sortIcon-Up';
+          }
+        } else {
+          return '';
+        }
       }
 
       scope.$watch('data', function (newVal, oldVal) {
