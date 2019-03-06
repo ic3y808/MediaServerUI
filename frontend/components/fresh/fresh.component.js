@@ -152,7 +152,6 @@ class FreshController {
       }
     });
 
-
     $rootScope.$watch("charts", (newVal, oldVal) => {
       if ($rootScope.charts) {
         if ($rootScope.charts.top_tracks) {

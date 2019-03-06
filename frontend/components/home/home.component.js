@@ -18,49 +18,20 @@ class HomeController {
     AppUtilities.showLoader();
 
     $scope.refresh = () => {
-      AlloyDbService.refreshFresh();
-      AlloyDbService.refreshRandom();
+      AlloyDbService.refreshCharts();
+
     };
 
-    //$rootScope.$watch('fresh_albums', (newVal, oldVal) => {
-    //  if ($rootScope.fresh_albums) {
-//
-//
-    //    $timeout(() => {
-    //      $scope.coverflow = coverflow('player').setup({
-//
-    //        playlist: $rootScope.fresh_albums,
-    //        width: '100%',
-    //        height: '100px',
-    //        coverwidth: 100,
-    //        coverheight: 100,
-    //        //reflectionoffset: -10,
-    //        //fixedsize: true,
-    //      }).on('ready', function () {
-    //        this.on('focus', index => {
-//
-    //        });
-//
-    //        this.on('click', (index, link) => {
-//
-    //        });
-    //      })
-    //      this.AppUtilities.apply();
-    //      this.AppUtilities.hideLoader();
-    //    });
-    //  }
-    //});
-//
-    //$rootScope.$watch('random', (newVal, oldVal) => {
-    //  if ($rootScope.random) {
-    //    var randomTrack = $rootScope.random[~~($rootScope.random.length * Math.random())];
-    //    if (randomTrack.cover_art) {
-    //      $scope.artistImage = this.AlloyDbService.getCoverArt({ track_id: randomTrack.cover_art })
-    //    }
-    //    this.AppUtilities.apply();
-    //    this.AppUtilities.hideLoader();
-    //  }
-    //});
+    $rootScope.$watch("charts", (newVal, oldVal) => {
+      if ($rootScope.charts) {
+        if ($rootScope.charts.top_tracks) {
+          $scope.top_tracks = AppUtilities.getRandom($rootScope.charts.top_tracks, 10);
+          $scope.never_played = AppUtilities.getRandom($rootScope.charts.never_played, 10);
+          $scope.never_played_albums = AppUtilities.getRandom($rootScope.charts.never_played_albums, 10);
+          this.AppUtilities.apply();
+        }
+      }
+    });
   }
   $onInit() {
     this.$element.addClass('vbox')
