@@ -1,21 +1,173 @@
-include ./../../views/pagecontainer
-  include ./../../views/pagetoolbar
-    .PageToolbarSection-section.PageToolbarSection-left
-      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
-      toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
-      toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
-      toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
-      toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
-      toolbarbutton(buttontext='Continous', buttonclick='toggleContinousPlay()', buttonicon="fa-check-square-o", ng-show="continousPlay")
-      toolbarbutton(buttontext='Continous', buttonclick='toggleContinousPlay()', buttonicon="fa-square-o", ng-show="!continousPlay")
+section.scrollable.padder-lg.w-f-md
+  a.pull-right.text-muted.m-t-lg(data-toggle='class:fa-spin', ng-click="refresh()")
+    i#refresh.icon-refresh.i-lg.inline
+  h2.font-thin.m-b
+    | Discover Whats New
+    PlayingStatusBars
 
-    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
-      .PageToolbarSection-section.PageToolbarSection-right
-        toolbarbutton(buttontext='Now Playing', buttonclick='findNowPlaying()', buttonicon='fa-dot-circle-o')
-        toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
+  .row
+    .col-md-7
+      h3.font-thin New Songs
+      .row.row-sm
+        div(ng-repeat="song in fresh_tracks")
+          .col-sm-3
+            .item
+              .pos-rlt
+                .item-overlay.opacity.r.r-2x.bg-black
+                  .center.text-center.m-t-n
+                    a(ng-click="playTrack(song, fresh_tracks)")
+                      i.fa.fa-play-circle.i-2x
+                a(href='#')
+                  img.r.r-2x.img-full.fresh-img(ng-src='{{song.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='#') {{song.title}}
+                a.text-ellipsis.text-xs.text-muted(href='#') {{song.artist}}
+    .col-md-5
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin Never Played
 
-  include ./../../views/pagebody
-    include ./../../views/pageheaderdynamic
-      div#player(style='overflow: hidden;')
-    include ./../../views/pagecontent
-      tracklist(data="tracks", showartist='true', showalbum='true')
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, never_played)", ng-repeat="song in never_played")
+          span.pull-right.h2.text-muted.m-l(ng-if="checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
+          PlayingStatusBars.pull-right(ng-if="checkIfNowPlaying('track', song.id) == true")
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}     
+
+  .row
+    .col-md-7
+      h3.font-thin New Albums
+      .row.row-sm
+        div(ng-repeat="album in fresh_albums")
+          .col-sm-3
+            .item(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}")
+              .pos-rlt
+                .item-overlay.opacity.r.r-2x.bg-black
+                  .center.text-center.m-t-n
+                    a(ng-click="playAlbum(album)")
+                      i.fa.fa-play-circle.i-2x
+                a(href='#')
+                  img.r.r-2x.img-full.fresh-img(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='#') {{album.name}}
+                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}  
+
+
+    .col-md-5
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin Quick Picks
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, quick_picks)", ng-repeat="song in quick_picks")
+          span.pull-right.h2.text-muted.m-l(ng-if="checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
+          PlayingStatusBars.pull-right(ng-if="checkIfNowPlaying('track', song.id) == true")
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}     
+  .row
+    .col-md-7
+      h3.font-thin New Artists
+      .row.row-sm
+        div(ng-repeat="artist in fresh_artists")
+          .col-sm-3
+            .item
+              .pos-rlt
+                .item-overlay.opacity.r.r-2x.bg-black
+                  .center.text-center.m-t-n
+                    a(ng-click="playArtist(artist)")
+                      i.fa.fa-play-circle.i-2x
+                a(href='#')
+                  img.r.r-2x.img-full(ng-src='{{artist.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='/artists/{{artist.id}}') {{artist.name}}
+             
+    .col-md-5
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin Top Songs
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, top_tracks)", ng-repeat="song in top_tracks")
+          span.pull-right.h2.text-muted.m-l(ng-if="checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
+          PlayingStatusBars.pull-right(ng-if="checkIfNowPlaying('track', song.id) == true")
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}
+            
+  .row
+    .col-md-7(ng-if="fresh_albums")
+
+      section.scrollable.padder
+        section.panel.panel-default
+          header.panel-heading  Recently Modified
+          .table-responsive
+            table.table.table-striped.b-t.b-light
+              thead
+                tr
+                  th.th-sortable(data-toggle='class')
+                    | Album
+                    span.th-sort
+                      i.fa.fa-sort-down.text
+                      i.fa.fa-sort-up.text-active
+                      i.fa.fa-sort
+                  th Artist
+                  th Created
+                  th Tracks
+              tbody(ng-repeat="album in fresh_albums")
+                tr
+                  td {{album.name}}
+                  td {{album.artist}}
+                  td {{album.created}}
+                  td {{album.track_count}}
+                
+        
+
+             
+    .col-md-5
+      h3.font-thin Top Songs
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, top_tracks)", ng-repeat="song in top_tracks")
+          span.pull-right.h2.text-muted.m-l {{$index + 1}}
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}
+
+
+
+  
+
+//include ./../../views/pagecontainer
+//  include ./../../views/pagetoolbar
+//    .PageToolbarSection-section.PageToolbarSection-left
+//      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
+//      toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
+//      toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
+//      toolbarbutton(buttontext='Radio', buttonclick='startRadio()', buttonicon='fa-rss')
+//      toolbarbutton(buttontext='Share', buttonclick='shareAlbum()', buttonicon='fa-bullhorn')
+//      toolbarbutton(buttontext='Continous', buttonclick='toggleContinousPlay()', buttonicon="fa-check-square-o", ng-show="continousPlay")
+//      toolbarbutton(buttontext='Continous', buttonclick='toggleContinousPlay()', buttonicon="fa-square-o", ng-show="!continousPlay")
+//
+//    .PageToolbarSection-sectionContainer(style='flex-grow: 1;')
+//      .PageToolbarSection-section.PageToolbarSection-right
+//        toolbarbutton(buttontext='Now Playing', buttonclick='findNowPlaying()', buttonicon='fa-dot-circle-o')
+//        toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
+//
+//  include ./../../views/pagebody
+//    include ./../../views/pageheaderdynamic
+//      div#player(style='overflow: hidden;')
+//    include ./../../views/pagecontent
+//      tracklist(data="tracks", showartist='true', showalbum='true')

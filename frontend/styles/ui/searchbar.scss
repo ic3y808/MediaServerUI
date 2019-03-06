@@ -1,0 +1,14 @@
+.autocomplete-container{
+  //position: absolute;
+  //right: 10px; 
+  width: 50vw !important;
+ // left: auto !important;
+  //top: $toolbar-height !important;
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.search-list-item{
+  margin: 0px;
+  cursor: pointer;
+}

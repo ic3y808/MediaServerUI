@@ -32,7 +32,7 @@ export default class AppUtilities {
   }
 
   getBackgroundStyle(imagepath) {
-    if(imagepath == undefined || imagepath == '' || imagepath == null) return '';
+    if (imagepath == undefined || imagepath == '' || imagepath == null) return '';
     return {
       'background-image': 'url(' + imagepath + ')'
     }
@@ -117,7 +117,7 @@ export default class AppUtilities {
       return;
     }
     navigator.clipboard.writeText(text).then(function () {
-      
+
     }, function (err) {
       console.error('Async: Could not copy text: ', err);
     });
@@ -167,6 +167,20 @@ export default class AppUtilities {
       timeout = setTimeout(later, wait);
       if (callNow) func.apply(context, args);
     };
+  }
+
+  getRandom(arr, n) {
+    var result = new Array(n),
+      len = arr.length,
+      taken = new Array(len);
+    if (n > len)
+      throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+      var x = Math.floor(Math.random() * len);
+      result[n] = arr[x in taken ? taken[x] : x];
+      taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
   }
 
   encryptPassword(pass) {

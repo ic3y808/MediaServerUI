@@ -1,34 +1,53 @@
-.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
-  table.Table-table
-    thead
-      tr
-        th.TableHeaderCell-headerCell(ng-show="{{showstar == 'true'}}", ng-click='sortColumn("starred")' ng-class='sortClass("starred")')
-        th.TableHeaderCell-headerCell.Link-link(label='Track', ng-show="{{showtracknum == 'true'}}", ng-click='sortColumn("no")' ng-class='sortClass("no")') #
-        th.TableHeaderCell-headerCell.Link-link(label='Title', ng-click='sortColumn("title")' ng-class='sortClass("title")') Title
-        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}", ng-click='sortColumn("artist")' ng-class='sortClass("artist")') Artist
-        th.TableHeaderCell-headerCell.Link-link(label='Album', ng-show="{{showalbum == 'true'}}", ng-click='sortColumn("album")' ng-class='sortClass("album")') Album
-        th.TableHeaderCell-headerCell.Link-link(label='Genre', ng-show="{{showgenre == 'true'}}", ng-click='sortColumn("genre")' ng-class='sortClass("genre")') Genre
-        th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Plays', ng-show="{{showplays == 'true'}}", ng-click='sortColumn("play_count")' ng-class='sortClass("play_count")') Plays
-        th.TableHeaderCell-headerCell.Link-link(label='Duration', ng-show="{{showduration == 'true'}}", ng-click='sortColumn("duration")' ng-class='sortClass("duration")') Duration
-    tbody(ng-repeat='track in data|orderBy:column:reverse')
-      tr.TableRow-row(ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true}", ng-dblclick="requestPlay(track.id)")
-        td.TableRowCell-star.TableRowCell-cell(ng-show="showstar == 'true'")
-          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starTrack(track)", ng-class="getClass(track.id)")
-            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="track.starred == 'true' ? 'fa-star' : 'fa-star-o'")
-        td.TableRowCell-count.TableRowCell-cell(ng-show="showtracknum == 'true'")
-          span.Label-label.Label-medium.Label-Page-Body(title='{{track.no}} / {{track.of}}', ng-class="getClass(track.id)")
-            span(ng-if="!track.of", ng-class="getClass(track.id)")  {{track.no}} 
-            span(ng-if="track.of", ng-class="getClass(track.id)") {{track.no}} / {{track.of}}
-        td.TableRowCell-cell
-          span.Link-link(ng-click="requestPlay(track.id)", ng-class="getClass(track.id)") {{track.title}}
-        td.TableRowCell-cell(ng-show="showartist == 'true'")
-          span.Link-link(ng-click="navToArtist(track.base_id)", ng-class="getClass(track.id)") {{track.artist}}
-        td.TableRowCell-cell(ng-show="showalbum == 'true'")
-          span.Link-link(ng-click="navToAlbum(track.album_id)", ng-class="getClass(track.id)") {{track.album}}
-        td.TableRowCell-cell(ng-show="showgenre == 'true'")
-          span.Link-link(ng-click="navToGenre(track.genre_id)", ng-class="getClass(track.id)") {{track.genre}}
-        td.TableRowCell-cell.TableRowCell-count-center(ng-show="showplays == 'true'")
-          span.Label-label.Label-medium.Label-Page-Body(title='{{track.play_count}}', ng-class="getClass(track.id)")
-            span(ng-class="getClass(track.id)") {{track.play_count}}
-        td.TableRowCell-duration.TableRowCell-cell(ng-show="showduration == 'true'")
-          span.Link-link(ng-click="navToAlbum(album.base_id)", ng-class="getClass(track.id)") {{$root.formatTime(track.duration)}}
+ul.list-group.list-group-lg.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat='track in data')
+  li.list-group-item(ng-class="{'list-group-item-now-playing': $parent.checkIfNowPlaying(track.id) == true}")
+    .pull-right.m-l
+      a.m-r-sm(href='#', ng-click="$parent.starTrack(track)")
+        i.alloy-icon.icon-star-o.icon(ng-class="track.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+      a.m-r-sm(href='#')
+        i.alloy-icon.icon-download.icon
+      a.m-r-sm(href='#')
+        i.icon-plus
+      a(href='#')
+        i.icon-minus
+    PlayingStatusBars.pull-left(ng-if="$parent.checkIfNowPlaying(track.id) == true", style="margin:0px; margin-right:8px;")
+    a.m-r-sm.pull-left(href='#', ng-click="$parent.requestPlay(track.id)", ng-show="$parent.checkIfNowPlaying(track.id) != true")
+      i.icon-control-play.text.icon(ng-class="$parent.checkPlayState(track.id) ? 'icon-pause' : 'icon-play'")
+
+    .clear.text-ellipsis
+      span {{track.title}}
+      span.text-muted  -- {{$root.formatTime(track.duration)}}
+
+//.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
+//  table.Table-table
+//    thead
+//      tr
+//        th.TableHeaderCell-headerCell(ng-show="{{showstar == 'true'}}", ng-click='sortColumn("starred")' ng-class='sortClass("starred")')
+//        th.TableHeaderCell-headerCell.Link-link(label='Track', ng-show="{{showtracknum == 'true'}}", ng-click='sortColumn("no")' ng-class='sortClass("no")') #
+//        th.TableHeaderCell-headerCell.Link-link(label='Title', ng-click='sortColumn("title")' ng-class='sortClass("title")') Title
+//        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}", ng-click='sortColumn("artist")' ng-class='sortClass("artist")') Artist
+//        th.TableHeaderCell-headerCell.Link-link(label='Album', ng-show="{{showalbum == 'true'}}", ng-click='sortColumn("album")' ng-class='sortClass("album")') Album
+//        th.TableHeaderCell-headerCell.Link-link(label='Genre', ng-show="{{showgenre == 'true'}}", ng-click='sortColumn("genre")' ng-class='sortClass("genre")') Genre
+//        th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Plays', ng-show="{{showplays == 'true'}}", ng-click='sortColumn("play_count")' ng-class='sortClass("play_count")') Plays
+//        th.TableHeaderCell-headerCell.Link-link(label='Duration', ng-show="{{showduration == 'true'}}", ng-click='sortColumn("duration")' ng-class='sortClass("duration")') Duration
+//    tbody(ng-repeat='track in data|orderBy:column:reverse')
+//      tr.TableRow-row(ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(track.id) == true}", ng-dblclick="requestPlay(track.id)")
+//        td.TableRowCell-star.TableRowCell-cell(ng-show="showstar == 'true'")
+//          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starTrack(track)", ng-class="getClass(track.id)")
+//            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="track.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+//        td.TableRowCell-count.TableRowCell-cell(ng-show="showtracknum == 'true'")
+//          span.Label-label.Label-medium.Label-Page-Body(title='{{track.no}} / {{track.of}}', ng-class="getClass(track.id)")
+//            span(ng-if="!track.of", ng-class="getClass(track.id)")  {{track.no}} 
+//            span(ng-if="track.of", ng-class="getClass(track.id)") {{track.no}} / {{track.of}}
+//        td.TableRowCell-cell
+//          span.Link-link(ng-click="requestPlay(track.id)", ng-class="getClass(track.id)") {{track.title}}
+//        td.TableRowCell-cell(ng-show="showartist == 'true'")
+//          span.Link-link(ng-click="navToArtist(track.base_id)", ng-class="getClass(track.id)") {{track.artist}}
+//        td.TableRowCell-cell(ng-show="showalbum == 'true'")
+//          span.Link-link(ng-click="navToAlbum(track.album_id)", ng-class="getClass(track.id)") {{track.album}}
+//        td.TableRowCell-cell(ng-show="showgenre == 'true'")
+//          span.Link-link(ng-click="navToGenre(track.genre_id)", ng-class="getClass(track.id)") {{track.genre}}
+//        td.TableRowCell-cell.TableRowCell-count-center(ng-show="showplays == 'true'")
+//          span.Label-label.Label-medium.Label-Page-Body(title='{{track.play_count}}', ng-class="getClass(track.id)")
+//            span(ng-class="getClass(track.id)") {{track.play_count}}
+//        td.TableRowCell-duration.TableRowCell-cell(ng-show="showduration == 'true'")
+//          span.Link-link(ng-click="navToAlbum(album.base_id)", ng-class="getClass(track.id)") {{$root.formatTime(track.duration)}}

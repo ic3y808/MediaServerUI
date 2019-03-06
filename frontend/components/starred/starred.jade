@@ -1,12 +1,72 @@
-include ./../../views/pagecontainer
-  include ./../../views/pagetoolbar
-    .PageToolbarSection-section.PageToolbarSection-left
-      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
-      toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
-      toolbarbutton(buttontext='Shuffle', buttonclick='shuffle()', buttonicon='fa-random')
 
-  include ./../../views/pagebody
-    include ./../../views/pageheaderdynamic
-      div#player(style='overflow: hidden;')
-    include ./../../views/pagecontent
-      tracklist(data="$root.starred_tracks", showartist='true', showalbum='true')
+section.scrollable.padder-lg.w-f-md
+  a.pull-right.text-muted.m-t-lg(ng-click="refresh()", data-toggle='class:fa-spin')
+    i#refresh.icon-refresh.i-lg.inline
+  h2.font-thin.m-b
+    | Starred 
+    span.musicbar.inline.m-l-sm(style='width:20px;height:20px')
+      span.bar1.a1.bg-primary.lter
+      span.bar2.a2.bg-info.lt
+      span.bar3.a3.bg-success
+      span.bar4.a4.bg-warning.dk
+      span.bar5.a5.bg-danger.dker
+
+  .row
+    .col-md-7
+      h3.font-thin Albums
+      .row.row-sm
+        div(ng-repeat="album in $root.starred_albums")
+          .col-sm-3
+            .item
+              .pos-rlt
+                .item-overlay.opacity.r.r-2x.bg-black
+                  .center.text-center.m-t-n
+                    a(ng-click="playAlbum(album)")
+                      i.fa.fa-play-circle.i-2x
+                a(href='#')
+                  img.r.r-2x.img-full(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='#') {{album.name}}
+                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}
+    
+    .col-md-5
+      h3.font-thin Top Songs
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix.pointer(href='#', ng-repeat="song in top_tracks")
+          span.pull-right.h2.text-muted.m-l {{$index + 1}}
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}
+  .row
+    .col-md-7
+      h3.font-thin Songs
+      .row.row-sm
+        div(ng-repeat="song in $root.starred_tracks")
+          .col-sm-3
+            .item
+              .pos-rlt
+                .item-overlay.opacity.r.r-2x.bg-black
+                  .center.text-center.m-t-n
+                    a(ng-click="playSong(song)")
+                      i.fa.fa-play-circle.i-2x
+                a(href='#')
+                  img.r.r-2x.img-full(ng-src='{{song.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='#') {{song.title}}
+                a.text-ellipsis.text-xs.text-muted(href='#') {{song.artist}}  
+
+
+    .col-md-5
+      h3.font-thin Other Fresh
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix.pointer(href='#', ng-repeat="song in songs")
+          span.pull-right.h2.text-muted.m-l {{$index + 1}}
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}     
+
+  

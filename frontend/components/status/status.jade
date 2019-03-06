@@ -1,127 +1,60 @@
-include ./../../views/pagecontainer
- 
-  include ./../../views/pagebody   
-                 
-    include ./../../views/pagecontent
-    
-      .ExpanderContainer
-        .ExpanderContainer-header
-          .ExpanderContainer-left
-            div
-              span.ExpanderContainer-label Backend
-        div#albumListContainer
-          .ExpanderContainer-body
-            fieldset.FieldSet-fieldSet
-              legend.FieldSet-legend Connection
-              div
-                div
-                .FormGroup-group.FormGroup-large
-                  .FormInputGroup-inputGroupContainer
-                    .FormInputGroup-inputGroup
-                      .FormInputGroup-inputContainer
-                        .Table-tableContainer.ng-isolate-scope
-                          table.Table-table
-                            tbody
-                              tr.TableRow-row.ng-scope
-                                td.TableRowCell-cell.TableRowCell-cell-no-border Status:
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{$root.backend_ping.status}}
-                              tr.TableRow-row.ng-scope
-                                td.TableRowCell-cell.TableRowCell-cell-no-border Server Time:
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{$root.backend_ping.server_time}}
-
-      .ExpanderContainer
-        button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleAlbums()')
-          .ExpanderContainer-header
-            .ExpanderContainer-left
-              div
-                span.ExpanderContainer-label SABnzbd 
-        div#albumListContainer
-          .ExpanderContainer-body
-            fieldset.FieldSet-fieldSet
-              legend.FieldSet-legend Connection
-              div
-                div
-                .FormGroup-group.FormGroup-large
-                  .FormInputGroup-inputGroupContainer
-                    .FormInputGroup-inputGroup
-                      .FormInputGroup-inputContainer
-                        .Table-tableContainer.ng-isolate-scope
-                          table.Table-table
-                            tbody
-                              tr.TableRow-row.ng-scope
-                                td.TableRowCell-cell.TableRowCell-cell-no-border Status:
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{$root.sabnzbd_ping.status}}
-                              tr.TableRow-row.ng-scope
-                                td.TableRowCell-cell.TableRowCell-cell-no-border Version:
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{$root.sabnzbd_ping.version}}
-      .ExpanderContainer
-        button.ExpanderContainer-expandButton.Link-link.Link-link(type='button', ng-click='toggleAlbums()')
-          .ExpanderContainer-header
-            .ExpanderContainer-left
-              div
-                span.ExpanderContainer-label Alloy DB
-        div#albumListContainer
-          .ExpanderContainer-body
-            fieldset.FieldSet-fieldSet
-              legend.FieldSet-legend Connection
-              div
-                div
-                .FormGroup-group.FormGroup-large
-                  .FormInputGroup-inputGroupContainer
-                    .FormInputGroup-inputGroup
-                      .FormInputGroup-inputContainer
-                        .Table-tableContainer.ng-isolate-scope
-                          table.Table-table
-                            tbody
-                              tr.TableRow-row.ng-scope
-                                td.TableRowCell-cell.TableRowCell-cell-no-border Status:
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{alloydb.status}}
-
-            fieldset.FieldSet-fieldSet
-              legend.FieldSet-legend Watched Folders
-              div
-                div
-                .FormGroup-group.FormGroup-large
-                  .FormInputGroup-inputGroupContainer
-                    .FormInputGroup-inputGroup
-                      .FormInputGroup-inputContainer
-                        .Table-tableContainer.ng-isolate-scope
-                          table.Table-table
-                            thead
-                              tr
-                                th.TableHeaderCell-headerCell.Link-link Display Name
-                                th.TableHeaderCell-headerCell.Link-link Path
-                                  
-                            tbody
-                              tr.TableRow-row.ng-scope(ng-repeat='mediaPath in mediaPaths')
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{mediaPath.display_name}}
-                                td.TableRowCell-cell.TableRowCell-cell-no-border {{mediaPath.path}}
-            fieldset.FieldSet-fieldSet
-              legend.FieldSet-legend Library Statistics
-              div
-                div
-                .FormGroup-group.FormGroup-large
-                  .FormInputGroup-inputGroupContainer
-                    .FormInputGroup-inputGroup
-                      .FormInputGroup-inputContainer
-                        table.Table-table                               
-                          tbody
-                            tr.TableRow-row.ng-scope(ng-repeat='(key, value) in libraryInfo')
-                              td.TableRowCell-cell.TableRowCell-cell-no-border {{key}}
-                              td.TableRowCell-cell.TableRowCell-cell-no-border {{value}}
-            div
-              .FormGroup-group.FormGroup-large
-                .FormInputGroup-inputGroupContainer
-                  .FormInputGroup-inputGroup
-                    .FormInputGroup-inputContainer
-                      .status-text {{scanStatus.result.status}}
-            div
-              .FormGroup-group.FormGroup-large
-                .FormInputGroup-inputGroupContainer
-                  .FormInputGroup-inputGroup
-                    .FormInputGroup-inputContainer
-                      button#testSabnzbdConnectionButton.btn.btn-block.Button-button.Link-link.Button-primary.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='scanFullStart()', ng-show='!scanStatus.result.isScanning') Full Rescan
-                      button#testSabnzbdConnectionButton.btn.btn-block.Button-button.Link-link.Button-primary.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='scanQuickStart()', ng-show='!scanStatus.result.isScanning') Quick Rescan
-                      button#testSabnzbdConnectionButton.btn.btn-block.Button-button.Link-link.Button-warning.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='scanCancel()', ng-show='scanStatus.result.isScanning') Cancel
+section.vbox.stretch
+  section.hbox.stretch
+    section.vbox.scrollable
+      section.vbox.scrollable
+      p
+        strong Portlet
+        |  (support on touch screen)
+      .row
+        .col-sm-6.portlet.ui-sortable
+         
+        .col-sm-6.portlet.ui-sortable
+          section.panel.panel-success.portlet-item
+            header.panel-heading  Connection 
+            ul.list-group.alt
+              li.list-group-item
+                .media
+                  span.pull-left.h2.text-muted.m-l B
+                  .pull-right.m-t-sm(ng-class='$root.backend_ping.status === "success" ? "text-success" : "text-danger"')
+                    i.fa.fa-circle
+                  .media-body
+                    div
+                      a(href='#') Backend Status
+                    small.text-muted {{$root.backend_ping.status}} - {{$root.backend_ping.server_time}}
+              li.list-group-item
+                .media
+                  span.pull-left.h2.text-muted.m-l A  
+                  .pull-right.m-t-sm(ng-class='alloydb.status === "success" ? "text-success" : "text-danger"')
+                    i.fa.fa-circle
+                  .media-body
+                    div
+                      a(href='#') AlloyDB Status
+                    small.text-muted {{alloydb.status}}
+              li.list-group-item
+                .media
+                  span.pull-left.h2.text-muted.m-l S
+                  .pull-right.m-t-sm(ng-class='$root.sabnzbd_ping.status === "success" ? "text-success" : "text-danger"')
+                    i.fa.fa-circle
+                  .media-body
+                    div
+                      a(href='#') SABnzbd Status
+                    small.text-muted {{$root.sabnzbd_ping.status}} - {{$root.sabnzbd_ping.version}}
+              
+          section.panel.panel-success.portlet-item
+            header.panel-heading  AlloyDB Media 
+            .table-responsive
+              #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
 
 
+                table#DataTables_Table_0.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
+                  thead
+                    tr(role='row')
+                      th(style='width: 350px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1')
+                      th(style='width: 220px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1')
+                  tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat='(key, value) in libraryInfo')
+                    tr(ng-class-odd="'odd'" ng-class-even="'even'")
+                      td.sorting_1
+                        a(href="/album/{{album.id}}") {{key}}
+                      td
+                        a(href="/artist/{{album.artist_id}}") {{value}}
+              

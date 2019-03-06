@@ -1,29 +1,50 @@
-.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
-  table.Table-table
-    thead
-      tr
-        th.TableHeaderCell-headerCell
-        th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
-        th.TableHeaderCell-headerCell.Link-link(label='Album', ng-click='sortColumn("album")' ng-class='sortClass("album")') Album
-        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}", ng-click='sortColumn("artist")' ng-class='sortClass("artist")') Artist
-        th.TableHeaderCell-headerCell.Link-link(label='Release', ng-click='sortColumn("created")' ng-class='sortClass("created")') Release
-        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.Link-link(label='Type', ng-click='sortColumn("type")' ng-class='sortClass("type")') Type
-        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks', ng-click='sortColumn("track_count")' ng-class='sortClass("track_count")') Tracks
-    tbody
-      tr.TableRow-row(ng-repeat='album in data|orderBy:column:reverse', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
-        td.TableRowCell-star.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starAlbum(album)")
-            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="album.starred == 'true' ? 'fa-star' : 'fa-star-o'")
-        td.TableRowCell-play.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button', ng-click="playAlbum(album)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
-            i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
-        td.TableRowCell-cell
-          span.Link-link.ng-binding(ng-click="navToAlbum(album.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.name}}
-        td.TableRowCell-cell(ng-show="showartist == 'true'")
-          span.Link-link.ng-binding(ng-click="navToArtist(album.artist_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.artist}}
-        td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.created}}
-        td.TableRowCell-type.TableRowCell-cell
-          span.Link-link.ng-binding(ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.type}}
-        td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium.Label-Page-Body(title='{{album.track_count}} total tracks', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
-            span {{album.track_count}}
+
+section.scrollable.hover.hbox.animated.fadeInUp
+  section.scrollable.hover
+    
+    ul.list-group.list-group-lg.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat='album in data|orderBy:column:reverse')
+      li.list-group-item(ng-class="{'list-group-item-now-playing': $parent.checkIfNowPlaying(album.id) == true}")
+        .pull-right.m-l
+          a.m-r-sm(ng-click="$parent.starAlbum(album)")
+            i.alloy-icon.icon-star-o.icon
+
+        a.m-r-sm.pull-left(ng-click="$parent.playAlbum(album)")
+          i.icon-control-play.text.alloy-icon.icon-play.icon
+          i.icon-control-pause.text-active.alloy-icon.icon-pause.icon
+        .clear.text-ellipsis
+          span {{album.name}}
+          span.text-muted  -- {{album.track_count}}
+
+
+
+
+
+//.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
+//  table.Table-table
+//    thead
+//      tr
+//        th.TableHeaderCell-headerCell
+//        th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
+//        th.TableHeaderCell-headerCell.Link-link(label='Album', ng-click='sortColumn("album")' ng-class='sortClass("album")') Album
+//        th.TableHeaderCell-headerCell.Link-link(label='Artist', ng-show="{{showartist == 'true'}}", ng-click='sortColumn("artist")' ng-class='sortClass("artist")') Artist
+//        th.TableHeaderCell-headerCell.Link-link(label='Release', ng-click='sortColumn("created")' ng-class='sortClass("created")') Release
+//        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.Link-link(label='Type', ng-click='sortColumn("type")' ng-class='sortClass("type")') Type
+//        th.TableHeaderCell-headerCell.TableHeaderCell-headerCell-Right.TableHeaderCell-headerCell-TrackCount.Link-link(label='Tracks', ng-click='sortColumn("track_count")' ng-class='sortClass("track_count")') Tracks
+//    tbody
+//      tr.TableRow-row(ng-repeat='album in data|orderBy:column:reverse', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(album.id) == true}")
+//        td.TableRowCell-star.TableRowCell-cell
+//          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starAlbum(album)")
+//            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="album.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+//        td.TableRowCell-play.TableRowCell-cell
+//          button.IconButton-button.Link-link.Link-link(type='button', ng-click="playAlbum(album)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
+//            i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+//        td.TableRowCell-cell
+//          span.Link-link.ng-binding(ng-click="navToAlbum(album.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.name}}
+//        td.TableRowCell-cell(ng-show="showartist == 'true'")
+//          span.Link-link.ng-binding(ng-click="navToArtist(album.artist_id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.artist}}
+//        td.RelativeDateCell-cell.TableRowCell-cell(title='{{album.created}}', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.created}}
+//        td.TableRowCell-type.TableRowCell-cell
+//          span.Link-link.ng-binding(ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}") {{album.type}}
+//        td.TableRowCell-count.TableRowCell-cell
+//          span.Label-label.Label-medium.Label-Page-Body(title='{{album.track_count}} total tracks', ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(album.id) == true}")
+//            span {{album.track_count}}

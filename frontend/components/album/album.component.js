@@ -1,9 +1,10 @@
 import "./album.scss";
 class AlbumController {
-  constructor($scope, $rootScope, $routeParams, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, $element, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$element = $element;
     this.Cache = Cache;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
@@ -191,6 +192,11 @@ class AlbumController {
 
     $scope.getAlbum();
   }
+
+  $onInit() {
+    this.$element.addClass('vbox')
+    this.$element.addClass('scrollable')
+  };
 }
 
 export default {

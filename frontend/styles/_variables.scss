@@ -65,15 +65,7 @@ $sub-font-size: 0.85em;
 $extra-font: 'MavenPro-Regular',
 sans-serif;
 $extra-font-size: 0.85em;
-@font-face {
-  font-family: $sub-font;
-  src: url(/content/Lato-Regular.ttf)format('truetype');
-}
 
-@font-face {
-  font-family: $extra-font;
-  src: url(/content/MavenPro-Regular.ttf)format('truetype');
-}
 
 //buttons
 $main-btn-hover-color:$now-playing-track;

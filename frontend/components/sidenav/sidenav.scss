@@ -1,52 +1,6 @@
-.sidebar {
-  background-color: $dark-color;
-  max-width: $sidebar-width;
-  border: 1px solid $general-border-color !important;
-  overflow: auto;
-  padding: 0;
-}
-
-.list-group-item-dark {
-  color: $sidebar-font-color !important;
-  background-color: $darker-color !important;
-  font-family: $sidebar-font;
-  font-weight: $sidebar-font-weight;
-  font-size: $sidebar-font-size;
-  line-height: sidebar-line-height;
-}
-
-.list-group-item-dark .active {
-  color: $main-text-color;
-  background-color: $dark-color;
-  font-family: $sidebar-font;
-  font-weight: $sidebar-font-weight;
-  font-size: $sidebar-font-size;
-}
-
-.list-group-item-dark-no-select {
-  color: $alt-text-color !important;
-  background-color: $darker-color !important;
-  font-family: $sidebar-font;
-  font-weight: $sidebar-font-weight;
-  font-size: $sidebar-font-size;
-}
-
-.sub-list-group-item-dark {
-  color: $main-text-color !important;
-  background-color: $alt-sub-background-color !important;
-  font-family: $sidebar-font;
-  font-weight: $sidebar-font-weight;
-  font-size: $sidebar-font-size;
-}
-
-.sidebar-expanded {
-  width: $sidebar-width;
-}
-
-.sidebar-collapsed {
-  width: $sidebar-collapsed-width;
-}
-
-.sidebar-text{
-  color:#e1e2e3 !important;
+.truncate {
+  width: 125px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

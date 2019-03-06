@@ -12,6 +12,8 @@ class ConfigAlloyDbController {
     this.Logger.debug('config-alloydb-controller');
 
     $scope.settings = {};
+    $scope.currentpath = '';
+    $scope.display_name = '';
   
     $scope.generateConnectionString = () =>  {
       var url = 'http://';
@@ -31,6 +33,59 @@ class ConfigAlloyDbController {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
 
+    $scope.testSettings = () => {
+      if(this.$rootScope.socket)
+       this.$rootScope.socket.emit('test_alloydb_settings', $rootScope.settings.sabnzbd);
+    };
+
+    $scope.removePath = mediaPath => {
+      var removeMediaPath = AlloyDbService.removeMediaPath(mediaPath);
+      if(removeMediaPath){
+        removeMediaPath.then(function(result){
+          $scope.reload();
+        });
+      }
+    }
+
+    $scope.browsePaths = () =>  {
+      $scope.currentpath = '';
+      $scope.display_name = '';
+      AppUtilities.apply();
+
+      var $this = $(this)
+              , $remote = $this.data('remote') || $this.attr('href')
+              , $modal = $('#addMediaPathModal')
+            $('#primary-content').append($modal);
+            $modal.modal();
+           // $modal.load($remote);
+
+     // $('#addMediaPathModal').modal()
+    }
+
+    $scope.addCurrentPath = () =>  {
+      var addMediaPath = AlloyDbService.addMediaPath({ display_name: $scope.display_name, path: $scope.currentpath });
+      if(addMediaPath){
+        addMediaPath.then(result => {
+
+          $scope.reload();
+        });
+      }
+      $('#addMediaPathModal').modal('hide')
+    }
+
+    $scope.reload = () =>  {
+      if (AlloyDbService.isLoggedIn) {
+        var mediaPaths = AlloyDbService.getMediaPaths();
+        if (mediaPaths) {
+          mediaPaths.then(paths => {
+            $scope.mediaPaths = paths;
+            AppUtilities.apply();
+            AppUtilities.hideLoader();
+          });
+        }
+      }
+    }
+
     if(this.$rootScope.socket)
        this.$rootScope.socket.emit('load_settings', 'alloydb_settings');
 
@@ -48,6 +103,12 @@ class ConfigAlloyDbController {
     $rootScope.$watch('settings.alloydb ', (newVal, oldVal) =>  {
       $scope.previewConnectionString();
     });
+
+    $rootScope.$on('loginStatusChange', function (event, data) {
+      $scope.reload();
+    });
+
+    $scope.reload();
   }
 }
 

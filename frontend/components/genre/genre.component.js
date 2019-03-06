@@ -1,10 +1,11 @@
 import './genre.scss';
 class GenreController {
-  constructor($scope, $rootScope, $routeParams, Cache, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, $element, Cache, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$routeParams = $routeParams;
+    this.$element = $element;
     this.Cache = Cache;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
@@ -104,6 +105,11 @@ class GenreController {
 
     $scope.getGenre();
   }
+
+  $onInit() {
+    this.$element.addClass('vbox')
+    this.$element.addClass('scrollable')
+  };
 }
 
 export default {

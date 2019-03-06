@@ -12,6 +12,11 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
       scope.navToArtist = function (id) {
         $location.path('/artist/' + id);
       }
+
+      scope.$watch('data', (o,n)=>{
+        $('#testDiv').slimscroll();
+      });
+      
       var testForLetter = function (character) {
         try {
           //Variable declarations can't start with digits or operators
@@ -32,10 +37,10 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
       scope.checkIfNowPlaying = function (id) {
         var selected = MediaPlayer.selectedTrack();
         if (selected) {
-          return id === selected.base_id;
+          return id === selected.artist_id;
         }
         return false;
-      }
+      };
 
       scope.starArtist = function (artist) {
         if (artist.starred === 'true') {

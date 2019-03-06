@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var path = require('path')
 var fs = require('fs');
+const sharp = require('sharp');
 var structures = require('./structures');
 var logger = require('../../../common/logger');
 
@@ -111,6 +112,8 @@ router.get('/cover_art', function (req, res) {
   var artist_id = req.query.artist_id;
   var track_id = req.query.track_id;
   var album_id = req.query.album_id;
+  var width = req.query.width;
+  var height = req.query.height;
   var coverFile = '';
 
   var shuffle = a => {
@@ -124,9 +127,9 @@ router.get('/cover_art', function (req, res) {
   if (artist_id) {
     var artist = res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(artist_id);
     if (artist && artist.path) {
-      if (fs.existsSync(path.join(artist.path, process.env.LOGO_IMAGE))) {
-        coverFile = path.join(artist.path, process.env.LOGO_IMAGE);
-      }
+      //if (fs.existsSync(path.join(artist.path, process.env.LOGO_IMAGE))) {
+      //  coverFile = path.join(artist.path, process.env.LOGO_IMAGE);
+      //}
       if (!coverFile) {
         var artistAlbums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(artist_id);
         artistAlbums = shuffle(artistAlbums)
@@ -177,9 +180,23 @@ router.get('/cover_art', function (req, res) {
     });
   }
 
-  if (!coverFile) res.sendfile(process.env.COVER_ART_NO_ART);
-  else res.sendFile(coverFile);
-
+  var input = process.env.COVER_ART_NO_ART;
+  if (coverFile) input = coverFile;
+  if (width && height) {
+    sharp(input)
+      .rotate()
+      .resize({
+        width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
+      })
+      .overlayWith(roundedCorners, { cutout: true })
+      .toBuffer()
+      .then(data => {
+        res.end(data)
+      })
+      .catch(err => { res.send(err); });
+  } else {
+    res.sendFile(input);
+  }
 });
 
 

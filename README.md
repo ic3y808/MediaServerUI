@@ -3,29 +3,51 @@
 ## Major Features Include:
 ###Please use Issues page for any new feature requests
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
-* Convert existing JS to ES6-JS - WIP
 * Full Rest API with AlloyDB
-* SabNZBD API connection - WIP
-* Radarr / Lidarr / Sonarr API - Future
-* Transmission API - Future
+* Database and UI can be deployed together or seperately
+* SabNZBD API connection - In Progress
+* Musicbrainz integration
+* Last.FM integration
 
 ## Feature Requests
 * Post am issue
 
+## Media Structure
+* Alloy DB expects a structure of the following folder format:
+```
+ {{root}}/{{artist}}/{{release name}}/{{media_name}}.{{ext}}
+```
+
+## Supported Formats
+```
+.mp3, .wav, .flac, .ogg, .aiff, .aac
+```
+
 ## To run: 
-* Deps.bat as Admin
-* Build.bat
-* Start_{os_type}.bat|sh
+* node ./setup.js -install
+* node ./setup.js -run
 * navigate to http://localhost:3000
+* navigate to http://localhost:4000/api_docs for information on the database API
 
-## creating database migrations
-* db-migrate create my-migration-name --config database.json -e dev 
+## setup.js
+setupjs has some different commands for running and development: 
+```
+-ui      # runs the full UI frontend application for connecting to a remote database
+-run     # runs the full UI frontend application and database server
+-fonts   # rebuilds just the fonts
+-build   # builds the resources
+-install # includes build, installs and builds
+```
 
+## database migrations
+It is important to add migrations for database changes.
+```
+db-migrate create my-migration-name --config database.json -e dev 
+```
 ### Now Playing Preview
 ![Alt text](/media/preview.png?raw=true "Overall interface")
 
-## Media Structure
-* Alloy DB expects a structure of {{media path}}\\{{artist}}\\{{release name}}\\{{media_name}}.{{format}}
+
 
 ### GIF Preview
 ![Alt Text](/media/preview.gif)

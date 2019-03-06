@@ -18,6 +18,10 @@ import PopoverButton from './ui/popoverbutton';
 import LinkButton from './ui/linkbutton';
 import CoverFlow from './ui/coverflow';
 import StarRatingLabel from './ui/starratinglabel';
+import SearchBar from './ui/searchbar';
+import ScrollSaver from './ui/scrollsaver';
+import PlayingStatusBars from './ui/playingstatusbars';
+import VolumeSlider from './ui/volumeslider';
 
 export default angular
   .module('app.directives', [])
@@ -38,5 +42,9 @@ export default angular
   .directive('popoverbutton', PopoverButton)
   .directive('linkbutton', LinkButton)
   .directive('starratinglabel', StarRatingLabel)
+  .directive('volumeslider', VolumeSlider)
+  .directive('searchbar', SearchBar)
+  .directive('scrollsaver', ScrollSaver)
+  .directive('playingstatusbars', PlayingStatusBars)
   .directive('coverflow', CoverFlow)
 ;
