@@ -3,7 +3,7 @@ var exec = require('child_process').exec;
 var ArgumentParser = require('argparse').ArgumentParser;
 var path = require('path');
 var npm = require('npm');
-var opn = require('opn');
+
 
 function load() {
   return new Promise((resolve, reject) => {
@@ -16,7 +16,7 @@ function load() {
 
 function launchBrowser() {
   setTimeout(() => {
-    opn('http://localhost:' + process.env.PORT);
+    require('opn').opn('http://localhost:' + process.env.PORT);
   }, 5000);
 }
 
