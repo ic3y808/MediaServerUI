@@ -267,6 +267,10 @@ export default class AlloyApi {
     return this._get('system/cancel_scan');
   }
 
+  charts() {
+    return this._get('browse/charts');
+  }
+
   search(query) {
     return this._get('search', {
       any: query

@@ -1,0 +1,5 @@
+section.vbox
+  ul.spaced
+    .list-group.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat="artist in data" )
+      a.list-group-item.list-group-item-slim.clearfix.btn-list(ng-click="clickButton(artist.name)", onclick="event.stopPropagation();")       
+        span.btn-artists-title {{artist.name}}  

@@ -1,34 +1,67 @@
-fieldset.FieldSet-fieldSet
-  legend.FieldSet-legend Scheduler
-  div
-    div
-    .FormGroup-group.FormGroup-large
-      .FormInputGroup-inputGroupContainer
-        .FormInputGroup-inputGroup
-          .FormInputGroup-inputContainer
-            .Table-tableContainer.ng-isolate-scope
-              table.Table-table
-                thead
-                  tr
-                    th.TableHeaderCell-headerCell.Link-link Task Name
-                    th.TableHeaderCell-headerCell.Link-link Last Run
-                    th.TableHeaderCell-headerCell.Link-link Next Run
-                    th.TableHeaderCell-headerCell Timezone
-                    th.TableHeaderCell-headerCell Cron
-                    th.TableHeaderCell-headerCell Run
-                      
-                tbody
-                  // ngRepeat: album in data.albums
-                  tr.TableRow-row.ng-scope(ng-repeat='task in schedulerStatus')
-                    td.TableRowCell-title.TableRowCell-cell
-                      a.Link-link.ng-binding(href='/album/album_748da5c6') {{task.name}}
-                    td.RelativeDateCell-cell.TableRowCell-cell {{task.lastExecution}}
-                    td.RelativeDateCell-cell.TableRowCell-cell {{task.nextExecution}}
-                    td.RelativeDateCell-cell.TableRowCell-cell {{task.timezone}}
-                    td.RelativeDateCell-cell.TableRowCell-cell {{task.source}}
-
-                    td.TableRowCell-cell
-                      button.IconButton-button.Link-link.Link-link(type='button')
-                        i.fa.fa-play-circle.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
-
-      
+section.scrollable.padder
+  section.panel.panel-default
+    header.panel-heading  Scheduled Tasks
+    .table-responsive
+      table.table.table-striped.b-t.b-light
+        thead
+          tr
+            th(style='width:20px;')
+              label.checkbox.m-n.i-checks
+                input(type='checkbox')
+                i
+            th.th-sortable(data-toggle='class')
+              | Task Name 
+              span.th-sort
+                i.fa.fa-sort-down.text
+                i.fa.fa-sort-up.text-active
+                i.fa.fa-sort
+            th Last Run
+            th Next Run
+            th Timezone
+            th Cron
+            th Run
+        tbody(ng-repeat='task in schedulerStatus')
+          tr
+            td
+              label.checkbox.m-n.i-checks
+                input(type='checkbox', name='post[]')
+                i
+            td {{task.name}}
+            td {{task.lastExecution}}
+            td {{task.nextExecution}}
+            td {{task.timezone}}
+            td {{task.source}}
+            td
+              a.active(href='#', data-toggle='class')
+                i.fa.fa-check.text-success.text-active
+                i.fa.fa-times.text-danger.text
+          
+    footer.panel-footer
+      .row
+        .col-sm-4.hidden-xs
+          select.input-sm.form-control.input-s-sm.inline.v-middle
+            option(value='0') Bulk action
+            option(value='1') Delete selected
+            option(value='2') Bulk edit
+            option(value='3') Export
+          button.btn.btn-sm.btn-default Apply
+        .col-sm-4.text-center
+          small.text-muted.inline.m-t-sm.m-b-sm showing 20-30 of 50 items
+        .col-sm-4.text-right.text-center-xs
+          ul.pagination.pagination-sm.m-t-none.m-b-none
+            li
+              a(href='#')
+                i.fa.fa-chevron-left
+            li
+              a(href='#') 1
+            li
+              a(href='#') 2
+            li
+              a(href='#') 3
+            li
+              a(href='#') 4
+            li
+              a(href='#') 5
+            li
+              a(href='#')
+                i.fa.fa-chevron-right

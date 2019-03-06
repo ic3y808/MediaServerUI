@@ -7,9 +7,10 @@ window.__onGCastApiAvailable = function (isAvailable) {
 };
 
 export default class MediaPlayer {
-  constructor($rootScope, Logger, MediaElement, AppUtilities, Backend, AlloyDbService) {
+  constructor($rootScope, Title, Logger, MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$rootScope = $rootScope;
+    this.Title = Title;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.AppUtilities = AppUtilities;
@@ -18,25 +19,32 @@ export default class MediaPlayer {
     this.Logger.debug('init media player');
     this.activeSong = "";
     this.playing = false;
+    this.paused = false;
     this.currentVolume = this.MediaElement.volume;
     this.selectedIndex = 0;
     this.repeatEnabled = false;
     this.$rootScope.checkIfNowPlaying = this.checkIfNowPlaying;
     this.$rootScope.tracks = [];
+    this.$rootScope.currentTrack = {};
 
     this.MediaElement.addEventListener('play', () => {
       this.playing = true;
+      this.paused = false;
       this.togglePlayPause();
+      AppUtilities.apply();
     });
 
     this.MediaElement.addEventListener('pause', () => {
       this.playing = false;
+      this.paused = true;
       this.togglePlayPause();
+      AppUtilities.apply();
     });
 
     this.MediaElement.addEventListener('ended', () => {
       if ((this.selectedIndex + 1) === this.$rootScope.tracks.length) {
         this.playing = false;
+        this.paused = false;
         this.selectedIndex = 0;
         this.togglePlayPause();
         $('#media-player').src = this.selectedTrack();
@@ -174,15 +182,12 @@ export default class MediaPlayer {
 
   checkNowPlayingImage(source) {
     if (source.cover_art) {
-      var coverArt = this.AlloyDbService.getCoverArt({
+      source.image = this.AlloyDbService.getCoverArt({
         track_id: source.cover_art
       });
 
-      if (coverArt) {
-        $('#nowPlayingImageHolder').attr('src', coverArt);
-        this.AppUtilities.apply();
-      }
-      
+      this.AppUtilities.apply();
+
     }
   }
 
@@ -261,11 +266,11 @@ export default class MediaPlayer {
     }
 
     if (playing) {
-      $("#playPauseIcon").addClass("fa-pause");
-      $("#playPauseIcon").removeClass("fa-play");
+      $("#playPauseIcon").addClass("icon-pause");
+      $("#playPauseIcon").removeClass("icon-play");
     } else {
-      $("#playPauseIcon").addClass("fa-play");
-      $("#playPauseIcon").removeClass("fa-pause");
+      $("#playPauseIcon").addClass("icon-play");
+      $("#playPauseIcon").removeClass("icon-pause");
     }
   }
 
@@ -310,14 +315,12 @@ export default class MediaPlayer {
     $('#mainTimeDisplay').html("Loading...");
 
     var source = this.selectedTrack();
+    this.$rootScope.currentTrack = source;
     this.Logger.debug(source.artist + " - " + source.title);
     source.artistUrl = "/artist/" + source.artist_id;
     source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {
       source.url = this.AlloyDbService.stream(source.id, 320);
-
-      this.checkVolume();
-
       //if (source.artistId) {
       this.checkStarred(source);
       this.checkArtistInfo(source);
@@ -346,6 +349,7 @@ export default class MediaPlayer {
           playPromise.then(_ => {
             this.scrobble(this, source);
             this.addPlay(this, source);
+            this.Title.setTitle(source.artist + " " + source.title)
             this.togglePlayPause();
             this.AppUtilities.broadcast('trackChangedEvent', source);
           }).catch(error => {
@@ -411,7 +415,11 @@ export default class MediaPlayer {
   }
 
   checkVolume() {
-    $('#volumeSlider').val(this.currentVolume * 100);
+    if (this.remotePlayerConnected()) {
+      return this.remotePlayer.volumeLevel;
+    } else {
+      return this.MediaElement.volume;
+    }
   }
 
   checkStarred(source) {
@@ -453,8 +461,6 @@ export default class MediaPlayer {
       this.timer = null;
     }
   }
-
-
 
   setupRemotePlayer() {
 
@@ -605,10 +611,16 @@ export default class MediaPlayer {
     this.remoteConfigured = false;
   }
 
-  checkIfNowPlaying(track) {
+  checkIfNowPlaying(type, obj) {
     var selected = this.selectedTrack();
-    if (selected && track) {
-      return track.id === selected.id;
+    if (selected && type && obj) {
+      if (type === 'track') {
+        return track.id === selected.id;
+      } else if (type === 'artist') {
+        return track.id === selected.artist_id;
+      } else if (type === 'album') {
+        return track.id === selected.album_id;
+      }
     }
     return false;
   }

@@ -1,21 +1,28 @@
-.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
-  table.Table-table
-    thead
-      tr
-        th.TableRowHeaderCell-Starred.TableHeaderCell-headerCell
-        th.TableRowHeaderCell-Play.TableHeaderCell-headerCell
-        th.TableHeaderCell-headerCell.Link-link(label='Artist Name') Artist Name
-        th.TableRowHeaderCell-TrackCount.TableHeaderCell-headerCell.Link-link(label='Tracks') Tracks
-    tbody
-      tr.TableRow-row(ng-repeat='artist in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(artist.id) == true}", ng-dblclick="navToArtist(artist.id)")
-        td.TableRowCell-star.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}")
+
+section.vbox.scrollable
+  section          
+    ul.list-group.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat='artist in $root.artists')
+      a.list-group-item.list-group-item-slim.clearfix.btn-list(ng-click="navToArtist(artist.id)", onclick="event.stopPropagation();", id='{{getId(artist.name)}}', ng-class="{'list-group-item-now-playing': $parent.checkIfNowPlaying(artist.id) == true}")
+        span
+          span.btn.btn-xs.btn-default.btn-artists(ng-click="starArtist(artist)", onclick="event.stopPropagation();")
             i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="artist.starred == 'true' ? 'fa-star' : 'fa-star-o'")
-        td.TableRowCell-play.TableRowCell-cell
-          button.IconButton-button.Link-link.Link-link(type='button', ng-click="playArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}")
+          span.btn.btn-xs.btn-default.btn-artists(ng-click="playArtist(artist)", onclick="event.stopPropagation();")
             i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
-        td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.name)}}')
-          span.TableRowCell-artist-text.Link-link.ng-binding(ng-click="navToArtist(artist.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}") {{artist.name}}
-        td.TableRowCell-count.TableRowCell-cell
-          span.Label-label.Label-medium.Label-Page-Body(title='')
-            span(ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}") {{artist.track_count}}
+            
+        span.btn-artists-title {{artist.name}}
+        b.badge.bg-primary.pull-right {{artist.track_count}}   
+
+
+//    tbody
+//      tr.TableRow-row(ng-repeat='artist in data', ng-class="{'TableRow-row-now-playing': checkIfNowPlaying(artist.id) == true}", ng-dblclick="navToArtist(artist.id)")
+//        td.TableRowCell-star.TableRowCell-cell
+//          button.IconButton-button.Link-link.Link-link(type='button', ng-click="starArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}")
+//            i.fa.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas', ng-class="artist.starred == 'true' ? 'fa-star' : 'fa-star-o'")
+//        td.TableRowCell-play.TableRowCell-cell
+//          button.IconButton-button.Link-link.Link-link(type='button', ng-click="playArtist(artist)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}")
+//            i.fa.fa-play.fa-w-16.Icon-default(aria-hidden='true', data-prefix='fas')
+//        td.TableRowCell-title.TableRowCell-cell(id='{{getId(artist.name)}}')
+//          span.TableRowCell-artist-text.Link-link.ng-binding(ng-click="navToArtist(artist.id)", ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}") {{artist.name}}
+//        td.TableRowCell-count.TableRowCell-cell
+//          span.Label-label.Label-medium.Label-Page-Body(title='')
+//            span(ng-class="{'TableRowCell-now-playing': checkIfNowPlaying(artist.id) == true}") {{artist.track_count}}

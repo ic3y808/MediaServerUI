@@ -58,9 +58,7 @@ class MediaScanner extends MediaScannerBase {
     var existingArtist = stmt.all(artist.id);
     if (existingArtist.length === 0) {
 
-      const artistTracks = klawSync(artist.path, {
-        nodir: true
-      });
+      const artistTracks = klawSync(artist.path, { nodir: true });
       var validTracks = [];
       artistTracks.forEach(track => {
         if (utils.isFileValid(track.path)) {
@@ -213,6 +211,7 @@ class MediaScanner extends MediaScannerBase {
 
   scanArtist(artist) {
     return new Promise((resolve, reject) => {
+
       this.updateStatus('Scanning artist ' + artist.path, true);
       var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
       var json = JSON.parse(parser.toJson(data));
@@ -239,51 +238,54 @@ class MediaScanner extends MediaScannerBase {
       var albums = this.checkDBAlbumsExist(artist);
       var allMetaPromises = [];
       albums.forEach(album => {
-        const albumTracks = klawSync(album.path, {
-          nodir: true
-        });
+
+        try {
+          const albumTracks = klawSync(album.path, {
+            nodir: true
+          });
 
 
-        albumTracks.forEach(track => {
-          if (utils.isFileValid(track.path)) {
-            allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
-              var processed_track = new structures.Song();
-              processed_track.path = track.path;
-              processed_track.artist = utils.isStringValid(artist.name, '');
-              processed_track.artist_id = artist.id;
-              processed_track.album = utils.isStringValid(album.name, '');
+          albumTracks.forEach(track => {
+            if (utils.isFileValid(track.path)) {
+              allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
+                var processed_track = new structures.Song();
+                processed_track.path = track.path;
+                processed_track.artist = utils.isStringValid(artist.name, '');
+                processed_track.artist_id = artist.id;
+                processed_track.album = utils.isStringValid(album.name, '');
 
-              processed_track.album_path = album.path;
-              processed_track.getStats();
-              processed_track = this.checkExistingTrack(processed_track, metadata);
-              processed_track.album_id = album.id;
+                processed_track.album_path = album.path;
+                processed_track.getStats();
+                processed_track = this.checkExistingTrack(processed_track, metadata);
+                processed_track.album_id = album.id;
 
-              album.releases.forEach(release => {
-                release.Tracks.forEach(albumTrack => {
-                  if (!processed_track.id) {
-                    var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000);
-                    var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
-                    var mediumCompare = processed_track.of == release.TrackCount;
+                album.releases.forEach(release => {
+                  release.Tracks.forEach(albumTrack => {
+                    if (!processed_track.id) {
+                      var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000);
+                      var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
+                      var mediumCompare = processed_track.of == release.TrackCount;
 
-                    if (msCompare && tracknumCompare && mediumCompare) {
-                      processed_track.id = albumTrack.RecordingId;
-                      processed_track.title = albumTrack.TrackName;
+                      if (msCompare && tracknumCompare && mediumCompare) {
+                        processed_track.id = albumTrack.RecordingId;
+                        processed_track.title = albumTrack.TrackName;
+                      }
+                    } else {
+                      if (processed_track.id === albumTrack.RecordingId) {
+                        processed_track.title = albumTrack.TrackName;
+                      }
                     }
-                  } else {
-                    if (processed_track.id === albumTrack.RecordingId) {
-                      processed_track.title = albumTrack.TrackName;
-                    }
-                  }
+                  });
                 });
-              });
 
-              processed_track = this.checkAlbumArt(processed_track, metadata);
+                processed_track = this.checkAlbumArt(processed_track, metadata);
 
-              this.writeDb(processed_track, "Tracks");
-              this.updateStatus('Scanning track ' + track.path, true);
-            }));
-          }
-        });
+                this.writeDb(processed_track, "Tracks");
+                this.updateStatus('Scanning track ' + track.path, true);
+              }));
+            }
+          });
+        } catch (err) { console.log(err); }
       });
 
       Promise.all(allMetaPromises).then(() => {
@@ -349,4 +351,3 @@ class MediaScanner extends MediaScannerBase {
 }
 
 module.exports = MediaScanner;
-1

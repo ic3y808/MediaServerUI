@@ -1,19 +1,28 @@
 import styles from './sidenav.scss';
 class SidenavController {
-  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  constructor($scope, $rootScope, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$element = $element;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.Logger.debug('sidenav-controller');
+
+    $scope.getNowPlayingImage = ()=>{
+      return this.MediaPlayer.selectedTrack();
+    };
+
+    $scope.createNewPlaylist = ()=>{
+
+    };
   }
 
   $onInit() {
-
+    this.$element.addClass('vbox')
     $('#sidebarCollapse').on('click', () => {
       $('#sidebar').toggleClass('active');
     });

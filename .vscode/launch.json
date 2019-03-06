@@ -49,6 +49,16 @@
       }
     },
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Rebuild Icons",
+      "program": "${workspaceFolder}/setup.js",
+      "args": [
+      
+        "-fonts"
+      ]
+    },
+    {
       "name": "LaunchChrome",
       "type": "chrome",
       "request": "launch",
@@ -79,6 +89,14 @@
       "configurations": [
         "UI-ServerDebug",
         "Backend-ServerDebug",
+        "LaunchChrome"
+      ]
+    },
+    {
+      "name": "Release All",
+      "configurations": [
+        "UI-ServerRelease",
+        "Backend-ServerRelease",
         "LaunchChrome"
       ]
     }

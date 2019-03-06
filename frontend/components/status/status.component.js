@@ -1,10 +1,11 @@
 import "./status.scss";
 class StatusController {
-  constructor($scope, $rootScope, $timeout, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $timeout, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
+    this.$element = $element;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
@@ -128,6 +129,11 @@ class StatusController {
     }, 500);
     AppUtilities.hideLoader();
   }
+
+  $onInit() {
+    this.$element.addClass('vbox')
+    this.$element.addClass('scrollable')
+  };
 }
 
 export default {

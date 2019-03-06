@@ -22,6 +22,10 @@ router.get('/fresh', function (req, res) {
   res.render('index', options);
 });
 
+router.get('/charts', function (req, res) {
+  res.render('index', options);
+});
+
 router.get('/status', function (req, res) {
   res.render('index', options);
 });

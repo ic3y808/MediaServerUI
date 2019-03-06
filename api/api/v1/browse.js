@@ -161,7 +161,7 @@ router.get('/artist', function (req, res) {
 
   result.prev = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order - 1);
   result.next = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order + 1);
-  
+
   var totalSize = 0;
   result.tracks.forEach(track => {
     totalSize += track.size;
@@ -299,6 +299,25 @@ router.get('/top_songs', function (req, res) {
 
 /**
  * This function comment is parsed by doctrine
+ * @route GET /browse/charts
+ * @produces application/json 
+ * @consumes application/json 
+ * @group browse - Browse API
+ * @security ApiKeyAuth
+ */
+router.get('/charts', function (req, res) {
+
+  var result = {
+    charts: {
+      top_tracks: res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT 50").all(),
+      never_played: res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT 50").all(),
+    }
+  };
+  res.json(result);
+});
+
+/**
+ * This function comment is parsed by doctrine
  * @route GET /browse/fresh
  * @produces application/json 
  * @consumes application/json 
@@ -310,16 +329,27 @@ router.get('/top_songs', function (req, res) {
 router.get('/fresh', function (req, res) {
   var limit = req.query.limit === undefined ? 10 : req.query.limit;
   var result = {
-    fresh: {}
+    fresh: {
+      albums: [],
+      artists: [],
+      tracks: []
+    }
   };
   //var tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE CAST((last_modified/1000) AS LONG) >= strftime('%s', 'now', '-" + days_back + " day');").all()
-  var albums = res.locals.db.prepare("SELECT DISTINCT album_id, album, cover_art FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit)
+  var albumIds = res.locals.db.prepare("SELECT DISTINCT album_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit)
+  var artistsIds = res.locals.db.prepare("SELECT DISTINCT artist_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit)
+  result.fresh.tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit)
 
-  albums.forEach(function (album) {
-    album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC").all(album.album_id)
-    album.track_count = album.tracks.length;
+  artistsIds.forEach(id => {
+    var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(id.artist_id);
+    artist.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
+    result.fresh.artists.push(artist);
   });
-  result.fresh.albums = albums;
+  albumIds.forEach(id => {
+    var album = res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id.album_id);
+    album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
+    result.fresh.albums.push(album);
+  });
   res.json(result);
 });
 

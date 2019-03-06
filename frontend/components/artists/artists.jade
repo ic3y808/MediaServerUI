@@ -1,15 +1,79 @@
-include ./../../views/pagecontainer
-  
-  include ./../../views/pagetoolbar
-    include ./../../views/toolbarsection-left
-      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
-      toolbarseperator
-      toolbarbutton(buttontext='Refresh', buttonclick='refresh()', buttonicon='fa-refresh')
-    include ./../../views/toolbarsection-right
-      toolbarbutton(buttontext='Add', buttonclick='refresh()', buttonicon='fa-plus')
-  jumpbar(data="$root.music_index", buttonclick='jumpBarClick()')
-  include ./../../views/pagebody   
-                 
-    include ./../../views/pagecontent
-      artistlist.col(data="$root.artists", hasjumpbar='true')
-      
+
+section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
+  a.pull-right.text-muted.m-t-lg(href='#', data-toggle='class:fa-spin')
+    i#refresh.icon-refresh.i-lg.inline
+  h2.font-thin.m-b
+    | Artists 
+    span.musicbar.inline.m-l-sm(style='width:20px;height:20px')
+      span.bar1.a1.bg-primary.lter
+      span.bar2.a2.bg-info.lt
+      span.bar3.a3.bg-success
+      span.bar4.a4.bg-warning.dk
+      span.bar5.a5.bg-danger.dker
+
+  .row
+    .col-md-7
+      h3.font-thin
+      .row.row-sm
+        div(ng-repeat="artist in $root.artists")
+          .col-sm-3
+            .item
+              .pos-rlt
+                a(href='/artist/{{artist.id}}')
+                  .item-overlay.opacity.r.r-2x.bg-black
+
+                
+                img.r.r-2x.img-full(ng-src='{{artist.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='#') {{artist.name}}
+                a.text-ellipsis.text-xs.text-muted(href='#') {{song.artist}}
+    
+    .col-md-5
+      h3.font-thin Top Songs
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix(href='#', ng-repeat="artist in $root.artists")
+          span.pull-right.h2.text-muted.m-l {{$index + 1}}
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{artist.image}}', alt='...')
+          span.clear
+            span {{artist.name}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}
+  .row
+    .col-md-7
+      h3.font-thin New Albums
+      .row.row-sm
+        div(ng-repeat="album in discover")
+          .col-sm-3
+            .item
+              .pos-rlt
+                .item-overlay.opacity.r.r-2x.bg-black
+                  .center.text-center.m-t-n
+                    a(ng-click="playAlbum(album)")
+                      i.fa.fa-play-circle.i-2x
+                a(href='#')
+                  img.r.r-2x.img-full(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
+              .padder-v
+                a.text-ellipsis(href='#') {{album.name}}
+                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}  
+
+
+    .col-md-5
+      h3.font-thin Other Fresh
+      .list-group.bg-white.list-group-lg.no-bg.auto
+        a.list-group-item.clearfix(href='#', ng-repeat="song in songs")
+          span.pull-right.h2.text-muted.m-l {{$index + 1}}
+          span.pull-left.thumb-sm.avatar.m-r
+            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
+          span.clear
+            span {{song.title}}
+            small.text-muted.clear.text-ellipsis by {{song.artist}}     
+
+//section.vbox
+//  section.w-f-md
+//    section.hbox.stretch
+//      section.vbox.scrollable(style="width:50px;")
+//        section          
+//          ul.list-group.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat="artist in $root.music_index" )
+//            a.list-group-item.list-group-item-slim.clearfix.btn-list(ng-click="clickButton(artist.name)", onclick="event.stopPropagation();")       
+//              span.btn-artists-title {{artist.name}}  
+//      artistlist(data="$root.artists")

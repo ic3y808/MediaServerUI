@@ -1,12 +1,13 @@
 import './config.scss';
 class ConfigController {
-  constructor($scope, $rootScope, $compile, $routeParams, $location, Logger, AppUtilities, Backend, MediaPlayer) {
+  constructor($scope, $rootScope, $compile, $routeParams, $location, $element, Logger, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$compile = $compile;
     this.$routeParams = $routeParams;
     this.$location = $location;
+    this.$element = $element;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
@@ -21,7 +22,7 @@ class ConfigController {
     };
 
     this.$scope.navigate = to => {
-      $('.PageContentBody-contentBody').append(this.$compile("<config" + to + "/>")(this.$scope));
+      $('#config-content').append(this.$compile("<config" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };
 
@@ -74,7 +75,10 @@ class ConfigController {
     if (this.$routeParams.id) {
       this.Logger.debug('navigating to ' + this.$routeParams.id);
       this.$scope.navigate(this.$routeParams.id);
-    }
+ 
+      this.$element.addClass('vbox')
+      this.$element.addClass('scrollable')
+    };
   }
 }
 

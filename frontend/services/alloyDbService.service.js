@@ -242,6 +242,13 @@ export default class AlloyDbService {
     else return false;
   }
 
+  charts() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.charts();
+    else return false;
+  }
+
   search(query) {
     this.doLogin();
     if (this.isLoggedIn)
@@ -332,6 +339,9 @@ export default class AlloyDbService {
       data.forEach(info => {
         if (info.artists) {
           this.$rootScope.artists = info.artists;
+          this.$rootScope.artists.forEach(artist => {
+            artist.image = this.getCoverArt({ artist_id: artist.id });
+          });
           this.AppUtilities.apply();
         }
       });
@@ -342,11 +352,24 @@ export default class AlloyDbService {
 
     if (data) {
       data.forEach(info => {
-        if (info.fresh && info.fresh.albums) {
+        if (info.fresh) {
           this.$rootScope.fresh_albums = info.fresh.albums;
           this.$rootScope.fresh_albums.forEach(album => {
-            album.image = this.getCoverArt({album_id: album.album_id});
-            album.title = album.album;
+            album.image = this.getCoverArt({ album_id: album.id });
+            album.tracks.forEach(track => {
+              track.image = this.getCoverArt({track_id:track.cover_art});
+            });
+          });
+          this.$rootScope.fresh_artists = info.fresh.artists;
+          this.$rootScope.fresh_artists.forEach(artist => {
+            artist.image = this.getCoverArt({ artist_id: artist.id });
+            artist.tracks.forEach(track => {
+              track.image = this.getCoverArt({track_id:track.cover_art});
+            });
+          });
+          this.$rootScope.fresh_tracks = info.fresh.tracks;
+          this.$rootScope.fresh_tracks.forEach(track => {
+            track.image = this.getCoverArt({ track_id: track.id });
           });
           this.AppUtilities.apply();
         }
@@ -388,10 +411,12 @@ export default class AlloyDbService {
       data.forEach(info => {
         if (info.starred) {
           this.$rootScope.starred_tracks = info.starred.tracks;
+          this.$rootScope.starred_tracks.forEach(track => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
           this.$rootScope.starred_albums = info.starred.albums;
           this.$rootScope.starred_albums.forEach(album => {
             album.image = this.getCoverArt({ album_id: album.id });
-            album.title = album.album;
           });
           this.AppUtilities.apply();
         }
@@ -417,9 +442,26 @@ export default class AlloyDbService {
       data.forEach(info => {
         if (info.random) {
           this.$rootScope.random = info.random;
-          //this.$rootScope.random.forEach(track=> {
-          //  track.image = this.getCoverArt(track.cover_art);
-          //});
+          this.$rootScope.random.forEach(track => {
+            track.image = this.getCoverArt({track_id:track.cover_art});
+          });
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
+  loadCharts(data) {
+    if (data) {
+      data.forEach(info => {
+        if (info.charts) {
+          this.$rootScope.charts = info.charts;
+          this.$rootScope.charts.top_tracks.forEach(track => {
+            track.image = this.getCoverArt({track_id:track.cover_art});
+          });
+          this.$rootScope.charts.never_played.forEach(track => {
+            track.image = this.getCoverArt({track_id:track.cover_art});
+          });
           this.AppUtilities.apply();
         }
       });
@@ -496,6 +538,16 @@ export default class AlloyDbService {
     }
   }
 
+  refreshCharts() {
+
+    var chartTopTracks = this.chart();
+    if (chartTopTracks) {
+      chartTopTracks.then(info => {
+        this.loadCharts([info]);
+      })
+    }
+  }
+
   preload() {
 
     var index = this.getMusicFoldersIndex();
@@ -504,10 +556,10 @@ export default class AlloyDbService {
     var albums = this.getAlbums();
     var genres = this.getGenres();
     var starred = this.getStarred();
-
     var random = this.getRandomSongs();
+    var charts = this.charts();
 
-    Promise.all([index, artists, fresh, albums, genres, starred, random]).then(info => {
+    Promise.all([index, artists, fresh, albums, genres, starred, random, charts]).then(info => {
       if (info) {
         this.loadIndex(info);
         this.loadArtists(info);
@@ -516,6 +568,7 @@ export default class AlloyDbService {
         this.loadGenres(info);
         this.loadStarred(info);
         this.loadRandom(info);
+        this.loadCharts(info);
         this.AppUtilities.apply();
       }
     });

@@ -10,6 +10,8 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<status/>',
   }).when('/index', {
     template: '<index/>',
+  }).when('/charts', {
+    template: '<charts/>',
   }).when('/database', {
     template: '<database/>',
   }).when('/starred', {
@@ -44,6 +46,8 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<album/>',
   }).when('/album/:id/:trackid', {
     template: '<album/>',
+  }).otherwise({
+    templateUrl: '/template/fourofour.jade',
   })
   $locationProvider.html5Mode({
     enabled: true,

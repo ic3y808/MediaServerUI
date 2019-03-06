@@ -1,4 +1,4 @@
 set MODE=prod
 set PORT=3000
-start "" http://localhost:3000
-npm run prod_ui_only
+node setup.js -b
+node setup.js -u

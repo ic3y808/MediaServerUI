@@ -1,11 +1,12 @@
 import './artists.scss';
 class ArtistsController {
-  constructor($scope, $rootScope, $timeout, $location, $anchorScroll, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $timeout, $location, $anchorScroll, $element, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
     this.$anchorScroll = $anchorScroll;
+    this.$element = $element;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
@@ -25,10 +26,17 @@ class ArtistsController {
     $rootScope.$watch('artists', function (newVal, oldVal) {
       if ($rootScope.artists) {
         AppUtilities.apply();
-        AppUtilities.hideLoader();        
+        AppUtilities.hideLoader();
       }
     });
+
+    
   }
+
+  $onInit() {
+    this.$element.addClass('vbox')
+    this.$element.addClass('scrollable')
+  };
 }
 
 export default {

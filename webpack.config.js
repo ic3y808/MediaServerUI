@@ -35,16 +35,16 @@ profile.plugins.push(new webpack.ProvidePlugin({
   Popper: ['popper.js', 'default'],
   //Clipboard: 'clipboard.js',
   //Alert: 'exports-loader?Alert!bootstrap/js/dist/alert',
-  Button: 'exports-loader?Button!bootstrap/js/dist/button',
+  //Button: 'exports-loader?Button!bootstrap/js/dist/button',
   //Carousel: 'exports-loader?Carousel!bootstrap/js/dist/carousel',
-  Collapse: 'exports-loader?Collapse!bootstrap/js/dist/collapse',
+  //Collapse: 'exports-loader?Collapse!bootstrap/js/dist/collapse',
   //Dropdown: 'exports-loader?Dropdown!bootstrap/js/dist/dropdown',
-  Modal: 'exports-loader?Modal!bootstrap/js/dist/modal',
-  Popover: 'exports-loader?Popover!bootstrap/js/dist/popover',
+  //Modal: 'exports-loader?Modal!bootstrap/js/dist/modal',
+  //Popover: 'exports-loader?Popover!bootstrap/js/dist/popover',
   //Scrollspy: 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
   //Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
-  Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-  Util: 'exports-loader?Util!bootstrap/js/dist/util'
+  //Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
+  //Util: 'exports-loader?Util!bootstrap/js/dist/util'
 }));
 
 profile.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
@@ -67,7 +67,8 @@ profile.module.rules.push({
 
 profile.module.rules.push({
   test: /\.(ttf|eot|woff|woff2)(\?v=\d+\.\d+\.\d+)?$/,
-  loader: "url-loader"
+  loader: "url-loader",
+
 });
 
 profile.module.rules.push({
@@ -86,40 +87,50 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.(scss|sass)$/,
   use: [{
-      loader: 'style-loader'
-    },
-    {
-      loader: 'css-loader'
-    },
-    {
-      loader: 'postcss-loader',
-      options: {
-        plugins: function () { // post css plugins, can be exported to postcss.config.js
-          return [
-            require('precss'),
-            require('autoprefixer')
-          ];
-        }
-      }
-    },
-    {
-      loader: "sass-loader",
-      options: {
-        includePaths: [path.join(nodePath, 'compass-mixins', 'lib')]
-      }
-    },
-    {
-      loader: 'sass-resources-loader',
-      options: {
-        resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss', './frontend/styles/_variables.scss']
+    loader: 'style-loader'
+  },
+  {
+    loader: 'css-loader'
+  },
+  {
+    loader: 'postcss-loader',
+    options: {
+      plugins: function () { // post css plugins, can be exported to postcss.config.js
+        return [
+          require('precss'),
+          require('autoprefixer')
+        ];
       }
     }
+  },
+  {
+    loader: "sass-loader",
+    options: {
+      includePaths: [path.join(nodePath, 'compass-mixins', 'lib')]
+    }
+  },
+  {
+    loader: 'sass-resources-loader',
+    options: {
+      resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss', './frontend/styles/_variables.scss']
+    }
+  }
   ]
 });
 
 profile.module.rules.push({
   test: /\.less$/,
-  use: ['style-loader', 'css-loader', 'less-loader']
+  use: [
+    { loader: 'style-loader' },
+    { loader: 'css-loader' },
+    {
+      loader: 'less-loader',
+      options: {
+        includePaths: [nodePath]
+      }
+    }
+  ],
+
 });
 
 profile.module.rules.push({
@@ -158,30 +169,30 @@ if (process.env.MODE === 'dev') {
   profile.module.rules.push({
     test: /\.js$/,
     use: [{
-        loader: 'strip-loader?strip[]=debug'
-      },
-      {
-        loader: 'babel-loader',
-        options: {
-          plugins: [
-            '@babel/plugin-transform-runtime',
-            [
-              "@babel/plugin-proposal-decorators",
-              {
-                "legacy": true,
-              }
-            ],
-            "@babel/plugin-proposal-class-properties",
-            ["angularjs-annotate", {
-              explicitOnly: true
-            }],
-            ["transform-es2015-arrow-functions", {
-              "spec": true
-            }]
+      loader: 'strip-loader?strip[]=debug'
+    },
+    {
+      loader: 'babel-loader',
+      options: {
+        plugins: [
+          '@babel/plugin-transform-runtime',
+          [
+            "@babel/plugin-proposal-decorators",
+            {
+              "legacy": true,
+            }
           ],
-          presets: ['@babel/preset-env']
-        }
+          "@babel/plugin-proposal-class-properties",
+          ["angularjs-annotate", {
+            explicitOnly: true
+          }],
+          ["transform-es2015-arrow-functions", {
+            "spec": true
+          }]
+        ],
+        presets: ['@babel/preset-env']
       }
+    }
     ],
     exclude: /(node_modules|bower_components|coverflow|modernizr\.js|angular-auto-complete\.js)/
   });

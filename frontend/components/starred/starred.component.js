@@ -1,10 +1,11 @@
 import './starred.scss';
 class StarredController {
-  constructor($scope, $rootScope, $timeout, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $timeout, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
+    this.$element = $element;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
@@ -28,23 +29,20 @@ class StarredController {
       });
     }
 
-    $scope.getAlbum = album => {
-      this.$scope.tracks = album.tracks;
+    $scope.playSong = (song) =>{
+      Logger.debug('selection changed');
+      $rootScope.tracks = $rootScope.starred_tracks;
+      var index = _.findIndex($rootScope.tracks, function (track) {
+        return track.id === song.id;
+      });
+      MediaPlayer.loadTrack(index);
+    };
 
-      if ($scope.play_prev_album) {
-        $rootScope.tracks = $scope.tracks;
-        MediaPlayer.loadTrack($scope.tracks.length - 1);
-        $scope.play_prev_album = false;
-      }
-
-      if ($scope.play_next_album) {
-        $rootScope.tracks = $scope.tracks;
-        MediaPlayer.loadTrack(0);
-        $scope.play_next_album = false;
-      }
-
-      
-    }
+    $scope.playAlbum = (album) =>{
+      Logger.debug('selection changed');
+      $rootScope.tracks = album.tracks;
+      MediaPlayer.loadTrack(0);
+    };
 
     $scope.refresh = () => {
       AlloyDbService.refreshStarred();
@@ -95,6 +93,11 @@ class StarredController {
     });
 
   }
+
+  $onInit() {
+    this.$element.addClass('vbox')
+    this.$element.addClass('scrollable')
+  };
 
 }
 
