@@ -164,12 +164,20 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   fixVbox();
   $(document).on('click', '[data-ride="collapse"] a', function (e) {
     var $this = $(e.target), $active;
+
     $this.is('a') || ($this = $this.closest('a'));
     $active = $this.parent().siblings(".active");
     $active && $active.toggleClass('active').find('> ul:visible').slideUp(200);
     ($this.parent().hasClass('active') && $this.next().slideUp(200)) || $this.next().slideDown(200);
     $this.parent().toggleClass('active');
+    var isMenu = $this.next().is('ul');
+
+    !$this.next().is('ul') && $('#sidenavButton').click(); 
+
     $this.next().is('ul') && e.preventDefault();
+    if ($active.length === 0) {
+
+    }
     setTimeout(function () {
       $(document).trigger('updateNav');
     }, 300);
@@ -255,11 +263,11 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   function toggleFullScreen() {
     var doc = window.document;
     var docEl = doc.documentElement;
-  
+
     var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
     var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-  
-    if(!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+
+    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
       requestFullScreen.call(docEl);
     }
     else {
@@ -267,7 +275,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     }
   }
 
- // toggleFullScreen();
+  // toggleFullScreen();
 
   //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";

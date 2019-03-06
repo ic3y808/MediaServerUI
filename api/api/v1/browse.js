@@ -303,16 +303,34 @@ router.get('/top_songs', function (req, res) {
  * @produces application/json 
  * @consumes application/json 
  * @group browse - Browse API
+ * @param {int} limit.query Max number of songs to return.
  * @security ApiKeyAuth
  */
 router.get('/charts', function (req, res) {
-
+  var limit = req.query.limit ? req.query.limit : 15;
   var result = {
-    charts: {
-      top_tracks: res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT 50").all(),
-      never_played: res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT 50").all(),
-    }
+    charts: {}
   };
+
+  var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
+  result.charts.never_played_albums = [];
+  allAlbums.forEach(album => {
+    if (result.charts.never_played_albums.length >= limit) return;
+    var allTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+    if (allTracks.length > 0) {
+      var anyPlays = allTracks.every(obj => {
+        obj.play_count === 0;
+      });
+      if (anyPlays === false) {
+        result.charts.never_played_albums.tracks = allTracks;
+        result.charts.never_played_albums.push(album);
+      }
+    }
+  });
+
+  result.charts.top_tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT ?").all(limit);
+  result.charts.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
+
   res.json(result);
 });
 

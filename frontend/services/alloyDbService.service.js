@@ -357,14 +357,14 @@ export default class AlloyDbService {
           this.$rootScope.fresh_albums.forEach(album => {
             album.image = this.getCoverArt({ album_id: album.id });
             album.tracks.forEach(track => {
-              track.image = this.getCoverArt({track_id:track.cover_art});
+              track.image = this.getCoverArt({ track_id: track.cover_art });
             });
           });
           this.$rootScope.fresh_artists = info.fresh.artists;
           this.$rootScope.fresh_artists.forEach(artist => {
             artist.image = this.getCoverArt({ artist_id: artist.id });
             artist.tracks.forEach(track => {
-              track.image = this.getCoverArt({track_id:track.cover_art});
+              track.image = this.getCoverArt({ track_id: track.cover_art });
             });
           });
           this.$rootScope.fresh_tracks = info.fresh.tracks;
@@ -443,7 +443,7 @@ export default class AlloyDbService {
         if (info.random) {
           this.$rootScope.random = info.random;
           this.$rootScope.random.forEach(track => {
-            track.image = this.getCoverArt({track_id:track.cover_art});
+            track.image = this.getCoverArt({ track_id: track.cover_art });
           });
           this.AppUtilities.apply();
         }
@@ -457,10 +457,13 @@ export default class AlloyDbService {
         if (info.charts) {
           this.$rootScope.charts = info.charts;
           this.$rootScope.charts.top_tracks.forEach(track => {
-            track.image = this.getCoverArt({track_id:track.cover_art});
+            track.image = this.getCoverArt({ track_id: track.cover_art });
           });
           this.$rootScope.charts.never_played.forEach(track => {
-            track.image = this.getCoverArt({track_id:track.cover_art});
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+          this.$rootScope.charts.never_played_albums.forEach(album => {
+            album.image = this.getCoverArt({ album_id: album.id });
           });
           this.AppUtilities.apply();
         }

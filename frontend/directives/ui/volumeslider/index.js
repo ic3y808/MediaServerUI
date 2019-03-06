@@ -1,4 +1,4 @@
-export default function ($rootScope, $timeout, $location, Logger, MediaElement, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
+export default function (MediaElement, MediaPlayer, AppUtilities) {
   "ngInject";
   return {
     restrict: 'E',
@@ -9,7 +9,6 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
     replace: true,
     link: function (scope, element, attrs) {
-      "ngInject";
 
       scope.getVolume = () => {
         var vol = MediaPlayer.checkVolume();
