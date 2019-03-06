@@ -16,7 +16,7 @@ function load() {
 
 function launchBrowser() {
   setTimeout(() => {
-    require('opn').opn('http://localhost:' + process.env.PORT);
+    require('opn')('http://localhost:' + process.env.PORT);
   }, 5000);
 }
 
