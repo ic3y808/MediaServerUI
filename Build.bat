@@ -1,1 +1,1 @@
-npm run build
+node setup.js -i
