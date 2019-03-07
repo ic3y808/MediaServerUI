@@ -11,7 +11,8 @@ steps:
 - task: Npm@1
   displayName: 'npm run setup'
   inputs:
-    command: setup
+    command: custom
+    customCommand: 'setup'
 
 - task: Npm@1
   displayName: 'npm test'
