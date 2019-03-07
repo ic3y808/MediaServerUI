@@ -8,11 +8,13 @@ steps:
   inputs:
     versionSpec: '8.x'
   
+- script: |
+    npm run setup
+
 - task: Npm@1
-  displayName: 'npm run setup'
+  displayName: 'npm install'
   inputs:
-    command: custom
-    customCommand: 'setup'
+    command: install
 
 - task: Npm@1
   displayName: 'npm test'
