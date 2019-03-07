@@ -141,10 +141,12 @@ load().then(() => {
     });
   }
   else if (args.install === true) {
-    npm.commands.install([], function (er, data) {
-      if (er) console.log(er);
-      processFonts().then(() => {
-        buildApp();
+    npm.commands.prune([], function (er, data) {
+      npm.commands.install([], function (er, data) {
+        if (er) console.log(er);
+        processFonts().then(() => {
+          buildApp();
+        });
       });
     });
   }

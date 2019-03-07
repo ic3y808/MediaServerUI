@@ -20,8 +20,8 @@ section.scrollable.padder-lg.w-f-md
                 a(href='#')
                   img.r.r-2x.img-full.fresh-img(ng-src='{{song.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
-                a.text-ellipsis(href='#') {{song.title}}
-                a.text-ellipsis.text-xs.text-muted(href='#') {{song.artist}}
+                a.text-ellipsis(href='/album/{{song.album_id}}/{{song.id}}') {{song.title}}
+                a.text-ellipsis.text-xs.text-muted(href='/artist/{{song.artist_id}}') {{song.artist}}
     .col-md-5
       a
         a.u.pull-right.h6.text-muted.m-l View More

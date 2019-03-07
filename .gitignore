@@ -80,3 +80,7 @@ typings/
 
 # package lock
 package-lock.json
+
+#test data
+TEST-RESULTS.xml
+.node*.*

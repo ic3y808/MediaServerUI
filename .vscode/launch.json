@@ -31,7 +31,7 @@
       "request": "launch",
       "name": "Backend-ServerDebug",
       "outputCapture": "std",
-      "program": "${workspaceFolder}/api/server.js",
+      "program": "${workspaceFolder}/api/index.js",
       "env": {
         "MODE": "dev",
         "API_PORT": "4000"
@@ -42,7 +42,7 @@
       "request": "launch",
       "name": "Backend-ServerRelease",
       "outputCapture": "std",
-      "program": "${workspaceFolder}/api/server.js",
+      "program": "${workspaceFolder}/api/index.js",
       "env": {
         "MODE": "prod",
         "API_PORT": "4000"
@@ -55,7 +55,7 @@
       "program": "${workspaceFolder}/setup.js",
       "args": [
       
-        "-fonts"
+        "-f"
       ]
     },
     {
