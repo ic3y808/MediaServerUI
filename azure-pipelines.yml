@@ -9,9 +9,9 @@ steps:
     versionSpec: '8.x'
   
 - task: Npm@1
-  displayName: 'npm run setup.js -i'
+  displayName: 'npm run setup'
   inputs:
-    command: install
+    command: setup
 
 - task: Npm@1
   displayName: 'npm test'
