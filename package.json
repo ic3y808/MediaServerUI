@@ -12,6 +12,7 @@
   "contributors": [],
   "scripts": {
     "build": "cross-env MODE=prod webpack",
+    "setup":"node setup.js -i",
     "start": "node backend/server.js",
     "start_backend": "cross-env MODE=prod node backend/server.js",
     "start_api": "cross-env MODE=prod node api/index.js",
