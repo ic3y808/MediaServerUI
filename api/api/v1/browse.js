@@ -151,13 +151,31 @@ router.get('/artists', function (req, res) {
  */
 router.get('/artist', function (req, res) {
   var id = req.query.id;
-
+  var all_albums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(id);
   var result = {
     artist: res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(id),
     tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC').all(id),
-    albums: res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(id),
-    links: res.locals.db.prepare('SELECT * FROM Links WHERE artist_id=?').all(id)
+    popular_tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=? ORDER BY play_count DESC LIMIT 5').all(id),
+    links: res.locals.db.prepare('SELECT * FROM Links WHERE artist_id=?').all(id),
+    albums: [],
+    EPs: [],
+    singles: [],
   };
+
+  all_albums.forEach(album => {
+    album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(album.id)
+    switch (album.type) {
+      case "EP":
+        result.EPs.push(album);
+        break;
+      case "Album":
+        result.albums.push(album);
+        break;
+      case "Single":
+        result.singles.push(album);
+        break;
+    }
+  });
 
   result.prev = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order - 1);
   result.next = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order + 1);

@@ -3,5 +3,6 @@
     "editor.fontFamily": "Fira Code, 'Fira Code', Fira Code",
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
-    "editor.detectIndentation": false
+    "editor.detectIndentation": false,
+    "mochaExplorer.optsFile":"${workspaceFolder}/mocha.opts"
 }

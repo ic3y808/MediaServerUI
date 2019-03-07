@@ -19,9 +19,10 @@ section.scrollable.padder-lg.w-f-md
                       i.fa.fa-play-circle.i-2x
                 a(href='#')
                   img.r.r-2x.img-full.fresh-img(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
+                  
               .padder-v
-                a.text-ellipsis(href='#') {{album.name}}
-                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}
+                a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
+                a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}
     .col-md-5
       a
         a.u.pull-right.h6.text-muted.m-l View More

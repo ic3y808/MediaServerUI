@@ -77,6 +77,22 @@ class ArtistController {
               artist_id: $routeParams.id
             });
 
+            $scope.info.albums.forEach(album => {
+              album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
+            });
+
+            $scope.info.singles.forEach(single => {
+              single.image = this.AlloyDbService.getCoverArt({ album_id: single.id });
+            });
+
+            $scope.info.EPs.forEach(ep => {
+              ep.image = this.AlloyDbService.getCoverArt({ album_id: ep.id });
+            });
+
+            $scope.info.popular_tracks.forEach(track => {
+              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
+            });
+
             if (coverArt) {
               $scope.info.artist.image = coverArt;
               this.AppUtilities.apply();
@@ -108,6 +124,27 @@ class ArtistController {
       this.Logger.debug('shuffle play artist ' + $scope.info.artist.name);
       this.$rootScope.tracks = $scope.info.tracks
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
+    };
+
+    $scope.playTrack = (song, playlist) => {
+      this.Logger.debug("Play Track");
+      $rootScope.tracks = playlist;
+      var index = _.findIndex($rootScope.tracks, function (track) {
+        return track.id === song.id;
+      });
+      this.MediaPlayer.loadTrack(index);
+    };
+
+    $scope.playAlbum = (album) => {
+      this.Logger.debug("Play Album");
+      $rootScope.tracks = album.tracks;
+      this.MediaPlayer.loadTrack(0);
+    };
+
+    $scope.playArtist = (artist) => {
+      this.Logger.debug("Play Album");
+      $rootScope.tracks = AppUtilities.shuffle(artist.tracks);
+      this.MediaPlayer.loadTrack(0);
     };
 
     $scope.getLinkIcon = function (link) {
