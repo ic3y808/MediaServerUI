@@ -41,17 +41,8 @@ setupjs has some different commands for running and development:
 -install # includes build, installs and builds
 ```
 
-## database migrations
-It is important to add migrations for database changes.
-```
-db-migrate create my-migration-name --config database.json -e dev 
-```
 ### Now Playing Preview
 ![Alt text](/media/preview.png?raw=true "Overall interface")
 
-
-
 ### GIF Preview
 ![Alt Text](/media/preview.gif)
-
-

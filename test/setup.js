@@ -1,4 +1,5 @@
 process.env.MODE = 'test';
+process.env.API_PORT = '5000';
 var App = require('../api/app');
 
 // use it in your mocha tests
