@@ -6,13 +6,9 @@ var path = require('path');
 var utils = require('./utils');
 var logger = require('../../../common/logger');
 
-var onlyUnique = function (value, index, self) {
-  return self.indexOf(value) === index;
-}
-
 /**
  * This function comment is parsed by doctrine
- * @route GET /browse/music_folders
+ * @route GET /browse/artists_index
  * @produces application/json 
  * @consumes application/json 
  * @group browse - Browse API
@@ -20,106 +16,13 @@ var onlyUnique = function (value, index, self) {
  * @returns {MusicFolder} 200 - Returns all configured top level music folders. Takes no extra parameters
  * @security ApiKeyAuth
  */
-router.get('/music_folders', function (req, res) {
-  var artists = {};
-  artists.artists = res.locals.db.prepare('SELECT DISTINCT * FROM BasePaths ORDER BY base_path COLLATE NOCASE ASC').all();
-  res.json(artists);
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/music_folders_index
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @returns {Array.<MusicFolder>}  Returns an array of MusicFolder objects
- * @returns {MusicFolder} 200 - Returns all configured top level music folders. Takes no extra parameters
- * @security ApiKeyAuth
- */
-router.get('/music_folders_index', function (req, res) {
+router.get('/artists_index', function (req, res) {
   var artists = res.locals.db.prepare('SELECT DISTINCT * FROM Artists ORDER BY name COLLATE NOCASE ASC').all();
-  var result = {};
-
-  var testForLetter = function (character) {
-    try {
-      //Variable declarations can't start with digits or operators
-      //If no error is thrown check for dollar or underscore. Those are the only nonletter characters that are allowed as identifiers
-      eval("let " + character + ";");
-      let regExSpecial = /[^\$_]/;
-      return regExSpecial.test(character);
-    } catch (error) {
-      return false;
-    }
-  }
-
-  artists.forEach(function (artist) {
-    var indexName = artist.name.slice(0, 1).toUpperCase();
-    if (testForLetter(indexName)) {
-      if (!result[indexName]) result[indexName] = [];
-      result[indexName].push(artist);
-    } else {
-      if (!result['#']) result['#'] = [];
-      result['#'].push(artist);
-    }
-
-  });
-  var finalResult = [];
-  for (var key in result) {
-    finalResult.push({
-      name: key,
-      value: result[key]
-    })
-  }
-
-  res.json({
+  var finalResult = utils.createIndex(artists);
+  var result = {
     index: finalResult
-  });
-});
+  };
 
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/indexes
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @returns {Array.<Directory>}  Returns an array of Directory objects
- * @param {string} musicFolderId.query
- * @param {string} ifModifiedSince.query
- * @returns {Ping} 200 - Returns an indexed structure of all artists.
- * @security ApiKeyAuth
- */
-router.get('/indexes', function (req, res) {
-  res.send('respond with a resource');
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/music_directory
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @returns {Array.<Directory>}  Returns an array of Directory objects
- * @param {string} id.query.required
- * @returns {Directory} 200 - Returns a listing of all files in a music directory. Typically used to get list of albums for an artist, or list of songs for an album.
- * @security ApiKeyAuth
- */
-router.get('/music_directory', function (req, res) {
-  res.send('respond with a resource');
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/genres
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @returns {Array.<Genre>}  Returns an array of Genre objects
- * @security ApiKeyAuth
- */
-router.get('/genres', function (req, res) {
-
-  var result = {};
-  result.genres = res.locals.db.prepare('SELECT * FROM Genres ORDER BY track_count DESC').all();
   res.json(result);
 });
 
@@ -250,6 +153,22 @@ router.get('/album', function (req, res) {
 
 /**
  * This function comment is parsed by doctrine
+ * @route GET /browse/genres
+ * @produces application/json 
+ * @consumes application/json 
+ * @group browse - Browse API
+ * @returns {Array.<Genre>}  Returns an array of Genre objects
+ * @security ApiKeyAuth
+ */
+router.get('/genres', function (req, res) {
+
+  var result = {};
+  result.genres = res.locals.db.prepare('SELECT * FROM Genres ORDER BY track_count DESC').all();
+  res.json(result);
+});
+
+/**
+ * This function comment is parsed by doctrine
  * @route GET /browse/genre
  * @produces application/json 
  * @consumes application/json 
@@ -260,90 +179,18 @@ router.get('/album', function (req, res) {
  */
 router.get('/genre', function (req, res) {
   var id = req.query.id;
-  var genre = res.locals.db.prepare('SELECT * FROM Genres WHERE id=?').all(id)
-  var tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE genre_id=? ORDER BY artist ASC, album ASC, no ASC, of ASC').all(id)
+  var result = {};
+  result.genre = res.locals.db.prepare('SELECT * FROM Genres WHERE id=?').get(id)
+  result.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE genre=? ORDER BY artist ASC, album ASC, no ASC, of ASC').all(id)
 
   var totalSize = 0;
-  tracks.forEach(track => {
+  result.tracks.forEach(track => {
     totalSize += track.size;
   });
 
-  var size = utils.toHumanReadable(totalSize);
+  result.size = utils.toHumanReadable(totalSize);
 
-  Object.assign(genre[0], {
-    tracks: tracks,
-    size: size
-  })
-
-  res.json(genre[0]);
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/song
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @param {string} id.query.required
- * @returns {Song} 200 - Returns a song
- * @security ApiKeyAuth
- */
-router.get('/song', function (req, res) {
-  var id = req.query.id;
-  res.send('respond with a resource');
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/artist_info
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @param {string} id.query.required
- * @param {int} count.query
- * @param {boolean} includeNotPresent.query
- * @returns {ArtistInfo} 200 - Returns artist info with biography, image URLs and similar artists, using data from last.fm.
- * @security ApiKeyAuth
- */
-router.get('/artist_info', function (req, res) {
-  var id = req.query.id;
-  var count = req.query.count;
-  var includeNotPresent = req.query.includeNotPresent;
-  res.send('respond with a resource');
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/similar_songs
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @param {string} id.query.required
- * @param {int} count.query
- * @returns {Array.<Song>} 200 - Returns a random collection of songs from the given artist and similar artists, using data from last.fm. Typically used for artist radio features.
- * @security ApiKeyAuth
- */
-router.get('/similar_songs', function (req, res) {
-  var id = req.query.id;
-  var count = req.query.count;
-  res.send('respond with a resource');
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/top_songs
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @param {string} artist.query.required The artist name.
- * @param {int} count.query Max number of songs to return.
- * @returns {Array.<Song>} 200 - Returns top songs for the given artist, using data from last.fm.
- * @security ApiKeyAuth
- */
-router.get('/top_songs', function (req, res) {
-  var artist = req.query.artist;
-  var count = req.query.count;
-  res.send('respond with a resource');
+  res.json(result);
 });
 
 /**

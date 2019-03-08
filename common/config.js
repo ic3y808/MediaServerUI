@@ -38,6 +38,14 @@ if (!fs.existsSync(process.env.DATA_DIR)) shell.mkdir("-p", process.env.DATA_DIR
 if (!fs.existsSync(process.env.LOGS_DIR)) shell.mkdir("-p", process.env.LOGS_DIR);
 if (!fs.existsSync(process.env.COVER_ART_DIR)) shell.mkdir("-p", process.env.COVER_ART_DIR);
 
+if (process.env.MODE === 'test') {
+  process.env.DATABASE = path.join(process.env.DATA_DIR, "test_database.db");
+  process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "test_database.db-wal");
+  process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "test_database.db-shm");
+  if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);
+  if (fs.existsSync(process.env.DATABASE_WAL)) shell.rm(process.env.DATABASE_WAL);
+  if (fs.existsSync(process.env.DATABASE_SHM)) shell.rm(process.env.DATABASE_SHM);
+}
 /// remove db debug
 //if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);
 //if (fs.existsSync(process.env.DATABASE_WAL)) shell.rm(process.env.DATABASE_WAL);

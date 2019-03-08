@@ -19,9 +19,9 @@ class IndexController {
 
     $scope.reloadArtists = () => {
       $scope.artists = [];
-      var getMusicFoldersIndex = this.AlloyDbService.getMusicFoldersIndex();
-      if (getMusicFoldersIndex) {
-        getMusicFoldersIndex.then(result => {
+      var getArtistsIndex = this.AlloyDbService.getArtistsIndex();
+      if (getArtistsIndex) {
+        getArtistsIndex.then(result => {
           $scope.artists = result;
           this.AppUtilities.apply();
           this.AppUtilities.hideLoader();

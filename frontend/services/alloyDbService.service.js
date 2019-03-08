@@ -102,17 +102,10 @@ export default class AlloyDbService {
     else return false;
   }
 
-  getMusicFolders() {
+  getArtistsIndex() {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.getMusicFolders();
-    else return false;
-  }
-
-  getMusicFoldersIndex() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getMusicFoldersIndex();
+      return this.alloydb.getArtistsIndex();
     else return false;
   }
 
@@ -162,13 +155,6 @@ export default class AlloyDbService {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.getGenres();
-    else return false;
-  }
-
-  getSongsByGenre(id) {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.getSongsByGenre(id);
     else return false;
   }
 
@@ -523,7 +509,7 @@ export default class AlloyDbService {
 
   refreshIndex() {
 
-    var index = this.getMusicFoldersIndex();
+    var index = this.getArtistsIndex();
     if (index) {
       index.then(info => {
         this.loadIndex([info]);
@@ -553,7 +539,7 @@ export default class AlloyDbService {
 
   preload() {
 
-    var index = this.getMusicFoldersIndex();
+    var index = this.getArtistsIndex();
     var artists = this.getArtists();
     var fresh = this.getFresh(50);
     var albums = this.getAlbums();

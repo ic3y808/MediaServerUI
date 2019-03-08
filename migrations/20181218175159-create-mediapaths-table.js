@@ -16,7 +16,7 @@ exports.setup = function (options, seedLink) {
 
 exports.up = function (db) {
   return db.createTable('MediaPaths', {
-    columns:{
+    columns: {
       display_name: { type: 'string', primaryKey: true, unique: true },
       path: { type: 'string' }
     },

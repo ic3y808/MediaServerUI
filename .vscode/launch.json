@@ -40,6 +40,17 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "Backend-ServerTest",
+      "outputCapture": "std",
+      "program": "${workspaceFolder}/api/index.js",
+      "env": {
+        "MODE": "test",
+        "API_PORT": "5000"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "Backend-ServerRelease",
       "outputCapture": "std",
       "program": "${workspaceFolder}/api/index.js",
