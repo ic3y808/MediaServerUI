@@ -10,14 +10,25 @@ Setup guides, FAQ, the more information we have on the wiki the better.
 - VSCode
 - Node
 - [Chrome Dev Tools](https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome)
+- [Test Explorer UI](https://github.com/hbenl/vscode-test-explorer)
 
 ### Getting started ###
 
 1.  Fork this project
-2.  Clone (develop branch) 
-3.  Run `npm install`
-4.  Run `npm start` - Used to compile the UI components and copy them.
-5.  Alternatively use vs code and run the Server or All builds.
+2.  Clone 
+3.  Run `npm i -g --production windows-build-tools` *windows users
+3.  Run `node setup.js -i`
+5.  Alternatively use vs code and run the Debug all or Release all builds.
+
+### Icons
+- All icons should go in the common/icons directory and be in .svg format
+- after adding icons you need to run `node setup.js -f` or use vs code's rebuild fonts command
+
+### database migrations
+- It is important to add migrations for database changes.
+```
+db-migrate create my-migration-name --config database.json -e dev 
+```
 
 ### Contributing Code ###
 - If you're adding a new, already requested feature, please comment on [Github Issues](https://github.com/ic3y808/Alloy/issues "Github Issues") so work is not duplicated (If you want to add something not already on there, please talk to us first)
