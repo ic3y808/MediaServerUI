@@ -195,7 +195,7 @@ export default class AlloyApi {
   }
 
   getAlbums() {
-    return this._get('list/album_list');
+    return this._get('browse/albums');
   }
 
   getAlbum(id)  {
