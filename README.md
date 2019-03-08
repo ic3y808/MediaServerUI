@@ -51,3 +51,6 @@ db-migrate create my-migration-name --config database.json -e dev
 
 ### GIF Preview
 ![Alt Text](/media/preview.gif)
+
+
+[![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=13&branchName=master)

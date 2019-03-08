@@ -12,8 +12,18 @@ describe('api tests', function () {
   // describe setup
   var env = global.setupEnv(before, after);
 
-  function generateUrl(path) {
-    return 'http://localhost:' + env.server.address().port + "/api/v1/" + path + "?api_key=" + process.env.API_KEY;
+  function getParmas(data) {
+    const ret = [];
+    for (let d in data)
+      ret.push(encodeURIComponent(d) + '=' + encodeURIComponent(data[d]));
+    return ret.join('&');
+  }
+  function generateUrl(path, params) {
+    var result = 'http://localhost:' + env.server.address().port + "/api/v1/" + path + "?api_key=" + process.env.API_KEY;
+    if (params) {
+      result += "&" + getParmas(params);
+    }
+    return result;
   }
 
   describe('system', () => {
@@ -61,6 +71,71 @@ describe('api tests', function () {
         });
       });
     });
+    describe('stats', () => {
+      it('should return Stats', function (done) {
+        request(generateUrl('system/stats'), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
   })
+
+  describe('browse', () => {
+    describe('artists', () => {
+      it('should return artists', function (done) {
+        request(generateUrl('browse/artists'), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+    describe('artist', () => {
+      it('should return an artist', function (done) {
+        request(generateUrl('browse/artist', { id: "12345" }), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+
+    describe('albums', () => {
+      it('should return an albums', function (done) {
+        request(generateUrl('browse/albums'), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+
+    describe('album', () => {
+      it('should return an album', function (done) {
+        request(generateUrl('browse/album', { id: "12345" }), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+  });
 });
 
