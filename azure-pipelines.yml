@@ -4,8 +4,8 @@
 steps:
 - task: NodeTool@0
   inputs:
-    versionSpec: 10.x'
-  
+    versionSpec: 11.2.0
+    checkLatest: true
 - task: Npm@1
   displayName: 'npm install'
   inputs:
