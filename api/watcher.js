@@ -1,5 +1,6 @@
 const watch = require('node-watch');
 const Queue = require('better-queue');
+const logger = require("../common/logger");
 var watchers = [];
 var mediaScanner = {};
 
