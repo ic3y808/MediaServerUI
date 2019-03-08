@@ -10,6 +10,14 @@ steps:
     versionSpec: 11.2.0
     checkLatest: true
     platform: $(platform)
+
+- task: Npm@1
+  displayName: 'npm stage one'
+  inputs:
+    command: custom
+    customCommand: 'i -g --production windows-build-tools'
+
+
 - task: Npm@1
   displayName: 'npm install'
   inputs:
