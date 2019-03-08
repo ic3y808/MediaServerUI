@@ -3,7 +3,6 @@ var assert = chai.assert;
 var expect = chai.expect;
 var should = chai.should();
 
-process.env.MODE = "prod"
 //// requiring dependencies
 var request = require('request');
 //
@@ -83,9 +82,24 @@ describe('api tests', function () {
         });
       });
     });
-  })
+  });
+
+
 
   describe('browse', () => {
+    describe('artists index', () => {
+      it('should return an index artists', function (done) {
+        request(generateUrl('browse/artists_index'), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+
     describe('artists', () => {
       it('should return artists', function (done) {
         request(generateUrl('browse/artists'), (error, response, body) => {
@@ -132,6 +146,137 @@ describe('api tests', function () {
           assert.typeOf(body, 'string');
           var result = JSON.parse(body);
           assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+
+    describe('genres', () => {
+      it('should return genres', function (done) {
+        request(generateUrl('browse/genres', { id: "12345" }), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+
+    describe('genre', () => {
+      it('should return an genre', function (done) {
+        request(generateUrl('browse/genre', { id: "12345" }), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+    describe('charts', () => {
+      it('should return the charts', function (done) {
+        request(generateUrl('browse/charts'), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+
+    describe('fresh', () => {
+      it('should return the charts', function (done) {
+        request(generateUrl('browse/fresh'), (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          done();
+        });
+      });
+    });
+  });
+
+  describe('config', () => {
+    describe('media paths', () => {
+
+      it('should put a new media path in', function (done) {
+        request({ url: generateUrl('config/mediapaths', { path: "C:\\test", display_name: "Test" }), method: 'PUT' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.result, 'string');
+          result.result.should.equal('success');
+          done();
+        });
+      });
+
+
+      it('should return an array of media paths', function (done) {
+        request({ url: generateUrl('config/mediapaths'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'array');
+
+          done();
+        });
+      });
+
+      it('should delete a media path', function (done) {
+        request({ url: generateUrl('config/mediapaths', { path: "C:\\test", display_name: "Test" }), method: 'DELETE' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.result, 'string');
+          result.result.should.equal('success');
+          done();
+        });
+      });
+    });
+
+    describe('file list', () => {
+      it('should list system drives', function (done) {
+        request({ url: generateUrl('config/file_list', { path: "" }), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'array');
+          done();
+        });
+      });
+      
+      it('should list a directory', function (done) {
+        request({ url: generateUrl('config/file_list', { path: "C:\\" }), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'array');
+          done();
+        });
+      });
+
+      it('should list a file parent', function (done) {
+        request({ url: generateUrl('config/file_parent', { path: "C:\\" }), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.path, 'string');
+          result.path.should.equal('');
           done();
         });
       });

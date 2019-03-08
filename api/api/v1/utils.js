@@ -51,3 +51,37 @@ module.exports.compare = function compare(a, b) {
     return 1;
   return 0;
 };
+
+module.exports.testForLetter = function (character) {
+  try {
+    //Variable declarations can't start with digits or operators
+    //If no error is thrown check for dollar or underscore. Those are the only nonletter characters that are allowed as identifiers
+    eval("let " + character + ";");
+    let regExSpecial = /[^\$_]/;
+    return regExSpecial.test(character);
+  } catch (error) {
+    return false;
+  }
+}
+
+module.exports.createIndex = function compare(items) {
+ var result = {};
+  items.forEach(function (item) {
+    var indexName = item.name.slice(0, 1).toUpperCase();
+    if (module.exports.testForLetter(indexName)) {
+      if (!result[indexName]) result[indexName] = [];
+      result[indexName].push(item);
+    } else {
+      if (!result['#']) result['#'] = [];
+      result['#'].push(item);
+    }
+  });
+  var finalResult = [];
+  for (var key in result) {
+    finalResult.push({
+      name: key,
+      value: result[key]
+    })
+  }
+  return finalResult;
+};

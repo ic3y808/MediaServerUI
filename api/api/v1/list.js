@@ -44,33 +44,6 @@ router.get('/random_songs', function (req, res) {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /list/songs_by_genre
- * @produces application/json 
- * @consumes application/json 
- * @group list - List API
- * @param {string} id.query.required Only returns songs belonging to this genre.
- * @param {int} count.query The number of songs to return. Max 500, default 10
- * @param {int} offset.query The offset. Useful if you want to page through the songs in a genre.
- * @param {string} musicFolderId.query  Only return albums in the music folder with the given ID. See MusicFolders
- * @returns {Array.<Song>} 200 - Returns an array of songs in a genre.
- * @security ApiKeyAuth
- */
-router.get('/songs_by_genre', function (req, res) {
-  var id = req.query.id;
-  var count = req.query.count;
-  var offset = req.query.toYear;
-  var musicFolderId = req.query.musicFolderId;
-  var sql = 'SELECT * FROM Tracks WHERE genre_id=? LIMIT ? OFFSET ?';
-
-  if (!count)
-    count = 500;
-  if (!offset)
-    offset = 0;
-  res.json(res.locals.db.prepare(sql).all(id, count, offset));
-});
-
-/**
- * This function comment is parsed by doctrine
  * @route GET /list/starred
  * @produces application/json 
  * @consumes application/json 

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const watch = require('node-watch');
 const Queue = require('better-queue');
 const logger = require("../common/logger");
@@ -23,7 +24,7 @@ class Watcher {
   configFileWatcher() {
     watchers.forEach(watcher => {
       if (!watcher.isClosed()) {
-        watchers.close();
+        watcher.close();
       }
     });
 
@@ -34,9 +35,11 @@ class Watcher {
       return;
     }
     mediaPaths.forEach(mediaPath => {
-      watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
-        this.processingQueue.push({ evt: evt, name: name })
-      }));
+      if (mediaPath.path && fs.existsSync(mediaPath.path)) {
+        watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
+          this.processingQueue.push({ evt: evt, name: name })
+        }));
+      }
     });
   };
 }

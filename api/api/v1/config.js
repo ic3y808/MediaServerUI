@@ -49,10 +49,10 @@ router.put("/mediapaths", function (req, res) {
     const info = stmt.run(displayName, path, path);
     if (info.changes) {
       res.locals.watcher.configFileWatcher();
-      res.json(new structures.StatusResult("Added media path"));
+      res.json(new structures.StatusResult("success"));
     } else res.json(new structures.StatusResult(info));
-  } catch {
-    res.json(new structures.StatusResult("Failed"));
+  } catch (err) {
+    res.json(new structures.StatusResult(failed));
   }
 });
 
@@ -79,8 +79,8 @@ router.delete("/mediapaths", function (req, res) {
     const info = stmt.run(displayName, path);
     if (info.changes) {
       res.locals.watcher.configFileWatcher();
-      res.json(new structures.StatusResult("Deleted media path"));
-    } else res.json(new structures.StatusResult(info));
+      res.json(new structures.StatusResult("success"));
+    } else res.json(new structures.StatusResult("nochange"));
   } catch {
     res.json(new structures.StatusResult("Failed"));
   }

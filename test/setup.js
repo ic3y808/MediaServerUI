@@ -1,4 +1,4 @@
-process.env.MODE = 'prod';
+process.env.MODE = 'test';
 var App = require('../api/app');
 
 // use it in your mocha tests

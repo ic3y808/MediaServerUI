@@ -168,12 +168,8 @@ export default class AlloyApi {
     });
   }
 
-  getMusicFolders() {
-    return this._get('browse/music_folders');
-  }
-
-  getMusicFoldersIndex() {
-    return this._get('browse/music_folders_index');
+  getArtistsIndex() {
+    return this._get('browse/artists_index');
   }
 
   getRandomSongs() {
@@ -212,12 +208,6 @@ export default class AlloyApi {
 
   getGenres() {
     return this._get('browse/genres');
-  }
-
-  getSongsByGenre(id) {
-    return this._get('list/songs_by_genre', {
-      id: id
-    });
   }
 
   getArtist(id) {

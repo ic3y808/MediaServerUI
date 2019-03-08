@@ -1,5 +1,7 @@
 # Alloy
 
+[![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=13&branchName=master)
+
 ## Major Features Include:
 ###Please use Issues page for any new feature requests
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
@@ -53,4 +55,3 @@ db-migrate create my-migration-name --config database.json -e dev
 ![Alt Text](/media/preview.gif)
 
 
-[![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=13&branchName=master)
