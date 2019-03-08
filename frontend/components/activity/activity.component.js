@@ -17,7 +17,7 @@ class ActivityController {
     };
 
     this.$scope.navigate = to => {
-      $('.PageContentBody-contentBody').append(this.$compile("<activity" + to + "/>")(this.$scope));
+      $('#activity-content').append(this.$compile("<activity" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };
 

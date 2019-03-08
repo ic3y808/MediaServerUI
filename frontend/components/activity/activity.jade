@@ -1,8 +1,3 @@
-include ./../../views/pagecontainer
-  include ./../../views/pagetoolbar
-    include ./../../views/toolbarsection-left
-      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
 
-  
-  include ./../../views/pagebody
-  
+section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver#activity-content
+  block activitypage
