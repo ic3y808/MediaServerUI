@@ -5,6 +5,12 @@ variables:
   platform: x64
 
 steps:
+- task: UsePythonVersion@0
+  inputs:
+    versionSpec: '2.7'
+    architecture: $(platform)
+
+steps:
 - task: NodeTool@0
   inputs:
     versionSpec: 11.2.0
