@@ -15,7 +15,7 @@ steps:
   displayName: 'npm stage one'
   inputs:
     command: custom
-    customCommand: 'i --production windows-build-tools'
+    customCommand: 'i windows-build-tools'
 
 
 - task: Npm@1
