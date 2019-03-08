@@ -84,8 +84,6 @@ describe('api tests', function () {
     });
   });
 
-
-
   describe('browse', () => {
     describe('artists index', () => {
       it('should return an index artists', function (done) {
@@ -256,7 +254,7 @@ describe('api tests', function () {
           done();
         });
       });
-      
+
       it('should list a directory', function (done) {
         request({ url: generateUrl('config/file_list', { path: "C:\\" }), method: 'GET' }, (error, response, body) => {
           assert.typeOf(error, 'null');
@@ -277,6 +275,41 @@ describe('api tests', function () {
           assert.typeOf(result, 'object');
           assert.typeOf(result.path, 'string');
           result.path.should.equal('');
+          done();
+        });
+      });
+    });
+  });
+
+  describe('list', () => {
+    describe('random tracks', () => {
+
+      it('should return an array', function (done) {
+        request({ url: generateUrl('list/random_songs'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.random, 'array');
+          done();
+        });
+      });
+    });
+
+    describe('starred tracks', () => {
+
+      it('should return an array', function (done) {
+        request({ url: generateUrl('list/starred'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.starred, 'object');
+          assert.typeOf(result.starred.tracks, 'array');
+          assert.typeOf(result.starred.albums, 'array');
+          assert.typeOf(result.starred.artists, 'array');
           done();
         });
       });
