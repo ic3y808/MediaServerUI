@@ -101,7 +101,8 @@ body,
 .jp-controls a {
   cursor: pointer;
   display: inline-block;
-  padding: 10px 5px;
+  padding-left: 5px;
+  padding-right: 5px;
 }
 
 .jp-controls a i {
@@ -5392,9 +5393,6 @@ span {
   }
   .header-md .navbar-brand img {
     max-height: 30px;
-  }
-  .header-md .navbar-nav>li>a {
-    padding: 20px;
   }
   .app .hbox.stretch {
     height: 100%;
