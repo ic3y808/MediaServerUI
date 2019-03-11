@@ -6,7 +6,10 @@ yarn-debug.log*
 yarn-error.log*
 
 #icons
-alloyicons.*
+alloyicons.eot
+alloyicons.ttf
+alloyicons.woff
+alloyicons.woff2
 # Runtime data
 pids
 *.pid
