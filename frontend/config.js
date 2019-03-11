@@ -20,6 +20,8 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
     template: '<playlist/>',
   }).when('/playlists', {
     template: '<playlists/>',
+  }).when('/history', {
+    template: '<history/>',
   }).when('/genres', {
     template: '<genres/>',
   }).when('/genre/:id', {

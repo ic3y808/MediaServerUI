@@ -133,11 +133,6 @@ profile.module.rules.push({
 
 });
 
-profile.module.rules.push({
-  test: /modernizr\.js$/,
-  loader: "imports-loader?this=>window!exports-loader?window.Modernizr"
-});
-
 // Output
 profile.output = {
   filename: '[name].js',
@@ -194,7 +189,7 @@ if (process.env.MODE === 'dev') {
       }
     }
     ],
-    exclude: /(node_modules|bower_components|coverflow|modernizr\.js|angular-auto-complete\.js)/
+    exclude: /(node_modules|bower_components|angular-auto-complete\.js)/
   });
 
   profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({

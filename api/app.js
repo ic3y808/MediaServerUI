@@ -62,7 +62,7 @@ class App {
       const WindowsTrayicon = require("windows-trayicon");
       this.trayApp = new WindowsTrayicon({
         title: "Alloy",
-        icon: path.resolve(__dirname, "icon.ico"),
+        icon: path.resolve(__dirname, "..", "common", "appicon.ico"),
         menu: [
           {
             id: "item-1-id",

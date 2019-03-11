@@ -185,6 +185,21 @@ class AlbumController {
       }
     };
 
+    $scope.playTrack = (song) => {
+      this.Logger.debug("Play Track");
+      $rootScope.tracks = $scope.info.tracks;
+      var index = _.findIndex($rootScope.tracks, function (track) {
+        return track.id === song.id;
+      });
+      this.MediaPlayer.loadTrack(index);
+    };
+
+    $scope.playAlbum = () => {
+      this.Logger.debug("Play Album");
+      $rootScope.tracks = $scope.info.tracks;
+      this.MediaPlayer.loadTrack(0);
+    };
+
     $rootScope.$on("loginStatusChange", (event, data) => {
       this.Logger.debug("Album reload on loginsatuschange");
       $scope.refresh();

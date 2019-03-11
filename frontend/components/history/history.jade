@@ -1,0 +1,66 @@
+section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.dk(style="padding:0px;")
+  section.content.artist
+    section.scrollable
+      .tab-content
+        #overview.tab-pane.active
+          section.artist-music.container-fluid(ng-if="$root.history.length > 0")
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') History
+                  section.tracklist-container.full-width
+                    ol.tracklist(ng-repeat="item in $root.history")
+                      .react-contextmenu-wrapper
+                        div(draggable='true')
+                          li.tracklist-row.tracklist-row--oneline(role='button', tabindex='0')
+                            .tracklist-col.position-outer
+                              .tracklist-play-pause.tracklist-middle-align(ng-click="playTrack(track, $root.history)")
+                                svg.icon-play(viewBox='0 0 85 100')
+                                  path(fill='currentColor', d='M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z')
+                                    title PLAY
+                        
+                            .tracklist-col.tracklist-col-cover-art-thumb
+                              .cover-art.shadow.tracklist-middle-align.cover-art--with-auto-height(aria-hidden='true', style='width: 50px; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='81', viewBox='0 0 80 81', xmlns='http://www.w3.org/2000/svg')
+                                      title Playlist Icon 
+                                      path(d='M25.6 11.565v45.38c-2.643-3.27-6.68-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4v-51.82l48-10.205V47.2c-2.642-3.27-6.678-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4S80 64.17 80 56.23V0L25.6 11.565zm-11.2 65.61c-6.176 0-11.2-5.025-11.2-11.2 0-6.177 5.024-11.2 11.2-11.2 6.176 0 11.2 5.023 11.2 11.2 0 6.174-5.026 11.2-11.2 11.2zm51.2-9.745c-6.176 0-11.2-5.024-11.2-11.2 0-6.174 5.024-11.2 11.2-11.2 6.176 0 11.2 5.026 11.2 11.2 0 6.178-5.026 11.2-11.2 11.2z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{item.image}}");')
+                            .tracklist-col.name
+                              .track-name-wrapper.tracklist-top-align
+                                .tracklist-name.ellipsis-one-line(dir='auto') {{item.title}}
+                                .second-line
+                                  span.TrackListRow__artists.ellipsis-one-line(dir='auto')
+                                    span.react-contextmenu-wrapper
+                                      span(draggable='true')
+                                        a.tracklist-row__artist-name-link(tabindex='-1', href='/artist/{{item.artist_id}}') {{item.artist}}
+                                  span.second-line-separator(aria-label='in album') •
+                                  span.TrackListRow__album.ellipsis-one-line(dir='auto')
+                                    span.react-contextmenu-wrapper
+                                      span(draggable='true')
+                                        a.tracklist-row__album-name-link(tabindex='-1', href='/album/{{item.album_id}}') {{item.album}}
+
+                            .tracklist-col.more
+                              .tracklist-middle-align
+                                .react-contextmenu-wrapper
+                                  button.spotify-btn.btn-transparent.btn--narrow.btn--no-margin.btn--no-padding
+                                    .spoticon-ellipsis-16
+                            .tracklist-col.tracklist-col-duration
+                              .tracklist-duration.tracklist-middle-align
+                                span {{$root.formatUnixTime(item.time)}}
+                    
+         
+
+ //     .timeline
+ //       article.timeline-item(ng-repeat="item in $root.history")
+ //         .timeline-caption
+ //           .panel.panel-default
+ //             .panel-body
+ //               span.arrow.left
+ //               span.timeline-icon
+ //                 i.fa.fa-phone.time-icon.bg-primary
+ //               span.timeline-date {{$root.formatUnixTime(item.time)}}
+ //               .text-sm {{item.artist}}
+ //               h5  {{item.action}} - {{item.title}}
+        

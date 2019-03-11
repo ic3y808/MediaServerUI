@@ -26,8 +26,8 @@
             a(title='Star', ng-click="starTrack()")
               i.alloy-icon(ng-class="isStarred()")
           .jp-progress.hidden-xs
-            .jp-seek-bar.dk(style='width: 100%;')
-              .jp-play-bar.bg-info(style='width: 0%;')  
+            #clickProgress.jp-seek-bar.dk(style='width: 100%;')
+              #mainProgress.jp-play-bar.bg-info(style='width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
                 .jp-title.text-lt.font-bold  {{$root.currentTrack.title}}
                 .jp-subtitle.text-lt.text-muted.text-xs {{$root.currentTrack.artist}}
 

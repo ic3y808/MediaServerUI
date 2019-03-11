@@ -26,8 +26,8 @@ section.scrollable.padder-lg.w-f-md
                 a(href='#')
                   img.r.r-2x.img-full(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
-                a.text-ellipsis(href='#') {{album.name}}
-                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}
+                a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
+                a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}
     
     .col-md-5
       h3.font-thin Top Songs
@@ -55,7 +55,7 @@ section.scrollable.padder-lg.w-f-md
                   img.r.r-2x.img-full(ng-src='{{song.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
                 a.text-ellipsis(href='#') {{song.title}}
-                a.text-ellipsis.text-xs.text-muted(href='#') {{song.artist}}  
+                a.text-ellipsis.text-xs.text-muted(href='/artist/{{song.artist_id}}') {{song.artist}}  
 
 
     .col-md-5

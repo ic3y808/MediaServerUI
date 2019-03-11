@@ -186,6 +186,10 @@ export default class AlloyApi {
     return this._get('list/starred');
   }
 
+  getHistory() {
+    return this._get('list/history');
+  }
+
   getArtists() {
     return this._get('browse/artists');
   }
@@ -257,7 +261,7 @@ export default class AlloyApi {
     return this._get('system/cancel_scan');
   }
 
-  charts() {
+  getCharts() {
     return this._get('browse/charts');
   }
 
@@ -271,6 +275,10 @@ export default class AlloyApi {
     return this._put('annotation/add_play', {
       id: id
     });
+  }
+
+  addHistory(data) {
+    return this._put('list/history', data);
   }
 
   love(params) {

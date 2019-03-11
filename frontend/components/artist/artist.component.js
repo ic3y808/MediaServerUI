@@ -28,38 +28,8 @@ class ArtistController {
     $scope.tracks_expanded = false;
     $('#trackListContainer').hide();
 
-    $scope.toggleAlbums = () => {
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
-      $scope.albums_expanded = !$scope.albums_expanded;
-    }
 
-    $scope.toggleTracks = () => {
-      if ($scope.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
-      $scope.tracks_expanded = !$scope.tracks_expanded;
-    }
-
-    $scope.expandAll = () => {
-      $scope.tracks_expanded = true;
-      $scope.albums_expanded = true;
-      $('#albumListContainer').show();
-      $('#trackListContainer').show();
-      this.AppUtilities.apply();
-    }
-
-    $scope.collapseAll = () => {
-      $scope.tracks_expanded = false;
-      $scope.albums_expanded = false;
-      $('#albumListContainer').hide();
-      $('#trackListContainer').hide();
-      this.AppUtilities.apply();
-    }
-
-    $scope.getTags = obj => {
-      return obj;
-    }
-
+    
     $scope.getArtist = () => {
       var cache = Cache.get($routeParams.id);
 

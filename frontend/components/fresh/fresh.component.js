@@ -48,20 +48,6 @@ class FreshController {
       return false;
     }
 
-    $scope.findNowPlaying = () => {
-      var found = false;
-      for (var i = 0; i < $rootScope.fresh_albums.length; i++) {
-        if (found) return;
-        var album = $rootScope.fresh_albums[i];
-        album.tracks.forEach(function (track) {
-          if (found) return;
-          if (MediaPlayer.checkIfNowPlaying(track)) {
-            $scope.coverflow.to(i);
-            found = true;
-          }
-        });
-      }
-    };
 
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");
@@ -109,17 +95,11 @@ class FreshController {
     };
 
     $rootScope.$on("playlistBeginEvent", (event, data) => {
-      if ($scope.continousPlay) {
-        $scope.play_prev_album = true;
-        $scope.coverflow.prev();
-      }
+     
     });
 
     $rootScope.$on("playlistEndEvent", (event, data) => {
-      if ($scope.continousPlay) {
-        $scope.play_next_album = true;
-        $scope.coverflow.next();
-      }
+     
     });
 
 
@@ -133,7 +113,7 @@ class FreshController {
             albumTracks.push(track);
           });
         });
-        $scope.quick_picks = AppUtilities.getRandom(albumTracks, 12);
+        $scope.quick_picks = AppUtilities.getRandom(albumTracks, 10);
         this.AppUtilities.apply();
       }
     });

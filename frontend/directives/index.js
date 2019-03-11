@@ -16,7 +16,6 @@ import DetailLabel from './ui/detaillabel';
 import ExpandButton from './ui/expandbutton';
 import PopoverButton from './ui/popoverbutton';
 import LinkButton from './ui/linkbutton';
-import CoverFlow from './ui/coverflow';
 import StarRatingLabel from './ui/starratinglabel';
 import SearchBar from './ui/searchbar';
 import ScrollSaver from './ui/scrollsaver';
@@ -46,5 +45,4 @@ export default angular
   .directive('searchbar', SearchBar)
   .directive('scrollsaver', ScrollSaver)
   .directive('playingstatusbars', PlayingStatusBars)
-  .directive('coverflow', CoverFlow)
 ;

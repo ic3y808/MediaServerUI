@@ -1,8 +1,10 @@
 'use strict';
 var express = require('express');
+var structures = require('./structures');
 var router = express.Router();
 var logger = require('../../../common/logger');
-
+var moment = require('moment');
+var utils = require('./utils');
 
 
 /**
@@ -58,7 +60,7 @@ router.get('/starred', function (req, res) {
     album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
   });
   var starredArtists = res.locals.db.prepare('SELECT * FROM Artists WHERE starred=?').all('true');
-  starredArtists.forEach(artist=>{
+  starredArtists.forEach(artist => {
     starredArtists.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=?').all(artist.id);
     starredArtists.albums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(artist.id);
     starredArtists.albums.forEach(album => {
@@ -66,6 +68,74 @@ router.get('/starred', function (req, res) {
     });
   });
   res.json({ starred: { tracks: starredTracks, albums: starredAlbums, artists: starredArtists } });
+});
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /list/history
+ * @produces application/json 
+ * @consumes application/json 
+ * @group list - List API
+ * @returns {Object} 200 - Returns play and action history.
+ * @security ApiKeyAuth
+ */
+router.get('/history', function (req, res) {
+  var history = res.locals.db.prepare('SELECT * FROM History ORDER BY time DESC').all();
+  res.json({ history: history });
+});
+
+/**
+ * This function comment is parsed by doctrine
+ * @route PUT /list/history
+ * @produces application/json 
+ * @consumes application/json 
+ * @group list - List API
+ * @param {string} id.query        
+ * @param {string} type.query      
+ * @param {string} action.query    
+ * @param {string} title.query    
+ * @param {int} time.query      
+ * @param {string} artist.query    
+ * @param {string} artist_id.query 
+ * @param {string} album.query     
+ * @param {string} album_id.query  
+ * @param {string} genre.query     
+ * @returns {Object} 200 - Returns play and action history.
+ * @security ApiKeyAuth
+ */
+router.put('/history', function (req, res) {
+  try {
+    var time =  moment().unix();
+    var d = {
+      id: req.query.id,
+      type: req.query.type,
+      action: req.query.action,
+      title: req.query.title,
+      time: time,
+      artist: req.query.artist,
+      artist_id: req.query.artist_id,
+      album: req.query.album,
+      album_id: req.query.album_id,
+      genre: req.query.genre
+    }
+
+      res.locals.db.prepare("INSERT INTO History (id, type, action, time, title, artist, artist_id, album, album_id, genre) VALUES (?,?,?,?,?,?,?,?,?,?)").run(
+        d.id,
+        d.type,
+        d.action,
+        d.time,
+        d.title,
+        d.artist,
+        d.artist_id,
+        d.album,
+        d.album_id,
+        d.genre
+      )
+    
+    res.send(new structures.StatusResult("success"));
+  } catch (err) {
+    res.send(new structures.StatusResult("failed"));
+  }
 });
 
 module.exports = router;

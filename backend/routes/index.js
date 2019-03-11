@@ -34,6 +34,10 @@ router.get('/index', function (req, res) {
   res.render('index', options);
 });
 
+router.get('/history', function (req, res) {
+  res.render('index', options);
+});
+
 router.get('/starred', function (req, res) {
   res.render('index', options);
 });

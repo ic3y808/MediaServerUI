@@ -26,6 +26,9 @@ export default class MediaPlayer {
     this.$rootScope.checkIfNowPlaying = this.checkIfNowPlaying;
     this.$rootScope.tracks = [];
     this.$rootScope.currentTrack = {};
+    this.currentProgressPercent = 0;
+    this.$rootScope.MediaPlayer = this;
+    
 
     this.MediaElement.addEventListener('play', () => {
       this.playing = true;
@@ -48,8 +51,8 @@ export default class MediaPlayer {
         this.selectedIndex = 0;
         this.togglePlayPause();
         $('#media-player').src = this.selectedTrack();
+        this.currentProgressPercent = 0;
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-        $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
         $('#mainTimeDisplay').html("");
         this.Logger.debug('Playlist ended');
         this.AppUtilities.broadcast('playlistEndEvent');
@@ -62,8 +65,8 @@ export default class MediaPlayer {
 
     this.MediaElement.addEventListener('canplaythrough', () => {
       $('#mainTimeDisplay').html("0:00 / " + this.AppUtilities.formatTime(MediaElement.duration));
+      this.currentProgressPercent = 0;
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
       this.togglePlayPause();
     });
 
@@ -83,9 +86,11 @@ export default class MediaPlayer {
         }
 
 
+
         $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
-        $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
+        this.currentProgressPercent = playPercent;
         $('#mainTimeDisplay').html(this.AppUtilities.formatTime(MediaElement.currentTime) + " / " + this.AppUtilities.formatTime(duration));
+        this.AppUtilities.apply();
       }
     });
   }
@@ -125,6 +130,8 @@ export default class MediaPlayer {
     return this.getCurrentSession();
     //return cast.framework.CastContext.getInstance().getCurrentSession();
   }
+
+
 
   trackCount() {
     return this.$rootScope.tracks.length;
@@ -183,7 +190,7 @@ export default class MediaPlayer {
   checkNowPlayingImage(source) {
     if (source.cover_art) {
       source.image = this.AlloyDbService.getCoverArt({
-        track_id: source.cover_art
+        track_id: source.id
       });
 
       this.AppUtilities.apply();
@@ -195,10 +202,10 @@ export default class MediaPlayer {
     if (newIndex <= 0) {
       this.playing = false;
       this.selectedIndex = 0;
+      this.currentProgressPercent = 0;
       this.togglePlayPause();
       $('#media-player').src = this.selectedTrack();
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
       $('#mainTimeDisplay').html("");
       this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistBeginEvent');
@@ -211,10 +218,9 @@ export default class MediaPlayer {
     if (newIndex >= this.$rootScope.tracks.length) {
       this.playing = false;
       this.selectedIndex = 0;
+      this.currentProgressPercent = 0;
       this.togglePlayPause();
-      $('#media-player').src = this.selectedTrack();
-      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $('#media-player').src = this.selectedTrack();    
       $('#mainTimeDisplay').html("");
       this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistEndEvent');
@@ -304,6 +310,12 @@ export default class MediaPlayer {
         source.play_count++;
         instance.AppUtilities.broadcast('trackChangedEvent', source);
         instance.AppUtilities.apply();
+      }
+    });
+    instance.AlloyDbService.addHistory({ type: 'track', action: 'played', id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id }).then(result => {
+      if (result) {
+        instance.Logger.info('addHistory resut: ' + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
+        instance.AlloyDbService.refreshHistory();
       }
     });
   }
@@ -407,6 +419,7 @@ export default class MediaPlayer {
       this.loadTrack(this.selectedIndex);
     }
   }
+
   next() {
     if (!this.repeatEnabled) this.selectedIndex++;
     if (!this.checkPlaylistEnding(this.selectedIndex)) {
@@ -448,7 +461,7 @@ export default class MediaPlayer {
         var playPercent = 100 * (currentMediaTime / currentMediaDuration);
         if (!isNaN(playPercent)) {
           $('#subProgress').attr('aria-valuenow', "100").css('width', "100%");
-          $('#mainProgress').attr('aria-valuenow', playPercent).css('width', playPercent + "%");
+          this.currentProgressPercent = playPercent;
           $('#mainTimeDisplay').html(this.AppUtilities.formatTime(currentMediaTime) + " / " + this.AppUtilities.formatTime(currentMediaDuration));
         }
       }

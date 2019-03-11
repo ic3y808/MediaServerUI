@@ -314,6 +314,21 @@ describe('api tests', function () {
         });
       });
     });
+
+    describe('history', () => {
+
+      it('should return an array', function (done) {
+        request({ url: generateUrl('list/history'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.history, 'array');
+          done();
+        });
+      });
+    });
   });
 });
 
