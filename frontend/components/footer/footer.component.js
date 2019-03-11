@@ -149,13 +149,21 @@ class FooterController {
         }
       }
     }
+
+    $rootScope.$watch("MediaPlayer", (o, n) => {
+      if ($rootScope.MediaPlayer) {
+
+        this.AppUtilities.apply();
+
+      }
+    });
   }
 
   $onInit() {
     this.Logger.debug('footer-init');
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-    $('#mainProgress').attr('aria-valuenow', 0).css('width', "0%");  
+    this.currentProgressPercent = 0;
 
     $("#clickProgress").click(e => {
       var seekto = NaN;

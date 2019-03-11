@@ -67,27 +67,6 @@ class StarredController {
 
         this.AppUtilities.apply();
         this.AppUtilities.hideLoader();
-        $timeout(() => {
-          $scope.coverflow = coverflow('player').setup({
-            playlist: $rootScope.starred_albums,
-            width: '100%',
-            coverwidth: 200,
-            coverheight: 200,
-            fixedsize: true,
-          }).on('ready', function() {
-            this.on('focus', index => {
-              //if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
-              //  $scope.getAlbum($rootScope.starred_albums[index]);
-              //}
-            });
-
-            this.on('click', (index, link) =>  {
-              //if ($rootScope.starred_albums && $rootScope.starred_albums.length > 0) {
-              //  $scope.getAlbum($rootScope.starred_albums[index]);
-              //}
-            });
-          });
-        });
       }
 
     });

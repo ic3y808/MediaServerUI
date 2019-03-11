@@ -1,29 +1,38 @@
 section.scrollable.padder-lg.w-f-md
-  a.pull-right.text-muted.m-t-lg(data-toggle='class:fa-spin', ng-click="refresh()")
-    i#refresh.icon-refresh.i-lg.inline
-  h2.font-thin.m-b
-    | Alloy
-    PlayingStatusBars
+
 
   .row
     .col-md-7
-      h3.font-thin Never Played Albums
+        h1.page-header-caption
+          | Alloy
+          PlayingStatusBars
+  .row
+    .col-md-7
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin Never Played Albums
       .row.row-sm
-        div(ng-repeat="album in never_played_albums")
+        div(ng-repeat="album in $root.charts.never_played_albums | limitTo:12")
           .col-sm-3
             .item
               .pos-rlt
                 .item-overlay.opacity.r.r-2x.bg-black
                   .center.text-center.m-t-n
                     a(ng-click="playAlbum(album)")
-                      i.fa.fa-play-circle.i-2x
+                      i.alloy-icon.icon-play.icon.i-2x
                 a(href='#')
-                  img.r.r-2x.img-full.fresh-img(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
+                  img.r.r-2x.img-full.fresh-img.thumbnail(ng-src='{{album.image}}', alt='', style="object-fit: cover;max-height:150px;")
                   
-              .padder-v
-                a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
-                a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}
+
+              a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
+              a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}
     .col-md-5
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
       a
         a.u.pull-right.h6.text-muted.m-l View More
         
@@ -31,7 +40,7 @@ section.scrollable.padder-lg.w-f-md
           span.h2.font-thin Never Played Tracks
 
       .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, never_played)", ng-repeat="song in never_played")
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, $root.charts.never_played)", ng-repeat="song in $root.charts.never_played | limitTo:10")
           span.pull-right.h2.text-muted.m-l(ng-if="checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
           PlayingStatusBars.pull-right(ng-if="checkIfNowPlaying('track', song.id) == true")
           span.pull-left.thumb-sm.avatar.m-r
@@ -81,7 +90,7 @@ section.scrollable.padder-lg.w-f-md
         div(ng-repeat="artist in fresh_artists")
           .col-sm-3
             .item
-              .pos-rlt
+              .pos-rlt 
                 .item-overlay.opacity.r.r-2x.bg-black
                   .center.text-center.m-t-n
                     a(ng-click="playArtist(artist)")
@@ -89,7 +98,7 @@ section.scrollable.padder-lg.w-f-md
                 a(href='#')
                   img.r.r-2x.img-full(ng-src='{{artist.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
-                a.text-ellipsis(href='/artists/{{artist.id}}') {{artist.name}}
+                a.text-ellipsis(href='/artist/{{artist.artist_id}}') {{artist.name}}
              
     .col-md-5
       a

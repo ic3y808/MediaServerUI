@@ -63,10 +63,16 @@ router.get('/artist', function (req, res) {
     albums: [],
     EPs: [],
     singles: [],
+    total_plays:0
   };
 
   all_albums.forEach(album => {
     album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(album.id)
+    album.play_count = 0;
+    album.tracks.forEach(track=>{
+      album.play_count += track.play_count;
+    });
+    result.total_plays += album.play_count;
     switch (album.type) {
       case "EP":
         result.EPs.push(album);

@@ -19,8 +19,11 @@ class HomeController {
 
     $scope.refresh = () => {
       AlloyDbService.refreshCharts();
-
     };
+
+    $scope.random = () => {
+      return 0.5 - Math.random();
+    }
 
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");
@@ -33,8 +36,10 @@ class HomeController {
 
     $scope.playAlbum = (album) => {
       this.Logger.debug("Play Album");
-      $rootScope.tracks = album.tracks;
-      this.MediaPlayer.loadTrack(0);
+      this.AlloyDbService.getAlbum(album.id).then(result => {
+        $rootScope.tracks = result.tracks;
+        this.MediaPlayer.loadTrack(0);
+      });
     };
 
     $scope.playArtist = (artist) => {
@@ -42,17 +47,6 @@ class HomeController {
       $rootScope.tracks = AppUtilities.shuffle(artist.tracks);
       this.MediaPlayer.loadTrack(0);
     };
-
-    $rootScope.$watch("charts", (newVal, oldVal) => {
-      if ($rootScope.charts) {
-        if ($rootScope.charts.top_tracks) {
-          $scope.top_tracks = AppUtilities.getRandom($rootScope.charts.top_tracks, 10);
-          $scope.never_played = AppUtilities.getRandom($rootScope.charts.never_played, 10);
-          $scope.never_played_albums = AppUtilities.getRandom($rootScope.charts.never_played_albums, 12);
-          this.AppUtilities.apply();
-        }
-      }
-    });
   }
   $onInit() {
     this.$element.addClass('vbox')

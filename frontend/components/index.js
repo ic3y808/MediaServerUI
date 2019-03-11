@@ -11,6 +11,7 @@ import FreshComponent from './fresh/fresh.component';
 import FooterComponent from './footer/footer.component';
 import GenreComponent from './genre/genre.component';
 import GenresComponent from './genres/genres.component';
+import HistoryComponent from './history/history.component';
 import HomeComponent from './home/home.component';
 import IndexComponent from './index/index.component';
 import NavbarComponent from './navbar/navbar.component';
@@ -46,6 +47,7 @@ export default angular
   .component('genre', GenreComponent)
   .component('genres', GenresComponent)
   .component('home', HomeComponent)
+  .component('history', HistoryComponent)
   .component('index', IndexComponent)
   .component('navbar', NavbarComponent)
   .component('playing', PlayingComponent)

@@ -35,3 +35,76 @@
   font-weight: 700;
   src: local('Source Sans Pro Bold'), local('./fonts/SourceSansPro-Bold'), url('./fonts/sourcesanspro-bold.woff') format('woff');
 }
+
+
+@font-face {
+  font-family: circular;
+  src: url(./fonts/circular/CircularSpUIv3T-Light.woff2) format("woff2"), url(./fonts/circular/CircularSpUIv3T-Light.woff) format("woff"), url(./fonts/circular/CircularSpUIv3T-Light.ttf) format("truetype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular;
+  src: url(./fonts/circular/CircularSpUIv3T-Book.woff2) format("woff2"), url(./fonts/circular/CircularSpUIv3T-Book.woff) format("woff"), url(./fonts/circular/CircularSpUIv3T-Book.ttf) format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular;
+  src: url(./fonts/circular/CircularSpUIv3T-Bold.woff2) format("woff2"), url(./fonts/circular/CircularSpUIv3T-Bold.woff) format("woff"), url(./fonts/circular/CircularSpUIv3T-Bold.ttf) format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular-arabic;
+  src: url(./fonts/circular/CircularSpUIAraOnly-Light.woff2) format("woff2"), url(./fonts/circular/CircularSpUIAraOnly-Light.woff) format("woff");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular-arabic;
+  src: url(./fonts/circular/CircularSpUIAraOnly-Book.woff2) format("woff2"), url(./fonts/circular/CircularSpUIAraOnly-Book.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular-arabic;
+  src: url(./fonts/circular/CircularSpUIAraOnly-Bold.woff2) format("woff2"), url(./fonts/circular/CircularSpUIAraOnly-Bold.woff) format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular-hebrew;
+  src: url(./fonts/circular/CircularSpUIHbrOnly-Light.woff2) format("woff2"), url(./fonts/circular/CircularSpUIHbrOnly-Light.woff) format("woff");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular-hebrew;
+  src: url(./fonts/circular/CircularSpUIHbrOnly-Book.woff2) format("woff2"), url(./fonts/circular/CircularSpUIHbrOnly-Book.woff) format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: circular-hebrew;
+  src: url(./fonts/circular/CircularSpUIHbrOnly-Bold.woff2) format("woff2"), url(./fonts/circular/CircularSpUIHbrOnly-Bold.woff) format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}

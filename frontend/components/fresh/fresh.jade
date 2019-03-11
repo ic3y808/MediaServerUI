@@ -1,28 +1,38 @@
 section.scrollable.padder-lg.w-f-md
-  a.pull-right.text-muted.m-t-lg(data-toggle='class:fa-spin', ng-click="refresh()")
-    i#refresh.icon-refresh.i-lg.inline
-  h2.font-thin.m-b
-    | Discover Whats New
-    PlayingStatusBars
+
 
   .row
     .col-md-7
-      h3.font-thin New Songs
+        h1.font-thin.m-b
+          | Discover What's New
+         
+
+  .row
+    .col-md-7(ng-if="fresh_tracks.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin New Songs
       .row.row-sm
-        div(ng-repeat="song in fresh_tracks")
+        div(ng-repeat="song in $root.fresh_tracks | limitTo:12")
           .col-sm-3
             .item
               .pos-rlt
                 .item-overlay.opacity.r.r-2x.bg-black
                   .center.text-center.m-t-n
-                    a(ng-click="playTrack(song, fresh_tracks)")
-                      i.fa.fa-play-circle.i-2x
+                    a(ng-click="playTrack(song, $root.fresh_tracks)")
+                      i.alloy-icon.icon-play.icon.i-2x
                 a(href='#')
-                  img.r.r-2x.img-full.fresh-img(ng-src='{{song.image}}', alt='', style="height:170px;object-fit: cover;")
+                  img.r.r-2x.img-full.fresh-img.thumbnail(ng-src='{{song.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
                 a.text-ellipsis(href='/album/{{song.album_id}}/{{song.id}}') {{song.title}}
                 a.text-ellipsis.text-xs.text-muted(href='/artist/{{song.artist_id}}') {{song.artist}}
-    .col-md-5
+    .col-md-5(ng-if="never_played.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
       a
         a.u.pull-right.h6.text-muted.m-l View More
         
@@ -30,7 +40,7 @@ section.scrollable.padder-lg.w-f-md
           span.h2.font-thin Never Played
 
       .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, never_played)", ng-repeat="song in never_played")
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, $root.charts.never_played)", ng-repeat="song in $root.charts.never_played | limitTo:10")
           span.pull-right.h2.text-muted.m-l(ng-if="checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
           PlayingStatusBars.pull-right(ng-if="checkIfNowPlaying('track', song.id) == true")
           span.pull-left.thumb-sm.avatar.m-r
@@ -40,25 +50,33 @@ section.scrollable.padder-lg.w-f-md
             small.text-muted.clear.text-ellipsis by {{song.artist}}     
 
   .row
-    .col-md-7
-      h3.font-thin New Albums
+    .col-md-7(ng-if="$root.fresh_albums.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin New Albums
       .row.row-sm
-        div(ng-repeat="album in fresh_albums")
+        div(ng-repeat="album in $root.fresh_albums | limitTo:12")
           .col-sm-3
             .item(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}")
               .pos-rlt
                 .item-overlay.opacity.r.r-2x.bg-black
                   .center.text-center.m-t-n
                     a(ng-click="playAlbum(album)")
-                      i.fa.fa-play-circle.i-2x
+                      i.alloy-icon.icon-play.icon.i-2x
                 a(href='#')
-                  img.r.r-2x.img-full.fresh-img(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
+                  img.r.r-2x.img-full.fresh-img.thumbnail(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
-                a.text-ellipsis(href='#') {{album.name}}
-                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}  
+                a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
+                a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}  
 
 
-    .col-md-5
+    .col-md-5(ng-if="quick_picks.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
       a
         a.u.pull-right.h6.text-muted.m-l View More
         
@@ -74,23 +92,27 @@ section.scrollable.padder-lg.w-f-md
             span {{song.title}}
             small.text-muted.clear.text-ellipsis by {{song.artist}}     
   .row
-    .col-md-7
-      h3.font-thin New Artists
+    .col-md-7(ng-if="fresh_artists.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin New Artists
       .row.row-sm
         div(ng-repeat="artist in fresh_artists")
           .col-sm-3
             .item
               .pos-rlt
-                .item-overlay.opacity.r.r-2x.bg-black
-                  .center.text-center.m-t-n
-                    a(ng-click="playArtist(artist)")
-                      i.fa.fa-play-circle.i-2x
-                a(href='#')
-                  img.r.r-2x.img-full(ng-src='{{artist.image}}', alt='', style="height:170px;object-fit: cover;")
+                a(href='/artist/{{artist.id}}')
+                  img.r.r-2x.img-full.thumbnail(ng-src='{{artist.image}}', alt='', style="height:170px;object-fit: cover;")
               .padder-v
-                a.text-ellipsis(href='/artists/{{artist.id}}') {{artist.name}}
+                a.text-ellipsis(href='/artist/{{artist.id}}') {{artist.name}}
              
-    .col-md-5
+    .col-md-5(ng-if="top_tracks.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
       a
         a.u.pull-right.h6.text-muted.m-l View More
         
@@ -105,14 +127,19 @@ section.scrollable.padder-lg.w-f-md
           span.clear
             span {{song.title}}
             small.text-muted.clear.text-ellipsis by {{song.artist}}
-            
-  .row
-    .col-md-7(ng-if="fresh_albums")
+   
 
-      section.scrollable.padder
-        section.panel.panel-default
-          header.panel-heading  Recently Modified
-          .table-responsive
+  .row
+    .col-md-7(ng-if="$root.fresh_albums.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin Recently Added
+      .row.row-sm
+        .table-responsive
             table.table.table-striped.b-t.b-light
               thead
                 tr
@@ -125,20 +152,23 @@ section.scrollable.padder-lg.w-f-md
                   th Artist
                   th Created
                   th Tracks
-              tbody(ng-repeat="album in fresh_albums")
+              tbody(ng-repeat="album in $root.fresh_albums | limitTo:25")
                 tr
                   td {{album.name}}
                   td {{album.artist}}
                   td {{album.created}}
                   td {{album.track_count}}
-                
-        
 
-             
-    .col-md-5
-      h3.font-thin Top Songs
+    .col-md-5(ng-if="$root.charts.top_tracks.length > 0")
+      a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refresh()")
+        i#refresh.icon-refresh.i-lg.inline.mini-icon
+      a
+        a.u.pull-right.h6.text-muted.m-l View More
+        
+        span.clear
+          span.h2.font-thin Top Songs
       .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, top_tracks)", ng-repeat="song in top_tracks")
+        a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': checkIfNowPlaying('track', song.id) == true}", ng-click="playTrack(song, top_tracks)", ng-repeat="song in $root.charts.top_tracks")
           span.pull-right.h2.text-muted.m-l {{$index + 1}}
           span.pull-left.thumb-sm.avatar.m-r
             img.img-thumbnail(ng-src='{{song.image}}', alt='...')

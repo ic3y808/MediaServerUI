@@ -1,4 +1,5 @@
 import CryptoJS from 'crypto-js';
+import moment from 'moment';
 
 export default class AppUtilities {
   constructor($rootScope, $timeout, Logger) {
@@ -13,6 +14,7 @@ export default class AppUtilities {
 
     this.$rootScope.decryptPassword = this.decryptPassword;
     this.$rootScope.formatTime = this.formatTime;
+    this.$rootScope.formatUnixTime = this.formatUnixTime;
     this.$rootScope.humanFileSize = this.humanFileSize;
   }
 
@@ -138,6 +140,11 @@ export default class AppUtilities {
     seconds = Math.floor(seconds % 60);
     seconds = (seconds >= 10) ? seconds : "0" + seconds;
     return minutes + ":" + seconds;
+  }
+
+  formatUnixTime(seconds) {
+    var dateString = moment.unix(seconds).format("MM/DD/YY hh:mm");
+    return dateString;
   }
 
   msToTime(duration) {

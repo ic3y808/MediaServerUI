@@ -85,3 +85,46 @@ module.exports.createIndex = function compare(items) {
   }
   return finalResult;
 };
+
+module.exports.writeDb = function(data, table) {
+  var sql = 'INSERT OR REPLACE INTO ' + table + ' (';
+  var values = {};
+  Object.keys(data).forEach(function (key, index) {
+    if (index == Object.keys(data).length - 1)
+      sql += key;
+    else
+      sql += key + ', ';
+  });
+
+
+
+  sql += ') VALUES (';
+
+
+  Object.keys(data).forEach(function (key, index) {
+    if (index == Object.keys(data).length - 1)
+      sql += '@' + key;
+    else
+      sql += '@' + key + ', ';
+  });
+
+  sql += ')';
+
+  try {
+    var insert = this.db.prepare(sql);
+
+
+    Object.keys(data).forEach(function (key, index) {
+      var a = {};
+      a[key] = data[key];
+      Object.assign(values, a);
+    });
+
+    insert.run(values);
+  } catch (err) {
+    if (err) logger.error("alloydb", JSON.stringify(err));
+    logger.info("alloydb", sql);
+    logger.info("alloydb", values);
+  }
+
+};

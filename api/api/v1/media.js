@@ -191,7 +191,6 @@ router.get('/cover_art', function (req, res) {
       .resize({
         width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
       })
-      .overlayWith(roundedCorners, { cutout: true })
       .toBuffer()
       .then(data => {
         res.end(data)
