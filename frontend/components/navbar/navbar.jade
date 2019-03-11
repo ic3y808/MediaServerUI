@@ -7,11 +7,14 @@ section.vbox
       span.hidden-nav-xs.m-l-sm Alloy 
     a.btn.btn-link.visible-xs(data-toggle='dropdown', data-target='.user')
       i.alloy-icon.icon-controls
-  ul.nav.navbar-nav.hidden-xs
-    li
-      a.text-muted(data-target='#nav,.navbar-header', data-toggle='class:nav-xs,nav-xs')
-        i.alloy-icon.icon-menu.icon
+
   form.navbar-form.navbar-left.input-s-lg.m-t.m-l-n-xs.hidden-xs(role='search')
+    .form-group
+      .input-group
+        span.input-group-btn
+          button.btn.btn-sm.bg-white.btn-icon.rounded(data-target='#nav,.navbar-header', data-toggle='class:nav-xs,nav-xs')
+            i.alloy-icon.icon-menu
+        
     searchbar
   .navbar-right
     ul.nav.navbar-nav.m-n.hidden-xs.nav-user.user
