@@ -4,6 +4,7 @@ var router = express.Router();
 var structures = require('./structures');
 var Lastfm = require('./simple-lastfm');
 var logger = require('../../../common/logger');
+var moment = require('moment');
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/star
@@ -24,25 +25,23 @@ router.put('/star', function (req, res) {
   var artist = req.query.artist;
   var genre = req.query.genre;
 
-
+  var time = moment().unix();
   if (id) {
-    res.locals.db.prepare('UPDATE Tracks SET starred="true" WHERE id=?').run(id);
+    res.locals.db.prepare('UPDATE Tracks SET starred="true", starred_date=? WHERE id=?').run(time, id);
     res.send(new structures.StatusResult("Updated track"));
   }
   if (album) {
-    res.locals.db.prepare('UPDATE Albums SET starred="true" WHERE id=?').run(album);
+    res.locals.db.prepare('UPDATE Albums SET starred="true", starred_date=? WHERE id=?').run(time, album);
     res.send(new structures.StatusResult("Updated album"));
   }
   if (artist) {
-    res.locals.db.prepare('UPDATE Artists SET starred="true" WHERE id=?').run(artist);
+    res.locals.db.prepare('UPDATE Artists SET starred="true", starred_date=? WHERE id=?').run(time, artist);
     res.send(new structures.StatusResult("Updated artist"));
   }
   if (genre) {
-    res.locals.db.prepare('UPDATE Genres SET starred="true" WHERE genre_id=?').run(genre);
+    res.locals.db.prepare('UPDATE Genres SET starred="true", starred_date=? WHERE genre_id=?').run(time, genre);
     res.send(new structures.StatusResult("Updated genre"));
   }
-
-
 });
 
 /**
@@ -65,21 +64,20 @@ router.put('/unstar', function (req, res) {
   var artist = req.query.artist;
   var genre = req.query.genre;
 
-
   if (id) {
-    res.locals.db.prepare('UPDATE Tracks SET starred="false" WHERE id=?').run(id);
+    res.locals.db.prepare('UPDATE Tracks SET starred="false", starred_date="" WHERE id=?').run(id);
     res.send(new structures.StatusResult("Updated track"));
   }
   if (album) {
-    res.locals.db.prepare('UPDATE Albums SET starred="false" WHERE id=?').run(album);
+    res.locals.db.prepare('UPDATE Albums SET starred="false", starred_date="" WHERE id=?').run(album);
     res.send(new structures.StatusResult("Updated album"));
   }
   if (artist) {
-    res.locals.db.prepare('UPDATE Artists SET starred="false" WHERE id=?').run(artist);
+    res.locals.db.prepare('UPDATE Artists SET starred="false", starred_date="" WHERE id=?').run(artist);
     res.send(new structures.StatusResult("Updated artist"));
   }
   if (genre) {
-    res.locals.db.prepare('UPDATE Genres SET starred="false" WHERE genre_id=?').run(genre);
+    res.locals.db.prepare('UPDATE Genres SET starred="false", starred_date="" WHERE genre_id=?').run(genre);
     res.send(new structures.StatusResult("Updated genre"));
   }
 });

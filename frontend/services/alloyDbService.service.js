@@ -423,6 +423,14 @@ export default class AlloyDbService {
     if (data) {
       data.forEach(info => {
         if (info.starred) {
+          this.$rootScope.starred_artists = info.starred.artists;
+          this.$rootScope.starred_artists.forEach(artist => {
+            artist.image = this.getCoverArt({ artist_id: artist.id });
+          });
+          this.$rootScope.starred_top_artists = info.starred.top_artists;
+          this.$rootScope.starred_top_artists.forEach(artist => {
+            artist.image = this.getCoverArt({ artist_id: artist.id });
+          });
           this.$rootScope.starred_tracks = info.starred.tracks;
           this.$rootScope.starred_tracks.forEach(track => {
             track.image = this.getCoverArt({ track_id: track.id });

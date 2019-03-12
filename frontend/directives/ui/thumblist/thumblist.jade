@@ -1,45 +1,35 @@
 div
   a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refreshclick()")
     i#refresh.icon-refresh.i-lg.inline.mini-icon
-  a
-    a.u.pull-right.h6.text-muted.m-l View More
-    
+  div.thumblist-header
+    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
     span.clear
       span.h2.font-thin {{title}}
   .row.row-sm(ng-if="type === 'tracks'")
-    div(ng-repeat="song in data | limitTo:limit")
-      .col-sm-3
-        .item
-          .pos-rlt
-            .item-overlay.opacity.r.r-2x.bg-black
-              .center.text-center.m-t-n
-                a(ng-click="$root.MediaPlayer.playTrack(song, data)")
-                  i.alloy-icon.icon-play.icon.i-2x
-            a(href='#')
-              img.r.r-2x.img-full.fresh-img.thumbnail(ng-src='{{song.image}}', alt='', style="max-height:170px;object-fit: cover;")
-          .padder-v
-            a.text-ellipsis(href='/album/{{song.album_id}}/{{song.id}}') {{song.title}}
-            a.text-ellipsis.text-xs.text-muted(href='/artist/{{song.artist_id}}') {{song.artist}}
+    .col-lg-4.col-md-4.col-sm-3.col-xs-12.image-col(ng-repeat="song in data | limitTo:limit")
+      .caption
+        a.text-ellipsis(href='/album/{{song.album_id}}/{{song.id}}') {{song.title}}
+        a.text-ellipsis.text-xs.text-muted(href='/artist/{{song.artist_id}}') {{song.artist}}
+      a.thumbnail(ng-click="$root.MediaPlayer.playTrack(song, data)")
+        .image-absolute
+          img.img.img-responsive.full-width(ng-src='{{song.image}}', alt='')
+
+   
   .row.row-sm(ng-if="type === 'albums'")
-    div(ng-repeat="album in data | limitTo:limit")
-      .col-sm-3
-        .item(ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}")
-          .pos-rlt
-            .item-overlay.opacity.r.r-2x.bg-black
-              .center.text-center.m-t-n
-                a(ng-click="$root.MediaPlayer.playAlbum(album)")
-                  i.alloy-icon.icon-play.icon.i-2x
-            a(href='#')
-              img.r.r-2x.img-full.fresh-img.thumbnail(ng-src='{{album.image}}', alt='', style="max-height:170px;object-fit: cover;")
-          .padder-v
-            a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
-            a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}  
+    .col-lg-4.col-md-4.col-sm-3.col-xs-12.image-col(ng-repeat="album in data | limitTo:limit", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}")
+      .caption
+        a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
+        a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}} 
+      a.thumbnail(ng-click="$root.MediaPlayer.playAlbum(album)")
+        .image-absolute
+          img.img.img-responsive.full-width(ng-src='{{album.image}}', alt="{{album.name}}")        
+
+  
   .row.row-sm(ng-if="type === 'artists'")
-    div(ng-repeat="artist in data | limitTo:limit")
-      .col-sm-3
-        .item
-          .pos-rlt
-            a(href='/artist/{{artist.id}}')
-              img.r.r-2x.img-full.thumbnail(ng-src='{{artist.image}}', alt='', style="max-height:170px;object-fit: cover;")
-          .padder-v
-            a.text-ellipsis(href='/artist/{{artist.id}}') {{artist.name}}
+    .col-lg-4.col-md-4.col-sm-3.col-xs-12.image-col(ng-repeat="artist in data | limitTo:limit")
+      .caption.text-center
+        a.text-ellipsis(href='/artist/{{artist.id}}') {{artist.name}}
+      a.thumbnail(href='/artist/{{artist.id}}')
+        .image-absolute
+          img.img.img-responsive.full-width(ng-src='{{artist.image}}', alt='')
+ 

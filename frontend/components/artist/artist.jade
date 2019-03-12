@@ -6,7 +6,10 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
       .header-buttons
         button.spotify-btn.btn-green(ng-click="shuffle()") PLAY
         div
-        button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library') Save to Your Library
+        starratinglabel(artist="artist")
+        div
+        button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starArtist()") {{info.artist.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+        div
         .react-contextmenu-wrapper
           button.spotify-btn.btn-transparent.btn--narrow(title='More')
             .spoticon-ellipsis-24.alloy-icon.icon-elipsis.icon

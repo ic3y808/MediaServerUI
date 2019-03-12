@@ -173,7 +173,7 @@ export default class AlloyApi {
   }
 
   getRandomSongs() {
-    return this._get('list/random_songs');
+    return this._get('browse/random_songs');
   }
 
   getFresh(limit) {
@@ -183,11 +183,11 @@ export default class AlloyApi {
   }
 
   getStarred() {
-    return this._get('list/starred');
+    return this._get('browse/starred');
   }
 
   getHistory() {
-    return this._get('list/history');
+    return this._get('browse/history');
   }
 
   getArtists() {
@@ -278,7 +278,7 @@ export default class AlloyApi {
   }
 
   addHistory(data) {
-    return this._put('list/history', data);
+    return this._put('browse/history', data);
   }
 
   love(params) {

@@ -241,7 +241,6 @@ class App {
       this.app.use("/api/v1/system", setupRoute("./api/v1/system"));
       this.app.use("/api/v1/media", setupRoute("./api/v1/media"));
       this.app.use("/api/v1/browse", setupRoute("./api/v1/browse"));
-      this.app.use("/api/v1/list", setupRoute("./api/v1/list"));
       this.app.use("/api/v1/search", setupRoute("./api/v1/search"));
       this.app.use("/api/v1/playlist", setupRoute("./api/v1/playlist"));
       this.app.use("/api/v1/config", setupRoute("./api/v1/config"));

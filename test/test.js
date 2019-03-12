@@ -199,6 +199,54 @@ describe('api tests', function () {
         });
       });
     });
+
+    describe('random tracks', () => {
+
+      it('should return an array', function (done) {
+        request({ url: generateUrl('browse/random_songs'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.random, 'array');
+          done();
+        });
+      });
+    });
+
+    describe('starred tracks', () => {
+
+      it('should return an array', function (done) {
+        request({ url: generateUrl('browse/starred'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.starred, 'object');
+          assert.typeOf(result.starred.tracks, 'array');
+          assert.typeOf(result.starred.albums, 'array');
+          assert.typeOf(result.starred.artists, 'array');
+          done();
+        });
+      });
+    });
+
+    describe('history', () => {
+
+      it('should return an array', function (done) {
+        request({ url: generateUrl('browse/history'), method: 'GET' }, (error, response, body) => {
+          assert.typeOf(error, 'null');
+          assert.typeOf(response, 'object');
+          assert.typeOf(body, 'string');
+          var result = JSON.parse(body);
+          assert.typeOf(result, 'object');
+          assert.typeOf(result.history, 'array');
+          done();
+        });
+      });
+    });
   });
 
   describe('config', () => {
@@ -281,54 +329,6 @@ describe('api tests', function () {
     });
   });
 
-  describe('list', () => {
-    describe('random tracks', () => {
 
-      it('should return an array', function (done) {
-        request({ url: generateUrl('list/random_songs'), method: 'GET' }, (error, response, body) => {
-          assert.typeOf(error, 'null');
-          assert.typeOf(response, 'object');
-          assert.typeOf(body, 'string');
-          var result = JSON.parse(body);
-          assert.typeOf(result, 'object');
-          assert.typeOf(result.random, 'array');
-          done();
-        });
-      });
-    });
-
-    describe('starred tracks', () => {
-
-      it('should return an array', function (done) {
-        request({ url: generateUrl('list/starred'), method: 'GET' }, (error, response, body) => {
-          assert.typeOf(error, 'null');
-          assert.typeOf(response, 'object');
-          assert.typeOf(body, 'string');
-          var result = JSON.parse(body);
-          assert.typeOf(result, 'object');
-          assert.typeOf(result.starred, 'object');
-          assert.typeOf(result.starred.tracks, 'array');
-          assert.typeOf(result.starred.albums, 'array');
-          assert.typeOf(result.starred.artists, 'array');
-          done();
-        });
-      });
-    });
-
-    describe('history', () => {
-
-      it('should return an array', function (done) {
-        request({ url: generateUrl('list/history'), method: 'GET' }, (error, response, body) => {
-          assert.typeOf(error, 'null');
-          assert.typeOf(response, 'object');
-          assert.typeOf(body, 'string');
-          var result = JSON.parse(body);
-          assert.typeOf(result, 'object');
-          assert.typeOf(result.history, 'array');
-          done();
-        });
-      });
-    });
-  });
 });
 

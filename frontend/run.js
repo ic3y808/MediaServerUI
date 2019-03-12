@@ -254,9 +254,10 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $(this).tab('show')
   })
 
-  $('.btn').on('click', () => {
-    $('.btn').blur();
+  $('*').on('click', () => {
+    $('*').blur();
   });
+
 
   function toggleFullScreen() {
     var doc = window.document;
