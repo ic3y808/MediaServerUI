@@ -13,32 +13,17 @@ section.scrollable.padder-lg.w-f-md
 
   .row
     .col-md-7(ng-if="$root.starred_albums.length > 0")
-      h3.font-thin Albums
-      .row.row-sm
-        div(ng-repeat="album in $root.starred_albums")
-          .col-sm-3
-            .item
-              .pos-rlt
-                .item-overlay.opacity.r.r-2x.bg-black
-                  .center.text-center.m-t-n
-                    a(ng-click="playAlbum(album)")
-                      i.alloy-icon.icon-play.icon.i-2x
-                a(href='#')
-                  img.r.r-2x.img-full(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
-              .padder-v
-                a.text-ellipsis(href='/album/{{album.id}}') {{album.name}}
-                a.text-ellipsis.text-xs.text-muted(href='/artist/{{album.artist_id}}') {{album.artist}}
-    
+      thumblist(data="$root.starred_albums", title="Albums", limit="12", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
+          
     .col-md-5(ng-if="$root.starred_top_albums.length > 0")
-      h3.font-thin Top Albums
-      .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix.pointer(ng-repeat="album in $root.starred_top_albums | limitTo:10", href='#')
-          span.pull-right.h2.text-muted.m-l {{$index + 1}}
-          span.pull-left.thumb-sm.avatar.m-r
-            img.img-thumbnail(ng-src='{{album.image}}', alt='...')
-          span.clear
-            span {{album.name}}
-            small.text-muted.clear.text-ellipsis by {{album.artist}}
+      itemlist(data="$root.starred_top_albums", title="Top Albums", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
+  .row
+    .col-md-7(ng-if="$root.starred_artists.length > 0")
+      thumblist(data="$root.starred_artists", title="Artists", limit="12", type="artists", refreshclick="refresh()", viewmorelink="/fresh")
+          
+    .col-md-5(ng-if="$root.starred_top_artists.length > 0")
+      itemlist(data="$root.starred_top_artists", title="Top Artists", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
+      
 
 
   .row

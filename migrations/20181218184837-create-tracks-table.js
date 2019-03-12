@@ -28,6 +28,7 @@ exports.up = function (db) {
       genre: { type: 'string', defaultValue: '' },
       cover_art: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
+      starred_date: { type: 'string', defaultValue: '' },
       rating: { type: 'int', defaultValue: 0 },
       bpm: { type: 'string', defaultValue: '' },
       year: { type: 'int', defaultValue: 0 },

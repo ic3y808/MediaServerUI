@@ -22,6 +22,7 @@ exports.up = function (db) {
       name: { type: 'string', defaultValue: '', unique: true },
       track_count: { type: 'int', defaultValue: 0 },
       starred: { type: 'string', defaultValue: 'false' },
+      starred_date: { type: 'string', defaultValue: '' },
     },
     ifNotExists: true
   });

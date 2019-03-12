@@ -25,6 +25,7 @@ exports.up = function (db) {
       overview: { type: 'string', defaultValue: '' },
       biography: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
+      starred_date: { type: 'string', defaultValue: '' },
       status: { type: 'string', defaultValue: '' },
       rating: { type: 'int', defaultValue: 0 },
       type: { type: 'string', defaultValue: '' },
