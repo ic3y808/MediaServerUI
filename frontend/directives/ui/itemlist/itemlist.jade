@@ -1,0 +1,18 @@
+div
+  a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refreshclick()")
+    i#refresh.icon-refresh.i-lg.inline.mini-icon
+  a
+    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
+    
+    span.clear
+      span.h2.font-thin {{title}}
+
+  .list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'tracks'")
+    a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}", ng-click="$root.MediaPlayer.playTrack(song, data)", ng-repeat="song in data | limitTo:itemLimit")
+      span.pull-right.h2.text-muted.m-l(ng-if="$root.MediaPlayer.checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
+      PlayingStatusBars.pull-right(ng-if="$root.MediaPlayer.checkIfNowPlaying('track', song.id) == true")
+      span.pull-left.thumb-sm.avatar.m-r
+        img.img-thumbnail(ng-src='{{song.image}}', alt='{{song.album}}')
+      span.clear
+        span {{song.title}}
+        small.text-muted.clear.text-ellipsis by {{song.artist}}    

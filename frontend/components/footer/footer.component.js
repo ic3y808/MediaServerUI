@@ -1,10 +1,11 @@
 import './footer.scss';
 class FooterController {
-  constructor($scope, $rootScope, $location, Logger, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $location, $element, Logger, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
+    this.$element = $element;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
@@ -161,9 +162,33 @@ class FooterController {
 
   $onInit() {
     this.Logger.debug('footer-init');
+    this.$element.addClass('vbox')
+    this.$element.addClass('scrollable')
 
     $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-    this.currentProgressPercent = 0;
+
+    function getMousePos(canvas, evt) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+      };
+    }
+
+    //$("#clickProgress").mousemove(function (evt) {
+    //  var c = document.getElementById("clickProgress");
+    //  var ctx = c.getContext("2d");
+    //  var x = (evt.pageX - $('#clickProgress').offset().left) + $(window).scrollLeft();
+    //  var y = (evt.pageY - $('#clickProgress').offset().top) + $(window).scrollTop();
+    //  ctx.save();
+    //  ctx.setTransform(1, 0, 0, 1, 0, 0);
+    //  ctx.clearRect(0, 0, c.width, c.height);
+    //  ctx.restore();
+    //  ctx.beginPath();
+    //  ctx.moveTo(x, 0);
+    //  ctx.lineTo(x, 60);
+    //  ctx.stroke();
+    //});
 
     $("#clickProgress").click(e => {
       var seekto = NaN;

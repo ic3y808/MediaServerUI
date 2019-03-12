@@ -110,10 +110,14 @@ class FreshController {
         var albumTracks = [];
         $scope.fresh_albums.forEach(album => {
           album.tracks.forEach(track => {
+            track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
             albumTracks.push(track);
           });
         });
         $scope.quick_picks = AppUtilities.getRandom(albumTracks, 10);
+        $scope.quick_picks.forEach(track => {
+          track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
+        });
         this.AppUtilities.apply();
       }
     });

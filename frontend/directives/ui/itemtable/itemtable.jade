@@ -1,0 +1,33 @@
+div
+  a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refreshclick()")
+    i#refresh.icon-refresh.i-lg.inline.mini-icon
+  a
+    a.u.pull-right.h6.text-muted.m-l View More
+    
+    span.clear
+      span.h2.font-thin {{title}}
+  .row.row-sm(ng-if="type === 'albums'")
+    .table-responsives
+        table.table.table-striped.b-t.b-light
+          thead
+            tr
+              th
+              th Album
+              th Artist
+              th Created
+              th Tracks
+          tbody(ng-repeat="album in data | limitTo:limit")
+            tr(title='{{album.name}}')
+              td  
+                span.pull-left.thumb-sm.avatar.m-r
+                  img.img-thumbnail(ng-src='{{album.image}}', alt='{{album.name}}')
+              td 
+                a(href="/album/{{album.id}}")
+                  span.clear.text-center
+                    span.text-center {{album.name}}
+               
+ 
+              td 
+                a(href="/artist/{{album.artist_id}}") {{album.artist}}
+              td {{album.created}}
+              td {{album.track_count}}

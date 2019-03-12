@@ -5,7 +5,7 @@ section.vbox
     a.navbar-brand.text-lt(href='/')
       i.alloy-icon.icon-headphones
       span.hidden-nav-xs.m-l-sm Alloy 
-    a.btn.btn-link.visible-xs(data-toggle='dropdown', data-target='.user')
+    a.btn.btn-link.visible-xs(href='/playing')
       i.alloy-icon.icon-controls
 
   form.navbar-form.navbar-left.input-s-lg.m-t.m-l-n-xs.hidden-xs(role='search')
@@ -16,80 +16,3 @@ section.vbox
             i.alloy-icon.icon-menu
         
     searchbar
-  .navbar-right
-    ul.nav.navbar-nav.m-n.hidden-xs.nav-user.user
-      li.hidden-xs
-        a.dropdown-toggle.lt(href='#', data-toggle='dropdown')
-          i.icon-bell
-          span.badge.badge-sm.up.bg-danger.count 2
-        section.dropdown-menu.aside-xl.animated.fadeInUp
-          section.panel.bg-white
-            .panel-heading.b-light.bg-light
-              strong
-                | You have 
-                span.count 2
-                |                                             notifications
-            .list-group.list-group-alt
-              a.media.list-group-item(href='#')
-                span.pull-left.thumb-sm
-                  img.img-circle(src='/content/150.png', alt='...')
-                span.media-body.block.m-b-none
-                  | Use awesome animate.css
-                  br
-                  small.text-muted 10 minutes ago
-              a.media.list-group-item(href='#')
-                span.media-body.block.m-b-none
-                  | 1.0 initial released
-                  br
-                  small.text-muted 1 hour ago
-            .panel-footer.text-sm
-              a.pull-right(href='#')
-                i.fa.fa-cog
-              a(href='#notes', data-toggle='class:show animated fadeInRight') See all the notifications
-      li.dropdown
-        a.dropdown-toggle.bg.clear(href='#', data-toggle='dropdown')
-          span.thumb-sm.avatar.pull-right.m-t-n-sm.m-b-n-sm.m-l-sm
-            img(src='/content/150.png', alt='...')
-          | Alloy User
-          b.caret
-        ul.dropdown-menu.animated.fadeInRight
-          li
-            span.arrow.top
-            a(href='#') Settings
-          li
-            a(href='profile.html') Profile
-          li
-            a(href='#')
-              span.badge.bg-danger.pull-right 3
-              |                                         Notifications
-          li
-            a(href='docs.html') Help
-          li.divider
-          li
-            a(href='modal.lockme.html', data-toggle='ajaxModal') Logout
-
-
-//nav.navbar.navbar-expand-sm.bg-dark.navbar-dark.fixed-top
-//  button.navbar-toggler.navbar-toggler-right(type='button', data-toggle='collapse', data-target='#navbarNavDropdown', aria-controls='navbarNavDropdown', aria-expanded='false', aria-label='Toggle navigation')
-//    span.navbar-toggler-icon
-//  a.navbar-brand(href='/')
-//    span Alloy
-//  #navbarNavDropdown.collapse.navbar-collapse
-//    ul.navbar-nav.mr-auto
-//      li.nav-item.active
-//        a.nav-link(href='/')
-//          | Home 
-//          span.sr-only (current)
-//      li.nav-item
-//        a.nav-link(href='/index') Index
-//      li.nav-item
-//        a.nav-link(href='/playing') Playing
-//      li.nav-item
-//        a.nav-link(href='/starred') Starred
-//      li.nav-item
-//        a.nav-link(href='/starred') Charts
-//      li.nav-item
-//        a.nav-link(href='/playlists') Playlists
-//
-//    form.form-inline
-//      input#search-box.form-control.form-control-sm.mr-sm-2(type='text', ng-model='searchText', placeholder="Search...", auto-complete='autoCompleteOptions', autocomplete="off")

@@ -1,5 +1,3 @@
-
-
 export default function ApplicationRun($window, $rootScope, $location, $timeout, Logger, Backend, MediaPlayer, AppUtilities) {
   "ngInject";
   Logger.info('starting application');
@@ -12,27 +10,27 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   $(window).on('resize', windowResized);
 
+
   $window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    var focus = $("#search-box").val();
+    var focus = $("#search-box").is(":focus") 
     if (!focus) {
       if (key === 32) {
         e.preventDefault();
       }
     }
-  }
+  };
 
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    var focus = $("#search-box").val();
+    var focus = $("#search-box").is(":focus") 
     if (!focus) {
       if (key === 32) {
         e.preventDefault();
         MediaPlayer.toggleCurrentStatus();
       }
     }
-
-  }
+  };
 
   $(document).on('click', "[data-toggle=fullscreen]", function (e) {
     e.preventDefault();

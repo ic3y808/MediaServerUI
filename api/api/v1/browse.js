@@ -209,7 +209,7 @@ router.get('/genre', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/charts', function (req, res) {
-  var limit = req.query.limit ? req.query.limit : 15;
+  var limit = req.query.limit ? req.query.limit : 35;
   var result = {
     charts: {}
   };
@@ -224,7 +224,7 @@ router.get('/charts', function (req, res) {
         obj.play_count === 0;
       });
       if (anyPlays === false) {
-        result.charts.never_played_albums.tracks = allTracks;
+        album.tracks = allTracks;
         result.charts.never_played_albums.push(album);
       }
     }

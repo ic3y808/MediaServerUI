@@ -1,8 +1,8 @@
-#jp_container_N.vbox
+
+#jp_container_N.jp-video-270p
   .jp-type-playlist
-    #jplayer_N.jp-jplayer.hide
     .jp-gui
-      .jp-video-play.hide
+      .jp-video-play.hide(style='display: block;')
         a.jp-video-play-icon play
       .jp-interface
         .jp-controls
@@ -10,102 +10,123 @@
             a(ng-click="skipBack()")
               i.alloy-icon.icon-rewind.i-lg
           div
-            a#playPauseButton.jp-play(ng-click="playPause()")
+            a#playPauseButton(ng-click="playPause()", style='display: inline-block;')
               i#playPauseIcon.alloy-icon.i-2x(ng-class="isPlaying()")
 
           div
             a(ng-click="skipNext()")
               i.alloy-icon.icon-fast-forward.i-lg
-          .hide
-            a.jp-stop
-              i.alloy-icon.icon-stop
-          div
-            a(data-toggle='dropdown', data-target='#playlist')
-              i.alloy-icon.icon-menu
+
           div
             a(title='Star', ng-click="starTrack()")
               i.alloy-icon(ng-class="isStarred()")
           .jp-progress.hidden-xs
-            #clickProgress.jp-seek-bar.dk(style='width: 100%;')
-              #mainProgress.jp-play-bar.bg-info(style='width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
-                .jp-title.text-lt.font-bold  {{$root.currentTrack.title}}
-                .jp-subtitle.text-lt.text-muted.text-xs {{$root.currentTrack.artist}}
-
-          .hidden-xs.hidden-sm.jp-current-time.text-xs.text-muted
-          .hidden-xs.hidden-sm.jp-duration.text-xs.text-muted
- 
+            #clickProgress.jp-seek-bar.dk(style='height:100%;width: 100%;')
+              #mainProgress.play-bar.bg-info(style='height:100%;width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
+              .jp-title.text-lt(style='display: none;') {{$root.currentTrack.title}}
+          .hidden-xs.hidden-sm.jp-current-time.text-xs.text-muted {{$root.MediaPlayer.currentTime}}
+          .hidden-xs.hidden-sm.jp-duration.text-xs.text-muted {{$root.MediaPlayer.currentDuration}}
           .hidden-xs.hidden-sm
             a(title='mute', ng-click="toggleMute()")
               i.alloy-icon(ng-class="isMuted()")
 
           .hidden-xs.hidden-sm.jp-volume
             volumeslider(direction='horizontal')
-            
           div
             a.jp-shuffle(title='shuffle', ng-click="toggleShuffle()")
               i.alloy-icon.icon.icon-shuffle.text-muted
-              
           div
             a.jp-repeat(title='repeat', ng-click="toggleRepeat()")
               i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
-
           .hide
             a.jp-full-screen(title='full screen')
               i.fa.fa-expand
-            a.jp-restore-screen(title='restore screen')
+            a.jp-restore-screen(title='restore screen', style='display: none;')
               i.fa.fa-compress.text-lt
     #playlist.jp-playlist.dropup
-      ul.dropdown-menu.aside-xl.dker
-        // The method Playlist.displayPlaylist() uses this unordered list
-        li.list-group-item
+      ul.dropdown-menu.aside-xl.dker(style='display: block;')
+        li.jp-playlist-current
+          div
+            a.jp-playlist-item-remove(href='javascript:;') ×
+            a.jp-playlist-item.jp-playlist-current(href='javascript:;', tabindex='1')
+              | Bubble 
+              span.jp-artist by Miaow
+        li
+          div
+            a.jp-playlist-item-remove(href='javascript:;') ×
+            a.jp-playlist-item(href='javascript:;', tabindex='1')
+              | Lentement 
+              span.jp-artist by Miaow
+        li
+          div
+            a.jp-playlist-item-remove(href='javascript:;') ×
+            a.jp-playlist-item(href='javascript:;', tabindex='1')
+              | Partir 
+              span.jp-artist by Miaow
+    .jp-no-solution.hide(style='display: none;')
+      span Update Required
+      |  To play the media you will need to either update your browser to a recent version or update your 
+      a(href='http://get.adobe.com/flashplayer/', target='_blank') Flash plugin
+      | .
 
 
 
 
-//.appfooter
-//  .nowPlayingBar
-//    .nowPlayingBarTop
-//      div.progress-background(style='height:10px;position:absolute;top:0;left:0;right:0;')
-//      .nowPlayingBarPositionContainer.sliderContainer.mdl-slider-container
-//      #progressContainer
-//        #subProgress.progress-bar.track-progress.buffer-color(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
-//        #mainProgress.progress-bar.track-progress.progress-color(role='progressbar', aria-valuenow='0', aria-valuemin='0', aria-valuemax='100')
-//      div#clickProgress(style='height:10px;position:absolute;top:0;left:0;right:0;opacity: 0;')  
-//      .nowPlayingBarInfoContainer
-//        img#nowPlayingImageHolder.nowPlayingImage(ng-click="goToNowPlaying()")
-//        .nowPlayingBarText
-//          div
-//            a#trackTitle(href='#')
-//          div            
-//             a#artistInfo(href='#') 
+//.vbox
+//  .jp-controls
+//    div
+//      a(ng-click="skipBack()")
+//        i.alloy-icon.icon-rewind.i-lg
+//    div
+//      a#playPauseButton.jp-play(ng-click="playPause()")
+//        i#playPauseIcon.alloy-icon.i-2x(ng-class="isPlaying()")
 //
-//      .nowPlayingBarCenter
-//        .nowPlayingBarTimeContainer.text-center
-//          .mediaControlButtonGroup.btn-group(role='group')
-//            button#skipBackButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
-//              i.fa.fa-step-backward(aria-hidden='true')
-//            button#playPauseButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
-//              i#playPauseIcon.fa.fa-play(aria-hidden='true')
-//            button#skipNextButton.btn.btn-sm.btn-dark.mediaControlButton(type='button') 
-//              i.fa.fa-step-forward(aria-hidden='true')
-//  
-//          .nowPlayingBarSecondaryText
-//            #mainTimeDisplay
+//    div
+//      a(ng-click="skipNext()")
+//        i.alloy-icon.icon-fast-forward.i-lg
+//    .hide
+//      a.jp-stop
+//        i.alloy-icon.icon-stop
+//    div
+//      a(data-toggle='dropdown', data-target='#playlist')
+//        i.alloy-icon.icon-menu
+//    div
+//      a(title='Star', ng-click="starTrack()")
+//        i.alloy-icon(ng-class="isStarred()")
+//    .jp-progress.hidden-xs
+//      #clickProgress.jp-seek-bar.dk(style='width: 100%;')
+//        #mainProgress.jp-play-bar.bg-info(style='width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
+//          .jp-title.text-lt.font-bold  {{$root.currentTrack.title}}
+//          .jp-subtitle.text-lt.text-muted.text-xs {{$root.currentTrack.artist}}
+//
+//    .hidden-xs.hidden-sm.jp-current-time.text-xs.text-muted {{$root.MediaPlayer.currentTime}}
+//    .hidden-xs.hidden-sm.jp-duration.text-xs.text-muted {{$root.MediaPlayer.currentDuration}}
+//
+//    .hidden-xs.hidden-sm
+//      a(title='mute', ng-click="toggleMute()")
+//        i.alloy-icon(ng-class="isMuted()")
+//
+//    .hidden-xs.hidden-sm.jp-volume
+//      volumeslider(direction='horizontal')
+//      
+//    div
+//      a.jp-shuffle(title='shuffle', ng-click="toggleShuffle()")
+//        i.alloy-icon.icon.icon-shuffle.text-muted
 //        
-//      .nowPlayingBarRight
-//        google-cast-launcher.btn.btn-sm.btn-dark(style='max-height:35px;max-width:35px;')
-//        button#downloadButton.btn.btn-sm.btn-dark
-//          i.fa.fa-download(aria-hidden='true')
-//        button#repeatButton.btn.btn-sm.btn-dark
-//          i.fa.fa-repeat(aria-hidden='true')
-//        button#likeButton.btn.btn-sm.btn-dark
-//          i#likeButtonIcon.fa.fa-star-o(aria-hidden='true')
-//        button#shareButton.btn.btn-sm.btn-dark
-//          i.fa.fa-bullhorn(aria-hidden='true')
-//        a(href='/playing')#nowPlayingViewButton.btn.btn-sm.btn-dark
-//          i.fa.fa-list-ul(aria-hidden='true')
-//        button#muteButton.btn.btn-sm.btn-dark
-//          i.fa.fa-volume-off(aria-hidden='true')
-//        .sliderContainer.nowPlayingBarVolumeSliderContainer.mdl-slider-container(style='width:100px;vertical-align:middle;display:inline-flex;')
-//          .slidecontainer
-//            input#volumeSlider.slider(type='range', min='1', max='100', value='50')
+//    div
+//      a.jp-repeat(title='repeat', ng-click="toggleRepeat()")
+//        i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
+//
+//    .hide
+//      a.jp-full-screen(title='full screen')
+//        i.fa.fa-expand
+//      a.jp-restore-screen(title='restore screen')
+//        i.fa.fa-compress.text-lt
+//#playlist.jp-playlist.dropup
+//ul.dropdown-menu.aside-xl.dker
+//  // The method Playlist.displayPlaylist() uses this unordered list
+//  li.list-group-item
+//
+//
+//
+//

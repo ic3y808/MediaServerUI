@@ -1,65 +1,168 @@
-include ./../../views/pagecontainer
-  include ./../../views/pagetoolbar
-    include ./../../views/toolbarsection-left
-      toolbarbutton(buttontext='Back', buttonclick='$root.goBack()', buttonicon='fa-arrow-circle-left')
-    include ./../../views/toolbarsection-right
-      toolbarbutton(buttontext='Star', buttonclick='starArtist()', buttonicon="{{artist.starred == 'true' ? 'fa-star' : 'fa-star-o'}}")
-
-  
-  div(style='position: relative; overflow: hidden; width: 100%; height: 100%; margin-right:10px; flex:1; flex-direction:row;')
-    .PageContentBody-contentBody(id='mainContentBody',style='height:100%; overflow: hidden; overflow-x:hidden; display:flex; flex-direction:column;')
-      .PageContentBody-innerContentBody(style="display:flex; flex-direction: column; height: 100%;")       
-        .PageContent-header(style="flex:1;")
-          .PageContent-backdrop
-            .PageContent-backdrop-bg.art-backdrop(style="width:100%; height:100%; position:absolute;",ng-style="$root.getBackgroundStyle(info.image)")
-            .PageContent-backdropOverlay 
-              .PageContent-headerContent
-                img.PageContent-HeaderDetails-poster(ng-show="!info.image", src='data:image/png;base64,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')
-                img.PageContent-HeaderDetails-poster(ng-show="info.image", src='{{info.image}}')
-                .PageContent-HeaderDetails-info
-                  .PageContent-HeaderDetails-titleContainer
-                    .PageContent-HeaderDetails-title {{info.title}}
-                  div
-                    starratinglabel(album="info.track")  
-                  div
-                    detaillabel(buttontext="{{info.artist}}", buttonicon="fa-level-up", href="/artist/{{info.artist_id}}")
-                    detaillabel(buttontext="{{info.album}}", buttonicon="fa-level-up", href="/album/{{info.album_id}}")
-                  
-                  div
-                    detaillabel(buttontext="{{info.path}}", buttonicon="fa-external-link")
-
-                  div
-                    detaillabel(buttontext="{{$root.humanFileSize(info.size)}}", buttonicon="fa-hdd-o")
-                    detaillabel(buttontext="Plays {{info.play_count}}", buttonicon="fa-play-circle-o")
-                    detaillabel(buttontext="Links", buttonicon="fa-external-link", buttonclick="showExternalLinks(artist.id)")
-                    popoverbutton(buttontext="Tags", buttonicon="fa-tags", data="album.artistInfo.tags.tag")
-                    detaillabel(buttontext="Similar", buttonicon="fa-clone", buttonclick="showExternalLinks(artist.id)")
-                    detaillabel(buttontext="BPM: {{info.bpm}}", buttonicon="fa-hdd-o", ng-show="info.bpm")
-                    detaillabel(buttontext="Track {{info.no}} of {{info.of}}", buttonicon="fa-hdd-o")
-                  .PageContent-HeaderDetails-overview 
-                    div(style='overflow: hidden;')
-                      span
-                      | {{artistBio}}
-
-        .PageContent-contentContainer(style="flex:1; height: 100%;")
-          .FlexContainer
-            .ExpanderContainer(style="flex:0.5;")
-              .ExpanderContainer-header
-                .ExpanderContainer-general
-                  div
-                    span.ExpanderContainer-label Last Played
-                  div
-                    span
-                      a.ExpanderContainer-sublabel(href="/artist/{{previousTrack.artist_id}}") {{previousTrack.title}}
+section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.dk(style="padding:0px;")
+  section.content.artist
+    header.artist-header(style='background-image: url({{info.artist.image}});')
+      span.monthly-listeners(ng-if="info.total_plays") {{info.total_plays}} {{info.total_plays > 1 ? "Plays" : "Play"}} 
+      h1.large(dir='auto') {{info.artist.name}}
+      .header-buttons
+        button.spotify-btn.btn-green(ng-click="shuffle()") PLAY
+        div
+        button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library') Save to Your Library
+        .react-contextmenu-wrapper
+          button.spotify-btn.btn-transparent.btn--narrow(title='More')
+            .spoticon-ellipsis-24.alloy-icon.icon-elipsis.icon
+      nav._11pfm-p6kRU6CrLDyLhi3a
+        ul._3v-H5s52KoSlx1rvzcnTvM
+          li.hG7sFJywaubVYCHAcZGVM.active
+            div
+              a.EYVkZXmTImKH4iH48N7Uj._1-aXXBO8bQU1WTFY-7B0m-(data-target='#overview', data-toggle='tab') Overview
+          li.hG7sFJywaubVYCHAcZGVM
+            div
+              a.EYVkZXmTImKH4iH48N7Uj(data-target='#related', data-toggle='tab') Related Artists
+          li.hG7sFJywaubVYCHAcZGVM
+            div
+              a.EYVkZXmTImKH4iH48N7Uj(data-target='#about', data-toggle='tab') About
+    section.scrollable
+      .tab-content
+        #overview.tab-pane.active
+          section.artist-music.container-fluid(ng-if="info.popular_tracks.length > 0")
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Popular
+                  section.tracklist-container.full-width
+                    ol.tracklist(ng-repeat="track in info.popular_tracks")
+                      .react-contextmenu-wrapper
+                        div(draggable='true')
+                          li.tracklist-row.tracklist-row--oneline(role='button', tabindex='0')
+                            .tracklist-col.position-outer
+                              .tracklist-play-pause.tracklist-middle-align(ng-click="playTrack(track, info.popular_tracks)")
+                                svg.icon-play(viewBox='0 0 85 100')
+                                  path(fill='currentColor', d='M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z')
+                                    title PLAY
+                        
+                            .tracklist-col.tracklist-col-cover-art-thumb
+                              .cover-art.shadow.tracklist-middle-align.cover-art--with-auto-height(aria-hidden='true', style='width: 50px; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='81', viewBox='0 0 80 81', xmlns='http://www.w3.org/2000/svg')
+                                      title Playlist Icon
+                                      path(d='M25.6 11.565v45.38c-2.643-3.27-6.68-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4 14.4-6.46 14.4-14.4v-51.82l48-10.205V47.2c-2.642-3.27-6.678-5.37-11.2-5.37-7.94 0-14.4 6.46-14.4 14.4s6.46 14.4 14.4 14.4S80 64.17 80 56.23V0L25.6 11.565zm-11.2 65.61c-6.176 0-11.2-5.025-11.2-11.2 0-6.177 5.024-11.2 11.2-11.2 6.176 0 11.2 5.023 11.2 11.2 0 6.174-5.026 11.2-11.2 11.2zm51.2-9.745c-6.176 0-11.2-5.024-11.2-11.2 0-6.174 5.024-11.2 11.2-11.2 6.176 0 11.2 5.026 11.2 11.2 0 6.178-5.026 11.2-11.2 11.2z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{track.image}}");')
+                            .tracklist-col.name
+                              .track-name-wrapper.tracklist-middle-align
+                                .tracklist-name.ellipsis-one-line(dir='auto') {{track.title}}
+                            .tracklist-col.more
+                              .tracklist-middle-align
+                                .react-contextmenu-wrapper
+                                  button.spotify-btn.btn-transparent.btn--narrow.btn--no-margin.btn--no-padding
+                                    .spoticon-ellipsis-16
+                            .tracklist-col.tracklist-col-duration
+                              .tracklist-duration.tracklist-middle-align
+                                span {{$root.formatTime(track.duration)}}
                     
-          
-            .ExpanderContainer(style="flex:0.5;")
-              .ExpanderContainer-header-right
-                .ExpanderContainer-general
-                  div
-                    span.ExpanderContainer-label Up Next
-                  div
-                    span
-                      a.ExpanderContainer-sublabel(href="/artist/{{upcomingTrack.artist_id}}")  {{upcomingTrack.title}}
+          section.artist-albums(ng-if="info.albums.length > 0")
+            .contentSpacing
+              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Albums
+              .row
+                .container-fluid.container-fluid--noSpaceAround
+                  ._2SnF0IAy7I_tM-7M5iEcyT.row
+                    .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="album in info.albums")
+                      div
+                        div(draggable='true')
+                          .media-object
+                            div
+                              .react-contextmenu-wrapper
+                                a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{album.id}}', style='width: auto; height: auto;')
+                                  div
+                                    .icon
+                                      svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                        title Album
+                                        path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                    .cover-art-image.cover-art-image-loaded(style='background-image: url("{{album.image}}");')
+                              .mo-info
+                                .react-contextmenu-wrapper
+                                  a.mo-info-name(title='Holograms', dir='auto', href='/album/{{album.id}}') {{album.name}}
+                            .mo-meta.ellipsis-one-line
+                              .react-contextmenu-wrapper
+                                a(dir='auto', href='/artist/{{album.artist_id}}') {{album.artist}}
+                  
+          section.artist-singles.artist-albums(ng-if="info.EPs.length > 0")
+            .contentSpacing
+              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') EPs
+              .container-fluid.container-fluid--noSpaceAround
+                ._2SnF0IAy7I_tM-7M5iEcyT.grid--limit.row
+                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="ep in info.EPs")
+                    div
+                      div(draggable='true')
+                        .media-object
+                          div
+                            .react-contextmenu-wrapper
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{ep.id}}', style='width: auto; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                      title Album
+                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{ep.image}}");')
+                            .mo-info
+                              .react-contextmenu-wrapper
+                                a.mo-info-name(title='Bass Real Big', dir='auto', href='/album/{{ep.id}}') {{ep.name}}
+                          .mo-meta.ellipsis-one-line
+                            .react-contextmenu-wrapper
+                              a(dir='auto', href='/artist/{{ep.artist_id}}') {{ep.artist}}
+                
+          section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
+            .contentSpacing
+              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Singles
+              .container-fluid.container-fluid--noSpaceAround
+                ._2SnF0IAy7I_tM-7M5iEcyT.grid--limit.row
+                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="single in info.singles")
+                    div
+                      div(draggable='true')
+                        .media-object
+                          div
+                            .react-contextmenu-wrapper
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{single.id}}', style='width: auto; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                      title Album
+                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{single.image}}");')
+                            .mo-info
+                              .react-contextmenu-wrapper
+                                a.mo-info-name(title='Firepower 200', dir='auto', href='/album/{{single.id}}') {{single.name}}
+                          .mo-meta.ellipsis-one-line
+                            .react-contextmenu-wrapper
+                              a(dir='auto', href='/artist/{{single.artist_id}}') {{single.artist}}
 
-          
+        #related.tab-pane
+          section.artist-music.container-fluid
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Related
+                  .vbox.stretch
+
+        #about.tab-pane
+           section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
+            .contentSpacing
+              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Singles
+              .container-fluid.container-fluid--noSpaceAround
+            
+                div
+                  small.text-uc.text-xs.text-muted Path
+                  p {{info.artist.path}}
+                  small.text-uc.text-xs.text-muted Size
+                  p {{info.size}}
+                  small.text-uc.text-xs.text-muted Type
+                  p {{info.artist.type}}
+                  small.text-uc.text-xs.text-muted Status
+                  p {{info.artist.status}}
+                  small.text-uc.text-xs.text-muted info
+                  p {{info.artist.biography}}
+                  .line
+                  small.text-uc.text-xs.text-muted 
+                  p.m-t-sm 
+                    a.btn.btn-rounded.btn-twitter.btn-icon(href='{{link.target}}', target="_blank", ng-repeat="link in info.links")
+                      i.alloy-icon.icon(ng-class="$parent.getLinkIcon(link)")

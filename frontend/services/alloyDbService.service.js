@@ -427,9 +427,23 @@ export default class AlloyDbService {
           this.$rootScope.starred_tracks.forEach(track => {
             track.image = this.getCoverArt({ track_id: track.id });
           });
+          this.$rootScope.starred_top_tracks = info.starred.top_tracks;
+          this.$rootScope.starred_top_tracks.forEach(track => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
           this.$rootScope.starred_albums = info.starred.albums;
           this.$rootScope.starred_albums.forEach(album => {
             album.image = this.getCoverArt({ album_id: album.id });
+            album.tracks.forEach(track => {
+              track.image = this.getCoverArt({ track_id: track.id });
+            });
+          });
+          this.$rootScope.starred_top_albums = info.starred.top_albums;
+          this.$rootScope.starred_top_albums.forEach(album => {
+            album.image = this.getCoverArt({ album_id: album.id });
+            album.tracks.forEach(track => {
+              track.image = this.getCoverArt({ track_id: track.id });
+            });
           });
           this.AppUtilities.apply();
         }
@@ -470,7 +484,7 @@ export default class AlloyDbService {
         if (info.charts) {
           this.$rootScope.charts = info.charts;
           this.$rootScope.charts.top_tracks.forEach(track => {
-            track.image = this.getCoverArt({ track_id: track.cover_art });
+            track.image = this.getCoverArt({ track_id: track.id });
           });
           this.$rootScope.charts.never_played.forEach(track => {
             track.image = this.getCoverArt({ track_id: track.id });

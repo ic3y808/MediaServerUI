@@ -108,7 +108,7 @@ class App {
             break;
           }
           case "cleanup": {
-            this.this.mediaScanner.incrementalCleanup();
+            this.mediaScanner.incrementalCleanup();
 
             break;
           }
