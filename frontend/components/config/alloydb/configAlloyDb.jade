@@ -42,28 +42,25 @@ section.panel.panel-default
   .panel-body
     form.form-horizontal(method='get')
 
-      .form-group
-        
-      .form-group
-        .table-responsive
-          #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
+      .table-responsive
+        #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
 
-            table#DataTables_Table_0.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
-              thead
-                tr(role='row')
-                  th.sorting_asc(style='width: 100px;', role='columnheader', tabindex='0', rowspan='1', colspan='1', aria-sort='ascending', aria-label='Display Name') Display Name
-                  th.sorting(style='width: 220px;', role='columnheader', tabindex='0', rowspan='1', colspan='1', aria-label='Path') Path
-                  th(style='width: 20px;max-width:20px', role='columnheader', tabindex='0', rowspan='1', colspan='1', aria-label='') 
-              tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat='mediaPath in mediaPaths')
-                tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                  td.sorting_1
-                    a(href="/album/{{album.id}}") {{mediaPath.display_name}}
-                  td
-                    a(href="/artist/{{album.artist_id}}") {{mediaPath.path}}
-                  td(style='width: 20px;max-width:20px')
-                    a.pull-right(ng-click='removePath(mediaPath)', title="Remove")
-                      i.alloy-icon.icon-ban.icon
-                
+          table.table.table-striped
+            thead
+              tr(role='row')
+                th(style='width: 100px;', tabindex='0', rowspan='1', colspan='1') Display Name
+                th(style='width: 220px;', tabindex='0', rowspan='1', colspan='1') Path
+                th(style='width: 20px;max-width:20px', tabindex='0', rowspan='1', colspan='1') 
+            tbody(ng-repeat='mediaPath in mediaPaths')
+              tr(ng-class-odd="'odd'" ng-class-even="'even'")
+                td
+                  span {{mediaPath.display_name}}
+                td
+                  span {{mediaPath.path}}
+                td(style='width: 20px;max-width:20px')
+                  a.pull-right(ng-click='removePath(mediaPath)', title="Remove")
+                    i.alloy-icon.icon-ban.icon
+              
 
 
         #addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')

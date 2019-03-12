@@ -3,9 +3,9 @@ import angular from 'angular';
 import ToolbarButton from './ui/toolbarbutton';
 import ToolbarSeperator from './ui/toolbarseperator';
 import NavButton from './ui/navbutton';
-import AlbumsList from './ui/albumslist';
-import ArtistList from './ui/artistlist';
-import GenreList from './ui/genrelist';
+import ItemTable from './ui/itemtable';
+import ThumbList from './ui/thumblist';
+import ItemList from './ui/itemlist';
 import TrackList from './ui/tracklist';
 import FolderList from './ui/folderlist';
 import QueueList from './ui/sabnzbd/queuelist';
@@ -27,9 +27,9 @@ export default angular
   .directive('toolbarbutton', ToolbarButton)
   .directive('toolbarseperator', ToolbarSeperator)
   .directive('navbutton', NavButton)
-  .directive('albumslist', AlbumsList)
-  .directive('artistlist', ArtistList)
-  .directive('genrelist', GenreList)
+  .directive('itemtable', ItemTable)
+  .directive('thumblist', ThumbList)
+  .directive('itemlist', ItemList)
   .directive('tracklist', TrackList)
   .directive('folderlist', FolderList)
   .directive('queuelist', QueueList)

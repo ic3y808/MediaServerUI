@@ -12,67 +12,55 @@ section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
       span.bar5.a5.bg-danger.dker
 
   .row
-    .col-md-7
+    .col-md-12
       h3.font-thin
       .row.row-sm
-        div(ng-repeat="artist in $root.artists")
-          .col-sm-3
-            .item
-              .pos-rlt
-                a(href='/artist/{{artist.id}}')
-                  .item-overlay.opacity.r.r-2x.bg-black
 
+        .table-responsive
+          #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
+            .row
+              .col-sm-6
+                #DataTables_Table_0_length.dataTables_length
+                  label
+                    | Show 
+                    select(size='1', name='DataTables_Table_0_length', aria-controls='DataTables_Table_0')
+                      option(value='10', selected='selected') 10
+                      option(value='25') 25
+                      option(value='50') 50
+                      option(value='100') 100
+                    |  entries
+              .col-sm-6
+                #DataTables_Table_0_filter.dataTables_filter
+                  label
+                    | Search: 
+                    input(type='text', aria-controls='DataTables_Table_0')
+              #DataTables_Table_0_processing.dataTables_processing(style='visibility: hidden;') Processing...
+            table#DataTables_Table_0.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
+              thead
+                tr(role='row')
+                  th.sorting(style='width: 220px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Artist
+                  th.sorting(style='width: 100px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Track(s)
+              tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat="artist in $root.artists")
+                tr(ng-class-odd="'odd'" ng-class-even="'even'")
+                  td.sorting_1
+                    a(href="/artist/{{artist.id}}") {{artist.name}}
+   
+                  td {{artist.track_count}}
                 
-                img.r.r-2x.img-full(ng-src='{{artist.image}}', alt='', style="height:170px;object-fit: cover;")
-              .padder-v
-                a.text-ellipsis(href='/artist/{{artist.id}}') {{artist.name}}
-    
-    .col-md-5
-      h3.font-thin Top Songs
-      .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix(href='#', ng-repeat="artist in $root.artists")
-          span.pull-right.h2.text-muted.m-l {{$index + 1}}
-          span.pull-left.thumb-sm.avatar.m-r
-            img.img-thumbnail(ng-src='{{artist.image}}', alt='...')
-          span.clear
-            span {{artist.name}}
-            small.text-muted.clear.text-ellipsis by {{song.artist}}
-  .row
-    .col-md-7
-      h3.font-thin New Albums
-      .row.row-sm
-        div(ng-repeat="album in discover")
-          .col-sm-3
-            .item
-              .pos-rlt
-                .item-overlay.opacity.r.r-2x.bg-black
-                  .center.text-center.m-t-n
-                    a(ng-click="playAlbum(album)")
-                      i.fa.fa-play-circle.i-2x
-                a(href='#')
-                  img.r.r-2x.img-full(ng-src='{{album.image}}', alt='', style="height:170px;object-fit: cover;")
-              .padder-v
-                a.text-ellipsis(href='#') {{album.name}}
-                a.text-ellipsis.text-xs.text-muted(href='#') {{album.artist}}  
+            .row
+              .col-sm-6
+                #DataTables_Table_0_info.dataTables_info Showing 1 to 10 of 57 entries
+              .col-sm-6
+                #DataTables_Table_0_paginate.dataTables_paginate.paging_full_numbers
+                  a#DataTables_Table_0_first.first.paginate_button.paginate_button_disabled(tabindex='0') First
+                  a#DataTables_Table_0_previous.previous.paginate_button.paginate_button_disabled(tabindex='0') Previous
+                  span
+                    a.paginate_active(tabindex='0') 1
+                    a.paginate_button(tabindex='0') 2
+                    a.paginate_button(tabindex='0') 3
+                    a.paginate_button(tabindex='0') 4
+                    a.paginate_button(tabindex='0') 5
+                  a#DataTables_Table_0_next.next.paginate_button(tabindex='0') Next
+                  a#DataTables_Table_0_last.last.paginate_button(tabindex='0') Last
 
 
-    .col-md-5
-      h3.font-thin Other Fresh
-      .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix(href='#', ng-repeat="song in songs")
-          span.pull-right.h2.text-muted.m-l {{$index + 1}}
-          span.pull-left.thumb-sm.avatar.m-r
-            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
-          span.clear
-            span {{song.title}}
-            small.text-muted.clear.text-ellipsis by {{song.artist}}     
-
-//section.vbox
-//  section.w-f-md
-//    section.hbox.stretch
-//      section.vbox.scrollable(style="width:50px;")
-//        section          
-//          ul.list-group.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat="artist in $root.music_index" )
-//            a.list-group-item.list-group-item-slim.clearfix.btn-list(ng-click="clickButton(artist.name)", onclick="event.stopPropagation();")       
-//              span.btn-artists-title {{artist.name}}  
-//      artistlist(data="$root.artists")

@@ -28,7 +28,10 @@ export default class MediaPlayer {
     this.$rootScope.currentTrack = {};
     this.currentProgressPercent = 0;
     this.$rootScope.MediaPlayer = this;
-    
+    this.$rootScope.playTrack = this.playTrack;
+    this.$rootScope.playAlbum = this.playAlbum;
+    this.$rootScope.playArtist = this.playArtist;
+
 
     this.MediaElement.addEventListener('play', () => {
       this.playing = true;
@@ -52,8 +55,10 @@ export default class MediaPlayer {
         this.togglePlayPause();
         $('#media-player').src = this.selectedTrack();
         this.currentProgressPercent = 0;
+        this.currentTime = "";
+        this.currentDuration = "";
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-        $('#mainTimeDisplay').html("");
+
         this.Logger.debug('Playlist ended');
         this.AppUtilities.broadcast('playlistEndEvent');
 
@@ -64,7 +69,8 @@ export default class MediaPlayer {
     });
 
     this.MediaElement.addEventListener('canplaythrough', () => {
-      $('#mainTimeDisplay').html("0:00 / " + this.AppUtilities.formatTime(MediaElement.duration));
+      this.currentTime = "0:00";
+      this.currentDuration = this.AppUtilities.formatTime(MediaElement.duration)
       this.currentProgressPercent = 0;
       $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
       this.togglePlayPause();
@@ -89,7 +95,8 @@ export default class MediaPlayer {
 
         $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
         this.currentProgressPercent = playPercent;
-        $('#mainTimeDisplay').html(this.AppUtilities.formatTime(MediaElement.currentTime) + " / " + this.AppUtilities.formatTime(duration));
+        this.currentTime = this.AppUtilities.formatTime(this.MediaElement.currentTime);
+        this.currentDuration = this.AppUtilities.formatTime(duration);
         this.AppUtilities.apply();
       }
     });
@@ -161,6 +168,27 @@ export default class MediaPlayer {
     }
   }
 
+  playTrack(song, playlist) {
+    this.Logger.debug("Play Track");
+    this.$rootScope.tracks = playlist;
+    var index = _.findIndex(this.$rootScope.tracks, function (track) {
+      return track.id === song.id;
+    });
+    this.loadTrack(index);
+  };
+
+  playAlbum(album) {
+    this.Logger.debug("Play Album");
+    this.$rootScope.tracks = album.tracks;
+    this.loadTrack(0);
+  };
+
+  playArtist(artist) {
+    this.Logger.debug("Play Album");
+    this.$rootScope.tracks = this.AppUtilities.shuffle(artist.tracks);
+    this.loadTrack(0);
+  };
+
   upcomingTracks(count) {
     var tracks = [];
     if (this.selectedIndex + 1 + count < this.$rootScope.tracks.length) {
@@ -220,7 +248,7 @@ export default class MediaPlayer {
       this.selectedIndex = 0;
       this.currentProgressPercent = 0;
       this.togglePlayPause();
-      $('#media-player').src = this.selectedTrack();    
+      $('#media-player').src = this.selectedTrack();
       $('#mainTimeDisplay').html("");
       this.Logger.debug('Playlist ended');
       this.AppUtilities.broadcast('playlistEndEvent');
@@ -624,15 +652,15 @@ export default class MediaPlayer {
     this.remoteConfigured = false;
   }
 
-  checkIfNowPlaying(type, obj) {
+  checkIfNowPlaying(type, id) {
     var selected = this.selectedTrack();
-    if (selected && type && obj) {
+    if (selected && type && id) {
       if (type === 'track') {
-        return track.id === selected.id;
+        return id === selected.id;
       } else if (type === 'artist') {
-        return track.id === selected.artist_id;
+        return id === selected.artist_id;
       } else if (type === 'album') {
-        return track.id === selected.album_id;
+        return id === selected.album_id;
       }
     }
     return false;

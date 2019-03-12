@@ -18,9 +18,14 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
       });
 
-      $element.bind("mouseenter", function () {
-        $element.focus();
-      })
+      $('#search-box')
+        .mouseenter(function () {
+          $(this).focus();
+        })
+        .mouseleave(function () {
+          if ("activeElement" in document)
+            document.activeElement.blur();
+        });
 
       var html = '';
       html += '<div class="unselectable card-5" data-instance-id="{{ ctrl.instanceId }} ng-show="ctrl.containerVisible">';
@@ -76,7 +81,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
           return AlloyDbService.search(searchText).then(result => {
             searchText = searchText.toUpperCase();
-            if(searchText === '') return [];
+            if (searchText === '') return [];
             var results = [
               {
                 title: "Artists",

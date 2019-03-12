@@ -5,6 +5,7 @@ var router = express.Router();
 var logger = require('../../../common/logger');
 var moment = require('moment');
 var utils = require('./utils');
+var _ = require('underscore');
 
 
 /**
@@ -55,10 +56,19 @@ router.get('/random_songs', function (req, res) {
  */
 router.get('/starred', function (req, res) {
   var starredTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE starred=?').all('true')
+  var topTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE starred=? ORDER BY play_count DESC LIMIT 25').all('true')
   var starredAlbums = res.locals.db.prepare('SELECT * FROM Albums WHERE starred=?').all('true');
+  
   starredAlbums.forEach(album => {
     album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+    album.play_count = 0;
+    album.tracks.forEach(track=>{
+      album.play_count += track.play_count;
+    });
+
   });
+  var topStarredAlbums = _.sortBy(starredAlbums, function(o) { return o.play_count; });
+
   var starredArtists = res.locals.db.prepare('SELECT * FROM Artists WHERE starred=?').all('true');
   starredArtists.forEach(artist => {
     starredArtists.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=?').all(artist.id);
@@ -67,7 +77,7 @@ router.get('/starred', function (req, res) {
       album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
     });
   });
-  res.json({ starred: { tracks: starredTracks, albums: starredAlbums, artists: starredArtists } });
+  res.json({ starred: { tracks: starredTracks, albums: starredAlbums, artists: starredArtists, top_tracks:topTracks, top_albums: topStarredAlbums } });
 });
 
 /**
