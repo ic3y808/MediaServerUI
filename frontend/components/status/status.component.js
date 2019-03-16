@@ -103,6 +103,7 @@ class StatusController {
       $scope.ping();
       $scope.getLibraryInfo();
       $scope.getMediaPaths();
+      $scope.getScanStatus();
     });
 
     $scope.refreshIntereval = setInterval(() => {

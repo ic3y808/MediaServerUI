@@ -208,21 +208,20 @@ module.exports.Song = class Song {
   }
 
   getStats() {
-    var stats = fs.statSync(this.path);
-    this.content_type = mime.lookup(this.path);
-    this.size = stats.size;
-    this.created = stats.ctime.getTime();
-    this.last_modified = stats.mtime.getTime();
-    var params = ' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  "' + this.path + '"';
-
-    var duration_out;
-    try {
-      duration_out = execSync(ffmpeg.path + params);
-    } catch (ex) {
-      duration_out = ex.stdout;
+    if (fs.existsSync(this.path)) {
+      var stats = fs.statSync(this.path);
+      this.content_type = mime.lookup(this.path);
+      this.size = stats.size;
+      this.created = stats.ctime.getTime();
+      this.last_modified = stats.mtime.getTime();
+      var params = ' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  "' + this.path + '"';
+      try {
+        var duration_out = execSync(ffmpeg.path + params);
+        this.duration = parseInt(duration_out.toString());
+      } catch (ex) {
+        duration_out = ex.stdout;
+      }
     }
-
-    this.duration = parseInt(duration_out.toString())
   }
 };
 

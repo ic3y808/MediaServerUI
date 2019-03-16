@@ -23,7 +23,7 @@
           .jp-progress.hidden-xs
             #clickProgress.jp-seek-bar.dk(style='height:100%;width: 100%;')
               #mainProgress.play-bar.bg-info(style='height:100%;width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
-              .jp-title.text-lt(style='display: none;') {{$root.currentTrack.title}}
+              .jp-title.text-lt {{$root.currentTrack.title}}
           .hidden-xs.hidden-sm.jp-current-time.text-xs.text-muted {{$root.MediaPlayer.currentTime}}
           .hidden-xs.hidden-sm.jp-duration.text-xs.text-muted {{$root.MediaPlayer.currentDuration}}
           .hidden-xs.hidden-sm
@@ -38,95 +38,3 @@
           div
             a.jp-repeat(title='repeat', ng-click="toggleRepeat()")
               i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
-          .hide
-            a.jp-full-screen(title='full screen')
-              i.fa.fa-expand
-            a.jp-restore-screen(title='restore screen', style='display: none;')
-              i.fa.fa-compress.text-lt
-    #playlist.jp-playlist.dropup
-      ul.dropdown-menu.aside-xl.dker(style='display: block;')
-        li.jp-playlist-current
-          div
-            a.jp-playlist-item-remove(href='javascript:;') ×
-            a.jp-playlist-item.jp-playlist-current(href='javascript:;', tabindex='1')
-              | Bubble 
-              span.jp-artist by Miaow
-        li
-          div
-            a.jp-playlist-item-remove(href='javascript:;') ×
-            a.jp-playlist-item(href='javascript:;', tabindex='1')
-              | Lentement 
-              span.jp-artist by Miaow
-        li
-          div
-            a.jp-playlist-item-remove(href='javascript:;') ×
-            a.jp-playlist-item(href='javascript:;', tabindex='1')
-              | Partir 
-              span.jp-artist by Miaow
-    .jp-no-solution.hide(style='display: none;')
-      span Update Required
-      |  To play the media you will need to either update your browser to a recent version or update your 
-      a(href='http://get.adobe.com/flashplayer/', target='_blank') Flash plugin
-      | .
-
-
-
-
-//.vbox
-//  .jp-controls
-//    div
-//      a(ng-click="skipBack()")
-//        i.alloy-icon.icon-rewind.i-lg
-//    div
-//      a#playPauseButton.jp-play(ng-click="playPause()")
-//        i#playPauseIcon.alloy-icon.i-2x(ng-class="isPlaying()")
-//
-//    div
-//      a(ng-click="skipNext()")
-//        i.alloy-icon.icon-fast-forward.i-lg
-//    .hide
-//      a.jp-stop
-//        i.alloy-icon.icon-stop
-//    div
-//      a(data-toggle='dropdown', data-target='#playlist')
-//        i.alloy-icon.icon-menu
-//    div
-//      a(title='Star', ng-click="starTrack()")
-//        i.alloy-icon(ng-class="isStarred()")
-//    .jp-progress.hidden-xs
-//      #clickProgress.jp-seek-bar.dk(style='width: 100%;')
-//        #mainProgress.jp-play-bar.bg-info(style='width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
-//          .jp-title.text-lt.font-bold  {{$root.currentTrack.title}}
-//          .jp-subtitle.text-lt.text-muted.text-xs {{$root.currentTrack.artist}}
-//
-//    .hidden-xs.hidden-sm.jp-current-time.text-xs.text-muted {{$root.MediaPlayer.currentTime}}
-//    .hidden-xs.hidden-sm.jp-duration.text-xs.text-muted {{$root.MediaPlayer.currentDuration}}
-//
-//    .hidden-xs.hidden-sm
-//      a(title='mute', ng-click="toggleMute()")
-//        i.alloy-icon(ng-class="isMuted()")
-//
-//    .hidden-xs.hidden-sm.jp-volume
-//      volumeslider(direction='horizontal')
-//      
-//    div
-//      a.jp-shuffle(title='shuffle', ng-click="toggleShuffle()")
-//        i.alloy-icon.icon.icon-shuffle.text-muted
-//        
-//    div
-//      a.jp-repeat(title='repeat', ng-click="toggleRepeat()")
-//        i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
-//
-//    .hide
-//      a.jp-full-screen(title='full screen')
-//        i.fa.fa-expand
-//      a.jp-restore-screen(title='restore screen')
-//        i.fa.fa-compress.text-lt
-//#playlist.jp-playlist.dropup
-//ul.dropdown-menu.aside-xl.dker
-//  // The method Playlist.displayPlaylist() uses this unordered list
-//  li.list-group-item
-//
-//
-//
-//

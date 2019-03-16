@@ -11,7 +11,6 @@ import FolderList from './ui/folderlist';
 import QueueList from './ui/sabnzbd/queuelist';
 import BlackList from './ui/sabnzbd/blacklist';
 import HistoryList from './ui/sabnzbd/historylist';
-import JumpBar from './ui/jumpbar';
 import DetailLabel from './ui/detaillabel';
 import ExpandButton from './ui/expandbutton';
 import PopoverButton from './ui/popoverbutton';
@@ -35,7 +34,6 @@ export default angular
   .directive('queuelist', QueueList)
   .directive('historylist', HistoryList)
   .directive('blacklist', BlackList)
-  .directive('jumpbar', JumpBar)
   .directive('detaillabel', DetailLabel)
   .directive('expandbutton', ExpandButton)
   .directive('popoverbutton', PopoverButton)

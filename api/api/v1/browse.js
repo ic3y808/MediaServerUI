@@ -5,7 +5,8 @@ var structures = require('./structures');
 var path = require('path');
 var utils = require('./utils');
 var logger = require('../../../common/logger');
-var _ = require('underscore');
+var _ = require('lodash');
+var moment = require('moment');
 
 /**
  * This function comment is parsed by doctrine
@@ -64,13 +65,13 @@ router.get('/artist', function (req, res) {
     albums: [],
     EPs: [],
     singles: [],
-    total_plays:0
+    total_plays: 0
   };
 
   all_albums.forEach(album => {
     album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(album.id)
     album.play_count = 0;
-    album.tracks.forEach(track=>{
+    album.tracks.forEach(track => {
       album.play_count += track.play_count;
     });
     result.total_plays += album.play_count;
@@ -170,7 +171,7 @@ router.get('/album', function (req, res) {
 router.get('/genres', function (req, res) {
 
   var result = {};
-  result.genres = res.locals.db.prepare('SELECT * FROM Genres ORDER BY track_count DESC').all();
+  result.genres = res.locals.db.prepare('SELECT * FROM Genres ORDER BY artist_count DESC, album_count DESC, track_count DESC').all();
   res.json(result);
 });
 
@@ -210,10 +211,20 @@ router.get('/genre', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/charts', function (req, res) {
-  var limit = req.query.limit ? req.query.limit : 35;
+  var limit = req.query.limit ? req.query.limit : 40;
   var result = {
     charts: {}
   };
+
+  var history = res.locals.db.prepare('SELECT * FROM History ORDER BY time ASC').all();
+  var tags = [];
+  history.forEach(item => {
+    var dateString = moment.unix(item.time).format("MM/DD/YYYY");
+    var existing = _.find(tags, { date: dateString });
+    if (existing) existing.tags.push(item.genre);
+    else tags.push({ date: dateString, tags: [item.genre] });
+  });
+  result.charts.tags = tags;
 
   var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
   result.charts.never_played_albums = [];
@@ -387,6 +398,7 @@ router.get('/history', function (req, res) {
  * @param {string} album.query     
  * @param {string} album_id.query  
  * @param {string} genre.query     
+ * @param {string} genre_id.query     
  * @returns {Object} 200 - Returns play and action history.
  * @security ApiKeyAuth
  */
@@ -403,10 +415,11 @@ router.put('/history', function (req, res) {
       artist_id: req.query.artist_id,
       album: req.query.album,
       album_id: req.query.album_id,
-      genre: req.query.genre
+      genre: req.query.genre,
+      genre_id: req.query.genre_id
     }
 
-    res.locals.db.prepare("INSERT INTO History (id, type, action, time, title, artist, artist_id, album, album_id, genre) VALUES (?,?,?,?,?,?,?,?,?,?)").run(
+    res.locals.db.prepare("INSERT INTO History (id, type, action, time, title, artist, artist_id, album, album_id, genre, genre_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)").run(
       d.id,
       d.type,
       d.action,
@@ -416,7 +429,8 @@ router.put('/history', function (req, res) {
       d.artist_id,
       d.album,
       d.album_id,
-      d.genre
+      d.genre,
+      d.genre_id
     )
 
     res.send(new structures.StatusResult("success"));

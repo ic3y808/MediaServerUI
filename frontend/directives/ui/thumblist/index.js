@@ -1,3 +1,4 @@
+import styles from './thumblist.scss';
 export default function ($rootScope, $location, Logger, Backend, AppUtilities, AlloyDbService, MediaPlayer) {
   "ngInject";
   return {
@@ -14,6 +15,12 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
     replace: true,
     link: function (scope, elm, attrs) {
       
+      scope.navigateToAlbum = id =>{
+        $location.path('/album/' + id);
+      };
+      scope.navigateToArtist = id =>{
+        $location.path('/artist/' + id);
+      };
     }
   }
 };

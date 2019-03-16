@@ -20,9 +20,11 @@ exports.up = function (db) {
     columns: {
       id: { type: 'string', defaultValue: '', unique: true },
       name: { type: 'string', defaultValue: '', unique: true },
-      track_count: { type: 'int', defaultValue: 0 },
       starred: { type: 'string', defaultValue: 'false' },
       starred_date: { type: 'string', defaultValue: '' },
+      track_count: { type: 'int', defaultValue: 0 },
+      artist_count: { type: 'int', defaultValue: 0 },
+      album_count: { type: 'int', defaultValue: 0 },
     },
     ifNotExists: true
   });

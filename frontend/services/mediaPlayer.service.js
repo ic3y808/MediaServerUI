@@ -340,7 +340,7 @@ export default class MediaPlayer {
         instance.AppUtilities.apply();
       }
     });
-    instance.AlloyDbService.addHistory({ type: 'track', action: 'played', id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id }).then(result => {
+    instance.AlloyDbService.addHistory({ type: 'track', action: 'played', id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id, genre: source.genre, genre_id: source.genre_id }).then(result => {
       if (result) {
         instance.Logger.info('addHistory resut: ' + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         instance.AlloyDbService.refreshHistory();
@@ -392,6 +392,7 @@ export default class MediaPlayer {
             this.Title.setTitle(source.artist + " " + source.title)
             this.togglePlayPause();
             this.AppUtilities.broadcast('trackChangedEvent', source);
+            this.AppUtilities.apply();
           }).catch(error => {
             this.Logger.error('playing failed ' + error);
             //this.next();

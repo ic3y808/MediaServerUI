@@ -57,4 +57,18 @@ section.vbox.stretch
                         a(href="/album/{{album.id}}") {{key}}
                       td
                         a(href="/artist/{{album.artist_id}}") {{value}}
-              
+
+          section.panel.panel-success.portlet-item(ng-if="scanStatus.result.isScanning")
+            header.panel-heading  AlloyDB Scan Status  
+            ul.list-group.alt
+              li.list-group-item
+                .media
+                  span.pull-left.h2.text-muted.m-l S
+                  
+                  .media-body
+                    div
+                      a(href='#') Currently Scanning
+                    small.text-muted {{scanStatus.result.status}}
+
+
+       

@@ -26,6 +26,8 @@ exports.up = function (db) {
       album_id: { type: 'string', defaultValue: '' },
       album_path: { type: 'string', defaultValue: '' },
       genre: { type: 'string', defaultValue: '' },
+      genre_id: { type: 'string', defaultValue: '' },
+      tags: { type: 'string', defaultValue: '' },
       cover_art: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
       starred_date: { type: 'string', defaultValue: '' },
