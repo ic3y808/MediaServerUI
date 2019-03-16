@@ -1,8 +1,8 @@
 //colors
-$primary-color: $clr-blue-grey-900;
-$light-color:$clr-blue-grey-300;
-$dark-color: $clr-blue-grey-700;
-$darker-color: $clr-blue-grey-900;
+$primary-color: $clr-cyan-900;
+$light-color:$clr-cyan-300;
+$dark-color: $clr-cyan-700;
+$darker-color: $clr-cyan-900;
 $background-color: #f5f7fa;
 $background-alt-color: #F5F5F6;
 $border-color: #868686;
@@ -13,8 +13,8 @@ $faded-text-color: choose-contrast-color($primary-color);
 $alt-text-color: choose-contrast-color($darker-color);
 $sub-background-color:$primary-color;
 $alt-sub-background-color: $light-color;
-$now-playing-track: rgba($dark-color, 0.904);
-$now-playing-track-text: rgba(choose-contrast-color($dark-color), 0.904);
+$now-playing-track: rgba($light-color, 0.904);
+$now-playing-track-text: rgba(choose-contrast-color($light-color), 0.904);
 $general-border-color:rgba($border-color, 0.904);
 $grid-selection-color:rgba($light-color, 0.5);
 $label-color:rgba(choose-contrast-color($primary-color), 0.904);

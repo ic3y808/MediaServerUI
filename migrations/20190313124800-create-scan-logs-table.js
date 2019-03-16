@@ -15,20 +15,19 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('History', {
+  return db.createTable('ScanEvents', {
     columns: {
-      history_id: { type: 'int', primaryKey: true, autoIncrement: true },
-      id: { type: 'string' },
-      type: { type: 'string', defaultValue: '' },
-      action: { type: 'string', defaultValue: '' },
+      event_type: { type: 'string', defaultValue: '' },
+      reason: { type: 'string', defaultValue: '' },
+      result: { type: 'string', defaultValue: '' },
       time: { type: 'int' },
+      path: { type: 'string', defaultValue: '' },
       title: { type: 'string', defaultValue: '' },
       artist: { type: 'string', defaultValue: '' },
       artist_id: { type: 'string', defaultValue: '' },
       album: { type: 'string', defaultValue: '' },
       album_id: { type: 'string', defaultValue: '' },
-      genre: { type: 'string', defaultValue: '' },
-      genre_id: { type: 'string', defaultValue: '' }
+      quality: { type: 'string', defaultValue: '' },
     },
     ifNotExists: true
   });

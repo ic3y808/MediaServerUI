@@ -13,6 +13,7 @@ import 'moment';
 import 'typeface-roboto';
 import 'angular-sanitize';
 import 'bootstrap/dist/js/bootstrap.min';
+import 'highcharts/highcharts';
 
 import './API/alloy.db';
 import './API/cast.framework';

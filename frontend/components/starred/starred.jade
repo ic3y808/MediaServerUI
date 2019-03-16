@@ -32,7 +32,7 @@ section.scrollable.padder-lg.w-f-md
       .row.row-sm
         .padder-lg
           ol.tracklist
-            .react-contextmenu-wrapper(ng-repeat="track in $root.starred_tracks | limitTo:25")
+            .menu-wrapper(ng-repeat="track in $root.starred_tracks | limitTo:25")
               div
                 li.tracklist-row.tracklist-row--oneline
                   .tracklist-col.position-outer
