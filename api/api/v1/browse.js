@@ -219,11 +219,30 @@ router.get('/charts', function (req, res) {
   var history = res.locals.db.prepare('SELECT * FROM History ORDER BY time ASC').all();
   var tags = [];
   history.forEach(item => {
+    var plays = res.locals.db.prepare('SELECT play_count FROM Tracks WHERE id=?').get(item.id).play_count;
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
-    if (existing) existing.tags.push(item.genre);
-    else tags.push({ date: dateString, tags: [item.genre] });
+    if (existing)
+      existing.tags.push({ genre: item.genre, play_count: plays });
+    else tags.push({ date: dateString, tags: [{ genre: item.genre, play_count: plays }] });
   });
+
+  tags.forEach(tag=>{
+    function compare(a, b) {
+      if (a.play_count > b.play_count)
+        return -1;
+      if (a.play_count < b.play_count)
+        return 1;
+      return 0;
+    }
+  
+    var tempTags = tag.tags.sort(compare).slice(0, 10);
+    tag.tags = [];
+    tempTags.forEach(newTag =>{
+      tag.tags.push(newTag.genre);
+    })
+  });
+
   result.charts.tags = tags;
 
   var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();

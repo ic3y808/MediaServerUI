@@ -27,11 +27,15 @@ import ApplicationConfig from './config.js';
 import ApplicationRun from './run.js';
 
 
-angular.module('alloy', [angularRoute, 'ngSanitize', 'autoCompleteModule', 'ui.bootstrap.contextMenu', Directives.name, Components.name, Factories.name, Services.name])
+var controllers = angular
+  .module('app.controllers', []).controller('DashboardIndexCtrl', function ($scope, $log) {
+  });
+
+angular.module('alloy', [angularRoute, 'ngSanitize', 'autoCompleteModule', 'ui.bootstrap.contextMenu', controllers.name, Directives.name, Components.name, Factories.name, Services.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);
 
 if (module.hot) {
   module.hot.accept();
   console.log('[HMR] Accepting module hot update.');
-}
+} 

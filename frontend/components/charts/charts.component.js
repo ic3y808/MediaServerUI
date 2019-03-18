@@ -115,6 +115,9 @@ class ChartsController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug('charts-controller');
 
+    this.$scope.refresh = () => {
+      this.AlloyDbService.refreshCharts();
+    };
     this.$rootScope.$watch('charts', (o, n) => {
       if (this.$rootScope.charts && this.$rootScope.charts.tags) {
         this.tooltip = new Tooltip();
@@ -124,6 +127,7 @@ class ChartsController {
       }
     });
   }
+
 
   addMarkers(series) {
     series.forEach(function (tag) {
@@ -341,7 +345,7 @@ class ChartsController {
       },
       title: false,
       legend: {
-        enabled: false
+        enabled: true
       },
       credits: {
         enabled: false
@@ -350,11 +354,11 @@ class ChartsController {
         series: {
           allowPointSelect: true,
           marker: {
-            enabled: false,
+            enabled: true,
             symbol: 'circle',
-            radius: 6
+            radius: 3
           },
-          lineWidth: 5,
+          lineWidth: 3,
           linecap: 'square',
           states: {
             hover: {
@@ -392,7 +396,7 @@ class ChartsController {
       },
       series: series
     });
-
+ 
     chart.series.forEach(this.applyZoneStyling.bind(this));
     this.addTooltips(chart.series);
   };
@@ -403,8 +407,12 @@ class ChartsController {
   };
 }
 
+
+//
 export default {
   bindings: {},
   controller: ChartsController,
   templateUrl: '/template/charts.jade'
-};
+}; 
+
+//
