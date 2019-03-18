@@ -1,10 +1,11 @@
+
+
 section.scrollable.padder-lg.w-f-md
   .row
-    .col-md-12.col-sm-12.col-xs-12
-      .user-dashboard-module-inner-wrap
-        h3.user-dashboard-module-title.js-user-dashboard-module-title
-          | Tag Timeline
-        .user-dashboard-scalable-content.user-dashboard-tube-tags-scroll-wrap.user-dashboard-js-only
-          .user-dashboard-tube-tags-scroll.user-dashboard-tube-tags-scroll--cols-6.js-tube-tags-target(data-highcharts-chart='1')   
-        .user-dashboard-scalable-content.user-dashboard-fallback
-
+    a.u.pull-right.h6.text-muted.m-l(ng-click="refreshclick()")
+      i#refresh.icon-refresh.i-lg.inline
+    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
+    h2.clear.font-thin Tags
+  .row 
+    .js-tube-tags-target(data-highcharts-chart='1')
+      

@@ -1,13 +1,11 @@
-div
-  a.u.pull-right.h6.text-muted.m-l(data-toggle='class:fa-spin', ng-click="refreshclick()")
-    i#refresh.icon-refresh.i-lg.inline.mini-icon
-  a
-    a.u.pull-right.h6.text-muted.m-l View More
-    
-    span.clear
-      span.h2.font-thin {{title}}
-  .row.row-sm(ng-if="type === 'albums'")
-    .table-responsives
+section.scrollable.padder-lg.w-f-md
+  .row
+    a.u.pull-right.h6.text-muted.m-l(ng-click="refreshclick()")
+      i#refresh.icon-refresh.i-lg.inline
+    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
+    h2.clear.font-thin {{title}}
+  .row 
+    .table-responsives(ng-if="type === 'albums'")
         table.table.table-striped.b-t.b-light
           thead
             tr
