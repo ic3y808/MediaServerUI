@@ -760,7 +760,7 @@
 
     function _renderItems(renderFn, dataItems) {
       // limit number of items rendered in the dropdown
-      var dataItemsToRender = _.slice(dataItems, 0, that.options.maxItemsToRender);
+      var dataItemsToRender = dataItems.slice(0, that.options.maxItemsToRender);
 
       var itemsToRender = _.map(dataItemsToRender, function (data, index) {
         // invoke render callback with the data as parameter

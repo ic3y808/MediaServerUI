@@ -11,25 +11,15 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $(window).on('resize', windowResized);
 
 
-  $window.onkeydown = function (e) {
-    var key = e.keyCode ? e.keyCode : e.which;
-    var focus = $("#search-box").is(":focus") 
-    if (!focus) {
-      if (key === 32) {
-        e.preventDefault();
-      }
-    }
-  };
-
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    var focus = $("#search-box").is(":focus") 
-    if (!focus) {
-      if (key === 32) {
-        e.preventDefault();
-        MediaPlayer.toggleCurrentStatus();
-      }
+    //  var focus = $("#search-box").is(":focus") 
+    //if (!focus) {
+    if (key === 32) {
+      e.preventDefault();
+      MediaPlayer.toggleCurrentStatus();
     }
+    //}
   };
 
   $(document).on('click', "[data-toggle=fullscreen]", function (e) {
@@ -170,7 +160,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $this.parent().toggleClass('active');
     var isMenu = $this.next().is('ul');
 
-    !$this.next().is('ul') && $('#sidenavButton').click(); 
+    !$this.next().is('ul') && $('#sidenavButton').click();
 
     $this.next().is('ul') && e.preventDefault();
     if ($active.length === 0) {
@@ -254,9 +244,6 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $(this).tab('show')
   })
 
-  $('*').on('click', () => {
-    $('*').blur();
-  });
 
 
   function toggleFullScreen() {

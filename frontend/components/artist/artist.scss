@@ -1,0 +1,130 @@
+
+
+header.artist-header {
+  position: relative;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background-size: cover;
+  background-position: 50%;
+}
+
+header.artist-header:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(-30%, rgba(0, 0, 0, 0)), to(#181818));
+  background: linear-gradient(rgba(0, 0, 0, 0) -30%, #181818);
+}
+
+header.artist-header>* {
+  position: relative;
+}
+
+header.artist-header .monthly-listeners {
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: .015em;
+  font-weight: var(--glue-font-weight-normal);
+  color: #b3b3b3;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: #fff;
+  opacity: .6;
+  padding-top: 100px;
+  display: block;
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+header.artist-header h1 {
+  margin: 0 auto;
+  max-width: 70%;
+  display: block;
+  text-align: center;
+}
+
+header.artist-header h1.large {
+  font-size: 72px;
+  line-height: 82px;
+  letter-spacing: -.005em;
+  font-family: "circular";
+  font-weight: bolder;
+  color: #fff;
+  text-transform: none;
+}
+
+[dir=ltr] header.artist-header {
+  padding-left: 230px;
+  margin-left: -230px;
+}
+
+.header-buttons {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.header-buttons button {
+  margin-right: 15px;
+}
+
+.artist.content {
+  padding: 0 !important;
+}
+
+.artist-albums,
+.artist-appears-on,
+.artist-music,
+.artist-singles {
+  overflow: hidden;
+}
+
+.artist-albums {
+  padding-top: 0;
+}
+
+.artist-albums:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.artist-toptracks {
+  margin: 0 auto;
+  float: none;
+}
+
+.container-fluid {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+
+.container-fluid:after,
+.container-fluid:before,
+.row:after,
+.row:before {
+  content: " ";
+  display: table;
+}
+
+.container-fluid:after,
+.row:after {
+  clear: both;
+}
+
+
+.panel-body:before,
+.panel-body:after {
+  display: table;
+  content: " ";
+}
+
+.panel-body:after {
+  clear: both;
+}
