@@ -1,132 +1,168 @@
-.AlbumDetails-innerContentBody {
-  padding: 0;
+.album-content {
+  padding-top: 2em;
 }
 
-.AlbumDetails-header {
-  position: relative;
-  width: 100%;
-  height: 375px;
-}
-
-.AlbumDetails-backdrop {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  background-position: center; 
-}
-
-.AlbumDetails-backdropOverlay {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.445);
-}
-
-.AlbumDetails-backdrop-bg{
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  background-position: center; 
-  filter: blur(28px);
-  -webkit-filter: blur(28px);
-}
-
-.AlbumDetails-headerContent {
+.album-container {
   display: -webkit-box;
-  display: -webkit-flex;
+  display: -ms-flexbox;
   display: flex;
-  padding: 30px;
-  width: 100%;
-  height: 100%;
-  color: #fff;
-}
-
-.AlbumDetails-poster {
-  -webkit-flex-shrink: 0;
-  flex-shrink: 0;
-  margin-right: 35px;
-  width: 250px;
-  height: 250px;
-}
-
-.AlbumDetails-info {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-  flex-direction: column;
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  flex-grow: 1;
-  overflow: hidden;
+  -ms-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
 }
 
-.AlbumDetails-metadataMessage {
-  color: #909293;
+.TrackListHeader {
+  margin: 0 auto 1.5em;
   text-align: center;
-  font-weight: 300;
-  font-size: 20px;
+  max-width: 400px;
 }
 
-.AlbumDetails-titleContainer {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  justify-content: space-between;
+.TrackListHeader .media-object {
+  margin: 0 auto;
+  padding-bottom: 15px;
+  max-width: 320px;
 }
 
-
-
-.AlbumDetails-title {
-  margin-bottom: 5px;
-  font-weight: 300;
-  font-size: 50px;
-  line-height: 50px;
+.TrackListHeader .mo-info {
+  display: block;
+  height: auto;
+  margin-bottom: .3em;
+  text-decoration: none;
 }
 
-.AlbumDetails-AlbumNavigationButtons {
-  white-space: nowrap;
+.TrackListHeader .mo-info-name {
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -.005em;
+  font-weight: var(--glue-font-weight-black);
+  color: #333;
+  text-transform: none;
 }
 
-.AlbumDetails-AlbumNavigationButton {
-  margin-left: 5px;
-  width: 30px;
-  color: #e1e2e3;
-  white-space: nowrap;
+.TrackListHeader__body {
+  vertical-align: middle;
+  color: #333;
 }
 
-.AlbumDetails-details {
-  font-weight: 300;
-  font-size: 20px;
+.TrackListHeader__text-silence {
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: .015em;
+  font-weight: var(--glue-font-weight-normal);
+  color: #b3b3b3;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: #333;
+  opacity: .6;
 }
 
-.AlbumDetails-overview {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1 0 auto;
-  flex: 1 0 auto;
-  min-height: 0;
+.TrackListHeader__entity-additional-info {
+  margin-bottom: .8em;
 }
 
-.AlbumDetails-contentContainer {
-  padding: 20px;
+.TrackListHeader__entity-name {
+  display: none;
+  padding-bottom: 10px;
 }
 
-@media only screen and (max-width: 768px) {
-  .AlbumDetails-contentContainer {
-    padding: 20px 0;
+.TrackListHeader__entity-name h2 {
+  font-size: 28px;
+  line-height: 36px;
+  letter-spacing: -.005em;
+  font-weight: var(--glue-font-weight-black);
+  color: #333;
+  text-transform: none;
+}
+
+.TrackListHeader__entity-by {
+  color: #333;
+  opacity: .6;
+}
+
+.TrackListHeader__button--top {
+  margin-bottom: 15px;
+}
+
+.TrackListHeader__button--bottom {
+  display: none;
+}
+
+.copyrights {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: .015em;
+  color: #333;
+  opacity: .6;
+  clear: both;
+  padding: 0 5%;
+  width: 70%;
+}
+
+@media (max-width: 768px) {
+  .TrackListHeader {
+    position: inherit;
   }
-  .AlbumDetails-headerContent {
-    padding: 15px;
-  }
 }
 
-@media only screen and (max-width: 1200px) {
-  .AlbumDetails-poster {
+@media (max-width: 1199px) {
+  .TrackListHeader {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-box-pack: start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    margin: 0 0 20px;
+    max-width: 100%;
+    padding-bottom: 20px;
+    border-bottom: 1px solid hsla(0, 0%, 100%, .1);
+  }
+  .TrackListHeader .media-object {
+    width: 30%;
+    min-width: 157px;
+    position: relative;
+  }
+  .TrackListHeader .mo-info,
+  .TrackListHeader .mo-meta,
+  .TrackListHeader__button--top {
     display: none;
+  }
+  .TrackListHeader__button--bottom {
+    display: block;
+  }
+  .TrackListHeader__body {
+    text-align: initial;
+    width: 70%;
+    margin: 0 40px;
+  }
+  .TrackListHeader__body .tracklist-header__extra-buttons {
+    margin: 0 13px;
+  }
+  .TrackListHeader__entity-name {
+    display: block;
+  }
+  .TrackListHeader__children {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+
+@media (min-width: 1200px)and(min-height) {
+  .album-header-container {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 40px;
   }
 }

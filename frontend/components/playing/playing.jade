@@ -10,17 +10,17 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
         .react-contextmenu-wrapper
           button.spotify-btn.btn-transparent.btn--narrow(title='More')
             .spoticon-ellipsis-24.alloy-icon.icon-elipsis.icon
-      nav._11pfm-p6kRU6CrLDyLhi3a
-        ul._3v-H5s52KoSlx1rvzcnTvM
-          li.hG7sFJywaubVYCHAcZGVM.active
+      nav.tab-nav-list
+        ul.selection-tabs
+          li.selection-tab.active
             div
-              a.EYVkZXmTImKH4iH48N7Uj._1-aXXBO8bQU1WTFY-7B0m-(data-target='#overview', data-toggle='tab') Overview
-          li.hG7sFJywaubVYCHAcZGVM
+              a.selection-tab-title.selection-tab-title-selected(data-target='#overview', data-toggle='tab') Overview
+          li.selection-tab
             div
-              a.EYVkZXmTImKH4iH48N7Uj(data-target='#related', data-toggle='tab') Related Artists
-          li.hG7sFJywaubVYCHAcZGVM
+              a.selection-tab-title(data-target='#related', data-toggle='tab') Related Artists
+          li.selection-tab
             div
-              a.EYVkZXmTImKH4iH48N7Uj(data-target='#about', data-toggle='tab') About
+              a.selection-tab-title(data-target='#about', data-toggle='tab') About
     section.scrollable
       .tab-content
         #overview.tab-pane.active
@@ -28,7 +28,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
             .row
               .contentSpacing
                 section.artist-toptracks
-                  h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Popular
+                  h1.section-title(dir='auto') Popular
                   section.tracklist-container.full-width
                     ol.tracklist(ng-repeat="track in info.popular_tracks")
                       .react-contextmenu-wrapper
@@ -62,10 +62,10 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
                     
           section.artist-albums(ng-if="info.albums.length > 0")
             .contentSpacing
-              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Albums
+              h1.section-title(dir='auto') Albums
               .row
                 .container-fluid.container-fluid--noSpaceAround
-                  ._2SnF0IAy7I_tM-7M5iEcyT.row
+                  .section-row.row
                     .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="album in info.albums")
                       div
                         div(draggable='true')
@@ -88,9 +88,9 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
                   
           section.artist-singles.artist-albums(ng-if="info.EPs.length > 0")
             .contentSpacing
-              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') EPs
+              h1.section-title(dir='auto') EPs
               .container-fluid.container-fluid--noSpaceAround
-                ._2SnF0IAy7I_tM-7M5iEcyT.grid--limit.row
+                .section-row.grid--limit.row
                   .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="ep in info.EPs")
                     div
                       div(draggable='true')
@@ -113,9 +113,9 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
                 
           section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
             .contentSpacing
-              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Singles
+              h1.section-title(dir='auto') Singles
               .container-fluid.container-fluid--noSpaceAround
-                ._2SnF0IAy7I_tM-7M5iEcyT.grid--limit.row
+                .section-row.grid--limit.row
                   .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="single in info.singles")
                     div
                       div(draggable='true')
@@ -141,13 +141,13 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.bg-dark.d
             .row
               .contentSpacing
                 section.artist-toptracks
-                  h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Related
+                  h1.section-title(dir='auto') Related
                   .vbox.stretch
 
         #about.tab-pane
            section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
             .contentSpacing
-              h1._1Fj-rlIZXTSNgYOCuLh7xo(dir='auto') Singles
+              h1.section-title(dir='auto') Singles
               .container-fluid.container-fluid--noSpaceAround
             
                 div

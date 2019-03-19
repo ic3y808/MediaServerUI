@@ -4,7 +4,7 @@ section.scrollable.padder-lg.w-f-md
       i#refresh.icon-refresh.i-lg.inline
     a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
     h2.clear.font-thin {{title}}
-  .row
+  .row(style='overflow:hidden;')
     .grid(ng-if="type === 'tracks'")
       .item(ng-repeat="song in data | limitTo:limit", style="background-image:url('{{song.image}}');",ng-click="$root.MediaPlayer.playTrack(song, data)", ng-class="{'item--now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}")
         .item__details

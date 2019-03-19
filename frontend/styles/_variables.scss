@@ -3,12 +3,14 @@ $primary-color: $clr-cyan-900;
 $light-color:$clr-cyan-300;
 $dark-color: $clr-cyan-700;
 $darker-color: $clr-cyan-900;
-$background-color: #f5f7fa;
+$background-color: #f2f4f8;
 $background-alt-color: #F5F5F6;
 $border-color: #868686;
 $main-background-color: $background-color;
 $main-background-color-transparent: rgba($primary-color, .35);
-$main-text-color: choose-contrast-color($background-color);
+$main-text-color: #788188;
+$main-link-color: #545a5f;
+$main-link-focus-color: #303437;
 $faded-text-color: choose-contrast-color($primary-color);
 $alt-text-color: choose-contrast-color($darker-color);
 $sub-background-color:$primary-color;
@@ -56,13 +58,13 @@ $break-maximum: 1600px;
 //@media screen and (max-width:$break-xxxhuge) { } //1440px;
 //@media screen and (max-width:$break-maximum) { } //1600px;
 //typography
-$main-font: 'Roboto',
+$main-font: 'circular',
 sans-serif;
 $main-font-size: 1em;
-$sub-font: 'Lato-Regular',
+$sub-font: 'Source Sans Pro',
 sans-serif;
 $sub-font-size: 0.85em;
-$extra-font: 'MavenPro-Regular',
+$extra-font: 'Helvetica Neue',
 sans-serif;
 $extra-font-size: 0.85em;
 

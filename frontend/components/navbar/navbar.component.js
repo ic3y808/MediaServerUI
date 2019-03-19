@@ -16,9 +16,7 @@ class NavbarController {
 
     $scope.selectedObject = null;
 
-    $("#search-box").mouseenter(() => {
-      $('#search-box').focus();
-    });
+   
 
     var html = '';
     html += '<div class="unselectable card-5" data-instance-id="{{ ctrl.instanceId }} ng-show="ctrl.containerVisible">';

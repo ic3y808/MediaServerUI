@@ -7,8 +7,6 @@ import 'lodash';
 import 'popper.js';
 import 'tooltip.js';
 import 'angular-bootstrap-contextmenu/contextMenu';
-import 'jquery.flipster';
-import 'jquery-slimscroll';
 import 'moment';
 import 'typeface-roboto';
 import 'angular-sanitize';

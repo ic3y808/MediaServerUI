@@ -18,7 +18,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
       });
 
-      $('#search-box')
+        $('#search-box')
         .mouseenter(function () {
           $(this).focus();
         })

@@ -112,7 +112,7 @@ profile.module.rules.push({
   {
     loader: 'sass-resources-loader',
     options: {
-      resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss', './frontend/styles/_variables.scss']
+      resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss', './frontend/styles/_variables.scss', './frontend/styles/_framework.scss']
     }
   }
   ]

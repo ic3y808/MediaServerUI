@@ -1,14 +1,14 @@
 import CryptoJS from 'crypto-js';
 import AlloyApi from '../API/alloy.db'
 export default class AlloyDbService {
-  constructor($rootScope, Logger, AppUtilities) {
+  constructor($rootScope, Logger, AppUtilities, $routeParams) {
     "ngInject";
     this.isLoggingIn = true;
     this.isLoggedIn = false;
     this.$rootScope = $rootScope;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
-
+    this.$rootScope.refreshPage = this.refreshPage;
   }
 
   doLogin() {
@@ -597,6 +597,10 @@ export default class AlloyDbService {
         this.loadCharts([info]);
       })
     }
+  }
+
+  refreshPage(page) {
+    console.log(page);
   }
 
   preload() {
