@@ -38,21 +38,11 @@ class GenreController {
       } else {
         if (AlloyDbService.isLoggedIn) {
           this.AlloyDbService.getGenre(this.$routeParams.id).then(result => {
-            $scope.genre = result;
+            $scope.info = result;
 
-            var randomTrack = $scope.genre.tracks[Math.floor(Math.random() * $scope.genre.tracks.length)];
+            var randomTrack = $scope.info.tracks[Math.floor(Math.random() * $scope.info.tracks.length)];
             if (randomTrack) {
-              $scope.genre.image = this.AlloyDbService.getCoverArt(randomTrack.cover_art);
-            }
-
-            var genreInfo = this.AlloyDbService.getGenreInfo($scope.genre.name);
-            if (genreInfo) {
-              genreInfo.then(result => {
-                $scope.genre.genreinfo = result.genreInfo;
-                $scope.genre.genreinfo.wiki.summary = $scope.genre.genreinfo.wiki.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-                Cache.put($routeParams.id, $scope.genre);
-                this.AppUtilities.apply();
-              });
+              $scope.info.image = this.AlloyDbService.getCoverArt({ track_id: randomTrack.id });
             }
             this.AppUtilities.apply();
             this.AppUtilities.hideLoader();
@@ -98,7 +88,7 @@ class GenreController {
       MediaPlayer.loadTrack(0);
     };
 
-    $rootScope.$on('loginStatusChange', (event, data) =>  {
+    $rootScope.$on('loginStatusChange', (event, data) => {
       this.Logger.debug('Genre reload on loginsatuschange');
       $scope.refresh();
     });

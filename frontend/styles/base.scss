@@ -2645,17 +2645,6 @@ div.jp-progress {
   background-color: #4d5d6e;
 }
 
-.spotify-btn {
-  -webkit-transition-duration: 50ms;
-  transition-duration: 50ms;
-}
-
-.spotify-btn:not(.disabled):focus,
-.spotify-btn:not(.disabled):hover {
-  -webkit-transition-duration: 66ms;
-  transition-duration: 66ms;
-}
-
 @media (max-width: 767px) {
   .image-col {
     max-height: 240px;

@@ -14,7 +14,15 @@ var logger = require('../../../common/logger');
  * @security ApiKeyAuth
  */
 router.get('/playlists', function (req, res) {
-  res.json(res.locals.db.prepare('SELECT * from Playlists').all());
+  var result = {
+    playlists: res.locals.db.prepare('SELECT * from Playlists').all(),
+  }
+
+  result.playlists.forEach(playlist => {
+    playlist.tracks = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(playlist.id)
+  });
+
+  res.json(result);
 });
 
 /**
@@ -44,6 +52,10 @@ router.put('/playlists', function (req, res) {
     } else {
       res.locals.db.prepare('INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);').run(existinPlaylist[0].id, songId);
     }
+  } else if (!id && name && !songId) {
+
+    res.locals.db.prepare('INSERT INTO Playlists (`name`) VALUES (?);').run(name);
+
   }
   res.send(new structures.StatusResult("Done"));
 });
@@ -87,14 +99,14 @@ router.delete('/playlists', function (req, res) {
 router.get('/', function (req, res) {
   var id = req.query.id;
   if (id) {
-    var playlist = res.locals.db.prepare('SELECT * from Playlists WHERE id=?').all(id);
-    if (playlist.length !== 0) {
-      var playlistTracks = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(id);
-      if (playlistTracks.length !== 0) {
-        playlist[0].tracks = playlistTracks;
-        res.json(playlist[0]);
-      }
+    var result = {
+      playlist: res.locals.db.prepare('SELECT * from Playlists WHERE id=?').get(id)
     }
+    result.playlist.tracks = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(id);
+
+    res.json(result);
+
+
   } else {
     res.send(new structures.StatusResult("An ID Is required"));
   }

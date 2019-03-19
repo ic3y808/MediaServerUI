@@ -222,6 +222,7 @@
 
 .btn--narrow {
   min-width: 50px;
+  max-width: 50px;
 }
 
 .btn.btn-transparent {
@@ -272,7 +273,7 @@
   border: 0;
   border-radius: 500px;
   padding: 13px;
-  min-width: 130px;
+  //min-width: 130px;
   white-space: normal;
   will-change: transform;
   line-height: 1.6;
@@ -281,12 +282,14 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  -webkit-transition-duration: 50ms;
+  transition-duration: 50ms;
 }
-
-
 
 .spotify-btn:not(.disabled):focus,
 .spotify-btn:not(.disabled):hover {
+  -webkit-transition-duration: 66ms;
+  transition-duration: 66ms;
   -webkit-transition: none 33ms cubic-bezier(.3, 0, 0, 1);
   transition: none 33ms cubic-bezier(.3, 0, 0, 1);
   -webkit-transition-property: all;
