@@ -198,7 +198,7 @@ export default class AlloyApi {
     return this._get('browse/albums');
   }
 
-  getAlbum(id)  {
+  getAlbum(id) {
     return this._get('browse/album', {
       id: id
     });
@@ -281,6 +281,26 @@ export default class AlloyApi {
     return this._put('browse/history', data);
   }
 
+  getPlaylist(id) {
+    return this._get('playlist', { id: id });
+  }
+
+  getPlaylists() {
+    return this._get('playlist/playlists');
+  }
+
+  addPlaylist(data) {
+    return this._put('playlist/playlists', data);
+  }
+
+  updatePlaylist(data) {
+    return this._put('playlist/playlists', data);
+  }
+
+  removePlaylist(data) {
+    return this._delete('playlist/playlists', data);
+  }
+
   love(params) {
     return this._put('lastfm/love', params);
   }
@@ -317,9 +337,9 @@ export default class AlloyApi {
   }
 
   getCoverArt(params) {
-    Object.assign(params, {api_key: this._settings.alloydb_apikey});
+    Object.assign(params, { api_key: this._settings.alloydb_apikey });
     return this._buildUrl('media/cover_art', params)
-   
+
   }
 
   scrobble(id) {

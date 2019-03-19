@@ -169,7 +169,6 @@ router.get('/album', function (req, res) {
  * @security ApiKeyAuth
  */
 router.get('/genres', function (req, res) {
-
   var result = {};
   result.genres = res.locals.db.prepare('SELECT * FROM Genres ORDER BY artist_count DESC, album_count DESC, track_count DESC').all();
   res.json(result);
@@ -189,11 +188,12 @@ router.get('/genre', function (req, res) {
   var id = req.query.id;
   var result = {};
   result.genre = res.locals.db.prepare('SELECT * FROM Genres WHERE id=?').get(id)
-  result.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE genre=? ORDER BY artist ASC, album ASC, no ASC, of ASC').all(id)
-
+  result.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE genre_id=? ORDER BY artist ASC, album ASC, no ASC, of ASC').all(id)
+  result.total_plays = 0;
   var totalSize = 0;
   result.tracks.forEach(track => {
     totalSize += track.size;
+    result.total_plays += track.play_count;
   });
 
   result.size = utils.toHumanReadable(totalSize);
@@ -219,7 +219,9 @@ router.get('/charts', function (req, res) {
   var history = res.locals.db.prepare('SELECT * FROM History ORDER BY time ASC').all();
   var tags = [];
   history.forEach(item => {
-    var plays = res.locals.db.prepare('SELECT play_count FROM Tracks WHERE id=?').get(item.id).play_count;
+    var plays = 0;
+    var t = res.locals.db.prepare('SELECT play_count FROM Tracks WHERE id=?').get(item.id);
+    if (t) plays = t.play_count;
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
     if (existing)
@@ -227,7 +229,7 @@ router.get('/charts', function (req, res) {
     else tags.push({ date: dateString, tags: [{ genre: item.genre, play_count: plays }] });
   });
 
-  tags.forEach(tag=>{
+  tags.forEach(tag => {
     function compare(a, b) {
       if (a.play_count > b.play_count)
         return -1;
@@ -235,10 +237,10 @@ router.get('/charts', function (req, res) {
         return 1;
       return 0;
     }
-  
+
     var tempTags = tag.tags.sort(compare).slice(0, 10);
     tag.tags = [];
-    tempTags.forEach(newTag =>{
+    tempTags.forEach(newTag => {
       tag.tags.push(newTag.genre);
     })
   });

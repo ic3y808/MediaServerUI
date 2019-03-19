@@ -121,16 +121,6 @@ class AlbumController {
       $scope.getAlbum();
     };
 
-    $scope.startRadio = () => {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(function (
-        similarSongs
-      ) {
-        this.Logger.debug("starting radio");
-        $rootScope.tracks = similarSongs.song;
-        MediaPlayer.loadTrack(0);
-      });
-    };
-
     $scope.shuffle = () => {
       this.Logger.debug('shuffle play album ' + $scope.info.album.name);
       this.$rootScope.tracks = $scope.info.tracks

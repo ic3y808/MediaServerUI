@@ -51,15 +51,15 @@ section.w-f-md.scrollable
           span.font-bold SABnzbd
         ul.nav.dk.text-sm
           li(style="height:30px;")
-            a.auto(href='/activity/queue', style="height:30px;", title='Queue')
+            a.auto(href='/activity/queue', title='Queue', style="height:30px;")
               i.alloy-icon.icon-queue.text-xs
               span.hidden-nav-xs.font-bold Queue
           li(style="height:30px;")
-            a.auto(href='/activity/history', style="height:30px;", title='History')
+            a.auto(href='/activity/history', title='History', style="height:30px;")
               i.alloy-icon.icon-history.text-xs
               span.hidden-nav-xs.font-bold History
           li(style="height:30px;")
-            a.auto(href='/activity/blacklist', style="height:30px;", title='Blacklist')
+            a.auto(href='/activity/blacklist', title='Blacklist', style="height:30px;")
               i.alloy-icon.icon-ban.text-xs
               span.hidden-nav-xs.font-bold Blacklist
 
@@ -76,37 +76,52 @@ section.w-f-md.scrollable
           span Config
         ul.nav.dk.text-sm
           li(style="height:30px;")
-            a(href='/config/alloydb', style="height:30px;", title='AlloyDB')
+            a(href='/config/alloydb', title='AlloyDB', style="height:30px;")
               i.alloy-icon.icon-alloydb.text-xs
               span.hidden-nav-xs.font-bold AlloyDB 
           li(style="height:30px;")
-            a(href='/database', style="height:30px;", title='Database')
+            a(href='/database', title='Database', style="height:30px;")
               i.alloy-icon.icon-database.text-xs
               span.hidden-nav-xs.font-bold Database 
           li(style="height:30px;")
-            a.auto(href='/config/scheduler', style="height:30px;", title='Scheduler')
+            a.auto(href='/config/scheduler', title='Scheduler', style="height:30px;")
               i.alloy-icon.icon-scheduler.text-xs
               span.hidden-nav-xs Scheduler
           li(style="height:30px;")
-            a.auto(href='/config/sabnzbd', style="height:30px;", title='SABnzbd')
+            a.auto(href='/config/sabnzbd', title='SABnzbd', style="height:30px;")
               i.alloy-icon.icon-sabnzbd.text-xs
               span.hidden-nav-xs SABnzbd
           
     ul.nav.text-sm
       li.hidden-nav-xs.padder.m-t.m-b-sm.text-xs.text-muted
         span.pull-right
-          a(ng-click="createNewPlaylist()")
+          a(ng-click="showCreatePlaylistModal()")
             i.alloy-icon.icon-plus.i-lg
-        | Playlist
-      li
-        a(href='#')
-          i.alloy-icon.icon-musical-note.icon
-          span Hip-Pop
-      li
-        a(href='#')
-          i.icon-playlist.icon.text-success-lter
-          b.badge.bg-success.dker.pull-right 9
-          span Jazz
+        | Playlists
+    ul.nav.text-sm.sidenav-playlist-list
+      li(ng-repeat="playlist in $root.playlists")
+        a.playlist-link(href='/playlist/{{playlist.id}}')
+          i.alloy-icon.icon-playlist.icon
+          b.badge.bg-success.dker.pull-right(ng-if='playlist.tracks') {{playlist.tracks.length}}
+          span {{playlist.name}}
+
+    #addPlaylistModal.modal.fade(role='dialog')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5#addMediaPathModalLabel.modal-title Create new Playlist
+            button.Link-link.close(data-dismiss='modal', type='button', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    input.Naming-namingInput.TextInput-input.Input-input(ng-model='newPlaylistName', type='text', placeholder='Playlist Name')
+            
+          .modal-footer
+            button.btn.btn-secondary(data-dismiss='modal', type='button') Close
+            button.btn.btn-primary(ng-click='createNewPlaylist()', type='button') Add
     // / nav
 footer.footer.hidden-xs.no-padder.text-center-nav-xs(ng-show="$root.currentTrack.image")
   .bg.hidden-xs

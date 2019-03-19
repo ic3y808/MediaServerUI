@@ -1,6 +1,6 @@
 import styles from './sidenav.scss';
 class SidenavController {
-  constructor($scope, $rootScope, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
+  constructor($scope, $rootScope, $element, Logger, MediaElement, MediaPlayer, AppUtilities, AlloyDbService, Backend) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
@@ -9,15 +9,30 @@ class SidenavController {
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
+    this.AlloyDbService = AlloyDbService;
     this.Backend = Backend;
     this.Logger.debug('sidenav-controller');
 
-    $scope.getNowPlayingImage = ()=>{
+    $scope.getNowPlayingImage = () => {
       return this.MediaPlayer.selectedTrack();
     };
 
-    $scope.createNewPlaylist = ()=>{
-
+    $scope.showCreatePlaylistModal = () => {
+      var $this = $(this)
+        , $remote = $this.data('remote') || $this.attr('href')
+        , $modal = $('#addPlaylistModal')
+      $('#primary-content').append($modal);
+      $modal.modal();
+    };
+    $scope.createNewPlaylist = () => {
+      var newPlaylist = this.AlloyDbService.addPlaylist({ name: $scope.newPlaylistName });
+      if (newPlaylist) {
+        newPlaylist.then(result => {
+          this.AlloyDbService.refreshPlaylists();
+          console.log(result);
+        });
+      }
+      $('#addPlaylistModal').modal('hide')
     };
   }
 
