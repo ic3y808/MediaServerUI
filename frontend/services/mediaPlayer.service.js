@@ -389,7 +389,7 @@ export default class MediaPlayer {
           playPromise.then(_ => {
             this.scrobble(this, source);
             this.addPlay(this, source);
-            this.Title.setTitle(source.artist + " " + source.title)
+            this.Title.setTitle(source.artist + " " + source.title, source.artist + " " + source.title)
             this.togglePlayPause();
             this.AppUtilities.broadcast('trackChangedEvent', source);
             this.AppUtilities.apply();
@@ -666,4 +666,9 @@ export default class MediaPlayer {
     }
     return false;
   }
+
+  isPlaying = () => {
+    console.log('playing: ' + this.playing + " paused:" + this.paused)
+    return this.playing && !this.paused;
+  };
 }

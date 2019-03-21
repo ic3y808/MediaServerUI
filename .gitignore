@@ -90,3 +90,4 @@ package-lock.json
 TEST-RESULTS.xml
 .node*.*
 .node-xmlhttprequest-sync-*
+
