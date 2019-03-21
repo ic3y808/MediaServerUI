@@ -21,8 +21,12 @@ class PlaylistController {
         if (playlist) {
           playlist.then(info => {
             if (info) {
-              $scope.info = info;
-
+              $scope.info = info.playlist;
+              
+              var randomTrack = $scope.info.tracks[Math.floor(Math.random() * $scope.info.tracks.length)];
+              if (randomTrack) {
+                $scope.info.image = this.AlloyDbService.getCoverArt({ track_id: randomTrack.id });
+              }
              
               this.AppUtilities.apply();
 

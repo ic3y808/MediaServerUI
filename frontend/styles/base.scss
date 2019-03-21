@@ -1282,6 +1282,7 @@ a.text-info:hover {
   display: block;
 }
 
+
 .list-group-item-now-playing {
   background-color: $now-playing-track !important;
   color: $now-playing-track-text !important;
@@ -2123,8 +2124,8 @@ a.text-info:hover {
   background-color: rgba(0, 0, 0, .3);
 }
 
-.tracklist-row:focus .tracklist-play-pause,
-.tracklist-row:hover .tracklist-play-pause {
+.tracklist-row .tracklist-play-pause,
+.tracklist-row .tracklist-play-pause {
   display: block;
   color: #fff;
 }
@@ -2245,6 +2246,11 @@ a.text-info:hover {
 .tracklist-row.tracklist-row--oneline,
 .tracklist-row.tracklist-row--oneline .tracklist-col {
   height: 4em;
+}
+
+.tracklist-now-playing {
+  background-color: $now-playing-track !important;
+  color: $now-playing-track-text !important;
 }
 
 .no-focus-outline .tracklist-row {
@@ -2435,6 +2441,13 @@ a.text-info:hover {
 
 .react-contextmenu-wrapper {
   display: inline;
+}
+
+.react-contextmenu-wrapper >button{
+  min-width:30px !important;
+  width:30px !important;
+  max-width:30px !important;
+  height: 100%;
 }
 
 .tab-nav-list {

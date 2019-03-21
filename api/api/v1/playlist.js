@@ -43,7 +43,10 @@ router.put('/playlists', function (req, res) {
   var songId = req.query.songId;
 
   if (id && songId) {
-    res.locals.db.prepare('INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);').run(id, songId);
+    var existing = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=? AND song_id=?').all(id, songId);
+    if (existing.length === 0) {
+      res.locals.db.prepare('INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);').run(id, songId);
+    }
   } else if (!id && name && songId) {
     var existinPlaylist = res.locals.db.prepare('SELECT * from Playlists').all();
     if (existinPlaylist.length === 0) {
@@ -102,11 +105,13 @@ router.get('/', function (req, res) {
     var result = {
       playlist: res.locals.db.prepare('SELECT * from Playlists WHERE id=?').get(id)
     }
-    result.playlist.tracks = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(id);
-
+    result.playlist.tracks = [];
+    var trackIds = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(id);
+    trackIds.forEach(id => {
+      var t = res.locals.db.prepare('SELECT * from Tracks WHERE id=?').get(id.song_id);
+      if (t) result.playlist.tracks.push(t);
+    })
     res.json(result);
-
-
   } else {
     res.send(new structures.StatusResult("An ID Is required"));
   }

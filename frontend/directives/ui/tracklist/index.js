@@ -11,7 +11,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
       showgenre: '@',
       showplays: '@',
       showduration: '@',
-      hasjumpbar: '@'
+      canaddplaylist: '@'
     },
     templateUrl: '/template/tracklist.jade',
 
@@ -20,98 +20,24 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
       scope.column = 'album';
       scope.reverse = false;
 
-      scope.navToAlbum = function (id) {
-        $location.path('/album/' + id);
-      }
-      scope.navToArtist = function (id) {
-        $location.path('/artist/' + id);
-      }
-      scope.navToGenre = function (id) {
-        $location.path('/genre/' + id);
-      }
-
-      scope.requestPlay = function (id) {
-        Logger.debug('selection changed');
-        scope.data.forEach(function (track) { track.selected = null })
-        $rootScope.tracks = scope.data;
-        var index = _.findIndex($rootScope.tracks, function (track) {
-          return track.id === id;
-        });
-        MediaPlayer.loadTrack(index);
-      }
-
-      scope.getClass = (id) => {
-        if (scope.checkIfNowPlaying(id))
-          return 'TableRowCell-now-playing';
-
-        scope.data.forEach(function (track) {
-          if (id === track.id && track.selected === true) {
-            return 'TableRow-row-selected';
-          }
-        })
-        return '';
-      }
-
-      scope.checkIfNowPlaying = function (id) {
-        var selected = MediaPlayer.selectedTrack();
-        if (selected) {
-          return id === selected.id;
-        }
-        return false;
-      }
-
-      scope.starTrack = function (track) {
-        Logger.info('starring track: ' + track.artist + " - " + track.title);
-        if (track.starred === 'true') {
-          AlloyDbService.unstar({ id: track.id }).then(function (result) {
-            if ($rootScope.settings.alloydb.alloydb_love_tracks === true) {
-              AlloyDbService.unlove({ id: track.id })
-            }
-            Logger.info('UnStarred');
-            Logger.info(result);
-            track.starred = 'false';
-            $timeout(function () {
+      scope.addTrackToPlaylist = (track) => {
+        scope.$modal = $('#addTrackToPlaylistModal')
+        $('#primary-content').append(scope.$modal);
+        scope.$modal.modal();
+      };
+  
+      scope.addToPlaylist = (playlist, track) => {
+        var pls = AlloyDbService.addPlaylist({ id: playlist, songId: track.id });
+        if (pls) {
+          pls.then(info => {
+            if (info) {
+              AlloyDbService.refreshPlaylists();
+              scope.$modal.modal('hide');
               AppUtilities.apply();
-            })
-          });
-        } else {
-          AlloyDbService.star({ id: track.id }).then(function (result) {
-            if ($rootScope.settings.alloydb.alloydb_love_tracks === true) {
-              AlloyDbService.love({ id: track.id })
             }
-            Logger.info('starred');
-            Logger.info(result);
-            track.starred = 'true';
-            $timeout(function () {
-              AppUtilities.apply();
-            })
-
           });
-        }
-      }
-
-      scope.sortColumn = function (col) {
-        scope.column = col;
-        if (scope.reverse) {
-          scope.reverse = false;
-          scope.reverseclass = 'TableHeaderCell-sortIcon-Up';
-        } else {
-          scope.reverse = true;
-          scope.reverseclass = 'TableHeaderCell-sortIcon-Down';
         }
       };
-
-      scope.sortClass = function (col) {
-        if (scope.column == col) {
-          if (scope.reverse) {
-            return 'TableHeaderCell-sortIcon-Down';
-          } else {
-            return 'TableHeaderCell-sortIcon-Up';
-          }
-        } else {
-          return '';
-        }
-      }
 
       scope.$watch('data', function (newVal, oldVal) {
         AppUtilities.apply();
