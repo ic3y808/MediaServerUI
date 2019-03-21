@@ -10,10 +10,7 @@ export default function (MediaPlayer) {
     replace: true,
     link: function ($scope, element, attrs) {
       "ngInject";
-      $scope.isPlaying = () => {
-        return MediaPlayer.playing && !MediaPlayer.paused;
-      };
-
+  
     }
   }
 };
