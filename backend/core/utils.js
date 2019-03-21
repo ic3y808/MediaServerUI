@@ -25,7 +25,7 @@ module.exports.onError = function onError(error) {
       process.exit(1);
       break;
     case "EADDRINUSE":
-      log.error('alloyui', utils.normalizePort(process.env.PORT || "3000") + " is already in use");
+      log.error('alloyui', module.exports.normalizePort(process.env.PORT || "3000") + " is already in use");
       process.exit(1);
       break;
     default:

@@ -653,8 +653,12 @@ export default class MediaPlayer {
     this.remoteConfigured = false;
   }
 
+
   checkIfNowPlaying(type, id) {
+
     var selected = this.selectedTrack();
+
+
     if (selected && type && id) {
       if (type === 'track') {
         return id === selected.id;
