@@ -39,9 +39,15 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
         }
       };
 
+      $rootScope.$on('trackChangedEvent', (event, data) => {
+        scope.currentTrack = data;
+      });
+
       scope.$watch('data', function (newVal, oldVal) {
         AppUtilities.apply();
       });
+
+      scope.currentTrack = $rootScope.currentTrack;
 
     }
   }
