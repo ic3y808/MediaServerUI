@@ -667,8 +667,7 @@ export default class MediaPlayer {
     return false;
   }
 
-  isPlaying = () => {
-    console.log('playing: ' + this.playing + " paused:" + this.paused)
+  isPlaying() {
     return this.playing && !this.paused;
   };
 }
