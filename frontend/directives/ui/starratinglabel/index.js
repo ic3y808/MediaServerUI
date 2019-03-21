@@ -7,7 +7,8 @@ export default function (AlloyDbService, Logger) {
     scope: {
       track: '=',
       artist: '=',
-      album: '='
+      album: '=',
+      extrastyles: '@'
     },
     controller: ["$scope", "$attrs", "$element", "$compile",
       function ($scope, $attrs, $element, $compile) {

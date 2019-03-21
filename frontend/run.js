@@ -244,7 +244,9 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $(this).tab('show')
   })
 
-
+ 
+ 
+ 
 
   function toggleFullScreen() {
     var doc = window.document;

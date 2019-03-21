@@ -67,48 +67,42 @@ class AlbumController {
 
     $scope.getAlbum = () => {
 
-      var cache = Cache.get($routeParams.id);
 
-      if (cache) {
-        $scope.album = cache;
-        this.AppUtilities.apply();
-        this.AppUtilities.hideLoader();
-      } else {
-        var alb = AlloyDbService.getAlbum($routeParams.id);
-        if (alb) {
-          alb.then(info => {
-            if (info) {
-              $scope.info = info;
+      var alb = AlloyDbService.getAlbum($routeParams.id);
+      if (alb) {
+        alb.then(info => {
+          if (info) {
+            $scope.info = info;
 
-              var coverArt = this.AlloyDbService.getCoverArt({
-                album_id: $routeParams.id
-              });
+            var coverArt = this.AlloyDbService.getCoverArt({
+              album_id: $routeParams.id
+            });
 
 
-              if (coverArt) {
-                $scope.info.album.image = coverArt;
-                this.AppUtilities.apply();
-              }
-
-              if ($scope.info.tracks && $scope.info.tracks.length > 0) {
-                if ($routeParams.trackid) {
-                  $scope.info.tracks.forEach(function(track) {
-                    if (track.id === $routeParams.trackid) {
-                      track.selected = true;
-                      AppUtilities.apply();
-                    }
-                  });
-                }
-              }
-              
-              Cache.put($routeParams.id, $scope.info);
+            if (coverArt) {
+              $scope.info.album.image = coverArt;
               this.AppUtilities.apply();
-
-              this.AppUtilities.hideLoader();
             }
-          });
-        }
+
+            if ($scope.info.tracks && $scope.info.tracks.length > 0) {
+              if ($routeParams.trackid) {
+                $scope.info.tracks.forEach(function (track) {
+                  if (track.id === $routeParams.trackid) {
+                    track.selected = true;
+                    AppUtilities.apply();
+                  }
+                });
+              }
+            }
+
+
+            this.AppUtilities.apply();
+
+            this.AppUtilities.hideLoader();
+          }
+        });
       }
+
     };
 
     $scope.goToArtist = id => {
@@ -189,6 +183,8 @@ class AlbumController {
       $rootScope.tracks = $scope.info.tracks;
       this.MediaPlayer.loadTrack(0);
     };
+
+
 
     $rootScope.$on("loginStatusChange", (event, data) => {
       this.Logger.debug("Album reload on loginsatuschange");

@@ -1,0 +1,8 @@
+section.scrollable.padder-lg.w-f-md
+  .row 
+    form.form-horizontal(method='get')
+      .form-group
+        label.col-sm-2.control-label Select Playlist
+        .col-sm-10
+          select.form-control(ng-model="selectedPlaylist")
+            option(ng-repeat="playlist in $root.playlists", value="{{playlist.name}}") {{playlist.name}}

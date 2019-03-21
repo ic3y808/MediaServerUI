@@ -1,22 +1,51 @@
-ul.list-group.list-group-lg.no-radius.no-border.no-bg.m-t-n-xxs.m-b-none.auto(ng-repeat='track in data')
-  li.list-group-item(ng-class="{'list-group-item-now-playing': $parent.checkIfNowPlaying(track.id) == true}")
-    .pull-right.m-l
-      a.m-r-sm(href='#', ng-click="$parent.starTrack(track)")
-        i.alloy-icon.icon-star-o.icon(ng-class="track.starred == 'true' ? 'fa-star' : 'fa-star-o'")
-      a.m-r-sm(href='#')
-        i.alloy-icon.icon-download.icon
-      a.m-r-sm(href='#')
-        i.icon-plus
-      a(href='#')
-        i.icon-minus
-    PlayingStatusBars.pull-left(ng-if="$parent.checkIfNowPlaying(track.id) == true", style="margin:0px; margin-right:8px;")
-    a.m-r-sm.pull-left(href='#', ng-click="$parent.requestPlay(track.id)", ng-show="$parent.checkIfNowPlaying(track.id) != true")
-      i.icon-control-play.text.icon(ng-class="$parent.checkPlayState(track.id) ? 'icon-pause' : 'icon-play'")
+section.tracklist-container
+  
+  ol.tracklist
+    .react-contextmenu-wrapper(ng-repeat="track in data")
+      div
+        li.tracklist-row.tracklist-row--oneline(role='button', ng-click="$root.MediaPlayer.playTrack(track, data)", ng-class="{'tracklist-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}")
+          .tracklist-col.position-outer
+            
+            .tracklist-play-pause.tracklist-middle-align
+              PlayingStatusBars(ng-if="$root.MediaPlayer.checkIfNowPlaying('track', track.id) == true")
+              
+      
+          .tracklist-col.name
+            .track-name-wrapper.tracklist-middle-align
+              .tracklist-name.ellipsis-one-line(dir='auto') {{track.title}}
+          .tracklist-col.more
+            .tracklist-middle-align
+              .react-contextmenu-wrapper
+                button.spotify-btn.btn-transparent.btn--narrow.btn--no-margin.btn--no-padding(ng-click="addTrackToPlaylist(track)", ng-if="canaddplaylist", onclick="event.stopPropagation();")
+                  i.alloy-icons.icon-plus
+                button.spotify-btn.btn-transparent.btn--narrow.btn--no-margin.btn--no-padding(ng-click="starTrack(track)", ng-class="getClass(track.id)", onclick="event.stopPropagation();")
+                  i.alloy-icons.icon-star-o
+                
+          .tracklist-col.tracklist-col-duration
+            .tracklist-duration.tracklist-middle-align
+              span {{$root.formatTime(track.duration)}}
 
-    .clear.text-ellipsis
-      span {{track.title}}
-      span.text-muted  -- {{$root.formatTime(track.duration)}}
+      #addTrackToPlaylistModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addTrackToPlaylistModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+          .modal-content
+            .modal-header
+              h5#addTrackToPlaylistModalLabel.modal-title Choose a Playlist
+              button.Link-link.close(type='button', data-dismiss='modal', aria-label='Close')
+                span(aria-hidden='true') ×
+            .modal-body
+              form.form-horizontal(method='get')
+                .form-group
+                  label.col-sm-2.control-label Select Playlist
+                  .col-sm-10
+                    select.form-control(ng-model="selectedPlaylist")
+                      option(ng-repeat="playlist in $root.playlists", value="{{playlist.id}}") {{playlist.name}}
 
+            .modal-footer
+              button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+              button.btn.btn-primary(type='button', ng-click='addToPlaylist(selectedPlaylist, track)') Add
+
+
+              
 //.Table-tableContainer(ng-style="{ 'padding-right' : (hasjumpbar == 'true') ? '40px' : '0px' }")
 //  table.Table-table
 //    thead
