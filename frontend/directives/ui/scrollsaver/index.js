@@ -1,48 +1,41 @@
-export default function ($rootScope, $location,$timeout) {
+export default function ($rootScope, $location, $timeout, $window) {
   "ngInject";
   return {
     restrict: 'AC',
-    template:'',
-
+    template: '',
+    scope: {
+      data: '='
+    },
     link: function (scope, element, attrs) {
       "ngInject";
+      var observer = new MutationObserver(function (mutations) {
+        console.log('changed')
+        $timeout(function () {
+          var pos = $rootScope.scrollPos[$location.path()];
+          console.log($location.path() + " " + pos);
+          $(".scrollsaver").scrollTop(pos);
+          $rootScope.okSaveScroll = true;
+        });
+      });
+      observer.observe(element[0], {
+        childList: true,
+        subtree: true
+      });
 
-      
 
       $rootScope.$on('$routeChangeStart', function () {
         $rootScope.okSaveScroll = false;
       });
-    
-      $rootScope.$on('$routeChangeSuccess', function ($event, next, current) {
-        $timeout(function () { // wait for DOM, then restore scroll position'
-        var pos = $rootScope.scrollPos[$location.path()];
-        angular.element(element)[0].scrollTop = pos;
-          $rootScope.okSaveScroll = true;
-        }, 0);
-      });
-    
-    
+
+
       $rootScope.scrollClear = function (path) {
         $rootScope.scrollPos[path] = 0;
       }
 
       element.bind("DOMMouseScroll mousewheel onmousewheel", event => {
-
         if ($rootScope.okSaveScroll) {
-          console.log($location.path() + " " + element[0].scrollTop)
-          $rootScope.scrollPos[$location.path()] = element[0].scrollTop;
+          $rootScope.scrollPos[$location.path()] = $(".scrollsaver").scrollTop();
         }
-        // cross-browser wheel delta
-        var event = window.event || event; // old IE support
-        var delta = Math.max(-1, Math.min(1, (event.wheelDelta || -event.detail)));
-
-        var value = 0;
-        if (delta < 0) {
-          value = -0.05;
-        } else if (delta > 0) {
-          value = 0.05;
-        }
-        console.log(value);
       });
     }
   }
