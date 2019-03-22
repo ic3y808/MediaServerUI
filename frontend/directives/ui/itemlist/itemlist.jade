@@ -7,8 +7,8 @@ section.scrollable.padder-lg.w-f-md
   .row 
     .list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'tracks'")
       a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}", ng-click="$root.MediaPlayer.playTrack(song, data)", ng-repeat="song in data | limitTo:itemLimit")
-        span.pull-right.h2.text-muted.m-l(ng-if="$root.MediaPlayer.checkIfNowPlaying('track', song.id) != true") {{$index + 1}}
-        PlayingStatusBars.pull-right(ng-if="$root.MediaPlayer.checkIfNowPlaying('track', song.id) == true")
+        span.pull-right.h2.text-muted.m-l(ng-if="isPlaying !== true || currentTrack.id !== song.id") {{$index + 1}}
+        PlayingStatusBars.pull-right(ng-if="currentTrack.id === song.id && isPlaying === true")
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(ng-src='{{song.image}}', alt='{{song.album}}')
         span.clear

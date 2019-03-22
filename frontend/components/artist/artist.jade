@@ -1,10 +1,11 @@
 section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style="padding:0px;")
   section.content.artist
     header.artist-header(style='background-image: url({{info.artist.image}});')
-      span.monthly-listeners(ng-if="info.total_plays") {{info.total_plays}} {{info.total_plays > 1 ? "Plays" : "Play"}} 
-      h1.large(dir='auto') {{info.artist.name}}
+      h1.monthly-listeners.large(dir='auto') {{info.artist.name}}
       .header-buttons
         button.spotify-btn.btn-green(ng-click="shuffle()") PLAY
+      //.header-buttons
+      //  span(ng-if="info.total_plays") {{info.total_plays}} {{info.total_plays > 1 ? "Plays" : "Play"}} 
       .header-buttons
         starratinglabel(artist="artist")
       .header-buttons

@@ -37,6 +37,7 @@ export default class MediaPlayer {
       this.playing = true;
       this.paused = false;
       this.togglePlayPause();
+      this.AppUtilities.broadcast('playbackStatusChangedEvent');
       AppUtilities.apply();
     });
 
@@ -44,6 +45,7 @@ export default class MediaPlayer {
       this.playing = false;
       this.paused = true;
       this.togglePlayPause();
+      this.AppUtilities.broadcast('playbackStatusChangedEvent');
       AppUtilities.apply();
     });
 
@@ -60,6 +62,7 @@ export default class MediaPlayer {
         $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
 
         this.Logger.debug('Playlist ended');
+        this.AppUtilities.broadcast('playbackStatusChangedEvent');
         this.AppUtilities.broadcast('playlistEndEvent');
 
       } else {
@@ -394,7 +397,7 @@ export default class MediaPlayer {
             this.AppUtilities.broadcast('trackChangedEvent', source);
             this.AppUtilities.apply();
           }).catch(error => {
-            this.Logger.error('playing failed ' + error);
+            this.Logger.error('playing failed ' + error.name + " " + error.message);
             //this.next();
           });
         } else {

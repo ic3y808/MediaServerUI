@@ -22,6 +22,25 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
         case 'albums': break;
         case 'artists': break;
       }
+
+      $rootScope.$on('trackChangedEvent', (event, data) => {
+        scope.currentTrack = data;
+        scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
+        AppUtilities.apply();
+      });
+
+      $rootScope.$on('playbackStatusChangedEvent', (event, data) => {
+        scope.currentTrack = $rootScope.currentTrack;
+        scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
+        AppUtilities.apply();
+      });
+
+      scope.$watch('data', function (newVal, oldVal) {
+        AppUtilities.apply();
+      });
+
+      scope.currentTrack = $rootScope.currentTrack;
+      scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
     }
   }
 };

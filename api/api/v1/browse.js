@@ -238,7 +238,7 @@ router.get('/charts', function (req, res) {
       return 0;
     }
 
-    var tempTags = tag.tags.sort(compare).slice(0, 10);
+    var tempTags = _.uniq(tag.tags.sort(compare), 'genre').slice(0, 10);
     tag.tags = [];
     tempTags.forEach(newTag => {
       tag.tags.push(newTag.genre);

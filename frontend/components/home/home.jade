@@ -3,7 +3,6 @@ section.scrollable.padder-lg.w-f-md
     .col-md-7
         h1.page-header-caption
           | Alloy
-          PlayingStatusBars
   .row
     .col-md-7(ng-if="$root.charts.never_played_albums.length > 0")
       thumblist(data="$root.charts.never_played_albums", title="Never Played Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")

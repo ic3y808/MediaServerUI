@@ -26,17 +26,17 @@ router.get('/stream', function (req, res) {
   var maxBitRate = req.query.maxBitRate;
   var format = req.query.format;
   var estimateContentLength = req.query.estimateContentLength;
-  var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').all(id);
-  if (track.length !== 0) {
+  var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(id);
+  if (track) {
 
 
 
 
 
-    const stat = fs.statSync(track[0].path);
+    const stat = fs.statSync(track.path);
     const total = stat.size;
     if (req.headers.range) {
-      fs.exists(track[0].path, (exists) => {
+      fs.exists(track.path, (exists) => {
         if (exists) {
           const range = req.headers.range;
           const parts = range.replace(/bytes=/, '').split('-');
@@ -46,7 +46,7 @@ router.get('/stream', function (req, res) {
           const start = parseInt(partialStart, 10);
           const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
           const chunksize = (end - start) + 1;
-          const rstream = fs.createReadStream(track[0].path, {
+          const rstream = fs.createReadStream(track.path, {
             start: start,
             end: end
           });
@@ -55,7 +55,7 @@ router.get('/stream', function (req, res) {
             'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
             'Accept-Ranges': 'bytes',
             'Content-Length': chunksize,
-            'Content-Type': track[0].content_type
+            'Content-Type': track.content_type
           });
           rstream.pipe(res);
 
@@ -65,7 +65,7 @@ router.get('/stream', function (req, res) {
         }
       });
     } else {
-      var rstream = fs.createReadStream(track[0].path);
+      var rstream = fs.createReadStream(track.path);
       rstream.pipe(res);
     }
   }
@@ -85,11 +85,11 @@ router.get('/stream', function (req, res) {
 router.get('/download', function (req, res) {
   var id = req.query.id;
 
-  var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').all(id);
+  var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(id);
   if (track.length !== 0) {
-    res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(track[0].path));
-    res.setHeader('Content-Type', 'application/' + track[0].content_type)
-    var rstream = fs.createReadStream(track[0].path);
+    res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(track.path));
+    res.setHeader('Content-Type', 'application/' + track.content_type)
+    var rstream = fs.createReadStream(track.path);
     rstream.pipe(res);
   }
 });
