@@ -22,6 +22,13 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     //}
   };
 
+  $window.onkeydown = function (e) {
+    var key = e.keyCode ? e.keyCode : e.which;
+    if (key === 32) {
+      e.preventDefault();
+    }
+  };
+
   $(document).on('click', "[data-toggle=fullscreen]", function (e) {
     e.preventDefault();
     if (screenfull.enabled) {

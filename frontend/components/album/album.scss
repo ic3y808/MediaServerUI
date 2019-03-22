@@ -34,6 +34,15 @@
   text-decoration: none;
 }
 
+.mo-info-name {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: .015em;
+  font-weight: var(--glue-font-weight-bold);
+  color: #333;
+  text-transform: none;
+}
+
 .TrackListHeader .mo-info-name {
   font-size: 28px;
   line-height: 36px;
@@ -130,7 +139,7 @@
     min-width: 157px;
     position: relative;
   }
-  .TrackListHeader .mo-info,
+  
   .TrackListHeader .mo-meta,
   .TrackListHeader__button--top {
     display: none;

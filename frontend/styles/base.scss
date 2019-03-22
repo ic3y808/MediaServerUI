@@ -1,3 +1,4 @@
+
 .modal-body {
   max-height: 70vh;
   overflow: auto;
@@ -17,14 +18,20 @@
 }
 
 .jp-controls a {
+  height: 60px;
   cursor: pointer;
   display: inline-block;
+  text-align: center;
+  vertical-align: middle;
   padding-left: 5px;
   padding-right: 5px;
 }
 
-.jp-controls a i {
-  line-height: inherit;
+.jp-controls a>i {
+  line-height: 45px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0px;
 }
 
 .jp-controls>div {
@@ -2352,14 +2359,7 @@ a.text-info:hover {
   display: block;
 }
 
-.mo-info-name {
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: .015em;
-  font-weight: var(--glue-font-weight-bold);
-  color: #333;
-  text-transform: none;
-}
+
 
 .mo-meta {
   text-align: center;

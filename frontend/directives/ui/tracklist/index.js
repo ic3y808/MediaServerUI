@@ -25,7 +25,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
         $('#primary-content').append(scope.$modal);
         scope.$modal.modal();
       };
-  
+
       scope.addToPlaylist = (playlist, track) => {
         var pls = AlloyDbService.addPlaylist({ id: playlist, songId: track.id });
         if (pls) {
@@ -39,8 +39,23 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
         }
       };
 
+      scope.trackTime = function (track) {
+        if (scope.isPlaying && scope.currentTrack.id === track.id) {
+          return $rootScope.MediaPlayer.currentTime + ' / ' + $rootScope.formatTime(track.duration);
+        }
+        return $rootScope.formatTime(track.duration);
+      };
+
       $rootScope.$on('trackChangedEvent', (event, data) => {
         scope.currentTrack = data;
+        scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
+        AppUtilities.apply();
+      });
+
+      $rootScope.$on('playbackStatusChangedEvent', (event, data) => {
+        scope.currentTrack = $rootScope.currentTrack;
+        scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
+        AppUtilities.apply();
       });
 
       scope.$watch('data', function (newVal, oldVal) {
@@ -48,7 +63,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
       });
 
       scope.currentTrack = $rootScope.currentTrack;
-
+      scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
     }
   }
 };

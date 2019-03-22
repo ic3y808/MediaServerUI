@@ -7,7 +7,7 @@ section.tracklist-container
           .tracklist-col.position-outer
             
             .tracklist-play-pause.tracklist-middle-align
-              //PlayingStatusBars(ng-if="$root.MediaPlayer.checkIfNowPlaying('track', track.id) == true")
+              PlayingStatusBars(ng-if="currentTrack.id === track.id && isPlaying === true")
               
       
           .tracklist-col.name
@@ -23,8 +23,7 @@ section.tracklist-container
                 
           .tracklist-col.tracklist-col-duration
             .tracklist-duration.tracklist-middle-align
-              span(ng-if="currentTrack.id !== track.id") {{$root.formatTime(track.duration)}}
-              span(ng-if="currentTrack.id === track.id") {{$root.MediaPlayer.currentTime}} / {{$root.formatTime(track.duration)}}
+              span {{trackTime(track)}}
 
       #addTrackToPlaylistModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addTrackToPlaylistModalLabel', aria-hidden='true')
         .modal-dialog(role='document')

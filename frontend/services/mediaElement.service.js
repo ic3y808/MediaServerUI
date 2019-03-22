@@ -6,7 +6,7 @@ export default class MediaElement {
     $('#media-player').on('error', function failed(e) {
       // audio playback failed - show a message saying why
       // to get the source of the audio element use $(this).src
-      Logger.error('player error ' + e.target.error);
+      Logger.error('player error ' + JSON.stringify(e.target.error));
       switch (e.target.error.code) {
         case e.target.error.MEDIA_ERR_ABORTED:
           Logger.error('You aborted the video playback.');
@@ -18,7 +18,7 @@ export default class MediaElement {
           Logger.error('The audio playback was aborted due to a corruption problem or because the video used features your browser did not support.');
           break;
         case e.target.error.MEDIA_ERR_SRC_NOT_SUPPORTED:
-          Logger.error('The video audio not be loaded, either because the server or network failed or because the format is not supported.');
+          Logger.error('The video audio could not be loaded, either because the server or network failed or because the format is not supported.');
           break;
         default:
           Logger.error('An unknown error occurred.');
