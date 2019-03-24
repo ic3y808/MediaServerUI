@@ -40,7 +40,7 @@ class MediaScanner extends MediaScannerBase {
   }
 
   checkDBLinks(artist) {
-    if (artist.Links) {
+    if (artist && artist.Links) {
       artist.Links.forEach(link => {
         var existingLink = this.db.prepare('SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?').all(link.type, link.target, artist.Id);
         if (existingLink.length === 0) {
@@ -120,17 +120,17 @@ class MediaScanner extends MediaScannerBase {
   checkDBGenreExist(track) {
     try {
       var genre = track.genre.split('/');
-      
+
       if (genre.length > 0) {
         track.genre = genre[0];
       }
       track.tags = "";
-      
-      for(var i = 1; i < genre.length; i++){
+
+      for (var i = 1; i < genre.length; i++) {
         track.tags += genre[i]
-        if(i < genre.length - 1) track.tags += "|";
+        if (i < genre.length - 1) track.tags += "|";
       }
-  
+
       var tempGenreId = 'genre_' + uuidv3(track.genre, process.env.UUID_BASE).split('-')[0];
       var stmt = this.db.prepare('SELECT * FROM Genres WHERE id = ? OR name = ?');
       var existingGenre = stmt.all(tempGenreId, track.genre);
@@ -152,11 +152,11 @@ class MediaScanner extends MediaScannerBase {
     track.artist = utils.isStringValid(metadata.common.artist, "No Artist");
     track.title = utils.isStringValid(metadata.common.title, "");
     track.album = utils.isStringValid(metadata.common.album, "No Album");
-    
-    
+
+
     track.genre = utils.isStringValid((metadata.common.genre !== undefined && metadata.common.genre[0] !== undefined && metadata.common.genre[0] !== '') ? metadata.common.genre[0] : "No Genre");
     this.checkDBGenreExist(track);
-    
+
     track.bpm = utils.isStringValid(metadata.common.bpm, "");
     track.year = metadata.common.year;
     track.suffix = utils.isStringValid(metadata.common.suffix, "");;
@@ -258,11 +258,12 @@ class MediaScanner extends MediaScannerBase {
       var allMetaPromises = [];
       albums.forEach(album => {
 
-        try {
-          const albumTracks = klawSync(album.path, { nodir: true });
+
+        const albumTracks = klawSync(album.path, { nodir: true });
 
 
-          albumTracks.forEach(track => {
+        albumTracks.forEach(track => {
+          try {
             if (utils.isFileValid(track.path)) {
               allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
                 var processed_track = new structures.Song();
@@ -270,7 +271,7 @@ class MediaScanner extends MediaScannerBase {
                 processed_track.artist = utils.isStringValid(artist.name, '');
                 processed_track.artist_id = artist.id;
                 processed_track.album = utils.isStringValid(album.name, '');
-        
+
 
                 processed_track.album_path = album.path;
                 processed_track.getStats();
@@ -303,11 +304,12 @@ class MediaScanner extends MediaScannerBase {
                 this.updateStatus('Scanning track ' + processed_track.path, true);
               }));
             }
-          });
-        } catch (err) {
-          logger.error("alloydb", err.message);
-          this.writeScanEvent("insert-track", processed_track, "Failed to insert mapped track", "failed");
-        }
+          } catch (err) {
+            logger.error("alloydb", err.message);
+            this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
+          }
+        });
+
       });
 
       Promise.all(allMetaPromises).then(() => {
