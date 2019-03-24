@@ -65,6 +65,10 @@ router.get('/stream', function (req, res) {
         }
       });
     } else {
+      res.writeHead(200, {
+        'Content-Length': total,
+        'Content-Type': track.content_type
+      });
       var rstream = fs.createReadStream(track.path);
       rstream.pipe(res);
     }
