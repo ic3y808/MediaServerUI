@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/action_edit_tags"
+        android:orderInCategory="100"
+        android:title="Edit Multiple"
+        app:showAsAction="never" />
+	<item
+		android:id="@+id/action_delete"
+		android:orderInCategory="100"
+		android:title="Delete Multiple"
+		app:showAsAction="never" />
+</menu>

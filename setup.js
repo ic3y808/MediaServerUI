@@ -24,7 +24,7 @@ function processFonts() {
   return new Promise((resolve, reject) => {
     var icfPath = path.join(__dirname, 'node_modules', 'icon-font-generator', 'bin', 'icon-font-generator');
     var iconsSrcPath = path.join(__dirname, 'common', 'icons', '*.svg');
-    var iconsDstPath = path.join(__dirname, 'frontend', 'styles', 'fonts');
+    var iconsDstPath = path.join(__dirname, 'web', 'frontend', 'styles', 'fonts');
     exec("node " + icfPath + " " + iconsSrcPath + " -n alloyicons --normalize --html false -j false -o " + iconsDstPath, function callback(error, stdout, stderr) {
       if (error) reject(error);
       if (stdout) {
