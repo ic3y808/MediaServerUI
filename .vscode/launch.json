@@ -5,7 +5,7 @@
       "type": "node",
       "request": "launch",
       "name": "UI-ServerDebug",
-      "program": "${workspaceFolder}/backend/server.js",
+      "program": "${workspaceFolder}/web/backend/server.js",
       "outputCapture": "std",
       "env": {
         "MODE": "dev",
@@ -20,7 +20,7 @@
       "request": "launch",
       "name": "UI-ServerRelease",
       "outputCapture": "std",
-      "program": "${workspaceFolder}/backend/server.js",
+      "program": "${workspaceFolder}/web/backend/server.js",
       "env": {
         "MODE": "prod",
         "PORT": "3000"

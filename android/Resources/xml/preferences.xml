@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<EditTextPreference android:title="Host"
+	                    android:key="alloydbhost"
+	                    android:summary="Host for AlloyDB including port"></EditTextPreference>	
+	<EditTextPreference android:title="ApiKey"
+	                    android:key="alloydbapikey"
+	                    android:summary="APIKey for AlloyDB"></EditTextPreference>
+	
+</PreferenceScreen>

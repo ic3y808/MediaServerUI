@@ -13,14 +13,14 @@ profile.module.rules = [];
 
 if (process.env.MODE === 'dev') {
   profile.entry = {
-    app: ['./frontend/app.js', 'webpack-hot-middleware/client']
+    app: ['./web/frontend/app.js', 'webpack-hot-middleware/client']
   };
   profile.devtool = 'inline-source-map';
   logger.info('webpack', 'packing dev mode source');
 } else {
   profile.devtool = 'cheap-module-source-map';
   profile.entry = {
-    app: ['./frontend/app.js']
+    app: ['./web/frontend/app.js']
   };
   logger.info('webpack', 'packing release mode source');
 }
@@ -112,7 +112,7 @@ profile.module.rules.push({
   {
     loader: 'sass-resources-loader',
     options: {
-      resources: ['./frontend/styles/_constants.scss', './frontend/styles/_material-colors.scss', './frontend/styles/_functions.scss', './frontend/styles/_variables.scss', './frontend/styles/_framework.scss']
+      resources: ['./web/frontend/styles/_constants.scss', './web/frontend/styles/_material-colors.scss', './web/frontend/styles/_functions.scss', './web/frontend/styles/_variables.scss', './web/frontend/styles/_framework.scss']
     }
   }
   ]

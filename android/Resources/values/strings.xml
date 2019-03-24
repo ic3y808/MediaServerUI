@@ -1,0 +1,80 @@
+<resources>
+	<!-- application -->
+	<string name="app_name">Alloy</string>
+
+	<!-- API -->
+	<string name="master_salt">DsfdDGDGH823974lkfAB06Fsddfd7C</string>
+	<string name="appcenter_api">e029d38b-1f4c-433b-a631-07ec8d18c0c4</string>
+	<string name="cast_app_id">DAB06F7C</string>
+
+	<!-- Main Menu. -->
+	<!-- Headers. -->
+	<string name="quick_access_header">Quick Access</string>
+	<string name="local_music_header">Local Music</string>
+	<string name="remote_media_header">Remote Media</string>
+
+	<!-- Fragments. -->
+	<string name="all_music_fragment_title">All Music</string>
+	<string name="all_music_fragment_id">all_music</string>
+	
+	<string name="favorites_fragment_title">Favorites</string>
+	<string name="favorites_fragment_id">local_favorites</string>
+	
+	<string name="local_artists_fragment_title">Artists</string>
+	<string name="local_artists_fragment_id">local_artists</string>
+		
+	<string name="local_albums_fragment_title">Albums</string>
+	<string name="local_albums_fragment_id">local_albums</string>
+		
+	<string name="local_genres_fragment_title">Genres</string>
+	<string name="local_genres_fragment_id">local_genres</string>
+		
+	<!-- Strings. -->
+	<string name="background_audio_service">AlloyBackgroundAudio</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+	<string name="action_settings">Settings</string>
+	<string name="all_music_header">Library</string>
+
+	<string name="all_music_title">All Music</string>
+	<string name="favorites_title">Favorites</string>
+	<string name="albums_title">Albums</string>
+	<string name="album_detail_title">Detail</string>
+	<string name="artists_title">Artists</string>
+	<string name="artist_detail_title">Detail</string>
+  
+  
+
+	<string name="genres_title">Genres</string>
+	<string name="genre_detail_title">Detail</string>
+	<string name="settings_title">Settings</string>
+
+	
+	<!-- Fragments. -->
+	<string name="currently_playing_song">Song currently playing</string>
+	<string name="currently_playing_artist">Artist of currently playing song</string>
+	<string name="currently_playing_extra_info">Extra info for currently playing song</string>
+	<string name="play_item">Play item</string>
+	<string name="play_pause">play or pause</string>
+	<string name="skip_next">skip to next</string>
+	<string name="skip_prev">skip to previous</string>
+
+	<string name="browse_genres">Genres</string>
+	<string name="browse_genre_subtitle">Songs by genre</string>
+	<string name="browse_musics_by_genre_subtitle">%1$s songs</string>
+	<string name="random_queue_title">Random music</string>
+	<string name="search_queue_title">Search results</string>
+
+	<string name="fragment_image_trans">fragment_image_transition</string>
+
+
+	<string name="nav_favorites">Favorites</string>
+	<string name="nav_stream">Stream</string>
+	<string name="nav_stations">Stations</string>
+
+	<string name="media_route_menu_title">Cast</string>
+
+
+	<!-- Settings. -->
+	
+</resources>

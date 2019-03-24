@@ -4,5 +4,6 @@
     "editor.tabSize": 2,
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
-    "mochaExplorer.optsFile":"${workspaceFolder}/mocha.opts"
+    "mochaExplorer.optsFile": "${workspaceFolder}/mocha.opts",
+    "git.ignoreLimitWarning": true
 }
