@@ -3,6 +3,9 @@
 variables:
   configuration: release
   platform: x64
+  
+pool:
+  name: default
 
 steps:
 - task: NodeTool@0
