@@ -5,6 +5,9 @@ variables:
   platform: x64
 
 steps:
+- powershell: Write-Host "##vso[task.prependpath]$env:CONDA\Scripts"
+  displayName: Add conda to PATH
+  
 - task: NodeTool@0
   inputs:
     versionSpec: 11.2.0
