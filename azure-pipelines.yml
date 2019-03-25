@@ -12,6 +12,8 @@ steps:
     platform: $(platform)
 
 - script: |
+    npm i -g --production windows-build-tools@4.0.0
+- script: |
     npm install
 - script: |
     npm rebuild --update-binary
