@@ -26,6 +26,8 @@
 ```
 
 ## To run: 
+* Powershell as admin npm i -g --production windows-build-tools@4.0.0
+* npm install
 * node ./setup.js -install
 * node ./setup.js -run
 * navigate to http://localhost:3000
