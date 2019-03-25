@@ -13,6 +13,9 @@ steps:
 
 - script: |
     npm install
+- script: |
+    rebuild --update-binary
+- script: |
     npm run setup
 
 - task: Npm@1
