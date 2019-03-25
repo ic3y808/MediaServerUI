@@ -1,7 +1,7 @@
 # Alloy
 
-[![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=14&branchName=master)
-
+[![API Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=14&branchName=master)
+[![Android Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-Android-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=18&branchName=master)
 ## Major Features Include:
 ###Please use Issues page for any new feature requests
 * Support for major platforms: Windows, Linux, macOS, Raspberry Pi, etc.
