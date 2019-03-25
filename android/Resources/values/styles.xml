@@ -8,7 +8,6 @@
 		<item name="android:windowContentTransitions">true</item>
 		<item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
-		<item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 	</style>
 
