@@ -100,8 +100,6 @@
     "walk": "^2.3.14",
     "windows-trayicon": "^1.0.2",
     "winston": "^3.1.0",
-    "x-ray": "^2.3.3",
-    "x-ray-phantom": "^1.0.1",
     "xml2js": "^0.4.19",
     "xml2json": "^0.11.2",
     "xmlhttprequest": "^1.8.0"
