@@ -13,8 +13,8 @@
   "scripts": {
     "build": "cross-env MODE=prod webpack",
     "setup": "node ./setup.js -i",
-    "start": "node backend/server.js",
-    "start_backend": "cross-env MODE=prod node backend/server.js",
+    "start": "node web/backend/server.js",
+    "start_backend": "cross-env MODE=prod node web/backend/server.js",
     "start_api": "cross-env MODE=prod node api/index.js",
     "prod": "concurrently --kill-others \"npm run start_backend\" \"npm run start_api\"",
     "prod_ui_only": "concurrently --kill-others \"npm run start_backend\"",
