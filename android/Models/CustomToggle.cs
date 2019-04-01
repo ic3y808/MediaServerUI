@@ -7,13 +7,14 @@ using Android.Support.V7.App;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
+using SlideUpPanelLibrary;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace Alloy.Models
 {
 	public class CustomToggle : ActionBarDrawerToggle
 	{
-		public RelativeLayout Layout { get; set; }
+		public SlidingUpPanelLayout Layout { get; set; }
 		private float lastTranslate = 0.0f;
 		protected CustomToggle(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 		{

@@ -14,6 +14,7 @@
 	<color name="menu_title_color">#D3D3D3</color>
 	<color name="menu_transparent">#00000000</color>
 	<color name="menu_default_background">#90242424</color>
+	<color name="menu_solid_background">#FF242424</color>
 	<color name="menu_selection_color">#9FC0C0C0</color>
 	<color name="cloudy_action_accent">#FF9B00C8</color>
 	<color name="cloudy_action_tint">#FF1B3147</color>

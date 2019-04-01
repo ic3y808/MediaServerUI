@@ -4,6 +4,10 @@
 	{
 		Artist,
 		Artists,
+		Albums,
+		Album,
+		Genres,
+		Genre,
 		Stream,
 		CoverArt,
 	}

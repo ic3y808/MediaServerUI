@@ -26,7 +26,7 @@ namespace Alloy.Adapters
 
 		public override long GetItemId(int position)
 		{
-			return MusicProvider.Genres[position].Id;
+			return position;
 		}
 
 		public override View GetView(int position, View convertView, ViewGroup parent)
@@ -37,9 +37,9 @@ namespace Alloy.Adapters
 			{
 				convertView = layoutInflater.Inflate(Resource.Layout.general_list_row, null);
 			}
-			convertView.FindViewById<TextView>(Resource.Id.title).Text = MusicProvider.Genres[position].Title;
+			convertView.FindViewById<TextView>(Resource.Id.title).Text = MusicProvider.Genres[position].Name;
 			convertView.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(MusicProvider.Genres[position].Art);
-			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = MusicProvider.Genres[position].TotalTracks.ToString();
+			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = MusicProvider.Genres[position].TrackCount.ToString();
 
 			if (MusicProvider.Genres[position].IsSelected)
 			{

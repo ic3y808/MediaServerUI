@@ -15,10 +15,10 @@ using Alloy.Widgets;
 
 namespace Alloy.Fragments
 {
-	public class AllMusicFragment : FragmentBase, OnStartDragListener
+	public class FreshFragment : FragmentBase, OnStartDragListener
 	{
 		private View root_view;
-		private FastScrollRecyclerView allMusicList;
+		private FastScrollRecyclerView freshTracksList;
 		private AllMusicAdapter adapter;
 		private LinearLayoutManager mainLayoutManager;
 		private SwipeRefreshLayout refreshLayout;
@@ -34,12 +34,12 @@ namespace Alloy.Fragments
 			adapter = new AllMusicAdapter(Resource.Layout.song_card2, this, ServiceConnection);
 			adapter.ItemClick += OnItemClick;
 
-			allMusicList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.all_music_list);
-			allMusicList.HasFixedSize = true;
-			allMusicList.SetLayoutManager(mainLayoutManager);
-			allMusicList.SetItemAnimator(new DefaultItemAnimator());
-			allMusicList.FocusableInTouchMode = true;
-			allMusicList.SetAdapter(adapter);
+			freshTracksList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.all_music_list);
+			freshTracksList.HasFixedSize = true;
+			freshTracksList.SetLayoutManager(mainLayoutManager);
+			freshTracksList.SetItemAnimator(new DefaultItemAnimator());
+			freshTracksList.FocusableInTouchMode = true;
+			freshTracksList.SetAdapter(adapter);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);
@@ -47,9 +47,9 @@ namespace Alloy.Fragments
 			
 			DividerItemDecoration itemDecoration = new DividerItemDecoration(Context, DividerItemDecoration.Vertical);
 			itemDecoration.SetDrawable(Application.Context.GetDrawable(Resource.Drawable.list_divider));
-			allMusicList.AddItemDecoration(itemDecoration);
+			freshTracksList.AddItemDecoration(itemDecoration);
 
-			CreateToolbar(root_view, Resource.String.all_music_title);
+			CreateToolbar(root_view, Resource.String.fresh_title);
 
 			if (MusicProvider.AllSongs.Count == 0)
 			{

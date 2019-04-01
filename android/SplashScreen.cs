@@ -37,7 +37,7 @@ namespace Alloy
 
 			mHelper.maybeRestoreAllDynamicShortcuts();
 
-			mHelper.AddShortcut("AllMusic", "All Music", "All Music", typeof(AllMusicFragment));
+			mHelper.AddShortcut("AllMusic", "All Music", "All Music", typeof(FreshFragment));
 			mHelper.AddShortcut("Favorites", "Favorites", "Favorites", typeof(FavoritesFragment));
 			mHelper.AddShortcut("Artists", "Artists", "Artists", typeof(ArtistsFragment));
 			mHelper.refreshShortcuts(true);

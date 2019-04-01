@@ -4,6 +4,7 @@ using Android.Widget;
 using Alloy.Adapters;
 using Alloy.Models;
 using Alloy.Services;
+using Android.Support.V4.Widget;
 
 namespace Alloy.Fragments
 {
@@ -12,18 +13,25 @@ namespace Alloy.Fragments
 		private View root_view;
 		private ListView listView;
 		private GenreDetailAdapter adapter;
+		private SwipeRefreshLayout refreshLayout;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
-			var genre = Arguments.GetParcelable("genre") as Genre;
+			Genre genre = Arguments.GetParcelable("genre") as Genre;
 
 			root_view = inflater.Inflate(Resource.Layout.genre_detail_layout, container, false);
 			listView = root_view.FindViewById<ListView>(Resource.Id.genre_track_list);
-			root_view.FindViewById<TextView>(Resource.Id.title).SetText(genre.Title, TextView.BufferType.Normal);
+			root_view.FindViewById<TextView>(Resource.Id.title).SetText(genre.Name, TextView.BufferType.Normal);
 			root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(genre.Art);
 
+			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
+			refreshLayout.SetOnRefreshListener(this);
+			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
+
+
 			adapter = new GenreDetailAdapter(genre);
+			GenreDetailAdapter.GenreLoaded += GenreDetailAdapter_GenreLoaded;
 			adapter.NotifyDataSetChanged();
 			listView.Adapter = adapter;
 			listView.ItemClick += MListView_ItemClick;
@@ -31,7 +39,24 @@ namespace Alloy.Fragments
 
 			CreateToolbar(root_view, Resource.String.genre_detail_title, true);
 
+			if (adapter.GenreTracks.Count == 0)
+			{
+				refreshLayout.Refreshing = true;
+				adapter.RefreshGenre();
+			}
+
 			return root_view;
+		}
+
+		private void GenreDetailAdapter_GenreLoaded(object sender, System.EventArgs e)
+		{
+			refreshLayout.Refreshing = false;
+		}
+
+		public override void OnRefreshed()
+		{
+			refreshLayout.Refreshing = true;
+			adapter.RefreshGenre();
 		}
 
 		public override void ScrollToNowPlaying()
@@ -40,7 +65,7 @@ namespace Alloy.Fragments
 			listView.ClearChoices();
 			for (int i = 0; i < adapter.Count; i++)
 			{
-				var item = adapter[i];
+				Song item = adapter[i];
 				item.IsSelected = false;
 			}
 
@@ -48,7 +73,7 @@ namespace Alloy.Fragments
 			{
 				for (int i = 0; i < adapter.Count; i++)
 				{
-					var item = adapter[i];
+					Song item = adapter[i];
 					if (ServiceConnection.CurrentSong.Id.Equals(item.Id))
 					{
 						item.IsSelected = true;

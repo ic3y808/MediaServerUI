@@ -33,18 +33,16 @@
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
 		android:paddingBottom="?attr/actionBarSize"
 		android:background="@android:color/transparent">
-		<ListView
+		<android.support.v7.widget.RecyclerView
 			android:id="@+id/artists_list"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			android:divider="#b5b5b5"
 			android:dividerHeight="1dp"
-			android:choiceMode="singleChoice"
-			android:listSelector="@android:color/transparent"
-			android:cacheColorHint="@android:color/transparent"
-			app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+			android:background="@android:color/transparent"
+			app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 	</android.support.v4.widget.SwipeRefreshLayout>
-	
+
 
 
 </android.support.design.widget.CoordinatorLayout>

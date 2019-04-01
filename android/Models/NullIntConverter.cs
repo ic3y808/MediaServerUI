@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Alloy.Models
 {
-	public class RatingConverter : JsonConverter
+	public class NullIntConverter : JsonConverter
 	{
 		public override bool CanWrite { get { return false; } }
 
@@ -21,9 +21,9 @@ namespace Alloy.Models
 				return 0;
 			}
 
-			int rating = 0;
-			int.TryParse(value.ToString(), out rating);
-			return rating;
+			int parsed = 0;
+			int.TryParse(value.ToString(), out parsed);
+			return parsed;
 		}
 
 		public override bool CanConvert(Type objectType)

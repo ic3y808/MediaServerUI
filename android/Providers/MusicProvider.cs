@@ -12,6 +12,7 @@ using Android.OS;
 using Android.Widget;
 using Alloy.Common;
 using Alloy.Helpers;
+using Alloy.Interfaces;
 using Alloy.Models;
 using Android.Graphics;
 using Android.Support.V7.Preferences;
@@ -25,20 +26,7 @@ using Path = System.IO.Path;
 
 namespace Alloy.Providers
 {
-	public class MusicQueue : IQueue
-	{
-		public override void GetMoreData()
-		{
 
-		}
-
-		public override void Refresh()
-		{
-
-		}
-
-		public override string NextHref { get; set; }
-	}
 
 	public class MusicProvider
 	{
@@ -46,8 +34,14 @@ namespace Alloy.Providers
 		public static IQueue Favorites { get; set; }
 		public static List<Genre> Genres { get; set; }
 		public static List<Album> Albums { get; set; }
-		public static List<Artist> Artists { get; set; }
+		public static ArtistsQueue Artists { get; set; }
+
+		public static int MaxCachedArtists = 15;
+
 		public static event EventHandler LibraryLoaded;
+
+		public static event EventHandler ArtistsStartRefresh;
+		public static event EventHandler<string> ArtistsRefreshed;
 
 		static MusicProvider()
 		{
@@ -55,13 +49,22 @@ namespace Alloy.Providers
 			Favorites = new MusicQueue();
 			Genres = new List<Genre>();
 			Albums = new List<Album>();
-			Artists = new List<Artist>();
+			Artists = new ArtistsQueue();
 		}
 
 		public static string GetHost()
 		{
+			return "http://127.0.0.1:4000";
+
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
 			return sp.GetString("alloydbhost", "");
+		}
+		public static string GetApiKey()
+		{
+			return "b1413ebe481e48880a466ffe8523060a";
+
+			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			return sp.GetString("alloydbapikey", "");
 		}
 
 		public static string ProcessApiRequest(ApiRequestType t)
@@ -71,7 +74,15 @@ namespace Alloy.Providers
 				case ApiRequestType.Artist:
 					return $"{GetHost()}/api/v1/browse/artist";
 				case ApiRequestType.Artists:
-					return $"{GetHost()}/api/v1/browse/artists"; 
+					return $"{GetHost()}/api/v1/browse/artists";
+				case ApiRequestType.Album:
+					return $"{GetHost()}/api/v1/browse/album";
+				case ApiRequestType.Albums:
+					return $"{GetHost()}/api/v1/browse/albums";
+				case ApiRequestType.Genres:
+					return $"{GetHost()}/api/v1/browse/genres";
+				case ApiRequestType.Genre:
+					return $"{GetHost()}/api/v1/browse/genre";
 				case ApiRequestType.Stream:
 					return $"{GetHost()}/api/v1/media/stream";
 				case ApiRequestType.CoverArt:
@@ -91,9 +102,8 @@ namespace Alloy.Providers
 			{
 				UriBuilder uriBuilder;
 				var parameters = new Extensions.HttpValueCollection();
-				ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-				string apiKey = sp.GetString("alloydbapikey", "");
-				parameters["api_key"] = apiKey;
+
+				parameters["api_key"] = GetApiKey();
 
 				uriBuilder = new UriBuilder(ProcessApiRequest(rt));
 
@@ -182,11 +192,18 @@ namespace Alloy.Providers
 			}
 		}
 
-		public class AlbumLoader : AsyncTask<object, Song, int>
+		public class AlbumsLoader : AsyncTask<object, Song, int>
 		{
 			protected override int RunInBackground(params object[] @params)
 			{
-
+				try
+				{
+					Utils.UnlockSsl(true);
+					var request = ApiRequest(ApiRequestType.Albums, null, RequestType.GET);
+					Albums = JsonConvert.DeserializeObject<AlbumList>(request).Albums;
+					Utils.UnlockSsl(false);
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
 				return 0;
 			}
 
@@ -200,13 +217,28 @@ namespace Alloy.Providers
 
 		public class ArtistsLoader : AsyncTask<object, Song, int>
 		{
+			private bool initial;
+			public ArtistsLoader(bool initial)
+			{
+				this.initial = initial;
+			}
 			protected override int RunInBackground(params object[] @params)
 			{
 				try
 				{
 					Utils.UnlockSsl(true);
-					var request = ApiRequest(ApiRequestType.Artists, null, RequestType.GET);
-					Artists = JsonConvert.DeserializeObject<ArtistList>(request).Artists;
+					var p = new Dictionary<string, object> { { "limit", MaxCachedArtists.ToString() } };
+					if (!initial || Artists.NextOffset != 0)
+					{
+						p.Add("offset", Artists.NextOffset.ToString());
+					}
+					var request = ApiRequest(ApiRequestType.Artists, p, RequestType.GET);
+
+					ArtistList result = JsonConvert.DeserializeObject<ArtistList>(request);
+
+					Artists.AddRange(result.Artists);
+					Artists.NextOffset = result.NextOffset;
+
 					Utils.UnlockSsl(false);
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -225,7 +257,14 @@ namespace Alloy.Providers
 		{
 			protected override int RunInBackground(params object[] @params)
 			{
-
+				try
+				{
+					Utils.UnlockSsl(true);
+					var request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
+					Genres = JsonConvert.DeserializeObject<GenreList>(request).Genres;
+					Utils.UnlockSsl(false);
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
 				return 0;
 			}
 
@@ -298,16 +337,16 @@ namespace Alloy.Providers
 			var allMusic = (AllMusicLoader)new AllMusicLoader().Execute();
 		}
 
-		public static void RefreshArtists()
+		public static void RefreshArtists(bool initial)
 		{
-			Artists = new List<Artist>();
-			var artists = (ArtistsLoader)new ArtistsLoader().Execute();
+			////if (initial) Artists = new ArtistsQueue();
+			var artists = (ArtistsLoader)new ArtistsLoader(initial).Execute();
 		}
 
 		public static void RefreshAlbums()
 		{
 			Albums = new List<Album>();
-			var albums = (AlbumLoader)new AlbumLoader().Execute();
+			var albums = (AlbumsLoader)new AlbumsLoader().Execute();
 		}
 
 		public static void RefreshGenres()
@@ -320,10 +359,10 @@ namespace Alloy.Providers
 		{
 			Genres = new List<Genre>();
 			Albums = new List<Album>();
-			Artists = new List<Artist>();
+			Artists = new ArtistsQueue();
 
-			var albums = (AlbumLoader)new AlbumLoader().Execute();
-			var artists = (ArtistsLoader)new ArtistsLoader().Execute();
+			var albums = (AlbumsLoader)new AlbumsLoader().Execute();
+			var artists = (ArtistsLoader)new ArtistsLoader(true).Execute();
 			var genres = (GenreLoader)new GenreLoader().Execute();
 		}
 
@@ -346,14 +385,32 @@ namespace Alloy.Providers
 		public static MusicQueue GetGenreTracks(Genre genre)
 		{
 			var tracks = new MusicQueue();
-			tracks.AddRange(AllSongs.Where(t => t.Genre.Equals(genre.Title)));
+			try
+			{
+				Utils.UnlockSsl(true);
+				var request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
+				GenreContainer result = JsonConvert.DeserializeObject<GenreContainer>(request);
+				tracks.AddRange(result.Tracks);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+
 			return tracks;
 		}
 
 		public static MusicQueue GetAlbumTracks(Album album)
 		{
 			var tracks = new MusicQueue();
-			tracks.AddRange(AllSongs.Where(t => t.Genre.Equals(album.AlbumName)));
+			try
+			{
+				Utils.UnlockSsl(true);
+				var request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
+				AlbumContainer result = JsonConvert.DeserializeObject<AlbumContainer>(request);
+				tracks.AddRange(result.Tracks);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+
 			return tracks;
 		}
 
@@ -361,9 +418,8 @@ namespace Alloy.Providers
 		{
 			UriBuilder uriBuilder;
 			var parameters = new Extensions.HttpValueCollection();
-			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			string apiKey = sp.GetString("alloydbapikey", "");
-			parameters["api_key"] = apiKey;
+
+			parameters["api_key"] = GetApiKey();
 			uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.Stream));
 			parameters["id"] = song.Id;
 
@@ -392,9 +448,8 @@ namespace Alloy.Providers
 		{
 			UriBuilder uriBuilder;
 			var parameters = new Extensions.HttpValueCollection();
-			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			string apiKey = sp.GetString("alloydbapikey", "");
-			parameters["api_key"] = apiKey;
+
+			parameters["api_key"] = GetApiKey();
 			uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.CoverArt));
 			if (paramsDictionary != null)
 			{
@@ -407,5 +462,20 @@ namespace Alloy.Providers
 			uriBuilder.Query = parameters.ToString();
 			return GetImageBitmapFromUrl(uriBuilder.Uri.ToString());
 		}
+	}
+
+	public class ArtistsQueue : IArtistQueue
+	{
+		public override void GetMoreData()
+		{
+			MusicProvider.RefreshArtists(true);
+		}
+
+		public override void Refresh()
+		{
+			MusicProvider.RefreshArtists(true);
+		}
+
+		public override int NextOffset { get; set; }
 	}
 }

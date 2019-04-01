@@ -119,5 +119,6 @@ namespace Alloy.Models
 		public TextView reposts;
 		public EventHandler ClickHandler;
 		public Song Song;
+		public Artist Artist;
 	}
 }

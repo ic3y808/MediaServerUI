@@ -30,7 +30,7 @@ namespace Alloy.Fragments
 
 			RegisterForContextMenu(listView);
 			adapter = new GenresAdapter();
-
+			
 			listView.Adapter = adapter;
 			listView.ItemClick += MListView_ItemClick;
 
@@ -44,6 +44,8 @@ namespace Alloy.Fragments
 
 			return root_view;
 		}
+
+	
 
 		public override void ScrollToNowPlaying()
 		{
@@ -60,7 +62,7 @@ namespace Alloy.Fragments
 				for (int i = 0; i < adapter.Count; i++)
 				{
 					var item = adapter[i];
-					if (ServiceConnection.CurrentSong.Genre.Equals(item.Title))
+					if (ServiceConnection.CurrentSong.Genre.Equals(item.Name))
 					{
 						item.IsSelected = true;
 						break;

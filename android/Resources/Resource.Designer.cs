@@ -26,6 +26,1587 @@ namespace Alloy
 		
 		public static void UpdateIdValues()
 		{
+			global::SlideUpPanelLibrary.Resource.Animation.abc_fade_in = global::Alloy.Resource.Animation.abc_fade_in;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_fade_out = global::Alloy.Resource.Animation.abc_fade_out;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_grow_fade_in_from_bottom = global::Alloy.Resource.Animation.abc_grow_fade_in_from_bottom;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_popup_enter = global::Alloy.Resource.Animation.abc_popup_enter;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_popup_exit = global::Alloy.Resource.Animation.abc_popup_exit;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_shrink_fade_out_from_bottom = global::Alloy.Resource.Animation.abc_shrink_fade_out_from_bottom;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_in_bottom = global::Alloy.Resource.Animation.abc_slide_in_bottom;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_in_top = global::Alloy.Resource.Animation.abc_slide_in_top;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_out_bottom = global::Alloy.Resource.Animation.abc_slide_out_bottom;
+			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_out_top = global::Alloy.Resource.Animation.abc_slide_out_top;
+			global::SlideUpPanelLibrary.Resource.Animation.tooltip_enter = global::Alloy.Resource.Animation.tooltip_enter;
+			global::SlideUpPanelLibrary.Resource.Animation.tooltip_exit = global::Alloy.Resource.Animation.tooltip_exit;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarDivider = global::Alloy.Resource.Attribute.actionBarDivider;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarItemBackground = global::Alloy.Resource.Attribute.actionBarItemBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarPopupTheme = global::Alloy.Resource.Attribute.actionBarPopupTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarSize = global::Alloy.Resource.Attribute.actionBarSize;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarSplitStyle = global::Alloy.Resource.Attribute.actionBarSplitStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarStyle = global::Alloy.Resource.Attribute.actionBarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTabBarStyle = global::Alloy.Resource.Attribute.actionBarTabBarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTabStyle = global::Alloy.Resource.Attribute.actionBarTabStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTabTextStyle = global::Alloy.Resource.Attribute.actionBarTabTextStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTheme = global::Alloy.Resource.Attribute.actionBarTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionBarWidgetTheme = global::Alloy.Resource.Attribute.actionBarWidgetTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionButtonStyle = global::Alloy.Resource.Attribute.actionButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionDropDownStyle = global::Alloy.Resource.Attribute.actionDropDownStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionLayout = global::Alloy.Resource.Attribute.actionLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionMenuTextAppearance = global::Alloy.Resource.Attribute.actionMenuTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionMenuTextColor = global::Alloy.Resource.Attribute.actionMenuTextColor;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeBackground = global::Alloy.Resource.Attribute.actionModeBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCloseButtonStyle = global::Alloy.Resource.Attribute.actionModeCloseButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCloseDrawable = global::Alloy.Resource.Attribute.actionModeCloseDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCopyDrawable = global::Alloy.Resource.Attribute.actionModeCopyDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCutDrawable = global::Alloy.Resource.Attribute.actionModeCutDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeFindDrawable = global::Alloy.Resource.Attribute.actionModeFindDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModePasteDrawable = global::Alloy.Resource.Attribute.actionModePasteDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModePopupWindowStyle = global::Alloy.Resource.Attribute.actionModePopupWindowStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeSelectAllDrawable = global::Alloy.Resource.Attribute.actionModeSelectAllDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeShareDrawable = global::Alloy.Resource.Attribute.actionModeShareDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeSplitBackground = global::Alloy.Resource.Attribute.actionModeSplitBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeStyle = global::Alloy.Resource.Attribute.actionModeStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionModeWebSearchDrawable = global::Alloy.Resource.Attribute.actionModeWebSearchDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionOverflowButtonStyle = global::Alloy.Resource.Attribute.actionOverflowButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionOverflowMenuStyle = global::Alloy.Resource.Attribute.actionOverflowMenuStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionProviderClass = global::Alloy.Resource.Attribute.actionProviderClass;
+			global::SlideUpPanelLibrary.Resource.Attribute.actionViewClass = global::Alloy.Resource.Attribute.actionViewClass;
+			global::SlideUpPanelLibrary.Resource.Attribute.activityChooserViewStyle = global::Alloy.Resource.Attribute.activityChooserViewStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogButtonGroupStyle = global::Alloy.Resource.Attribute.alertDialogButtonGroupStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogCenterButtons = global::Alloy.Resource.Attribute.alertDialogCenterButtons;
+			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogStyle = global::Alloy.Resource.Attribute.alertDialogStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogTheme = global::Alloy.Resource.Attribute.alertDialogTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.allowStacking = global::Alloy.Resource.Attribute.allowStacking;
+			global::SlideUpPanelLibrary.Resource.Attribute.alpha = global::Alloy.Resource.Attribute.alpha;
+			global::SlideUpPanelLibrary.Resource.Attribute.alphabeticModifiers = global::Alloy.Resource.Attribute.alphabeticModifiers;
+			global::SlideUpPanelLibrary.Resource.Attribute.arrowHeadLength = global::Alloy.Resource.Attribute.arrowHeadLength;
+			global::SlideUpPanelLibrary.Resource.Attribute.arrowShaftLength = global::Alloy.Resource.Attribute.arrowShaftLength;
+			global::SlideUpPanelLibrary.Resource.Attribute.autoCompleteTextViewStyle = global::Alloy.Resource.Attribute.autoCompleteTextViewStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeMaxTextSize = global::Alloy.Resource.Attribute.autoSizeMaxTextSize;
+			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeMinTextSize = global::Alloy.Resource.Attribute.autoSizeMinTextSize;
+			global::SlideUpPanelLibrary.Resource.Attribute.autoSizePresetSizes = global::Alloy.Resource.Attribute.autoSizePresetSizes;
+			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeStepGranularity = global::Alloy.Resource.Attribute.autoSizeStepGranularity;
+			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeTextType = global::Alloy.Resource.Attribute.autoSizeTextType;
+			global::SlideUpPanelLibrary.Resource.Attribute.background = global::Alloy.Resource.Attribute.background;
+			global::SlideUpPanelLibrary.Resource.Attribute.backgroundSplit = global::Alloy.Resource.Attribute.backgroundSplit;
+			global::SlideUpPanelLibrary.Resource.Attribute.backgroundStacked = global::Alloy.Resource.Attribute.backgroundStacked;
+			global::SlideUpPanelLibrary.Resource.Attribute.backgroundTint = global::Alloy.Resource.Attribute.backgroundTint;
+			global::SlideUpPanelLibrary.Resource.Attribute.backgroundTintMode = global::Alloy.Resource.Attribute.backgroundTintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.barLength = global::Alloy.Resource.Attribute.barLength;
+			global::SlideUpPanelLibrary.Resource.Attribute.borderlessButtonStyle = global::Alloy.Resource.Attribute.borderlessButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarButtonStyle = global::Alloy.Resource.Attribute.buttonBarButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarNegativeButtonStyle = global::Alloy.Resource.Attribute.buttonBarNegativeButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarNeutralButtonStyle = global::Alloy.Resource.Attribute.buttonBarNeutralButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarPositiveButtonStyle = global::Alloy.Resource.Attribute.buttonBarPositiveButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarStyle = global::Alloy.Resource.Attribute.buttonBarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonGravity = global::Alloy.Resource.Attribute.buttonGravity;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonPanelSideLayout = global::Alloy.Resource.Attribute.buttonPanelSideLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonStyle = global::Alloy.Resource.Attribute.buttonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonStyleSmall = global::Alloy.Resource.Attribute.buttonStyleSmall;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonTint = global::Alloy.Resource.Attribute.buttonTint;
+			global::SlideUpPanelLibrary.Resource.Attribute.buttonTintMode = global::Alloy.Resource.Attribute.buttonTintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.checkboxStyle = global::Alloy.Resource.Attribute.checkboxStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.checkedTextViewStyle = global::Alloy.Resource.Attribute.checkedTextViewStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.closeIcon = global::Alloy.Resource.Attribute.closeIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.closeItemLayout = global::Alloy.Resource.Attribute.closeItemLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.collapseContentDescription = global::Alloy.Resource.Attribute.collapseContentDescription;
+			global::SlideUpPanelLibrary.Resource.Attribute.collapseIcon = global::Alloy.Resource.Attribute.collapseIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.color = global::Alloy.Resource.Attribute.color;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorAccent = global::Alloy.Resource.Attribute.colorAccent;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorBackgroundFloating = global::Alloy.Resource.Attribute.colorBackgroundFloating;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorButtonNormal = global::Alloy.Resource.Attribute.colorButtonNormal;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorControlActivated = global::Alloy.Resource.Attribute.colorControlActivated;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorControlHighlight = global::Alloy.Resource.Attribute.colorControlHighlight;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorControlNormal = global::Alloy.Resource.Attribute.colorControlNormal;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorError = global::Alloy.Resource.Attribute.colorError;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorPrimary = global::Alloy.Resource.Attribute.colorPrimary;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorPrimaryDark = global::Alloy.Resource.Attribute.colorPrimaryDark;
+			global::SlideUpPanelLibrary.Resource.Attribute.colorSwitchThumbNormal = global::Alloy.Resource.Attribute.colorSwitchThumbNormal;
+			global::SlideUpPanelLibrary.Resource.Attribute.commitIcon = global::Alloy.Resource.Attribute.commitIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentDescription = global::Alloy.Resource.Attribute.contentDescription;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetEnd = global::Alloy.Resource.Attribute.contentInsetEnd;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetEndWithActions = global::Alloy.Resource.Attribute.contentInsetEndWithActions;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetLeft = global::Alloy.Resource.Attribute.contentInsetLeft;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetRight = global::Alloy.Resource.Attribute.contentInsetRight;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetStart = global::Alloy.Resource.Attribute.contentInsetStart;
+			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetStartWithNavigation = global::Alloy.Resource.Attribute.contentInsetStartWithNavigation;
+			global::SlideUpPanelLibrary.Resource.Attribute.controlBackground = global::Alloy.Resource.Attribute.controlBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.customNavigationLayout = global::Alloy.Resource.Attribute.customNavigationLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.defaultQueryHint = global::Alloy.Resource.Attribute.defaultQueryHint;
+			global::SlideUpPanelLibrary.Resource.Attribute.dialogPreferredPadding = global::Alloy.Resource.Attribute.dialogPreferredPadding;
+			global::SlideUpPanelLibrary.Resource.Attribute.dialogTheme = global::Alloy.Resource.Attribute.dialogTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.displayOptions = global::Alloy.Resource.Attribute.displayOptions;
+			global::SlideUpPanelLibrary.Resource.Attribute.divider = global::Alloy.Resource.Attribute.divider;
+			global::SlideUpPanelLibrary.Resource.Attribute.dividerHorizontal = global::Alloy.Resource.Attribute.dividerHorizontal;
+			global::SlideUpPanelLibrary.Resource.Attribute.dividerPadding = global::Alloy.Resource.Attribute.dividerPadding;
+			global::SlideUpPanelLibrary.Resource.Attribute.dividerVertical = global::Alloy.Resource.Attribute.dividerVertical;
+			global::SlideUpPanelLibrary.Resource.Attribute.drawableSize = global::Alloy.Resource.Attribute.drawableSize;
+			global::SlideUpPanelLibrary.Resource.Attribute.drawerArrowStyle = global::Alloy.Resource.Attribute.drawerArrowStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.dropDownListViewStyle = global::Alloy.Resource.Attribute.dropDownListViewStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.dropdownListPreferredItemHeight = global::Alloy.Resource.Attribute.dropdownListPreferredItemHeight;
+			global::SlideUpPanelLibrary.Resource.Attribute.editTextBackground = global::Alloy.Resource.Attribute.editTextBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.editTextColor = global::Alloy.Resource.Attribute.editTextColor;
+			global::SlideUpPanelLibrary.Resource.Attribute.editTextStyle = global::Alloy.Resource.Attribute.editTextStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.elevation = global::Alloy.Resource.Attribute.elevation;
+			global::SlideUpPanelLibrary.Resource.Attribute.expandActivityOverflowButtonDrawable = global::Alloy.Resource.Attribute.expandActivityOverflowButtonDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollEnabled = global::Alloy.Resource.Attribute.fastScrollEnabled;
+			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollHorizontalThumbDrawable = global::Alloy.Resource.Attribute.fastScrollHorizontalThumbDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollHorizontalTrackDrawable = global::Alloy.Resource.Attribute.fastScrollHorizontalTrackDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollVerticalThumbDrawable = global::Alloy.Resource.Attribute.fastScrollVerticalThumbDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollVerticalTrackDrawable = global::Alloy.Resource.Attribute.fastScrollVerticalTrackDrawable;
+			global::SlideUpPanelLibrary.Resource.Attribute.font = global::Alloy.Resource.Attribute.font;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontFamily = global::Alloy.Resource.Attribute.fontFamily;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderAuthority = global::Alloy.Resource.Attribute.fontProviderAuthority;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderCerts = global::Alloy.Resource.Attribute.fontProviderCerts;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderFetchStrategy = global::Alloy.Resource.Attribute.fontProviderFetchStrategy;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderFetchTimeout = global::Alloy.Resource.Attribute.fontProviderFetchTimeout;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderPackage = global::Alloy.Resource.Attribute.fontProviderPackage;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderQuery = global::Alloy.Resource.Attribute.fontProviderQuery;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontStyle = global::Alloy.Resource.Attribute.fontStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.fontWeight = global::Alloy.Resource.Attribute.fontWeight;
+			global::SlideUpPanelLibrary.Resource.Attribute.gapBetweenBars = global::Alloy.Resource.Attribute.gapBetweenBars;
+			global::SlideUpPanelLibrary.Resource.Attribute.goIcon = global::Alloy.Resource.Attribute.goIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.height = global::Alloy.Resource.Attribute.height;
+			global::SlideUpPanelLibrary.Resource.Attribute.hideOnContentScroll = global::Alloy.Resource.Attribute.hideOnContentScroll;
+			global::SlideUpPanelLibrary.Resource.Attribute.homeAsUpIndicator = global::Alloy.Resource.Attribute.homeAsUpIndicator;
+			global::SlideUpPanelLibrary.Resource.Attribute.homeLayout = global::Alloy.Resource.Attribute.homeLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.icon = global::Alloy.Resource.Attribute.icon;
+			global::SlideUpPanelLibrary.Resource.Attribute.iconTint = global::Alloy.Resource.Attribute.iconTint;
+			global::SlideUpPanelLibrary.Resource.Attribute.iconTintMode = global::Alloy.Resource.Attribute.iconTintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.iconifiedByDefault = global::Alloy.Resource.Attribute.iconifiedByDefault;
+			global::SlideUpPanelLibrary.Resource.Attribute.imageButtonStyle = global::Alloy.Resource.Attribute.imageButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.indeterminateProgressStyle = global::Alloy.Resource.Attribute.indeterminateProgressStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.initialActivityCount = global::Alloy.Resource.Attribute.initialActivityCount;
+			global::SlideUpPanelLibrary.Resource.Attribute.isLightTheme = global::Alloy.Resource.Attribute.isLightTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.itemPadding = global::Alloy.Resource.Attribute.itemPadding;
+			global::SlideUpPanelLibrary.Resource.Attribute.layout = global::Alloy.Resource.Attribute.layout;
+			global::SlideUpPanelLibrary.Resource.Attribute.layoutManager = global::Alloy.Resource.Attribute.layoutManager;
+			global::SlideUpPanelLibrary.Resource.Attribute.listChoiceBackgroundIndicator = global::Alloy.Resource.Attribute.listChoiceBackgroundIndicator;
+			global::SlideUpPanelLibrary.Resource.Attribute.listDividerAlertDialog = global::Alloy.Resource.Attribute.listDividerAlertDialog;
+			global::SlideUpPanelLibrary.Resource.Attribute.listItemLayout = global::Alloy.Resource.Attribute.listItemLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.listLayout = global::Alloy.Resource.Attribute.listLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.listMenuViewStyle = global::Alloy.Resource.Attribute.listMenuViewStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.listPopupWindowStyle = global::Alloy.Resource.Attribute.listPopupWindowStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemHeight = global::Alloy.Resource.Attribute.listPreferredItemHeight;
+			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemHeightLarge = global::Alloy.Resource.Attribute.listPreferredItemHeightLarge;
+			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemHeightSmall = global::Alloy.Resource.Attribute.listPreferredItemHeightSmall;
+			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemPaddingLeft = global::Alloy.Resource.Attribute.listPreferredItemPaddingLeft;
+			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemPaddingRight = global::Alloy.Resource.Attribute.listPreferredItemPaddingRight;
+			global::SlideUpPanelLibrary.Resource.Attribute.logo = global::Alloy.Resource.Attribute.logo;
+			global::SlideUpPanelLibrary.Resource.Attribute.logoDescription = global::Alloy.Resource.Attribute.logoDescription;
+			global::SlideUpPanelLibrary.Resource.Attribute.maxButtonHeight = global::Alloy.Resource.Attribute.maxButtonHeight;
+			global::SlideUpPanelLibrary.Resource.Attribute.measureWithLargestChild = global::Alloy.Resource.Attribute.measureWithLargestChild;
+			global::SlideUpPanelLibrary.Resource.Attribute.multiChoiceItemLayout = global::Alloy.Resource.Attribute.multiChoiceItemLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.navigationContentDescription = global::Alloy.Resource.Attribute.navigationContentDescription;
+			global::SlideUpPanelLibrary.Resource.Attribute.navigationIcon = global::Alloy.Resource.Attribute.navigationIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.navigationMode = global::Alloy.Resource.Attribute.navigationMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.numericModifiers = global::Alloy.Resource.Attribute.numericModifiers;
+			global::SlideUpPanelLibrary.Resource.Attribute.overlapAnchor = global::Alloy.Resource.Attribute.overlapAnchor;
+			global::SlideUpPanelLibrary.Resource.Attribute.paddingBottomNoButtons = global::Alloy.Resource.Attribute.paddingBottomNoButtons;
+			global::SlideUpPanelLibrary.Resource.Attribute.paddingEnd = global::Alloy.Resource.Attribute.paddingEnd;
+			global::SlideUpPanelLibrary.Resource.Attribute.paddingStart = global::Alloy.Resource.Attribute.paddingStart;
+			global::SlideUpPanelLibrary.Resource.Attribute.paddingTopNoTitle = global::Alloy.Resource.Attribute.paddingTopNoTitle;
+			global::SlideUpPanelLibrary.Resource.Attribute.panelBackground = global::Alloy.Resource.Attribute.panelBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.panelMenuListTheme = global::Alloy.Resource.Attribute.panelMenuListTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.panelMenuListWidth = global::Alloy.Resource.Attribute.panelMenuListWidth;
+			global::SlideUpPanelLibrary.Resource.Attribute.popupMenuStyle = global::Alloy.Resource.Attribute.popupMenuStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.popupTheme = global::Alloy.Resource.Attribute.popupTheme;
+			global::SlideUpPanelLibrary.Resource.Attribute.popupWindowStyle = global::Alloy.Resource.Attribute.popupWindowStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.preserveIconSpacing = global::Alloy.Resource.Attribute.preserveIconSpacing;
+			global::SlideUpPanelLibrary.Resource.Attribute.progressBarPadding = global::Alloy.Resource.Attribute.progressBarPadding;
+			global::SlideUpPanelLibrary.Resource.Attribute.progressBarStyle = global::Alloy.Resource.Attribute.progressBarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.queryBackground = global::Alloy.Resource.Attribute.queryBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.queryHint = global::Alloy.Resource.Attribute.queryHint;
+			global::SlideUpPanelLibrary.Resource.Attribute.radioButtonStyle = global::Alloy.Resource.Attribute.radioButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.ratingBarStyle = global::Alloy.Resource.Attribute.ratingBarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.ratingBarStyleIndicator = global::Alloy.Resource.Attribute.ratingBarStyleIndicator;
+			global::SlideUpPanelLibrary.Resource.Attribute.ratingBarStyleSmall = global::Alloy.Resource.Attribute.ratingBarStyleSmall;
+			global::SlideUpPanelLibrary.Resource.Attribute.reverseLayout = global::Alloy.Resource.Attribute.reverseLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.searchHintIcon = global::Alloy.Resource.Attribute.searchHintIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.searchIcon = global::Alloy.Resource.Attribute.searchIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.searchViewStyle = global::Alloy.Resource.Attribute.searchViewStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.seekBarStyle = global::Alloy.Resource.Attribute.seekBarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.selectableItemBackground = global::Alloy.Resource.Attribute.selectableItemBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.selectableItemBackgroundBorderless = global::Alloy.Resource.Attribute.selectableItemBackgroundBorderless;
+			global::SlideUpPanelLibrary.Resource.Attribute.showAsAction = global::Alloy.Resource.Attribute.showAsAction;
+			global::SlideUpPanelLibrary.Resource.Attribute.showDividers = global::Alloy.Resource.Attribute.showDividers;
+			global::SlideUpPanelLibrary.Resource.Attribute.showText = global::Alloy.Resource.Attribute.showText;
+			global::SlideUpPanelLibrary.Resource.Attribute.showTitle = global::Alloy.Resource.Attribute.showTitle;
+			global::SlideUpPanelLibrary.Resource.Attribute.singleChoiceItemLayout = global::Alloy.Resource.Attribute.singleChoiceItemLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.spanCount = global::Alloy.Resource.Attribute.spanCount;
+			global::SlideUpPanelLibrary.Resource.Attribute.spinBars = global::Alloy.Resource.Attribute.spinBars;
+			global::SlideUpPanelLibrary.Resource.Attribute.spinnerDropDownItemStyle = global::Alloy.Resource.Attribute.spinnerDropDownItemStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.spinnerStyle = global::Alloy.Resource.Attribute.spinnerStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.splitTrack = global::Alloy.Resource.Attribute.splitTrack;
+			global::SlideUpPanelLibrary.Resource.Attribute.srcCompat = global::Alloy.Resource.Attribute.srcCompat;
+			global::SlideUpPanelLibrary.Resource.Attribute.stackFromEnd = global::Alloy.Resource.Attribute.stackFromEnd;
+			global::SlideUpPanelLibrary.Resource.Attribute.state_above_anchor = global::Alloy.Resource.Attribute.state_above_anchor;
+			global::SlideUpPanelLibrary.Resource.Attribute.subMenuArrow = global::Alloy.Resource.Attribute.subMenuArrow;
+			global::SlideUpPanelLibrary.Resource.Attribute.submitBackground = global::Alloy.Resource.Attribute.submitBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.subtitle = global::Alloy.Resource.Attribute.subtitle;
+			global::SlideUpPanelLibrary.Resource.Attribute.subtitleTextAppearance = global::Alloy.Resource.Attribute.subtitleTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Attribute.subtitleTextColor = global::Alloy.Resource.Attribute.subtitleTextColor;
+			global::SlideUpPanelLibrary.Resource.Attribute.subtitleTextStyle = global::Alloy.Resource.Attribute.subtitleTextStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.suggestionRowLayout = global::Alloy.Resource.Attribute.suggestionRowLayout;
+			global::SlideUpPanelLibrary.Resource.Attribute.switchMinWidth = global::Alloy.Resource.Attribute.switchMinWidth;
+			global::SlideUpPanelLibrary.Resource.Attribute.switchPadding = global::Alloy.Resource.Attribute.switchPadding;
+			global::SlideUpPanelLibrary.Resource.Attribute.switchStyle = global::Alloy.Resource.Attribute.switchStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.switchTextAppearance = global::Alloy.Resource.Attribute.switchTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAllCaps = global::Alloy.Resource.Attribute.textAllCaps;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceLargePopupMenu = global::Alloy.Resource.Attribute.textAppearanceLargePopupMenu;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceListItem = global::Alloy.Resource.Attribute.textAppearanceListItem;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceListItemSecondary = global::Alloy.Resource.Attribute.textAppearanceListItemSecondary;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceListItemSmall = global::Alloy.Resource.Attribute.textAppearanceListItemSmall;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearancePopupMenuHeader = global::Alloy.Resource.Attribute.textAppearancePopupMenuHeader;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceSearchResultSubtitle = global::Alloy.Resource.Attribute.textAppearanceSearchResultSubtitle;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceSearchResultTitle = global::Alloy.Resource.Attribute.textAppearanceSearchResultTitle;
+			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceSmallPopupMenu = global::Alloy.Resource.Attribute.textAppearanceSmallPopupMenu;
+			global::SlideUpPanelLibrary.Resource.Attribute.textColorAlertDialogListItem = global::Alloy.Resource.Attribute.textColorAlertDialogListItem;
+			global::SlideUpPanelLibrary.Resource.Attribute.textColorSearchUrl = global::Alloy.Resource.Attribute.textColorSearchUrl;
+			global::SlideUpPanelLibrary.Resource.Attribute.theme = global::Alloy.Resource.Attribute.theme;
+			global::SlideUpPanelLibrary.Resource.Attribute.thickness = global::Alloy.Resource.Attribute.thickness;
+			global::SlideUpPanelLibrary.Resource.Attribute.thumbTextPadding = global::Alloy.Resource.Attribute.thumbTextPadding;
+			global::SlideUpPanelLibrary.Resource.Attribute.thumbTint = global::Alloy.Resource.Attribute.thumbTint;
+			global::SlideUpPanelLibrary.Resource.Attribute.thumbTintMode = global::Alloy.Resource.Attribute.thumbTintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.tickMark = global::Alloy.Resource.Attribute.tickMark;
+			global::SlideUpPanelLibrary.Resource.Attribute.tickMarkTint = global::Alloy.Resource.Attribute.tickMarkTint;
+			global::SlideUpPanelLibrary.Resource.Attribute.tickMarkTintMode = global::Alloy.Resource.Attribute.tickMarkTintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.tint = global::Alloy.Resource.Attribute.tint;
+			global::SlideUpPanelLibrary.Resource.Attribute.tintMode = global::Alloy.Resource.Attribute.tintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.title = global::Alloy.Resource.Attribute.title;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleMargin = global::Alloy.Resource.Attribute.titleMargin;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginBottom = global::Alloy.Resource.Attribute.titleMarginBottom;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginEnd = global::Alloy.Resource.Attribute.titleMarginEnd;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginStart = global::Alloy.Resource.Attribute.titleMarginStart;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginTop = global::Alloy.Resource.Attribute.titleMarginTop;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleMargins = global::Alloy.Resource.Attribute.titleMargins;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleTextAppearance = global::Alloy.Resource.Attribute.titleTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleTextColor = global::Alloy.Resource.Attribute.titleTextColor;
+			global::SlideUpPanelLibrary.Resource.Attribute.titleTextStyle = global::Alloy.Resource.Attribute.titleTextStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.toolbarNavigationButtonStyle = global::Alloy.Resource.Attribute.toolbarNavigationButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.toolbarStyle = global::Alloy.Resource.Attribute.toolbarStyle;
+			global::SlideUpPanelLibrary.Resource.Attribute.tooltipForegroundColor = global::Alloy.Resource.Attribute.tooltipForegroundColor;
+			global::SlideUpPanelLibrary.Resource.Attribute.tooltipFrameBackground = global::Alloy.Resource.Attribute.tooltipFrameBackground;
+			global::SlideUpPanelLibrary.Resource.Attribute.tooltipText = global::Alloy.Resource.Attribute.tooltipText;
+			global::SlideUpPanelLibrary.Resource.Attribute.track = global::Alloy.Resource.Attribute.track;
+			global::SlideUpPanelLibrary.Resource.Attribute.trackTint = global::Alloy.Resource.Attribute.trackTint;
+			global::SlideUpPanelLibrary.Resource.Attribute.trackTintMode = global::Alloy.Resource.Attribute.trackTintMode;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoAnchorPoint = global::Alloy.Resource.Attribute.umanoAnchorPoint;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoClipPanel = global::Alloy.Resource.Attribute.umanoClipPanel;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoDragView = global::Alloy.Resource.Attribute.umanoDragView;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoFadeColor = global::Alloy.Resource.Attribute.umanoFadeColor;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoFlingVelocity = global::Alloy.Resource.Attribute.umanoFlingVelocity;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoInitialState = global::Alloy.Resource.Attribute.umanoInitialState;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoOverlay = global::Alloy.Resource.Attribute.umanoOverlay;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoPanelHeight = global::Alloy.Resource.Attribute.umanoPanelHeight;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoParallaxOffset = global::Alloy.Resource.Attribute.umanoParallaxOffset;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoScrollInterpolator = global::Alloy.Resource.Attribute.umanoScrollInterpolator;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoScrollableView = global::Alloy.Resource.Attribute.umanoScrollableView;
+			global::SlideUpPanelLibrary.Resource.Attribute.umanoShadowHeight = global::Alloy.Resource.Attribute.umanoShadowHeight;
+			global::SlideUpPanelLibrary.Resource.Attribute.voiceIcon = global::Alloy.Resource.Attribute.voiceIcon;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowActionBar = global::Alloy.Resource.Attribute.windowActionBar;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowActionBarOverlay = global::Alloy.Resource.Attribute.windowActionBarOverlay;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowActionModeOverlay = global::Alloy.Resource.Attribute.windowActionModeOverlay;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedHeightMajor = global::Alloy.Resource.Attribute.windowFixedHeightMajor;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedHeightMinor = global::Alloy.Resource.Attribute.windowFixedHeightMinor;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedWidthMajor = global::Alloy.Resource.Attribute.windowFixedWidthMajor;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedWidthMinor = global::Alloy.Resource.Attribute.windowFixedWidthMinor;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowMinWidthMajor = global::Alloy.Resource.Attribute.windowMinWidthMajor;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowMinWidthMinor = global::Alloy.Resource.Attribute.windowMinWidthMinor;
+			global::SlideUpPanelLibrary.Resource.Attribute.windowNoTitle = global::Alloy.Resource.Attribute.windowNoTitle;
+			global::SlideUpPanelLibrary.Resource.Boolean.abc_action_bar_embed_tabs = global::Alloy.Resource.Boolean.abc_action_bar_embed_tabs;
+			global::SlideUpPanelLibrary.Resource.Boolean.abc_allow_stacked_button_bar = global::Alloy.Resource.Boolean.abc_allow_stacked_button_bar;
+			global::SlideUpPanelLibrary.Resource.Boolean.abc_config_actionMenuItemAllCaps = global::Alloy.Resource.Boolean.abc_config_actionMenuItemAllCaps;
+			global::SlideUpPanelLibrary.Resource.Boolean.abc_config_closeDialogWhenTouchOutside = global::Alloy.Resource.Boolean.abc_config_closeDialogWhenTouchOutside;
+			global::SlideUpPanelLibrary.Resource.Boolean.abc_config_showMenuShortcutsWhenKeyboardPresent = global::Alloy.Resource.Boolean.abc_config_showMenuShortcutsWhenKeyboardPresent;
+			global::SlideUpPanelLibrary.Resource.Color.abc_background_cache_hint_selector_material_dark = global::Alloy.Resource.Color.abc_background_cache_hint_selector_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.abc_background_cache_hint_selector_material_light = global::Alloy.Resource.Color.abc_background_cache_hint_selector_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.abc_btn_colored_borderless_text_material = global::Alloy.Resource.Color.abc_btn_colored_borderless_text_material;
+			global::SlideUpPanelLibrary.Resource.Color.abc_btn_colored_text_material = global::Alloy.Resource.Color.abc_btn_colored_text_material;
+			global::SlideUpPanelLibrary.Resource.Color.abc_color_highlight_material = global::Alloy.Resource.Color.abc_color_highlight_material;
+			global::SlideUpPanelLibrary.Resource.Color.abc_hint_foreground_material_dark = global::Alloy.Resource.Color.abc_hint_foreground_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.abc_hint_foreground_material_light = global::Alloy.Resource.Color.abc_hint_foreground_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.abc_input_method_navigation_guard = global::Alloy.Resource.Color.abc_input_method_navigation_guard;
+			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_disable_only_material_dark = global::Alloy.Resource.Color.abc_primary_text_disable_only_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_disable_only_material_light = global::Alloy.Resource.Color.abc_primary_text_disable_only_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_material_dark = global::Alloy.Resource.Color.abc_primary_text_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_material_light = global::Alloy.Resource.Color.abc_primary_text_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text = global::Alloy.Resource.Color.abc_search_url_text;
+			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text_normal = global::Alloy.Resource.Color.abc_search_url_text_normal;
+			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text_pressed = global::Alloy.Resource.Color.abc_search_url_text_pressed;
+			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text_selected = global::Alloy.Resource.Color.abc_search_url_text_selected;
+			global::SlideUpPanelLibrary.Resource.Color.abc_secondary_text_material_dark = global::Alloy.Resource.Color.abc_secondary_text_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.abc_secondary_text_material_light = global::Alloy.Resource.Color.abc_secondary_text_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.abc_tint_btn_checkable = global::Alloy.Resource.Color.abc_tint_btn_checkable;
+			global::SlideUpPanelLibrary.Resource.Color.abc_tint_default = global::Alloy.Resource.Color.abc_tint_default;
+			global::SlideUpPanelLibrary.Resource.Color.abc_tint_edittext = global::Alloy.Resource.Color.abc_tint_edittext;
+			global::SlideUpPanelLibrary.Resource.Color.abc_tint_seek_thumb = global::Alloy.Resource.Color.abc_tint_seek_thumb;
+			global::SlideUpPanelLibrary.Resource.Color.abc_tint_spinner = global::Alloy.Resource.Color.abc_tint_spinner;
+			global::SlideUpPanelLibrary.Resource.Color.abc_tint_switch_track = global::Alloy.Resource.Color.abc_tint_switch_track;
+			global::SlideUpPanelLibrary.Resource.Color.accent_material_dark = global::Alloy.Resource.Color.accent_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.accent_material_light = global::Alloy.Resource.Color.accent_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.background_floating_material_dark = global::Alloy.Resource.Color.background_floating_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.background_floating_material_light = global::Alloy.Resource.Color.background_floating_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.background_material_dark = global::Alloy.Resource.Color.background_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.background_material_light = global::Alloy.Resource.Color.background_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_disabled_material_dark = global::Alloy.Resource.Color.bright_foreground_disabled_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_disabled_material_light = global::Alloy.Resource.Color.bright_foreground_disabled_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_inverse_material_dark = global::Alloy.Resource.Color.bright_foreground_inverse_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_inverse_material_light = global::Alloy.Resource.Color.bright_foreground_inverse_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_material_dark = global::Alloy.Resource.Color.bright_foreground_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_material_light = global::Alloy.Resource.Color.bright_foreground_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.button_material_dark = global::Alloy.Resource.Color.button_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.button_material_light = global::Alloy.Resource.Color.button_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_disabled_material_dark = global::Alloy.Resource.Color.dim_foreground_disabled_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_disabled_material_light = global::Alloy.Resource.Color.dim_foreground_disabled_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_material_dark = global::Alloy.Resource.Color.dim_foreground_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_material_light = global::Alloy.Resource.Color.dim_foreground_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.error_color_material = global::Alloy.Resource.Color.error_color_material;
+			global::SlideUpPanelLibrary.Resource.Color.foreground_material_dark = global::Alloy.Resource.Color.foreground_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.foreground_material_light = global::Alloy.Resource.Color.foreground_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.highlighted_text_material_dark = global::Alloy.Resource.Color.highlighted_text_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.highlighted_text_material_light = global::Alloy.Resource.Color.highlighted_text_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.material_blue_grey_800 = global::Alloy.Resource.Color.material_blue_grey_800;
+			global::SlideUpPanelLibrary.Resource.Color.material_blue_grey_900 = global::Alloy.Resource.Color.material_blue_grey_900;
+			global::SlideUpPanelLibrary.Resource.Color.material_blue_grey_950 = global::Alloy.Resource.Color.material_blue_grey_950;
+			global::SlideUpPanelLibrary.Resource.Color.material_deep_teal_200 = global::Alloy.Resource.Color.material_deep_teal_200;
+			global::SlideUpPanelLibrary.Resource.Color.material_deep_teal_500 = global::Alloy.Resource.Color.material_deep_teal_500;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_100 = global::Alloy.Resource.Color.material_grey_100;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_300 = global::Alloy.Resource.Color.material_grey_300;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_50 = global::Alloy.Resource.Color.material_grey_50;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_600 = global::Alloy.Resource.Color.material_grey_600;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_800 = global::Alloy.Resource.Color.material_grey_800;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_850 = global::Alloy.Resource.Color.material_grey_850;
+			global::SlideUpPanelLibrary.Resource.Color.material_grey_900 = global::Alloy.Resource.Color.material_grey_900;
+			global::SlideUpPanelLibrary.Resource.Color.notification_action_color_filter = global::Alloy.Resource.Color.notification_action_color_filter;
+			global::SlideUpPanelLibrary.Resource.Color.notification_icon_bg_color = global::Alloy.Resource.Color.notification_icon_bg_color;
+			global::SlideUpPanelLibrary.Resource.Color.notification_material_background_media_default_color = global::Alloy.Resource.Color.notification_material_background_media_default_color;
+			global::SlideUpPanelLibrary.Resource.Color.primary_dark_material_dark = global::Alloy.Resource.Color.primary_dark_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.primary_dark_material_light = global::Alloy.Resource.Color.primary_dark_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.primary_material_dark = global::Alloy.Resource.Color.primary_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.primary_material_light = global::Alloy.Resource.Color.primary_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.primary_text_default_material_dark = global::Alloy.Resource.Color.primary_text_default_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.primary_text_default_material_light = global::Alloy.Resource.Color.primary_text_default_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.primary_text_disabled_material_dark = global::Alloy.Resource.Color.primary_text_disabled_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.primary_text_disabled_material_light = global::Alloy.Resource.Color.primary_text_disabled_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.ripple_material_dark = global::Alloy.Resource.Color.ripple_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.ripple_material_light = global::Alloy.Resource.Color.ripple_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.secondary_text_default_material_dark = global::Alloy.Resource.Color.secondary_text_default_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.secondary_text_default_material_light = global::Alloy.Resource.Color.secondary_text_default_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.secondary_text_disabled_material_dark = global::Alloy.Resource.Color.secondary_text_disabled_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.secondary_text_disabled_material_light = global::Alloy.Resource.Color.secondary_text_disabled_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_disabled_material_dark = global::Alloy.Resource.Color.switch_thumb_disabled_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_disabled_material_light = global::Alloy.Resource.Color.switch_thumb_disabled_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_material_dark = global::Alloy.Resource.Color.switch_thumb_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_material_light = global::Alloy.Resource.Color.switch_thumb_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_normal_material_dark = global::Alloy.Resource.Color.switch_thumb_normal_material_dark;
+			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_normal_material_light = global::Alloy.Resource.Color.switch_thumb_normal_material_light;
+			global::SlideUpPanelLibrary.Resource.Color.tooltip_background_dark = global::Alloy.Resource.Color.tooltip_background_dark;
+			global::SlideUpPanelLibrary.Resource.Color.tooltip_background_light = global::Alloy.Resource.Color.tooltip_background_light;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_content_inset_material = global::Alloy.Resource.Dimension.abc_action_bar_content_inset_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_content_inset_with_nav = global::Alloy.Resource.Dimension.abc_action_bar_content_inset_with_nav;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_default_height_material = global::Alloy.Resource.Dimension.abc_action_bar_default_height_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_default_padding_end_material = global::Alloy.Resource.Dimension.abc_action_bar_default_padding_end_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_default_padding_start_material = global::Alloy.Resource.Dimension.abc_action_bar_default_padding_start_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_elevation_material = global::Alloy.Resource.Dimension.abc_action_bar_elevation_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_icon_vertical_padding_material = global::Alloy.Resource.Dimension.abc_action_bar_icon_vertical_padding_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_overflow_padding_end_material = global::Alloy.Resource.Dimension.abc_action_bar_overflow_padding_end_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_overflow_padding_start_material = global::Alloy.Resource.Dimension.abc_action_bar_overflow_padding_start_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_progress_bar_size = global::Alloy.Resource.Dimension.abc_action_bar_progress_bar_size;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_stacked_max_height = global::Alloy.Resource.Dimension.abc_action_bar_stacked_max_height;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_stacked_tab_max_width = global::Alloy.Resource.Dimension.abc_action_bar_stacked_tab_max_width;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_subtitle_bottom_margin_material = global::Alloy.Resource.Dimension.abc_action_bar_subtitle_bottom_margin_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_subtitle_top_margin_material = global::Alloy.Resource.Dimension.abc_action_bar_subtitle_top_margin_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_button_min_height_material = global::Alloy.Resource.Dimension.abc_action_button_min_height_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_button_min_width_material = global::Alloy.Resource.Dimension.abc_action_button_min_width_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_button_min_width_overflow_material = global::Alloy.Resource.Dimension.abc_action_button_min_width_overflow_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_alert_dialog_button_bar_height = global::Alloy.Resource.Dimension.abc_alert_dialog_button_bar_height;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_inset_horizontal_material = global::Alloy.Resource.Dimension.abc_button_inset_horizontal_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_inset_vertical_material = global::Alloy.Resource.Dimension.abc_button_inset_vertical_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_padding_horizontal_material = global::Alloy.Resource.Dimension.abc_button_padding_horizontal_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_padding_vertical_material = global::Alloy.Resource.Dimension.abc_button_padding_vertical_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_cascading_menus_min_smallest_width = global::Alloy.Resource.Dimension.abc_cascading_menus_min_smallest_width;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_config_prefDialogWidth = global::Alloy.Resource.Dimension.abc_config_prefDialogWidth;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_control_corner_material = global::Alloy.Resource.Dimension.abc_control_corner_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_control_inset_material = global::Alloy.Resource.Dimension.abc_control_inset_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_control_padding_material = global::Alloy.Resource.Dimension.abc_control_padding_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_height_major = global::Alloy.Resource.Dimension.abc_dialog_fixed_height_major;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_height_minor = global::Alloy.Resource.Dimension.abc_dialog_fixed_height_minor;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_width_major = global::Alloy.Resource.Dimension.abc_dialog_fixed_width_major;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_width_minor = global::Alloy.Resource.Dimension.abc_dialog_fixed_width_minor;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_list_padding_bottom_no_buttons = global::Alloy.Resource.Dimension.abc_dialog_list_padding_bottom_no_buttons;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_list_padding_top_no_title = global::Alloy.Resource.Dimension.abc_dialog_list_padding_top_no_title;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_min_width_major = global::Alloy.Resource.Dimension.abc_dialog_min_width_major;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_min_width_minor = global::Alloy.Resource.Dimension.abc_dialog_min_width_minor;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_padding_material = global::Alloy.Resource.Dimension.abc_dialog_padding_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_padding_top_material = global::Alloy.Resource.Dimension.abc_dialog_padding_top_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_title_divider_material = global::Alloy.Resource.Dimension.abc_dialog_title_divider_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_disabled_alpha_material_dark = global::Alloy.Resource.Dimension.abc_disabled_alpha_material_dark;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_disabled_alpha_material_light = global::Alloy.Resource.Dimension.abc_disabled_alpha_material_light;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dropdownitem_icon_width = global::Alloy.Resource.Dimension.abc_dropdownitem_icon_width;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dropdownitem_text_padding_left = global::Alloy.Resource.Dimension.abc_dropdownitem_text_padding_left;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_dropdownitem_text_padding_right = global::Alloy.Resource.Dimension.abc_dropdownitem_text_padding_right;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_edit_text_inset_bottom_material = global::Alloy.Resource.Dimension.abc_edit_text_inset_bottom_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_edit_text_inset_horizontal_material = global::Alloy.Resource.Dimension.abc_edit_text_inset_horizontal_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_edit_text_inset_top_material = global::Alloy.Resource.Dimension.abc_edit_text_inset_top_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_floating_window_z = global::Alloy.Resource.Dimension.abc_floating_window_z;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_list_item_padding_horizontal_material = global::Alloy.Resource.Dimension.abc_list_item_padding_horizontal_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_panel_menu_list_width = global::Alloy.Resource.Dimension.abc_panel_menu_list_width;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_progress_bar_height_material = global::Alloy.Resource.Dimension.abc_progress_bar_height_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_search_view_preferred_height = global::Alloy.Resource.Dimension.abc_search_view_preferred_height;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_search_view_preferred_width = global::Alloy.Resource.Dimension.abc_search_view_preferred_width;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_seekbar_track_background_height_material = global::Alloy.Resource.Dimension.abc_seekbar_track_background_height_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_seekbar_track_progress_height_material = global::Alloy.Resource.Dimension.abc_seekbar_track_progress_height_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_select_dialog_padding_start_material = global::Alloy.Resource.Dimension.abc_select_dialog_padding_start_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_switch_padding = global::Alloy.Resource.Dimension.abc_switch_padding;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_body_1_material = global::Alloy.Resource.Dimension.abc_text_size_body_1_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_body_2_material = global::Alloy.Resource.Dimension.abc_text_size_body_2_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_button_material = global::Alloy.Resource.Dimension.abc_text_size_button_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_caption_material = global::Alloy.Resource.Dimension.abc_text_size_caption_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_1_material = global::Alloy.Resource.Dimension.abc_text_size_display_1_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_2_material = global::Alloy.Resource.Dimension.abc_text_size_display_2_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_3_material = global::Alloy.Resource.Dimension.abc_text_size_display_3_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_4_material = global::Alloy.Resource.Dimension.abc_text_size_display_4_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_headline_material = global::Alloy.Resource.Dimension.abc_text_size_headline_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_large_material = global::Alloy.Resource.Dimension.abc_text_size_large_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_medium_material = global::Alloy.Resource.Dimension.abc_text_size_medium_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_menu_header_material = global::Alloy.Resource.Dimension.abc_text_size_menu_header_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_menu_material = global::Alloy.Resource.Dimension.abc_text_size_menu_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_small_material = global::Alloy.Resource.Dimension.abc_text_size_small_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_subhead_material = global::Alloy.Resource.Dimension.abc_text_size_subhead_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_subtitle_material_toolbar = global::Alloy.Resource.Dimension.abc_text_size_subtitle_material_toolbar;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_title_material = global::Alloy.Resource.Dimension.abc_text_size_title_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_title_material_toolbar = global::Alloy.Resource.Dimension.abc_text_size_title_material_toolbar;
+			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_inset_horizontal_material = global::Alloy.Resource.Dimension.compat_button_inset_horizontal_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_inset_vertical_material = global::Alloy.Resource.Dimension.compat_button_inset_vertical_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_padding_horizontal_material = global::Alloy.Resource.Dimension.compat_button_padding_horizontal_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_padding_vertical_material = global::Alloy.Resource.Dimension.compat_button_padding_vertical_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.compat_control_corner_material = global::Alloy.Resource.Dimension.compat_control_corner_material;
+			global::SlideUpPanelLibrary.Resource.Dimension.disabled_alpha_material_dark = global::Alloy.Resource.Dimension.disabled_alpha_material_dark;
+			global::SlideUpPanelLibrary.Resource.Dimension.disabled_alpha_material_light = global::Alloy.Resource.Dimension.disabled_alpha_material_light;
+			global::SlideUpPanelLibrary.Resource.Dimension.fastscroll_default_thickness = global::Alloy.Resource.Dimension.fastscroll_default_thickness;
+			global::SlideUpPanelLibrary.Resource.Dimension.fastscroll_margin = global::Alloy.Resource.Dimension.fastscroll_margin;
+			global::SlideUpPanelLibrary.Resource.Dimension.fastscroll_minimum_range = global::Alloy.Resource.Dimension.fastscroll_minimum_range;
+			global::SlideUpPanelLibrary.Resource.Dimension.highlight_alpha_material_colored = global::Alloy.Resource.Dimension.highlight_alpha_material_colored;
+			global::SlideUpPanelLibrary.Resource.Dimension.highlight_alpha_material_dark = global::Alloy.Resource.Dimension.highlight_alpha_material_dark;
+			global::SlideUpPanelLibrary.Resource.Dimension.highlight_alpha_material_light = global::Alloy.Resource.Dimension.highlight_alpha_material_light;
+			global::SlideUpPanelLibrary.Resource.Dimension.hint_alpha_material_dark = global::Alloy.Resource.Dimension.hint_alpha_material_dark;
+			global::SlideUpPanelLibrary.Resource.Dimension.hint_alpha_material_light = global::Alloy.Resource.Dimension.hint_alpha_material_light;
+			global::SlideUpPanelLibrary.Resource.Dimension.hint_pressed_alpha_material_dark = global::Alloy.Resource.Dimension.hint_pressed_alpha_material_dark;
+			global::SlideUpPanelLibrary.Resource.Dimension.hint_pressed_alpha_material_light = global::Alloy.Resource.Dimension.hint_pressed_alpha_material_light;
+			global::SlideUpPanelLibrary.Resource.Dimension.item_touch_helper_max_drag_scroll_per_frame = global::Alloy.Resource.Dimension.item_touch_helper_max_drag_scroll_per_frame;
+			global::SlideUpPanelLibrary.Resource.Dimension.item_touch_helper_swipe_escape_max_velocity = global::Alloy.Resource.Dimension.item_touch_helper_swipe_escape_max_velocity;
+			global::SlideUpPanelLibrary.Resource.Dimension.item_touch_helper_swipe_escape_velocity = global::Alloy.Resource.Dimension.item_touch_helper_swipe_escape_velocity;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_action_icon_size = global::Alloy.Resource.Dimension.notification_action_icon_size;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_action_text_size = global::Alloy.Resource.Dimension.notification_action_text_size;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_big_circle_margin = global::Alloy.Resource.Dimension.notification_big_circle_margin;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_content_margin_start = global::Alloy.Resource.Dimension.notification_content_margin_start;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_large_icon_height = global::Alloy.Resource.Dimension.notification_large_icon_height;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_large_icon_width = global::Alloy.Resource.Dimension.notification_large_icon_width;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_main_column_padding_top = global::Alloy.Resource.Dimension.notification_main_column_padding_top;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_media_narrow_margin = global::Alloy.Resource.Dimension.notification_media_narrow_margin;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_right_icon_size = global::Alloy.Resource.Dimension.notification_right_icon_size;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_right_side_padding_top = global::Alloy.Resource.Dimension.notification_right_side_padding_top;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_small_icon_background_padding = global::Alloy.Resource.Dimension.notification_small_icon_background_padding;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_small_icon_size_as_large = global::Alloy.Resource.Dimension.notification_small_icon_size_as_large;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_subtext_size = global::Alloy.Resource.Dimension.notification_subtext_size;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_top_pad = global::Alloy.Resource.Dimension.notification_top_pad;
+			global::SlideUpPanelLibrary.Resource.Dimension.notification_top_pad_large_text = global::Alloy.Resource.Dimension.notification_top_pad_large_text;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_corner_radius = global::Alloy.Resource.Dimension.tooltip_corner_radius;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_horizontal_padding = global::Alloy.Resource.Dimension.tooltip_horizontal_padding;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_margin = global::Alloy.Resource.Dimension.tooltip_margin;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_precise_anchor_extra_offset = global::Alloy.Resource.Dimension.tooltip_precise_anchor_extra_offset;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_precise_anchor_threshold = global::Alloy.Resource.Dimension.tooltip_precise_anchor_threshold;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_vertical_padding = global::Alloy.Resource.Dimension.tooltip_vertical_padding;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_y_offset_non_touch = global::Alloy.Resource.Dimension.tooltip_y_offset_non_touch;
+			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_y_offset_touch = global::Alloy.Resource.Dimension.tooltip_y_offset_touch;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ab_share_pack_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ab_share_pack_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_action_bar_item_background_material = global::Alloy.Resource.Drawable.abc_action_bar_item_background_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_borderless_material = global::Alloy.Resource.Drawable.abc_btn_borderless_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_check_material = global::Alloy.Resource.Drawable.abc_btn_check_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_check_to_on_mtrl_000 = global::Alloy.Resource.Drawable.abc_btn_check_to_on_mtrl_000;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_check_to_on_mtrl_015 = global::Alloy.Resource.Drawable.abc_btn_check_to_on_mtrl_015;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_colored_material = global::Alloy.Resource.Drawable.abc_btn_colored_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_default_mtrl_shape = global::Alloy.Resource.Drawable.abc_btn_default_mtrl_shape;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_radio_material = global::Alloy.Resource.Drawable.abc_btn_radio_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_radio_to_on_mtrl_000 = global::Alloy.Resource.Drawable.abc_btn_radio_to_on_mtrl_000;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_radio_to_on_mtrl_015 = global::Alloy.Resource.Drawable.abc_btn_radio_to_on_mtrl_015;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_switch_to_on_mtrl_00001 = global::Alloy.Resource.Drawable.abc_btn_switch_to_on_mtrl_00001;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_switch_to_on_mtrl_00012 = global::Alloy.Resource.Drawable.abc_btn_switch_to_on_mtrl_00012;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_cab_background_internal_bg = global::Alloy.Resource.Drawable.abc_cab_background_internal_bg;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_cab_background_top_material = global::Alloy.Resource.Drawable.abc_cab_background_top_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_cab_background_top_mtrl_alpha = global::Alloy.Resource.Drawable.abc_cab_background_top_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_control_background_material = global::Alloy.Resource.Drawable.abc_control_background_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_dialog_material_background = global::Alloy.Resource.Drawable.abc_dialog_material_background;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_edit_text_material = global::Alloy.Resource.Drawable.abc_edit_text_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_ab_back_material = global::Alloy.Resource.Drawable.abc_ic_ab_back_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_arrow_drop_right_black_24dp = global::Alloy.Resource.Drawable.abc_ic_arrow_drop_right_black_24dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_clear_material = global::Alloy.Resource.Drawable.abc_ic_clear_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_commit_search_api_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_commit_search_api_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_go_search_api_material = global::Alloy.Resource.Drawable.abc_ic_go_search_api_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_copy_mtrl_am_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_copy_mtrl_am_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_cut_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_cut_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_overflow_material = global::Alloy.Resource.Drawable.abc_ic_menu_overflow_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_paste_mtrl_am_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_paste_mtrl_am_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_selectall_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_selectall_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_share_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_share_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_search_api_material = global::Alloy.Resource.Drawable.abc_ic_search_api_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_black_16dp = global::Alloy.Resource.Drawable.abc_ic_star_black_16dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_black_36dp = global::Alloy.Resource.Drawable.abc_ic_star_black_36dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_black_48dp = global::Alloy.Resource.Drawable.abc_ic_star_black_48dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_half_black_16dp = global::Alloy.Resource.Drawable.abc_ic_star_half_black_16dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_half_black_36dp = global::Alloy.Resource.Drawable.abc_ic_star_half_black_36dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_half_black_48dp = global::Alloy.Resource.Drawable.abc_ic_star_half_black_48dp;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_voice_search_api_material = global::Alloy.Resource.Drawable.abc_ic_voice_search_api_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_item_background_holo_dark = global::Alloy.Resource.Drawable.abc_item_background_holo_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_item_background_holo_light = global::Alloy.Resource.Drawable.abc_item_background_holo_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_divider_mtrl_alpha = global::Alloy.Resource.Drawable.abc_list_divider_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_focused_holo = global::Alloy.Resource.Drawable.abc_list_focused_holo;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_longpressed_holo = global::Alloy.Resource.Drawable.abc_list_longpressed_holo;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_pressed_holo_dark = global::Alloy.Resource.Drawable.abc_list_pressed_holo_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_pressed_holo_light = global::Alloy.Resource.Drawable.abc_list_pressed_holo_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_background_transition_holo_dark = global::Alloy.Resource.Drawable.abc_list_selector_background_transition_holo_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_background_transition_holo_light = global::Alloy.Resource.Drawable.abc_list_selector_background_transition_holo_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_disabled_holo_dark = global::Alloy.Resource.Drawable.abc_list_selector_disabled_holo_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_disabled_holo_light = global::Alloy.Resource.Drawable.abc_list_selector_disabled_holo_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_holo_dark = global::Alloy.Resource.Drawable.abc_list_selector_holo_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_holo_light = global::Alloy.Resource.Drawable.abc_list_selector_holo_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_menu_hardkey_panel_mtrl_mult = global::Alloy.Resource.Drawable.abc_menu_hardkey_panel_mtrl_mult;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_popup_background_mtrl_mult = global::Alloy.Resource.Drawable.abc_popup_background_mtrl_mult;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ratingbar_indicator_material = global::Alloy.Resource.Drawable.abc_ratingbar_indicator_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ratingbar_material = global::Alloy.Resource.Drawable.abc_ratingbar_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_ratingbar_small_material = global::Alloy.Resource.Drawable.abc_ratingbar_small_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_control_off_mtrl_alpha = global::Alloy.Resource.Drawable.abc_scrubber_control_off_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_000 = global::Alloy.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_000;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_005 = global::Alloy.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_005;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_primary_mtrl_alpha = global::Alloy.Resource.Drawable.abc_scrubber_primary_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_track_mtrl_alpha = global::Alloy.Resource.Drawable.abc_scrubber_track_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_seekbar_thumb_material = global::Alloy.Resource.Drawable.abc_seekbar_thumb_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_seekbar_tick_mark_material = global::Alloy.Resource.Drawable.abc_seekbar_tick_mark_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_seekbar_track_material = global::Alloy.Resource.Drawable.abc_seekbar_track_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_spinner_mtrl_am_alpha = global::Alloy.Resource.Drawable.abc_spinner_mtrl_am_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_spinner_textfield_background_material = global::Alloy.Resource.Drawable.abc_spinner_textfield_background_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_switch_thumb_material = global::Alloy.Resource.Drawable.abc_switch_thumb_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_switch_track_mtrl_alpha = global::Alloy.Resource.Drawable.abc_switch_track_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_tab_indicator_material = global::Alloy.Resource.Drawable.abc_tab_indicator_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_tab_indicator_mtrl_alpha = global::Alloy.Resource.Drawable.abc_tab_indicator_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_cursor_material = global::Alloy.Resource.Drawable.abc_text_cursor_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_left_mtrl_dark = global::Alloy.Resource.Drawable.abc_text_select_handle_left_mtrl_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_left_mtrl_light = global::Alloy.Resource.Drawable.abc_text_select_handle_left_mtrl_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_middle_mtrl_dark = global::Alloy.Resource.Drawable.abc_text_select_handle_middle_mtrl_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_middle_mtrl_light = global::Alloy.Resource.Drawable.abc_text_select_handle_middle_mtrl_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_right_mtrl_dark = global::Alloy.Resource.Drawable.abc_text_select_handle_right_mtrl_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_right_mtrl_light = global::Alloy.Resource.Drawable.abc_text_select_handle_right_mtrl_light;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_activated_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_activated_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_default_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_default_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_search_default_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_search_default_mtrl_alpha;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_search_material = global::Alloy.Resource.Drawable.abc_textfield_search_material;
+			global::SlideUpPanelLibrary.Resource.Drawable.abc_vector_test = global::Alloy.Resource.Drawable.abc_vector_test;
+			global::SlideUpPanelLibrary.Resource.Drawable.above_shadow = global::Alloy.Resource.Drawable.above_shadow;
+			global::SlideUpPanelLibrary.Resource.Drawable.below_shadow = global::Alloy.Resource.Drawable.below_shadow;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_action_background = global::Alloy.Resource.Drawable.notification_action_background;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg = global::Alloy.Resource.Drawable.notification_bg;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_low = global::Alloy.Resource.Drawable.notification_bg_low;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_low_normal = global::Alloy.Resource.Drawable.notification_bg_low_normal;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_low_pressed = global::Alloy.Resource.Drawable.notification_bg_low_pressed;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_normal = global::Alloy.Resource.Drawable.notification_bg_normal;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_normal_pressed = global::Alloy.Resource.Drawable.notification_bg_normal_pressed;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_icon_background = global::Alloy.Resource.Drawable.notification_icon_background;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_template_icon_bg = global::Alloy.Resource.Drawable.notification_template_icon_bg;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_template_icon_low_bg = global::Alloy.Resource.Drawable.notification_template_icon_low_bg;
+			global::SlideUpPanelLibrary.Resource.Drawable.notification_tile_bg = global::Alloy.Resource.Drawable.notification_tile_bg;
+			global::SlideUpPanelLibrary.Resource.Drawable.notify_panel_notification_icon_bg = global::Alloy.Resource.Drawable.notify_panel_notification_icon_bg;
+			global::SlideUpPanelLibrary.Resource.Drawable.tooltip_frame_dark = global::Alloy.Resource.Drawable.tooltip_frame_dark;
+			global::SlideUpPanelLibrary.Resource.Drawable.tooltip_frame_light = global::Alloy.Resource.Drawable.tooltip_frame_light;
+			global::SlideUpPanelLibrary.Resource.Id.ALT = global::Alloy.Resource.Id.ALT;
+			global::SlideUpPanelLibrary.Resource.Id.CTRL = global::Alloy.Resource.Id.CTRL;
+			global::SlideUpPanelLibrary.Resource.Id.FUNCTION = global::Alloy.Resource.Id.FUNCTION;
+			global::SlideUpPanelLibrary.Resource.Id.META = global::Alloy.Resource.Id.META;
+			global::SlideUpPanelLibrary.Resource.Id.SHIFT = global::Alloy.Resource.Id.SHIFT;
+			global::SlideUpPanelLibrary.Resource.Id.SYM = global::Alloy.Resource.Id.SYM;
+			global::SlideUpPanelLibrary.Resource.Id.action0 = global::Alloy.Resource.Id.action0;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar = global::Alloy.Resource.Id.action_bar;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar_activity_content = global::Alloy.Resource.Id.action_bar_activity_content;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar_container = global::Alloy.Resource.Id.action_bar_container;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar_root = global::Alloy.Resource.Id.action_bar_root;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar_spinner = global::Alloy.Resource.Id.action_bar_spinner;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar_subtitle = global::Alloy.Resource.Id.action_bar_subtitle;
+			global::SlideUpPanelLibrary.Resource.Id.action_bar_title = global::Alloy.Resource.Id.action_bar_title;
+			global::SlideUpPanelLibrary.Resource.Id.action_container = global::Alloy.Resource.Id.action_container;
+			global::SlideUpPanelLibrary.Resource.Id.action_context_bar = global::Alloy.Resource.Id.action_context_bar;
+			global::SlideUpPanelLibrary.Resource.Id.action_divider = global::Alloy.Resource.Id.action_divider;
+			global::SlideUpPanelLibrary.Resource.Id.action_image = global::Alloy.Resource.Id.action_image;
+			global::SlideUpPanelLibrary.Resource.Id.action_menu_divider = global::Alloy.Resource.Id.action_menu_divider;
+			global::SlideUpPanelLibrary.Resource.Id.action_menu_presenter = global::Alloy.Resource.Id.action_menu_presenter;
+			global::SlideUpPanelLibrary.Resource.Id.action_mode_bar = global::Alloy.Resource.Id.action_mode_bar;
+			global::SlideUpPanelLibrary.Resource.Id.action_mode_bar_stub = global::Alloy.Resource.Id.action_mode_bar_stub;
+			global::SlideUpPanelLibrary.Resource.Id.action_mode_close_button = global::Alloy.Resource.Id.action_mode_close_button;
+			global::SlideUpPanelLibrary.Resource.Id.action_text = global::Alloy.Resource.Id.action_text;
+			global::SlideUpPanelLibrary.Resource.Id.actions = global::Alloy.Resource.Id.actions;
+			global::SlideUpPanelLibrary.Resource.Id.activity_chooser_view_content = global::Alloy.Resource.Id.activity_chooser_view_content;
+			global::SlideUpPanelLibrary.Resource.Id.add = global::Alloy.Resource.Id.add;
+			global::SlideUpPanelLibrary.Resource.Id.alertTitle = global::Alloy.Resource.Id.alertTitle;
+			global::SlideUpPanelLibrary.Resource.Id.always = global::Alloy.Resource.Id.always;
+			global::SlideUpPanelLibrary.Resource.Id.anchored = global::Alloy.Resource.Id.anchored;
+			global::SlideUpPanelLibrary.Resource.Id.async = global::Alloy.Resource.Id.async;
+			global::SlideUpPanelLibrary.Resource.Id.beginning = global::Alloy.Resource.Id.beginning;
+			global::SlideUpPanelLibrary.Resource.Id.blocking = global::Alloy.Resource.Id.blocking;
+			global::SlideUpPanelLibrary.Resource.Id.bottom = global::Alloy.Resource.Id.bottom;
+			global::SlideUpPanelLibrary.Resource.Id.buttonPanel = global::Alloy.Resource.Id.buttonPanel;
+			global::SlideUpPanelLibrary.Resource.Id.cancel_action = global::Alloy.Resource.Id.cancel_action;
+			global::SlideUpPanelLibrary.Resource.Id.checkbox = global::Alloy.Resource.Id.checkbox;
+			global::SlideUpPanelLibrary.Resource.Id.chronometer = global::Alloy.Resource.Id.chronometer;
+			global::SlideUpPanelLibrary.Resource.Id.collapseActionView = global::Alloy.Resource.Id.collapseActionView;
+			global::SlideUpPanelLibrary.Resource.Id.collapsed = global::Alloy.Resource.Id.collapsed;
+			global::SlideUpPanelLibrary.Resource.Id.contentPanel = global::Alloy.Resource.Id.contentPanel;
+			global::SlideUpPanelLibrary.Resource.Id.custom = global::Alloy.Resource.Id.custom;
+			global::SlideUpPanelLibrary.Resource.Id.customPanel = global::Alloy.Resource.Id.customPanel;
+			global::SlideUpPanelLibrary.Resource.Id.decor_content_parent = global::Alloy.Resource.Id.decor_content_parent;
+			global::SlideUpPanelLibrary.Resource.Id.default_activity_button = global::Alloy.Resource.Id.default_activity_button;
+			global::SlideUpPanelLibrary.Resource.Id.disableHome = global::Alloy.Resource.Id.disableHome;
+			global::SlideUpPanelLibrary.Resource.Id.edit_query = global::Alloy.Resource.Id.edit_query;
+			global::SlideUpPanelLibrary.Resource.Id.end = global::Alloy.Resource.Id.end;
+			global::SlideUpPanelLibrary.Resource.Id.end_padder = global::Alloy.Resource.Id.end_padder;
+			global::SlideUpPanelLibrary.Resource.Id.expand_activities_button = global::Alloy.Resource.Id.expand_activities_button;
+			global::SlideUpPanelLibrary.Resource.Id.expanded = global::Alloy.Resource.Id.expanded;
+			global::SlideUpPanelLibrary.Resource.Id.expanded_menu = global::Alloy.Resource.Id.expanded_menu;
+			global::SlideUpPanelLibrary.Resource.Id.forever = global::Alloy.Resource.Id.forever;
+			global::SlideUpPanelLibrary.Resource.Id.hidden = global::Alloy.Resource.Id.hidden;
+			global::SlideUpPanelLibrary.Resource.Id.home = global::Alloy.Resource.Id.home;
+			global::SlideUpPanelLibrary.Resource.Id.homeAsUp = global::Alloy.Resource.Id.homeAsUp;
+			global::SlideUpPanelLibrary.Resource.Id.icon = global::Alloy.Resource.Id.icon;
+			global::SlideUpPanelLibrary.Resource.Id.icon_group = global::Alloy.Resource.Id.icon_group;
+			global::SlideUpPanelLibrary.Resource.Id.ifRoom = global::Alloy.Resource.Id.ifRoom;
+			global::SlideUpPanelLibrary.Resource.Id.image = global::Alloy.Resource.Id.image;
+			global::SlideUpPanelLibrary.Resource.Id.info = global::Alloy.Resource.Id.info;
+			global::SlideUpPanelLibrary.Resource.Id.italic = global::Alloy.Resource.Id.italic;
+			global::SlideUpPanelLibrary.Resource.Id.item_touch_helper_previous_elevation = global::Alloy.Resource.Id.item_touch_helper_previous_elevation;
+			global::SlideUpPanelLibrary.Resource.Id.line1 = global::Alloy.Resource.Id.line1;
+			global::SlideUpPanelLibrary.Resource.Id.line3 = global::Alloy.Resource.Id.line3;
+			global::SlideUpPanelLibrary.Resource.Id.listMode = global::Alloy.Resource.Id.listMode;
+			global::SlideUpPanelLibrary.Resource.Id.list_item = global::Alloy.Resource.Id.list_item;
+			global::SlideUpPanelLibrary.Resource.Id.media_actions = global::Alloy.Resource.Id.media_actions;
+			global::SlideUpPanelLibrary.Resource.Id.message = global::Alloy.Resource.Id.message;
+			global::SlideUpPanelLibrary.Resource.Id.middle = global::Alloy.Resource.Id.middle;
+			global::SlideUpPanelLibrary.Resource.Id.multiply = global::Alloy.Resource.Id.multiply;
+			global::SlideUpPanelLibrary.Resource.Id.never = global::Alloy.Resource.Id.never;
+			global::SlideUpPanelLibrary.Resource.Id.none = global::Alloy.Resource.Id.none;
+			global::SlideUpPanelLibrary.Resource.Id.normal = global::Alloy.Resource.Id.normal;
+			global::SlideUpPanelLibrary.Resource.Id.notification_background = global::Alloy.Resource.Id.notification_background;
+			global::SlideUpPanelLibrary.Resource.Id.notification_main_column = global::Alloy.Resource.Id.notification_main_column;
+			global::SlideUpPanelLibrary.Resource.Id.notification_main_column_container = global::Alloy.Resource.Id.notification_main_column_container;
+			global::SlideUpPanelLibrary.Resource.Id.parentPanel = global::Alloy.Resource.Id.parentPanel;
+			global::SlideUpPanelLibrary.Resource.Id.progress_circular = global::Alloy.Resource.Id.progress_circular;
+			global::SlideUpPanelLibrary.Resource.Id.progress_horizontal = global::Alloy.Resource.Id.progress_horizontal;
+			global::SlideUpPanelLibrary.Resource.Id.radio = global::Alloy.Resource.Id.radio;
+			global::SlideUpPanelLibrary.Resource.Id.right_icon = global::Alloy.Resource.Id.right_icon;
+			global::SlideUpPanelLibrary.Resource.Id.right_side = global::Alloy.Resource.Id.right_side;
+			global::SlideUpPanelLibrary.Resource.Id.screen = global::Alloy.Resource.Id.screen;
+			global::SlideUpPanelLibrary.Resource.Id.scrollIndicatorDown = global::Alloy.Resource.Id.scrollIndicatorDown;
+			global::SlideUpPanelLibrary.Resource.Id.scrollIndicatorUp = global::Alloy.Resource.Id.scrollIndicatorUp;
+			global::SlideUpPanelLibrary.Resource.Id.scrollView = global::Alloy.Resource.Id.scrollView;
+			global::SlideUpPanelLibrary.Resource.Id.search_badge = global::Alloy.Resource.Id.search_badge;
+			global::SlideUpPanelLibrary.Resource.Id.search_bar = global::Alloy.Resource.Id.search_bar;
+			global::SlideUpPanelLibrary.Resource.Id.search_button = global::Alloy.Resource.Id.search_button;
+			global::SlideUpPanelLibrary.Resource.Id.search_close_btn = global::Alloy.Resource.Id.search_close_btn;
+			global::SlideUpPanelLibrary.Resource.Id.search_edit_frame = global::Alloy.Resource.Id.search_edit_frame;
+			global::SlideUpPanelLibrary.Resource.Id.search_go_btn = global::Alloy.Resource.Id.search_go_btn;
+			global::SlideUpPanelLibrary.Resource.Id.search_mag_icon = global::Alloy.Resource.Id.search_mag_icon;
+			global::SlideUpPanelLibrary.Resource.Id.search_plate = global::Alloy.Resource.Id.search_plate;
+			global::SlideUpPanelLibrary.Resource.Id.search_src_text = global::Alloy.Resource.Id.search_src_text;
+			global::SlideUpPanelLibrary.Resource.Id.search_voice_btn = global::Alloy.Resource.Id.search_voice_btn;
+			global::SlideUpPanelLibrary.Resource.Id.select_dialog_listview = global::Alloy.Resource.Id.select_dialog_listview;
+			global::SlideUpPanelLibrary.Resource.Id.shortcut = global::Alloy.Resource.Id.shortcut;
+			global::SlideUpPanelLibrary.Resource.Id.showCustom = global::Alloy.Resource.Id.showCustom;
+			global::SlideUpPanelLibrary.Resource.Id.showHome = global::Alloy.Resource.Id.showHome;
+			global::SlideUpPanelLibrary.Resource.Id.showTitle = global::Alloy.Resource.Id.showTitle;
+			global::SlideUpPanelLibrary.Resource.Id.spacer = global::Alloy.Resource.Id.spacer;
+			global::SlideUpPanelLibrary.Resource.Id.split_action_bar = global::Alloy.Resource.Id.split_action_bar;
+			global::SlideUpPanelLibrary.Resource.Id.src_atop = global::Alloy.Resource.Id.src_atop;
+			global::SlideUpPanelLibrary.Resource.Id.src_in = global::Alloy.Resource.Id.src_in;
+			global::SlideUpPanelLibrary.Resource.Id.src_over = global::Alloy.Resource.Id.src_over;
+			global::SlideUpPanelLibrary.Resource.Id.status_bar_latest_event_content = global::Alloy.Resource.Id.status_bar_latest_event_content;
+			global::SlideUpPanelLibrary.Resource.Id.submenuarrow = global::Alloy.Resource.Id.submenuarrow;
+			global::SlideUpPanelLibrary.Resource.Id.submit_area = global::Alloy.Resource.Id.submit_area;
+			global::SlideUpPanelLibrary.Resource.Id.tabMode = global::Alloy.Resource.Id.tabMode;
+			global::SlideUpPanelLibrary.Resource.Id.tag_transition_group = global::Alloy.Resource.Id.tag_transition_group;
+			global::SlideUpPanelLibrary.Resource.Id.text = global::Alloy.Resource.Id.text;
+			global::SlideUpPanelLibrary.Resource.Id.text2 = global::Alloy.Resource.Id.text2;
+			global::SlideUpPanelLibrary.Resource.Id.textSpacerNoButtons = global::Alloy.Resource.Id.textSpacerNoButtons;
+			global::SlideUpPanelLibrary.Resource.Id.textSpacerNoTitle = global::Alloy.Resource.Id.textSpacerNoTitle;
+			global::SlideUpPanelLibrary.Resource.Id.time = global::Alloy.Resource.Id.time;
+			global::SlideUpPanelLibrary.Resource.Id.title = global::Alloy.Resource.Id.title;
+			global::SlideUpPanelLibrary.Resource.Id.titleDividerNoCustom = global::Alloy.Resource.Id.titleDividerNoCustom;
+			global::SlideUpPanelLibrary.Resource.Id.title_template = global::Alloy.Resource.Id.title_template;
+			global::SlideUpPanelLibrary.Resource.Id.top = global::Alloy.Resource.Id.top;
+			global::SlideUpPanelLibrary.Resource.Id.topPanel = global::Alloy.Resource.Id.topPanel;
+			global::SlideUpPanelLibrary.Resource.Id.uniform = global::Alloy.Resource.Id.uniform;
+			global::SlideUpPanelLibrary.Resource.Id.up = global::Alloy.Resource.Id.up;
+			global::SlideUpPanelLibrary.Resource.Id.useLogo = global::Alloy.Resource.Id.useLogo;
+			global::SlideUpPanelLibrary.Resource.Id.withText = global::Alloy.Resource.Id.withText;
+			global::SlideUpPanelLibrary.Resource.Id.wrap_content = global::Alloy.Resource.Id.wrap_content;
+			global::SlideUpPanelLibrary.Resource.Integer.abc_config_activityDefaultDur = global::Alloy.Resource.Integer.abc_config_activityDefaultDur;
+			global::SlideUpPanelLibrary.Resource.Integer.abc_config_activityShortDur = global::Alloy.Resource.Integer.abc_config_activityShortDur;
+			global::SlideUpPanelLibrary.Resource.Integer.cancel_button_image_alpha = global::Alloy.Resource.Integer.cancel_button_image_alpha;
+			global::SlideUpPanelLibrary.Resource.Integer.config_tooltipAnimTime = global::Alloy.Resource.Integer.config_tooltipAnimTime;
+			global::SlideUpPanelLibrary.Resource.Integer.status_bar_notification_info_maxnum = global::Alloy.Resource.Integer.status_bar_notification_info_maxnum;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_action_bar_title_item = global::Alloy.Resource.Layout.abc_action_bar_title_item;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_action_bar_up_container = global::Alloy.Resource.Layout.abc_action_bar_up_container;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_action_menu_item_layout = global::Alloy.Resource.Layout.abc_action_menu_item_layout;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_action_menu_layout = global::Alloy.Resource.Layout.abc_action_menu_layout;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_action_mode_bar = global::Alloy.Resource.Layout.abc_action_mode_bar;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_action_mode_close_item_material = global::Alloy.Resource.Layout.abc_action_mode_close_item_material;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_activity_chooser_view = global::Alloy.Resource.Layout.abc_activity_chooser_view;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_activity_chooser_view_list_item = global::Alloy.Resource.Layout.abc_activity_chooser_view_list_item;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_alert_dialog_button_bar_material = global::Alloy.Resource.Layout.abc_alert_dialog_button_bar_material;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_alert_dialog_material = global::Alloy.Resource.Layout.abc_alert_dialog_material;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_alert_dialog_title_material = global::Alloy.Resource.Layout.abc_alert_dialog_title_material;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_dialog_title_material = global::Alloy.Resource.Layout.abc_dialog_title_material;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_expanded_menu_layout = global::Alloy.Resource.Layout.abc_expanded_menu_layout;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_checkbox = global::Alloy.Resource.Layout.abc_list_menu_item_checkbox;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_icon = global::Alloy.Resource.Layout.abc_list_menu_item_icon;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_layout = global::Alloy.Resource.Layout.abc_list_menu_item_layout;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_radio = global::Alloy.Resource.Layout.abc_list_menu_item_radio;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_popup_menu_header_item_layout = global::Alloy.Resource.Layout.abc_popup_menu_header_item_layout;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_popup_menu_item_layout = global::Alloy.Resource.Layout.abc_popup_menu_item_layout;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_content_include = global::Alloy.Resource.Layout.abc_screen_content_include;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_simple = global::Alloy.Resource.Layout.abc_screen_simple;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_simple_overlay_action_mode = global::Alloy.Resource.Layout.abc_screen_simple_overlay_action_mode;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_toolbar = global::Alloy.Resource.Layout.abc_screen_toolbar;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_search_dropdown_item_icons_2line = global::Alloy.Resource.Layout.abc_search_dropdown_item_icons_2line;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_search_view = global::Alloy.Resource.Layout.abc_search_view;
+			global::SlideUpPanelLibrary.Resource.Layout.abc_select_dialog_material = global::Alloy.Resource.Layout.abc_select_dialog_material;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_action = global::Alloy.Resource.Layout.notification_action;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_action_tombstone = global::Alloy.Resource.Layout.notification_action_tombstone;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_media_action = global::Alloy.Resource.Layout.notification_media_action;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_media_cancel_action = global::Alloy.Resource.Layout.notification_media_cancel_action;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media = global::Alloy.Resource.Layout.notification_template_big_media;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media_custom = global::Alloy.Resource.Layout.notification_template_big_media_custom;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media_narrow = global::Alloy.Resource.Layout.notification_template_big_media_narrow;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media_narrow_custom = global::Alloy.Resource.Layout.notification_template_big_media_narrow_custom;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_custom_big = global::Alloy.Resource.Layout.notification_template_custom_big;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_icon_group = global::Alloy.Resource.Layout.notification_template_icon_group;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_lines_media = global::Alloy.Resource.Layout.notification_template_lines_media;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_media = global::Alloy.Resource.Layout.notification_template_media;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_media_custom = global::Alloy.Resource.Layout.notification_template_media_custom;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_part_chronometer = global::Alloy.Resource.Layout.notification_template_part_chronometer;
+			global::SlideUpPanelLibrary.Resource.Layout.notification_template_part_time = global::Alloy.Resource.Layout.notification_template_part_time;
+			global::SlideUpPanelLibrary.Resource.Layout.select_dialog_item_material = global::Alloy.Resource.Layout.select_dialog_item_material;
+			global::SlideUpPanelLibrary.Resource.Layout.select_dialog_multichoice_material = global::Alloy.Resource.Layout.select_dialog_multichoice_material;
+			global::SlideUpPanelLibrary.Resource.Layout.select_dialog_singlechoice_material = global::Alloy.Resource.Layout.select_dialog_singlechoice_material;
+			global::SlideUpPanelLibrary.Resource.Layout.support_simple_spinner_dropdown_item = global::Alloy.Resource.Layout.support_simple_spinner_dropdown_item;
+			global::SlideUpPanelLibrary.Resource.Layout.tooltip = global::Alloy.Resource.Layout.tooltip;
+			global::SlideUpPanelLibrary.Resource.String.abc_action_bar_home_description = global::Alloy.Resource.String.abc_action_bar_home_description;
+			global::SlideUpPanelLibrary.Resource.String.abc_action_bar_up_description = global::Alloy.Resource.String.abc_action_bar_up_description;
+			global::SlideUpPanelLibrary.Resource.String.abc_action_menu_overflow_description = global::Alloy.Resource.String.abc_action_menu_overflow_description;
+			global::SlideUpPanelLibrary.Resource.String.abc_action_mode_done = global::Alloy.Resource.String.abc_action_mode_done;
+			global::SlideUpPanelLibrary.Resource.String.abc_activity_chooser_view_see_all = global::Alloy.Resource.String.abc_activity_chooser_view_see_all;
+			global::SlideUpPanelLibrary.Resource.String.abc_activitychooserview_choose_application = global::Alloy.Resource.String.abc_activitychooserview_choose_application;
+			global::SlideUpPanelLibrary.Resource.String.abc_capital_off = global::Alloy.Resource.String.abc_capital_off;
+			global::SlideUpPanelLibrary.Resource.String.abc_capital_on = global::Alloy.Resource.String.abc_capital_on;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_body_1_material = global::Alloy.Resource.String.abc_font_family_body_1_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_body_2_material = global::Alloy.Resource.String.abc_font_family_body_2_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_button_material = global::Alloy.Resource.String.abc_font_family_button_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_caption_material = global::Alloy.Resource.String.abc_font_family_caption_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_1_material = global::Alloy.Resource.String.abc_font_family_display_1_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_2_material = global::Alloy.Resource.String.abc_font_family_display_2_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_3_material = global::Alloy.Resource.String.abc_font_family_display_3_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_4_material = global::Alloy.Resource.String.abc_font_family_display_4_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_headline_material = global::Alloy.Resource.String.abc_font_family_headline_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_menu_material = global::Alloy.Resource.String.abc_font_family_menu_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_subhead_material = global::Alloy.Resource.String.abc_font_family_subhead_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_font_family_title_material = global::Alloy.Resource.String.abc_font_family_title_material;
+			global::SlideUpPanelLibrary.Resource.String.abc_search_hint = global::Alloy.Resource.String.abc_search_hint;
+			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_clear = global::Alloy.Resource.String.abc_searchview_description_clear;
+			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_query = global::Alloy.Resource.String.abc_searchview_description_query;
+			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_search = global::Alloy.Resource.String.abc_searchview_description_search;
+			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_submit = global::Alloy.Resource.String.abc_searchview_description_submit;
+			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_voice = global::Alloy.Resource.String.abc_searchview_description_voice;
+			global::SlideUpPanelLibrary.Resource.String.abc_shareactionprovider_share_with = global::Alloy.Resource.String.abc_shareactionprovider_share_with;
+			global::SlideUpPanelLibrary.Resource.String.abc_shareactionprovider_share_with_application = global::Alloy.Resource.String.abc_shareactionprovider_share_with_application;
+			global::SlideUpPanelLibrary.Resource.String.abc_toolbar_collapse_description = global::Alloy.Resource.String.abc_toolbar_collapse_description;
+			global::SlideUpPanelLibrary.Resource.String.app_name = global::Alloy.Resource.String.app_name;
+			global::SlideUpPanelLibrary.Resource.String.hello = global::Alloy.Resource.String.hello;
+			global::SlideUpPanelLibrary.Resource.String.search_menu_title = global::Alloy.Resource.String.search_menu_title;
+			global::SlideUpPanelLibrary.Resource.String.status_bar_notification_info_overflow = global::Alloy.Resource.String.status_bar_notification_info_overflow;
+			global::SlideUpPanelLibrary.Resource.Style.AlertDialog_AppCompat = global::Alloy.Resource.Style.AlertDialog_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.AlertDialog_AppCompat_Light = global::Alloy.Resource.Style.AlertDialog_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Animation_AppCompat_Dialog = global::Alloy.Resource.Style.Animation_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Animation_AppCompat_DropDownUp = global::Alloy.Resource.Style.Animation_AppCompat_DropDownUp;
+			global::SlideUpPanelLibrary.Resource.Style.Animation_AppCompat_Tooltip = global::Alloy.Resource.Style.Animation_AppCompat_Tooltip;
+			global::SlideUpPanelLibrary.Resource.Style.Base_AlertDialog_AppCompat = global::Alloy.Resource.Style.Base_AlertDialog_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_AlertDialog_AppCompat_Light = global::Alloy.Resource.Style.Base_AlertDialog_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Animation_AppCompat_Dialog = global::Alloy.Resource.Style.Base_Animation_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Animation_AppCompat_DropDownUp = global::Alloy.Resource.Style.Base_Animation_AppCompat_DropDownUp;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Animation_AppCompat_Tooltip = global::Alloy.Resource.Style.Base_Animation_AppCompat_Tooltip;
+			global::SlideUpPanelLibrary.Resource.Style.Base_DialogWindowTitle_AppCompat = global::Alloy.Resource.Style.Base_DialogWindowTitle_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_DialogWindowTitleBackground_AppCompat = global::Alloy.Resource.Style.Base_DialogWindowTitleBackground_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Body1 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Body1;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Body2 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Body2;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Button = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Button;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Caption = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Caption;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display1 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display1;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display2 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display2;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display3 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display3;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display4 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display4;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Headline = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Headline;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Large = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Large;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Large_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Large_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Large = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Large;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Small = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Medium = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Medium;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Medium_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Medium_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Menu = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Menu;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_SearchResult = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_SearchResult;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Title;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Small = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Small_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Small_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Subhead = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Subhead;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Subhead_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Subhead_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Title;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Title_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Title_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Tooltip = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Tooltip;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Menu = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Menu;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Title;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Borderless_Colored = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Borderless_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Colored = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_DropDownItem = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_DropDownItem;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Header = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Header;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Large = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Large;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Small = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Switch = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Switch;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_TextView_SpinnerItem = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_TextView_SpinnerItem;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::Alloy.Resource.Style.Base_TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Title = global::Alloy.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Title;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat = global::Alloy.Resource.Style.Base_Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_CompactMenu = global::Alloy.Resource.Style.Base_Theme_AppCompat_CompactMenu;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge = global::Alloy.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_ActionBar = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dark = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dark;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dark_ActionBar = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dark_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Light = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V11_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V11_Theme_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V11_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_V11_Theme_AppCompat_Light_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V11_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V11_ThemeOverlay_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V12_Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Base_V12_Widget_AppCompat_AutoCompleteTextView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V12_Widget_AppCompat_EditText = global::Alloy.Resource.Style.Base_V12_Widget_AppCompat_EditText;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V22_Theme_AppCompat = global::Alloy.Resource.Style.Base_V22_Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V22_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V22_Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V23_Theme_AppCompat = global::Alloy.Resource.Style.Base_V23_Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V23_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V23_Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V26_Theme_AppCompat = global::Alloy.Resource.Style.Base_V26_Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V26_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V26_Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V26_Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Base_V26_Widget_AppCompat_Toolbar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat_Light_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Base_V7_Widget_AppCompat_AutoCompleteTextView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Widget_AppCompat_EditText = global::Alloy.Resource.Style.Base_V7_Widget_AppCompat_EditText;
+			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Base_V7_Widget_AppCompat_Toolbar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_Solid = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_Solid;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_TabBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_TabBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_TabText = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_TabText;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_TabView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_TabView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionButton = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionButton;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionButton_CloseMode = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionButton_CloseMode;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionButton_Overflow = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionButton_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionMode = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionMode;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActivityChooserView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActivityChooserView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Base_Widget_AppCompat_AutoCompleteTextView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Borderless = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Borderless;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Borderless_Colored = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Borderless_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_ButtonBar_AlertDialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Colored = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Small = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ButtonBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ButtonBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_CompoundButton_CheckBox = global::Alloy.Resource.Style.Base_Widget_AppCompat_CompoundButton_CheckBox;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_CompoundButton_RadioButton = global::Alloy.Resource.Style.Base_Widget_AppCompat_CompoundButton_RadioButton;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_CompoundButton_Switch = global::Alloy.Resource.Style.Base_Widget_AppCompat_CompoundButton_Switch;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle = global::Alloy.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle_Common = global::Alloy.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle_Common;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_DropDownItem_Spinner = global::Alloy.Resource.Style.Base_Widget_AppCompat_DropDownItem_Spinner;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_EditText = global::Alloy.Resource.Style.Base_Widget_AppCompat_EditText;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ImageButton = global::Alloy.Resource.Style.Base_Widget_AppCompat_ImageButton;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_Solid = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_Solid;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText_Inverse = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabView = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu_Overflow = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListMenuView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListMenuView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListPopupWindow = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListPopupWindow;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListView_DropDown = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListView_DropDown;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListView_Menu = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListView_Menu;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_PopupMenu = global::Alloy.Resource.Style.Base_Widget_AppCompat_PopupMenu;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_PopupMenu_Overflow = global::Alloy.Resource.Style.Base_Widget_AppCompat_PopupMenu_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_PopupWindow = global::Alloy.Resource.Style.Base_Widget_AppCompat_PopupWindow;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ProgressBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ProgressBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ProgressBar_Horizontal = global::Alloy.Resource.Style.Base_Widget_AppCompat_ProgressBar_Horizontal;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_RatingBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_RatingBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_RatingBar_Indicator = global::Alloy.Resource.Style.Base_Widget_AppCompat_RatingBar_Indicator;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_RatingBar_Small = global::Alloy.Resource.Style.Base_Widget_AppCompat_RatingBar_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SearchView = global::Alloy.Resource.Style.Base_Widget_AppCompat_SearchView;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SearchView_ActionBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_SearchView_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SeekBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_SeekBar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SeekBar_Discrete = global::Alloy.Resource.Style.Base_Widget_AppCompat_SeekBar_Discrete;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Spinner = global::Alloy.Resource.Style.Base_Widget_AppCompat_Spinner;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Spinner_Underlined = global::Alloy.Resource.Style.Base_Widget_AppCompat_Spinner_Underlined;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_TextView_SpinnerItem = global::Alloy.Resource.Style.Base_Widget_AppCompat_TextView_SpinnerItem;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Base_Widget_AppCompat_Toolbar;
+			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Toolbar_Button_Navigation = global::Alloy.Resource.Style.Base_Widget_AppCompat_Toolbar_Button_Navigation;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_AppCompat = global::Alloy.Resource.Style.Platform_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_AppCompat_Light = global::Alloy.Resource.Style.Platform_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_ThemeOverlay_AppCompat = global::Alloy.Resource.Style.Platform_ThemeOverlay_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_ThemeOverlay_AppCompat_Dark = global::Alloy.Resource.Style.Platform_ThemeOverlay_AppCompat_Dark;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_ThemeOverlay_AppCompat_Light = global::Alloy.Resource.Style.Platform_ThemeOverlay_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V11_AppCompat = global::Alloy.Resource.Style.Platform_V11_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V11_AppCompat_Light = global::Alloy.Resource.Style.Platform_V11_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V14_AppCompat = global::Alloy.Resource.Style.Platform_V14_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V14_AppCompat_Light = global::Alloy.Resource.Style.Platform_V14_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V21_AppCompat = global::Alloy.Resource.Style.Platform_V21_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V21_AppCompat_Light = global::Alloy.Resource.Style.Platform_V21_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V25_AppCompat = global::Alloy.Resource.Style.Platform_V25_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_V25_AppCompat_Light = global::Alloy.Resource.Style.Platform_V25_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Platform_Widget_AppCompat_Spinner = global::Alloy.Resource.Style.Platform_Widget_AppCompat_Spinner;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_DialogWindowTitle_AppCompat = global::Alloy.Resource.Style.RtlOverlay_DialogWindowTitle_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_ActionBar_TitleItem = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_ActionBar_TitleItem;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_DialogTitle_Icon = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_DialogTitle_Icon;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_InternalGroup = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_InternalGroup;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Text = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Text;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1 = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2 = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Query = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Query;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Text = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Text;
+			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon;
+			global::SlideUpPanelLibrary.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton = global::Alloy.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton;
+			global::SlideUpPanelLibrary.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = global::Alloy.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat = global::Alloy.Resource.Style.TextAppearance_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Body1 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Body1;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Body2 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Body2;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Button = global::Alloy.Resource.Style.TextAppearance_AppCompat_Button;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Caption = global::Alloy.Resource.Style.TextAppearance_AppCompat_Caption;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display1 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display1;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display2 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display2;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display3 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display3;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display4 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display4;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Headline = global::Alloy.Resource.Style.TextAppearance_AppCompat_Headline;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Large = global::Alloy.Resource.Style.TextAppearance_AppCompat_Large;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Large_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Large_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Title;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Large = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Large;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Small = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Small;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Medium = global::Alloy.Resource.Style.TextAppearance_AppCompat_Medium;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Medium_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Medium_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Menu = global::Alloy.Resource.Style.TextAppearance_AppCompat_Menu;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_SearchResult_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_SearchResult_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_SearchResult_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_SearchResult_Title;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Small = global::Alloy.Resource.Style.TextAppearance_AppCompat_Small;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Small_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Small_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Subhead = global::Alloy.Resource.Style.TextAppearance_AppCompat_Subhead;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Subhead_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Subhead_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Title;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Title_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Title_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Tooltip = global::Alloy.Resource.Style.TextAppearance_AppCompat_Tooltip;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Menu = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Menu;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button_Borderless_Colored = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button_Borderless_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button_Colored = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_DropDownItem = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_DropDownItem;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Header = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Header;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Large = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Large;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Small = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Small;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Switch = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Switch;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_TextView_SpinnerItem = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_TextView_SpinnerItem;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification = global::Alloy.Resource.Style.TextAppearance_Compat_Notification;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Info = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Info;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Info_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Info_Media;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Line2 = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Line2;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Line2_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Line2_Media;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Media;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Time = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Time;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Time_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Time_Media;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Title = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Title;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Title_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Title_Media;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::Alloy.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::Alloy.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
+			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title = global::Alloy.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat = global::Alloy.Resource.Style.Theme_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_CompactMenu = global::Alloy.Resource.Style.Theme_AppCompat_CompactMenu;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight = global::Alloy.Resource.Style.Theme_AppCompat_DayNight;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_Dialog = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_NoActionBar = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_NoActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Theme_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.Theme_AppCompat_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Dialog_MinWidth = global::Alloy.Resource.Style.Theme_AppCompat_Dialog_MinWidth;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DialogWhenLarge = global::Alloy.Resource.Style.Theme_AppCompat_DialogWhenLarge;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light = global::Alloy.Resource.Style.Theme_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_DarkActionBar = global::Alloy.Resource.Style.Theme_AppCompat_Light_DarkActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Theme_AppCompat_Light_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_Dialog_Alert = global::Alloy.Resource.Style.Theme_AppCompat_Light_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth = global::Alloy.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge = global::Alloy.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_NoActionBar = global::Alloy.Resource.Style.Theme_AppCompat_Light_NoActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_NoActionBar = global::Alloy.Resource.Style.Theme_AppCompat_NoActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat = global::Alloy.Resource.Style.ThemeOverlay_AppCompat;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_ActionBar = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dark = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dark;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dark_ActionBar = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dark_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dialog;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dialog_Alert;
+			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Light = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Light;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_Solid = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_Solid;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_TabBar = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_TabBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_TabText = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_TabText;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_TabView = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_TabView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionButton = global::Alloy.Resource.Style.Widget_AppCompat_ActionButton;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionButton_CloseMode = global::Alloy.Resource.Style.Widget_AppCompat_ActionButton_CloseMode;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionButton_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_ActionButton_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionMode = global::Alloy.Resource.Style.Widget_AppCompat_ActionMode;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActivityChooserView = global::Alloy.Resource.Style.Widget_AppCompat_ActivityChooserView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Widget_AppCompat_AutoCompleteTextView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button = global::Alloy.Resource.Style.Widget_AppCompat_Button;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Borderless = global::Alloy.Resource.Style.Widget_AppCompat_Button_Borderless;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Borderless_Colored = global::Alloy.Resource.Style.Widget_AppCompat_Button_Borderless_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Widget_AppCompat_Button_ButtonBar_AlertDialog;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Colored = global::Alloy.Resource.Style.Widget_AppCompat_Button_Colored;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Small = global::Alloy.Resource.Style.Widget_AppCompat_Button_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ButtonBar = global::Alloy.Resource.Style.Widget_AppCompat_ButtonBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_CompoundButton_CheckBox = global::Alloy.Resource.Style.Widget_AppCompat_CompoundButton_CheckBox;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_CompoundButton_RadioButton = global::Alloy.Resource.Style.Widget_AppCompat_CompoundButton_RadioButton;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_CompoundButton_Switch = global::Alloy.Resource.Style.Widget_AppCompat_CompoundButton_Switch;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_DrawerArrowToggle = global::Alloy.Resource.Style.Widget_AppCompat_DrawerArrowToggle;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_DropDownItem_Spinner = global::Alloy.Resource.Style.Widget_AppCompat_DropDownItem_Spinner;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_EditText = global::Alloy.Resource.Style.Widget_AppCompat_EditText;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ImageButton = global::Alloy.Resource.Style.Widget_AppCompat_ImageButton;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionButton = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionButton;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionButton_CloseMode = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionButton_CloseMode;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionButton_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionButton_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionMode_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionMode_Inverse;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActivityChooserView = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActivityChooserView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_AutoCompleteTextView = global::Alloy.Resource.Style.Widget_AppCompat_Light_AutoCompleteTextView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_DropDownItem_Spinner = global::Alloy.Resource.Style.Widget_AppCompat_Light_DropDownItem_Spinner;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ListPopupWindow = global::Alloy.Resource.Style.Widget_AppCompat_Light_ListPopupWindow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ListView_DropDown = global::Alloy.Resource.Style.Widget_AppCompat_Light_ListView_DropDown;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_PopupMenu = global::Alloy.Resource.Style.Widget_AppCompat_Light_PopupMenu;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_PopupMenu_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_Light_PopupMenu_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_SearchView = global::Alloy.Resource.Style.Widget_AppCompat_Light_SearchView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_Spinner_DropDown_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_Light_Spinner_DropDown_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListMenuView = global::Alloy.Resource.Style.Widget_AppCompat_ListMenuView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListPopupWindow = global::Alloy.Resource.Style.Widget_AppCompat_ListPopupWindow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListView = global::Alloy.Resource.Style.Widget_AppCompat_ListView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListView_DropDown = global::Alloy.Resource.Style.Widget_AppCompat_ListView_DropDown;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListView_Menu = global::Alloy.Resource.Style.Widget_AppCompat_ListView_Menu;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_PopupMenu = global::Alloy.Resource.Style.Widget_AppCompat_PopupMenu;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_PopupMenu_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_PopupMenu_Overflow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_PopupWindow = global::Alloy.Resource.Style.Widget_AppCompat_PopupWindow;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ProgressBar = global::Alloy.Resource.Style.Widget_AppCompat_ProgressBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ProgressBar_Horizontal = global::Alloy.Resource.Style.Widget_AppCompat_ProgressBar_Horizontal;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_RatingBar = global::Alloy.Resource.Style.Widget_AppCompat_RatingBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_RatingBar_Indicator = global::Alloy.Resource.Style.Widget_AppCompat_RatingBar_Indicator;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_RatingBar_Small = global::Alloy.Resource.Style.Widget_AppCompat_RatingBar_Small;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SearchView = global::Alloy.Resource.Style.Widget_AppCompat_SearchView;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SearchView_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_SearchView_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SeekBar = global::Alloy.Resource.Style.Widget_AppCompat_SeekBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SeekBar_Discrete = global::Alloy.Resource.Style.Widget_AppCompat_SeekBar_Discrete;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner = global::Alloy.Resource.Style.Widget_AppCompat_Spinner;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner_DropDown = global::Alloy.Resource.Style.Widget_AppCompat_Spinner_DropDown;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner_DropDown_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_Spinner_DropDown_ActionBar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner_Underlined = global::Alloy.Resource.Style.Widget_AppCompat_Spinner_Underlined;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_TextView_SpinnerItem = global::Alloy.Resource.Style.Widget_AppCompat_TextView_SpinnerItem;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Widget_AppCompat_Toolbar;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Toolbar_Button_Navigation = global::Alloy.Resource.Style.Widget_AppCompat_Toolbar_Button_Navigation;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_Compat_NotificationActionContainer = global::Alloy.Resource.Style.Widget_Compat_NotificationActionContainer;
+			global::SlideUpPanelLibrary.Resource.Style.Widget_Compat_NotificationActionText = global::Alloy.Resource.Style.Widget_Compat_NotificationActionText;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar = global::Alloy.Resource.Styleable.ActionBar;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_background = global::Alloy.Resource.Styleable.ActionBar_background;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_backgroundSplit = global::Alloy.Resource.Styleable.ActionBar_backgroundSplit;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_backgroundStacked = global::Alloy.Resource.Styleable.ActionBar_backgroundStacked;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetEnd = global::Alloy.Resource.Styleable.ActionBar_contentInsetEnd;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetEndWithActions = global::Alloy.Resource.Styleable.ActionBar_contentInsetEndWithActions;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetLeft = global::Alloy.Resource.Styleable.ActionBar_contentInsetLeft;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetRight = global::Alloy.Resource.Styleable.ActionBar_contentInsetRight;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetStart = global::Alloy.Resource.Styleable.ActionBar_contentInsetStart;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetStartWithNavigation = global::Alloy.Resource.Styleable.ActionBar_contentInsetStartWithNavigation;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_customNavigationLayout = global::Alloy.Resource.Styleable.ActionBar_customNavigationLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_displayOptions = global::Alloy.Resource.Styleable.ActionBar_displayOptions;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_divider = global::Alloy.Resource.Styleable.ActionBar_divider;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_elevation = global::Alloy.Resource.Styleable.ActionBar_elevation;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_height = global::Alloy.Resource.Styleable.ActionBar_height;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_hideOnContentScroll = global::Alloy.Resource.Styleable.ActionBar_hideOnContentScroll;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_homeAsUpIndicator = global::Alloy.Resource.Styleable.ActionBar_homeAsUpIndicator;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_homeLayout = global::Alloy.Resource.Styleable.ActionBar_homeLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_icon = global::Alloy.Resource.Styleable.ActionBar_icon;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_indeterminateProgressStyle = global::Alloy.Resource.Styleable.ActionBar_indeterminateProgressStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_itemPadding = global::Alloy.Resource.Styleable.ActionBar_itemPadding;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_logo = global::Alloy.Resource.Styleable.ActionBar_logo;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_navigationMode = global::Alloy.Resource.Styleable.ActionBar_navigationMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_popupTheme = global::Alloy.Resource.Styleable.ActionBar_popupTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_progressBarPadding = global::Alloy.Resource.Styleable.ActionBar_progressBarPadding;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_progressBarStyle = global::Alloy.Resource.Styleable.ActionBar_progressBarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_subtitle = global::Alloy.Resource.Styleable.ActionBar_subtitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_subtitleTextStyle = global::Alloy.Resource.Styleable.ActionBar_subtitleTextStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_title = global::Alloy.Resource.Styleable.ActionBar_title;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_titleTextStyle = global::Alloy.Resource.Styleable.ActionBar_titleTextStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBarLayout = global::Alloy.Resource.Styleable.ActionBarLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionBarLayout_android_layout_gravity = global::Alloy.Resource.Styleable.ActionBarLayout_android_layout_gravity;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMenuItemView = global::Alloy.Resource.Styleable.ActionMenuItemView;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMenuItemView_android_minWidth = global::Alloy.Resource.Styleable.ActionMenuItemView_android_minWidth;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMenuView = global::Alloy.Resource.Styleable.ActionMenuView;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode = global::Alloy.Resource.Styleable.ActionMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_background = global::Alloy.Resource.Styleable.ActionMode_background;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_backgroundSplit = global::Alloy.Resource.Styleable.ActionMode_backgroundSplit;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_closeItemLayout = global::Alloy.Resource.Styleable.ActionMode_closeItemLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_height = global::Alloy.Resource.Styleable.ActionMode_height;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_subtitleTextStyle = global::Alloy.Resource.Styleable.ActionMode_subtitleTextStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_titleTextStyle = global::Alloy.Resource.Styleable.ActionMode_titleTextStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActivityChooserView = global::Alloy.Resource.Styleable.ActivityChooserView;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActivityChooserView_expandActivityOverflowButtonDrawable = global::Alloy.Resource.Styleable.ActivityChooserView_expandActivityOverflowButtonDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.ActivityChooserView_initialActivityCount = global::Alloy.Resource.Styleable.ActivityChooserView_initialActivityCount;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog = global::Alloy.Resource.Styleable.AlertDialog;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_android_layout = global::Alloy.Resource.Styleable.AlertDialog_android_layout;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_buttonPanelSideLayout = global::Alloy.Resource.Styleable.AlertDialog_buttonPanelSideLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_listItemLayout = global::Alloy.Resource.Styleable.AlertDialog_listItemLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_listLayout = global::Alloy.Resource.Styleable.AlertDialog_listLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_multiChoiceItemLayout = global::Alloy.Resource.Styleable.AlertDialog_multiChoiceItemLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_showTitle = global::Alloy.Resource.Styleable.AlertDialog_showTitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_singleChoiceItemLayout = global::Alloy.Resource.Styleable.AlertDialog_singleChoiceItemLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView = global::Alloy.Resource.Styleable.AppCompatImageView;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_android_src = global::Alloy.Resource.Styleable.AppCompatImageView_android_src;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_srcCompat = global::Alloy.Resource.Styleable.AppCompatImageView_srcCompat;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_tint = global::Alloy.Resource.Styleable.AppCompatImageView_tint;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_tintMode = global::Alloy.Resource.Styleable.AppCompatImageView_tintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar = global::Alloy.Resource.Styleable.AppCompatSeekBar;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_android_thumb = global::Alloy.Resource.Styleable.AppCompatSeekBar_android_thumb;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_tickMark = global::Alloy.Resource.Styleable.AppCompatSeekBar_tickMark;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_tickMarkTint = global::Alloy.Resource.Styleable.AppCompatSeekBar_tickMarkTint;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_tickMarkTintMode = global::Alloy.Resource.Styleable.AppCompatSeekBar_tickMarkTintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper = global::Alloy.Resource.Styleable.AppCompatTextHelper;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableBottom = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableBottom;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableEnd = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableEnd;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableLeft = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableLeft;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableRight = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableRight;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableStart = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableStart;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableTop = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableTop;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_textAppearance = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_textAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView = global::Alloy.Resource.Styleable.AppCompatTextView;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_android_textAppearance = global::Alloy.Resource.Styleable.AppCompatTextView_android_textAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeMaxTextSize = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeMaxTextSize;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeMinTextSize = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeMinTextSize;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizePresetSizes = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizePresetSizes;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeStepGranularity = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeStepGranularity;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeTextType = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeTextType;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_fontFamily = global::Alloy.Resource.Styleable.AppCompatTextView_fontFamily;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_textAllCaps = global::Alloy.Resource.Styleable.AppCompatTextView_textAllCaps;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme = global::Alloy.Resource.Styleable.AppCompatTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarDivider = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarDivider;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarItemBackground = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarItemBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarPopupTheme = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarPopupTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarSize = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarSize;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarSplitStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarSplitStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTabBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTabBarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTabStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTabStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTabTextStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTabTextStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTheme = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarWidgetTheme = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarWidgetTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionDropDownStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionDropDownStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionMenuTextAppearance = global::Alloy.Resource.Styleable.AppCompatTheme_actionMenuTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionMenuTextColor = global::Alloy.Resource.Styleable.AppCompatTheme_actionMenuTextColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeBackground = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCloseButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCloseButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCloseDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCloseDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCopyDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCopyDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCutDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCutDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeFindDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeFindDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModePasteDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModePasteDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModePopupWindowStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionModePopupWindowStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeSelectAllDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeSelectAllDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeShareDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeShareDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeSplitBackground = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeSplitBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeWebSearchDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeWebSearchDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionOverflowButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionOverflowButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionOverflowMenuStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionOverflowMenuStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_activityChooserViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_activityChooserViewStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogButtonGroupStyle = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogButtonGroupStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogCenterButtons = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogCenterButtons;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogStyle = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogTheme = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_android_windowAnimationStyle = global::Alloy.Resource.Styleable.AppCompatTheme_android_windowAnimationStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_android_windowIsFloating = global::Alloy.Resource.Styleable.AppCompatTheme_android_windowIsFloating;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_autoCompleteTextViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_autoCompleteTextViewStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_borderlessButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_borderlessButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarNegativeButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarNegativeButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarNeutralButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarNeutralButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarPositiveButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarPositiveButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonStyleSmall = global::Alloy.Resource.Styleable.AppCompatTheme_buttonStyleSmall;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_checkboxStyle = global::Alloy.Resource.Styleable.AppCompatTheme_checkboxStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_checkedTextViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_checkedTextViewStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorAccent = global::Alloy.Resource.Styleable.AppCompatTheme_colorAccent;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorBackgroundFloating = global::Alloy.Resource.Styleable.AppCompatTheme_colorBackgroundFloating;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorButtonNormal = global::Alloy.Resource.Styleable.AppCompatTheme_colorButtonNormal;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorControlActivated = global::Alloy.Resource.Styleable.AppCompatTheme_colorControlActivated;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorControlHighlight = global::Alloy.Resource.Styleable.AppCompatTheme_colorControlHighlight;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorControlNormal = global::Alloy.Resource.Styleable.AppCompatTheme_colorControlNormal;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorError = global::Alloy.Resource.Styleable.AppCompatTheme_colorError;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorPrimary = global::Alloy.Resource.Styleable.AppCompatTheme_colorPrimary;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorPrimaryDark = global::Alloy.Resource.Styleable.AppCompatTheme_colorPrimaryDark;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorSwitchThumbNormal = global::Alloy.Resource.Styleable.AppCompatTheme_colorSwitchThumbNormal;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_controlBackground = global::Alloy.Resource.Styleable.AppCompatTheme_controlBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dialogPreferredPadding = global::Alloy.Resource.Styleable.AppCompatTheme_dialogPreferredPadding;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dialogTheme = global::Alloy.Resource.Styleable.AppCompatTheme_dialogTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dividerHorizontal = global::Alloy.Resource.Styleable.AppCompatTheme_dividerHorizontal;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dividerVertical = global::Alloy.Resource.Styleable.AppCompatTheme_dividerVertical;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dropDownListViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_dropDownListViewStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight = global::Alloy.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_editTextBackground = global::Alloy.Resource.Styleable.AppCompatTheme_editTextBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_editTextColor = global::Alloy.Resource.Styleable.AppCompatTheme_editTextColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_editTextStyle = global::Alloy.Resource.Styleable.AppCompatTheme_editTextStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_homeAsUpIndicator = global::Alloy.Resource.Styleable.AppCompatTheme_homeAsUpIndicator;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_imageButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_imageButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listChoiceBackgroundIndicator = global::Alloy.Resource.Styleable.AppCompatTheme_listChoiceBackgroundIndicator;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listDividerAlertDialog = global::Alloy.Resource.Styleable.AppCompatTheme_listDividerAlertDialog;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listMenuViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_listMenuViewStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPopupWindowStyle = global::Alloy.Resource.Styleable.AppCompatTheme_listPopupWindowStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemHeight = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemHeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemHeightLarge = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemHeightLarge;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemHeightSmall = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemHeightSmall;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingLeft = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingLeft;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingRight = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingRight;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_panelBackground = global::Alloy.Resource.Styleable.AppCompatTheme_panelBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_panelMenuListTheme = global::Alloy.Resource.Styleable.AppCompatTheme_panelMenuListTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_panelMenuListWidth = global::Alloy.Resource.Styleable.AppCompatTheme_panelMenuListWidth;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_popupMenuStyle = global::Alloy.Resource.Styleable.AppCompatTheme_popupMenuStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_popupWindowStyle = global::Alloy.Resource.Styleable.AppCompatTheme_popupWindowStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_radioButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_radioButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_ratingBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_ratingBarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_ratingBarStyleIndicator = global::Alloy.Resource.Styleable.AppCompatTheme_ratingBarStyleIndicator;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_ratingBarStyleSmall = global::Alloy.Resource.Styleable.AppCompatTheme_ratingBarStyleSmall;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_searchViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_searchViewStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_seekBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_seekBarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_selectableItemBackground = global::Alloy.Resource.Styleable.AppCompatTheme_selectableItemBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_selectableItemBackgroundBorderless = global::Alloy.Resource.Styleable.AppCompatTheme_selectableItemBackgroundBorderless;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_spinnerDropDownItemStyle = global::Alloy.Resource.Styleable.AppCompatTheme_spinnerDropDownItemStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_spinnerStyle = global::Alloy.Resource.Styleable.AppCompatTheme_spinnerStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_switchStyle = global::Alloy.Resource.Styleable.AppCompatTheme_switchStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceLargePopupMenu = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceLargePopupMenu;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceListItem = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceListItem;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceListItemSecondary = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceListItemSecondary;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceListItemSmall = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceListItemSmall;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearancePopupMenuHeader = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearancePopupMenuHeader;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultSubtitle = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultSubtitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultTitle = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultTitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceSmallPopupMenu = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceSmallPopupMenu;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textColorAlertDialogListItem = global::Alloy.Resource.Styleable.AppCompatTheme_textColorAlertDialogListItem;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textColorSearchUrl = global::Alloy.Resource.Styleable.AppCompatTheme_textColorSearchUrl;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_toolbarNavigationButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_toolbarNavigationButtonStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_toolbarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_toolbarStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_tooltipForegroundColor = global::Alloy.Resource.Styleable.AppCompatTheme_tooltipForegroundColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_tooltipFrameBackground = global::Alloy.Resource.Styleable.AppCompatTheme_tooltipFrameBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowActionBar = global::Alloy.Resource.Styleable.AppCompatTheme_windowActionBar;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowActionBarOverlay = global::Alloy.Resource.Styleable.AppCompatTheme_windowActionBarOverlay;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowActionModeOverlay = global::Alloy.Resource.Styleable.AppCompatTheme_windowActionModeOverlay;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedHeightMajor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedHeightMajor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedHeightMinor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedHeightMinor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedWidthMajor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedWidthMajor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedWidthMinor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedWidthMinor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowMinWidthMajor = global::Alloy.Resource.Styleable.AppCompatTheme_windowMinWidthMajor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowMinWidthMinor = global::Alloy.Resource.Styleable.AppCompatTheme_windowMinWidthMinor;
+			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowNoTitle = global::Alloy.Resource.Styleable.AppCompatTheme_windowNoTitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.ButtonBarLayout = global::Alloy.Resource.Styleable.ButtonBarLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.ButtonBarLayout_allowStacking = global::Alloy.Resource.Styleable.ButtonBarLayout_allowStacking;
+			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem = global::Alloy.Resource.Styleable.ColorStateListItem;
+			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem_alpha = global::Alloy.Resource.Styleable.ColorStateListItem_alpha;
+			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem_android_alpha = global::Alloy.Resource.Styleable.ColorStateListItem_android_alpha;
+			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem_android_color = global::Alloy.Resource.Styleable.ColorStateListItem_android_color;
+			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton = global::Alloy.Resource.Styleable.CompoundButton;
+			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton_android_button = global::Alloy.Resource.Styleable.CompoundButton_android_button;
+			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton_buttonTint = global::Alloy.Resource.Styleable.CompoundButton_buttonTint;
+			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton_buttonTintMode = global::Alloy.Resource.Styleable.CompoundButton_buttonTintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle = global::Alloy.Resource.Styleable.DrawerArrowToggle;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_arrowHeadLength = global::Alloy.Resource.Styleable.DrawerArrowToggle_arrowHeadLength;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_arrowShaftLength = global::Alloy.Resource.Styleable.DrawerArrowToggle_arrowShaftLength;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_barLength = global::Alloy.Resource.Styleable.DrawerArrowToggle_barLength;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_color = global::Alloy.Resource.Styleable.DrawerArrowToggle_color;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_drawableSize = global::Alloy.Resource.Styleable.DrawerArrowToggle_drawableSize;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_gapBetweenBars = global::Alloy.Resource.Styleable.DrawerArrowToggle_gapBetweenBars;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_spinBars = global::Alloy.Resource.Styleable.DrawerArrowToggle_spinBars;
+			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_thickness = global::Alloy.Resource.Styleable.DrawerArrowToggle_thickness;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily = global::Alloy.Resource.Styleable.FontFamily;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderAuthority = global::Alloy.Resource.Styleable.FontFamily_fontProviderAuthority;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderCerts = global::Alloy.Resource.Styleable.FontFamily_fontProviderCerts;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::Alloy.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::Alloy.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderPackage = global::Alloy.Resource.Styleable.FontFamily_fontProviderPackage;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderQuery = global::Alloy.Resource.Styleable.FontFamily_fontProviderQuery;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont = global::Alloy.Resource.Styleable.FontFamilyFont;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_android_font = global::Alloy.Resource.Styleable.FontFamilyFont_android_font;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_android_fontStyle = global::Alloy.Resource.Styleable.FontFamilyFont_android_fontStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_android_fontWeight = global::Alloy.Resource.Styleable.FontFamilyFont_android_fontWeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_font = global::Alloy.Resource.Styleable.FontFamilyFont_font;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_fontStyle = global::Alloy.Resource.Styleable.FontFamilyFont_fontStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_fontWeight = global::Alloy.Resource.Styleable.FontFamilyFont_fontWeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat = global::Alloy.Resource.Styleable.LinearLayoutCompat;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_baselineAligned = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_baselineAligned;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_baselineAlignedChildIndex = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_baselineAlignedChildIndex;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_gravity = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_gravity;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_orientation = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_orientation;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_weightSum = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_weightSum;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_divider = global::Alloy.Resource.Styleable.LinearLayoutCompat_divider;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_dividerPadding = global::Alloy.Resource.Styleable.LinearLayoutCompat_dividerPadding;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild = global::Alloy.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_showDividers = global::Alloy.Resource.Styleable.LinearLayoutCompat_showDividers;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_gravity = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_gravity;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_height = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_height;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_weight = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_weight;
+			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_width = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_width;
+			global::SlideUpPanelLibrary.Resource.Styleable.ListPopupWindow = global::Alloy.Resource.Styleable.ListPopupWindow;
+			global::SlideUpPanelLibrary.Resource.Styleable.ListPopupWindow_android_dropDownHorizontalOffset = global::Alloy.Resource.Styleable.ListPopupWindow_android_dropDownHorizontalOffset;
+			global::SlideUpPanelLibrary.Resource.Styleable.ListPopupWindow_android_dropDownVerticalOffset = global::Alloy.Resource.Styleable.ListPopupWindow_android_dropDownVerticalOffset;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup = global::Alloy.Resource.Styleable.MenuGroup;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_checkableBehavior = global::Alloy.Resource.Styleable.MenuGroup_android_checkableBehavior;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_enabled = global::Alloy.Resource.Styleable.MenuGroup_android_enabled;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_id = global::Alloy.Resource.Styleable.MenuGroup_android_id;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_menuCategory = global::Alloy.Resource.Styleable.MenuGroup_android_menuCategory;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_orderInCategory = global::Alloy.Resource.Styleable.MenuGroup_android_orderInCategory;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_visible = global::Alloy.Resource.Styleable.MenuGroup_android_visible;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem = global::Alloy.Resource.Styleable.MenuItem;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_actionLayout = global::Alloy.Resource.Styleable.MenuItem_actionLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_actionProviderClass = global::Alloy.Resource.Styleable.MenuItem_actionProviderClass;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_actionViewClass = global::Alloy.Resource.Styleable.MenuItem_actionViewClass;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_alphabeticModifiers = global::Alloy.Resource.Styleable.MenuItem_alphabeticModifiers;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_alphabeticShortcut = global::Alloy.Resource.Styleable.MenuItem_android_alphabeticShortcut;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_checkable = global::Alloy.Resource.Styleable.MenuItem_android_checkable;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_checked = global::Alloy.Resource.Styleable.MenuItem_android_checked;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_enabled = global::Alloy.Resource.Styleable.MenuItem_android_enabled;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_icon = global::Alloy.Resource.Styleable.MenuItem_android_icon;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_id = global::Alloy.Resource.Styleable.MenuItem_android_id;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_menuCategory = global::Alloy.Resource.Styleable.MenuItem_android_menuCategory;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_numericShortcut = global::Alloy.Resource.Styleable.MenuItem_android_numericShortcut;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_onClick = global::Alloy.Resource.Styleable.MenuItem_android_onClick;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_orderInCategory = global::Alloy.Resource.Styleable.MenuItem_android_orderInCategory;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_title = global::Alloy.Resource.Styleable.MenuItem_android_title;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_titleCondensed = global::Alloy.Resource.Styleable.MenuItem_android_titleCondensed;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_visible = global::Alloy.Resource.Styleable.MenuItem_android_visible;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_contentDescription = global::Alloy.Resource.Styleable.MenuItem_contentDescription;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_iconTint = global::Alloy.Resource.Styleable.MenuItem_iconTint;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_iconTintMode = global::Alloy.Resource.Styleable.MenuItem_iconTintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_numericModifiers = global::Alloy.Resource.Styleable.MenuItem_numericModifiers;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_showAsAction = global::Alloy.Resource.Styleable.MenuItem_showAsAction;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_tooltipText = global::Alloy.Resource.Styleable.MenuItem_tooltipText;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView = global::Alloy.Resource.Styleable.MenuView;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_headerBackground = global::Alloy.Resource.Styleable.MenuView_android_headerBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_horizontalDivider = global::Alloy.Resource.Styleable.MenuView_android_horizontalDivider;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_itemBackground = global::Alloy.Resource.Styleable.MenuView_android_itemBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_itemIconDisabledAlpha = global::Alloy.Resource.Styleable.MenuView_android_itemIconDisabledAlpha;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_itemTextAppearance = global::Alloy.Resource.Styleable.MenuView_android_itemTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_verticalDivider = global::Alloy.Resource.Styleable.MenuView_android_verticalDivider;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_windowAnimationStyle = global::Alloy.Resource.Styleable.MenuView_android_windowAnimationStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_preserveIconSpacing = global::Alloy.Resource.Styleable.MenuView_preserveIconSpacing;
+			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_subMenuArrow = global::Alloy.Resource.Styleable.MenuView_subMenuArrow;
+			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow = global::Alloy.Resource.Styleable.PopupWindow;
+			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow_android_popupAnimationStyle = global::Alloy.Resource.Styleable.PopupWindow_android_popupAnimationStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow_android_popupBackground = global::Alloy.Resource.Styleable.PopupWindow_android_popupBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow_overlapAnchor = global::Alloy.Resource.Styleable.PopupWindow_overlapAnchor;
+			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindowBackgroundState = global::Alloy.Resource.Styleable.PopupWindowBackgroundState;
+			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor = global::Alloy.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecycleListView = global::Alloy.Resource.Styleable.RecycleListView;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecycleListView_paddingBottomNoButtons = global::Alloy.Resource.Styleable.RecycleListView_paddingBottomNoButtons;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecycleListView_paddingTopNoTitle = global::Alloy.Resource.Styleable.RecycleListView_paddingTopNoTitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView = global::Alloy.Resource.Styleable.RecyclerView;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_android_descendantFocusability = global::Alloy.Resource.Styleable.RecyclerView_android_descendantFocusability;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_android_orientation = global::Alloy.Resource.Styleable.RecyclerView_android_orientation;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollEnabled = global::Alloy.Resource.Styleable.RecyclerView_fastScrollEnabled;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollHorizontalThumbDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollHorizontalThumbDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollHorizontalTrackDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollHorizontalTrackDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollVerticalThumbDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollVerticalThumbDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollVerticalTrackDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollVerticalTrackDrawable;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_layoutManager = global::Alloy.Resource.Styleable.RecyclerView_layoutManager;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_reverseLayout = global::Alloy.Resource.Styleable.RecyclerView_reverseLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_spanCount = global::Alloy.Resource.Styleable.RecyclerView_spanCount;
+			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_stackFromEnd = global::Alloy.Resource.Styleable.RecyclerView_stackFromEnd;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView = global::Alloy.Resource.Styleable.SearchView;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_focusable = global::Alloy.Resource.Styleable.SearchView_android_focusable;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_imeOptions = global::Alloy.Resource.Styleable.SearchView_android_imeOptions;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_inputType = global::Alloy.Resource.Styleable.SearchView_android_inputType;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_maxWidth = global::Alloy.Resource.Styleable.SearchView_android_maxWidth;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_closeIcon = global::Alloy.Resource.Styleable.SearchView_closeIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_commitIcon = global::Alloy.Resource.Styleable.SearchView_commitIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_defaultQueryHint = global::Alloy.Resource.Styleable.SearchView_defaultQueryHint;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_goIcon = global::Alloy.Resource.Styleable.SearchView_goIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_iconifiedByDefault = global::Alloy.Resource.Styleable.SearchView_iconifiedByDefault;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_layout = global::Alloy.Resource.Styleable.SearchView_layout;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_queryBackground = global::Alloy.Resource.Styleable.SearchView_queryBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_queryHint = global::Alloy.Resource.Styleable.SearchView_queryHint;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_searchHintIcon = global::Alloy.Resource.Styleable.SearchView_searchHintIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_searchIcon = global::Alloy.Resource.Styleable.SearchView_searchIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_submitBackground = global::Alloy.Resource.Styleable.SearchView_submitBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_suggestionRowLayout = global::Alloy.Resource.Styleable.SearchView_suggestionRowLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_voiceIcon = global::Alloy.Resource.Styleable.SearchView_voiceIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout = global::Alloy.Resource.Styleable.SlidingUpPanelLayout;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoAnchorPoint = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoAnchorPoint;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoClipPanel = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoClipPanel;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoDragView = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoDragView;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoFadeColor = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoFadeColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoFlingVelocity = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoFlingVelocity;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoInitialState = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoInitialState;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoOverlay = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoOverlay;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoPanelHeight = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoPanelHeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoParallaxOffset = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoParallaxOffset;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoScrollInterpolator = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoScrollInterpolator;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoScrollableView = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoScrollableView;
+			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoShadowHeight = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoShadowHeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.Spinner = global::Alloy.Resource.Styleable.Spinner;
+			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_dropDownWidth = global::Alloy.Resource.Styleable.Spinner_android_dropDownWidth;
+			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_entries = global::Alloy.Resource.Styleable.Spinner_android_entries;
+			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_popupBackground = global::Alloy.Resource.Styleable.Spinner_android_popupBackground;
+			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_prompt = global::Alloy.Resource.Styleable.Spinner_android_prompt;
+			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_popupTheme = global::Alloy.Resource.Styleable.Spinner_popupTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat = global::Alloy.Resource.Styleable.SwitchCompat;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_android_textOff = global::Alloy.Resource.Styleable.SwitchCompat_android_textOff;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_android_textOn = global::Alloy.Resource.Styleable.SwitchCompat_android_textOn;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_android_thumb = global::Alloy.Resource.Styleable.SwitchCompat_android_thumb;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_showText = global::Alloy.Resource.Styleable.SwitchCompat_showText;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_splitTrack = global::Alloy.Resource.Styleable.SwitchCompat_splitTrack;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_switchMinWidth = global::Alloy.Resource.Styleable.SwitchCompat_switchMinWidth;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_switchPadding = global::Alloy.Resource.Styleable.SwitchCompat_switchPadding;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_switchTextAppearance = global::Alloy.Resource.Styleable.SwitchCompat_switchTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_thumbTextPadding = global::Alloy.Resource.Styleable.SwitchCompat_thumbTextPadding;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_thumbTint = global::Alloy.Resource.Styleable.SwitchCompat_thumbTint;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_thumbTintMode = global::Alloy.Resource.Styleable.SwitchCompat_thumbTintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_track = global::Alloy.Resource.Styleable.SwitchCompat_track;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_trackTint = global::Alloy.Resource.Styleable.SwitchCompat_trackTint;
+			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_trackTintMode = global::Alloy.Resource.Styleable.SwitchCompat_trackTintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance = global::Alloy.Resource.Styleable.TextAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_fontFamily = global::Alloy.Resource.Styleable.TextAppearance_android_fontFamily;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowColor = global::Alloy.Resource.Styleable.TextAppearance_android_shadowColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowDx = global::Alloy.Resource.Styleable.TextAppearance_android_shadowDx;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowDy = global::Alloy.Resource.Styleable.TextAppearance_android_shadowDy;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowRadius = global::Alloy.Resource.Styleable.TextAppearance_android_shadowRadius;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textColor = global::Alloy.Resource.Styleable.TextAppearance_android_textColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textColorHint = global::Alloy.Resource.Styleable.TextAppearance_android_textColorHint;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textColorLink = global::Alloy.Resource.Styleable.TextAppearance_android_textColorLink;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textSize = global::Alloy.Resource.Styleable.TextAppearance_android_textSize;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textStyle = global::Alloy.Resource.Styleable.TextAppearance_android_textStyle;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_typeface = global::Alloy.Resource.Styleable.TextAppearance_android_typeface;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_fontFamily = global::Alloy.Resource.Styleable.TextAppearance_fontFamily;
+			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_textAllCaps = global::Alloy.Resource.Styleable.TextAppearance_textAllCaps;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar = global::Alloy.Resource.Styleable.Toolbar;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_android_gravity = global::Alloy.Resource.Styleable.Toolbar_android_gravity;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_android_minHeight = global::Alloy.Resource.Styleable.Toolbar_android_minHeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_buttonGravity = global::Alloy.Resource.Styleable.Toolbar_buttonGravity;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_collapseContentDescription = global::Alloy.Resource.Styleable.Toolbar_collapseContentDescription;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_collapseIcon = global::Alloy.Resource.Styleable.Toolbar_collapseIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetEnd = global::Alloy.Resource.Styleable.Toolbar_contentInsetEnd;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetEndWithActions = global::Alloy.Resource.Styleable.Toolbar_contentInsetEndWithActions;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetLeft = global::Alloy.Resource.Styleable.Toolbar_contentInsetLeft;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetRight = global::Alloy.Resource.Styleable.Toolbar_contentInsetRight;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetStart = global::Alloy.Resource.Styleable.Toolbar_contentInsetStart;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetStartWithNavigation = global::Alloy.Resource.Styleable.Toolbar_contentInsetStartWithNavigation;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_logo = global::Alloy.Resource.Styleable.Toolbar_logo;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_logoDescription = global::Alloy.Resource.Styleable.Toolbar_logoDescription;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_maxButtonHeight = global::Alloy.Resource.Styleable.Toolbar_maxButtonHeight;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_navigationContentDescription = global::Alloy.Resource.Styleable.Toolbar_navigationContentDescription;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_navigationIcon = global::Alloy.Resource.Styleable.Toolbar_navigationIcon;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_popupTheme = global::Alloy.Resource.Styleable.Toolbar_popupTheme;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_subtitle = global::Alloy.Resource.Styleable.Toolbar_subtitle;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_subtitleTextAppearance = global::Alloy.Resource.Styleable.Toolbar_subtitleTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_subtitleTextColor = global::Alloy.Resource.Styleable.Toolbar_subtitleTextColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_title = global::Alloy.Resource.Styleable.Toolbar_title;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMargin = global::Alloy.Resource.Styleable.Toolbar_titleMargin;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginBottom = global::Alloy.Resource.Styleable.Toolbar_titleMarginBottom;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginEnd = global::Alloy.Resource.Styleable.Toolbar_titleMarginEnd;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginStart = global::Alloy.Resource.Styleable.Toolbar_titleMarginStart;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginTop = global::Alloy.Resource.Styleable.Toolbar_titleMarginTop;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMargins = global::Alloy.Resource.Styleable.Toolbar_titleMargins;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleTextAppearance = global::Alloy.Resource.Styleable.Toolbar_titleTextAppearance;
+			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleTextColor = global::Alloy.Resource.Styleable.Toolbar_titleTextColor;
+			global::SlideUpPanelLibrary.Resource.Styleable.View = global::Alloy.Resource.Styleable.View;
+			global::SlideUpPanelLibrary.Resource.Styleable.View_android_focusable = global::Alloy.Resource.Styleable.View_android_focusable;
+			global::SlideUpPanelLibrary.Resource.Styleable.View_android_theme = global::Alloy.Resource.Styleable.View_android_theme;
+			global::SlideUpPanelLibrary.Resource.Styleable.View_paddingEnd = global::Alloy.Resource.Styleable.View_paddingEnd;
+			global::SlideUpPanelLibrary.Resource.Styleable.View_paddingStart = global::Alloy.Resource.Styleable.View_paddingStart;
+			global::SlideUpPanelLibrary.Resource.Styleable.View_theme = global::Alloy.Resource.Styleable.View_theme;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper = global::Alloy.Resource.Styleable.ViewBackgroundHelper;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper_android_background = global::Alloy.Resource.Styleable.ViewBackgroundHelper_android_background;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper_backgroundTint = global::Alloy.Resource.Styleable.ViewBackgroundHelper_backgroundTint;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper_backgroundTintMode = global::Alloy.Resource.Styleable.ViewBackgroundHelper_backgroundTintMode;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat = global::Alloy.Resource.Styleable.ViewStubCompat;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat_android_id = global::Alloy.Resource.Styleable.ViewStubCompat_android_id;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat_android_inflatedId = global::Alloy.Resource.Styleable.ViewStubCompat_android_inflatedId;
+			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat_android_layout = global::Alloy.Resource.Styleable.ViewStubCompat_android_layout;
 			global::Spotlight.Resource.Animation.abc_fade_in = global::Alloy.Resource.Animation.abc_fade_in;
 			global::Spotlight.Resource.Animation.abc_fade_out = global::Alloy.Resource.Animation.abc_fade_out;
 			global::Spotlight.Resource.Animation.abc_grow_fade_in_from_bottom = global::Alloy.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -2293,14 +3874,14 @@ namespace Alloy
 			// aapt resource value: 0x7f01019c
 			public const int fabSize = 2130772380;
 			
-			// aapt resource value: 0x7f0101eb
-			public const int fastScrollAutoHide = 2130772459;
+			// aapt resource value: 0x7f0101f7
+			public const int fastScrollAutoHide = 2130772471;
 			
-			// aapt resource value: 0x7f0101ec
-			public const int fastScrollAutoHideDelay = 2130772460;
+			// aapt resource value: 0x7f0101f8
+			public const int fastScrollAutoHideDelay = 2130772472;
 			
-			// aapt resource value: 0x7f0101ed
-			public const int fastScrollEnableThumbInactiveColor = 2130772461;
+			// aapt resource value: 0x7f0101f9
+			public const int fastScrollEnableThumbInactiveColor = 2130772473;
 			
 			// aapt resource value: 0x7f010028
 			public const int fastScrollEnabled = 2130772008;
@@ -2311,32 +3892,32 @@ namespace Alloy
 			// aapt resource value: 0x7f01002c
 			public const int fastScrollHorizontalTrackDrawable = 2130772012;
 			
-			// aapt resource value: 0x7f0101e9
-			public const int fastScrollPopupBackgroundSize = 2130772457;
+			// aapt resource value: 0x7f0101f5
+			public const int fastScrollPopupBackgroundSize = 2130772469;
 			
-			// aapt resource value: 0x7f0101e6
-			public const int fastScrollPopupBgColor = 2130772454;
+			// aapt resource value: 0x7f0101f2
+			public const int fastScrollPopupBgColor = 2130772466;
 			
-			// aapt resource value: 0x7f0101ea
-			public const int fastScrollPopupPosition = 2130772458;
+			// aapt resource value: 0x7f0101f6
+			public const int fastScrollPopupPosition = 2130772470;
 			
-			// aapt resource value: 0x7f0101e7
-			public const int fastScrollPopupTextColor = 2130772455;
+			// aapt resource value: 0x7f0101f3
+			public const int fastScrollPopupTextColor = 2130772467;
 			
-			// aapt resource value: 0x7f0101e8
-			public const int fastScrollPopupTextSize = 2130772456;
+			// aapt resource value: 0x7f0101f4
+			public const int fastScrollPopupTextSize = 2130772468;
 			
-			// aapt resource value: 0x7f0101e3
-			public const int fastScrollThumbColor = 2130772451;
+			// aapt resource value: 0x7f0101ef
+			public const int fastScrollThumbColor = 2130772463;
 			
-			// aapt resource value: 0x7f0101ee
-			public const int fastScrollThumbEnabled = 2130772462;
+			// aapt resource value: 0x7f0101fa
+			public const int fastScrollThumbEnabled = 2130772474;
 			
-			// aapt resource value: 0x7f0101e4
-			public const int fastScrollThumbInactiveColor = 2130772452;
+			// aapt resource value: 0x7f0101f0
+			public const int fastScrollThumbInactiveColor = 2130772464;
 			
-			// aapt resource value: 0x7f0101e5
-			public const int fastScrollTrackColor = 2130772453;
+			// aapt resource value: 0x7f0101f1
+			public const int fastScrollTrackColor = 2130772465;
 			
 			// aapt resource value: 0x7f010029
 			public const int fastScrollVerticalThumbDrawable = 2130772009;
@@ -2437,41 +4018,41 @@ namespace Alloy
 			// aapt resource value: 0x7f010093
 			public const int indeterminateProgressStyle = 2130772115;
 			
-			// aapt resource value: 0x7f0101dd
-			public const int indexBarColor = 2130772445;
+			// aapt resource value: 0x7f0101e9
+			public const int indexBarColor = 2130772457;
 			
-			// aapt resource value: 0x7f0101e0
-			public const int indexBarColorRes = 2130772448;
+			// aapt resource value: 0x7f0101ec
+			public const int indexBarColorRes = 2130772460;
 			
-			// aapt resource value: 0x7f0101db
-			public const int indexBarCornerRadius = 2130772443;
+			// aapt resource value: 0x7f0101e7
+			public const int indexBarCornerRadius = 2130772455;
 			
-			// aapt resource value: 0x7f0101df
-			public const int indexBarHighlightTextColor = 2130772447;
+			// aapt resource value: 0x7f0101eb
+			public const int indexBarHighlightTextColor = 2130772459;
 			
-			// aapt resource value: 0x7f0101e2
-			public const int indexBarHighlightTextColorRes = 2130772450;
+			// aapt resource value: 0x7f0101ee
+			public const int indexBarHighlightTextColorRes = 2130772462;
+			
+			// aapt resource value: 0x7f0101ea
+			public const int indexBarTextColor = 2130772458;
+			
+			// aapt resource value: 0x7f0101ed
+			public const int indexBarTextColorRes = 2130772461;
+			
+			// aapt resource value: 0x7f0101e8
+			public const int indexBarTransparentValue = 2130772456;
 			
 			// aapt resource value: 0x7f0101de
-			public const int indexBarTextColor = 2130772446;
+			public const int indexTextSize = 2130772446;
 			
 			// aapt resource value: 0x7f0101e1
-			public const int indexBarTextColorRes = 2130772449;
+			public const int indexbarMarginHeight = 2130772449;
 			
-			// aapt resource value: 0x7f0101dc
-			public const int indexBarTransparentValue = 2130772444;
+			// aapt resource value: 0x7f0101e0
+			public const int indexbarMarginWidth = 2130772448;
 			
-			// aapt resource value: 0x7f0101d2
-			public const int indexTextSize = 2130772434;
-			
-			// aapt resource value: 0x7f0101d5
-			public const int indexbarMarginHeight = 2130772437;
-			
-			// aapt resource value: 0x7f0101d4
-			public const int indexbarMarginWidth = 2130772436;
-			
-			// aapt resource value: 0x7f0101d3
-			public const int indexbarWidth = 2130772435;
+			// aapt resource value: 0x7f0101df
+			public const int indexbarWidth = 2130772447;
 			
 			// aapt resource value: 0x7f0100a0
 			public const int initialActivityCount = 2130772128;
@@ -2764,20 +4345,20 @@ namespace Alloy
 			// aapt resource value: 0x7f01019d
 			public const int pressedTranslationZ = 2130772381;
 			
-			// aapt resource value: 0x7f0101d8
-			public const int previewColor = 2130772440;
+			// aapt resource value: 0x7f0101e4
+			public const int previewColor = 2130772452;
 			
-			// aapt resource value: 0x7f0101d6
-			public const int previewPadding = 2130772438;
+			// aapt resource value: 0x7f0101e2
+			public const int previewPadding = 2130772450;
 			
-			// aapt resource value: 0x7f0101d9
-			public const int previewTextColor = 2130772441;
+			// aapt resource value: 0x7f0101e5
+			public const int previewTextColor = 2130772453;
 			
-			// aapt resource value: 0x7f0101d7
-			public const int previewTextSize = 2130772439;
+			// aapt resource value: 0x7f0101e3
+			public const int previewTextSize = 2130772451;
 			
-			// aapt resource value: 0x7f0101da
-			public const int previewTransparentValue = 2130772442;
+			// aapt resource value: 0x7f0101e6
+			public const int previewTransparentValue = 2130772454;
 			
 			// aapt resource value: 0x7f010094
 			public const int progressBarPadding = 2130772116;
@@ -3136,6 +4717,42 @@ namespace Alloy
 			// aapt resource value: 0x7f01015a
 			public const int trackTintMode = 2130772314;
 			
+			// aapt resource value: 0x7f0101db
+			public const int umanoAnchorPoint = 2130772443;
+			
+			// aapt resource value: 0x7f0101da
+			public const int umanoClipPanel = 2130772442;
+			
+			// aapt resource value: 0x7f0101d7
+			public const int umanoDragView = 2130772439;
+			
+			// aapt resource value: 0x7f0101d5
+			public const int umanoFadeColor = 2130772437;
+			
+			// aapt resource value: 0x7f0101d6
+			public const int umanoFlingVelocity = 2130772438;
+			
+			// aapt resource value: 0x7f0101dc
+			public const int umanoInitialState = 2130772444;
+			
+			// aapt resource value: 0x7f0101d9
+			public const int umanoOverlay = 2130772441;
+			
+			// aapt resource value: 0x7f0101d2
+			public const int umanoPanelHeight = 2130772434;
+			
+			// aapt resource value: 0x7f0101d4
+			public const int umanoParallaxOffset = 2130772436;
+			
+			// aapt resource value: 0x7f0101dd
+			public const int umanoScrollInterpolator = 2130772445;
+			
+			// aapt resource value: 0x7f0101d8
+			public const int umanoScrollableView = 2130772440;
+			
+			// aapt resource value: 0x7f0101d3
+			public const int umanoShadowHeight = 2130772435;
+			
 			// aapt resource value: 0x7f01019f
 			public const int useCompatPadding = 2130772383;
 			
@@ -3219,44 +4836,44 @@ namespace Alloy
 		public partial class Color
 		{
 			
-			// aapt resource value: 0x7f0b0071
-			public const int abc_background_cache_hint_selector_material_dark = 2131427441;
-			
 			// aapt resource value: 0x7f0b0072
-			public const int abc_background_cache_hint_selector_material_light = 2131427442;
+			public const int abc_background_cache_hint_selector_material_dark = 2131427442;
 			
 			// aapt resource value: 0x7f0b0073
-			public const int abc_btn_colored_borderless_text_material = 2131427443;
+			public const int abc_background_cache_hint_selector_material_light = 2131427443;
 			
 			// aapt resource value: 0x7f0b0074
-			public const int abc_btn_colored_text_material = 2131427444;
+			public const int abc_btn_colored_borderless_text_material = 2131427444;
 			
 			// aapt resource value: 0x7f0b0075
-			public const int abc_color_highlight_material = 2131427445;
+			public const int abc_btn_colored_text_material = 2131427445;
 			
 			// aapt resource value: 0x7f0b0076
-			public const int abc_hint_foreground_material_dark = 2131427446;
+			public const int abc_color_highlight_material = 2131427446;
 			
 			// aapt resource value: 0x7f0b0077
-			public const int abc_hint_foreground_material_light = 2131427447;
+			public const int abc_hint_foreground_material_dark = 2131427447;
+			
+			// aapt resource value: 0x7f0b0078
+			public const int abc_hint_foreground_material_light = 2131427448;
 			
 			// aapt resource value: 0x7f0b0017
 			public const int abc_input_method_navigation_guard = 2131427351;
 			
-			// aapt resource value: 0x7f0b0078
-			public const int abc_primary_text_disable_only_material_dark = 2131427448;
-			
 			// aapt resource value: 0x7f0b0079
-			public const int abc_primary_text_disable_only_material_light = 2131427449;
+			public const int abc_primary_text_disable_only_material_dark = 2131427449;
 			
 			// aapt resource value: 0x7f0b007a
-			public const int abc_primary_text_material_dark = 2131427450;
+			public const int abc_primary_text_disable_only_material_light = 2131427450;
 			
 			// aapt resource value: 0x7f0b007b
-			public const int abc_primary_text_material_light = 2131427451;
+			public const int abc_primary_text_material_dark = 2131427451;
 			
 			// aapt resource value: 0x7f0b007c
-			public const int abc_search_url_text = 2131427452;
+			public const int abc_primary_text_material_light = 2131427452;
+			
+			// aapt resource value: 0x7f0b007d
+			public const int abc_search_url_text = 2131427453;
 			
 			// aapt resource value: 0x7f0b0018
 			public const int abc_search_url_text_normal = 2131427352;
@@ -3267,29 +4884,29 @@ namespace Alloy
 			// aapt resource value: 0x7f0b001a
 			public const int abc_search_url_text_selected = 2131427354;
 			
-			// aapt resource value: 0x7f0b007d
-			public const int abc_secondary_text_material_dark = 2131427453;
-			
 			// aapt resource value: 0x7f0b007e
-			public const int abc_secondary_text_material_light = 2131427454;
+			public const int abc_secondary_text_material_dark = 2131427454;
 			
 			// aapt resource value: 0x7f0b007f
-			public const int abc_tint_btn_checkable = 2131427455;
+			public const int abc_secondary_text_material_light = 2131427455;
 			
 			// aapt resource value: 0x7f0b0080
-			public const int abc_tint_default = 2131427456;
+			public const int abc_tint_btn_checkable = 2131427456;
 			
 			// aapt resource value: 0x7f0b0081
-			public const int abc_tint_edittext = 2131427457;
+			public const int abc_tint_default = 2131427457;
 			
 			// aapt resource value: 0x7f0b0082
-			public const int abc_tint_seek_thumb = 2131427458;
+			public const int abc_tint_edittext = 2131427458;
 			
 			// aapt resource value: 0x7f0b0083
-			public const int abc_tint_spinner = 2131427459;
+			public const int abc_tint_seek_thumb = 2131427459;
 			
 			// aapt resource value: 0x7f0b0084
-			public const int abc_tint_switch_track = 2131427460;
+			public const int abc_tint_spinner = 2131427460;
+			
+			// aapt resource value: 0x7f0b0085
+			public const int abc_tint_switch_track = 2131427461;
 			
 			// aapt resource value: 0x7f0b001b
 			public const int accent_material_dark = 2131427355;
@@ -3387,11 +5004,11 @@ namespace Alloy
 			// aapt resource value: 0x7f0b000a
 			public const int cast_libraries_material_featurehighlight_text_header_color = 2131427338;
 			
-			// aapt resource value: 0x7f0b006c
-			public const int cloudy_action_accent = 2131427436;
-			
 			// aapt resource value: 0x7f0b006d
-			public const int cloudy_action_tint = 2131427437;
+			public const int cloudy_action_accent = 2131427437;
+			
+			// aapt resource value: 0x7f0b006e
+			public const int cloudy_action_tint = 2131427438;
 			
 			// aapt resource value: 0x7f0b0060
 			public const int colorAccent = 2131427424;
@@ -3402,8 +5019,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0b005f
 			public const int colorPrimaryDark = 2131427423;
 			
-			// aapt resource value: 0x7f0b0085
-			public const int common_google_signin_btn_text_dark = 2131427461;
+			// aapt resource value: 0x7f0b0086
+			public const int common_google_signin_btn_text_dark = 2131427462;
 			
 			// aapt resource value: 0x7f0b000b
 			public const int common_google_signin_btn_text_dark_default = 2131427339;
@@ -3417,8 +5034,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0b000e
 			public const int common_google_signin_btn_text_dark_pressed = 2131427342;
 			
-			// aapt resource value: 0x7f0b0086
-			public const int common_google_signin_btn_text_light = 2131427462;
+			// aapt resource value: 0x7f0b0087
+			public const int common_google_signin_btn_text_light = 2131427463;
 			
 			// aapt resource value: 0x7f0b000f
 			public const int common_google_signin_btn_text_light_default = 2131427343;
@@ -3432,14 +5049,14 @@ namespace Alloy
 			// aapt resource value: 0x7f0b0012
 			public const int common_google_signin_btn_text_light_pressed = 2131427346;
 			
-			// aapt resource value: 0x7f0b0087
-			public const int common_google_signin_btn_tint = 2131427463;
+			// aapt resource value: 0x7f0b0088
+			public const int common_google_signin_btn_tint = 2131427464;
 			
 			// aapt resource value: 0x7f0b0053
 			public const int design_bottom_navigation_shadow_color = 2131427411;
 			
-			// aapt resource value: 0x7f0b0088
-			public const int design_error = 2131427464;
+			// aapt resource value: 0x7f0b0089
+			public const int design_error = 2131427465;
 			
 			// aapt resource value: 0x7f0b0054
 			public const int design_fab_shadow_end_color = 2131427412;
@@ -3465,8 +5082,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0b005b
 			public const int design_snackbar_background_color = 2131427419;
 			
-			// aapt resource value: 0x7f0b0089
-			public const int design_tint_password_toggle = 2131427465;
+			// aapt resource value: 0x7f0b008a
+			public const int design_tint_password_toggle = 2131427466;
 			
 			// aapt resource value: 0x7f0b0029
 			public const int dim_foreground_disabled_material_dark = 2131427369;
@@ -3501,17 +5118,17 @@ namespace Alloy
 			// aapt resource value: 0x7f0b0031
 			public const int highlighted_text_material_light = 2131427377;
 			
-			// aapt resource value: 0x7f0b0070
-			public const int ic_launcher_background = 2131427440;
+			// aapt resource value: 0x7f0b0071
+			public const int ic_launcher_background = 2131427441;
 			
 			// aapt resource value: 0x7f0b0062
 			public const int lightgray = 2131427426;
 			
-			// aapt resource value: 0x7f0b006e
-			public const int list_popup_color = 2131427438;
-			
 			// aapt resource value: 0x7f0b006f
-			public const int list_popup_text_color = 2131427439;
+			public const int list_popup_color = 2131427439;
+			
+			// aapt resource value: 0x7f0b0070
+			public const int list_popup_text_color = 2131427440;
 			
 			// aapt resource value: 0x7f0b0032
 			public const int material_blue_grey_800 = 2131427378;
@@ -3552,11 +5169,14 @@ namespace Alloy
 			// aapt resource value: 0x7f0b006a
 			public const int menu_default_background = 2131427434;
 			
-			// aapt resource value: 0x7f0b006b
-			public const int menu_selection_color = 2131427435;
+			// aapt resource value: 0x7f0b006c
+			public const int menu_selection_color = 2131427436;
 			
-			// aapt resource value: 0x7f0b008a
-			public const int menu_text_color = 2131427466;
+			// aapt resource value: 0x7f0b006b
+			public const int menu_solid_background = 2131427435;
+			
+			// aapt resource value: 0x7f0b008b
+			public const int menu_text_color = 2131427467;
 			
 			// aapt resource value: 0x7f0b0068
 			public const int menu_title_color = 2131427432;
@@ -3624,11 +5244,11 @@ namespace Alloy
 			// aapt resource value: 0x7f0b004d
 			public const int switch_thumb_disabled_material_light = 2131427405;
 			
-			// aapt resource value: 0x7f0b008b
-			public const int switch_thumb_material_dark = 2131427467;
-			
 			// aapt resource value: 0x7f0b008c
-			public const int switch_thumb_material_light = 2131427468;
+			public const int switch_thumb_material_dark = 2131427468;
+			
+			// aapt resource value: 0x7f0b008d
+			public const int switch_thumb_material_light = 2131427469;
 			
 			// aapt resource value: 0x7f0b004e
 			public const int switch_thumb_normal_material_dark = 2131427406;
@@ -4132,11 +5752,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0c001f
 			public const int fastscroll_minimum_range = 2131492895;
 			
-			// aapt resource value: 0x7f0c00e2
-			public const int general_subsonic_list_item_double_height = 2131493090;
-			
 			// aapt resource value: 0x7f0c00e1
-			public const int general_subsonic_list_item_height = 2131493089;
+			public const int general_list_item_height = 2131493089;
 			
 			// aapt resource value: 0x7f0c00d7
 			public const int gif_card_height = 2131493079;
@@ -4602,1210 +6219,1225 @@ namespace Alloy
 			public const int abc_vector_test = 2130837587;
 			
 			// aapt resource value: 0x7f020054
-			public const int albums = 2130837588;
+			public const int above_shadow = 2130837588;
 			
 			// aapt resource value: 0x7f020055
-			public const int all_music = 2130837589;
+			public const int albums = 2130837589;
 			
 			// aapt resource value: 0x7f020056
-			public const int artists = 2130837590;
+			public const int all_music = 2130837590;
 			
 			// aapt resource value: 0x7f020057
-			public const int avd_hide_password = 2130837591;
-			
-			// aapt resource value: 0x7f0201e0
-			public const int avd_hide_password_1 = 2130837984;
-			
-			// aapt resource value: 0x7f0201e1
-			public const int avd_hide_password_2 = 2130837985;
-			
-			// aapt resource value: 0x7f0201e2
-			public const int avd_hide_password_3 = 2130837986;
+			public const int artists = 2130837591;
 			
 			// aapt resource value: 0x7f020058
-			public const int avd_show_password = 2130837592;
-			
-			// aapt resource value: 0x7f0201e3
-			public const int avd_show_password_1 = 2130837987;
-			
-			// aapt resource value: 0x7f0201e4
-			public const int avd_show_password_2 = 2130837988;
+			public const int avd_hide_password = 2130837592;
 			
 			// aapt resource value: 0x7f0201e5
-			public const int avd_show_password_3 = 2130837989;
+			public const int avd_hide_password_1 = 2130837989;
+			
+			// aapt resource value: 0x7f0201e6
+			public const int avd_hide_password_2 = 2130837990;
+			
+			// aapt resource value: 0x7f0201e7
+			public const int avd_hide_password_3 = 2130837991;
 			
 			// aapt resource value: 0x7f020059
-			public const int avd_spotlight_arc = 2130837593;
+			public const int avd_show_password = 2130837593;
+			
+			// aapt resource value: 0x7f0201e8
+			public const int avd_show_password_1 = 2130837992;
+			
+			// aapt resource value: 0x7f0201e9
+			public const int avd_show_password_2 = 2130837993;
+			
+			// aapt resource value: 0x7f0201ea
+			public const int avd_show_password_3 = 2130837994;
 			
 			// aapt resource value: 0x7f02005a
-			public const int background = 2130837594;
+			public const int avd_spotlight_arc = 2130837594;
 			
 			// aapt resource value: 0x7f02005b
-			public const int bottom_background = 2130837595;
+			public const int background = 2130837595;
 			
 			// aapt resource value: 0x7f02005c
-			public const int bottom_left = 2130837596;
+			public const int below_shadow = 2130837596;
 			
 			// aapt resource value: 0x7f02005d
-			public const int bottom_right = 2130837597;
+			public const int bottom_background = 2130837597;
 			
 			// aapt resource value: 0x7f02005e
-			public const int cast_abc_scrubber_control_off_mtrl_alpha = 2130837598;
+			public const int bottom_left = 2130837598;
 			
 			// aapt resource value: 0x7f02005f
-			public const int cast_abc_scrubber_control_to_pressed_mtrl_000 = 2130837599;
+			public const int bottom_right = 2130837599;
 			
 			// aapt resource value: 0x7f020060
-			public const int cast_abc_scrubber_control_to_pressed_mtrl_005 = 2130837600;
+			public const int cast_abc_scrubber_control_off_mtrl_alpha = 2130837600;
 			
 			// aapt resource value: 0x7f020061
-			public const int cast_abc_scrubber_primary_mtrl_alpha = 2130837601;
+			public const int cast_abc_scrubber_control_to_pressed_mtrl_000 = 2130837601;
 			
 			// aapt resource value: 0x7f020062
-			public const int cast_album_art_placeholder = 2130837602;
+			public const int cast_abc_scrubber_control_to_pressed_mtrl_005 = 2130837602;
 			
 			// aapt resource value: 0x7f020063
-			public const int cast_album_art_placeholder_large = 2130837603;
+			public const int cast_abc_scrubber_primary_mtrl_alpha = 2130837603;
 			
 			// aapt resource value: 0x7f020064
-			public const int cast_connected = 2130837604;
+			public const int cast_album_art_placeholder = 2130837604;
 			
 			// aapt resource value: 0x7f020065
-			public const int cast_default = 2130837605;
+			public const int cast_album_art_placeholder_large = 2130837605;
 			
 			// aapt resource value: 0x7f020066
-			public const int cast_expanded_controller_actionbar_bg_gradient_light = 2130837606;
+			public const int cast_connected = 2130837606;
 			
 			// aapt resource value: 0x7f020067
-			public const int cast_expanded_controller_bg_gradient_light = 2130837607;
+			public const int cast_default = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int cast_expanded_controller_seekbar_thumb = 2130837608;
+			public const int cast_expanded_controller_actionbar_bg_gradient_light = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int cast_expanded_controller_seekbar_track = 2130837609;
+			public const int cast_expanded_controller_bg_gradient_light = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int cast_ic_expanded_controller_closed_caption = 2130837610;
+			public const int cast_expanded_controller_seekbar_thumb = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int cast_ic_expanded_controller_forward30 = 2130837611;
+			public const int cast_expanded_controller_seekbar_track = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int cast_ic_expanded_controller_mute = 2130837612;
+			public const int cast_ic_expanded_controller_closed_caption = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int cast_ic_expanded_controller_pause = 2130837613;
+			public const int cast_ic_expanded_controller_forward30 = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int cast_ic_expanded_controller_play = 2130837614;
+			public const int cast_ic_expanded_controller_mute = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int cast_ic_expanded_controller_rewind30 = 2130837615;
+			public const int cast_ic_expanded_controller_pause = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int cast_ic_expanded_controller_skip_next = 2130837616;
+			public const int cast_ic_expanded_controller_play = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int cast_ic_expanded_controller_skip_previous = 2130837617;
+			public const int cast_ic_expanded_controller_rewind30 = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int cast_ic_expanded_controller_stop = 2130837618;
+			public const int cast_ic_expanded_controller_skip_next = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int cast_ic_mini_controller_closed_caption = 2130837619;
+			public const int cast_ic_expanded_controller_skip_previous = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int cast_ic_mini_controller_forward30 = 2130837620;
+			public const int cast_ic_expanded_controller_stop = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int cast_ic_mini_controller_mute = 2130837621;
+			public const int cast_ic_mini_controller_closed_caption = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int cast_ic_mini_controller_pause = 2130837622;
+			public const int cast_ic_mini_controller_forward30 = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int cast_ic_mini_controller_pause_large = 2130837623;
+			public const int cast_ic_mini_controller_mute = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int cast_ic_mini_controller_play = 2130837624;
+			public const int cast_ic_mini_controller_pause = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int cast_ic_mini_controller_play_large = 2130837625;
+			public const int cast_ic_mini_controller_pause_large = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int cast_ic_mini_controller_rewind30 = 2130837626;
+			public const int cast_ic_mini_controller_play = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int cast_ic_mini_controller_skip_next = 2130837627;
+			public const int cast_ic_mini_controller_play_large = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int cast_ic_mini_controller_skip_prev = 2130837628;
+			public const int cast_ic_mini_controller_rewind30 = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int cast_ic_mini_controller_stop = 2130837629;
+			public const int cast_ic_mini_controller_skip_next = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int cast_ic_mini_controller_stop_large = 2130837630;
+			public const int cast_ic_mini_controller_skip_prev = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int cast_ic_notification_0 = 2130837631;
+			public const int cast_ic_mini_controller_stop = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int cast_ic_notification_1 = 2130837632;
+			public const int cast_ic_mini_controller_stop_large = 2130837632;
 			
 			// aapt resource value: 0x7f020081
-			public const int cast_ic_notification_2 = 2130837633;
+			public const int cast_ic_notification_0 = 2130837633;
 			
 			// aapt resource value: 0x7f020082
-			public const int cast_ic_notification_connecting = 2130837634;
+			public const int cast_ic_notification_1 = 2130837634;
 			
 			// aapt resource value: 0x7f020083
-			public const int cast_ic_notification_disconnect = 2130837635;
+			public const int cast_ic_notification_2 = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int cast_ic_notification_forward = 2130837636;
+			public const int cast_ic_notification_connecting = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int cast_ic_notification_forward10 = 2130837637;
+			public const int cast_ic_notification_disconnect = 2130837637;
 			
 			// aapt resource value: 0x7f020086
-			public const int cast_ic_notification_forward30 = 2130837638;
+			public const int cast_ic_notification_forward = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int cast_ic_notification_on = 2130837639;
+			public const int cast_ic_notification_forward10 = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int cast_ic_notification_pause = 2130837640;
+			public const int cast_ic_notification_forward30 = 2130837640;
 			
 			// aapt resource value: 0x7f020089
-			public const int cast_ic_notification_play = 2130837641;
+			public const int cast_ic_notification_on = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int cast_ic_notification_rewind = 2130837642;
+			public const int cast_ic_notification_pause = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int cast_ic_notification_rewind10 = 2130837643;
+			public const int cast_ic_notification_play = 2130837643;
 			
 			// aapt resource value: 0x7f02008c
-			public const int cast_ic_notification_rewind30 = 2130837644;
+			public const int cast_ic_notification_rewind = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int cast_ic_notification_skip_next = 2130837645;
+			public const int cast_ic_notification_rewind10 = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
-			public const int cast_ic_notification_skip_prev = 2130837646;
+			public const int cast_ic_notification_rewind30 = 2130837646;
 			
 			// aapt resource value: 0x7f02008f
-			public const int cast_ic_notification_small_icon = 2130837647;
+			public const int cast_ic_notification_skip_next = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int cast_ic_notification_stop_live_stream = 2130837648;
+			public const int cast_ic_notification_skip_prev = 2130837648;
 			
 			// aapt resource value: 0x7f020091
-			public const int cast_ic_stop_circle_filled_grey600 = 2130837649;
+			public const int cast_ic_notification_small_icon = 2130837649;
 			
 			// aapt resource value: 0x7f020092
-			public const int cast_ic_stop_circle_filled_white = 2130837650;
+			public const int cast_ic_notification_stop_live_stream = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int cast_mini_controller_gradient_light = 2130837651;
+			public const int cast_ic_stop_circle_filled_grey600 = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int cast_mini_controller_progress_drawable = 2130837652;
+			public const int cast_ic_stop_circle_filled_white = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int cast_skip_ad_label_border = 2130837653;
+			public const int cast_mini_controller_gradient_light = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int cloudy = 2130837654;
+			public const int cast_mini_controller_progress_drawable = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int common_full_open_on_phone = 2130837655;
+			public const int cast_skip_ad_label_border = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int common_google_signin_btn_icon_dark = 2130837656;
+			public const int cloudy = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int common_google_signin_btn_icon_dark_focused = 2130837657;
+			public const int common_full_open_on_phone = 2130837657;
 			
 			// aapt resource value: 0x7f02009a
-			public const int common_google_signin_btn_icon_dark_normal = 2130837658;
+			public const int common_google_signin_btn_icon_dark = 2130837658;
 			
 			// aapt resource value: 0x7f02009b
-			public const int common_google_signin_btn_icon_dark_normal_background = 2130837659;
+			public const int common_google_signin_btn_icon_dark_focused = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int common_google_signin_btn_icon_disabled = 2130837660;
+			public const int common_google_signin_btn_icon_dark_normal = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int common_google_signin_btn_icon_light = 2130837661;
+			public const int common_google_signin_btn_icon_dark_normal_background = 2130837661;
 			
 			// aapt resource value: 0x7f02009e
-			public const int common_google_signin_btn_icon_light_focused = 2130837662;
+			public const int common_google_signin_btn_icon_disabled = 2130837662;
 			
 			// aapt resource value: 0x7f02009f
-			public const int common_google_signin_btn_icon_light_normal = 2130837663;
+			public const int common_google_signin_btn_icon_light = 2130837663;
 			
 			// aapt resource value: 0x7f0200a0
-			public const int common_google_signin_btn_icon_light_normal_background = 2130837664;
+			public const int common_google_signin_btn_icon_light_focused = 2130837664;
 			
 			// aapt resource value: 0x7f0200a1
-			public const int common_google_signin_btn_text_dark = 2130837665;
+			public const int common_google_signin_btn_icon_light_normal = 2130837665;
 			
 			// aapt resource value: 0x7f0200a2
-			public const int common_google_signin_btn_text_dark_focused = 2130837666;
+			public const int common_google_signin_btn_icon_light_normal_background = 2130837666;
 			
 			// aapt resource value: 0x7f0200a3
-			public const int common_google_signin_btn_text_dark_normal = 2130837667;
+			public const int common_google_signin_btn_text_dark = 2130837667;
 			
 			// aapt resource value: 0x7f0200a4
-			public const int common_google_signin_btn_text_dark_normal_background = 2130837668;
+			public const int common_google_signin_btn_text_dark_focused = 2130837668;
 			
 			// aapt resource value: 0x7f0200a5
-			public const int common_google_signin_btn_text_disabled = 2130837669;
+			public const int common_google_signin_btn_text_dark_normal = 2130837669;
 			
 			// aapt resource value: 0x7f0200a6
-			public const int common_google_signin_btn_text_light = 2130837670;
+			public const int common_google_signin_btn_text_dark_normal_background = 2130837670;
 			
 			// aapt resource value: 0x7f0200a7
-			public const int common_google_signin_btn_text_light_focused = 2130837671;
+			public const int common_google_signin_btn_text_disabled = 2130837671;
 			
 			// aapt resource value: 0x7f0200a8
-			public const int common_google_signin_btn_text_light_normal = 2130837672;
+			public const int common_google_signin_btn_text_light = 2130837672;
 			
 			// aapt resource value: 0x7f0200a9
-			public const int common_google_signin_btn_text_light_normal_background = 2130837673;
+			public const int common_google_signin_btn_text_light_focused = 2130837673;
 			
 			// aapt resource value: 0x7f0200aa
-			public const int design_bottom_navigation_item_background = 2130837674;
+			public const int common_google_signin_btn_text_light_normal = 2130837674;
 			
 			// aapt resource value: 0x7f0200ab
-			public const int design_fab_background = 2130837675;
+			public const int common_google_signin_btn_text_light_normal_background = 2130837675;
 			
 			// aapt resource value: 0x7f0200ac
-			public const int design_ic_visibility = 2130837676;
+			public const int design_bottom_navigation_item_background = 2130837676;
 			
 			// aapt resource value: 0x7f0200ad
-			public const int design_ic_visibility_off = 2130837677;
+			public const int design_fab_background = 2130837677;
 			
 			// aapt resource value: 0x7f0200ae
-			public const int design_password_eye = 2130837678;
+			public const int design_ic_visibility = 2130837678;
 			
 			// aapt resource value: 0x7f0200af
-			public const int design_snackbar_background = 2130837679;
+			public const int design_ic_visibility_off = 2130837679;
 			
 			// aapt resource value: 0x7f0200b0
-			public const int emby = 2130837680;
+			public const int design_password_eye = 2130837680;
 			
 			// aapt resource value: 0x7f0200b1
-			public const int favorite = 2130837681;
+			public const int design_snackbar_background = 2130837681;
 			
 			// aapt resource value: 0x7f0200b2
-			public const int favorites = 2130837682;
+			public const int emby = 2130837682;
 			
 			// aapt resource value: 0x7f0200b3
-			public const int folder = 2130837683;
+			public const int favorite = 2130837683;
 			
 			// aapt resource value: 0x7f0200b4
-			public const int general_background = 2130837684;
+			public const int favorites = 2130837684;
 			
 			// aapt resource value: 0x7f0200b5
-			public const int genres = 2130837685;
+			public const int folder = 2130837685;
 			
 			// aapt resource value: 0x7f0200b6
-			public const int googleg_disabled_color_18 = 2130837686;
+			public const int general_background = 2130837686;
 			
 			// aapt resource value: 0x7f0200b7
-			public const int googleg_standard_color_18 = 2130837687;
+			public const int genres = 2130837687;
 			
 			// aapt resource value: 0x7f0200b8
-			public const int grab = 2130837688;
+			public const int googleg_disabled_color_18 = 2130837688;
 			
 			// aapt resource value: 0x7f0200b9
-			public const int gradient_card_background = 2130837689;
+			public const int googleg_standard_color_18 = 2130837689;
 			
 			// aapt resource value: 0x7f0200ba
-			public const int heart = 2130837690;
+			public const int grab = 2130837690;
 			
 			// aapt resource value: 0x7f0200bb
-			public const int ic_audiotrack_dark = 2130837691;
+			public const int gradient_card_background = 2130837691;
 			
 			// aapt resource value: 0x7f0200bc
-			public const int ic_audiotrack_light = 2130837692;
+			public const int heart = 2130837692;
 			
 			// aapt resource value: 0x7f0200bd
-			public const int ic_cast1_white_24dp = 2130837693;
+			public const int ic_audiotrack_dark = 2130837693;
 			
 			// aapt resource value: 0x7f0200be
-			public const int ic_cast_connected_white_24dp = 2130837694;
+			public const int ic_audiotrack_light = 2130837694;
 			
 			// aapt resource value: 0x7f0200bf
-			public const int ic_dialog_close_dark = 2130837695;
+			public const int ic_cast1_white_24dp = 2130837695;
 			
 			// aapt resource value: 0x7f0200c0
-			public const int ic_dialog_close_light = 2130837696;
+			public const int ic_cast_connected_white_24dp = 2130837696;
 			
 			// aapt resource value: 0x7f0200c1
-			public const int ic_drawer = 2130837697;
+			public const int ic_dialog_close_dark = 2130837697;
 			
 			// aapt resource value: 0x7f0200c2
-			public const int ic_favorite = 2130837698;
+			public const int ic_dialog_close_light = 2130837698;
 			
 			// aapt resource value: 0x7f0200c3
-			public const int ic_favorite_border = 2130837699;
+			public const int ic_drawer = 2130837699;
 			
 			// aapt resource value: 0x7f0200c4
-			public const int ic_group_collapse_00 = 2130837700;
+			public const int ic_favorite = 2130837700;
 			
 			// aapt resource value: 0x7f0200c5
-			public const int ic_group_collapse_01 = 2130837701;
+			public const int ic_favorite_border = 2130837701;
 			
 			// aapt resource value: 0x7f0200c6
-			public const int ic_group_collapse_02 = 2130837702;
+			public const int ic_group_collapse_00 = 2130837702;
 			
 			// aapt resource value: 0x7f0200c7
-			public const int ic_group_collapse_03 = 2130837703;
+			public const int ic_group_collapse_01 = 2130837703;
 			
 			// aapt resource value: 0x7f0200c8
-			public const int ic_group_collapse_04 = 2130837704;
+			public const int ic_group_collapse_02 = 2130837704;
 			
 			// aapt resource value: 0x7f0200c9
-			public const int ic_group_collapse_05 = 2130837705;
+			public const int ic_group_collapse_03 = 2130837705;
 			
 			// aapt resource value: 0x7f0200ca
-			public const int ic_group_collapse_06 = 2130837706;
+			public const int ic_group_collapse_04 = 2130837706;
 			
 			// aapt resource value: 0x7f0200cb
-			public const int ic_group_collapse_07 = 2130837707;
+			public const int ic_group_collapse_05 = 2130837707;
 			
 			// aapt resource value: 0x7f0200cc
-			public const int ic_group_collapse_08 = 2130837708;
+			public const int ic_group_collapse_06 = 2130837708;
 			
 			// aapt resource value: 0x7f0200cd
-			public const int ic_group_collapse_09 = 2130837709;
+			public const int ic_group_collapse_07 = 2130837709;
 			
 			// aapt resource value: 0x7f0200ce
-			public const int ic_group_collapse_10 = 2130837710;
+			public const int ic_group_collapse_08 = 2130837710;
 			
 			// aapt resource value: 0x7f0200cf
-			public const int ic_group_collapse_11 = 2130837711;
+			public const int ic_group_collapse_09 = 2130837711;
 			
 			// aapt resource value: 0x7f0200d0
-			public const int ic_group_collapse_12 = 2130837712;
+			public const int ic_group_collapse_10 = 2130837712;
 			
 			// aapt resource value: 0x7f0200d1
-			public const int ic_group_collapse_13 = 2130837713;
+			public const int ic_group_collapse_11 = 2130837713;
 			
 			// aapt resource value: 0x7f0200d2
-			public const int ic_group_collapse_14 = 2130837714;
+			public const int ic_group_collapse_12 = 2130837714;
 			
 			// aapt resource value: 0x7f0200d3
-			public const int ic_group_collapse_15 = 2130837715;
+			public const int ic_group_collapse_13 = 2130837715;
 			
 			// aapt resource value: 0x7f0200d4
-			public const int ic_group_expand_00 = 2130837716;
+			public const int ic_group_collapse_14 = 2130837716;
 			
 			// aapt resource value: 0x7f0200d5
-			public const int ic_group_expand_01 = 2130837717;
+			public const int ic_group_collapse_15 = 2130837717;
 			
 			// aapt resource value: 0x7f0200d6
-			public const int ic_group_expand_02 = 2130837718;
+			public const int ic_group_expand_00 = 2130837718;
 			
 			// aapt resource value: 0x7f0200d7
-			public const int ic_group_expand_03 = 2130837719;
+			public const int ic_group_expand_01 = 2130837719;
 			
 			// aapt resource value: 0x7f0200d8
-			public const int ic_group_expand_04 = 2130837720;
+			public const int ic_group_expand_02 = 2130837720;
 			
 			// aapt resource value: 0x7f0200d9
-			public const int ic_group_expand_05 = 2130837721;
+			public const int ic_group_expand_03 = 2130837721;
 			
 			// aapt resource value: 0x7f0200da
-			public const int ic_group_expand_06 = 2130837722;
+			public const int ic_group_expand_04 = 2130837722;
 			
 			// aapt resource value: 0x7f0200db
-			public const int ic_group_expand_07 = 2130837723;
+			public const int ic_group_expand_05 = 2130837723;
 			
 			// aapt resource value: 0x7f0200dc
-			public const int ic_group_expand_08 = 2130837724;
+			public const int ic_group_expand_06 = 2130837724;
 			
 			// aapt resource value: 0x7f0200dd
-			public const int ic_group_expand_09 = 2130837725;
+			public const int ic_group_expand_07 = 2130837725;
 			
 			// aapt resource value: 0x7f0200de
-			public const int ic_group_expand_10 = 2130837726;
+			public const int ic_group_expand_08 = 2130837726;
 			
 			// aapt resource value: 0x7f0200df
-			public const int ic_group_expand_11 = 2130837727;
+			public const int ic_group_expand_09 = 2130837727;
 			
 			// aapt resource value: 0x7f0200e0
-			public const int ic_group_expand_12 = 2130837728;
+			public const int ic_group_expand_10 = 2130837728;
 			
 			// aapt resource value: 0x7f0200e1
-			public const int ic_group_expand_13 = 2130837729;
+			public const int ic_group_expand_11 = 2130837729;
 			
 			// aapt resource value: 0x7f0200e2
-			public const int ic_group_expand_14 = 2130837730;
+			public const int ic_group_expand_12 = 2130837730;
 			
 			// aapt resource value: 0x7f0200e3
-			public const int ic_group_expand_15 = 2130837731;
+			public const int ic_group_expand_13 = 2130837731;
 			
 			// aapt resource value: 0x7f0200e4
-			public const int ic_media_pause_dark = 2130837732;
+			public const int ic_group_expand_14 = 2130837732;
 			
 			// aapt resource value: 0x7f0200e5
-			public const int ic_media_pause_light = 2130837733;
+			public const int ic_group_expand_15 = 2130837733;
 			
 			// aapt resource value: 0x7f0200e6
-			public const int ic_media_play_dark = 2130837734;
+			public const int ic_media_pause_dark = 2130837734;
 			
 			// aapt resource value: 0x7f0200e7
-			public const int ic_media_play_light = 2130837735;
+			public const int ic_media_pause_light = 2130837735;
 			
 			// aapt resource value: 0x7f0200e8
-			public const int ic_media_stop_dark = 2130837736;
+			public const int ic_media_play_dark = 2130837736;
 			
 			// aapt resource value: 0x7f0200e9
-			public const int ic_media_stop_light = 2130837737;
+			public const int ic_media_play_light = 2130837737;
 			
 			// aapt resource value: 0x7f0200ea
-			public const int ic_menu_camera = 2130837738;
+			public const int ic_media_stop_dark = 2130837738;
 			
 			// aapt resource value: 0x7f0200eb
-			public const int ic_menu_gallery = 2130837739;
+			public const int ic_media_stop_light = 2130837739;
 			
 			// aapt resource value: 0x7f0200ec
-			public const int ic_menu_manage = 2130837740;
+			public const int ic_menu_camera = 2130837740;
 			
 			// aapt resource value: 0x7f0200ed
-			public const int ic_menu_send = 2130837741;
+			public const int ic_menu_gallery = 2130837741;
 			
 			// aapt resource value: 0x7f0200ee
-			public const int ic_menu_share = 2130837742;
+			public const int ic_menu_manage = 2130837742;
 			
 			// aapt resource value: 0x7f0200ef
-			public const int ic_menu_slideshow = 2130837743;
+			public const int ic_menu_send = 2130837743;
 			
 			// aapt resource value: 0x7f0200f0
-			public const int ic_mr_button_connected_00_dark = 2130837744;
+			public const int ic_menu_share = 2130837744;
 			
 			// aapt resource value: 0x7f0200f1
-			public const int ic_mr_button_connected_00_light = 2130837745;
+			public const int ic_menu_slideshow = 2130837745;
 			
 			// aapt resource value: 0x7f0200f2
-			public const int ic_mr_button_connected_01_dark = 2130837746;
+			public const int ic_mr_button_connected_00_dark = 2130837746;
 			
 			// aapt resource value: 0x7f0200f3
-			public const int ic_mr_button_connected_01_light = 2130837747;
+			public const int ic_mr_button_connected_00_light = 2130837747;
 			
 			// aapt resource value: 0x7f0200f4
-			public const int ic_mr_button_connected_02_dark = 2130837748;
+			public const int ic_mr_button_connected_01_dark = 2130837748;
 			
 			// aapt resource value: 0x7f0200f5
-			public const int ic_mr_button_connected_02_light = 2130837749;
+			public const int ic_mr_button_connected_01_light = 2130837749;
 			
 			// aapt resource value: 0x7f0200f6
-			public const int ic_mr_button_connected_03_dark = 2130837750;
+			public const int ic_mr_button_connected_02_dark = 2130837750;
 			
 			// aapt resource value: 0x7f0200f7
-			public const int ic_mr_button_connected_03_light = 2130837751;
+			public const int ic_mr_button_connected_02_light = 2130837751;
 			
 			// aapt resource value: 0x7f0200f8
-			public const int ic_mr_button_connected_04_dark = 2130837752;
+			public const int ic_mr_button_connected_03_dark = 2130837752;
 			
 			// aapt resource value: 0x7f0200f9
-			public const int ic_mr_button_connected_04_light = 2130837753;
+			public const int ic_mr_button_connected_03_light = 2130837753;
 			
 			// aapt resource value: 0x7f0200fa
-			public const int ic_mr_button_connected_05_dark = 2130837754;
+			public const int ic_mr_button_connected_04_dark = 2130837754;
 			
 			// aapt resource value: 0x7f0200fb
-			public const int ic_mr_button_connected_05_light = 2130837755;
+			public const int ic_mr_button_connected_04_light = 2130837755;
 			
 			// aapt resource value: 0x7f0200fc
-			public const int ic_mr_button_connected_06_dark = 2130837756;
+			public const int ic_mr_button_connected_05_dark = 2130837756;
 			
 			// aapt resource value: 0x7f0200fd
-			public const int ic_mr_button_connected_06_light = 2130837757;
+			public const int ic_mr_button_connected_05_light = 2130837757;
 			
 			// aapt resource value: 0x7f0200fe
-			public const int ic_mr_button_connected_07_dark = 2130837758;
+			public const int ic_mr_button_connected_06_dark = 2130837758;
 			
 			// aapt resource value: 0x7f0200ff
-			public const int ic_mr_button_connected_07_light = 2130837759;
+			public const int ic_mr_button_connected_06_light = 2130837759;
 			
 			// aapt resource value: 0x7f020100
-			public const int ic_mr_button_connected_08_dark = 2130837760;
+			public const int ic_mr_button_connected_07_dark = 2130837760;
 			
 			// aapt resource value: 0x7f020101
-			public const int ic_mr_button_connected_08_light = 2130837761;
+			public const int ic_mr_button_connected_07_light = 2130837761;
 			
 			// aapt resource value: 0x7f020102
-			public const int ic_mr_button_connected_09_dark = 2130837762;
+			public const int ic_mr_button_connected_08_dark = 2130837762;
 			
 			// aapt resource value: 0x7f020103
-			public const int ic_mr_button_connected_09_light = 2130837763;
+			public const int ic_mr_button_connected_08_light = 2130837763;
 			
 			// aapt resource value: 0x7f020104
-			public const int ic_mr_button_connected_10_dark = 2130837764;
+			public const int ic_mr_button_connected_09_dark = 2130837764;
 			
 			// aapt resource value: 0x7f020105
-			public const int ic_mr_button_connected_10_light = 2130837765;
+			public const int ic_mr_button_connected_09_light = 2130837765;
 			
 			// aapt resource value: 0x7f020106
-			public const int ic_mr_button_connected_11_dark = 2130837766;
+			public const int ic_mr_button_connected_10_dark = 2130837766;
 			
 			// aapt resource value: 0x7f020107
-			public const int ic_mr_button_connected_11_light = 2130837767;
+			public const int ic_mr_button_connected_10_light = 2130837767;
 			
 			// aapt resource value: 0x7f020108
-			public const int ic_mr_button_connected_12_dark = 2130837768;
+			public const int ic_mr_button_connected_11_dark = 2130837768;
 			
 			// aapt resource value: 0x7f020109
-			public const int ic_mr_button_connected_12_light = 2130837769;
+			public const int ic_mr_button_connected_11_light = 2130837769;
 			
 			// aapt resource value: 0x7f02010a
-			public const int ic_mr_button_connected_13_dark = 2130837770;
+			public const int ic_mr_button_connected_12_dark = 2130837770;
 			
 			// aapt resource value: 0x7f02010b
-			public const int ic_mr_button_connected_13_light = 2130837771;
+			public const int ic_mr_button_connected_12_light = 2130837771;
 			
 			// aapt resource value: 0x7f02010c
-			public const int ic_mr_button_connected_14_dark = 2130837772;
+			public const int ic_mr_button_connected_13_dark = 2130837772;
 			
 			// aapt resource value: 0x7f02010d
-			public const int ic_mr_button_connected_14_light = 2130837773;
+			public const int ic_mr_button_connected_13_light = 2130837773;
 			
 			// aapt resource value: 0x7f02010e
-			public const int ic_mr_button_connected_15_dark = 2130837774;
+			public const int ic_mr_button_connected_14_dark = 2130837774;
 			
 			// aapt resource value: 0x7f02010f
-			public const int ic_mr_button_connected_15_light = 2130837775;
+			public const int ic_mr_button_connected_14_light = 2130837775;
 			
 			// aapt resource value: 0x7f020110
-			public const int ic_mr_button_connected_16_dark = 2130837776;
+			public const int ic_mr_button_connected_15_dark = 2130837776;
 			
 			// aapt resource value: 0x7f020111
-			public const int ic_mr_button_connected_16_light = 2130837777;
+			public const int ic_mr_button_connected_15_light = 2130837777;
 			
 			// aapt resource value: 0x7f020112
-			public const int ic_mr_button_connected_17_dark = 2130837778;
+			public const int ic_mr_button_connected_16_dark = 2130837778;
 			
 			// aapt resource value: 0x7f020113
-			public const int ic_mr_button_connected_17_light = 2130837779;
+			public const int ic_mr_button_connected_16_light = 2130837779;
 			
 			// aapt resource value: 0x7f020114
-			public const int ic_mr_button_connected_18_dark = 2130837780;
+			public const int ic_mr_button_connected_17_dark = 2130837780;
 			
 			// aapt resource value: 0x7f020115
-			public const int ic_mr_button_connected_18_light = 2130837781;
+			public const int ic_mr_button_connected_17_light = 2130837781;
 			
 			// aapt resource value: 0x7f020116
-			public const int ic_mr_button_connected_19_dark = 2130837782;
+			public const int ic_mr_button_connected_18_dark = 2130837782;
 			
 			// aapt resource value: 0x7f020117
-			public const int ic_mr_button_connected_19_light = 2130837783;
+			public const int ic_mr_button_connected_18_light = 2130837783;
 			
 			// aapt resource value: 0x7f020118
-			public const int ic_mr_button_connected_20_dark = 2130837784;
+			public const int ic_mr_button_connected_19_dark = 2130837784;
 			
 			// aapt resource value: 0x7f020119
-			public const int ic_mr_button_connected_20_light = 2130837785;
+			public const int ic_mr_button_connected_19_light = 2130837785;
 			
 			// aapt resource value: 0x7f02011a
-			public const int ic_mr_button_connected_21_dark = 2130837786;
+			public const int ic_mr_button_connected_20_dark = 2130837786;
 			
 			// aapt resource value: 0x7f02011b
-			public const int ic_mr_button_connected_21_light = 2130837787;
+			public const int ic_mr_button_connected_20_light = 2130837787;
 			
 			// aapt resource value: 0x7f02011c
-			public const int ic_mr_button_connected_22_dark = 2130837788;
+			public const int ic_mr_button_connected_21_dark = 2130837788;
 			
 			// aapt resource value: 0x7f02011d
-			public const int ic_mr_button_connected_22_light = 2130837789;
+			public const int ic_mr_button_connected_21_light = 2130837789;
 			
 			// aapt resource value: 0x7f02011e
-			public const int ic_mr_button_connected_23_dark = 2130837790;
+			public const int ic_mr_button_connected_22_dark = 2130837790;
 			
 			// aapt resource value: 0x7f02011f
-			public const int ic_mr_button_connected_23_light = 2130837791;
+			public const int ic_mr_button_connected_22_light = 2130837791;
 			
 			// aapt resource value: 0x7f020120
-			public const int ic_mr_button_connected_24_dark = 2130837792;
+			public const int ic_mr_button_connected_23_dark = 2130837792;
 			
 			// aapt resource value: 0x7f020121
-			public const int ic_mr_button_connected_24_light = 2130837793;
+			public const int ic_mr_button_connected_23_light = 2130837793;
 			
 			// aapt resource value: 0x7f020122
-			public const int ic_mr_button_connected_25_dark = 2130837794;
+			public const int ic_mr_button_connected_24_dark = 2130837794;
 			
 			// aapt resource value: 0x7f020123
-			public const int ic_mr_button_connected_25_light = 2130837795;
+			public const int ic_mr_button_connected_24_light = 2130837795;
 			
 			// aapt resource value: 0x7f020124
-			public const int ic_mr_button_connected_26_dark = 2130837796;
+			public const int ic_mr_button_connected_25_dark = 2130837796;
 			
 			// aapt resource value: 0x7f020125
-			public const int ic_mr_button_connected_26_light = 2130837797;
+			public const int ic_mr_button_connected_25_light = 2130837797;
 			
 			// aapt resource value: 0x7f020126
-			public const int ic_mr_button_connected_27_dark = 2130837798;
+			public const int ic_mr_button_connected_26_dark = 2130837798;
 			
 			// aapt resource value: 0x7f020127
-			public const int ic_mr_button_connected_27_light = 2130837799;
+			public const int ic_mr_button_connected_26_light = 2130837799;
 			
 			// aapt resource value: 0x7f020128
-			public const int ic_mr_button_connected_28_dark = 2130837800;
+			public const int ic_mr_button_connected_27_dark = 2130837800;
 			
 			// aapt resource value: 0x7f020129
-			public const int ic_mr_button_connected_28_light = 2130837801;
+			public const int ic_mr_button_connected_27_light = 2130837801;
 			
 			// aapt resource value: 0x7f02012a
-			public const int ic_mr_button_connected_29_dark = 2130837802;
+			public const int ic_mr_button_connected_28_dark = 2130837802;
 			
 			// aapt resource value: 0x7f02012b
-			public const int ic_mr_button_connected_29_light = 2130837803;
+			public const int ic_mr_button_connected_28_light = 2130837803;
 			
 			// aapt resource value: 0x7f02012c
-			public const int ic_mr_button_connected_30_dark = 2130837804;
+			public const int ic_mr_button_connected_29_dark = 2130837804;
 			
 			// aapt resource value: 0x7f02012d
-			public const int ic_mr_button_connected_30_light = 2130837805;
+			public const int ic_mr_button_connected_29_light = 2130837805;
 			
 			// aapt resource value: 0x7f02012e
-			public const int ic_mr_button_connecting_00_dark = 2130837806;
+			public const int ic_mr_button_connected_30_dark = 2130837806;
 			
 			// aapt resource value: 0x7f02012f
-			public const int ic_mr_button_connecting_00_light = 2130837807;
+			public const int ic_mr_button_connected_30_light = 2130837807;
 			
 			// aapt resource value: 0x7f020130
-			public const int ic_mr_button_connecting_01_dark = 2130837808;
+			public const int ic_mr_button_connecting_00_dark = 2130837808;
 			
 			// aapt resource value: 0x7f020131
-			public const int ic_mr_button_connecting_01_light = 2130837809;
+			public const int ic_mr_button_connecting_00_light = 2130837809;
 			
 			// aapt resource value: 0x7f020132
-			public const int ic_mr_button_connecting_02_dark = 2130837810;
+			public const int ic_mr_button_connecting_01_dark = 2130837810;
 			
 			// aapt resource value: 0x7f020133
-			public const int ic_mr_button_connecting_02_light = 2130837811;
+			public const int ic_mr_button_connecting_01_light = 2130837811;
 			
 			// aapt resource value: 0x7f020134
-			public const int ic_mr_button_connecting_03_dark = 2130837812;
+			public const int ic_mr_button_connecting_02_dark = 2130837812;
 			
 			// aapt resource value: 0x7f020135
-			public const int ic_mr_button_connecting_03_light = 2130837813;
+			public const int ic_mr_button_connecting_02_light = 2130837813;
 			
 			// aapt resource value: 0x7f020136
-			public const int ic_mr_button_connecting_04_dark = 2130837814;
+			public const int ic_mr_button_connecting_03_dark = 2130837814;
 			
 			// aapt resource value: 0x7f020137
-			public const int ic_mr_button_connecting_04_light = 2130837815;
+			public const int ic_mr_button_connecting_03_light = 2130837815;
 			
 			// aapt resource value: 0x7f020138
-			public const int ic_mr_button_connecting_05_dark = 2130837816;
+			public const int ic_mr_button_connecting_04_dark = 2130837816;
 			
 			// aapt resource value: 0x7f020139
-			public const int ic_mr_button_connecting_05_light = 2130837817;
+			public const int ic_mr_button_connecting_04_light = 2130837817;
 			
 			// aapt resource value: 0x7f02013a
-			public const int ic_mr_button_connecting_06_dark = 2130837818;
+			public const int ic_mr_button_connecting_05_dark = 2130837818;
 			
 			// aapt resource value: 0x7f02013b
-			public const int ic_mr_button_connecting_06_light = 2130837819;
+			public const int ic_mr_button_connecting_05_light = 2130837819;
 			
 			// aapt resource value: 0x7f02013c
-			public const int ic_mr_button_connecting_07_dark = 2130837820;
+			public const int ic_mr_button_connecting_06_dark = 2130837820;
 			
 			// aapt resource value: 0x7f02013d
-			public const int ic_mr_button_connecting_07_light = 2130837821;
+			public const int ic_mr_button_connecting_06_light = 2130837821;
 			
 			// aapt resource value: 0x7f02013e
-			public const int ic_mr_button_connecting_08_dark = 2130837822;
+			public const int ic_mr_button_connecting_07_dark = 2130837822;
 			
 			// aapt resource value: 0x7f02013f
-			public const int ic_mr_button_connecting_08_light = 2130837823;
+			public const int ic_mr_button_connecting_07_light = 2130837823;
 			
 			// aapt resource value: 0x7f020140
-			public const int ic_mr_button_connecting_09_dark = 2130837824;
+			public const int ic_mr_button_connecting_08_dark = 2130837824;
 			
 			// aapt resource value: 0x7f020141
-			public const int ic_mr_button_connecting_09_light = 2130837825;
+			public const int ic_mr_button_connecting_08_light = 2130837825;
 			
 			// aapt resource value: 0x7f020142
-			public const int ic_mr_button_connecting_10_dark = 2130837826;
+			public const int ic_mr_button_connecting_09_dark = 2130837826;
 			
 			// aapt resource value: 0x7f020143
-			public const int ic_mr_button_connecting_10_light = 2130837827;
+			public const int ic_mr_button_connecting_09_light = 2130837827;
 			
 			// aapt resource value: 0x7f020144
-			public const int ic_mr_button_connecting_11_dark = 2130837828;
+			public const int ic_mr_button_connecting_10_dark = 2130837828;
 			
 			// aapt resource value: 0x7f020145
-			public const int ic_mr_button_connecting_11_light = 2130837829;
+			public const int ic_mr_button_connecting_10_light = 2130837829;
 			
 			// aapt resource value: 0x7f020146
-			public const int ic_mr_button_connecting_12_dark = 2130837830;
+			public const int ic_mr_button_connecting_11_dark = 2130837830;
 			
 			// aapt resource value: 0x7f020147
-			public const int ic_mr_button_connecting_12_light = 2130837831;
+			public const int ic_mr_button_connecting_11_light = 2130837831;
 			
 			// aapt resource value: 0x7f020148
-			public const int ic_mr_button_connecting_13_dark = 2130837832;
+			public const int ic_mr_button_connecting_12_dark = 2130837832;
 			
 			// aapt resource value: 0x7f020149
-			public const int ic_mr_button_connecting_13_light = 2130837833;
+			public const int ic_mr_button_connecting_12_light = 2130837833;
 			
 			// aapt resource value: 0x7f02014a
-			public const int ic_mr_button_connecting_14_dark = 2130837834;
+			public const int ic_mr_button_connecting_13_dark = 2130837834;
 			
 			// aapt resource value: 0x7f02014b
-			public const int ic_mr_button_connecting_14_light = 2130837835;
+			public const int ic_mr_button_connecting_13_light = 2130837835;
 			
 			// aapt resource value: 0x7f02014c
-			public const int ic_mr_button_connecting_15_dark = 2130837836;
+			public const int ic_mr_button_connecting_14_dark = 2130837836;
 			
 			// aapt resource value: 0x7f02014d
-			public const int ic_mr_button_connecting_15_light = 2130837837;
+			public const int ic_mr_button_connecting_14_light = 2130837837;
 			
 			// aapt resource value: 0x7f02014e
-			public const int ic_mr_button_connecting_16_dark = 2130837838;
+			public const int ic_mr_button_connecting_15_dark = 2130837838;
 			
 			// aapt resource value: 0x7f02014f
-			public const int ic_mr_button_connecting_16_light = 2130837839;
+			public const int ic_mr_button_connecting_15_light = 2130837839;
 			
 			// aapt resource value: 0x7f020150
-			public const int ic_mr_button_connecting_17_dark = 2130837840;
+			public const int ic_mr_button_connecting_16_dark = 2130837840;
 			
 			// aapt resource value: 0x7f020151
-			public const int ic_mr_button_connecting_17_light = 2130837841;
+			public const int ic_mr_button_connecting_16_light = 2130837841;
 			
 			// aapt resource value: 0x7f020152
-			public const int ic_mr_button_connecting_18_dark = 2130837842;
+			public const int ic_mr_button_connecting_17_dark = 2130837842;
 			
 			// aapt resource value: 0x7f020153
-			public const int ic_mr_button_connecting_18_light = 2130837843;
+			public const int ic_mr_button_connecting_17_light = 2130837843;
 			
 			// aapt resource value: 0x7f020154
-			public const int ic_mr_button_connecting_19_dark = 2130837844;
+			public const int ic_mr_button_connecting_18_dark = 2130837844;
 			
 			// aapt resource value: 0x7f020155
-			public const int ic_mr_button_connecting_19_light = 2130837845;
+			public const int ic_mr_button_connecting_18_light = 2130837845;
 			
 			// aapt resource value: 0x7f020156
-			public const int ic_mr_button_connecting_20_dark = 2130837846;
+			public const int ic_mr_button_connecting_19_dark = 2130837846;
 			
 			// aapt resource value: 0x7f020157
-			public const int ic_mr_button_connecting_20_light = 2130837847;
+			public const int ic_mr_button_connecting_19_light = 2130837847;
 			
 			// aapt resource value: 0x7f020158
-			public const int ic_mr_button_connecting_21_dark = 2130837848;
+			public const int ic_mr_button_connecting_20_dark = 2130837848;
 			
 			// aapt resource value: 0x7f020159
-			public const int ic_mr_button_connecting_21_light = 2130837849;
+			public const int ic_mr_button_connecting_20_light = 2130837849;
 			
 			// aapt resource value: 0x7f02015a
-			public const int ic_mr_button_connecting_22_dark = 2130837850;
+			public const int ic_mr_button_connecting_21_dark = 2130837850;
 			
 			// aapt resource value: 0x7f02015b
-			public const int ic_mr_button_connecting_22_light = 2130837851;
+			public const int ic_mr_button_connecting_21_light = 2130837851;
 			
 			// aapt resource value: 0x7f02015c
-			public const int ic_mr_button_connecting_23_dark = 2130837852;
+			public const int ic_mr_button_connecting_22_dark = 2130837852;
 			
 			// aapt resource value: 0x7f02015d
-			public const int ic_mr_button_connecting_23_light = 2130837853;
+			public const int ic_mr_button_connecting_22_light = 2130837853;
 			
 			// aapt resource value: 0x7f02015e
-			public const int ic_mr_button_connecting_24_dark = 2130837854;
+			public const int ic_mr_button_connecting_23_dark = 2130837854;
 			
 			// aapt resource value: 0x7f02015f
-			public const int ic_mr_button_connecting_24_light = 2130837855;
+			public const int ic_mr_button_connecting_23_light = 2130837855;
 			
 			// aapt resource value: 0x7f020160
-			public const int ic_mr_button_connecting_25_dark = 2130837856;
+			public const int ic_mr_button_connecting_24_dark = 2130837856;
 			
 			// aapt resource value: 0x7f020161
-			public const int ic_mr_button_connecting_25_light = 2130837857;
+			public const int ic_mr_button_connecting_24_light = 2130837857;
 			
 			// aapt resource value: 0x7f020162
-			public const int ic_mr_button_connecting_26_dark = 2130837858;
+			public const int ic_mr_button_connecting_25_dark = 2130837858;
 			
 			// aapt resource value: 0x7f020163
-			public const int ic_mr_button_connecting_26_light = 2130837859;
+			public const int ic_mr_button_connecting_25_light = 2130837859;
 			
 			// aapt resource value: 0x7f020164
-			public const int ic_mr_button_connecting_27_dark = 2130837860;
+			public const int ic_mr_button_connecting_26_dark = 2130837860;
 			
 			// aapt resource value: 0x7f020165
-			public const int ic_mr_button_connecting_27_light = 2130837861;
+			public const int ic_mr_button_connecting_26_light = 2130837861;
 			
 			// aapt resource value: 0x7f020166
-			public const int ic_mr_button_connecting_28_dark = 2130837862;
+			public const int ic_mr_button_connecting_27_dark = 2130837862;
 			
 			// aapt resource value: 0x7f020167
-			public const int ic_mr_button_connecting_28_light = 2130837863;
+			public const int ic_mr_button_connecting_27_light = 2130837863;
 			
 			// aapt resource value: 0x7f020168
-			public const int ic_mr_button_connecting_29_dark = 2130837864;
+			public const int ic_mr_button_connecting_28_dark = 2130837864;
 			
 			// aapt resource value: 0x7f020169
-			public const int ic_mr_button_connecting_29_light = 2130837865;
+			public const int ic_mr_button_connecting_28_light = 2130837865;
 			
 			// aapt resource value: 0x7f02016a
-			public const int ic_mr_button_connecting_30_dark = 2130837866;
+			public const int ic_mr_button_connecting_29_dark = 2130837866;
 			
 			// aapt resource value: 0x7f02016b
-			public const int ic_mr_button_connecting_30_light = 2130837867;
+			public const int ic_mr_button_connecting_29_light = 2130837867;
 			
 			// aapt resource value: 0x7f02016c
-			public const int ic_mr_button_disabled_dark = 2130837868;
+			public const int ic_mr_button_connecting_30_dark = 2130837868;
 			
 			// aapt resource value: 0x7f02016d
-			public const int ic_mr_button_disabled_light = 2130837869;
+			public const int ic_mr_button_connecting_30_light = 2130837869;
 			
 			// aapt resource value: 0x7f02016e
-			public const int ic_mr_button_disconnected_dark = 2130837870;
+			public const int ic_mr_button_disabled_dark = 2130837870;
 			
 			// aapt resource value: 0x7f02016f
-			public const int ic_mr_button_disconnected_light = 2130837871;
+			public const int ic_mr_button_disabled_light = 2130837871;
 			
 			// aapt resource value: 0x7f020170
-			public const int ic_mr_button_grey = 2130837872;
+			public const int ic_mr_button_disconnected_dark = 2130837872;
 			
 			// aapt resource value: 0x7f020171
-			public const int ic_plus = 2130837873;
+			public const int ic_mr_button_disconnected_light = 2130837873;
 			
 			// aapt resource value: 0x7f020172
-			public const int ic_spotlight_arc = 2130837874;
+			public const int ic_mr_button_grey = 2130837874;
 			
 			// aapt resource value: 0x7f020173
-			public const int ic_vol_type_speaker_dark = 2130837875;
+			public const int ic_plus = 2130837875;
 			
 			// aapt resource value: 0x7f020174
-			public const int ic_vol_type_speaker_group_dark = 2130837876;
+			public const int ic_spotlight_arc = 2130837876;
 			
 			// aapt resource value: 0x7f020175
-			public const int ic_vol_type_speaker_group_light = 2130837877;
+			public const int ic_vol_type_speaker_dark = 2130837877;
 			
 			// aapt resource value: 0x7f020176
-			public const int ic_vol_type_speaker_light = 2130837878;
+			public const int ic_vol_type_speaker_group_dark = 2130837878;
 			
 			// aapt resource value: 0x7f020177
-			public const int ic_vol_type_tv_dark = 2130837879;
+			public const int ic_vol_type_speaker_group_light = 2130837879;
 			
 			// aapt resource value: 0x7f020178
-			public const int ic_vol_type_tv_light = 2130837880;
+			public const int ic_vol_type_speaker_light = 2130837880;
 			
 			// aapt resource value: 0x7f020179
-			public const int list_divider = 2130837881;
+			public const int ic_vol_type_tv_dark = 2130837881;
 			
 			// aapt resource value: 0x7f02017a
-			public const int logo = 2130837882;
+			public const int ic_vol_type_tv_light = 2130837882;
 			
 			// aapt resource value: 0x7f02017b
-			public const int logo_text = 2130837883;
+			public const int list_divider = 2130837883;
 			
 			// aapt resource value: 0x7f02017c
-			public const int menu_background_color = 2130837884;
+			public const int logo = 2130837884;
 			
 			// aapt resource value: 0x7f02017d
-			public const int menu_category_background = 2130837885;
+			public const int logo_text = 2130837885;
 			
 			// aapt resource value: 0x7f02017e
-			public const int menu_list_focused_holo = 2130837886;
+			public const int magnifier = 2130837886;
 			
 			// aapt resource value: 0x7f02017f
-			public const int menu_list_longpressed_holo = 2130837887;
+			public const int menu_background_color = 2130837887;
 			
 			// aapt resource value: 0x7f020180
-			public const int menu_list_pressed_holo_dark = 2130837888;
+			public const int menu_category_background = 2130837888;
 			
 			// aapt resource value: 0x7f020181
-			public const int menu_list_selector_background_transition_holo_dark = 2130837889;
+			public const int menu_list_focused_holo = 2130837889;
 			
 			// aapt resource value: 0x7f020182
-			public const int menu_list_selector_disabled_holo_dark = 2130837890;
+			public const int menu_list_longpressed_holo = 2130837890;
 			
 			// aapt resource value: 0x7f020183
-			public const int menu_list_selector_holo_dark = 2130837891;
+			public const int menu_list_pressed_holo_dark = 2130837891;
 			
 			// aapt resource value: 0x7f020184
-			public const int mr_button_connected_dark = 2130837892;
+			public const int menu_list_selector_background_transition_holo_dark = 2130837892;
 			
 			// aapt resource value: 0x7f020185
-			public const int mr_button_connected_light = 2130837893;
+			public const int menu_list_selector_disabled_holo_dark = 2130837893;
 			
 			// aapt resource value: 0x7f020186
-			public const int mr_button_connecting_dark = 2130837894;
+			public const int menu_list_selector_holo_dark = 2130837894;
 			
 			// aapt resource value: 0x7f020187
-			public const int mr_button_connecting_light = 2130837895;
+			public const int mr_button_connected_dark = 2130837895;
 			
 			// aapt resource value: 0x7f020188
-			public const int mr_button_dark = 2130837896;
+			public const int mr_button_connected_light = 2130837896;
 			
 			// aapt resource value: 0x7f020189
-			public const int mr_button_light = 2130837897;
+			public const int mr_button_connecting_dark = 2130837897;
 			
 			// aapt resource value: 0x7f02018a
-			public const int mr_dialog_close_dark = 2130837898;
+			public const int mr_button_connecting_light = 2130837898;
 			
 			// aapt resource value: 0x7f02018b
-			public const int mr_dialog_close_light = 2130837899;
+			public const int mr_button_dark = 2130837899;
 			
 			// aapt resource value: 0x7f02018c
-			public const int mr_dialog_material_background_dark = 2130837900;
+			public const int mr_button_light = 2130837900;
 			
 			// aapt resource value: 0x7f02018d
-			public const int mr_dialog_material_background_light = 2130837901;
+			public const int mr_dialog_close_dark = 2130837901;
 			
 			// aapt resource value: 0x7f02018e
-			public const int mr_group_collapse = 2130837902;
+			public const int mr_dialog_close_light = 2130837902;
 			
 			// aapt resource value: 0x7f02018f
-			public const int mr_group_expand = 2130837903;
+			public const int mr_dialog_material_background_dark = 2130837903;
 			
 			// aapt resource value: 0x7f020190
-			public const int mr_media_pause_dark = 2130837904;
+			public const int mr_dialog_material_background_light = 2130837904;
 			
 			// aapt resource value: 0x7f020191
-			public const int mr_media_pause_light = 2130837905;
+			public const int mr_group_collapse = 2130837905;
 			
 			// aapt resource value: 0x7f020192
-			public const int mr_media_play_dark = 2130837906;
+			public const int mr_group_expand = 2130837906;
 			
 			// aapt resource value: 0x7f020193
-			public const int mr_media_play_light = 2130837907;
+			public const int mr_media_pause_dark = 2130837907;
 			
 			// aapt resource value: 0x7f020194
-			public const int mr_media_stop_dark = 2130837908;
+			public const int mr_media_pause_light = 2130837908;
 			
 			// aapt resource value: 0x7f020195
-			public const int mr_media_stop_light = 2130837909;
+			public const int mr_media_play_dark = 2130837909;
 			
 			// aapt resource value: 0x7f020196
-			public const int mr_vol_type_audiotrack_dark = 2130837910;
+			public const int mr_media_play_light = 2130837910;
 			
 			// aapt resource value: 0x7f020197
-			public const int mr_vol_type_audiotrack_light = 2130837911;
+			public const int mr_media_stop_dark = 2130837911;
 			
 			// aapt resource value: 0x7f020198
-			public const int navigation_empty_icon = 2130837912;
+			public const int mr_media_stop_light = 2130837912;
 			
 			// aapt resource value: 0x7f020199
-			public const int next = 2130837913;
+			public const int mr_vol_type_audiotrack_dark = 2130837913;
 			
 			// aapt resource value: 0x7f02019a
-			public const int not_favorite = 2130837914;
+			public const int mr_vol_type_audiotrack_light = 2130837914;
 			
 			// aapt resource value: 0x7f02019b
-			public const int notification_action_background = 2130837915;
+			public const int navigation_empty_icon = 2130837915;
 			
 			// aapt resource value: 0x7f02019c
-			public const int notification_bg = 2130837916;
+			public const int next = 2130837916;
 			
 			// aapt resource value: 0x7f02019d
-			public const int notification_bg_low = 2130837917;
+			public const int not_favorite = 2130837917;
 			
 			// aapt resource value: 0x7f02019e
-			public const int notification_bg_low_normal = 2130837918;
+			public const int notification_action_background = 2130837918;
 			
 			// aapt resource value: 0x7f02019f
-			public const int notification_bg_low_pressed = 2130837919;
+			public const int notification_bg = 2130837919;
 			
 			// aapt resource value: 0x7f0201a0
-			public const int notification_bg_normal = 2130837920;
+			public const int notification_bg_low = 2130837920;
 			
 			// aapt resource value: 0x7f0201a1
-			public const int notification_bg_normal_pressed = 2130837921;
+			public const int notification_bg_low_normal = 2130837921;
 			
 			// aapt resource value: 0x7f0201a2
-			public const int notification_icon_background = 2130837922;
-			
-			// aapt resource value: 0x7f0201de
-			public const int notification_template_icon_bg = 2130837982;
-			
-			// aapt resource value: 0x7f0201df
-			public const int notification_template_icon_low_bg = 2130837983;
+			public const int notification_bg_low_pressed = 2130837922;
 			
 			// aapt resource value: 0x7f0201a3
-			public const int notification_tile_bg = 2130837923;
+			public const int notification_bg_normal = 2130837923;
 			
 			// aapt resource value: 0x7f0201a4
-			public const int notify_panel_notification_icon_bg = 2130837924;
+			public const int notification_bg_normal_pressed = 2130837924;
 			
 			// aapt resource value: 0x7f0201a5
-			public const int pause = 2130837925;
+			public const int notification_icon_background = 2130837925;
+			
+			// aapt resource value: 0x7f0201e3
+			public const int notification_template_icon_bg = 2130837987;
+			
+			// aapt resource value: 0x7f0201e4
+			public const int notification_template_icon_low_bg = 2130837988;
 			
 			// aapt resource value: 0x7f0201a6
-			public const int play = 2130837926;
+			public const int notification_tile_bg = 2130837926;
 			
 			// aapt resource value: 0x7f0201a7
-			public const int previous = 2130837927;
+			public const int notify_panel_notification_icon_bg = 2130837927;
 			
 			// aapt resource value: 0x7f0201a8
-			public const int quantum_ic_art_track_grey600_48 = 2130837928;
+			public const int pause = 2130837928;
 			
 			// aapt resource value: 0x7f0201a9
-			public const int quantum_ic_bigtop_updates_white_24 = 2130837929;
+			public const int play = 2130837929;
 			
 			// aapt resource value: 0x7f0201aa
-			public const int quantum_ic_cast_connected_white_24 = 2130837930;
+			public const int previous = 2130837930;
 			
 			// aapt resource value: 0x7f0201ab
-			public const int quantum_ic_cast_white_36 = 2130837931;
+			public const int quantum_ic_art_track_grey600_48 = 2130837931;
 			
 			// aapt resource value: 0x7f0201ac
-			public const int quantum_ic_clear_white_24 = 2130837932;
+			public const int quantum_ic_bigtop_updates_white_24 = 2130837932;
 			
 			// aapt resource value: 0x7f0201ad
-			public const int quantum_ic_closed_caption_grey600_36 = 2130837933;
+			public const int quantum_ic_cast_connected_white_24 = 2130837933;
 			
 			// aapt resource value: 0x7f0201ae
-			public const int quantum_ic_closed_caption_white_36 = 2130837934;
+			public const int quantum_ic_cast_white_36 = 2130837934;
 			
 			// aapt resource value: 0x7f0201af
-			public const int quantum_ic_forward_10_white_24 = 2130837935;
+			public const int quantum_ic_clear_white_24 = 2130837935;
 			
 			// aapt resource value: 0x7f0201b0
-			public const int quantum_ic_forward_30_grey600_36 = 2130837936;
+			public const int quantum_ic_closed_caption_grey600_36 = 2130837936;
 			
 			// aapt resource value: 0x7f0201b1
-			public const int quantum_ic_forward_30_white_24 = 2130837937;
+			public const int quantum_ic_closed_caption_white_36 = 2130837937;
 			
 			// aapt resource value: 0x7f0201b2
-			public const int quantum_ic_forward_30_white_36 = 2130837938;
+			public const int quantum_ic_forward_10_white_24 = 2130837938;
 			
 			// aapt resource value: 0x7f0201b3
-			public const int quantum_ic_keyboard_arrow_down_white_36 = 2130837939;
+			public const int quantum_ic_forward_30_grey600_36 = 2130837939;
 			
 			// aapt resource value: 0x7f0201b4
-			public const int quantum_ic_pause_circle_filled_grey600_36 = 2130837940;
+			public const int quantum_ic_forward_30_white_24 = 2130837940;
 			
 			// aapt resource value: 0x7f0201b5
-			public const int quantum_ic_pause_circle_filled_white_36 = 2130837941;
+			public const int quantum_ic_forward_30_white_36 = 2130837941;
 			
 			// aapt resource value: 0x7f0201b6
-			public const int quantum_ic_pause_grey600_36 = 2130837942;
+			public const int quantum_ic_keyboard_arrow_down_white_36 = 2130837942;
 			
 			// aapt resource value: 0x7f0201b7
-			public const int quantum_ic_pause_grey600_48 = 2130837943;
+			public const int quantum_ic_pause_circle_filled_grey600_36 = 2130837943;
 			
 			// aapt resource value: 0x7f0201b8
-			public const int quantum_ic_pause_white_24 = 2130837944;
+			public const int quantum_ic_pause_circle_filled_white_36 = 2130837944;
 			
 			// aapt resource value: 0x7f0201b9
-			public const int quantum_ic_play_arrow_grey600_36 = 2130837945;
+			public const int quantum_ic_pause_grey600_36 = 2130837945;
 			
 			// aapt resource value: 0x7f0201ba
-			public const int quantum_ic_play_arrow_grey600_48 = 2130837946;
+			public const int quantum_ic_pause_grey600_48 = 2130837946;
 			
 			// aapt resource value: 0x7f0201bb
-			public const int quantum_ic_play_arrow_white_24 = 2130837947;
+			public const int quantum_ic_pause_white_24 = 2130837947;
 			
 			// aapt resource value: 0x7f0201bc
-			public const int quantum_ic_play_circle_filled_grey600_36 = 2130837948;
+			public const int quantum_ic_play_arrow_grey600_36 = 2130837948;
 			
 			// aapt resource value: 0x7f0201bd
-			public const int quantum_ic_play_circle_filled_white_36 = 2130837949;
+			public const int quantum_ic_play_arrow_grey600_48 = 2130837949;
 			
 			// aapt resource value: 0x7f0201be
-			public const int quantum_ic_refresh_white_24 = 2130837950;
+			public const int quantum_ic_play_arrow_white_24 = 2130837950;
 			
 			// aapt resource value: 0x7f0201bf
-			public const int quantum_ic_replay_10_white_24 = 2130837951;
+			public const int quantum_ic_play_circle_filled_grey600_36 = 2130837951;
 			
 			// aapt resource value: 0x7f0201c0
-			public const int quantum_ic_replay_30_grey600_36 = 2130837952;
+			public const int quantum_ic_play_circle_filled_white_36 = 2130837952;
 			
 			// aapt resource value: 0x7f0201c1
-			public const int quantum_ic_replay_30_white_24 = 2130837953;
+			public const int quantum_ic_refresh_white_24 = 2130837953;
 			
 			// aapt resource value: 0x7f0201c2
-			public const int quantum_ic_replay_30_white_36 = 2130837954;
+			public const int quantum_ic_replay_10_white_24 = 2130837954;
 			
 			// aapt resource value: 0x7f0201c3
-			public const int quantum_ic_replay_white_24 = 2130837955;
+			public const int quantum_ic_replay_30_grey600_36 = 2130837955;
 			
 			// aapt resource value: 0x7f0201c4
-			public const int quantum_ic_skip_next_grey600_36 = 2130837956;
+			public const int quantum_ic_replay_30_white_24 = 2130837956;
 			
 			// aapt resource value: 0x7f0201c5
-			public const int quantum_ic_skip_next_white_24 = 2130837957;
+			public const int quantum_ic_replay_30_white_36 = 2130837957;
 			
 			// aapt resource value: 0x7f0201c6
-			public const int quantum_ic_skip_next_white_36 = 2130837958;
+			public const int quantum_ic_replay_white_24 = 2130837958;
 			
 			// aapt resource value: 0x7f0201c7
-			public const int quantum_ic_skip_previous_grey600_36 = 2130837959;
+			public const int quantum_ic_skip_next_grey600_36 = 2130837959;
 			
 			// aapt resource value: 0x7f0201c8
-			public const int quantum_ic_skip_previous_white_24 = 2130837960;
+			public const int quantum_ic_skip_next_white_24 = 2130837960;
 			
 			// aapt resource value: 0x7f0201c9
-			public const int quantum_ic_skip_previous_white_36 = 2130837961;
+			public const int quantum_ic_skip_next_white_36 = 2130837961;
 			
 			// aapt resource value: 0x7f0201ca
-			public const int quantum_ic_stop_grey600_36 = 2130837962;
+			public const int quantum_ic_skip_previous_grey600_36 = 2130837962;
 			
 			// aapt resource value: 0x7f0201cb
-			public const int quantum_ic_stop_grey600_48 = 2130837963;
+			public const int quantum_ic_skip_previous_white_24 = 2130837963;
 			
 			// aapt resource value: 0x7f0201cc
-			public const int quantum_ic_stop_white_24 = 2130837964;
+			public const int quantum_ic_skip_previous_white_36 = 2130837964;
 			
 			// aapt resource value: 0x7f0201cd
-			public const int quantum_ic_volume_off_grey600_36 = 2130837965;
+			public const int quantum_ic_stop_grey600_36 = 2130837965;
 			
 			// aapt resource value: 0x7f0201ce
-			public const int quantum_ic_volume_off_white_36 = 2130837966;
+			public const int quantum_ic_stop_grey600_48 = 2130837966;
 			
 			// aapt resource value: 0x7f0201cf
-			public const int quantum_ic_volume_up_grey600_36 = 2130837967;
+			public const int quantum_ic_stop_white_24 = 2130837967;
 			
 			// aapt resource value: 0x7f0201d0
-			public const int quantum_ic_volume_up_white_36 = 2130837968;
+			public const int quantum_ic_volume_off_grey600_36 = 2130837968;
 			
 			// aapt resource value: 0x7f0201d1
-			public const int side_nav_bar = 2130837969;
+			public const int quantum_ic_volume_off_white_36 = 2130837969;
 			
 			// aapt resource value: 0x7f0201d2
-			public const int soundcloud = 2130837970;
+			public const int quantum_ic_volume_up_grey600_36 = 2130837970;
 			
 			// aapt resource value: 0x7f0201d3
-			public const int splash = 2130837971;
+			public const int quantum_ic_volume_up_white_36 = 2130837971;
 			
 			// aapt resource value: 0x7f0201d4
-			public const int stations = 2130837972;
+			public const int side_nav_bar = 2130837972;
 			
 			// aapt resource value: 0x7f0201d5
-			public const int subsonic = 2130837973;
+			public const int soundcloud = 2130837973;
 			
 			// aapt resource value: 0x7f0201d6
-			public const int text_background = 2130837974;
+			public const int splash = 2130837974;
 			
 			// aapt resource value: 0x7f0201d7
-			public const int tooltip_frame_dark = 2130837975;
+			public const int star = 2130837975;
 			
 			// aapt resource value: 0x7f0201d8
-			public const int tooltip_frame_light = 2130837976;
+			public const int stations = 2130837976;
 			
 			// aapt resource value: 0x7f0201d9
-			public const int top_background = 2130837977;
+			public const int subsonic = 2130837977;
 			
 			// aapt resource value: 0x7f0201da
-			public const int top_left = 2130837978;
+			public const int text_background = 2130837978;
 			
 			// aapt resource value: 0x7f0201db
-			public const int top_right = 2130837979;
+			public const int tooltip_frame_dark = 2130837979;
 			
 			// aapt resource value: 0x7f0201dc
-			public const int videos = 2130837980;
+			public const int tooltip_frame_light = 2130837980;
 			
 			// aapt resource value: 0x7f0201dd
-			public const int wave = 2130837981;
+			public const int top_background = 2130837981;
+			
+			// aapt resource value: 0x7f0201de
+			public const int top_left = 2130837982;
+			
+			// aapt resource value: 0x7f0201df
+			public const int top_right = 2130837983;
+			
+			// aapt resource value: 0x7f0201e0
+			public const int trash = 2130837984;
+			
+			// aapt resource value: 0x7f0201e1
+			public const int videos = 2130837985;
+			
+			// aapt resource value: 0x7f0201e2
+			public const int wave = 2130837986;
 			
 			static Drawable()
 			{
@@ -5838,47 +7470,47 @@ namespace Alloy
 			// aapt resource value: 0x7f0d004c
 			public const int SYM = 2131558476;
 			
-			// aapt resource value: 0x7f0d0112
-			public const int action0 = 2131558674;
+			// aapt resource value: 0x7f0d0119
+			public const int action0 = 2131558681;
 			
-			// aapt resource value: 0x7f0d0091
-			public const int action_bar = 2131558545;
+			// aapt resource value: 0x7f0d0095
+			public const int action_bar = 2131558549;
 			
 			// aapt resource value: 0x7f0d000e
 			public const int action_bar_activity_content = 2131558414;
 			
-			// aapt resource value: 0x7f0d0090
-			public const int action_bar_container = 2131558544;
+			// aapt resource value: 0x7f0d0094
+			public const int action_bar_container = 2131558548;
 			
-			// aapt resource value: 0x7f0d008c
-			public const int action_bar_root = 2131558540;
+			// aapt resource value: 0x7f0d0090
+			public const int action_bar_root = 2131558544;
 			
 			// aapt resource value: 0x7f0d000f
 			public const int action_bar_spinner = 2131558415;
 			
-			// aapt resource value: 0x7f0d0070
-			public const int action_bar_subtitle = 2131558512;
+			// aapt resource value: 0x7f0d0074
+			public const int action_bar_subtitle = 2131558516;
 			
-			// aapt resource value: 0x7f0d006f
-			public const int action_bar_title = 2131558511;
-			
-			// aapt resource value: 0x7f0d010f
-			public const int action_container = 2131558671;
-			
-			// aapt resource value: 0x7f0d0092
-			public const int action_context_bar = 2131558546;
-			
-			// aapt resource value: 0x7f0d0136
-			public const int action_delete = 2131558710;
+			// aapt resource value: 0x7f0d0073
+			public const int action_bar_title = 2131558515;
 			
 			// aapt resource value: 0x7f0d0116
-			public const int action_divider = 2131558678;
+			public const int action_container = 2131558678;
 			
-			// aapt resource value: 0x7f0d0135
-			public const int action_edit_tags = 2131558709;
+			// aapt resource value: 0x7f0d0096
+			public const int action_context_bar = 2131558550;
 			
-			// aapt resource value: 0x7f0d0110
-			public const int action_image = 2131558672;
+			// aapt resource value: 0x7f0d013c
+			public const int action_delete = 2131558716;
+			
+			// aapt resource value: 0x7f0d011d
+			public const int action_divider = 2131558685;
+			
+			// aapt resource value: 0x7f0d013b
+			public const int action_edit_tags = 2131558715;
+			
+			// aapt resource value: 0x7f0d0117
+			public const int action_image = 2131558679;
 			
 			// aapt resource value: 0x7f0d0010
 			public const int action_menu_divider = 2131558416;
@@ -5886,44 +7518,44 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0011
 			public const int action_menu_presenter = 2131558417;
 			
-			// aapt resource value: 0x7f0d008e
-			public const int action_mode_bar = 2131558542;
+			// aapt resource value: 0x7f0d0092
+			public const int action_mode_bar = 2131558546;
 			
-			// aapt resource value: 0x7f0d008d
-			public const int action_mode_bar_stub = 2131558541;
+			// aapt resource value: 0x7f0d0091
+			public const int action_mode_bar_stub = 2131558545;
 			
-			// aapt resource value: 0x7f0d0071
-			public const int action_mode_close_button = 2131558513;
+			// aapt resource value: 0x7f0d0075
+			public const int action_mode_close_button = 2131558517;
 			
-			// aapt resource value: 0x7f0d0133
-			public const int action_settings = 2131558707;
+			// aapt resource value: 0x7f0d0139
+			public const int action_settings = 2131558713;
 			
-			// aapt resource value: 0x7f0d0111
-			public const int action_text = 2131558673;
+			// aapt resource value: 0x7f0d0118
+			public const int action_text = 2131558680;
 			
-			// aapt resource value: 0x7f0d011f
-			public const int actions = 2131558687;
+			// aapt resource value: 0x7f0d0126
+			public const int actions = 2131558694;
 			
-			// aapt resource value: 0x7f0d0072
-			public const int activity_chooser_view_content = 2131558514;
+			// aapt resource value: 0x7f0d0076
+			public const int activity_chooser_view_content = 2131558518;
 			
-			// aapt resource value: 0x7f0d00bf
-			public const int ad_container = 2131558591;
+			// aapt resource value: 0x7f0d00c6
+			public const int ad_container = 2131558598;
 			
-			// aapt resource value: 0x7f0d00c2
-			public const int ad_image_view = 2131558594;
+			// aapt resource value: 0x7f0d00c9
+			public const int ad_image_view = 2131558601;
 			
-			// aapt resource value: 0x7f0d00c1
-			public const int ad_in_progress_label = 2131558593;
+			// aapt resource value: 0x7f0d00c8
+			public const int ad_in_progress_label = 2131558600;
 			
-			// aapt resource value: 0x7f0d00c0
-			public const int ad_label = 2131558592;
+			// aapt resource value: 0x7f0d00c7
+			public const int ad_label = 2131558599;
 			
 			// aapt resource value: 0x7f0d003c
 			public const int add = 2131558460;
 			
-			// aapt resource value: 0x7f0d006e
-			public const int adjacent = 2131558510;
+			// aapt resource value: 0x7f0d0072
+			public const int adjacent = 2131558514;
 			
 			// aapt resource value: 0x7f0d002a
 			public const int adjust_height = 2131558442;
@@ -5931,50 +7563,53 @@ namespace Alloy
 			// aapt resource value: 0x7f0d002b
 			public const int adjust_width = 2131558443;
 			
-			// aapt resource value: 0x7f0d00a7
-			public const int album_art = 2131558567;
+			// aapt resource value: 0x7f0d00ad
+			public const int album_art = 2131558573;
 			
-			// aapt resource value: 0x7f0d00b4
-			public const int album_tracks_list = 2131558580;
+			// aapt resource value: 0x7f0d00bb
+			public const int album_tracks_list = 2131558587;
 			
-			// aapt resource value: 0x7f0d00b5
-			public const int albums_list = 2131558581;
+			// aapt resource value: 0x7f0d00bc
+			public const int albums_list = 2131558588;
 			
-			// aapt resource value: 0x7f0d0085
-			public const int alertTitle = 2131558533;
+			// aapt resource value: 0x7f0d0089
+			public const int alertTitle = 2131558537;
 			
 			// aapt resource value: 0x7f0d0066
 			public const int all = 2131558502;
 			
-			// aapt resource value: 0x7f0d00b6
-			public const int all_music_list = 2131558582;
+			// aapt resource value: 0x7f0d00bd
+			public const int all_music_list = 2131558589;
 			
 			// aapt resource value: 0x7f0d004d
 			public const int always = 2131558477;
 			
-			// aapt resource value: 0x7f0d00aa
-			public const int artist = 2131558570;
+			// aapt resource value: 0x7f0d006e
+			public const int anchored = 2131558510;
 			
-			// aapt resource value: 0x7f0d00b7
-			public const int artist_track_list = 2131558583;
+			// aapt resource value: 0x7f0d00b0
+			public const int artist = 2131558576;
 			
-			// aapt resource value: 0x7f0d00b8
-			public const int artists_list = 2131558584;
+			// aapt resource value: 0x7f0d00be
+			public const int artist_track_list = 2131558590;
+			
+			// aapt resource value: 0x7f0d00bf
+			public const int artists_list = 2131558591;
 			
 			// aapt resource value: 0x7f0d006a
 			public const int async = 2131558506;
 			
-			// aapt resource value: 0x7f0d00da
-			public const int audio_list_view = 2131558618;
+			// aapt resource value: 0x7f0d00e1
+			public const int audio_list_view = 2131558625;
 			
 			// aapt resource value: 0x7f0d0030
 			public const int auto = 2131558448;
 			
-			// aapt resource value: 0x7f0d00ba
-			public const int background_image_view = 2131558586;
+			// aapt resource value: 0x7f0d00c1
+			public const int background_image_view = 2131558593;
 			
-			// aapt resource value: 0x7f0d00be
-			public const int background_place_holder_image_view = 2131558590;
+			// aapt resource value: 0x7f0d00c5
+			public const int background_place_holder_image_view = 2131558597;
 			
 			// aapt resource value: 0x7f0d0044
 			public const int beginning = 2131558468;
@@ -5982,44 +7617,44 @@ namespace Alloy
 			// aapt resource value: 0x7f0d006b
 			public const int blocking = 2131558507;
 			
-			// aapt resource value: 0x7f0d00bb
-			public const int blurred_background_image_view = 2131558587;
+			// aapt resource value: 0x7f0d00c2
+			public const int blurred_background_image_view = 2131558594;
 			
 			// aapt resource value: 0x7f0d0052
 			public const int bottom = 2131558482;
 			
-			// aapt resource value: 0x7f0d00b0
-			public const int bottom_button_bar = 2131558576;
+			// aapt resource value: 0x7f0d00b7
+			public const int bottom_button_bar = 2131558583;
 			
-			// aapt resource value: 0x7f0d00d1
-			public const int button = 2131558609;
+			// aapt resource value: 0x7f0d00d8
+			public const int button = 2131558616;
 			
-			// aapt resource value: 0x7f0d0078
-			public const int buttonPanel = 2131558520;
+			// aapt resource value: 0x7f0d007c
+			public const int buttonPanel = 2131558524;
 			
-			// aapt resource value: 0x7f0d00cb
-			public const int button_0 = 2131558603;
+			// aapt resource value: 0x7f0d00d2
+			public const int button_0 = 2131558610;
 			
-			// aapt resource value: 0x7f0d00cc
-			public const int button_1 = 2131558604;
+			// aapt resource value: 0x7f0d00d3
+			public const int button_1 = 2131558611;
 			
-			// aapt resource value: 0x7f0d00ce
-			public const int button_2 = 2131558606;
+			// aapt resource value: 0x7f0d00d5
+			public const int button_2 = 2131558613;
 			
-			// aapt resource value: 0x7f0d00cf
-			public const int button_3 = 2131558607;
+			// aapt resource value: 0x7f0d00d6
+			public const int button_3 = 2131558614;
 			
-			// aapt resource value: 0x7f0d00cd
-			public const int button_play_pause_toggle = 2131558605;
+			// aapt resource value: 0x7f0d00d4
+			public const int button_play_pause_toggle = 2131558612;
 			
-			// aapt resource value: 0x7f0d0113
-			public const int cancel_action = 2131558675;
+			// aapt resource value: 0x7f0d011a
+			public const int cancel_action = 2131558682;
 			
-			// aapt resource value: 0x7f0d0122
-			public const int card_layout = 2131558690;
+			// aapt resource value: 0x7f0d0129
+			public const int card_layout = 2131558697;
 			
-			// aapt resource value: 0x7f0d012b
-			public const int card_view = 2131558699;
+			// aapt resource value: 0x7f0d0131
+			public const int card_view = 2131558705;
 			
 			// aapt resource value: 0x7f0d0000
 			public const int cast_button_type_closed_caption = 2131558400;
@@ -6060,8 +7695,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d000c
 			public const int cast_notification_id = 2131558412;
 			
-			// aapt resource value: 0x7f0d00f1
-			public const int category_header = 2131558641;
+			// aapt resource value: 0x7f0d00f8
+			public const int category_header = 2131558648;
 			
 			// aapt resource value: 0x7f0d0059
 			public const int center = 2131558489;
@@ -6072,11 +7707,11 @@ namespace Alloy
 			// aapt resource value: 0x7f0d005b
 			public const int center_vertical = 2131558491;
 			
-			// aapt resource value: 0x7f0d0088
-			public const int checkbox = 2131558536;
+			// aapt resource value: 0x7f0d008c
+			public const int checkbox = 2131558540;
 			
-			// aapt resource value: 0x7f0d011b
-			public const int chronometer = 2131558683;
+			// aapt resource value: 0x7f0d0122
+			public const int chronometer = 2131558690;
 			
 			// aapt resource value: 0x7f0d0062
 			public const int clip_horizontal = 2131558498;
@@ -6087,86 +7722,92 @@ namespace Alloy
 			// aapt resource value: 0x7f0d004e
 			public const int collapseActionView = 2131558478;
 			
-			// aapt resource value: 0x7f0d012c
-			public const int comment = 2131558700;
+			// aapt resource value: 0x7f0d006f
+			public const int collapsed = 2131558511;
 			
-			// aapt resource value: 0x7f0d00dd
-			public const int container = 2131558621;
+			// aapt resource value: 0x7f0d0132
+			public const int comment = 2131558706;
 			
-			// aapt resource value: 0x7f0d00d2
-			public const int container_all = 2131558610;
+			// aapt resource value: 0x7f0d00e4
+			public const int container = 2131558628;
 			
-			// aapt resource value: 0x7f0d00d3
-			public const int container_current = 2131558611;
+			// aapt resource value: 0x7f0d00d9
+			public const int container_all = 2131558617;
 			
-			// aapt resource value: 0x7f0d00a8
-			public const int content = 2131558568;
+			// aapt resource value: 0x7f0d00da
+			public const int container_current = 2131558618;
 			
-			// aapt resource value: 0x7f0d007b
-			public const int contentPanel = 2131558523;
+			// aapt resource value: 0x7f0d00ae
+			public const int content = 2131558574;
 			
-			// aapt resource value: 0x7f0d00bd
-			public const int controllers = 2131558589;
+			// aapt resource value: 0x7f0d007f
+			public const int contentPanel = 2131558527;
 			
-			// aapt resource value: 0x7f0d00a5
-			public const int controls_container = 2131558565;
+			// aapt resource value: 0x7f0d00c4
+			public const int controllers = 2131558596;
 			
-			// aapt resource value: 0x7f0d00de
-			public const int coordinator = 2131558622;
+			// aapt resource value: 0x7f0d00ab
+			public const int controls_container = 2131558571;
 			
-			// aapt resource value: 0x7f0d0123
-			public const int current_queue = 2131558691;
+			// aapt resource value: 0x7f0d00e5
+			public const int coordinator = 2131558629;
 			
-			// aapt resource value: 0x7f0d0082
-			public const int custom = 2131558530;
+			// aapt resource value: 0x7f0d012a
+			public const int current_queue = 2131558698;
 			
-			// aapt resource value: 0x7f0d0081
-			public const int customPanel = 2131558529;
+			// aapt resource value: 0x7f0d0086
+			public const int custom = 2131558534;
+			
+			// aapt resource value: 0x7f0d0085
+			public const int customPanel = 2131558533;
 			
 			// aapt resource value: 0x7f0d0031
 			public const int dark = 2131558449;
 			
-			// aapt resource value: 0x7f0d008f
-			public const int decor_content_parent = 2131558543;
+			// aapt resource value: 0x7f0d0093
+			public const int decor_content_parent = 2131558547;
 			
-			// aapt resource value: 0x7f0d0075
-			public const int default_activity_button = 2131558517;
-			
-			// aapt resource value: 0x7f0d00e0
-			public const int design_bottom_sheet = 2131558624;
+			// aapt resource value: 0x7f0d0079
+			public const int default_activity_button = 2131558521;
 			
 			// aapt resource value: 0x7f0d00e7
-			public const int design_menu_item_action_area = 2131558631;
+			public const int design_bottom_sheet = 2131558631;
 			
-			// aapt resource value: 0x7f0d00e6
-			public const int design_menu_item_action_area_stub = 2131558630;
+			// aapt resource value: 0x7f0d00ee
+			public const int design_menu_item_action_area = 2131558638;
 			
-			// aapt resource value: 0x7f0d00e5
-			public const int design_menu_item_text = 2131558629;
+			// aapt resource value: 0x7f0d00ed
+			public const int design_menu_item_action_area_stub = 2131558637;
 			
-			// aapt resource value: 0x7f0d00e4
-			public const int design_navigation_view = 2131558628;
+			// aapt resource value: 0x7f0d00ec
+			public const int design_menu_item_text = 2131558636;
+			
+			// aapt resource value: 0x7f0d00eb
+			public const int design_navigation_view = 2131558635;
 			
 			// aapt resource value: 0x7f0d0036
 			public const int disableHome = 2131558454;
 			
-			// aapt resource value: 0x7f0d00a0
-			public const int drawer_layout = 2131558560;
+			// aapt resource value: 0x7f0d00a8
+			public const int dragView = 2131558568;
 			
-			// aapt resource value: 0x7f0d0124
-			public const int duration = 2131558692;
+			// aapt resource value: 0x7f0d00a4
+			public const int drawer_layout = 2131558564;
 			
-			// aapt resource value: 0x7f0d0093
-			public const int edit_query = 2131558547;
+			// aapt resource value: 0x7f0d012b
+			public const int duration = 2131558699;
+			
+			// aapt resource value: 0x7f0d0097
+			public const int edit_query = 2131558551;
 			
 			// aapt resource value: 0x7f0d0045
 			public const int end = 2131558469;
 			
-			// aapt resource value: 0x7f0d0121
-			public const int end_padder = 2131558689;
+			// aapt resource value: 0x7f0d0128
+			public const int end_padder = 2131558696;
 			
-			// aapt resource value: 0x7f0d00c7
-			public const int end_text = 2131558599;
+			// aapt resource value: 0x7f0d00ce
+			public const int end_text = 2131558606;
 			
 			// aapt resource value: 0x7f0d0054
 			public const int enterAlways = 2131558484;
@@ -6177,23 +7818,26 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0056
 			public const int exitUntilCollapsed = 2131558486;
 			
-			// aapt resource value: 0x7f0d0073
-			public const int expand_activities_button = 2131558515;
+			// aapt resource value: 0x7f0d0077
+			public const int expand_activities_button = 2131558519;
 			
-			// aapt resource value: 0x7f0d00b9
-			public const int expanded_controller_layout = 2131558585;
+			// aapt resource value: 0x7f0d0070
+			public const int expanded = 2131558512;
 			
-			// aapt resource value: 0x7f0d0087
-			public const int expanded_menu = 2131558535;
+			// aapt resource value: 0x7f0d00c0
+			public const int expanded_controller_layout = 2131558592;
 			
-			// aapt resource value: 0x7f0d00ab
-			public const int extra_info = 2131558571;
+			// aapt resource value: 0x7f0d008b
+			public const int expanded_menu = 2131558539;
 			
-			// aapt resource value: 0x7f0d00eb
-			public const int favorite_button = 2131558635;
+			// aapt resource value: 0x7f0d00b1
+			public const int extra_info = 2131558577;
 			
-			// aapt resource value: 0x7f0d00e9
-			public const int favorites_list = 2131558633;
+			// aapt resource value: 0x7f0d00f2
+			public const int favorite_button = 2131558642;
+			
+			// aapt resource value: 0x7f0d00f0
+			public const int favorites_list = 2131558640;
 			
 			// aapt resource value: 0x7f0d0064
 			public const int fill = 2131558500;
@@ -6207,26 +7851,29 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0068
 			public const int @fixed = 2131558504;
 			
-			// aapt resource value: 0x7f0d00a4
-			public const int flContent = 2131558564;
+			// aapt resource value: 0x7f0d00aa
+			public const int flContent = 2131558570;
 			
-			// aapt resource value: 0x7f0d00ea
-			public const int folders_list = 2131558634;
+			// aapt resource value: 0x7f0d00f1
+			public const int folders_list = 2131558641;
 			
 			// aapt resource value: 0x7f0d006c
 			public const int forever = 2131558508;
 			
-			// aapt resource value: 0x7f0d00a6
-			public const int fragment_playback_controls = 2131558566;
+			// aapt resource value: 0x7f0d00ac
+			public const int fragment_playback_controls = 2131558572;
 			
-			// aapt resource value: 0x7f0d00ef
-			public const int genre_track_list = 2131558639;
+			// aapt resource value: 0x7f0d00f6
+			public const int genre_track_list = 2131558646;
 			
-			// aapt resource value: 0x7f0d00f0
-			public const int genres_list = 2131558640;
+			// aapt resource value: 0x7f0d00f7
+			public const int genres_list = 2131558647;
 			
 			// aapt resource value: 0x7f0d0017
 			public const int ghost_view = 2131558423;
+			
+			// aapt resource value: 0x7f0d0071
+			public const int hidden = 2131558513;
 			
 			// aapt resource value: 0x7f0d0012
 			public const int home = 2131558418;
@@ -6234,29 +7881,29 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0037
 			public const int homeAsUp = 2131558455;
 			
-			// aapt resource value: 0x7f0d0077
-			public const int icon = 2131558519;
+			// aapt resource value: 0x7f0d007b
+			public const int icon = 2131558523;
 			
-			// aapt resource value: 0x7f0d0125
-			public const int icon_frame = 2131558693;
+			// aapt resource value: 0x7f0d012c
+			public const int icon_frame = 2131558700;
 			
-			// aapt resource value: 0x7f0d0120
-			public const int icon_group = 2131558688;
+			// aapt resource value: 0x7f0d0127
+			public const int icon_group = 2131558695;
 			
 			// aapt resource value: 0x7f0d002d
 			public const int icon_only = 2131558445;
 			
-			// aapt resource value: 0x7f0d00d4
-			public const int icon_view = 2131558612;
+			// aapt resource value: 0x7f0d00db
+			public const int icon_view = 2131558619;
 			
 			// aapt resource value: 0x7f0d004f
 			public const int ifRoom = 2131558479;
 			
-			// aapt resource value: 0x7f0d0074
-			public const int image = 2131558516;
+			// aapt resource value: 0x7f0d0078
+			public const int image = 2131558520;
 			
-			// aapt resource value: 0x7f0d011c
-			public const int info = 2131558684;
+			// aapt resource value: 0x7f0d0123
+			public const int info = 2131558691;
 			
 			// aapt resource value: 0x7f0d006d
 			public const int italic = 2131558509;
@@ -6264,8 +7911,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d000d
 			public const int item_touch_helper_previous_elevation = 2131558413;
 			
-			// aapt resource value: 0x7f0d00dc
-			public const int largeLabel = 2131558620;
+			// aapt resource value: 0x7f0d00e3
+			public const int largeLabel = 2131558627;
 			
 			// aapt resource value: 0x7f0d005d
 			public const int left = 2131558493;
@@ -6273,8 +7920,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0032
 			public const int light = 2131558450;
 			
-			// aapt resource value: 0x7f0d012e
-			public const int likes = 2131558702;
+			// aapt resource value: 0x7f0d0134
+			public const int likes = 2131558708;
 			
 			// aapt resource value: 0x7f0d0024
 			public const int line1 = 2131558436;
@@ -6282,47 +7929,50 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0025
 			public const int line3 = 2131558437;
 			
-			// aapt resource value: 0x7f0d0127
-			public const int list = 2131558695;
+			// aapt resource value: 0x7f0d00a9
+			public const int list = 2131558569;
 			
 			// aapt resource value: 0x7f0d0033
 			public const int listMode = 2131558451;
 			
-			// aapt resource value: 0x7f0d0076
-			public const int list_item = 2131558518;
+			// aapt resource value: 0x7f0d007a
+			public const int list_item = 2131558522;
 			
-			// aapt resource value: 0x7f0d00c8
-			public const int live_stream_indicator = 2131558600;
+			// aapt resource value: 0x7f0d00cf
+			public const int live_stream_indicator = 2131558607;
+			
+			// aapt resource value: 0x7f0d00d1
+			public const int live_stream_seek_bar = 2131558609;
 			
 			// aapt resource value: 0x7f0d00ca
-			public const int live_stream_seek_bar = 2131558602;
+			public const int loading_indicator = 2131558602;
 			
-			// aapt resource value: 0x7f0d00c3
-			public const int loading_indicator = 2131558595;
+			// aapt resource value: 0x7f0d00a7
+			public const int main_layout = 2131558567;
 			
-			// aapt resource value: 0x7f0d00a3
-			public const int main_layout = 2131558563;
+			// aapt resource value: 0x7f0d00b6
+			public const int main_menu_list = 2131558582;
 			
-			// aapt resource value: 0x7f0d00af
-			public const int main_menu_list = 2131558575;
+			// aapt resource value: 0x7f0d00b4
+			public const int main_playlist = 2131558580;
 			
-			// aapt resource value: 0x7f0d00b2
-			public const int main_toolbar = 2131558578;
+			// aapt resource value: 0x7f0d00b9
+			public const int main_toolbar = 2131558585;
 			
-			// aapt resource value: 0x7f0d0131
-			public const int masked = 2131558705;
+			// aapt resource value: 0x7f0d0137
+			public const int masked = 2131558711;
 			
-			// aapt resource value: 0x7f0d0115
-			public const int media_actions = 2131558677;
+			// aapt resource value: 0x7f0d011c
+			public const int media_actions = 2131558684;
 			
-			// aapt resource value: 0x7f0d0134
-			public const int media_route_button = 2131558708;
+			// aapt resource value: 0x7f0d013a
+			public const int media_route_button = 2131558714;
 			
-			// aapt resource value: 0x7f0d0132
-			public const int media_route_menu_item = 2131558706;
+			// aapt resource value: 0x7f0d0138
+			public const int media_route_menu_item = 2131558712;
 			
-			// aapt resource value: 0x7f0d012f
-			public const int message = 2131558703;
+			// aapt resource value: 0x7f0d0135
+			public const int message = 2131558709;
 			
 			// aapt resource value: 0x7f0d0046
 			public const int middle = 2131558470;
@@ -6330,104 +7980,104 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0067
 			public const int mini = 2131558503;
 			
-			// aapt resource value: 0x7f0d00fe
-			public const int mr_art = 2131558654;
-			
-			// aapt resource value: 0x7f0d00f3
-			public const int mr_chooser_list = 2131558643;
-			
-			// aapt resource value: 0x7f0d00f6
-			public const int mr_chooser_route_desc = 2131558646;
-			
-			// aapt resource value: 0x7f0d00f4
-			public const int mr_chooser_route_icon = 2131558644;
-			
-			// aapt resource value: 0x7f0d00f5
-			public const int mr_chooser_route_name = 2131558645;
-			
-			// aapt resource value: 0x7f0d00f2
-			public const int mr_chooser_title = 2131558642;
-			
-			// aapt resource value: 0x7f0d00fb
-			public const int mr_close = 2131558651;
-			
-			// aapt resource value: 0x7f0d0101
-			public const int mr_control_divider = 2131558657;
-			
-			// aapt resource value: 0x7f0d0107
-			public const int mr_control_playback_ctrl = 2131558663;
-			
-			// aapt resource value: 0x7f0d010a
-			public const int mr_control_subtitle = 2131558666;
-			
-			// aapt resource value: 0x7f0d0109
-			public const int mr_control_title = 2131558665;
-			
-			// aapt resource value: 0x7f0d0108
-			public const int mr_control_title_container = 2131558664;
-			
-			// aapt resource value: 0x7f0d00fc
-			public const int mr_custom_control = 2131558652;
-			
-			// aapt resource value: 0x7f0d00fd
-			public const int mr_default_control = 2131558653;
-			
-			// aapt resource value: 0x7f0d00f8
-			public const int mr_dialog_area = 2131558648;
-			
-			// aapt resource value: 0x7f0d00f7
-			public const int mr_expandable_area = 2131558647;
-			
-			// aapt resource value: 0x7f0d010b
-			public const int mr_group_expand_collapse = 2131558667;
-			
-			// aapt resource value: 0x7f0d00ff
-			public const int mr_media_main_control = 2131558655;
+			// aapt resource value: 0x7f0d0105
+			public const int mr_art = 2131558661;
 			
 			// aapt resource value: 0x7f0d00fa
-			public const int mr_name = 2131558650;
+			public const int mr_chooser_list = 2131558650;
 			
-			// aapt resource value: 0x7f0d0100
-			public const int mr_playback_control = 2131558656;
+			// aapt resource value: 0x7f0d00fd
+			public const int mr_chooser_route_desc = 2131558653;
+			
+			// aapt resource value: 0x7f0d00fb
+			public const int mr_chooser_route_icon = 2131558651;
+			
+			// aapt resource value: 0x7f0d00fc
+			public const int mr_chooser_route_name = 2131558652;
 			
 			// aapt resource value: 0x7f0d00f9
-			public const int mr_title_bar = 2131558649;
+			public const int mr_chooser_title = 2131558649;
 			
 			// aapt resource value: 0x7f0d0102
-			public const int mr_volume_control = 2131558658;
+			public const int mr_close = 2131558658;
+			
+			// aapt resource value: 0x7f0d0108
+			public const int mr_control_divider = 2131558664;
+			
+			// aapt resource value: 0x7f0d010e
+			public const int mr_control_playback_ctrl = 2131558670;
+			
+			// aapt resource value: 0x7f0d0111
+			public const int mr_control_subtitle = 2131558673;
+			
+			// aapt resource value: 0x7f0d0110
+			public const int mr_control_title = 2131558672;
+			
+			// aapt resource value: 0x7f0d010f
+			public const int mr_control_title_container = 2131558671;
 			
 			// aapt resource value: 0x7f0d0103
-			public const int mr_volume_group_list = 2131558659;
+			public const int mr_custom_control = 2131558659;
 			
-			// aapt resource value: 0x7f0d0105
-			public const int mr_volume_item_icon = 2131558661;
+			// aapt resource value: 0x7f0d0104
+			public const int mr_default_control = 2131558660;
+			
+			// aapt resource value: 0x7f0d00ff
+			public const int mr_dialog_area = 2131558655;
+			
+			// aapt resource value: 0x7f0d00fe
+			public const int mr_expandable_area = 2131558654;
+			
+			// aapt resource value: 0x7f0d0112
+			public const int mr_group_expand_collapse = 2131558674;
 			
 			// aapt resource value: 0x7f0d0106
-			public const int mr_volume_slider = 2131558662;
+			public const int mr_media_main_control = 2131558662;
+			
+			// aapt resource value: 0x7f0d0101
+			public const int mr_name = 2131558657;
+			
+			// aapt resource value: 0x7f0d0107
+			public const int mr_playback_control = 2131558663;
+			
+			// aapt resource value: 0x7f0d0100
+			public const int mr_title_bar = 2131558656;
+			
+			// aapt resource value: 0x7f0d0109
+			public const int mr_volume_control = 2131558665;
+			
+			// aapt resource value: 0x7f0d010a
+			public const int mr_volume_group_list = 2131558666;
+			
+			// aapt resource value: 0x7f0d010c
+			public const int mr_volume_item_icon = 2131558668;
+			
+			// aapt resource value: 0x7f0d010d
+			public const int mr_volume_slider = 2131558669;
 			
 			// aapt resource value: 0x7f0d003d
 			public const int multiply = 2131558461;
 			
-			// aapt resource value: 0x7f0d010d
-			public const int nav_icon = 2131558669;
+			// aapt resource value: 0x7f0d0114
+			public const int nav_icon = 2131558676;
 			
-			// aapt resource value: 0x7f0d010e
-			public const int nav_label = 2131558670;
+			// aapt resource value: 0x7f0d0115
+			public const int nav_label = 2131558677;
 			
-			// aapt resource value: 0x7f0d010c
-			public const int nav_tab = 2131558668;
+			// aapt resource value: 0x7f0d0113
+			public const int nav_tab = 2131558675;
 			
-			// aapt resource value: 0x7f0d00ae
-			public const int nav_view = 2131558574;
+			// aapt resource value: 0x7f0d00b5
+			public const int nav_view = 2131558581;
 			
-			// aapt resource value: 0x7f0d00e3
-			public const int navigation_header_container = 2131558627;
+			// aapt resource value: 0x7f0d00ea
+			public const int navigation_header_container = 2131558634;
 			
 			// aapt resource value: 0x7f0d0050
 			public const int never = 2131558480;
 			
-			// aapt resource value: 0x7f0d00ad
-			public const int next_button = 2131558573;
+			// aapt resource value: 0x7f0d00b3
+			public const int next_button = 2131558579;
 			
 			// aapt resource value: 0x7f0d002c
 			public const int none = 2131558444;
@@ -6435,20 +8085,20 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0034
 			public const int normal = 2131558452;
 			
+			// aapt resource value: 0x7f0d0125
+			public const int notification_background = 2131558693;
+			
+			// aapt resource value: 0x7f0d011f
+			public const int notification_main_column = 2131558687;
+			
 			// aapt resource value: 0x7f0d011e
-			public const int notification_background = 2131558686;
-			
-			// aapt resource value: 0x7f0d0118
-			public const int notification_main_column = 2131558680;
-			
-			// aapt resource value: 0x7f0d0117
-			public const int notification_main_column_container = 2131558679;
+			public const int notification_main_column_container = 2131558686;
 			
 			// aapt resource value: 0x7f0d0060
 			public const int parallax = 2131558496;
 			
-			// aapt resource value: 0x7f0d007a
-			public const int parentPanel = 2131558522;
+			// aapt resource value: 0x7f0d007e
+			public const int parentPanel = 2131558526;
 			
 			// aapt resource value: 0x7f0d0018
 			public const int parent_matrix = 2131558424;
@@ -6456,17 +8106,17 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0061
 			public const int pin = 2131558497;
 			
-			// aapt resource value: 0x7f0d00ac
-			public const int play_pause_button = 2131558572;
+			// aapt resource value: 0x7f0d00b2
+			public const int play_pause_button = 2131558578;
 			
-			// aapt resource value: 0x7f0d00a9
-			public const int previous_button = 2131558569;
+			// aapt resource value: 0x7f0d00af
+			public const int previous_button = 2131558575;
 			
-			// aapt resource value: 0x7f0d00a1
-			public const int primary_background = 2131558561;
+			// aapt resource value: 0x7f0d00a5
+			public const int primary_background = 2131558565;
 			
-			// aapt resource value: 0x7f0d00d7
-			public const int progressBar = 2131558615;
+			// aapt resource value: 0x7f0d00de
+			public const int progressBar = 2131558622;
 			
 			// aapt resource value: 0x7f0d0013
 			public const int progress_circular = 2131558419;
@@ -6474,23 +8124,23 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0014
 			public const int progress_horizontal = 2131558420;
 			
-			// aapt resource value: 0x7f0d008a
-			public const int radio = 2131558538;
+			// aapt resource value: 0x7f0d008e
+			public const int radio = 2131558542;
 			
-			// aapt resource value: 0x7f0d012d
-			public const int reposts = 2131558701;
+			// aapt resource value: 0x7f0d0133
+			public const int reposts = 2131558707;
 			
 			// aapt resource value: 0x7f0d005e
 			public const int right = 2131558494;
 			
-			// aapt resource value: 0x7f0d011d
-			public const int right_icon = 2131558685;
+			// aapt resource value: 0x7f0d0124
+			public const int right_icon = 2131558692;
 			
-			// aapt resource value: 0x7f0d0119
-			public const int right_side = 2131558681;
+			// aapt resource value: 0x7f0d0120
+			public const int right_side = 2131558688;
 			
-			// aapt resource value: 0x7f0d00ee
-			public const int right_side_count = 2131558638;
+			// aapt resource value: 0x7f0d00f5
+			public const int right_side_count = 2131558645;
 			
 			// aapt resource value: 0x7f0d0019
 			public const int save_image_matrix = 2131558425;
@@ -6507,74 +8157,74 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0057
 			public const int scroll = 2131558487;
 			
+			// aapt resource value: 0x7f0d0084
+			public const int scrollIndicatorDown = 2131558532;
+			
 			// aapt resource value: 0x7f0d0080
-			public const int scrollIndicatorDown = 2131558528;
+			public const int scrollIndicatorUp = 2131558528;
 			
-			// aapt resource value: 0x7f0d007c
-			public const int scrollIndicatorUp = 2131558524;
-			
-			// aapt resource value: 0x7f0d007d
-			public const int scrollView = 2131558525;
+			// aapt resource value: 0x7f0d0081
+			public const int scrollView = 2131558529;
 			
 			// aapt resource value: 0x7f0d0069
 			public const int scrollable = 2131558505;
 			
-			// aapt resource value: 0x7f0d0095
-			public const int search_badge = 2131558549;
-			
-			// aapt resource value: 0x7f0d0094
-			public const int search_bar = 2131558548;
-			
-			// aapt resource value: 0x7f0d0096
-			public const int search_button = 2131558550;
-			
-			// aapt resource value: 0x7f0d009b
-			public const int search_close_btn = 2131558555;
-			
-			// aapt resource value: 0x7f0d0097
-			public const int search_edit_frame = 2131558551;
-			
-			// aapt resource value: 0x7f0d009d
-			public const int search_go_btn = 2131558557;
+			// aapt resource value: 0x7f0d0099
+			public const int search_badge = 2131558553;
 			
 			// aapt resource value: 0x7f0d0098
-			public const int search_mag_icon = 2131558552;
-			
-			// aapt resource value: 0x7f0d0099
-			public const int search_plate = 2131558553;
+			public const int search_bar = 2131558552;
 			
 			// aapt resource value: 0x7f0d009a
-			public const int search_src_text = 2131558554;
-			
-			// aapt resource value: 0x7f0d009e
-			public const int search_voice_btn = 2131558558;
-			
-			// aapt resource value: 0x7f0d00a2
-			public const int secondary_background = 2131558562;
-			
-			// aapt resource value: 0x7f0d00ec
-			public const int seekBar = 2131558636;
-			
-			// aapt resource value: 0x7f0d00c9
-			public const int seek_bar = 2131558601;
-			
-			// aapt resource value: 0x7f0d00c5
-			public const int seek_bar_controls = 2131558597;
-			
-			// aapt resource value: 0x7f0d0128
-			public const int seekbar = 2131558696;
-			
-			// aapt resource value: 0x7f0d0129
-			public const int seekbar_value = 2131558697;
+			public const int search_button = 2131558554;
 			
 			// aapt resource value: 0x7f0d009f
-			public const int select_dialog_listview = 2131558559;
+			public const int search_close_btn = 2131558559;
 			
-			// aapt resource value: 0x7f0d00b1
-			public const int settings_footer = 2131558577;
+			// aapt resource value: 0x7f0d009b
+			public const int search_edit_frame = 2131558555;
 			
-			// aapt resource value: 0x7f0d0089
-			public const int shortcut = 2131558537;
+			// aapt resource value: 0x7f0d00a1
+			public const int search_go_btn = 2131558561;
+			
+			// aapt resource value: 0x7f0d009c
+			public const int search_mag_icon = 2131558556;
+			
+			// aapt resource value: 0x7f0d009d
+			public const int search_plate = 2131558557;
+			
+			// aapt resource value: 0x7f0d009e
+			public const int search_src_text = 2131558558;
+			
+			// aapt resource value: 0x7f0d00a2
+			public const int search_voice_btn = 2131558562;
+			
+			// aapt resource value: 0x7f0d00a6
+			public const int secondary_background = 2131558566;
+			
+			// aapt resource value: 0x7f0d00f3
+			public const int seekBar = 2131558643;
+			
+			// aapt resource value: 0x7f0d00d0
+			public const int seek_bar = 2131558608;
+			
+			// aapt resource value: 0x7f0d00cc
+			public const int seek_bar_controls = 2131558604;
+			
+			// aapt resource value: 0x7f0d012e
+			public const int seekbar = 2131558702;
+			
+			// aapt resource value: 0x7f0d012f
+			public const int seekbar_value = 2131558703;
+			
+			// aapt resource value: 0x7f0d00a3
+			public const int select_dialog_listview = 2131558563;
+			
+			// aapt resource value: 0x7f0d00b8
+			public const int settings_footer = 2131558584;
+			
+			// aapt resource value: 0x7f0d008d
+			public const int shortcut = 2131558541;
 			
 			// aapt resource value: 0x7f0d0038
 			public const int showCustom = 2131558456;
@@ -6585,23 +8235,23 @@ namespace Alloy
 			// aapt resource value: 0x7f0d003a
 			public const int showTitle = 2131558458;
 			
-			// aapt resource value: 0x7f0d00db
-			public const int smallLabel = 2131558619;
-			
 			// aapt resource value: 0x7f0d00e2
-			public const int snackbar_action = 2131558626;
+			public const int smallLabel = 2131558626;
 			
-			// aapt resource value: 0x7f0d00e1
-			public const int snackbar_text = 2131558625;
+			// aapt resource value: 0x7f0d00e9
+			public const int snackbar_action = 2131558633;
+			
+			// aapt resource value: 0x7f0d00e8
+			public const int snackbar_text = 2131558632;
 			
 			// aapt resource value: 0x7f0d0058
 			public const int snap = 2131558488;
 			
-			// aapt resource value: 0x7f0d0079
-			public const int spacer = 2131558521;
+			// aapt resource value: 0x7f0d007d
+			public const int spacer = 2131558525;
 			
-			// aapt resource value: 0x7f0d0126
-			public const int spinner = 2131558694;
+			// aapt resource value: 0x7f0d012d
+			public const int spinner = 2131558701;
 			
 			// aapt resource value: 0x7f0d0015
 			public const int split_action_bar = 2131558421;
@@ -6621,35 +8271,35 @@ namespace Alloy
 			// aapt resource value: 0x7f0d005f
 			public const int start = 2131558495;
 			
-			// aapt resource value: 0x7f0d00c6
-			public const int start_text = 2131558598;
+			// aapt resource value: 0x7f0d00cd
+			public const int start_text = 2131558605;
 			
-			// aapt resource value: 0x7f0d0114
-			public const int status_bar_latest_event_content = 2131558676;
+			// aapt resource value: 0x7f0d011b
+			public const int status_bar_latest_event_content = 2131558683;
 			
-			// aapt resource value: 0x7f0d00c4
-			public const int status_text = 2131558596;
+			// aapt resource value: 0x7f0d00cb
+			public const int status_text = 2131558603;
 			
-			// aapt resource value: 0x7f0d008b
-			public const int submenuarrow = 2131558539;
+			// aapt resource value: 0x7f0d008f
+			public const int submenuarrow = 2131558543;
 			
-			// aapt resource value: 0x7f0d009c
-			public const int submit_area = 2131558556;
+			// aapt resource value: 0x7f0d00a0
+			public const int submit_area = 2131558560;
 			
-			// aapt resource value: 0x7f0d00d6
-			public const int subtitle_view = 2131558614;
+			// aapt resource value: 0x7f0d00dd
+			public const int subtitle_view = 2131558621;
 			
-			// aapt resource value: 0x7f0d00b3
-			public const int swipe_container = 2131558579;
+			// aapt resource value: 0x7f0d00ba
+			public const int swipe_container = 2131558586;
 			
-			// aapt resource value: 0x7f0d012a
-			public const int switchWidget = 2131558698;
+			// aapt resource value: 0x7f0d0130
+			public const int switchWidget = 2131558704;
 			
 			// aapt resource value: 0x7f0d0035
 			public const int tabMode = 2131558453;
 			
-			// aapt resource value: 0x7f0d00d8
-			public const int tab_host = 2131558616;
+			// aapt resource value: 0x7f0d00df
+			public const int tab_host = 2131558623;
 			
 			// aapt resource value: 0x7f0d0026
 			public const int tag_transition_group = 2131558438;
@@ -6660,20 +8310,20 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0028
 			public const int text2 = 2131558440;
 			
-			// aapt resource value: 0x7f0d007f
-			public const int textSpacerNoButtons = 2131558527;
+			// aapt resource value: 0x7f0d0083
+			public const int textSpacerNoButtons = 2131558531;
 			
-			// aapt resource value: 0x7f0d007e
-			public const int textSpacerNoTitle = 2131558526;
+			// aapt resource value: 0x7f0d0082
+			public const int textSpacerNoTitle = 2131558530;
 			
-			// aapt resource value: 0x7f0d00d0
-			public const int textTitle = 2131558608;
+			// aapt resource value: 0x7f0d00d7
+			public const int textTitle = 2131558615;
 			
-			// aapt resource value: 0x7f0d00e8
-			public const int text_input_password_toggle = 2131558632;
+			// aapt resource value: 0x7f0d00ef
+			public const int text_input_password_toggle = 2131558639;
 			
-			// aapt resource value: 0x7f0d00d9
-			public const int text_list_view = 2131558617;
+			// aapt resource value: 0x7f0d00e0
+			public const int text_list_view = 2131558624;
 			
 			// aapt resource value: 0x7f0d0021
 			public const int textinput_counter = 2131558433;
@@ -6681,35 +8331,35 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0022
 			public const int textinput_error = 2131558434;
 			
-			// aapt resource value: 0x7f0d00ed
-			public const int thumbnail = 2131558637;
+			// aapt resource value: 0x7f0d00f4
+			public const int thumbnail = 2131558644;
 			
-			// aapt resource value: 0x7f0d011a
-			public const int time = 2131558682;
+			// aapt resource value: 0x7f0d0121
+			public const int time = 2131558689;
 			
 			// aapt resource value: 0x7f0d0029
 			public const int title = 2131558441;
 			
-			// aapt resource value: 0x7f0d0086
-			public const int titleDividerNoCustom = 2131558534;
+			// aapt resource value: 0x7f0d008a
+			public const int titleDividerNoCustom = 2131558538;
 			
-			// aapt resource value: 0x7f0d0084
-			public const int title_template = 2131558532;
+			// aapt resource value: 0x7f0d0088
+			public const int title_template = 2131558536;
 			
-			// aapt resource value: 0x7f0d00d5
-			public const int title_view = 2131558613;
+			// aapt resource value: 0x7f0d00dc
+			public const int title_view = 2131558620;
 			
-			// aapt resource value: 0x7f0d00bc
-			public const int toolbar = 2131558588;
+			// aapt resource value: 0x7f0d00c3
+			public const int toolbar = 2131558595;
 			
 			// aapt resource value: 0x7f0d0053
 			public const int top = 2131558483;
 			
-			// aapt resource value: 0x7f0d0083
-			public const int topPanel = 2131558531;
+			// aapt resource value: 0x7f0d0087
+			public const int topPanel = 2131558535;
 			
-			// aapt resource value: 0x7f0d00df
-			public const int touch_outside = 2131558623;
+			// aapt resource value: 0x7f0d00e6
+			public const int touch_outside = 2131558630;
 			
 			// aapt resource value: 0x7f0d001c
 			public const int transition_current_scene = 2131558428;
@@ -6738,11 +8388,11 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0023
 			public const int view_offset_helper = 2131558435;
 			
-			// aapt resource value: 0x7f0d0130
-			public const int visible = 2131558704;
+			// aapt resource value: 0x7f0d0136
+			public const int visible = 2131558710;
 			
-			// aapt resource value: 0x7f0d0104
-			public const int volume_item_container = 2131558660;
+			// aapt resource value: 0x7f0d010b
+			public const int volume_item_container = 2131558667;
 			
 			// aapt resource value: 0x7f0d002f
 			public const int wide = 2131558447;
@@ -7296,8 +8946,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0060
 			public const int abc_toolbar_collapse_description = 2131689568;
 			
-			// aapt resource value: 0x7f0f008b
-			public const int action_settings = 2131689611;
+			// aapt resource value: 0x7f0f008c
+			public const int action_settings = 2131689612;
 			
 			// aapt resource value: 0x7f0f0090
 			public const int album_detail_title = 2131689616;
@@ -7305,26 +8955,14 @@ namespace Alloy
 			// aapt resource value: 0x7f0f008f
 			public const int albums_title = 2131689615;
 			
-			// aapt resource value: 0x7f0f007f
-			public const int all_music_fragment_id = 2131689599;
-			
-			// aapt resource value: 0x7f0f007e
-			public const int all_music_fragment_title = 2131689598;
-			
-			// aapt resource value: 0x7f0f008c
-			public const int all_music_header = 2131689612;
-			
-			// aapt resource value: 0x7f0f008d
-			public const int all_music_title = 2131689613;
-			
 			// aapt resource value: 0x7f0f0077
 			public const int app_name = 2131689591;
 			
 			// aapt resource value: 0x7f0f006e
 			public const int appbar_scrolling_view_behavior = 2131689582;
 			
-			// aapt resource value: 0x7f0f0079
-			public const int appcenter_api = 2131689593;
+			// aapt resource value: 0x7f0f007a
+			public const int appcenter_api = 2131689594;
 			
 			// aapt resource value: 0x7f0f0092
 			public const int artist_detail_title = 2131689618;
@@ -7332,8 +8970,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0091
 			public const int artists_title = 2131689617;
 			
-			// aapt resource value: 0x7f0f0088
-			public const int background_audio_service = 2131689608;
+			// aapt resource value: 0x7f0f0089
+			public const int background_audio_service = 2131689609;
 			
 			// aapt resource value: 0x7f0f006f
 			public const int bottom_sheet_behavior = 2131689583;
@@ -7350,8 +8988,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0000
 			public const int cast_ad_label = 2131689472;
 			
-			// aapt resource value: 0x7f0f007a
-			public const int cast_app_id = 2131689594;
+			// aapt resource value: 0x7f0f007b
+			public const int cast_app_id = 2131689595;
 			
 			// aapt resource value: 0x7f0f0001
 			public const int cast_casting_to_device = 2131689473;
@@ -7533,17 +9171,17 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0096
 			public const int currently_playing_song = 2131689622;
 			
-			// aapt resource value: 0x7f0f0081
-			public const int favorites_fragment_id = 2131689601;
-			
-			// aapt resource value: 0x7f0f0080
-			public const int favorites_fragment_title = 2131689600;
-			
-			// aapt resource value: 0x7f0f008e
-			public const int favorites_title = 2131689614;
-			
 			// aapt resource value: 0x7f0f00a2
 			public const int fragment_image_trans = 2131689634;
+			
+			// aapt resource value: 0x7f0f0080
+			public const int fresh_fragment_id = 2131689600;
+			
+			// aapt resource value: 0x7f0f007f
+			public const int fresh_fragment_title = 2131689599;
+			
+			// aapt resource value: 0x7f0f008d
+			public const int fresh_title = 2131689613;
 			
 			// aapt resource value: 0x7f0f0094
 			public const int genre_detail_title = 2131689620;
@@ -7551,29 +9189,32 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0093
 			public const int genres_title = 2131689619;
 			
-			// aapt resource value: 0x7f0f0085
-			public const int local_albums_fragment_id = 2131689605;
-			
-			// aapt resource value: 0x7f0f0084
-			public const int local_albums_fragment_title = 2131689604;
-			
-			// aapt resource value: 0x7f0f0083
-			public const int local_artists_fragment_id = 2131689603;
-			
-			// aapt resource value: 0x7f0f0082
-			public const int local_artists_fragment_title = 2131689602;
-			
-			// aapt resource value: 0x7f0f0087
-			public const int local_genres_fragment_id = 2131689607;
+			// aapt resource value: 0x7f0f0078
+			public const int hello = 2131689592;
 			
 			// aapt resource value: 0x7f0f0086
-			public const int local_genres_fragment_title = 2131689606;
+			public const int local_albums_fragment_id = 2131689606;
 			
-			// aapt resource value: 0x7f0f007c
-			public const int local_music_header = 2131689596;
+			// aapt resource value: 0x7f0f0085
+			public const int local_albums_fragment_title = 2131689605;
 			
-			// aapt resource value: 0x7f0f0078
-			public const int master_salt = 2131689592;
+			// aapt resource value: 0x7f0f0084
+			public const int local_artists_fragment_id = 2131689604;
+			
+			// aapt resource value: 0x7f0f0083
+			public const int local_artists_fragment_title = 2131689603;
+			
+			// aapt resource value: 0x7f0f0088
+			public const int local_genres_fragment_id = 2131689608;
+			
+			// aapt resource value: 0x7f0f0087
+			public const int local_genres_fragment_title = 2131689607;
+			
+			// aapt resource value: 0x7f0f007d
+			public const int local_music_header = 2131689597;
+			
+			// aapt resource value: 0x7f0f0079
+			public const int master_salt = 2131689593;
 			
 			// aapt resource value: 0x7f0f00a6
 			public const int media_route_menu_title = 2131689638;
@@ -7650,11 +9291,11 @@ namespace Alloy
 			// aapt resource value: 0x7f0f00a4
 			public const int nav_stream = 2131689636;
 			
-			// aapt resource value: 0x7f0f008a
-			public const int navigation_drawer_close = 2131689610;
+			// aapt resource value: 0x7f0f008b
+			public const int navigation_drawer_close = 2131689611;
 			
-			// aapt resource value: 0x7f0f0089
-			public const int navigation_drawer_open = 2131689609;
+			// aapt resource value: 0x7f0f008a
+			public const int navigation_drawer_open = 2131689610;
 			
 			// aapt resource value: 0x7f0f0071
 			public const int password_toggle_content_description = 2131689585;
@@ -7677,14 +9318,14 @@ namespace Alloy
 			// aapt resource value: 0x7f0f009a
 			public const int play_pause = 2131689626;
 			
-			// aapt resource value: 0x7f0f007b
-			public const int quick_access_header = 2131689595;
+			// aapt resource value: 0x7f0f007c
+			public const int quick_access_header = 2131689596;
 			
 			// aapt resource value: 0x7f0f00a0
 			public const int random_queue_title = 2131689632;
 			
-			// aapt resource value: 0x7f0f007d
-			public const int remote_media_header = 2131689597;
+			// aapt resource value: 0x7f0f007e
+			public const int remote_media_header = 2131689598;
 			
 			// aapt resource value: 0x7f0f0061
 			public const int search_menu_title = 2131689569;
@@ -7700,6 +9341,15 @@ namespace Alloy
 			
 			// aapt resource value: 0x7f0f009c
 			public const int skip_prev = 2131689628;
+			
+			// aapt resource value: 0x7f0f0082
+			public const int starred_fragment_id = 2131689602;
+			
+			// aapt resource value: 0x7f0f0081
+			public const int starred_fragment_title = 2131689601;
+			
+			// aapt resource value: 0x7f0f008e
+			public const int starred_title = 2131689614;
 			
 			// aapt resource value: 0x7f0f0076
 			public const int status_bar_notification_info_overflow = 2131689590;
@@ -10450,18 +12100,18 @@ namespace Alloy
 			public const int DrawerArrowToggle_thickness = 7;
 			
 			public static int[] FastScrollRecyclerView = new int[] {
-					2130772451,
-					2130772452,
-					2130772453,
-					2130772454,
-					2130772455,
-					2130772456,
-					2130772457,
-					2130772458,
-					2130772459,
-					2130772460,
-					2130772461,
-					2130772462};
+					2130772463,
+					2130772464,
+					2130772465,
+					2130772466,
+					2130772467,
+					2130772468,
+					2130772469,
+					2130772470,
+					2130772471,
+					2130772472,
+					2130772473,
+					2130772474};
 			
 			// aapt resource value: 8
 			public const int FastScrollRecyclerView_fastScrollAutoHide = 8;
@@ -10606,23 +12256,23 @@ namespace Alloy
 			public const int ForegroundLinearLayout_foregroundInsidePadding = 2;
 			
 			public static int[] IndexFastScrollRecyclerView = new int[] {
-					2130772434,
-					2130772435,
-					2130772436,
-					2130772437,
-					2130772438,
-					2130772439,
-					2130772440,
-					2130772441,
-					2130772442,
-					2130772443,
-					2130772444,
-					2130772445,
 					2130772446,
 					2130772447,
 					2130772448,
 					2130772449,
-					2130772450};
+					2130772450,
+					2130772451,
+					2130772452,
+					2130772453,
+					2130772454,
+					2130772455,
+					2130772456,
+					2130772457,
+					2130772458,
+					2130772459,
+					2130772460,
+					2130772461,
+					2130772462};
 			
 			// aapt resource value: 11
 			public const int IndexFastScrollRecyclerView_indexBarColor = 11;
@@ -11484,6 +13134,56 @@ namespace Alloy
 			
 			// aapt resource value: 2
 			public const int SignInButton_scopeUris = 2;
+			
+			public static int[] SlidingUpPanelLayout = new int[] {
+					2130772434,
+					2130772435,
+					2130772436,
+					2130772437,
+					2130772438,
+					2130772439,
+					2130772440,
+					2130772441,
+					2130772442,
+					2130772443,
+					2130772444,
+					2130772445};
+			
+			// aapt resource value: 9
+			public const int SlidingUpPanelLayout_umanoAnchorPoint = 9;
+			
+			// aapt resource value: 8
+			public const int SlidingUpPanelLayout_umanoClipPanel = 8;
+			
+			// aapt resource value: 5
+			public const int SlidingUpPanelLayout_umanoDragView = 5;
+			
+			// aapt resource value: 3
+			public const int SlidingUpPanelLayout_umanoFadeColor = 3;
+			
+			// aapt resource value: 4
+			public const int SlidingUpPanelLayout_umanoFlingVelocity = 4;
+			
+			// aapt resource value: 10
+			public const int SlidingUpPanelLayout_umanoInitialState = 10;
+			
+			// aapt resource value: 7
+			public const int SlidingUpPanelLayout_umanoOverlay = 7;
+			
+			// aapt resource value: 0
+			public const int SlidingUpPanelLayout_umanoPanelHeight = 0;
+			
+			// aapt resource value: 2
+			public const int SlidingUpPanelLayout_umanoParallaxOffset = 2;
+			
+			// aapt resource value: 11
+			public const int SlidingUpPanelLayout_umanoScrollInterpolator = 11;
+			
+			// aapt resource value: 6
+			public const int SlidingUpPanelLayout_umanoScrollableView = 6;
+			
+			// aapt resource value: 1
+			public const int SlidingUpPanelLayout_umanoShadowHeight = 1;
 			
 			public static int[] SnackbarLayout = new int[] {
 					16843039,

@@ -60,7 +60,7 @@ namespace Alloy.Fragments
 				for (int i = 0; i < adapter.Count; i++)
 				{
 					var item = adapter[i];
-					if (ServiceConnection.CurrentSong.Album.Equals(item.AlbumName))
+					if (ServiceConnection.CurrentSong.Album.Equals(item.Name))
 					{
 						item.IsSelected = true;
 						break;

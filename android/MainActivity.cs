@@ -26,6 +26,7 @@ using Spotlight;
 using Alloy.Adapters;
 using Alloy.Interfaces;
 using Alloy.Models;
+using SlideUpPanelLibrary;
 using Exception = System.Exception;
 using Object = Java.Lang.Object;
 
@@ -36,14 +37,14 @@ namespace Alloy
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "content", DataMimeTypes = new[] { "audio/*", "application/ogg", "application/x-ogg", "application/x-vorbis", "application/x-flac" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "http", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm", "audio/x-wav", "audio/ogg", "audio/webm", "application/ogg", "application/x-ogg" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "sshttp", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm" })]
-	public class MainActivity : AppCompatActivity, ICastStateListener, IAppVisibilityListener, ISessionManagerListener, IMenuListener
+	public class MainActivity : AppCompatActivity, ICastStateListener, IAppVisibilityListener, ISessionManagerListener, IMenuListener, PanelSlideListener, View.IOnClickListener
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
 		private ImageView primaryBackground;
 		private ImageView secondaryBackground;
 		private DrawerLayout drawerLayout;
 		private CustomToggle drawerToggle;
-		private RelativeLayout mainLayout;
+		private SlidingUpPanelLayout mainLayout;
 		private NavigationView navigationView;
 		private CurrentBackground currentBackground;
 		private CastContext castContext;
@@ -58,6 +59,7 @@ namespace Alloy
 		private ImageButton nextImageButton;
 		private ImageButton previousImageButton;
 		private SimpleHTTPServer castServer;
+		private MainPlaylistAdapter playlistAdapter;
 		private CastStates lastState = CastStates.NoDevicesAvailable;
 
 		protected override void OnCreate(Bundle savedInstanceState)
@@ -71,7 +73,11 @@ namespace Alloy
 
 			drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
 
-			mainLayout = (RelativeLayout)FindViewById(Resource.Id.main_layout);
+			mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
+			mainLayout.setAnchorPoint(0.7f);
+			mainLayout.addPanelSlideListener(this);
+			mainLayout.setFadeOnClickListener(this);
+
 			mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
 
 
@@ -111,8 +117,8 @@ namespace Alloy
 
 			ArrayList items = new ArrayList();
 			items.Add(new Category(Resource.String.quick_access_header));
-			items.Add(new Item(Resource.String.all_music_fragment_id, Resource.String.all_music_fragment_title, Resource.Drawable.all_music));
-			items.Add(new Item(Resource.String.favorites_fragment_id, Resource.String.favorites_fragment_title, Resource.Drawable.favorites));
+			items.Add(new Item(Resource.String.fresh_fragment_id, Resource.String.fresh_fragment_title, Resource.Drawable.all_music));
+			items.Add(new Item(Resource.String.starred_fragment_id, Resource.String.starred_fragment_title, Resource.Drawable.favorites));
 			items.Add(new Category(Resource.String.local_music_header));
 			items.Add(new Item(Resource.String.local_artists_fragment_id, Resource.String.local_artists_fragment_title, Resource.Drawable.artists));
 			items.Add(new Item(Resource.String.local_albums_fragment_id, Resource.String.local_albums_fragment_title, Resource.Drawable.albums));
@@ -141,7 +147,7 @@ namespace Alloy
 			//	var tab_name = Intent.GetStringExtra("tab_name");
 			//	if (!string.IsNullOrEmpty(tab_name))
 			//		ChangeFragment(tab_name);
-			//	else ChangeFragment(Resource.String.all_music_fragment_id, false);
+			//	else ChangeFragment(Resource.String.fresh_fragment_id, false);
 			//}
 			//else
 			//{
@@ -176,10 +182,10 @@ namespace Alloy
 
 			switch (itemText)
 			{
-				case Resource.String.all_music_fragment_id:
-					fragment = new AllMusicFragment();
+				case Resource.String.fresh_fragment_id:
+					fragment = new FreshFragment();
 					break;
-				case Resource.String.favorites_fragment_id:
+				case Resource.String.starred_fragment_id:
 					fragment = new FavoritesFragment();
 					break;
 				case Resource.String.local_artists_fragment_id:
@@ -323,6 +329,7 @@ namespace Alloy
 			SetBackground();
 			SetPlaying();
 			SetMetaData();
+			SetMainPlaylist();
 		}
 
 		private void ServiceConnection_ServiceConnected(object sender, bool e)
@@ -336,9 +343,7 @@ namespace Alloy
 			SetBackground();
 			SetPlaying();
 			SetMetaData();
-
-
-
+			SetMainPlaylist();
 		}
 
 		private void AlbumArtImageView_Click(object sender, System.EventArgs e)
@@ -435,6 +440,26 @@ namespace Alloy
 			}
 
 			SetPlaying();
+		}
+
+		public void SetMainPlaylist()
+		{
+			ListView lv = (ListView)FindViewById(Resource.Id.main_playlist);
+			if (playlistAdapter == null)
+			{
+				playlistAdapter = new MainPlaylistAdapter(serviceConnection);
+				lv.Adapter = playlistAdapter;
+				lv.ItemClick += (sender, e) =>
+				{
+					serviceConnection.Play(e.Position, serviceConnection.MainQueue);
+				};
+
+			}
+			
+			if (serviceConnection?.MainQueue != null)
+			{
+				Adapters.Adapters.SetAdapters(this, playlistAdapter);
+			}
 		}
 
 		protected override void OnDestroy()
@@ -683,6 +708,21 @@ namespace Alloy
 		public void OnActiveViewChanged(View v)
 		{
 
+		}
+
+		public void onPanelSlide(View panel, float slideOffset)
+		{
+			
+		}
+
+		public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState)
+		{
+
+		}
+
+		public void OnClick(View v)
+		{
+			
 		}
 	}
 }

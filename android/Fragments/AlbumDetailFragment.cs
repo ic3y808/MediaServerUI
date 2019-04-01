@@ -4,6 +4,7 @@ using Android.Widget;
 using Alloy.Adapters;
 using Alloy.Models;
 using Alloy.Services;
+using Android.Support.V4.Widget;
 
 namespace Alloy.Fragments
 {
@@ -12,23 +13,50 @@ namespace Alloy.Fragments
 		private View root_view;
 		private ListView listView;
 		private AlbumDetailAdapter adapter;
+		private SwipeRefreshLayout refreshLayout;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			var album = Arguments.GetParcelable("artist") as Album;
+			Album album = Arguments.GetParcelable("artist") as Album;
 			root_view = inflater.Inflate(Resource.Layout.album_detail_layout, container, false);
 			listView = root_view.FindViewById<ListView>(Resource.Id.album_tracks_list);
-			root_view.FindViewById<TextView>(Resource.Id.title).SetText(album.AlbumName, TextView.BufferType.Normal);
-			root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(album.Art);
-			RegisterForContextMenu(listView);
-			adapter = new AlbumDetailAdapter(album, ServiceConnection);
+			if (album != null)
+			{
+				root_view.FindViewById<TextView>(Resource.Id.title).SetText(album.Name, TextView.BufferType.Normal);
+				root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(album.Art);
+				adapter = new AlbumDetailAdapter(album);
+			}
 
+			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
+			refreshLayout.SetOnRefreshListener(this);
+			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
+
+			RegisterForContextMenu(listView);
+
+			AlbumDetailAdapter.AlbumLoaded += AlbumDetailAdapter_AlbumLoaded;
 			listView.Adapter = adapter;
 			listView.ItemClick += ListView_ItemClick;
 
 			CreateToolbar(root_view, Resource.String.album_detail_title, true);
 
+			if (adapter.AlbumTracks.Count == 0)
+			{
+				refreshLayout.Refreshing = true;
+				adapter.RefreshAlbum();
+			}
+
 			return root_view;
+		}
+
+		private void AlbumDetailAdapter_AlbumLoaded(object sender, System.EventArgs e)
+		{
+			refreshLayout.Refreshing = false;
+		}
+
+		public override void OnRefreshed()
+		{
+			refreshLayout.Refreshing = true;
+			adapter.RefreshAlbum();
 		}
 
 		public override void ScrollToNowPlaying()
@@ -37,7 +65,7 @@ namespace Alloy.Fragments
 			listView.ClearChoices();
 			for (int i = 0; i < adapter.Count; i++)
 			{
-				var item = adapter[i];
+				Song item = adapter[i];
 				item.IsSelected = false;
 			}
 
@@ -45,7 +73,7 @@ namespace Alloy.Fragments
 			{
 				for (int i = 0; i < adapter.Count; i++)
 				{
-					var item = adapter[i];
+					Song item = adapter[i];
 					if (ServiceConnection.CurrentSong.Id.Equals(item.Id))
 					{
 						item.IsSelected = true;
