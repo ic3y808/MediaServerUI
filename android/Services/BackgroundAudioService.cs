@@ -95,6 +95,7 @@ namespace Alloy.Services
 			//InitBluetoothReceiver();
 			InitMediaButtonReceiver();
 			InitMusicSyncReceiver();
+			//InitNoisyReceiver();
 			InitHeadsetPlugReceiver();
 			InitMediaSession();
 			InitCast();
@@ -258,7 +259,7 @@ namespace Alloy.Services
 			//{
 			if (Remote == null) Reset();
 
-			
+
 
 			if (MainQueue != null && MainQueue.Count > 0)
 			{
@@ -278,7 +279,7 @@ namespace Alloy.Services
 
 			//if (CurrentSong.IsSubsonicTrack)
 			//{
-				Utils.UnlockSsl(true);
+			Utils.UnlockSsl(true);
 			//}
 			JSONObject jsonObj = null;
 			if (Remote != null)
@@ -300,8 +301,8 @@ namespace Alloy.Services
 
 
 					var url = "";
-					
-					
+
+
 					var info = new Android.Gms.Cast.MediaInfo.Builder(url)
 					.SetCustomData(jsonObj)
 					.SetMetadata(meta)
@@ -322,7 +323,7 @@ namespace Alloy.Services
 					//{
 					//	MainQueue.ToLocalMediaQueue();
 					//}
-					
+
 					var result = await Remote.QueueLoad(MainQueue.MediaQueue, index, 0, jsonObj);
 					//Android.Gms.Common.Apis.IResult result = await Remote.LoadAsync(info, true, 0, jsonObj);
 					if (result.Status.IsSuccess)
@@ -341,14 +342,14 @@ namespace Alloy.Services
 				//}
 				//else
 				//{
-					MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(CurrentSong));
+				MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(CurrentSong));
 				//}
 
-				
+
 				MediaPlayer.Prepare();
 			}
 
-				Utils.UnlockSsl(false);
+			Utils.UnlockSsl(false);
 			//}
 			//catch (Exception e)
 			//{
@@ -396,7 +397,7 @@ namespace Alloy.Services
 					var song = index + 1 >= MainQueue.Count ? MainQueue[0] : MainQueue[index + 1];
 					if (song != null)
 					{
-						 Play(song); 
+						Play(song);
 					}
 				}
 			}
@@ -435,7 +436,7 @@ namespace Alloy.Services
 					var index = MainQueue.IndexOf(CurrentSong);
 					var song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
 
-					Play(song); 
+					Play(song);
 				}
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -466,14 +467,14 @@ namespace Alloy.Services
 				Utils.UnlockSsl(true);
 				//}
 				MediaPlayer.Start();
-				
+
 				loading = false;
 				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
 				notificationService.ShowPlayingNotification();
 				notificationService.UpdateMediaSessionMeta();
 				//if (CurrentSong.IsSubsonicTrack)
 				//{
-					Utils.UnlockSsl(false);
+				Utils.UnlockSsl(false);
 				//}
 			}
 			catch (Exception ee)
@@ -495,14 +496,10 @@ namespace Alloy.Services
 			{
 				MediaPlayer?.Stop();
 				MediaPlayer?.Release();
-				if (noisyReceiver != null)
-				{
-					UnregisterReceiver(noisyReceiver);
-					noisyReceiver = null;
-				}
+
 
 				InitMediaPlayer();
-				//	InitHeadsetPlugReceiver();
+				InitHeadsetPlugReceiver();
 				//InitNoisyReceiver();
 				//	InitBluetoothReceiver();
 			}
@@ -519,7 +516,7 @@ namespace Alloy.Services
 					.SetUsage(AudioUsageKind.Media)
 					.SetContentType(AudioContentType.Music)
 					.Build());
-				
+
 				MediaPlayer.Completion += MediaPlayer_Completion;
 				MediaPlayer.Prepared += MediaPlayer_Prepared;
 				MediaPlayer.SetVolume(1.0f, 1.0f);
@@ -546,6 +543,11 @@ namespace Alloy.Services
 		{
 			try
 			{
+				if (noisyReceiver != null)
+				{
+					UnregisterReceiver(noisyReceiver);
+					noisyReceiver = null;
+				}
 				IntentFilter filter = new IntentFilter(AudioManager.ActionAudioBecomingNoisy);
 				noisyReceiver = new NoisyAudioReciever(this);
 

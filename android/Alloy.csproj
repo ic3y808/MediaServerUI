@@ -22,6 +22,7 @@
     <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidUseManagedDesignTimeResourceGenerator>False</AndroidUseManagedDesignTimeResourceGenerator>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
@@ -35,14 +36,13 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
-    <AndroidSupportedAbis>
-    </AndroidSupportedAbis>
+    <AndroidSupportedAbis>armeabi;armeabi-v7a;x86;x86_64;arm64-v8a</AndroidSupportedAbis>
     <JavaMaximumHeapSize>
     </JavaMaximumHeapSize>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
@@ -82,6 +82,7 @@
     <Compile Include="Adapters\ArtistsDetailAdapter.cs" />
     <Compile Include="Adapters\GenreDetailAdapter.cs" />
     <Compile Include="Adapters\GenresAdapter.cs" />
+    <Compile Include="Adapters\MainPlaylistAdapter.cs" />
     <Compile Include="Adapters\NowPlayingAdapter.cs" />
     <Compile Include="Adapters\FavoritesAdapter.cs" />
     <Compile Include="Common\PackageUtil.cs" />
@@ -104,8 +105,10 @@
     <Compile Include="Models\CustomToggle.cs" />
     <Compile Include="Models\HeadsetDeviceManager.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemClickEventArgs.cs" />
     <Compile Include="Models\MinDateTimeConverter.cs" />
-    <Compile Include="Models\RatingConverter.cs" />
+    <Compile Include="Models\MusicQueue.cs" />
+    <Compile Include="Models\NullIntConverter.cs" />
     <Compile Include="Models\SlideDrawable.cs" />
     <Compile Include="Models\StringToBooleanConverter.cs" />
     <Compile Include="Providers\CastOptionsProvider.cs" />
@@ -137,7 +140,7 @@
     <Compile Include="Recievers\BluetoothIntentReceiver.cs" />
     <Compile Include="Recievers\MusicSyncReceiver.cs" />
     <Compile Include="Services\BackgroundAudioService.cs" />
-    <Compile Include="Fragments\AllMusicFragment.cs" />
+    <Compile Include="Fragments\FreshFragment.cs" />
     <Compile Include="Fragments\FavoritesFragment.cs" />
     <Compile Include="Fragments\AlbumsFragment.cs" />
     <Compile Include="Fragments\GenresFragment.cs" />
@@ -656,6 +659,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\emby.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Users\ic3y8\Desktop\AndroidUISamples\src\SlideUpPanelLibrary\SlideUpPanelLibrary.csproj">
+      <Project>{873ba868-2f1b-4257-9628-d1cd6fb0d36e}</Project>
+      <Name>SlideUpPanelLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\magnifier.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-hdpi\trash.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,27 +1,32 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+using Android.OS;
 
 namespace Alloy.Adapters
 {
 	class GenreDetailAdapter : BaseAdapter<Song>
 	{
 		private LayoutInflater layoutInflater;
+		public Genre Genre;
 		public MusicQueue GenreTracks;
+		public static event EventHandler GenreLoaded;
 
 		public GenreDetailAdapter(Genre genre)
 		{
-			layoutInflater = LayoutInflater.From(Application.Context);
 			GenreTracks = new MusicQueue();
-			
-			foreach (var song in MusicProvider.AllSongs)
-			{
-				if (song.Genre != null && song.Genre.Contains(genre.Title)) GenreTracks.Add(song);
-			}
+			Genre = genre;
+			layoutInflater = LayoutInflater.From(Application.Context);
+		}
+
+		public void RefreshGenre()
+		{
+			var artistLoader = (GenreLoader)new GenreLoader(this, Genre).Execute();
 		}
 
 		public override long GetItemId(int position)
@@ -54,5 +59,35 @@ namespace Alloy.Adapters
 		public override int Count => GenreTracks.Count;
 
 		public override Song this[int position] => GenreTracks[position];
+		public class GenreLoader : AsyncTask<object, Song, int>
+		{
+			private GenreDetailAdapter adapter;
+			private Genre genre;
+			public GenreLoader(GenreDetailAdapter adapter, Genre genre)
+			{
+				this.adapter = adapter;
+				this.genre = genre;
+			}
+
+			protected override int RunInBackground(params object[] @params)
+			{
+				adapter.GenreTracks = MusicProvider.GetGenreTracks(genre);
+
+				return 0;
+			}
+
+			protected override void OnProgressUpdate(params Song[] values)
+			{
+				Alloy.Adapters.Adapters.UpdateAdapters();
+				base.OnProgressUpdate(values);
+			}
+
+			protected override void OnPostExecute(int result)
+			{
+				Alloy.Adapters.Adapters.UpdateAdapters();
+				GenreLoaded?.Invoke(null, null);
+				base.OnPostExecute(result);
+			}
+		}
 	}
 }

@@ -14,6 +14,7 @@ namespace Alloy.Adapters
 	public static class Adapters
 	{
 		public static RecyclerView.Adapter[] RecyclerAdapters { get; set; }
+		public static BaseAdapter<Song>[] PlaylistAdapters { get; set; }
 		public static BaseAdapter<Song>[] ListAdapters { get; set; }
 		public static BaseAdapter<Album>[] AlbumAdapters { get; set; }
 		public static BaseAdapter<Artist>[] ArtistAdapters { get; set; }
@@ -50,6 +51,12 @@ namespace Alloy.Adapters
 			GenreAdapters = addedAdapters;
 		}
 
+		public static void SetPlaylistAdapters(Activity activity, params BaseAdapter<Song>[] addedAdapters)
+		{
+			CurrentActivity = activity;
+			PlaylistAdapters = addedAdapters;
+		}
+
 		private static void Update()
 		{
 			try
@@ -59,6 +66,11 @@ namespace Alloy.Adapters
 					lock (Alloy.Adapters.Adapters.RecyclerAdapters)
 						foreach (var adapter in Alloy.Adapters.Adapters.RecyclerAdapters) { adapter.NotifyDataSetChanged(); }
 				}
+
+				if (Alloy.Adapters.Adapters.PlaylistAdapters != null)
+					lock (Alloy.Adapters.Adapters.PlaylistAdapters)
+						foreach (var adapter in Alloy.Adapters.Adapters.PlaylistAdapters) { adapter.NotifyDataSetChanged(); }
+
 				if (Alloy.Adapters.Adapters.ListAdapters != null)
 					lock (Alloy.Adapters.Adapters.ListAdapters)
 						foreach (var adapter in Alloy.Adapters.Adapters.ListAdapters) { adapter.NotifyDataSetChanged(); }
@@ -85,7 +97,6 @@ namespace Alloy.Adapters
 			{
 				CurrentActivity.RunOnUiThread(Update);
 			}
-			
 		}
 	}
 }

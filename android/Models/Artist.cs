@@ -13,7 +13,11 @@ namespace Alloy.Models
 	public class ArtistList
 	{
 		[JsonProperty("artists")]
-		public List<Artist> Artists { get; set; }
+		public ArtistsQueue Artists { get; set; }
+		[JsonProperty("next_offset")]
+		public int NextOffset { get; set; }
+		[JsonProperty("limit")]
+		public int Limit { get; set; }
 	}
 	public class ArtistContainer
 	{
@@ -26,17 +30,8 @@ namespace Alloy.Models
 
 	public class Artist : Object, IParcelable
 	{
-		private string _id;
 		[JsonProperty("id")]
-		public string Id
-		{
-			get { return _id; }
-			set
-			{
-				_id = value;
-				//if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", _id } });
-			}
-		}
+		public string Id { get; set; }
 		[JsonIgnore]
 		public Bitmap Art { get; set; }
 		[JsonProperty("name")]
@@ -55,15 +50,15 @@ namespace Alloy.Models
 		public DateTime StarredDate { get; set; }
 		[JsonProperty("status")]
 		public string Status { get; set; }
-		[JsonProperty("rating"), JsonConverter(typeof(RatingConverter))]
+		[JsonProperty("rating"), JsonConverter(typeof(NullIntConverter))]
 		public int Rating { get; set; }
 		[JsonProperty("type")]
 		public string Type { get; set; }
 		[JsonProperty("path")]
 		public string Path { get; set; }
-		[JsonProperty("track_count")]
+		[JsonProperty("track_count"), JsonConverter(typeof(NullIntConverter))]
 		public int TrackCount { get; set; }
-		[JsonProperty("sort_order")]
+		[JsonProperty("sort_order"), JsonConverter(typeof(NullIntConverter))]
 		public int SortOrder { get; set; }
 
 

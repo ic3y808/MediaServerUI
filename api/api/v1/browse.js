@@ -34,14 +34,32 @@ router.get('/artists_index', function (req, res) {
  * @produces application/json 
  * @consumes application/json 
  * @group browse - Browse API
+ * @param {int} limit.query The list limit.
+ * @param {int} offset.query The list offset. 
  * @returns {Array.<Artist>} 200 - Returns an array of Artist objects
  * @security ApiKeyAuth
  */
 router.get('/artists', function (req, res) {
-  var artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC').all();
-  res.json({
-    artists: artists
-  });
+  var limit = req.query.limit;
+  var offset = req.query.offset;
+  var result = { artists: [] }
+
+  result.limit = limit;
+
+
+  if (limit && !offset) {
+    result.artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC LIMIT ?').all(limit);
+    result.next_offset = limit;
+  } else if (limit && offset) {
+    result.next_offset = parseInt(offset) + parseInt(limit);
+    result.artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC LIMIT ? OFFSET ?').all(limit, offset);
+  } else {
+    result.artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC').all();
+    result.next_offset = 0;
+  }
+  
+
+  res.json(result);
 });
 
 /**
@@ -123,9 +141,9 @@ router.get('/albums', function (req, res) {
     size = req.query.size;
   var result = {};
   if (genre) {
-    result.albums = res.locals.db.prepare('SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC LIMIT ?').all(genre, size);
+    result.albums = res.locals.db.prepare('SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC').all(genre);
   } else {
-    result.albums = res.locals.db.prepare('SELECT * FROM Albums ORDER BY artist ASC, name ASC LIMIT ?').all(size);
+    result.albums = res.locals.db.prepare('SELECT * FROM Albums ORDER BY name ASC, artist ASC').all();
   }
   res.json(result)
 });

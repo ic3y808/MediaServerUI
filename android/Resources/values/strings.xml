@@ -14,11 +14,11 @@
 	<string name="remote_media_header">Remote Media</string>
 
 	<!-- Fragments. -->
-	<string name="all_music_fragment_title">All Music</string>
-	<string name="all_music_fragment_id">all_music</string>
+	<string name="fresh_fragment_title">Fresh</string>
+	<string name="fresh_fragment_id">local_fresh</string>
 	
-	<string name="favorites_fragment_title">Favorites</string>
-	<string name="favorites_fragment_id">local_favorites</string>
+	<string name="starred_fragment_title">Starred</string>
+	<string name="starred_fragment_id">local_starred</string>
 	
 	<string name="local_artists_fragment_title">Artists</string>
 	<string name="local_artists_fragment_id">local_artists</string>
@@ -34,17 +34,13 @@
 	<string name="navigation_drawer_open">Open navigation drawer</string>
 	<string name="navigation_drawer_close">Close navigation drawer</string>
 	<string name="action_settings">Settings</string>
-	<string name="all_music_header">Library</string>
 
-	<string name="all_music_title">All Music</string>
-	<string name="favorites_title">Favorites</string>
+	<string name="fresh_title">Fresh</string>
+	<string name="starred_title">Starred</string>
 	<string name="albums_title">Albums</string>
 	<string name="album_detail_title">Detail</string>
 	<string name="artists_title">Artists</string>
 	<string name="artist_detail_title">Detail</string>
-  
-  
-
 	<string name="genres_title">Genres</string>
 	<string name="genre_detail_title">Detail</string>
 	<string name="settings_title">Settings</string>

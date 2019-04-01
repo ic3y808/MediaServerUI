@@ -569,7 +569,7 @@ namespace Alloy
 		private void SetFavorite()
 		{
 			favoritesButton.SetImageResource(Resource.Drawable.not_favorite);
-			if (serviceConnection == null || !serviceConnection.IsConnected) return;
+			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			if (serviceConnection.CurrentSong.Starred) favoritesButton.SetImageResource(Resource.Drawable.favorite);
 		}
 

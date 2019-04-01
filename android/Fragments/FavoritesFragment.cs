@@ -32,7 +32,7 @@ namespace Alloy.Fragments
 			listView.Adapter = adapter;
 			listView.ItemClick += MListView_ItemClick;
 
-			CreateToolbar(root_view, Resource.String.favorites_title);
+			CreateToolbar(root_view, Resource.String.starred_title);
 
 			return root_view;
 		}

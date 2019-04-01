@@ -55,7 +55,7 @@ namespace Alloy.Models
 		public bool Starred { get; set; }
 		[JsonProperty("starred_date"), JsonConverter(typeof(MinDateTimeConverter))]
 		public DateTime StarredDate { get; set; }
-		[JsonProperty("rating"), JsonConverter(typeof(RatingConverter))]
+		[JsonProperty("rating"), JsonConverter(typeof(NullIntConverter))]
 		public int Rating { get; set; }
 		[JsonProperty("bpm")]
 		public string Bpm { get; set; }

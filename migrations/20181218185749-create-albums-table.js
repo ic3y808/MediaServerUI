@@ -24,6 +24,7 @@ exports.up = function(db) {
       artist: { type: 'string', defaultValue: '' },
       artist_id: { type: 'string', defaultValue: '' },
       genre: { type: 'string', defaultValue: '' },
+      genre_id: { type: 'string', defaultValue: '' },
       starred: { type: 'string', defaultValue: 'false' },
       starred_date: { type: 'string', defaultValue: '' },
       rating: { type: 'int', defaultValue: 0 },
