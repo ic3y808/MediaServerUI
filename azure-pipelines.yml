@@ -45,11 +45,10 @@ steps:
 #- task: PublishBuildArtifacts@1
 
 # Copy Files
-# Copy files from source folder to target folder using match patterns (The match patterns will only match file paths, not folder paths)
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(System.DefaultWorkingDirectory)'
-    contents: 'web' 
+    #contents: '**/' 
     targetFolder: '$(Build.ArtifactStagingDirectory)'
     cleanTargetFolder: true # Optional
     overWrite: true # Optional
