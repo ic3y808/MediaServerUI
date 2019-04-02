@@ -27,9 +27,11 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <AndroidKeyStore>false</AndroidKeyStore>
-    <AndroidSigningKeyStore>D:\Source\Github\Alloy\android\alloy.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass />
+    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidSigningKeyStore>D:\Source\Github\Alloy\data\alloy.keystore</AndroidSigningKeyStore>
+    <AndroidSigningStorePass>37a2447966364633bbed42866b87ad13</AndroidSigningStorePass>
+    <AndroidSigningKeyPass>37a2447966364633bbed42866b87ad13</AndroidSigningKeyPass>
+    <AndroidSigningKeyAlias>android</AndroidSigningKeyAlias>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
