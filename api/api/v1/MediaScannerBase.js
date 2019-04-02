@@ -78,6 +78,12 @@ class MediaScannerBase {
       artists = _.uniq(artists);
       this.db.prepare("UPDATE Genres SET track_count=?, artist_count=?, album_count=? WHERE id=?").run(tracks.length, artists.length, albums.length, g.id);
     });
+
+    var albums = this.db.prepare('SELECT * FROM Albums').all();
+    albums.forEach(a => {
+      var tracks = this.db.prepare('SELECT id FROM Tracks WHERE album_id=?').all(a.id);
+      this.db.prepare("UPDATE Albums SET track_count=? WHERE id=?").run(tracks.length, a.id);
+    });
   };
 
   checkSortOrder() {
@@ -170,18 +176,18 @@ class MediaScannerBase {
     var allHistory = this.db.prepare('SELECT * FROM History').all();
     allHistory.forEach(item => {
       var track = this.db.prepare('SELECT * FROM Tracks WHERE id=?').get(item.id);
-      if(track) {
+      if (track) {
         try {
 
-            item.title= track.title;
-            item.artist= track.artist;
-            item.artist_id= track.artist_id;
-            item.album= track.album;
-            item.album_id= track.album_id;
-            item.genre= track.genre;
-            item.genre_id= track.genre_id;
-          
-    
+          item.title = track.title;
+          item.artist = track.artist;
+          item.artist_id = track.artist_id;
+          item.album = track.album;
+          item.album_id = track.album_id;
+          item.genre = track.genre;
+          item.genre_id = track.genre_id;
+
+
           var sql = 'REPLACE INTO History (history_id, id, type, action, time, title, artist, artist_id, album, album_id, genre, genre_id) VALUES(@history_id, @id, @type, @action, @time, @title, @artist, @artist_id, @album, @album_id, @genre, @genre_id)  ';
           var insert = this.db.prepare(sql);
           insert.run(item);
@@ -196,12 +202,12 @@ class MediaScannerBase {
 
   cleanup() {
     logger.info("alloydb", 'Starting cleanup');
-    //this.checkTracksExist();
-    //this.checkEmptyPlaylists();
-    //this.checkEmptyArtists();
-    //this.checkEmptyGenres();
-    //this.checkSortOrder();
-    //this.checkCounts();
+    this.checkTracksExist();
+    this.checkEmptyPlaylists();
+    this.checkEmptyArtists();
+    this.checkEmptyGenres();
+    this.checkSortOrder();
+    this.checkCounts();
     this.checkHistory();
     logger.info("alloydb", 'Cleanup complete');
     this.updateStatus('Scan Complete', false);
