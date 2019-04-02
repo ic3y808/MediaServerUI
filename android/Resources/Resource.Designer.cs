@@ -26,1587 +26,6 @@ namespace Alloy
 		
 		public static void UpdateIdValues()
 		{
-			global::SlideUpPanelLibrary.Resource.Animation.abc_fade_in = global::Alloy.Resource.Animation.abc_fade_in;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_fade_out = global::Alloy.Resource.Animation.abc_fade_out;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_grow_fade_in_from_bottom = global::Alloy.Resource.Animation.abc_grow_fade_in_from_bottom;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_popup_enter = global::Alloy.Resource.Animation.abc_popup_enter;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_popup_exit = global::Alloy.Resource.Animation.abc_popup_exit;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_shrink_fade_out_from_bottom = global::Alloy.Resource.Animation.abc_shrink_fade_out_from_bottom;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_in_bottom = global::Alloy.Resource.Animation.abc_slide_in_bottom;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_in_top = global::Alloy.Resource.Animation.abc_slide_in_top;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_out_bottom = global::Alloy.Resource.Animation.abc_slide_out_bottom;
-			global::SlideUpPanelLibrary.Resource.Animation.abc_slide_out_top = global::Alloy.Resource.Animation.abc_slide_out_top;
-			global::SlideUpPanelLibrary.Resource.Animation.tooltip_enter = global::Alloy.Resource.Animation.tooltip_enter;
-			global::SlideUpPanelLibrary.Resource.Animation.tooltip_exit = global::Alloy.Resource.Animation.tooltip_exit;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarDivider = global::Alloy.Resource.Attribute.actionBarDivider;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarItemBackground = global::Alloy.Resource.Attribute.actionBarItemBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarPopupTheme = global::Alloy.Resource.Attribute.actionBarPopupTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarSize = global::Alloy.Resource.Attribute.actionBarSize;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarSplitStyle = global::Alloy.Resource.Attribute.actionBarSplitStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarStyle = global::Alloy.Resource.Attribute.actionBarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTabBarStyle = global::Alloy.Resource.Attribute.actionBarTabBarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTabStyle = global::Alloy.Resource.Attribute.actionBarTabStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTabTextStyle = global::Alloy.Resource.Attribute.actionBarTabTextStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarTheme = global::Alloy.Resource.Attribute.actionBarTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionBarWidgetTheme = global::Alloy.Resource.Attribute.actionBarWidgetTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionButtonStyle = global::Alloy.Resource.Attribute.actionButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionDropDownStyle = global::Alloy.Resource.Attribute.actionDropDownStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionLayout = global::Alloy.Resource.Attribute.actionLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionMenuTextAppearance = global::Alloy.Resource.Attribute.actionMenuTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionMenuTextColor = global::Alloy.Resource.Attribute.actionMenuTextColor;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeBackground = global::Alloy.Resource.Attribute.actionModeBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCloseButtonStyle = global::Alloy.Resource.Attribute.actionModeCloseButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCloseDrawable = global::Alloy.Resource.Attribute.actionModeCloseDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCopyDrawable = global::Alloy.Resource.Attribute.actionModeCopyDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeCutDrawable = global::Alloy.Resource.Attribute.actionModeCutDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeFindDrawable = global::Alloy.Resource.Attribute.actionModeFindDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModePasteDrawable = global::Alloy.Resource.Attribute.actionModePasteDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModePopupWindowStyle = global::Alloy.Resource.Attribute.actionModePopupWindowStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeSelectAllDrawable = global::Alloy.Resource.Attribute.actionModeSelectAllDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeShareDrawable = global::Alloy.Resource.Attribute.actionModeShareDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeSplitBackground = global::Alloy.Resource.Attribute.actionModeSplitBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeStyle = global::Alloy.Resource.Attribute.actionModeStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionModeWebSearchDrawable = global::Alloy.Resource.Attribute.actionModeWebSearchDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionOverflowButtonStyle = global::Alloy.Resource.Attribute.actionOverflowButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionOverflowMenuStyle = global::Alloy.Resource.Attribute.actionOverflowMenuStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionProviderClass = global::Alloy.Resource.Attribute.actionProviderClass;
-			global::SlideUpPanelLibrary.Resource.Attribute.actionViewClass = global::Alloy.Resource.Attribute.actionViewClass;
-			global::SlideUpPanelLibrary.Resource.Attribute.activityChooserViewStyle = global::Alloy.Resource.Attribute.activityChooserViewStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogButtonGroupStyle = global::Alloy.Resource.Attribute.alertDialogButtonGroupStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogCenterButtons = global::Alloy.Resource.Attribute.alertDialogCenterButtons;
-			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogStyle = global::Alloy.Resource.Attribute.alertDialogStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.alertDialogTheme = global::Alloy.Resource.Attribute.alertDialogTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.allowStacking = global::Alloy.Resource.Attribute.allowStacking;
-			global::SlideUpPanelLibrary.Resource.Attribute.alpha = global::Alloy.Resource.Attribute.alpha;
-			global::SlideUpPanelLibrary.Resource.Attribute.alphabeticModifiers = global::Alloy.Resource.Attribute.alphabeticModifiers;
-			global::SlideUpPanelLibrary.Resource.Attribute.arrowHeadLength = global::Alloy.Resource.Attribute.arrowHeadLength;
-			global::SlideUpPanelLibrary.Resource.Attribute.arrowShaftLength = global::Alloy.Resource.Attribute.arrowShaftLength;
-			global::SlideUpPanelLibrary.Resource.Attribute.autoCompleteTextViewStyle = global::Alloy.Resource.Attribute.autoCompleteTextViewStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeMaxTextSize = global::Alloy.Resource.Attribute.autoSizeMaxTextSize;
-			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeMinTextSize = global::Alloy.Resource.Attribute.autoSizeMinTextSize;
-			global::SlideUpPanelLibrary.Resource.Attribute.autoSizePresetSizes = global::Alloy.Resource.Attribute.autoSizePresetSizes;
-			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeStepGranularity = global::Alloy.Resource.Attribute.autoSizeStepGranularity;
-			global::SlideUpPanelLibrary.Resource.Attribute.autoSizeTextType = global::Alloy.Resource.Attribute.autoSizeTextType;
-			global::SlideUpPanelLibrary.Resource.Attribute.background = global::Alloy.Resource.Attribute.background;
-			global::SlideUpPanelLibrary.Resource.Attribute.backgroundSplit = global::Alloy.Resource.Attribute.backgroundSplit;
-			global::SlideUpPanelLibrary.Resource.Attribute.backgroundStacked = global::Alloy.Resource.Attribute.backgroundStacked;
-			global::SlideUpPanelLibrary.Resource.Attribute.backgroundTint = global::Alloy.Resource.Attribute.backgroundTint;
-			global::SlideUpPanelLibrary.Resource.Attribute.backgroundTintMode = global::Alloy.Resource.Attribute.backgroundTintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.barLength = global::Alloy.Resource.Attribute.barLength;
-			global::SlideUpPanelLibrary.Resource.Attribute.borderlessButtonStyle = global::Alloy.Resource.Attribute.borderlessButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarButtonStyle = global::Alloy.Resource.Attribute.buttonBarButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarNegativeButtonStyle = global::Alloy.Resource.Attribute.buttonBarNegativeButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarNeutralButtonStyle = global::Alloy.Resource.Attribute.buttonBarNeutralButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarPositiveButtonStyle = global::Alloy.Resource.Attribute.buttonBarPositiveButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonBarStyle = global::Alloy.Resource.Attribute.buttonBarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonGravity = global::Alloy.Resource.Attribute.buttonGravity;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonPanelSideLayout = global::Alloy.Resource.Attribute.buttonPanelSideLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonStyle = global::Alloy.Resource.Attribute.buttonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonStyleSmall = global::Alloy.Resource.Attribute.buttonStyleSmall;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonTint = global::Alloy.Resource.Attribute.buttonTint;
-			global::SlideUpPanelLibrary.Resource.Attribute.buttonTintMode = global::Alloy.Resource.Attribute.buttonTintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.checkboxStyle = global::Alloy.Resource.Attribute.checkboxStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.checkedTextViewStyle = global::Alloy.Resource.Attribute.checkedTextViewStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.closeIcon = global::Alloy.Resource.Attribute.closeIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.closeItemLayout = global::Alloy.Resource.Attribute.closeItemLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.collapseContentDescription = global::Alloy.Resource.Attribute.collapseContentDescription;
-			global::SlideUpPanelLibrary.Resource.Attribute.collapseIcon = global::Alloy.Resource.Attribute.collapseIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.color = global::Alloy.Resource.Attribute.color;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorAccent = global::Alloy.Resource.Attribute.colorAccent;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorBackgroundFloating = global::Alloy.Resource.Attribute.colorBackgroundFloating;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorButtonNormal = global::Alloy.Resource.Attribute.colorButtonNormal;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorControlActivated = global::Alloy.Resource.Attribute.colorControlActivated;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorControlHighlight = global::Alloy.Resource.Attribute.colorControlHighlight;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorControlNormal = global::Alloy.Resource.Attribute.colorControlNormal;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorError = global::Alloy.Resource.Attribute.colorError;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorPrimary = global::Alloy.Resource.Attribute.colorPrimary;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorPrimaryDark = global::Alloy.Resource.Attribute.colorPrimaryDark;
-			global::SlideUpPanelLibrary.Resource.Attribute.colorSwitchThumbNormal = global::Alloy.Resource.Attribute.colorSwitchThumbNormal;
-			global::SlideUpPanelLibrary.Resource.Attribute.commitIcon = global::Alloy.Resource.Attribute.commitIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentDescription = global::Alloy.Resource.Attribute.contentDescription;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetEnd = global::Alloy.Resource.Attribute.contentInsetEnd;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetEndWithActions = global::Alloy.Resource.Attribute.contentInsetEndWithActions;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetLeft = global::Alloy.Resource.Attribute.contentInsetLeft;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetRight = global::Alloy.Resource.Attribute.contentInsetRight;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetStart = global::Alloy.Resource.Attribute.contentInsetStart;
-			global::SlideUpPanelLibrary.Resource.Attribute.contentInsetStartWithNavigation = global::Alloy.Resource.Attribute.contentInsetStartWithNavigation;
-			global::SlideUpPanelLibrary.Resource.Attribute.controlBackground = global::Alloy.Resource.Attribute.controlBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.customNavigationLayout = global::Alloy.Resource.Attribute.customNavigationLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.defaultQueryHint = global::Alloy.Resource.Attribute.defaultQueryHint;
-			global::SlideUpPanelLibrary.Resource.Attribute.dialogPreferredPadding = global::Alloy.Resource.Attribute.dialogPreferredPadding;
-			global::SlideUpPanelLibrary.Resource.Attribute.dialogTheme = global::Alloy.Resource.Attribute.dialogTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.displayOptions = global::Alloy.Resource.Attribute.displayOptions;
-			global::SlideUpPanelLibrary.Resource.Attribute.divider = global::Alloy.Resource.Attribute.divider;
-			global::SlideUpPanelLibrary.Resource.Attribute.dividerHorizontal = global::Alloy.Resource.Attribute.dividerHorizontal;
-			global::SlideUpPanelLibrary.Resource.Attribute.dividerPadding = global::Alloy.Resource.Attribute.dividerPadding;
-			global::SlideUpPanelLibrary.Resource.Attribute.dividerVertical = global::Alloy.Resource.Attribute.dividerVertical;
-			global::SlideUpPanelLibrary.Resource.Attribute.drawableSize = global::Alloy.Resource.Attribute.drawableSize;
-			global::SlideUpPanelLibrary.Resource.Attribute.drawerArrowStyle = global::Alloy.Resource.Attribute.drawerArrowStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.dropDownListViewStyle = global::Alloy.Resource.Attribute.dropDownListViewStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.dropdownListPreferredItemHeight = global::Alloy.Resource.Attribute.dropdownListPreferredItemHeight;
-			global::SlideUpPanelLibrary.Resource.Attribute.editTextBackground = global::Alloy.Resource.Attribute.editTextBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.editTextColor = global::Alloy.Resource.Attribute.editTextColor;
-			global::SlideUpPanelLibrary.Resource.Attribute.editTextStyle = global::Alloy.Resource.Attribute.editTextStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.elevation = global::Alloy.Resource.Attribute.elevation;
-			global::SlideUpPanelLibrary.Resource.Attribute.expandActivityOverflowButtonDrawable = global::Alloy.Resource.Attribute.expandActivityOverflowButtonDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollEnabled = global::Alloy.Resource.Attribute.fastScrollEnabled;
-			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollHorizontalThumbDrawable = global::Alloy.Resource.Attribute.fastScrollHorizontalThumbDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollHorizontalTrackDrawable = global::Alloy.Resource.Attribute.fastScrollHorizontalTrackDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollVerticalThumbDrawable = global::Alloy.Resource.Attribute.fastScrollVerticalThumbDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.fastScrollVerticalTrackDrawable = global::Alloy.Resource.Attribute.fastScrollVerticalTrackDrawable;
-			global::SlideUpPanelLibrary.Resource.Attribute.font = global::Alloy.Resource.Attribute.font;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontFamily = global::Alloy.Resource.Attribute.fontFamily;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderAuthority = global::Alloy.Resource.Attribute.fontProviderAuthority;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderCerts = global::Alloy.Resource.Attribute.fontProviderCerts;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderFetchStrategy = global::Alloy.Resource.Attribute.fontProviderFetchStrategy;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderFetchTimeout = global::Alloy.Resource.Attribute.fontProviderFetchTimeout;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderPackage = global::Alloy.Resource.Attribute.fontProviderPackage;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontProviderQuery = global::Alloy.Resource.Attribute.fontProviderQuery;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontStyle = global::Alloy.Resource.Attribute.fontStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.fontWeight = global::Alloy.Resource.Attribute.fontWeight;
-			global::SlideUpPanelLibrary.Resource.Attribute.gapBetweenBars = global::Alloy.Resource.Attribute.gapBetweenBars;
-			global::SlideUpPanelLibrary.Resource.Attribute.goIcon = global::Alloy.Resource.Attribute.goIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.height = global::Alloy.Resource.Attribute.height;
-			global::SlideUpPanelLibrary.Resource.Attribute.hideOnContentScroll = global::Alloy.Resource.Attribute.hideOnContentScroll;
-			global::SlideUpPanelLibrary.Resource.Attribute.homeAsUpIndicator = global::Alloy.Resource.Attribute.homeAsUpIndicator;
-			global::SlideUpPanelLibrary.Resource.Attribute.homeLayout = global::Alloy.Resource.Attribute.homeLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.icon = global::Alloy.Resource.Attribute.icon;
-			global::SlideUpPanelLibrary.Resource.Attribute.iconTint = global::Alloy.Resource.Attribute.iconTint;
-			global::SlideUpPanelLibrary.Resource.Attribute.iconTintMode = global::Alloy.Resource.Attribute.iconTintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.iconifiedByDefault = global::Alloy.Resource.Attribute.iconifiedByDefault;
-			global::SlideUpPanelLibrary.Resource.Attribute.imageButtonStyle = global::Alloy.Resource.Attribute.imageButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.indeterminateProgressStyle = global::Alloy.Resource.Attribute.indeterminateProgressStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.initialActivityCount = global::Alloy.Resource.Attribute.initialActivityCount;
-			global::SlideUpPanelLibrary.Resource.Attribute.isLightTheme = global::Alloy.Resource.Attribute.isLightTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.itemPadding = global::Alloy.Resource.Attribute.itemPadding;
-			global::SlideUpPanelLibrary.Resource.Attribute.layout = global::Alloy.Resource.Attribute.layout;
-			global::SlideUpPanelLibrary.Resource.Attribute.layoutManager = global::Alloy.Resource.Attribute.layoutManager;
-			global::SlideUpPanelLibrary.Resource.Attribute.listChoiceBackgroundIndicator = global::Alloy.Resource.Attribute.listChoiceBackgroundIndicator;
-			global::SlideUpPanelLibrary.Resource.Attribute.listDividerAlertDialog = global::Alloy.Resource.Attribute.listDividerAlertDialog;
-			global::SlideUpPanelLibrary.Resource.Attribute.listItemLayout = global::Alloy.Resource.Attribute.listItemLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.listLayout = global::Alloy.Resource.Attribute.listLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.listMenuViewStyle = global::Alloy.Resource.Attribute.listMenuViewStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.listPopupWindowStyle = global::Alloy.Resource.Attribute.listPopupWindowStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemHeight = global::Alloy.Resource.Attribute.listPreferredItemHeight;
-			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemHeightLarge = global::Alloy.Resource.Attribute.listPreferredItemHeightLarge;
-			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemHeightSmall = global::Alloy.Resource.Attribute.listPreferredItemHeightSmall;
-			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemPaddingLeft = global::Alloy.Resource.Attribute.listPreferredItemPaddingLeft;
-			global::SlideUpPanelLibrary.Resource.Attribute.listPreferredItemPaddingRight = global::Alloy.Resource.Attribute.listPreferredItemPaddingRight;
-			global::SlideUpPanelLibrary.Resource.Attribute.logo = global::Alloy.Resource.Attribute.logo;
-			global::SlideUpPanelLibrary.Resource.Attribute.logoDescription = global::Alloy.Resource.Attribute.logoDescription;
-			global::SlideUpPanelLibrary.Resource.Attribute.maxButtonHeight = global::Alloy.Resource.Attribute.maxButtonHeight;
-			global::SlideUpPanelLibrary.Resource.Attribute.measureWithLargestChild = global::Alloy.Resource.Attribute.measureWithLargestChild;
-			global::SlideUpPanelLibrary.Resource.Attribute.multiChoiceItemLayout = global::Alloy.Resource.Attribute.multiChoiceItemLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.navigationContentDescription = global::Alloy.Resource.Attribute.navigationContentDescription;
-			global::SlideUpPanelLibrary.Resource.Attribute.navigationIcon = global::Alloy.Resource.Attribute.navigationIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.navigationMode = global::Alloy.Resource.Attribute.navigationMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.numericModifiers = global::Alloy.Resource.Attribute.numericModifiers;
-			global::SlideUpPanelLibrary.Resource.Attribute.overlapAnchor = global::Alloy.Resource.Attribute.overlapAnchor;
-			global::SlideUpPanelLibrary.Resource.Attribute.paddingBottomNoButtons = global::Alloy.Resource.Attribute.paddingBottomNoButtons;
-			global::SlideUpPanelLibrary.Resource.Attribute.paddingEnd = global::Alloy.Resource.Attribute.paddingEnd;
-			global::SlideUpPanelLibrary.Resource.Attribute.paddingStart = global::Alloy.Resource.Attribute.paddingStart;
-			global::SlideUpPanelLibrary.Resource.Attribute.paddingTopNoTitle = global::Alloy.Resource.Attribute.paddingTopNoTitle;
-			global::SlideUpPanelLibrary.Resource.Attribute.panelBackground = global::Alloy.Resource.Attribute.panelBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.panelMenuListTheme = global::Alloy.Resource.Attribute.panelMenuListTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.panelMenuListWidth = global::Alloy.Resource.Attribute.panelMenuListWidth;
-			global::SlideUpPanelLibrary.Resource.Attribute.popupMenuStyle = global::Alloy.Resource.Attribute.popupMenuStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.popupTheme = global::Alloy.Resource.Attribute.popupTheme;
-			global::SlideUpPanelLibrary.Resource.Attribute.popupWindowStyle = global::Alloy.Resource.Attribute.popupWindowStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.preserveIconSpacing = global::Alloy.Resource.Attribute.preserveIconSpacing;
-			global::SlideUpPanelLibrary.Resource.Attribute.progressBarPadding = global::Alloy.Resource.Attribute.progressBarPadding;
-			global::SlideUpPanelLibrary.Resource.Attribute.progressBarStyle = global::Alloy.Resource.Attribute.progressBarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.queryBackground = global::Alloy.Resource.Attribute.queryBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.queryHint = global::Alloy.Resource.Attribute.queryHint;
-			global::SlideUpPanelLibrary.Resource.Attribute.radioButtonStyle = global::Alloy.Resource.Attribute.radioButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.ratingBarStyle = global::Alloy.Resource.Attribute.ratingBarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.ratingBarStyleIndicator = global::Alloy.Resource.Attribute.ratingBarStyleIndicator;
-			global::SlideUpPanelLibrary.Resource.Attribute.ratingBarStyleSmall = global::Alloy.Resource.Attribute.ratingBarStyleSmall;
-			global::SlideUpPanelLibrary.Resource.Attribute.reverseLayout = global::Alloy.Resource.Attribute.reverseLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.searchHintIcon = global::Alloy.Resource.Attribute.searchHintIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.searchIcon = global::Alloy.Resource.Attribute.searchIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.searchViewStyle = global::Alloy.Resource.Attribute.searchViewStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.seekBarStyle = global::Alloy.Resource.Attribute.seekBarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.selectableItemBackground = global::Alloy.Resource.Attribute.selectableItemBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.selectableItemBackgroundBorderless = global::Alloy.Resource.Attribute.selectableItemBackgroundBorderless;
-			global::SlideUpPanelLibrary.Resource.Attribute.showAsAction = global::Alloy.Resource.Attribute.showAsAction;
-			global::SlideUpPanelLibrary.Resource.Attribute.showDividers = global::Alloy.Resource.Attribute.showDividers;
-			global::SlideUpPanelLibrary.Resource.Attribute.showText = global::Alloy.Resource.Attribute.showText;
-			global::SlideUpPanelLibrary.Resource.Attribute.showTitle = global::Alloy.Resource.Attribute.showTitle;
-			global::SlideUpPanelLibrary.Resource.Attribute.singleChoiceItemLayout = global::Alloy.Resource.Attribute.singleChoiceItemLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.spanCount = global::Alloy.Resource.Attribute.spanCount;
-			global::SlideUpPanelLibrary.Resource.Attribute.spinBars = global::Alloy.Resource.Attribute.spinBars;
-			global::SlideUpPanelLibrary.Resource.Attribute.spinnerDropDownItemStyle = global::Alloy.Resource.Attribute.spinnerDropDownItemStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.spinnerStyle = global::Alloy.Resource.Attribute.spinnerStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.splitTrack = global::Alloy.Resource.Attribute.splitTrack;
-			global::SlideUpPanelLibrary.Resource.Attribute.srcCompat = global::Alloy.Resource.Attribute.srcCompat;
-			global::SlideUpPanelLibrary.Resource.Attribute.stackFromEnd = global::Alloy.Resource.Attribute.stackFromEnd;
-			global::SlideUpPanelLibrary.Resource.Attribute.state_above_anchor = global::Alloy.Resource.Attribute.state_above_anchor;
-			global::SlideUpPanelLibrary.Resource.Attribute.subMenuArrow = global::Alloy.Resource.Attribute.subMenuArrow;
-			global::SlideUpPanelLibrary.Resource.Attribute.submitBackground = global::Alloy.Resource.Attribute.submitBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.subtitle = global::Alloy.Resource.Attribute.subtitle;
-			global::SlideUpPanelLibrary.Resource.Attribute.subtitleTextAppearance = global::Alloy.Resource.Attribute.subtitleTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Attribute.subtitleTextColor = global::Alloy.Resource.Attribute.subtitleTextColor;
-			global::SlideUpPanelLibrary.Resource.Attribute.subtitleTextStyle = global::Alloy.Resource.Attribute.subtitleTextStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.suggestionRowLayout = global::Alloy.Resource.Attribute.suggestionRowLayout;
-			global::SlideUpPanelLibrary.Resource.Attribute.switchMinWidth = global::Alloy.Resource.Attribute.switchMinWidth;
-			global::SlideUpPanelLibrary.Resource.Attribute.switchPadding = global::Alloy.Resource.Attribute.switchPadding;
-			global::SlideUpPanelLibrary.Resource.Attribute.switchStyle = global::Alloy.Resource.Attribute.switchStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.switchTextAppearance = global::Alloy.Resource.Attribute.switchTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAllCaps = global::Alloy.Resource.Attribute.textAllCaps;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceLargePopupMenu = global::Alloy.Resource.Attribute.textAppearanceLargePopupMenu;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceListItem = global::Alloy.Resource.Attribute.textAppearanceListItem;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceListItemSecondary = global::Alloy.Resource.Attribute.textAppearanceListItemSecondary;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceListItemSmall = global::Alloy.Resource.Attribute.textAppearanceListItemSmall;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearancePopupMenuHeader = global::Alloy.Resource.Attribute.textAppearancePopupMenuHeader;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceSearchResultSubtitle = global::Alloy.Resource.Attribute.textAppearanceSearchResultSubtitle;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceSearchResultTitle = global::Alloy.Resource.Attribute.textAppearanceSearchResultTitle;
-			global::SlideUpPanelLibrary.Resource.Attribute.textAppearanceSmallPopupMenu = global::Alloy.Resource.Attribute.textAppearanceSmallPopupMenu;
-			global::SlideUpPanelLibrary.Resource.Attribute.textColorAlertDialogListItem = global::Alloy.Resource.Attribute.textColorAlertDialogListItem;
-			global::SlideUpPanelLibrary.Resource.Attribute.textColorSearchUrl = global::Alloy.Resource.Attribute.textColorSearchUrl;
-			global::SlideUpPanelLibrary.Resource.Attribute.theme = global::Alloy.Resource.Attribute.theme;
-			global::SlideUpPanelLibrary.Resource.Attribute.thickness = global::Alloy.Resource.Attribute.thickness;
-			global::SlideUpPanelLibrary.Resource.Attribute.thumbTextPadding = global::Alloy.Resource.Attribute.thumbTextPadding;
-			global::SlideUpPanelLibrary.Resource.Attribute.thumbTint = global::Alloy.Resource.Attribute.thumbTint;
-			global::SlideUpPanelLibrary.Resource.Attribute.thumbTintMode = global::Alloy.Resource.Attribute.thumbTintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.tickMark = global::Alloy.Resource.Attribute.tickMark;
-			global::SlideUpPanelLibrary.Resource.Attribute.tickMarkTint = global::Alloy.Resource.Attribute.tickMarkTint;
-			global::SlideUpPanelLibrary.Resource.Attribute.tickMarkTintMode = global::Alloy.Resource.Attribute.tickMarkTintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.tint = global::Alloy.Resource.Attribute.tint;
-			global::SlideUpPanelLibrary.Resource.Attribute.tintMode = global::Alloy.Resource.Attribute.tintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.title = global::Alloy.Resource.Attribute.title;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleMargin = global::Alloy.Resource.Attribute.titleMargin;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginBottom = global::Alloy.Resource.Attribute.titleMarginBottom;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginEnd = global::Alloy.Resource.Attribute.titleMarginEnd;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginStart = global::Alloy.Resource.Attribute.titleMarginStart;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleMarginTop = global::Alloy.Resource.Attribute.titleMarginTop;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleMargins = global::Alloy.Resource.Attribute.titleMargins;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleTextAppearance = global::Alloy.Resource.Attribute.titleTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleTextColor = global::Alloy.Resource.Attribute.titleTextColor;
-			global::SlideUpPanelLibrary.Resource.Attribute.titleTextStyle = global::Alloy.Resource.Attribute.titleTextStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.toolbarNavigationButtonStyle = global::Alloy.Resource.Attribute.toolbarNavigationButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.toolbarStyle = global::Alloy.Resource.Attribute.toolbarStyle;
-			global::SlideUpPanelLibrary.Resource.Attribute.tooltipForegroundColor = global::Alloy.Resource.Attribute.tooltipForegroundColor;
-			global::SlideUpPanelLibrary.Resource.Attribute.tooltipFrameBackground = global::Alloy.Resource.Attribute.tooltipFrameBackground;
-			global::SlideUpPanelLibrary.Resource.Attribute.tooltipText = global::Alloy.Resource.Attribute.tooltipText;
-			global::SlideUpPanelLibrary.Resource.Attribute.track = global::Alloy.Resource.Attribute.track;
-			global::SlideUpPanelLibrary.Resource.Attribute.trackTint = global::Alloy.Resource.Attribute.trackTint;
-			global::SlideUpPanelLibrary.Resource.Attribute.trackTintMode = global::Alloy.Resource.Attribute.trackTintMode;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoAnchorPoint = global::Alloy.Resource.Attribute.umanoAnchorPoint;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoClipPanel = global::Alloy.Resource.Attribute.umanoClipPanel;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoDragView = global::Alloy.Resource.Attribute.umanoDragView;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoFadeColor = global::Alloy.Resource.Attribute.umanoFadeColor;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoFlingVelocity = global::Alloy.Resource.Attribute.umanoFlingVelocity;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoInitialState = global::Alloy.Resource.Attribute.umanoInitialState;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoOverlay = global::Alloy.Resource.Attribute.umanoOverlay;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoPanelHeight = global::Alloy.Resource.Attribute.umanoPanelHeight;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoParallaxOffset = global::Alloy.Resource.Attribute.umanoParallaxOffset;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoScrollInterpolator = global::Alloy.Resource.Attribute.umanoScrollInterpolator;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoScrollableView = global::Alloy.Resource.Attribute.umanoScrollableView;
-			global::SlideUpPanelLibrary.Resource.Attribute.umanoShadowHeight = global::Alloy.Resource.Attribute.umanoShadowHeight;
-			global::SlideUpPanelLibrary.Resource.Attribute.voiceIcon = global::Alloy.Resource.Attribute.voiceIcon;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowActionBar = global::Alloy.Resource.Attribute.windowActionBar;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowActionBarOverlay = global::Alloy.Resource.Attribute.windowActionBarOverlay;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowActionModeOverlay = global::Alloy.Resource.Attribute.windowActionModeOverlay;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedHeightMajor = global::Alloy.Resource.Attribute.windowFixedHeightMajor;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedHeightMinor = global::Alloy.Resource.Attribute.windowFixedHeightMinor;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedWidthMajor = global::Alloy.Resource.Attribute.windowFixedWidthMajor;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowFixedWidthMinor = global::Alloy.Resource.Attribute.windowFixedWidthMinor;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowMinWidthMajor = global::Alloy.Resource.Attribute.windowMinWidthMajor;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowMinWidthMinor = global::Alloy.Resource.Attribute.windowMinWidthMinor;
-			global::SlideUpPanelLibrary.Resource.Attribute.windowNoTitle = global::Alloy.Resource.Attribute.windowNoTitle;
-			global::SlideUpPanelLibrary.Resource.Boolean.abc_action_bar_embed_tabs = global::Alloy.Resource.Boolean.abc_action_bar_embed_tabs;
-			global::SlideUpPanelLibrary.Resource.Boolean.abc_allow_stacked_button_bar = global::Alloy.Resource.Boolean.abc_allow_stacked_button_bar;
-			global::SlideUpPanelLibrary.Resource.Boolean.abc_config_actionMenuItemAllCaps = global::Alloy.Resource.Boolean.abc_config_actionMenuItemAllCaps;
-			global::SlideUpPanelLibrary.Resource.Boolean.abc_config_closeDialogWhenTouchOutside = global::Alloy.Resource.Boolean.abc_config_closeDialogWhenTouchOutside;
-			global::SlideUpPanelLibrary.Resource.Boolean.abc_config_showMenuShortcutsWhenKeyboardPresent = global::Alloy.Resource.Boolean.abc_config_showMenuShortcutsWhenKeyboardPresent;
-			global::SlideUpPanelLibrary.Resource.Color.abc_background_cache_hint_selector_material_dark = global::Alloy.Resource.Color.abc_background_cache_hint_selector_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.abc_background_cache_hint_selector_material_light = global::Alloy.Resource.Color.abc_background_cache_hint_selector_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.abc_btn_colored_borderless_text_material = global::Alloy.Resource.Color.abc_btn_colored_borderless_text_material;
-			global::SlideUpPanelLibrary.Resource.Color.abc_btn_colored_text_material = global::Alloy.Resource.Color.abc_btn_colored_text_material;
-			global::SlideUpPanelLibrary.Resource.Color.abc_color_highlight_material = global::Alloy.Resource.Color.abc_color_highlight_material;
-			global::SlideUpPanelLibrary.Resource.Color.abc_hint_foreground_material_dark = global::Alloy.Resource.Color.abc_hint_foreground_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.abc_hint_foreground_material_light = global::Alloy.Resource.Color.abc_hint_foreground_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.abc_input_method_navigation_guard = global::Alloy.Resource.Color.abc_input_method_navigation_guard;
-			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_disable_only_material_dark = global::Alloy.Resource.Color.abc_primary_text_disable_only_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_disable_only_material_light = global::Alloy.Resource.Color.abc_primary_text_disable_only_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_material_dark = global::Alloy.Resource.Color.abc_primary_text_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.abc_primary_text_material_light = global::Alloy.Resource.Color.abc_primary_text_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text = global::Alloy.Resource.Color.abc_search_url_text;
-			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text_normal = global::Alloy.Resource.Color.abc_search_url_text_normal;
-			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text_pressed = global::Alloy.Resource.Color.abc_search_url_text_pressed;
-			global::SlideUpPanelLibrary.Resource.Color.abc_search_url_text_selected = global::Alloy.Resource.Color.abc_search_url_text_selected;
-			global::SlideUpPanelLibrary.Resource.Color.abc_secondary_text_material_dark = global::Alloy.Resource.Color.abc_secondary_text_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.abc_secondary_text_material_light = global::Alloy.Resource.Color.abc_secondary_text_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.abc_tint_btn_checkable = global::Alloy.Resource.Color.abc_tint_btn_checkable;
-			global::SlideUpPanelLibrary.Resource.Color.abc_tint_default = global::Alloy.Resource.Color.abc_tint_default;
-			global::SlideUpPanelLibrary.Resource.Color.abc_tint_edittext = global::Alloy.Resource.Color.abc_tint_edittext;
-			global::SlideUpPanelLibrary.Resource.Color.abc_tint_seek_thumb = global::Alloy.Resource.Color.abc_tint_seek_thumb;
-			global::SlideUpPanelLibrary.Resource.Color.abc_tint_spinner = global::Alloy.Resource.Color.abc_tint_spinner;
-			global::SlideUpPanelLibrary.Resource.Color.abc_tint_switch_track = global::Alloy.Resource.Color.abc_tint_switch_track;
-			global::SlideUpPanelLibrary.Resource.Color.accent_material_dark = global::Alloy.Resource.Color.accent_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.accent_material_light = global::Alloy.Resource.Color.accent_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.background_floating_material_dark = global::Alloy.Resource.Color.background_floating_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.background_floating_material_light = global::Alloy.Resource.Color.background_floating_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.background_material_dark = global::Alloy.Resource.Color.background_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.background_material_light = global::Alloy.Resource.Color.background_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_disabled_material_dark = global::Alloy.Resource.Color.bright_foreground_disabled_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_disabled_material_light = global::Alloy.Resource.Color.bright_foreground_disabled_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_inverse_material_dark = global::Alloy.Resource.Color.bright_foreground_inverse_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_inverse_material_light = global::Alloy.Resource.Color.bright_foreground_inverse_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_material_dark = global::Alloy.Resource.Color.bright_foreground_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.bright_foreground_material_light = global::Alloy.Resource.Color.bright_foreground_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.button_material_dark = global::Alloy.Resource.Color.button_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.button_material_light = global::Alloy.Resource.Color.button_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_disabled_material_dark = global::Alloy.Resource.Color.dim_foreground_disabled_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_disabled_material_light = global::Alloy.Resource.Color.dim_foreground_disabled_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_material_dark = global::Alloy.Resource.Color.dim_foreground_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.dim_foreground_material_light = global::Alloy.Resource.Color.dim_foreground_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.error_color_material = global::Alloy.Resource.Color.error_color_material;
-			global::SlideUpPanelLibrary.Resource.Color.foreground_material_dark = global::Alloy.Resource.Color.foreground_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.foreground_material_light = global::Alloy.Resource.Color.foreground_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.highlighted_text_material_dark = global::Alloy.Resource.Color.highlighted_text_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.highlighted_text_material_light = global::Alloy.Resource.Color.highlighted_text_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.material_blue_grey_800 = global::Alloy.Resource.Color.material_blue_grey_800;
-			global::SlideUpPanelLibrary.Resource.Color.material_blue_grey_900 = global::Alloy.Resource.Color.material_blue_grey_900;
-			global::SlideUpPanelLibrary.Resource.Color.material_blue_grey_950 = global::Alloy.Resource.Color.material_blue_grey_950;
-			global::SlideUpPanelLibrary.Resource.Color.material_deep_teal_200 = global::Alloy.Resource.Color.material_deep_teal_200;
-			global::SlideUpPanelLibrary.Resource.Color.material_deep_teal_500 = global::Alloy.Resource.Color.material_deep_teal_500;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_100 = global::Alloy.Resource.Color.material_grey_100;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_300 = global::Alloy.Resource.Color.material_grey_300;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_50 = global::Alloy.Resource.Color.material_grey_50;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_600 = global::Alloy.Resource.Color.material_grey_600;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_800 = global::Alloy.Resource.Color.material_grey_800;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_850 = global::Alloy.Resource.Color.material_grey_850;
-			global::SlideUpPanelLibrary.Resource.Color.material_grey_900 = global::Alloy.Resource.Color.material_grey_900;
-			global::SlideUpPanelLibrary.Resource.Color.notification_action_color_filter = global::Alloy.Resource.Color.notification_action_color_filter;
-			global::SlideUpPanelLibrary.Resource.Color.notification_icon_bg_color = global::Alloy.Resource.Color.notification_icon_bg_color;
-			global::SlideUpPanelLibrary.Resource.Color.notification_material_background_media_default_color = global::Alloy.Resource.Color.notification_material_background_media_default_color;
-			global::SlideUpPanelLibrary.Resource.Color.primary_dark_material_dark = global::Alloy.Resource.Color.primary_dark_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.primary_dark_material_light = global::Alloy.Resource.Color.primary_dark_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.primary_material_dark = global::Alloy.Resource.Color.primary_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.primary_material_light = global::Alloy.Resource.Color.primary_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.primary_text_default_material_dark = global::Alloy.Resource.Color.primary_text_default_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.primary_text_default_material_light = global::Alloy.Resource.Color.primary_text_default_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.primary_text_disabled_material_dark = global::Alloy.Resource.Color.primary_text_disabled_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.primary_text_disabled_material_light = global::Alloy.Resource.Color.primary_text_disabled_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.ripple_material_dark = global::Alloy.Resource.Color.ripple_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.ripple_material_light = global::Alloy.Resource.Color.ripple_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.secondary_text_default_material_dark = global::Alloy.Resource.Color.secondary_text_default_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.secondary_text_default_material_light = global::Alloy.Resource.Color.secondary_text_default_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.secondary_text_disabled_material_dark = global::Alloy.Resource.Color.secondary_text_disabled_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.secondary_text_disabled_material_light = global::Alloy.Resource.Color.secondary_text_disabled_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_disabled_material_dark = global::Alloy.Resource.Color.switch_thumb_disabled_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_disabled_material_light = global::Alloy.Resource.Color.switch_thumb_disabled_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_material_dark = global::Alloy.Resource.Color.switch_thumb_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_material_light = global::Alloy.Resource.Color.switch_thumb_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_normal_material_dark = global::Alloy.Resource.Color.switch_thumb_normal_material_dark;
-			global::SlideUpPanelLibrary.Resource.Color.switch_thumb_normal_material_light = global::Alloy.Resource.Color.switch_thumb_normal_material_light;
-			global::SlideUpPanelLibrary.Resource.Color.tooltip_background_dark = global::Alloy.Resource.Color.tooltip_background_dark;
-			global::SlideUpPanelLibrary.Resource.Color.tooltip_background_light = global::Alloy.Resource.Color.tooltip_background_light;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_content_inset_material = global::Alloy.Resource.Dimension.abc_action_bar_content_inset_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_content_inset_with_nav = global::Alloy.Resource.Dimension.abc_action_bar_content_inset_with_nav;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_default_height_material = global::Alloy.Resource.Dimension.abc_action_bar_default_height_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_default_padding_end_material = global::Alloy.Resource.Dimension.abc_action_bar_default_padding_end_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_default_padding_start_material = global::Alloy.Resource.Dimension.abc_action_bar_default_padding_start_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_elevation_material = global::Alloy.Resource.Dimension.abc_action_bar_elevation_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_icon_vertical_padding_material = global::Alloy.Resource.Dimension.abc_action_bar_icon_vertical_padding_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_overflow_padding_end_material = global::Alloy.Resource.Dimension.abc_action_bar_overflow_padding_end_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_overflow_padding_start_material = global::Alloy.Resource.Dimension.abc_action_bar_overflow_padding_start_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_progress_bar_size = global::Alloy.Resource.Dimension.abc_action_bar_progress_bar_size;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_stacked_max_height = global::Alloy.Resource.Dimension.abc_action_bar_stacked_max_height;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_stacked_tab_max_width = global::Alloy.Resource.Dimension.abc_action_bar_stacked_tab_max_width;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_subtitle_bottom_margin_material = global::Alloy.Resource.Dimension.abc_action_bar_subtitle_bottom_margin_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_bar_subtitle_top_margin_material = global::Alloy.Resource.Dimension.abc_action_bar_subtitle_top_margin_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_button_min_height_material = global::Alloy.Resource.Dimension.abc_action_button_min_height_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_button_min_width_material = global::Alloy.Resource.Dimension.abc_action_button_min_width_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_action_button_min_width_overflow_material = global::Alloy.Resource.Dimension.abc_action_button_min_width_overflow_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_alert_dialog_button_bar_height = global::Alloy.Resource.Dimension.abc_alert_dialog_button_bar_height;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_inset_horizontal_material = global::Alloy.Resource.Dimension.abc_button_inset_horizontal_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_inset_vertical_material = global::Alloy.Resource.Dimension.abc_button_inset_vertical_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_padding_horizontal_material = global::Alloy.Resource.Dimension.abc_button_padding_horizontal_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_button_padding_vertical_material = global::Alloy.Resource.Dimension.abc_button_padding_vertical_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_cascading_menus_min_smallest_width = global::Alloy.Resource.Dimension.abc_cascading_menus_min_smallest_width;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_config_prefDialogWidth = global::Alloy.Resource.Dimension.abc_config_prefDialogWidth;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_control_corner_material = global::Alloy.Resource.Dimension.abc_control_corner_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_control_inset_material = global::Alloy.Resource.Dimension.abc_control_inset_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_control_padding_material = global::Alloy.Resource.Dimension.abc_control_padding_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_height_major = global::Alloy.Resource.Dimension.abc_dialog_fixed_height_major;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_height_minor = global::Alloy.Resource.Dimension.abc_dialog_fixed_height_minor;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_width_major = global::Alloy.Resource.Dimension.abc_dialog_fixed_width_major;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_fixed_width_minor = global::Alloy.Resource.Dimension.abc_dialog_fixed_width_minor;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_list_padding_bottom_no_buttons = global::Alloy.Resource.Dimension.abc_dialog_list_padding_bottom_no_buttons;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_list_padding_top_no_title = global::Alloy.Resource.Dimension.abc_dialog_list_padding_top_no_title;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_min_width_major = global::Alloy.Resource.Dimension.abc_dialog_min_width_major;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_min_width_minor = global::Alloy.Resource.Dimension.abc_dialog_min_width_minor;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_padding_material = global::Alloy.Resource.Dimension.abc_dialog_padding_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_padding_top_material = global::Alloy.Resource.Dimension.abc_dialog_padding_top_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dialog_title_divider_material = global::Alloy.Resource.Dimension.abc_dialog_title_divider_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_disabled_alpha_material_dark = global::Alloy.Resource.Dimension.abc_disabled_alpha_material_dark;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_disabled_alpha_material_light = global::Alloy.Resource.Dimension.abc_disabled_alpha_material_light;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dropdownitem_icon_width = global::Alloy.Resource.Dimension.abc_dropdownitem_icon_width;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dropdownitem_text_padding_left = global::Alloy.Resource.Dimension.abc_dropdownitem_text_padding_left;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_dropdownitem_text_padding_right = global::Alloy.Resource.Dimension.abc_dropdownitem_text_padding_right;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_edit_text_inset_bottom_material = global::Alloy.Resource.Dimension.abc_edit_text_inset_bottom_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_edit_text_inset_horizontal_material = global::Alloy.Resource.Dimension.abc_edit_text_inset_horizontal_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_edit_text_inset_top_material = global::Alloy.Resource.Dimension.abc_edit_text_inset_top_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_floating_window_z = global::Alloy.Resource.Dimension.abc_floating_window_z;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_list_item_padding_horizontal_material = global::Alloy.Resource.Dimension.abc_list_item_padding_horizontal_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_panel_menu_list_width = global::Alloy.Resource.Dimension.abc_panel_menu_list_width;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_progress_bar_height_material = global::Alloy.Resource.Dimension.abc_progress_bar_height_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_search_view_preferred_height = global::Alloy.Resource.Dimension.abc_search_view_preferred_height;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_search_view_preferred_width = global::Alloy.Resource.Dimension.abc_search_view_preferred_width;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_seekbar_track_background_height_material = global::Alloy.Resource.Dimension.abc_seekbar_track_background_height_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_seekbar_track_progress_height_material = global::Alloy.Resource.Dimension.abc_seekbar_track_progress_height_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_select_dialog_padding_start_material = global::Alloy.Resource.Dimension.abc_select_dialog_padding_start_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_switch_padding = global::Alloy.Resource.Dimension.abc_switch_padding;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_body_1_material = global::Alloy.Resource.Dimension.abc_text_size_body_1_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_body_2_material = global::Alloy.Resource.Dimension.abc_text_size_body_2_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_button_material = global::Alloy.Resource.Dimension.abc_text_size_button_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_caption_material = global::Alloy.Resource.Dimension.abc_text_size_caption_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_1_material = global::Alloy.Resource.Dimension.abc_text_size_display_1_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_2_material = global::Alloy.Resource.Dimension.abc_text_size_display_2_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_3_material = global::Alloy.Resource.Dimension.abc_text_size_display_3_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_display_4_material = global::Alloy.Resource.Dimension.abc_text_size_display_4_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_headline_material = global::Alloy.Resource.Dimension.abc_text_size_headline_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_large_material = global::Alloy.Resource.Dimension.abc_text_size_large_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_medium_material = global::Alloy.Resource.Dimension.abc_text_size_medium_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_menu_header_material = global::Alloy.Resource.Dimension.abc_text_size_menu_header_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_menu_material = global::Alloy.Resource.Dimension.abc_text_size_menu_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_small_material = global::Alloy.Resource.Dimension.abc_text_size_small_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_subhead_material = global::Alloy.Resource.Dimension.abc_text_size_subhead_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_subtitle_material_toolbar = global::Alloy.Resource.Dimension.abc_text_size_subtitle_material_toolbar;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_title_material = global::Alloy.Resource.Dimension.abc_text_size_title_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.abc_text_size_title_material_toolbar = global::Alloy.Resource.Dimension.abc_text_size_title_material_toolbar;
-			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_inset_horizontal_material = global::Alloy.Resource.Dimension.compat_button_inset_horizontal_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_inset_vertical_material = global::Alloy.Resource.Dimension.compat_button_inset_vertical_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_padding_horizontal_material = global::Alloy.Resource.Dimension.compat_button_padding_horizontal_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.compat_button_padding_vertical_material = global::Alloy.Resource.Dimension.compat_button_padding_vertical_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.compat_control_corner_material = global::Alloy.Resource.Dimension.compat_control_corner_material;
-			global::SlideUpPanelLibrary.Resource.Dimension.disabled_alpha_material_dark = global::Alloy.Resource.Dimension.disabled_alpha_material_dark;
-			global::SlideUpPanelLibrary.Resource.Dimension.disabled_alpha_material_light = global::Alloy.Resource.Dimension.disabled_alpha_material_light;
-			global::SlideUpPanelLibrary.Resource.Dimension.fastscroll_default_thickness = global::Alloy.Resource.Dimension.fastscroll_default_thickness;
-			global::SlideUpPanelLibrary.Resource.Dimension.fastscroll_margin = global::Alloy.Resource.Dimension.fastscroll_margin;
-			global::SlideUpPanelLibrary.Resource.Dimension.fastscroll_minimum_range = global::Alloy.Resource.Dimension.fastscroll_minimum_range;
-			global::SlideUpPanelLibrary.Resource.Dimension.highlight_alpha_material_colored = global::Alloy.Resource.Dimension.highlight_alpha_material_colored;
-			global::SlideUpPanelLibrary.Resource.Dimension.highlight_alpha_material_dark = global::Alloy.Resource.Dimension.highlight_alpha_material_dark;
-			global::SlideUpPanelLibrary.Resource.Dimension.highlight_alpha_material_light = global::Alloy.Resource.Dimension.highlight_alpha_material_light;
-			global::SlideUpPanelLibrary.Resource.Dimension.hint_alpha_material_dark = global::Alloy.Resource.Dimension.hint_alpha_material_dark;
-			global::SlideUpPanelLibrary.Resource.Dimension.hint_alpha_material_light = global::Alloy.Resource.Dimension.hint_alpha_material_light;
-			global::SlideUpPanelLibrary.Resource.Dimension.hint_pressed_alpha_material_dark = global::Alloy.Resource.Dimension.hint_pressed_alpha_material_dark;
-			global::SlideUpPanelLibrary.Resource.Dimension.hint_pressed_alpha_material_light = global::Alloy.Resource.Dimension.hint_pressed_alpha_material_light;
-			global::SlideUpPanelLibrary.Resource.Dimension.item_touch_helper_max_drag_scroll_per_frame = global::Alloy.Resource.Dimension.item_touch_helper_max_drag_scroll_per_frame;
-			global::SlideUpPanelLibrary.Resource.Dimension.item_touch_helper_swipe_escape_max_velocity = global::Alloy.Resource.Dimension.item_touch_helper_swipe_escape_max_velocity;
-			global::SlideUpPanelLibrary.Resource.Dimension.item_touch_helper_swipe_escape_velocity = global::Alloy.Resource.Dimension.item_touch_helper_swipe_escape_velocity;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_action_icon_size = global::Alloy.Resource.Dimension.notification_action_icon_size;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_action_text_size = global::Alloy.Resource.Dimension.notification_action_text_size;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_big_circle_margin = global::Alloy.Resource.Dimension.notification_big_circle_margin;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_content_margin_start = global::Alloy.Resource.Dimension.notification_content_margin_start;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_large_icon_height = global::Alloy.Resource.Dimension.notification_large_icon_height;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_large_icon_width = global::Alloy.Resource.Dimension.notification_large_icon_width;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_main_column_padding_top = global::Alloy.Resource.Dimension.notification_main_column_padding_top;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_media_narrow_margin = global::Alloy.Resource.Dimension.notification_media_narrow_margin;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_right_icon_size = global::Alloy.Resource.Dimension.notification_right_icon_size;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_right_side_padding_top = global::Alloy.Resource.Dimension.notification_right_side_padding_top;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_small_icon_background_padding = global::Alloy.Resource.Dimension.notification_small_icon_background_padding;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_small_icon_size_as_large = global::Alloy.Resource.Dimension.notification_small_icon_size_as_large;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_subtext_size = global::Alloy.Resource.Dimension.notification_subtext_size;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_top_pad = global::Alloy.Resource.Dimension.notification_top_pad;
-			global::SlideUpPanelLibrary.Resource.Dimension.notification_top_pad_large_text = global::Alloy.Resource.Dimension.notification_top_pad_large_text;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_corner_radius = global::Alloy.Resource.Dimension.tooltip_corner_radius;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_horizontal_padding = global::Alloy.Resource.Dimension.tooltip_horizontal_padding;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_margin = global::Alloy.Resource.Dimension.tooltip_margin;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_precise_anchor_extra_offset = global::Alloy.Resource.Dimension.tooltip_precise_anchor_extra_offset;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_precise_anchor_threshold = global::Alloy.Resource.Dimension.tooltip_precise_anchor_threshold;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_vertical_padding = global::Alloy.Resource.Dimension.tooltip_vertical_padding;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_y_offset_non_touch = global::Alloy.Resource.Dimension.tooltip_y_offset_non_touch;
-			global::SlideUpPanelLibrary.Resource.Dimension.tooltip_y_offset_touch = global::Alloy.Resource.Dimension.tooltip_y_offset_touch;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ab_share_pack_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ab_share_pack_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_action_bar_item_background_material = global::Alloy.Resource.Drawable.abc_action_bar_item_background_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_borderless_material = global::Alloy.Resource.Drawable.abc_btn_borderless_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_check_material = global::Alloy.Resource.Drawable.abc_btn_check_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_check_to_on_mtrl_000 = global::Alloy.Resource.Drawable.abc_btn_check_to_on_mtrl_000;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_check_to_on_mtrl_015 = global::Alloy.Resource.Drawable.abc_btn_check_to_on_mtrl_015;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_colored_material = global::Alloy.Resource.Drawable.abc_btn_colored_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_default_mtrl_shape = global::Alloy.Resource.Drawable.abc_btn_default_mtrl_shape;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_radio_material = global::Alloy.Resource.Drawable.abc_btn_radio_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_radio_to_on_mtrl_000 = global::Alloy.Resource.Drawable.abc_btn_radio_to_on_mtrl_000;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_radio_to_on_mtrl_015 = global::Alloy.Resource.Drawable.abc_btn_radio_to_on_mtrl_015;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_switch_to_on_mtrl_00001 = global::Alloy.Resource.Drawable.abc_btn_switch_to_on_mtrl_00001;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_btn_switch_to_on_mtrl_00012 = global::Alloy.Resource.Drawable.abc_btn_switch_to_on_mtrl_00012;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_cab_background_internal_bg = global::Alloy.Resource.Drawable.abc_cab_background_internal_bg;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_cab_background_top_material = global::Alloy.Resource.Drawable.abc_cab_background_top_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_cab_background_top_mtrl_alpha = global::Alloy.Resource.Drawable.abc_cab_background_top_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_control_background_material = global::Alloy.Resource.Drawable.abc_control_background_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_dialog_material_background = global::Alloy.Resource.Drawable.abc_dialog_material_background;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_edit_text_material = global::Alloy.Resource.Drawable.abc_edit_text_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_ab_back_material = global::Alloy.Resource.Drawable.abc_ic_ab_back_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_arrow_drop_right_black_24dp = global::Alloy.Resource.Drawable.abc_ic_arrow_drop_right_black_24dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_clear_material = global::Alloy.Resource.Drawable.abc_ic_clear_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_commit_search_api_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_commit_search_api_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_go_search_api_material = global::Alloy.Resource.Drawable.abc_ic_go_search_api_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_copy_mtrl_am_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_copy_mtrl_am_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_cut_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_cut_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_overflow_material = global::Alloy.Resource.Drawable.abc_ic_menu_overflow_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_paste_mtrl_am_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_paste_mtrl_am_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_selectall_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_selectall_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_menu_share_mtrl_alpha = global::Alloy.Resource.Drawable.abc_ic_menu_share_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_search_api_material = global::Alloy.Resource.Drawable.abc_ic_search_api_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_black_16dp = global::Alloy.Resource.Drawable.abc_ic_star_black_16dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_black_36dp = global::Alloy.Resource.Drawable.abc_ic_star_black_36dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_black_48dp = global::Alloy.Resource.Drawable.abc_ic_star_black_48dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_half_black_16dp = global::Alloy.Resource.Drawable.abc_ic_star_half_black_16dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_half_black_36dp = global::Alloy.Resource.Drawable.abc_ic_star_half_black_36dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_star_half_black_48dp = global::Alloy.Resource.Drawable.abc_ic_star_half_black_48dp;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ic_voice_search_api_material = global::Alloy.Resource.Drawable.abc_ic_voice_search_api_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_item_background_holo_dark = global::Alloy.Resource.Drawable.abc_item_background_holo_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_item_background_holo_light = global::Alloy.Resource.Drawable.abc_item_background_holo_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_divider_mtrl_alpha = global::Alloy.Resource.Drawable.abc_list_divider_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_focused_holo = global::Alloy.Resource.Drawable.abc_list_focused_holo;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_longpressed_holo = global::Alloy.Resource.Drawable.abc_list_longpressed_holo;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_pressed_holo_dark = global::Alloy.Resource.Drawable.abc_list_pressed_holo_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_pressed_holo_light = global::Alloy.Resource.Drawable.abc_list_pressed_holo_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_background_transition_holo_dark = global::Alloy.Resource.Drawable.abc_list_selector_background_transition_holo_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_background_transition_holo_light = global::Alloy.Resource.Drawable.abc_list_selector_background_transition_holo_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_disabled_holo_dark = global::Alloy.Resource.Drawable.abc_list_selector_disabled_holo_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_disabled_holo_light = global::Alloy.Resource.Drawable.abc_list_selector_disabled_holo_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_holo_dark = global::Alloy.Resource.Drawable.abc_list_selector_holo_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_list_selector_holo_light = global::Alloy.Resource.Drawable.abc_list_selector_holo_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_menu_hardkey_panel_mtrl_mult = global::Alloy.Resource.Drawable.abc_menu_hardkey_panel_mtrl_mult;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_popup_background_mtrl_mult = global::Alloy.Resource.Drawable.abc_popup_background_mtrl_mult;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ratingbar_indicator_material = global::Alloy.Resource.Drawable.abc_ratingbar_indicator_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ratingbar_material = global::Alloy.Resource.Drawable.abc_ratingbar_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_ratingbar_small_material = global::Alloy.Resource.Drawable.abc_ratingbar_small_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_control_off_mtrl_alpha = global::Alloy.Resource.Drawable.abc_scrubber_control_off_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_000 = global::Alloy.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_000;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_005 = global::Alloy.Resource.Drawable.abc_scrubber_control_to_pressed_mtrl_005;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_primary_mtrl_alpha = global::Alloy.Resource.Drawable.abc_scrubber_primary_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_scrubber_track_mtrl_alpha = global::Alloy.Resource.Drawable.abc_scrubber_track_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_seekbar_thumb_material = global::Alloy.Resource.Drawable.abc_seekbar_thumb_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_seekbar_tick_mark_material = global::Alloy.Resource.Drawable.abc_seekbar_tick_mark_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_seekbar_track_material = global::Alloy.Resource.Drawable.abc_seekbar_track_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_spinner_mtrl_am_alpha = global::Alloy.Resource.Drawable.abc_spinner_mtrl_am_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_spinner_textfield_background_material = global::Alloy.Resource.Drawable.abc_spinner_textfield_background_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_switch_thumb_material = global::Alloy.Resource.Drawable.abc_switch_thumb_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_switch_track_mtrl_alpha = global::Alloy.Resource.Drawable.abc_switch_track_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_tab_indicator_material = global::Alloy.Resource.Drawable.abc_tab_indicator_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_tab_indicator_mtrl_alpha = global::Alloy.Resource.Drawable.abc_tab_indicator_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_cursor_material = global::Alloy.Resource.Drawable.abc_text_cursor_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_left_mtrl_dark = global::Alloy.Resource.Drawable.abc_text_select_handle_left_mtrl_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_left_mtrl_light = global::Alloy.Resource.Drawable.abc_text_select_handle_left_mtrl_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_middle_mtrl_dark = global::Alloy.Resource.Drawable.abc_text_select_handle_middle_mtrl_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_middle_mtrl_light = global::Alloy.Resource.Drawable.abc_text_select_handle_middle_mtrl_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_right_mtrl_dark = global::Alloy.Resource.Drawable.abc_text_select_handle_right_mtrl_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_text_select_handle_right_mtrl_light = global::Alloy.Resource.Drawable.abc_text_select_handle_right_mtrl_light;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_activated_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_activated_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_default_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_default_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_search_activated_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_search_default_mtrl_alpha = global::Alloy.Resource.Drawable.abc_textfield_search_default_mtrl_alpha;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_textfield_search_material = global::Alloy.Resource.Drawable.abc_textfield_search_material;
-			global::SlideUpPanelLibrary.Resource.Drawable.abc_vector_test = global::Alloy.Resource.Drawable.abc_vector_test;
-			global::SlideUpPanelLibrary.Resource.Drawable.above_shadow = global::Alloy.Resource.Drawable.above_shadow;
-			global::SlideUpPanelLibrary.Resource.Drawable.below_shadow = global::Alloy.Resource.Drawable.below_shadow;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_action_background = global::Alloy.Resource.Drawable.notification_action_background;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg = global::Alloy.Resource.Drawable.notification_bg;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_low = global::Alloy.Resource.Drawable.notification_bg_low;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_low_normal = global::Alloy.Resource.Drawable.notification_bg_low_normal;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_low_pressed = global::Alloy.Resource.Drawable.notification_bg_low_pressed;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_normal = global::Alloy.Resource.Drawable.notification_bg_normal;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_bg_normal_pressed = global::Alloy.Resource.Drawable.notification_bg_normal_pressed;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_icon_background = global::Alloy.Resource.Drawable.notification_icon_background;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_template_icon_bg = global::Alloy.Resource.Drawable.notification_template_icon_bg;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_template_icon_low_bg = global::Alloy.Resource.Drawable.notification_template_icon_low_bg;
-			global::SlideUpPanelLibrary.Resource.Drawable.notification_tile_bg = global::Alloy.Resource.Drawable.notification_tile_bg;
-			global::SlideUpPanelLibrary.Resource.Drawable.notify_panel_notification_icon_bg = global::Alloy.Resource.Drawable.notify_panel_notification_icon_bg;
-			global::SlideUpPanelLibrary.Resource.Drawable.tooltip_frame_dark = global::Alloy.Resource.Drawable.tooltip_frame_dark;
-			global::SlideUpPanelLibrary.Resource.Drawable.tooltip_frame_light = global::Alloy.Resource.Drawable.tooltip_frame_light;
-			global::SlideUpPanelLibrary.Resource.Id.ALT = global::Alloy.Resource.Id.ALT;
-			global::SlideUpPanelLibrary.Resource.Id.CTRL = global::Alloy.Resource.Id.CTRL;
-			global::SlideUpPanelLibrary.Resource.Id.FUNCTION = global::Alloy.Resource.Id.FUNCTION;
-			global::SlideUpPanelLibrary.Resource.Id.META = global::Alloy.Resource.Id.META;
-			global::SlideUpPanelLibrary.Resource.Id.SHIFT = global::Alloy.Resource.Id.SHIFT;
-			global::SlideUpPanelLibrary.Resource.Id.SYM = global::Alloy.Resource.Id.SYM;
-			global::SlideUpPanelLibrary.Resource.Id.action0 = global::Alloy.Resource.Id.action0;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar = global::Alloy.Resource.Id.action_bar;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar_activity_content = global::Alloy.Resource.Id.action_bar_activity_content;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar_container = global::Alloy.Resource.Id.action_bar_container;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar_root = global::Alloy.Resource.Id.action_bar_root;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar_spinner = global::Alloy.Resource.Id.action_bar_spinner;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar_subtitle = global::Alloy.Resource.Id.action_bar_subtitle;
-			global::SlideUpPanelLibrary.Resource.Id.action_bar_title = global::Alloy.Resource.Id.action_bar_title;
-			global::SlideUpPanelLibrary.Resource.Id.action_container = global::Alloy.Resource.Id.action_container;
-			global::SlideUpPanelLibrary.Resource.Id.action_context_bar = global::Alloy.Resource.Id.action_context_bar;
-			global::SlideUpPanelLibrary.Resource.Id.action_divider = global::Alloy.Resource.Id.action_divider;
-			global::SlideUpPanelLibrary.Resource.Id.action_image = global::Alloy.Resource.Id.action_image;
-			global::SlideUpPanelLibrary.Resource.Id.action_menu_divider = global::Alloy.Resource.Id.action_menu_divider;
-			global::SlideUpPanelLibrary.Resource.Id.action_menu_presenter = global::Alloy.Resource.Id.action_menu_presenter;
-			global::SlideUpPanelLibrary.Resource.Id.action_mode_bar = global::Alloy.Resource.Id.action_mode_bar;
-			global::SlideUpPanelLibrary.Resource.Id.action_mode_bar_stub = global::Alloy.Resource.Id.action_mode_bar_stub;
-			global::SlideUpPanelLibrary.Resource.Id.action_mode_close_button = global::Alloy.Resource.Id.action_mode_close_button;
-			global::SlideUpPanelLibrary.Resource.Id.action_text = global::Alloy.Resource.Id.action_text;
-			global::SlideUpPanelLibrary.Resource.Id.actions = global::Alloy.Resource.Id.actions;
-			global::SlideUpPanelLibrary.Resource.Id.activity_chooser_view_content = global::Alloy.Resource.Id.activity_chooser_view_content;
-			global::SlideUpPanelLibrary.Resource.Id.add = global::Alloy.Resource.Id.add;
-			global::SlideUpPanelLibrary.Resource.Id.alertTitle = global::Alloy.Resource.Id.alertTitle;
-			global::SlideUpPanelLibrary.Resource.Id.always = global::Alloy.Resource.Id.always;
-			global::SlideUpPanelLibrary.Resource.Id.anchored = global::Alloy.Resource.Id.anchored;
-			global::SlideUpPanelLibrary.Resource.Id.async = global::Alloy.Resource.Id.async;
-			global::SlideUpPanelLibrary.Resource.Id.beginning = global::Alloy.Resource.Id.beginning;
-			global::SlideUpPanelLibrary.Resource.Id.blocking = global::Alloy.Resource.Id.blocking;
-			global::SlideUpPanelLibrary.Resource.Id.bottom = global::Alloy.Resource.Id.bottom;
-			global::SlideUpPanelLibrary.Resource.Id.buttonPanel = global::Alloy.Resource.Id.buttonPanel;
-			global::SlideUpPanelLibrary.Resource.Id.cancel_action = global::Alloy.Resource.Id.cancel_action;
-			global::SlideUpPanelLibrary.Resource.Id.checkbox = global::Alloy.Resource.Id.checkbox;
-			global::SlideUpPanelLibrary.Resource.Id.chronometer = global::Alloy.Resource.Id.chronometer;
-			global::SlideUpPanelLibrary.Resource.Id.collapseActionView = global::Alloy.Resource.Id.collapseActionView;
-			global::SlideUpPanelLibrary.Resource.Id.collapsed = global::Alloy.Resource.Id.collapsed;
-			global::SlideUpPanelLibrary.Resource.Id.contentPanel = global::Alloy.Resource.Id.contentPanel;
-			global::SlideUpPanelLibrary.Resource.Id.custom = global::Alloy.Resource.Id.custom;
-			global::SlideUpPanelLibrary.Resource.Id.customPanel = global::Alloy.Resource.Id.customPanel;
-			global::SlideUpPanelLibrary.Resource.Id.decor_content_parent = global::Alloy.Resource.Id.decor_content_parent;
-			global::SlideUpPanelLibrary.Resource.Id.default_activity_button = global::Alloy.Resource.Id.default_activity_button;
-			global::SlideUpPanelLibrary.Resource.Id.disableHome = global::Alloy.Resource.Id.disableHome;
-			global::SlideUpPanelLibrary.Resource.Id.edit_query = global::Alloy.Resource.Id.edit_query;
-			global::SlideUpPanelLibrary.Resource.Id.end = global::Alloy.Resource.Id.end;
-			global::SlideUpPanelLibrary.Resource.Id.end_padder = global::Alloy.Resource.Id.end_padder;
-			global::SlideUpPanelLibrary.Resource.Id.expand_activities_button = global::Alloy.Resource.Id.expand_activities_button;
-			global::SlideUpPanelLibrary.Resource.Id.expanded = global::Alloy.Resource.Id.expanded;
-			global::SlideUpPanelLibrary.Resource.Id.expanded_menu = global::Alloy.Resource.Id.expanded_menu;
-			global::SlideUpPanelLibrary.Resource.Id.forever = global::Alloy.Resource.Id.forever;
-			global::SlideUpPanelLibrary.Resource.Id.hidden = global::Alloy.Resource.Id.hidden;
-			global::SlideUpPanelLibrary.Resource.Id.home = global::Alloy.Resource.Id.home;
-			global::SlideUpPanelLibrary.Resource.Id.homeAsUp = global::Alloy.Resource.Id.homeAsUp;
-			global::SlideUpPanelLibrary.Resource.Id.icon = global::Alloy.Resource.Id.icon;
-			global::SlideUpPanelLibrary.Resource.Id.icon_group = global::Alloy.Resource.Id.icon_group;
-			global::SlideUpPanelLibrary.Resource.Id.ifRoom = global::Alloy.Resource.Id.ifRoom;
-			global::SlideUpPanelLibrary.Resource.Id.image = global::Alloy.Resource.Id.image;
-			global::SlideUpPanelLibrary.Resource.Id.info = global::Alloy.Resource.Id.info;
-			global::SlideUpPanelLibrary.Resource.Id.italic = global::Alloy.Resource.Id.italic;
-			global::SlideUpPanelLibrary.Resource.Id.item_touch_helper_previous_elevation = global::Alloy.Resource.Id.item_touch_helper_previous_elevation;
-			global::SlideUpPanelLibrary.Resource.Id.line1 = global::Alloy.Resource.Id.line1;
-			global::SlideUpPanelLibrary.Resource.Id.line3 = global::Alloy.Resource.Id.line3;
-			global::SlideUpPanelLibrary.Resource.Id.listMode = global::Alloy.Resource.Id.listMode;
-			global::SlideUpPanelLibrary.Resource.Id.list_item = global::Alloy.Resource.Id.list_item;
-			global::SlideUpPanelLibrary.Resource.Id.media_actions = global::Alloy.Resource.Id.media_actions;
-			global::SlideUpPanelLibrary.Resource.Id.message = global::Alloy.Resource.Id.message;
-			global::SlideUpPanelLibrary.Resource.Id.middle = global::Alloy.Resource.Id.middle;
-			global::SlideUpPanelLibrary.Resource.Id.multiply = global::Alloy.Resource.Id.multiply;
-			global::SlideUpPanelLibrary.Resource.Id.never = global::Alloy.Resource.Id.never;
-			global::SlideUpPanelLibrary.Resource.Id.none = global::Alloy.Resource.Id.none;
-			global::SlideUpPanelLibrary.Resource.Id.normal = global::Alloy.Resource.Id.normal;
-			global::SlideUpPanelLibrary.Resource.Id.notification_background = global::Alloy.Resource.Id.notification_background;
-			global::SlideUpPanelLibrary.Resource.Id.notification_main_column = global::Alloy.Resource.Id.notification_main_column;
-			global::SlideUpPanelLibrary.Resource.Id.notification_main_column_container = global::Alloy.Resource.Id.notification_main_column_container;
-			global::SlideUpPanelLibrary.Resource.Id.parentPanel = global::Alloy.Resource.Id.parentPanel;
-			global::SlideUpPanelLibrary.Resource.Id.progress_circular = global::Alloy.Resource.Id.progress_circular;
-			global::SlideUpPanelLibrary.Resource.Id.progress_horizontal = global::Alloy.Resource.Id.progress_horizontal;
-			global::SlideUpPanelLibrary.Resource.Id.radio = global::Alloy.Resource.Id.radio;
-			global::SlideUpPanelLibrary.Resource.Id.right_icon = global::Alloy.Resource.Id.right_icon;
-			global::SlideUpPanelLibrary.Resource.Id.right_side = global::Alloy.Resource.Id.right_side;
-			global::SlideUpPanelLibrary.Resource.Id.screen = global::Alloy.Resource.Id.screen;
-			global::SlideUpPanelLibrary.Resource.Id.scrollIndicatorDown = global::Alloy.Resource.Id.scrollIndicatorDown;
-			global::SlideUpPanelLibrary.Resource.Id.scrollIndicatorUp = global::Alloy.Resource.Id.scrollIndicatorUp;
-			global::SlideUpPanelLibrary.Resource.Id.scrollView = global::Alloy.Resource.Id.scrollView;
-			global::SlideUpPanelLibrary.Resource.Id.search_badge = global::Alloy.Resource.Id.search_badge;
-			global::SlideUpPanelLibrary.Resource.Id.search_bar = global::Alloy.Resource.Id.search_bar;
-			global::SlideUpPanelLibrary.Resource.Id.search_button = global::Alloy.Resource.Id.search_button;
-			global::SlideUpPanelLibrary.Resource.Id.search_close_btn = global::Alloy.Resource.Id.search_close_btn;
-			global::SlideUpPanelLibrary.Resource.Id.search_edit_frame = global::Alloy.Resource.Id.search_edit_frame;
-			global::SlideUpPanelLibrary.Resource.Id.search_go_btn = global::Alloy.Resource.Id.search_go_btn;
-			global::SlideUpPanelLibrary.Resource.Id.search_mag_icon = global::Alloy.Resource.Id.search_mag_icon;
-			global::SlideUpPanelLibrary.Resource.Id.search_plate = global::Alloy.Resource.Id.search_plate;
-			global::SlideUpPanelLibrary.Resource.Id.search_src_text = global::Alloy.Resource.Id.search_src_text;
-			global::SlideUpPanelLibrary.Resource.Id.search_voice_btn = global::Alloy.Resource.Id.search_voice_btn;
-			global::SlideUpPanelLibrary.Resource.Id.select_dialog_listview = global::Alloy.Resource.Id.select_dialog_listview;
-			global::SlideUpPanelLibrary.Resource.Id.shortcut = global::Alloy.Resource.Id.shortcut;
-			global::SlideUpPanelLibrary.Resource.Id.showCustom = global::Alloy.Resource.Id.showCustom;
-			global::SlideUpPanelLibrary.Resource.Id.showHome = global::Alloy.Resource.Id.showHome;
-			global::SlideUpPanelLibrary.Resource.Id.showTitle = global::Alloy.Resource.Id.showTitle;
-			global::SlideUpPanelLibrary.Resource.Id.spacer = global::Alloy.Resource.Id.spacer;
-			global::SlideUpPanelLibrary.Resource.Id.split_action_bar = global::Alloy.Resource.Id.split_action_bar;
-			global::SlideUpPanelLibrary.Resource.Id.src_atop = global::Alloy.Resource.Id.src_atop;
-			global::SlideUpPanelLibrary.Resource.Id.src_in = global::Alloy.Resource.Id.src_in;
-			global::SlideUpPanelLibrary.Resource.Id.src_over = global::Alloy.Resource.Id.src_over;
-			global::SlideUpPanelLibrary.Resource.Id.status_bar_latest_event_content = global::Alloy.Resource.Id.status_bar_latest_event_content;
-			global::SlideUpPanelLibrary.Resource.Id.submenuarrow = global::Alloy.Resource.Id.submenuarrow;
-			global::SlideUpPanelLibrary.Resource.Id.submit_area = global::Alloy.Resource.Id.submit_area;
-			global::SlideUpPanelLibrary.Resource.Id.tabMode = global::Alloy.Resource.Id.tabMode;
-			global::SlideUpPanelLibrary.Resource.Id.tag_transition_group = global::Alloy.Resource.Id.tag_transition_group;
-			global::SlideUpPanelLibrary.Resource.Id.text = global::Alloy.Resource.Id.text;
-			global::SlideUpPanelLibrary.Resource.Id.text2 = global::Alloy.Resource.Id.text2;
-			global::SlideUpPanelLibrary.Resource.Id.textSpacerNoButtons = global::Alloy.Resource.Id.textSpacerNoButtons;
-			global::SlideUpPanelLibrary.Resource.Id.textSpacerNoTitle = global::Alloy.Resource.Id.textSpacerNoTitle;
-			global::SlideUpPanelLibrary.Resource.Id.time = global::Alloy.Resource.Id.time;
-			global::SlideUpPanelLibrary.Resource.Id.title = global::Alloy.Resource.Id.title;
-			global::SlideUpPanelLibrary.Resource.Id.titleDividerNoCustom = global::Alloy.Resource.Id.titleDividerNoCustom;
-			global::SlideUpPanelLibrary.Resource.Id.title_template = global::Alloy.Resource.Id.title_template;
-			global::SlideUpPanelLibrary.Resource.Id.top = global::Alloy.Resource.Id.top;
-			global::SlideUpPanelLibrary.Resource.Id.topPanel = global::Alloy.Resource.Id.topPanel;
-			global::SlideUpPanelLibrary.Resource.Id.uniform = global::Alloy.Resource.Id.uniform;
-			global::SlideUpPanelLibrary.Resource.Id.up = global::Alloy.Resource.Id.up;
-			global::SlideUpPanelLibrary.Resource.Id.useLogo = global::Alloy.Resource.Id.useLogo;
-			global::SlideUpPanelLibrary.Resource.Id.withText = global::Alloy.Resource.Id.withText;
-			global::SlideUpPanelLibrary.Resource.Id.wrap_content = global::Alloy.Resource.Id.wrap_content;
-			global::SlideUpPanelLibrary.Resource.Integer.abc_config_activityDefaultDur = global::Alloy.Resource.Integer.abc_config_activityDefaultDur;
-			global::SlideUpPanelLibrary.Resource.Integer.abc_config_activityShortDur = global::Alloy.Resource.Integer.abc_config_activityShortDur;
-			global::SlideUpPanelLibrary.Resource.Integer.cancel_button_image_alpha = global::Alloy.Resource.Integer.cancel_button_image_alpha;
-			global::SlideUpPanelLibrary.Resource.Integer.config_tooltipAnimTime = global::Alloy.Resource.Integer.config_tooltipAnimTime;
-			global::SlideUpPanelLibrary.Resource.Integer.status_bar_notification_info_maxnum = global::Alloy.Resource.Integer.status_bar_notification_info_maxnum;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_action_bar_title_item = global::Alloy.Resource.Layout.abc_action_bar_title_item;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_action_bar_up_container = global::Alloy.Resource.Layout.abc_action_bar_up_container;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_action_menu_item_layout = global::Alloy.Resource.Layout.abc_action_menu_item_layout;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_action_menu_layout = global::Alloy.Resource.Layout.abc_action_menu_layout;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_action_mode_bar = global::Alloy.Resource.Layout.abc_action_mode_bar;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_action_mode_close_item_material = global::Alloy.Resource.Layout.abc_action_mode_close_item_material;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_activity_chooser_view = global::Alloy.Resource.Layout.abc_activity_chooser_view;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_activity_chooser_view_list_item = global::Alloy.Resource.Layout.abc_activity_chooser_view_list_item;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_alert_dialog_button_bar_material = global::Alloy.Resource.Layout.abc_alert_dialog_button_bar_material;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_alert_dialog_material = global::Alloy.Resource.Layout.abc_alert_dialog_material;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_alert_dialog_title_material = global::Alloy.Resource.Layout.abc_alert_dialog_title_material;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_dialog_title_material = global::Alloy.Resource.Layout.abc_dialog_title_material;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_expanded_menu_layout = global::Alloy.Resource.Layout.abc_expanded_menu_layout;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_checkbox = global::Alloy.Resource.Layout.abc_list_menu_item_checkbox;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_icon = global::Alloy.Resource.Layout.abc_list_menu_item_icon;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_layout = global::Alloy.Resource.Layout.abc_list_menu_item_layout;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_list_menu_item_radio = global::Alloy.Resource.Layout.abc_list_menu_item_radio;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_popup_menu_header_item_layout = global::Alloy.Resource.Layout.abc_popup_menu_header_item_layout;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_popup_menu_item_layout = global::Alloy.Resource.Layout.abc_popup_menu_item_layout;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_content_include = global::Alloy.Resource.Layout.abc_screen_content_include;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_simple = global::Alloy.Resource.Layout.abc_screen_simple;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_simple_overlay_action_mode = global::Alloy.Resource.Layout.abc_screen_simple_overlay_action_mode;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_screen_toolbar = global::Alloy.Resource.Layout.abc_screen_toolbar;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_search_dropdown_item_icons_2line = global::Alloy.Resource.Layout.abc_search_dropdown_item_icons_2line;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_search_view = global::Alloy.Resource.Layout.abc_search_view;
-			global::SlideUpPanelLibrary.Resource.Layout.abc_select_dialog_material = global::Alloy.Resource.Layout.abc_select_dialog_material;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_action = global::Alloy.Resource.Layout.notification_action;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_action_tombstone = global::Alloy.Resource.Layout.notification_action_tombstone;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_media_action = global::Alloy.Resource.Layout.notification_media_action;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_media_cancel_action = global::Alloy.Resource.Layout.notification_media_cancel_action;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media = global::Alloy.Resource.Layout.notification_template_big_media;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media_custom = global::Alloy.Resource.Layout.notification_template_big_media_custom;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media_narrow = global::Alloy.Resource.Layout.notification_template_big_media_narrow;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_big_media_narrow_custom = global::Alloy.Resource.Layout.notification_template_big_media_narrow_custom;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_custom_big = global::Alloy.Resource.Layout.notification_template_custom_big;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_icon_group = global::Alloy.Resource.Layout.notification_template_icon_group;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_lines_media = global::Alloy.Resource.Layout.notification_template_lines_media;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_media = global::Alloy.Resource.Layout.notification_template_media;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_media_custom = global::Alloy.Resource.Layout.notification_template_media_custom;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_part_chronometer = global::Alloy.Resource.Layout.notification_template_part_chronometer;
-			global::SlideUpPanelLibrary.Resource.Layout.notification_template_part_time = global::Alloy.Resource.Layout.notification_template_part_time;
-			global::SlideUpPanelLibrary.Resource.Layout.select_dialog_item_material = global::Alloy.Resource.Layout.select_dialog_item_material;
-			global::SlideUpPanelLibrary.Resource.Layout.select_dialog_multichoice_material = global::Alloy.Resource.Layout.select_dialog_multichoice_material;
-			global::SlideUpPanelLibrary.Resource.Layout.select_dialog_singlechoice_material = global::Alloy.Resource.Layout.select_dialog_singlechoice_material;
-			global::SlideUpPanelLibrary.Resource.Layout.support_simple_spinner_dropdown_item = global::Alloy.Resource.Layout.support_simple_spinner_dropdown_item;
-			global::SlideUpPanelLibrary.Resource.Layout.tooltip = global::Alloy.Resource.Layout.tooltip;
-			global::SlideUpPanelLibrary.Resource.String.abc_action_bar_home_description = global::Alloy.Resource.String.abc_action_bar_home_description;
-			global::SlideUpPanelLibrary.Resource.String.abc_action_bar_up_description = global::Alloy.Resource.String.abc_action_bar_up_description;
-			global::SlideUpPanelLibrary.Resource.String.abc_action_menu_overflow_description = global::Alloy.Resource.String.abc_action_menu_overflow_description;
-			global::SlideUpPanelLibrary.Resource.String.abc_action_mode_done = global::Alloy.Resource.String.abc_action_mode_done;
-			global::SlideUpPanelLibrary.Resource.String.abc_activity_chooser_view_see_all = global::Alloy.Resource.String.abc_activity_chooser_view_see_all;
-			global::SlideUpPanelLibrary.Resource.String.abc_activitychooserview_choose_application = global::Alloy.Resource.String.abc_activitychooserview_choose_application;
-			global::SlideUpPanelLibrary.Resource.String.abc_capital_off = global::Alloy.Resource.String.abc_capital_off;
-			global::SlideUpPanelLibrary.Resource.String.abc_capital_on = global::Alloy.Resource.String.abc_capital_on;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_body_1_material = global::Alloy.Resource.String.abc_font_family_body_1_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_body_2_material = global::Alloy.Resource.String.abc_font_family_body_2_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_button_material = global::Alloy.Resource.String.abc_font_family_button_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_caption_material = global::Alloy.Resource.String.abc_font_family_caption_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_1_material = global::Alloy.Resource.String.abc_font_family_display_1_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_2_material = global::Alloy.Resource.String.abc_font_family_display_2_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_3_material = global::Alloy.Resource.String.abc_font_family_display_3_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_display_4_material = global::Alloy.Resource.String.abc_font_family_display_4_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_headline_material = global::Alloy.Resource.String.abc_font_family_headline_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_menu_material = global::Alloy.Resource.String.abc_font_family_menu_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_subhead_material = global::Alloy.Resource.String.abc_font_family_subhead_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_font_family_title_material = global::Alloy.Resource.String.abc_font_family_title_material;
-			global::SlideUpPanelLibrary.Resource.String.abc_search_hint = global::Alloy.Resource.String.abc_search_hint;
-			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_clear = global::Alloy.Resource.String.abc_searchview_description_clear;
-			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_query = global::Alloy.Resource.String.abc_searchview_description_query;
-			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_search = global::Alloy.Resource.String.abc_searchview_description_search;
-			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_submit = global::Alloy.Resource.String.abc_searchview_description_submit;
-			global::SlideUpPanelLibrary.Resource.String.abc_searchview_description_voice = global::Alloy.Resource.String.abc_searchview_description_voice;
-			global::SlideUpPanelLibrary.Resource.String.abc_shareactionprovider_share_with = global::Alloy.Resource.String.abc_shareactionprovider_share_with;
-			global::SlideUpPanelLibrary.Resource.String.abc_shareactionprovider_share_with_application = global::Alloy.Resource.String.abc_shareactionprovider_share_with_application;
-			global::SlideUpPanelLibrary.Resource.String.abc_toolbar_collapse_description = global::Alloy.Resource.String.abc_toolbar_collapse_description;
-			global::SlideUpPanelLibrary.Resource.String.app_name = global::Alloy.Resource.String.app_name;
-			global::SlideUpPanelLibrary.Resource.String.hello = global::Alloy.Resource.String.hello;
-			global::SlideUpPanelLibrary.Resource.String.search_menu_title = global::Alloy.Resource.String.search_menu_title;
-			global::SlideUpPanelLibrary.Resource.String.status_bar_notification_info_overflow = global::Alloy.Resource.String.status_bar_notification_info_overflow;
-			global::SlideUpPanelLibrary.Resource.Style.AlertDialog_AppCompat = global::Alloy.Resource.Style.AlertDialog_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.AlertDialog_AppCompat_Light = global::Alloy.Resource.Style.AlertDialog_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Animation_AppCompat_Dialog = global::Alloy.Resource.Style.Animation_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Animation_AppCompat_DropDownUp = global::Alloy.Resource.Style.Animation_AppCompat_DropDownUp;
-			global::SlideUpPanelLibrary.Resource.Style.Animation_AppCompat_Tooltip = global::Alloy.Resource.Style.Animation_AppCompat_Tooltip;
-			global::SlideUpPanelLibrary.Resource.Style.Base_AlertDialog_AppCompat = global::Alloy.Resource.Style.Base_AlertDialog_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_AlertDialog_AppCompat_Light = global::Alloy.Resource.Style.Base_AlertDialog_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Animation_AppCompat_Dialog = global::Alloy.Resource.Style.Base_Animation_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Animation_AppCompat_DropDownUp = global::Alloy.Resource.Style.Base_Animation_AppCompat_DropDownUp;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Animation_AppCompat_Tooltip = global::Alloy.Resource.Style.Base_Animation_AppCompat_Tooltip;
-			global::SlideUpPanelLibrary.Resource.Style.Base_DialogWindowTitle_AppCompat = global::Alloy.Resource.Style.Base_DialogWindowTitle_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_DialogWindowTitleBackground_AppCompat = global::Alloy.Resource.Style.Base_DialogWindowTitleBackground_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Body1 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Body1;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Body2 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Body2;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Button = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Button;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Caption = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Caption;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display1 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display1;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display2 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display2;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display3 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display3;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Display4 = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Display4;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Headline = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Headline;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Large = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Large;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Large_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Large_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Large = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Large;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Small = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Light_Widget_PopupMenu_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Medium = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Medium;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Medium_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Medium_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Menu = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Menu;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_SearchResult = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_SearchResult;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_SearchResult_Title;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Small = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Small_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Small_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Subhead = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Subhead;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Subhead_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Subhead_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Title;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Title_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Title_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Tooltip = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Tooltip;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Menu = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Menu;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Title = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_ActionMode_Title;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Borderless_Colored = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Borderless_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Colored = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Inverse = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Button_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_DropDownItem = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_DropDownItem;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Header = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Header;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Large = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Large;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Small = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_PopupMenu_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_Switch = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_Switch;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_AppCompat_Widget_TextView_SpinnerItem = global::Alloy.Resource.Style.Base_TextAppearance_AppCompat_Widget_TextView_SpinnerItem;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::Alloy.Resource.Style.Base_TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::Alloy.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Title = global::Alloy.Resource.Style.Base_TextAppearance_Widget_AppCompat_Toolbar_Title;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat = global::Alloy.Resource.Style.Base_Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_CompactMenu = global::Alloy.Resource.Style.Base_Theme_AppCompat_CompactMenu;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog_FixedSize;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth = global::Alloy.Resource.Style.Base_Theme_AppCompat_Dialog_MinWidth;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge = global::Alloy.Resource.Style.Base_Theme_AppCompat_DialogWhenLarge;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_DarkActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog_FixedSize;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_Dialog_MinWidth;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge = global::Alloy.Resource.Style.Base_Theme_AppCompat_Light_DialogWhenLarge;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_ActionBar = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dark = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dark;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dark_ActionBar = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dark_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.Base_ThemeOverlay_AppCompat_Light = global::Alloy.Resource.Style.Base_ThemeOverlay_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V11_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V11_Theme_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V11_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_V11_Theme_AppCompat_Light_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V11_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V11_ThemeOverlay_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V12_Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Base_V12_Widget_AppCompat_AutoCompleteTextView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V12_Widget_AppCompat_EditText = global::Alloy.Resource.Style.Base_V12_Widget_AppCompat_EditText;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_V21_Theme_AppCompat_Light_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V21_ThemeOverlay_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V22_Theme_AppCompat = global::Alloy.Resource.Style.Base_V22_Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V22_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V22_Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V23_Theme_AppCompat = global::Alloy.Resource.Style.Base_V23_Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V23_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V23_Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V26_Theme_AppCompat = global::Alloy.Resource.Style.Base_V26_Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V26_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V26_Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V26_Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Base_V26_Widget_AppCompat_Toolbar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat_Light = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Base_V7_Theme_AppCompat_Light_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.Base_V7_ThemeOverlay_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Base_V7_Widget_AppCompat_AutoCompleteTextView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Widget_AppCompat_EditText = global::Alloy.Resource.Style.Base_V7_Widget_AppCompat_EditText;
-			global::SlideUpPanelLibrary.Resource.Style.Base_V7_Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Base_V7_Widget_AppCompat_Toolbar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_Solid = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_Solid;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_TabBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_TabBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_TabText = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_TabText;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionBar_TabView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionBar_TabView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionButton = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionButton;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionButton_CloseMode = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionButton_CloseMode;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionButton_Overflow = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionButton_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActionMode = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActionMode;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ActivityChooserView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ActivityChooserView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Base_Widget_AppCompat_AutoCompleteTextView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Borderless = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Borderless;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Borderless_Colored = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Borderless_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_ButtonBar_AlertDialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Colored = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Button_Small = global::Alloy.Resource.Style.Base_Widget_AppCompat_Button_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ButtonBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ButtonBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Base_Widget_AppCompat_ButtonBar_AlertDialog;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_CompoundButton_CheckBox = global::Alloy.Resource.Style.Base_Widget_AppCompat_CompoundButton_CheckBox;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_CompoundButton_RadioButton = global::Alloy.Resource.Style.Base_Widget_AppCompat_CompoundButton_RadioButton;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_CompoundButton_Switch = global::Alloy.Resource.Style.Base_Widget_AppCompat_CompoundButton_Switch;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle = global::Alloy.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle_Common = global::Alloy.Resource.Style.Base_Widget_AppCompat_DrawerArrowToggle_Common;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_DropDownItem_Spinner = global::Alloy.Resource.Style.Base_Widget_AppCompat_DropDownItem_Spinner;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_EditText = global::Alloy.Resource.Style.Base_Widget_AppCompat_EditText;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ImageButton = global::Alloy.Resource.Style.Base_Widget_AppCompat_ImageButton;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_Solid = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_Solid;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText_Inverse = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabText_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabView = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_ActionBar_TabView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu_Overflow = global::Alloy.Resource.Style.Base_Widget_AppCompat_Light_PopupMenu_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListMenuView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListMenuView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListPopupWindow = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListPopupWindow;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListView = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListView_DropDown = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListView_DropDown;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ListView_Menu = global::Alloy.Resource.Style.Base_Widget_AppCompat_ListView_Menu;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_PopupMenu = global::Alloy.Resource.Style.Base_Widget_AppCompat_PopupMenu;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_PopupMenu_Overflow = global::Alloy.Resource.Style.Base_Widget_AppCompat_PopupMenu_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_PopupWindow = global::Alloy.Resource.Style.Base_Widget_AppCompat_PopupWindow;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ProgressBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_ProgressBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_ProgressBar_Horizontal = global::Alloy.Resource.Style.Base_Widget_AppCompat_ProgressBar_Horizontal;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_RatingBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_RatingBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_RatingBar_Indicator = global::Alloy.Resource.Style.Base_Widget_AppCompat_RatingBar_Indicator;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_RatingBar_Small = global::Alloy.Resource.Style.Base_Widget_AppCompat_RatingBar_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SearchView = global::Alloy.Resource.Style.Base_Widget_AppCompat_SearchView;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SearchView_ActionBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_SearchView_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SeekBar = global::Alloy.Resource.Style.Base_Widget_AppCompat_SeekBar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_SeekBar_Discrete = global::Alloy.Resource.Style.Base_Widget_AppCompat_SeekBar_Discrete;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Spinner = global::Alloy.Resource.Style.Base_Widget_AppCompat_Spinner;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Spinner_Underlined = global::Alloy.Resource.Style.Base_Widget_AppCompat_Spinner_Underlined;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_TextView_SpinnerItem = global::Alloy.Resource.Style.Base_Widget_AppCompat_TextView_SpinnerItem;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Base_Widget_AppCompat_Toolbar;
-			global::SlideUpPanelLibrary.Resource.Style.Base_Widget_AppCompat_Toolbar_Button_Navigation = global::Alloy.Resource.Style.Base_Widget_AppCompat_Toolbar_Button_Navigation;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_AppCompat = global::Alloy.Resource.Style.Platform_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_AppCompat_Light = global::Alloy.Resource.Style.Platform_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_ThemeOverlay_AppCompat = global::Alloy.Resource.Style.Platform_ThemeOverlay_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_ThemeOverlay_AppCompat_Dark = global::Alloy.Resource.Style.Platform_ThemeOverlay_AppCompat_Dark;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_ThemeOverlay_AppCompat_Light = global::Alloy.Resource.Style.Platform_ThemeOverlay_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V11_AppCompat = global::Alloy.Resource.Style.Platform_V11_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V11_AppCompat_Light = global::Alloy.Resource.Style.Platform_V11_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V14_AppCompat = global::Alloy.Resource.Style.Platform_V14_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V14_AppCompat_Light = global::Alloy.Resource.Style.Platform_V14_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V21_AppCompat = global::Alloy.Resource.Style.Platform_V21_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V21_AppCompat_Light = global::Alloy.Resource.Style.Platform_V21_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V25_AppCompat = global::Alloy.Resource.Style.Platform_V25_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_V25_AppCompat_Light = global::Alloy.Resource.Style.Platform_V25_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Platform_Widget_AppCompat_Spinner = global::Alloy.Resource.Style.Platform_Widget_AppCompat_Spinner;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_DialogWindowTitle_AppCompat = global::Alloy.Resource.Style.RtlOverlay_DialogWindowTitle_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_ActionBar_TitleItem = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_ActionBar_TitleItem;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_DialogTitle_Icon = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_DialogTitle_Icon;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_InternalGroup = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_InternalGroup;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Text = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_PopupMenuItem_Text;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1 = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon1;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2 = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Icon2;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Query = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Query;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Text = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_Search_DropDown_Text;
-			global::SlideUpPanelLibrary.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon = global::Alloy.Resource.Style.RtlOverlay_Widget_AppCompat_SearchView_MagIcon;
-			global::SlideUpPanelLibrary.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton = global::Alloy.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton;
-			global::SlideUpPanelLibrary.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = global::Alloy.Resource.Style.RtlUnderlay_Widget_AppCompat_ActionButton_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat = global::Alloy.Resource.Style.TextAppearance_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Body1 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Body1;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Body2 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Body2;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Button = global::Alloy.Resource.Style.TextAppearance_AppCompat_Button;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Caption = global::Alloy.Resource.Style.TextAppearance_AppCompat_Caption;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display1 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display1;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display2 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display2;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display3 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display3;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Display4 = global::Alloy.Resource.Style.TextAppearance_AppCompat_Display4;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Headline = global::Alloy.Resource.Style.TextAppearance_AppCompat_Headline;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Large = global::Alloy.Resource.Style.TextAppearance_AppCompat_Large;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Large_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Large_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_SearchResult_Title;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Large = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Large;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Small = global::Alloy.Resource.Style.TextAppearance_AppCompat_Light_Widget_PopupMenu_Small;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Medium = global::Alloy.Resource.Style.TextAppearance_AppCompat_Medium;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Medium_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Medium_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Menu = global::Alloy.Resource.Style.TextAppearance_AppCompat_Menu;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_SearchResult_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_SearchResult_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_SearchResult_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_SearchResult_Title;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Small = global::Alloy.Resource.Style.TextAppearance_AppCompat_Small;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Small_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Small_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Subhead = global::Alloy.Resource.Style.TextAppearance_AppCompat_Subhead;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Subhead_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Subhead_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Title;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Title_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Title_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Tooltip = global::Alloy.Resource.Style.TextAppearance_AppCompat_Tooltip;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Menu = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Menu;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionBar_Title_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Subtitle_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_ActionMode_Title_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button_Borderless_Colored = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button_Borderless_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button_Colored = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Button_Inverse = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Button_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_DropDownItem = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_DropDownItem;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Header = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Header;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Large = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Large;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Small = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_PopupMenu_Small;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_Switch = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_Switch;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_AppCompat_Widget_TextView_SpinnerItem = global::Alloy.Resource.Style.TextAppearance_AppCompat_Widget_TextView_SpinnerItem;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification = global::Alloy.Resource.Style.TextAppearance_Compat_Notification;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Info = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Info;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Info_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Info_Media;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Line2 = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Line2;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Line2_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Line2_Media;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Media;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Time = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Time;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Time_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Time_Media;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Title = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Title;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Compat_Notification_Title_Media = global::Alloy.Resource.Style.TextAppearance_Compat_Notification_Title_Media;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item = global::Alloy.Resource.Style.TextAppearance_Widget_AppCompat_ExpandedMenu_Item;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle = global::Alloy.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Subtitle;
-			global::SlideUpPanelLibrary.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title = global::Alloy.Resource.Style.TextAppearance_Widget_AppCompat_Toolbar_Title;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat = global::Alloy.Resource.Style.Theme_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_CompactMenu = global::Alloy.Resource.Style.Theme_AppCompat_CompactMenu;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight = global::Alloy.Resource.Style.Theme_AppCompat_DayNight;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_DarkActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_Dialog = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_Dialog_MinWidth;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_DialogWhenLarge;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DayNight_NoActionBar = global::Alloy.Resource.Style.Theme_AppCompat_DayNight_NoActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Dialog = global::Alloy.Resource.Style.Theme_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.Theme_AppCompat_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Dialog_MinWidth = global::Alloy.Resource.Style.Theme_AppCompat_Dialog_MinWidth;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_DialogWhenLarge = global::Alloy.Resource.Style.Theme_AppCompat_DialogWhenLarge;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light = global::Alloy.Resource.Style.Theme_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_DarkActionBar = global::Alloy.Resource.Style.Theme_AppCompat_Light_DarkActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_Dialog = global::Alloy.Resource.Style.Theme_AppCompat_Light_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_Dialog_Alert = global::Alloy.Resource.Style.Theme_AppCompat_Light_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth = global::Alloy.Resource.Style.Theme_AppCompat_Light_Dialog_MinWidth;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge = global::Alloy.Resource.Style.Theme_AppCompat_Light_DialogWhenLarge;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_Light_NoActionBar = global::Alloy.Resource.Style.Theme_AppCompat_Light_NoActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Theme_AppCompat_NoActionBar = global::Alloy.Resource.Style.Theme_AppCompat_NoActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat = global::Alloy.Resource.Style.ThemeOverlay_AppCompat;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_ActionBar = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dark = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dark;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dark_ActionBar = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dark_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dialog = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dialog;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Dialog_Alert = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Dialog_Alert;
-			global::SlideUpPanelLibrary.Resource.Style.ThemeOverlay_AppCompat_Light = global::Alloy.Resource.Style.ThemeOverlay_AppCompat_Light;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_Solid = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_Solid;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_TabBar = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_TabBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_TabText = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_TabText;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionBar_TabView = global::Alloy.Resource.Style.Widget_AppCompat_ActionBar_TabView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionButton = global::Alloy.Resource.Style.Widget_AppCompat_ActionButton;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionButton_CloseMode = global::Alloy.Resource.Style.Widget_AppCompat_ActionButton_CloseMode;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionButton_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_ActionButton_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActionMode = global::Alloy.Resource.Style.Widget_AppCompat_ActionMode;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ActivityChooserView = global::Alloy.Resource.Style.Widget_AppCompat_ActivityChooserView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_AutoCompleteTextView = global::Alloy.Resource.Style.Widget_AppCompat_AutoCompleteTextView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button = global::Alloy.Resource.Style.Widget_AppCompat_Button;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Borderless = global::Alloy.Resource.Style.Widget_AppCompat_Button_Borderless;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Borderless_Colored = global::Alloy.Resource.Style.Widget_AppCompat_Button_Borderless_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Widget_AppCompat_Button_ButtonBar_AlertDialog;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Colored = global::Alloy.Resource.Style.Widget_AppCompat_Button_Colored;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Button_Small = global::Alloy.Resource.Style.Widget_AppCompat_Button_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ButtonBar = global::Alloy.Resource.Style.Widget_AppCompat_ButtonBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog = global::Alloy.Resource.Style.Widget_AppCompat_ButtonBar_AlertDialog;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_CompoundButton_CheckBox = global::Alloy.Resource.Style.Widget_AppCompat_CompoundButton_CheckBox;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_CompoundButton_RadioButton = global::Alloy.Resource.Style.Widget_AppCompat_CompoundButton_RadioButton;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_CompoundButton_Switch = global::Alloy.Resource.Style.Widget_AppCompat_CompoundButton_Switch;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_DrawerArrowToggle = global::Alloy.Resource.Style.Widget_AppCompat_DrawerArrowToggle;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_DropDownItem_Spinner = global::Alloy.Resource.Style.Widget_AppCompat_DropDownItem_Spinner;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_EditText = global::Alloy.Resource.Style.Widget_AppCompat_EditText;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ImageButton = global::Alloy.Resource.Style.Widget_AppCompat_ImageButton;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_Solid_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabBar_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabText_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionBar_TabView_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionButton = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionButton;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionButton_CloseMode = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionButton_CloseMode;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionButton_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionButton_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActionMode_Inverse = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActionMode_Inverse;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ActivityChooserView = global::Alloy.Resource.Style.Widget_AppCompat_Light_ActivityChooserView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_AutoCompleteTextView = global::Alloy.Resource.Style.Widget_AppCompat_Light_AutoCompleteTextView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_DropDownItem_Spinner = global::Alloy.Resource.Style.Widget_AppCompat_Light_DropDownItem_Spinner;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ListPopupWindow = global::Alloy.Resource.Style.Widget_AppCompat_Light_ListPopupWindow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_ListView_DropDown = global::Alloy.Resource.Style.Widget_AppCompat_Light_ListView_DropDown;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_PopupMenu = global::Alloy.Resource.Style.Widget_AppCompat_Light_PopupMenu;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_PopupMenu_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_Light_PopupMenu_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_SearchView = global::Alloy.Resource.Style.Widget_AppCompat_Light_SearchView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Light_Spinner_DropDown_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_Light_Spinner_DropDown_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListMenuView = global::Alloy.Resource.Style.Widget_AppCompat_ListMenuView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListPopupWindow = global::Alloy.Resource.Style.Widget_AppCompat_ListPopupWindow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListView = global::Alloy.Resource.Style.Widget_AppCompat_ListView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListView_DropDown = global::Alloy.Resource.Style.Widget_AppCompat_ListView_DropDown;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ListView_Menu = global::Alloy.Resource.Style.Widget_AppCompat_ListView_Menu;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_PopupMenu = global::Alloy.Resource.Style.Widget_AppCompat_PopupMenu;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_PopupMenu_Overflow = global::Alloy.Resource.Style.Widget_AppCompat_PopupMenu_Overflow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_PopupWindow = global::Alloy.Resource.Style.Widget_AppCompat_PopupWindow;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ProgressBar = global::Alloy.Resource.Style.Widget_AppCompat_ProgressBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_ProgressBar_Horizontal = global::Alloy.Resource.Style.Widget_AppCompat_ProgressBar_Horizontal;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_RatingBar = global::Alloy.Resource.Style.Widget_AppCompat_RatingBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_RatingBar_Indicator = global::Alloy.Resource.Style.Widget_AppCompat_RatingBar_Indicator;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_RatingBar_Small = global::Alloy.Resource.Style.Widget_AppCompat_RatingBar_Small;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SearchView = global::Alloy.Resource.Style.Widget_AppCompat_SearchView;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SearchView_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_SearchView_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SeekBar = global::Alloy.Resource.Style.Widget_AppCompat_SeekBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_SeekBar_Discrete = global::Alloy.Resource.Style.Widget_AppCompat_SeekBar_Discrete;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner = global::Alloy.Resource.Style.Widget_AppCompat_Spinner;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner_DropDown = global::Alloy.Resource.Style.Widget_AppCompat_Spinner_DropDown;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner_DropDown_ActionBar = global::Alloy.Resource.Style.Widget_AppCompat_Spinner_DropDown_ActionBar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Spinner_Underlined = global::Alloy.Resource.Style.Widget_AppCompat_Spinner_Underlined;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_TextView_SpinnerItem = global::Alloy.Resource.Style.Widget_AppCompat_TextView_SpinnerItem;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Toolbar = global::Alloy.Resource.Style.Widget_AppCompat_Toolbar;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_AppCompat_Toolbar_Button_Navigation = global::Alloy.Resource.Style.Widget_AppCompat_Toolbar_Button_Navigation;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_Compat_NotificationActionContainer = global::Alloy.Resource.Style.Widget_Compat_NotificationActionContainer;
-			global::SlideUpPanelLibrary.Resource.Style.Widget_Compat_NotificationActionText = global::Alloy.Resource.Style.Widget_Compat_NotificationActionText;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar = global::Alloy.Resource.Styleable.ActionBar;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_background = global::Alloy.Resource.Styleable.ActionBar_background;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_backgroundSplit = global::Alloy.Resource.Styleable.ActionBar_backgroundSplit;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_backgroundStacked = global::Alloy.Resource.Styleable.ActionBar_backgroundStacked;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetEnd = global::Alloy.Resource.Styleable.ActionBar_contentInsetEnd;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetEndWithActions = global::Alloy.Resource.Styleable.ActionBar_contentInsetEndWithActions;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetLeft = global::Alloy.Resource.Styleable.ActionBar_contentInsetLeft;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetRight = global::Alloy.Resource.Styleable.ActionBar_contentInsetRight;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetStart = global::Alloy.Resource.Styleable.ActionBar_contentInsetStart;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_contentInsetStartWithNavigation = global::Alloy.Resource.Styleable.ActionBar_contentInsetStartWithNavigation;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_customNavigationLayout = global::Alloy.Resource.Styleable.ActionBar_customNavigationLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_displayOptions = global::Alloy.Resource.Styleable.ActionBar_displayOptions;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_divider = global::Alloy.Resource.Styleable.ActionBar_divider;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_elevation = global::Alloy.Resource.Styleable.ActionBar_elevation;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_height = global::Alloy.Resource.Styleable.ActionBar_height;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_hideOnContentScroll = global::Alloy.Resource.Styleable.ActionBar_hideOnContentScroll;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_homeAsUpIndicator = global::Alloy.Resource.Styleable.ActionBar_homeAsUpIndicator;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_homeLayout = global::Alloy.Resource.Styleable.ActionBar_homeLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_icon = global::Alloy.Resource.Styleable.ActionBar_icon;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_indeterminateProgressStyle = global::Alloy.Resource.Styleable.ActionBar_indeterminateProgressStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_itemPadding = global::Alloy.Resource.Styleable.ActionBar_itemPadding;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_logo = global::Alloy.Resource.Styleable.ActionBar_logo;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_navigationMode = global::Alloy.Resource.Styleable.ActionBar_navigationMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_popupTheme = global::Alloy.Resource.Styleable.ActionBar_popupTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_progressBarPadding = global::Alloy.Resource.Styleable.ActionBar_progressBarPadding;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_progressBarStyle = global::Alloy.Resource.Styleable.ActionBar_progressBarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_subtitle = global::Alloy.Resource.Styleable.ActionBar_subtitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_subtitleTextStyle = global::Alloy.Resource.Styleable.ActionBar_subtitleTextStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_title = global::Alloy.Resource.Styleable.ActionBar_title;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBar_titleTextStyle = global::Alloy.Resource.Styleable.ActionBar_titleTextStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBarLayout = global::Alloy.Resource.Styleable.ActionBarLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionBarLayout_android_layout_gravity = global::Alloy.Resource.Styleable.ActionBarLayout_android_layout_gravity;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMenuItemView = global::Alloy.Resource.Styleable.ActionMenuItemView;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMenuItemView_android_minWidth = global::Alloy.Resource.Styleable.ActionMenuItemView_android_minWidth;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMenuView = global::Alloy.Resource.Styleable.ActionMenuView;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode = global::Alloy.Resource.Styleable.ActionMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_background = global::Alloy.Resource.Styleable.ActionMode_background;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_backgroundSplit = global::Alloy.Resource.Styleable.ActionMode_backgroundSplit;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_closeItemLayout = global::Alloy.Resource.Styleable.ActionMode_closeItemLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_height = global::Alloy.Resource.Styleable.ActionMode_height;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_subtitleTextStyle = global::Alloy.Resource.Styleable.ActionMode_subtitleTextStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActionMode_titleTextStyle = global::Alloy.Resource.Styleable.ActionMode_titleTextStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActivityChooserView = global::Alloy.Resource.Styleable.ActivityChooserView;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActivityChooserView_expandActivityOverflowButtonDrawable = global::Alloy.Resource.Styleable.ActivityChooserView_expandActivityOverflowButtonDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.ActivityChooserView_initialActivityCount = global::Alloy.Resource.Styleable.ActivityChooserView_initialActivityCount;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog = global::Alloy.Resource.Styleable.AlertDialog;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_android_layout = global::Alloy.Resource.Styleable.AlertDialog_android_layout;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_buttonPanelSideLayout = global::Alloy.Resource.Styleable.AlertDialog_buttonPanelSideLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_listItemLayout = global::Alloy.Resource.Styleable.AlertDialog_listItemLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_listLayout = global::Alloy.Resource.Styleable.AlertDialog_listLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_multiChoiceItemLayout = global::Alloy.Resource.Styleable.AlertDialog_multiChoiceItemLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_showTitle = global::Alloy.Resource.Styleable.AlertDialog_showTitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AlertDialog_singleChoiceItemLayout = global::Alloy.Resource.Styleable.AlertDialog_singleChoiceItemLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView = global::Alloy.Resource.Styleable.AppCompatImageView;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_android_src = global::Alloy.Resource.Styleable.AppCompatImageView_android_src;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_srcCompat = global::Alloy.Resource.Styleable.AppCompatImageView_srcCompat;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_tint = global::Alloy.Resource.Styleable.AppCompatImageView_tint;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatImageView_tintMode = global::Alloy.Resource.Styleable.AppCompatImageView_tintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar = global::Alloy.Resource.Styleable.AppCompatSeekBar;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_android_thumb = global::Alloy.Resource.Styleable.AppCompatSeekBar_android_thumb;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_tickMark = global::Alloy.Resource.Styleable.AppCompatSeekBar_tickMark;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_tickMarkTint = global::Alloy.Resource.Styleable.AppCompatSeekBar_tickMarkTint;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatSeekBar_tickMarkTintMode = global::Alloy.Resource.Styleable.AppCompatSeekBar_tickMarkTintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper = global::Alloy.Resource.Styleable.AppCompatTextHelper;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableBottom = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableBottom;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableEnd = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableEnd;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableLeft = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableLeft;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableRight = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableRight;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableStart = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableStart;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_drawableTop = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_drawableTop;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextHelper_android_textAppearance = global::Alloy.Resource.Styleable.AppCompatTextHelper_android_textAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView = global::Alloy.Resource.Styleable.AppCompatTextView;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_android_textAppearance = global::Alloy.Resource.Styleable.AppCompatTextView_android_textAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeMaxTextSize = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeMaxTextSize;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeMinTextSize = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeMinTextSize;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizePresetSizes = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizePresetSizes;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeStepGranularity = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeStepGranularity;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_autoSizeTextType = global::Alloy.Resource.Styleable.AppCompatTextView_autoSizeTextType;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_fontFamily = global::Alloy.Resource.Styleable.AppCompatTextView_fontFamily;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTextView_textAllCaps = global::Alloy.Resource.Styleable.AppCompatTextView_textAllCaps;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme = global::Alloy.Resource.Styleable.AppCompatTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarDivider = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarDivider;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarItemBackground = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarItemBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarPopupTheme = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarPopupTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarSize = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarSize;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarSplitStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarSplitStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTabBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTabBarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTabStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTabStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTabTextStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTabTextStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarTheme = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionBarWidgetTheme = global::Alloy.Resource.Styleable.AppCompatTheme_actionBarWidgetTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionDropDownStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionDropDownStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionMenuTextAppearance = global::Alloy.Resource.Styleable.AppCompatTheme_actionMenuTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionMenuTextColor = global::Alloy.Resource.Styleable.AppCompatTheme_actionMenuTextColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeBackground = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCloseButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCloseButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCloseDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCloseDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCopyDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCopyDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeCutDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeCutDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeFindDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeFindDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModePasteDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModePasteDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModePopupWindowStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionModePopupWindowStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeSelectAllDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeSelectAllDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeShareDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeShareDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeSplitBackground = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeSplitBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionModeWebSearchDrawable = global::Alloy.Resource.Styleable.AppCompatTheme_actionModeWebSearchDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionOverflowButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionOverflowButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_actionOverflowMenuStyle = global::Alloy.Resource.Styleable.AppCompatTheme_actionOverflowMenuStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_activityChooserViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_activityChooserViewStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogButtonGroupStyle = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogButtonGroupStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogCenterButtons = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogCenterButtons;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogStyle = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_alertDialogTheme = global::Alloy.Resource.Styleable.AppCompatTheme_alertDialogTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_android_windowAnimationStyle = global::Alloy.Resource.Styleable.AppCompatTheme_android_windowAnimationStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_android_windowIsFloating = global::Alloy.Resource.Styleable.AppCompatTheme_android_windowIsFloating;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_autoCompleteTextViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_autoCompleteTextViewStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_borderlessButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_borderlessButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarNegativeButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarNegativeButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarNeutralButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarNeutralButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarPositiveButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarPositiveButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonBarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_buttonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_buttonStyleSmall = global::Alloy.Resource.Styleable.AppCompatTheme_buttonStyleSmall;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_checkboxStyle = global::Alloy.Resource.Styleable.AppCompatTheme_checkboxStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_checkedTextViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_checkedTextViewStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorAccent = global::Alloy.Resource.Styleable.AppCompatTheme_colorAccent;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorBackgroundFloating = global::Alloy.Resource.Styleable.AppCompatTheme_colorBackgroundFloating;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorButtonNormal = global::Alloy.Resource.Styleable.AppCompatTheme_colorButtonNormal;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorControlActivated = global::Alloy.Resource.Styleable.AppCompatTheme_colorControlActivated;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorControlHighlight = global::Alloy.Resource.Styleable.AppCompatTheme_colorControlHighlight;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorControlNormal = global::Alloy.Resource.Styleable.AppCompatTheme_colorControlNormal;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorError = global::Alloy.Resource.Styleable.AppCompatTheme_colorError;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorPrimary = global::Alloy.Resource.Styleable.AppCompatTheme_colorPrimary;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorPrimaryDark = global::Alloy.Resource.Styleable.AppCompatTheme_colorPrimaryDark;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_colorSwitchThumbNormal = global::Alloy.Resource.Styleable.AppCompatTheme_colorSwitchThumbNormal;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_controlBackground = global::Alloy.Resource.Styleable.AppCompatTheme_controlBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dialogPreferredPadding = global::Alloy.Resource.Styleable.AppCompatTheme_dialogPreferredPadding;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dialogTheme = global::Alloy.Resource.Styleable.AppCompatTheme_dialogTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dividerHorizontal = global::Alloy.Resource.Styleable.AppCompatTheme_dividerHorizontal;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dividerVertical = global::Alloy.Resource.Styleable.AppCompatTheme_dividerVertical;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dropDownListViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_dropDownListViewStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight = global::Alloy.Resource.Styleable.AppCompatTheme_dropdownListPreferredItemHeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_editTextBackground = global::Alloy.Resource.Styleable.AppCompatTheme_editTextBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_editTextColor = global::Alloy.Resource.Styleable.AppCompatTheme_editTextColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_editTextStyle = global::Alloy.Resource.Styleable.AppCompatTheme_editTextStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_homeAsUpIndicator = global::Alloy.Resource.Styleable.AppCompatTheme_homeAsUpIndicator;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_imageButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_imageButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listChoiceBackgroundIndicator = global::Alloy.Resource.Styleable.AppCompatTheme_listChoiceBackgroundIndicator;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listDividerAlertDialog = global::Alloy.Resource.Styleable.AppCompatTheme_listDividerAlertDialog;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listMenuViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_listMenuViewStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPopupWindowStyle = global::Alloy.Resource.Styleable.AppCompatTheme_listPopupWindowStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemHeight = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemHeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemHeightLarge = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemHeightLarge;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemHeightSmall = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemHeightSmall;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingLeft = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingLeft;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingRight = global::Alloy.Resource.Styleable.AppCompatTheme_listPreferredItemPaddingRight;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_panelBackground = global::Alloy.Resource.Styleable.AppCompatTheme_panelBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_panelMenuListTheme = global::Alloy.Resource.Styleable.AppCompatTheme_panelMenuListTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_panelMenuListWidth = global::Alloy.Resource.Styleable.AppCompatTheme_panelMenuListWidth;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_popupMenuStyle = global::Alloy.Resource.Styleable.AppCompatTheme_popupMenuStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_popupWindowStyle = global::Alloy.Resource.Styleable.AppCompatTheme_popupWindowStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_radioButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_radioButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_ratingBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_ratingBarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_ratingBarStyleIndicator = global::Alloy.Resource.Styleable.AppCompatTheme_ratingBarStyleIndicator;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_ratingBarStyleSmall = global::Alloy.Resource.Styleable.AppCompatTheme_ratingBarStyleSmall;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_searchViewStyle = global::Alloy.Resource.Styleable.AppCompatTheme_searchViewStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_seekBarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_seekBarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_selectableItemBackground = global::Alloy.Resource.Styleable.AppCompatTheme_selectableItemBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_selectableItemBackgroundBorderless = global::Alloy.Resource.Styleable.AppCompatTheme_selectableItemBackgroundBorderless;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_spinnerDropDownItemStyle = global::Alloy.Resource.Styleable.AppCompatTheme_spinnerDropDownItemStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_spinnerStyle = global::Alloy.Resource.Styleable.AppCompatTheme_spinnerStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_switchStyle = global::Alloy.Resource.Styleable.AppCompatTheme_switchStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceLargePopupMenu = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceLargePopupMenu;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceListItem = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceListItem;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceListItemSecondary = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceListItemSecondary;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceListItemSmall = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceListItemSmall;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearancePopupMenuHeader = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearancePopupMenuHeader;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultSubtitle = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultSubtitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultTitle = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceSearchResultTitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textAppearanceSmallPopupMenu = global::Alloy.Resource.Styleable.AppCompatTheme_textAppearanceSmallPopupMenu;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textColorAlertDialogListItem = global::Alloy.Resource.Styleable.AppCompatTheme_textColorAlertDialogListItem;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_textColorSearchUrl = global::Alloy.Resource.Styleable.AppCompatTheme_textColorSearchUrl;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_toolbarNavigationButtonStyle = global::Alloy.Resource.Styleable.AppCompatTheme_toolbarNavigationButtonStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_toolbarStyle = global::Alloy.Resource.Styleable.AppCompatTheme_toolbarStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_tooltipForegroundColor = global::Alloy.Resource.Styleable.AppCompatTheme_tooltipForegroundColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_tooltipFrameBackground = global::Alloy.Resource.Styleable.AppCompatTheme_tooltipFrameBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowActionBar = global::Alloy.Resource.Styleable.AppCompatTheme_windowActionBar;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowActionBarOverlay = global::Alloy.Resource.Styleable.AppCompatTheme_windowActionBarOverlay;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowActionModeOverlay = global::Alloy.Resource.Styleable.AppCompatTheme_windowActionModeOverlay;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedHeightMajor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedHeightMajor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedHeightMinor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedHeightMinor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedWidthMajor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedWidthMajor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowFixedWidthMinor = global::Alloy.Resource.Styleable.AppCompatTheme_windowFixedWidthMinor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowMinWidthMajor = global::Alloy.Resource.Styleable.AppCompatTheme_windowMinWidthMajor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowMinWidthMinor = global::Alloy.Resource.Styleable.AppCompatTheme_windowMinWidthMinor;
-			global::SlideUpPanelLibrary.Resource.Styleable.AppCompatTheme_windowNoTitle = global::Alloy.Resource.Styleable.AppCompatTheme_windowNoTitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.ButtonBarLayout = global::Alloy.Resource.Styleable.ButtonBarLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.ButtonBarLayout_allowStacking = global::Alloy.Resource.Styleable.ButtonBarLayout_allowStacking;
-			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem = global::Alloy.Resource.Styleable.ColorStateListItem;
-			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem_alpha = global::Alloy.Resource.Styleable.ColorStateListItem_alpha;
-			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem_android_alpha = global::Alloy.Resource.Styleable.ColorStateListItem_android_alpha;
-			global::SlideUpPanelLibrary.Resource.Styleable.ColorStateListItem_android_color = global::Alloy.Resource.Styleable.ColorStateListItem_android_color;
-			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton = global::Alloy.Resource.Styleable.CompoundButton;
-			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton_android_button = global::Alloy.Resource.Styleable.CompoundButton_android_button;
-			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton_buttonTint = global::Alloy.Resource.Styleable.CompoundButton_buttonTint;
-			global::SlideUpPanelLibrary.Resource.Styleable.CompoundButton_buttonTintMode = global::Alloy.Resource.Styleable.CompoundButton_buttonTintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle = global::Alloy.Resource.Styleable.DrawerArrowToggle;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_arrowHeadLength = global::Alloy.Resource.Styleable.DrawerArrowToggle_arrowHeadLength;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_arrowShaftLength = global::Alloy.Resource.Styleable.DrawerArrowToggle_arrowShaftLength;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_barLength = global::Alloy.Resource.Styleable.DrawerArrowToggle_barLength;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_color = global::Alloy.Resource.Styleable.DrawerArrowToggle_color;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_drawableSize = global::Alloy.Resource.Styleable.DrawerArrowToggle_drawableSize;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_gapBetweenBars = global::Alloy.Resource.Styleable.DrawerArrowToggle_gapBetweenBars;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_spinBars = global::Alloy.Resource.Styleable.DrawerArrowToggle_spinBars;
-			global::SlideUpPanelLibrary.Resource.Styleable.DrawerArrowToggle_thickness = global::Alloy.Resource.Styleable.DrawerArrowToggle_thickness;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily = global::Alloy.Resource.Styleable.FontFamily;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderAuthority = global::Alloy.Resource.Styleable.FontFamily_fontProviderAuthority;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderCerts = global::Alloy.Resource.Styleable.FontFamily_fontProviderCerts;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderFetchStrategy = global::Alloy.Resource.Styleable.FontFamily_fontProviderFetchStrategy;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderFetchTimeout = global::Alloy.Resource.Styleable.FontFamily_fontProviderFetchTimeout;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderPackage = global::Alloy.Resource.Styleable.FontFamily_fontProviderPackage;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamily_fontProviderQuery = global::Alloy.Resource.Styleable.FontFamily_fontProviderQuery;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont = global::Alloy.Resource.Styleable.FontFamilyFont;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_android_font = global::Alloy.Resource.Styleable.FontFamilyFont_android_font;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_android_fontStyle = global::Alloy.Resource.Styleable.FontFamilyFont_android_fontStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_android_fontWeight = global::Alloy.Resource.Styleable.FontFamilyFont_android_fontWeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_font = global::Alloy.Resource.Styleable.FontFamilyFont_font;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_fontStyle = global::Alloy.Resource.Styleable.FontFamilyFont_fontStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.FontFamilyFont_fontWeight = global::Alloy.Resource.Styleable.FontFamilyFont_fontWeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat = global::Alloy.Resource.Styleable.LinearLayoutCompat;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_baselineAligned = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_baselineAligned;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_baselineAlignedChildIndex = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_baselineAlignedChildIndex;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_gravity = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_gravity;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_orientation = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_orientation;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_android_weightSum = global::Alloy.Resource.Styleable.LinearLayoutCompat_android_weightSum;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_divider = global::Alloy.Resource.Styleable.LinearLayoutCompat_divider;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_dividerPadding = global::Alloy.Resource.Styleable.LinearLayoutCompat_dividerPadding;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild = global::Alloy.Resource.Styleable.LinearLayoutCompat_measureWithLargestChild;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_showDividers = global::Alloy.Resource.Styleable.LinearLayoutCompat_showDividers;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_gravity = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_gravity;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_height = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_height;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_weight = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_weight;
-			global::SlideUpPanelLibrary.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_width = global::Alloy.Resource.Styleable.LinearLayoutCompat_Layout_android_layout_width;
-			global::SlideUpPanelLibrary.Resource.Styleable.ListPopupWindow = global::Alloy.Resource.Styleable.ListPopupWindow;
-			global::SlideUpPanelLibrary.Resource.Styleable.ListPopupWindow_android_dropDownHorizontalOffset = global::Alloy.Resource.Styleable.ListPopupWindow_android_dropDownHorizontalOffset;
-			global::SlideUpPanelLibrary.Resource.Styleable.ListPopupWindow_android_dropDownVerticalOffset = global::Alloy.Resource.Styleable.ListPopupWindow_android_dropDownVerticalOffset;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup = global::Alloy.Resource.Styleable.MenuGroup;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_checkableBehavior = global::Alloy.Resource.Styleable.MenuGroup_android_checkableBehavior;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_enabled = global::Alloy.Resource.Styleable.MenuGroup_android_enabled;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_id = global::Alloy.Resource.Styleable.MenuGroup_android_id;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_menuCategory = global::Alloy.Resource.Styleable.MenuGroup_android_menuCategory;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_orderInCategory = global::Alloy.Resource.Styleable.MenuGroup_android_orderInCategory;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuGroup_android_visible = global::Alloy.Resource.Styleable.MenuGroup_android_visible;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem = global::Alloy.Resource.Styleable.MenuItem;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_actionLayout = global::Alloy.Resource.Styleable.MenuItem_actionLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_actionProviderClass = global::Alloy.Resource.Styleable.MenuItem_actionProviderClass;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_actionViewClass = global::Alloy.Resource.Styleable.MenuItem_actionViewClass;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_alphabeticModifiers = global::Alloy.Resource.Styleable.MenuItem_alphabeticModifiers;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_alphabeticShortcut = global::Alloy.Resource.Styleable.MenuItem_android_alphabeticShortcut;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_checkable = global::Alloy.Resource.Styleable.MenuItem_android_checkable;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_checked = global::Alloy.Resource.Styleable.MenuItem_android_checked;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_enabled = global::Alloy.Resource.Styleable.MenuItem_android_enabled;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_icon = global::Alloy.Resource.Styleable.MenuItem_android_icon;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_id = global::Alloy.Resource.Styleable.MenuItem_android_id;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_menuCategory = global::Alloy.Resource.Styleable.MenuItem_android_menuCategory;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_numericShortcut = global::Alloy.Resource.Styleable.MenuItem_android_numericShortcut;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_onClick = global::Alloy.Resource.Styleable.MenuItem_android_onClick;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_orderInCategory = global::Alloy.Resource.Styleable.MenuItem_android_orderInCategory;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_title = global::Alloy.Resource.Styleable.MenuItem_android_title;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_titleCondensed = global::Alloy.Resource.Styleable.MenuItem_android_titleCondensed;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_android_visible = global::Alloy.Resource.Styleable.MenuItem_android_visible;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_contentDescription = global::Alloy.Resource.Styleable.MenuItem_contentDescription;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_iconTint = global::Alloy.Resource.Styleable.MenuItem_iconTint;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_iconTintMode = global::Alloy.Resource.Styleable.MenuItem_iconTintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_numericModifiers = global::Alloy.Resource.Styleable.MenuItem_numericModifiers;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_showAsAction = global::Alloy.Resource.Styleable.MenuItem_showAsAction;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuItem_tooltipText = global::Alloy.Resource.Styleable.MenuItem_tooltipText;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView = global::Alloy.Resource.Styleable.MenuView;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_headerBackground = global::Alloy.Resource.Styleable.MenuView_android_headerBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_horizontalDivider = global::Alloy.Resource.Styleable.MenuView_android_horizontalDivider;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_itemBackground = global::Alloy.Resource.Styleable.MenuView_android_itemBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_itemIconDisabledAlpha = global::Alloy.Resource.Styleable.MenuView_android_itemIconDisabledAlpha;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_itemTextAppearance = global::Alloy.Resource.Styleable.MenuView_android_itemTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_verticalDivider = global::Alloy.Resource.Styleable.MenuView_android_verticalDivider;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_android_windowAnimationStyle = global::Alloy.Resource.Styleable.MenuView_android_windowAnimationStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_preserveIconSpacing = global::Alloy.Resource.Styleable.MenuView_preserveIconSpacing;
-			global::SlideUpPanelLibrary.Resource.Styleable.MenuView_subMenuArrow = global::Alloy.Resource.Styleable.MenuView_subMenuArrow;
-			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow = global::Alloy.Resource.Styleable.PopupWindow;
-			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow_android_popupAnimationStyle = global::Alloy.Resource.Styleable.PopupWindow_android_popupAnimationStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow_android_popupBackground = global::Alloy.Resource.Styleable.PopupWindow_android_popupBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindow_overlapAnchor = global::Alloy.Resource.Styleable.PopupWindow_overlapAnchor;
-			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindowBackgroundState = global::Alloy.Resource.Styleable.PopupWindowBackgroundState;
-			global::SlideUpPanelLibrary.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor = global::Alloy.Resource.Styleable.PopupWindowBackgroundState_state_above_anchor;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecycleListView = global::Alloy.Resource.Styleable.RecycleListView;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecycleListView_paddingBottomNoButtons = global::Alloy.Resource.Styleable.RecycleListView_paddingBottomNoButtons;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecycleListView_paddingTopNoTitle = global::Alloy.Resource.Styleable.RecycleListView_paddingTopNoTitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView = global::Alloy.Resource.Styleable.RecyclerView;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_android_descendantFocusability = global::Alloy.Resource.Styleable.RecyclerView_android_descendantFocusability;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_android_orientation = global::Alloy.Resource.Styleable.RecyclerView_android_orientation;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollEnabled = global::Alloy.Resource.Styleable.RecyclerView_fastScrollEnabled;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollHorizontalThumbDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollHorizontalThumbDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollHorizontalTrackDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollHorizontalTrackDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollVerticalThumbDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollVerticalThumbDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_fastScrollVerticalTrackDrawable = global::Alloy.Resource.Styleable.RecyclerView_fastScrollVerticalTrackDrawable;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_layoutManager = global::Alloy.Resource.Styleable.RecyclerView_layoutManager;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_reverseLayout = global::Alloy.Resource.Styleable.RecyclerView_reverseLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_spanCount = global::Alloy.Resource.Styleable.RecyclerView_spanCount;
-			global::SlideUpPanelLibrary.Resource.Styleable.RecyclerView_stackFromEnd = global::Alloy.Resource.Styleable.RecyclerView_stackFromEnd;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView = global::Alloy.Resource.Styleable.SearchView;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_focusable = global::Alloy.Resource.Styleable.SearchView_android_focusable;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_imeOptions = global::Alloy.Resource.Styleable.SearchView_android_imeOptions;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_inputType = global::Alloy.Resource.Styleable.SearchView_android_inputType;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_android_maxWidth = global::Alloy.Resource.Styleable.SearchView_android_maxWidth;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_closeIcon = global::Alloy.Resource.Styleable.SearchView_closeIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_commitIcon = global::Alloy.Resource.Styleable.SearchView_commitIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_defaultQueryHint = global::Alloy.Resource.Styleable.SearchView_defaultQueryHint;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_goIcon = global::Alloy.Resource.Styleable.SearchView_goIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_iconifiedByDefault = global::Alloy.Resource.Styleable.SearchView_iconifiedByDefault;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_layout = global::Alloy.Resource.Styleable.SearchView_layout;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_queryBackground = global::Alloy.Resource.Styleable.SearchView_queryBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_queryHint = global::Alloy.Resource.Styleable.SearchView_queryHint;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_searchHintIcon = global::Alloy.Resource.Styleable.SearchView_searchHintIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_searchIcon = global::Alloy.Resource.Styleable.SearchView_searchIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_submitBackground = global::Alloy.Resource.Styleable.SearchView_submitBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_suggestionRowLayout = global::Alloy.Resource.Styleable.SearchView_suggestionRowLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.SearchView_voiceIcon = global::Alloy.Resource.Styleable.SearchView_voiceIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout = global::Alloy.Resource.Styleable.SlidingUpPanelLayout;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoAnchorPoint = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoAnchorPoint;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoClipPanel = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoClipPanel;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoDragView = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoDragView;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoFadeColor = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoFadeColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoFlingVelocity = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoFlingVelocity;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoInitialState = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoInitialState;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoOverlay = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoOverlay;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoPanelHeight = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoPanelHeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoParallaxOffset = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoParallaxOffset;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoScrollInterpolator = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoScrollInterpolator;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoScrollableView = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoScrollableView;
-			global::SlideUpPanelLibrary.Resource.Styleable.SlidingUpPanelLayout_umanoShadowHeight = global::Alloy.Resource.Styleable.SlidingUpPanelLayout_umanoShadowHeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.Spinner = global::Alloy.Resource.Styleable.Spinner;
-			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_dropDownWidth = global::Alloy.Resource.Styleable.Spinner_android_dropDownWidth;
-			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_entries = global::Alloy.Resource.Styleable.Spinner_android_entries;
-			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_popupBackground = global::Alloy.Resource.Styleable.Spinner_android_popupBackground;
-			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_android_prompt = global::Alloy.Resource.Styleable.Spinner_android_prompt;
-			global::SlideUpPanelLibrary.Resource.Styleable.Spinner_popupTheme = global::Alloy.Resource.Styleable.Spinner_popupTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat = global::Alloy.Resource.Styleable.SwitchCompat;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_android_textOff = global::Alloy.Resource.Styleable.SwitchCompat_android_textOff;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_android_textOn = global::Alloy.Resource.Styleable.SwitchCompat_android_textOn;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_android_thumb = global::Alloy.Resource.Styleable.SwitchCompat_android_thumb;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_showText = global::Alloy.Resource.Styleable.SwitchCompat_showText;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_splitTrack = global::Alloy.Resource.Styleable.SwitchCompat_splitTrack;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_switchMinWidth = global::Alloy.Resource.Styleable.SwitchCompat_switchMinWidth;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_switchPadding = global::Alloy.Resource.Styleable.SwitchCompat_switchPadding;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_switchTextAppearance = global::Alloy.Resource.Styleable.SwitchCompat_switchTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_thumbTextPadding = global::Alloy.Resource.Styleable.SwitchCompat_thumbTextPadding;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_thumbTint = global::Alloy.Resource.Styleable.SwitchCompat_thumbTint;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_thumbTintMode = global::Alloy.Resource.Styleable.SwitchCompat_thumbTintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_track = global::Alloy.Resource.Styleable.SwitchCompat_track;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_trackTint = global::Alloy.Resource.Styleable.SwitchCompat_trackTint;
-			global::SlideUpPanelLibrary.Resource.Styleable.SwitchCompat_trackTintMode = global::Alloy.Resource.Styleable.SwitchCompat_trackTintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance = global::Alloy.Resource.Styleable.TextAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_fontFamily = global::Alloy.Resource.Styleable.TextAppearance_android_fontFamily;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowColor = global::Alloy.Resource.Styleable.TextAppearance_android_shadowColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowDx = global::Alloy.Resource.Styleable.TextAppearance_android_shadowDx;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowDy = global::Alloy.Resource.Styleable.TextAppearance_android_shadowDy;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_shadowRadius = global::Alloy.Resource.Styleable.TextAppearance_android_shadowRadius;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textColor = global::Alloy.Resource.Styleable.TextAppearance_android_textColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textColorHint = global::Alloy.Resource.Styleable.TextAppearance_android_textColorHint;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textColorLink = global::Alloy.Resource.Styleable.TextAppearance_android_textColorLink;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textSize = global::Alloy.Resource.Styleable.TextAppearance_android_textSize;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_textStyle = global::Alloy.Resource.Styleable.TextAppearance_android_textStyle;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_android_typeface = global::Alloy.Resource.Styleable.TextAppearance_android_typeface;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_fontFamily = global::Alloy.Resource.Styleable.TextAppearance_fontFamily;
-			global::SlideUpPanelLibrary.Resource.Styleable.TextAppearance_textAllCaps = global::Alloy.Resource.Styleable.TextAppearance_textAllCaps;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar = global::Alloy.Resource.Styleable.Toolbar;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_android_gravity = global::Alloy.Resource.Styleable.Toolbar_android_gravity;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_android_minHeight = global::Alloy.Resource.Styleable.Toolbar_android_minHeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_buttonGravity = global::Alloy.Resource.Styleable.Toolbar_buttonGravity;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_collapseContentDescription = global::Alloy.Resource.Styleable.Toolbar_collapseContentDescription;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_collapseIcon = global::Alloy.Resource.Styleable.Toolbar_collapseIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetEnd = global::Alloy.Resource.Styleable.Toolbar_contentInsetEnd;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetEndWithActions = global::Alloy.Resource.Styleable.Toolbar_contentInsetEndWithActions;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetLeft = global::Alloy.Resource.Styleable.Toolbar_contentInsetLeft;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetRight = global::Alloy.Resource.Styleable.Toolbar_contentInsetRight;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetStart = global::Alloy.Resource.Styleable.Toolbar_contentInsetStart;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_contentInsetStartWithNavigation = global::Alloy.Resource.Styleable.Toolbar_contentInsetStartWithNavigation;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_logo = global::Alloy.Resource.Styleable.Toolbar_logo;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_logoDescription = global::Alloy.Resource.Styleable.Toolbar_logoDescription;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_maxButtonHeight = global::Alloy.Resource.Styleable.Toolbar_maxButtonHeight;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_navigationContentDescription = global::Alloy.Resource.Styleable.Toolbar_navigationContentDescription;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_navigationIcon = global::Alloy.Resource.Styleable.Toolbar_navigationIcon;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_popupTheme = global::Alloy.Resource.Styleable.Toolbar_popupTheme;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_subtitle = global::Alloy.Resource.Styleable.Toolbar_subtitle;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_subtitleTextAppearance = global::Alloy.Resource.Styleable.Toolbar_subtitleTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_subtitleTextColor = global::Alloy.Resource.Styleable.Toolbar_subtitleTextColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_title = global::Alloy.Resource.Styleable.Toolbar_title;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMargin = global::Alloy.Resource.Styleable.Toolbar_titleMargin;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginBottom = global::Alloy.Resource.Styleable.Toolbar_titleMarginBottom;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginEnd = global::Alloy.Resource.Styleable.Toolbar_titleMarginEnd;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginStart = global::Alloy.Resource.Styleable.Toolbar_titleMarginStart;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMarginTop = global::Alloy.Resource.Styleable.Toolbar_titleMarginTop;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleMargins = global::Alloy.Resource.Styleable.Toolbar_titleMargins;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleTextAppearance = global::Alloy.Resource.Styleable.Toolbar_titleTextAppearance;
-			global::SlideUpPanelLibrary.Resource.Styleable.Toolbar_titleTextColor = global::Alloy.Resource.Styleable.Toolbar_titleTextColor;
-			global::SlideUpPanelLibrary.Resource.Styleable.View = global::Alloy.Resource.Styleable.View;
-			global::SlideUpPanelLibrary.Resource.Styleable.View_android_focusable = global::Alloy.Resource.Styleable.View_android_focusable;
-			global::SlideUpPanelLibrary.Resource.Styleable.View_android_theme = global::Alloy.Resource.Styleable.View_android_theme;
-			global::SlideUpPanelLibrary.Resource.Styleable.View_paddingEnd = global::Alloy.Resource.Styleable.View_paddingEnd;
-			global::SlideUpPanelLibrary.Resource.Styleable.View_paddingStart = global::Alloy.Resource.Styleable.View_paddingStart;
-			global::SlideUpPanelLibrary.Resource.Styleable.View_theme = global::Alloy.Resource.Styleable.View_theme;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper = global::Alloy.Resource.Styleable.ViewBackgroundHelper;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper_android_background = global::Alloy.Resource.Styleable.ViewBackgroundHelper_android_background;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper_backgroundTint = global::Alloy.Resource.Styleable.ViewBackgroundHelper_backgroundTint;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewBackgroundHelper_backgroundTintMode = global::Alloy.Resource.Styleable.ViewBackgroundHelper_backgroundTintMode;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat = global::Alloy.Resource.Styleable.ViewStubCompat;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat_android_id = global::Alloy.Resource.Styleable.ViewStubCompat_android_id;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat_android_inflatedId = global::Alloy.Resource.Styleable.ViewStubCompat_android_inflatedId;
-			global::SlideUpPanelLibrary.Resource.Styleable.ViewStubCompat_android_layout = global::Alloy.Resource.Styleable.ViewStubCompat_android_layout;
 			global::Spotlight.Resource.Animation.abc_fade_in = global::Alloy.Resource.Animation.abc_fade_in;
 			global::Spotlight.Resource.Animation.abc_fade_out = global::Alloy.Resource.Animation.abc_fade_out;
 			global::Spotlight.Resource.Animation.abc_grow_fade_in_from_bottom = global::Alloy.Resource.Animation.abc_grow_fade_in_from_bottom;
@@ -3874,14 +2293,14 @@ namespace Alloy
 			// aapt resource value: 0x7f01019c
 			public const int fabSize = 2130772380;
 			
-			// aapt resource value: 0x7f0101f7
-			public const int fastScrollAutoHide = 2130772471;
+			// aapt resource value: 0x7f0101eb
+			public const int fastScrollAutoHide = 2130772459;
 			
-			// aapt resource value: 0x7f0101f8
-			public const int fastScrollAutoHideDelay = 2130772472;
+			// aapt resource value: 0x7f0101ec
+			public const int fastScrollAutoHideDelay = 2130772460;
 			
-			// aapt resource value: 0x7f0101f9
-			public const int fastScrollEnableThumbInactiveColor = 2130772473;
+			// aapt resource value: 0x7f0101ed
+			public const int fastScrollEnableThumbInactiveColor = 2130772461;
 			
 			// aapt resource value: 0x7f010028
 			public const int fastScrollEnabled = 2130772008;
@@ -3892,32 +2311,32 @@ namespace Alloy
 			// aapt resource value: 0x7f01002c
 			public const int fastScrollHorizontalTrackDrawable = 2130772012;
 			
-			// aapt resource value: 0x7f0101f5
-			public const int fastScrollPopupBackgroundSize = 2130772469;
+			// aapt resource value: 0x7f0101e9
+			public const int fastScrollPopupBackgroundSize = 2130772457;
 			
-			// aapt resource value: 0x7f0101f2
-			public const int fastScrollPopupBgColor = 2130772466;
+			// aapt resource value: 0x7f0101e6
+			public const int fastScrollPopupBgColor = 2130772454;
 			
-			// aapt resource value: 0x7f0101f6
-			public const int fastScrollPopupPosition = 2130772470;
+			// aapt resource value: 0x7f0101ea
+			public const int fastScrollPopupPosition = 2130772458;
 			
-			// aapt resource value: 0x7f0101f3
-			public const int fastScrollPopupTextColor = 2130772467;
+			// aapt resource value: 0x7f0101e7
+			public const int fastScrollPopupTextColor = 2130772455;
 			
-			// aapt resource value: 0x7f0101f4
-			public const int fastScrollPopupTextSize = 2130772468;
+			// aapt resource value: 0x7f0101e8
+			public const int fastScrollPopupTextSize = 2130772456;
 			
-			// aapt resource value: 0x7f0101ef
-			public const int fastScrollThumbColor = 2130772463;
+			// aapt resource value: 0x7f0101e3
+			public const int fastScrollThumbColor = 2130772451;
 			
-			// aapt resource value: 0x7f0101fa
-			public const int fastScrollThumbEnabled = 2130772474;
+			// aapt resource value: 0x7f0101ee
+			public const int fastScrollThumbEnabled = 2130772462;
 			
-			// aapt resource value: 0x7f0101f0
-			public const int fastScrollThumbInactiveColor = 2130772464;
+			// aapt resource value: 0x7f0101e4
+			public const int fastScrollThumbInactiveColor = 2130772452;
 			
-			// aapt resource value: 0x7f0101f1
-			public const int fastScrollTrackColor = 2130772465;
+			// aapt resource value: 0x7f0101e5
+			public const int fastScrollTrackColor = 2130772453;
 			
 			// aapt resource value: 0x7f010029
 			public const int fastScrollVerticalThumbDrawable = 2130772009;
@@ -4018,41 +2437,41 @@ namespace Alloy
 			// aapt resource value: 0x7f010093
 			public const int indeterminateProgressStyle = 2130772115;
 			
-			// aapt resource value: 0x7f0101e9
-			public const int indexBarColor = 2130772457;
-			
-			// aapt resource value: 0x7f0101ec
-			public const int indexBarColorRes = 2130772460;
-			
-			// aapt resource value: 0x7f0101e7
-			public const int indexBarCornerRadius = 2130772455;
-			
-			// aapt resource value: 0x7f0101eb
-			public const int indexBarHighlightTextColor = 2130772459;
-			
-			// aapt resource value: 0x7f0101ee
-			public const int indexBarHighlightTextColorRes = 2130772462;
-			
-			// aapt resource value: 0x7f0101ea
-			public const int indexBarTextColor = 2130772458;
-			
-			// aapt resource value: 0x7f0101ed
-			public const int indexBarTextColorRes = 2130772461;
-			
-			// aapt resource value: 0x7f0101e8
-			public const int indexBarTransparentValue = 2130772456;
-			
-			// aapt resource value: 0x7f0101de
-			public const int indexTextSize = 2130772446;
-			
-			// aapt resource value: 0x7f0101e1
-			public const int indexbarMarginHeight = 2130772449;
+			// aapt resource value: 0x7f0101dd
+			public const int indexBarColor = 2130772445;
 			
 			// aapt resource value: 0x7f0101e0
-			public const int indexbarMarginWidth = 2130772448;
+			public const int indexBarColorRes = 2130772448;
+			
+			// aapt resource value: 0x7f0101db
+			public const int indexBarCornerRadius = 2130772443;
 			
 			// aapt resource value: 0x7f0101df
-			public const int indexbarWidth = 2130772447;
+			public const int indexBarHighlightTextColor = 2130772447;
+			
+			// aapt resource value: 0x7f0101e2
+			public const int indexBarHighlightTextColorRes = 2130772450;
+			
+			// aapt resource value: 0x7f0101de
+			public const int indexBarTextColor = 2130772446;
+			
+			// aapt resource value: 0x7f0101e1
+			public const int indexBarTextColorRes = 2130772449;
+			
+			// aapt resource value: 0x7f0101dc
+			public const int indexBarTransparentValue = 2130772444;
+			
+			// aapt resource value: 0x7f0101d2
+			public const int indexTextSize = 2130772434;
+			
+			// aapt resource value: 0x7f0101d5
+			public const int indexbarMarginHeight = 2130772437;
+			
+			// aapt resource value: 0x7f0101d4
+			public const int indexbarMarginWidth = 2130772436;
+			
+			// aapt resource value: 0x7f0101d3
+			public const int indexbarWidth = 2130772435;
 			
 			// aapt resource value: 0x7f0100a0
 			public const int initialActivityCount = 2130772128;
@@ -4345,20 +2764,20 @@ namespace Alloy
 			// aapt resource value: 0x7f01019d
 			public const int pressedTranslationZ = 2130772381;
 			
-			// aapt resource value: 0x7f0101e4
-			public const int previewColor = 2130772452;
+			// aapt resource value: 0x7f0101d8
+			public const int previewColor = 2130772440;
 			
-			// aapt resource value: 0x7f0101e2
-			public const int previewPadding = 2130772450;
+			// aapt resource value: 0x7f0101d6
+			public const int previewPadding = 2130772438;
 			
-			// aapt resource value: 0x7f0101e5
-			public const int previewTextColor = 2130772453;
+			// aapt resource value: 0x7f0101d9
+			public const int previewTextColor = 2130772441;
 			
-			// aapt resource value: 0x7f0101e3
-			public const int previewTextSize = 2130772451;
+			// aapt resource value: 0x7f0101d7
+			public const int previewTextSize = 2130772439;
 			
-			// aapt resource value: 0x7f0101e6
-			public const int previewTransparentValue = 2130772454;
+			// aapt resource value: 0x7f0101da
+			public const int previewTransparentValue = 2130772442;
 			
 			// aapt resource value: 0x7f010094
 			public const int progressBarPadding = 2130772116;
@@ -4717,41 +3136,41 @@ namespace Alloy
 			// aapt resource value: 0x7f01015a
 			public const int trackTintMode = 2130772314;
 			
-			// aapt resource value: 0x7f0101db
-			public const int umanoAnchorPoint = 2130772443;
+			// aapt resource value: 0x7f0101f8
+			public const int umanoAnchorPoint = 2130772472;
 			
-			// aapt resource value: 0x7f0101da
-			public const int umanoClipPanel = 2130772442;
+			// aapt resource value: 0x7f0101f7
+			public const int umanoClipPanel = 2130772471;
 			
-			// aapt resource value: 0x7f0101d7
-			public const int umanoDragView = 2130772439;
+			// aapt resource value: 0x7f0101f4
+			public const int umanoDragView = 2130772468;
 			
-			// aapt resource value: 0x7f0101d5
-			public const int umanoFadeColor = 2130772437;
+			// aapt resource value: 0x7f0101f2
+			public const int umanoFadeColor = 2130772466;
 			
-			// aapt resource value: 0x7f0101d6
-			public const int umanoFlingVelocity = 2130772438;
+			// aapt resource value: 0x7f0101f3
+			public const int umanoFlingVelocity = 2130772467;
 			
-			// aapt resource value: 0x7f0101dc
-			public const int umanoInitialState = 2130772444;
+			// aapt resource value: 0x7f0101f9
+			public const int umanoInitialState = 2130772473;
 			
-			// aapt resource value: 0x7f0101d9
-			public const int umanoOverlay = 2130772441;
+			// aapt resource value: 0x7f0101f6
+			public const int umanoOverlay = 2130772470;
 			
-			// aapt resource value: 0x7f0101d2
-			public const int umanoPanelHeight = 2130772434;
+			// aapt resource value: 0x7f0101ef
+			public const int umanoPanelHeight = 2130772463;
 			
-			// aapt resource value: 0x7f0101d4
-			public const int umanoParallaxOffset = 2130772436;
+			// aapt resource value: 0x7f0101f1
+			public const int umanoParallaxOffset = 2130772465;
 			
-			// aapt resource value: 0x7f0101dd
-			public const int umanoScrollInterpolator = 2130772445;
+			// aapt resource value: 0x7f0101fa
+			public const int umanoScrollInterpolator = 2130772474;
 			
-			// aapt resource value: 0x7f0101d8
-			public const int umanoScrollableView = 2130772440;
+			// aapt resource value: 0x7f0101f5
+			public const int umanoScrollableView = 2130772469;
 			
-			// aapt resource value: 0x7f0101d3
-			public const int umanoShadowHeight = 2130772435;
+			// aapt resource value: 0x7f0101f0
+			public const int umanoShadowHeight = 2130772464;
 			
 			// aapt resource value: 0x7f01019f
 			public const int useCompatPadding = 2130772383;
@@ -7554,8 +5973,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d003c
 			public const int add = 2131558460;
 			
-			// aapt resource value: 0x7f0d0072
-			public const int adjacent = 2131558514;
+			// aapt resource value: 0x7f0d006e
+			public const int adjacent = 2131558510;
 			
 			// aapt resource value: 0x7f0d002a
 			public const int adjust_height = 2131558442;
@@ -7584,8 +6003,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d004d
 			public const int always = 2131558477;
 			
-			// aapt resource value: 0x7f0d006e
-			public const int anchored = 2131558510;
+			// aapt resource value: 0x7f0d006f
+			public const int anchored = 2131558511;
 			
 			// aapt resource value: 0x7f0d00b0
 			public const int artist = 2131558576;
@@ -7722,8 +6141,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d004e
 			public const int collapseActionView = 2131558478;
 			
-			// aapt resource value: 0x7f0d006f
-			public const int collapsed = 2131558511;
+			// aapt resource value: 0x7f0d0070
+			public const int collapsed = 2131558512;
 			
 			// aapt resource value: 0x7f0d0132
 			public const int comment = 2131558706;
@@ -7821,8 +6240,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0077
 			public const int expand_activities_button = 2131558519;
 			
-			// aapt resource value: 0x7f0d0070
-			public const int expanded = 2131558512;
+			// aapt resource value: 0x7f0d0071
+			public const int expanded = 2131558513;
 			
 			// aapt resource value: 0x7f0d00c0
 			public const int expanded_controller_layout = 2131558592;
@@ -7872,8 +6291,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0d0017
 			public const int ghost_view = 2131558423;
 			
-			// aapt resource value: 0x7f0d0071
-			public const int hidden = 2131558513;
+			// aapt resource value: 0x7f0d0072
+			public const int hidden = 2131558514;
 			
 			// aapt resource value: 0x7f0d0012
 			public const int home = 2131558418;
@@ -8946,14 +7365,14 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0060
 			public const int abc_toolbar_collapse_description = 2131689568;
 			
-			// aapt resource value: 0x7f0f008c
-			public const int action_settings = 2131689612;
-			
-			// aapt resource value: 0x7f0f0090
-			public const int album_detail_title = 2131689616;
+			// aapt resource value: 0x7f0f008b
+			public const int action_settings = 2131689611;
 			
 			// aapt resource value: 0x7f0f008f
-			public const int albums_title = 2131689615;
+			public const int album_detail_title = 2131689615;
+			
+			// aapt resource value: 0x7f0f008e
+			public const int albums_title = 2131689614;
 			
 			// aapt resource value: 0x7f0f0077
 			public const int app_name = 2131689591;
@@ -8961,35 +7380,35 @@ namespace Alloy
 			// aapt resource value: 0x7f0f006e
 			public const int appbar_scrolling_view_behavior = 2131689582;
 			
-			// aapt resource value: 0x7f0f007a
-			public const int appcenter_api = 2131689594;
-			
-			// aapt resource value: 0x7f0f0092
-			public const int artist_detail_title = 2131689618;
+			// aapt resource value: 0x7f0f0079
+			public const int appcenter_api = 2131689593;
 			
 			// aapt resource value: 0x7f0f0091
-			public const int artists_title = 2131689617;
+			public const int artist_detail_title = 2131689617;
 			
-			// aapt resource value: 0x7f0f0089
-			public const int background_audio_service = 2131689609;
+			// aapt resource value: 0x7f0f0090
+			public const int artists_title = 2131689616;
+			
+			// aapt resource value: 0x7f0f0088
+			public const int background_audio_service = 2131689608;
 			
 			// aapt resource value: 0x7f0f006f
 			public const int bottom_sheet_behavior = 2131689583;
 			
-			// aapt resource value: 0x7f0f009e
-			public const int browse_genre_subtitle = 2131689630;
-			
 			// aapt resource value: 0x7f0f009d
-			public const int browse_genres = 2131689629;
+			public const int browse_genre_subtitle = 2131689629;
 			
-			// aapt resource value: 0x7f0f009f
-			public const int browse_musics_by_genre_subtitle = 2131689631;
+			// aapt resource value: 0x7f0f009c
+			public const int browse_genres = 2131689628;
+			
+			// aapt resource value: 0x7f0f009e
+			public const int browse_musics_by_genre_subtitle = 2131689630;
 			
 			// aapt resource value: 0x7f0f0000
 			public const int cast_ad_label = 2131689472;
 			
-			// aapt resource value: 0x7f0f007b
-			public const int cast_app_id = 2131689595;
+			// aapt resource value: 0x7f0f007a
+			public const int cast_app_id = 2131689594;
 			
 			// aapt resource value: 0x7f0f0001
 			public const int cast_casting_to_device = 2131689473;
@@ -9162,62 +7581,59 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0038
 			public const int common_signin_button_text_long = 2131689528;
 			
-			// aapt resource value: 0x7f0f0097
-			public const int currently_playing_artist = 2131689623;
-			
-			// aapt resource value: 0x7f0f0098
-			public const int currently_playing_extra_info = 2131689624;
-			
 			// aapt resource value: 0x7f0f0096
-			public const int currently_playing_song = 2131689622;
+			public const int currently_playing_artist = 2131689622;
 			
-			// aapt resource value: 0x7f0f00a2
-			public const int fragment_image_trans = 2131689634;
+			// aapt resource value: 0x7f0f0097
+			public const int currently_playing_extra_info = 2131689623;
 			
-			// aapt resource value: 0x7f0f0080
-			public const int fresh_fragment_id = 2131689600;
+			// aapt resource value: 0x7f0f0095
+			public const int currently_playing_song = 2131689621;
+			
+			// aapt resource value: 0x7f0f00a1
+			public const int fragment_image_trans = 2131689633;
 			
 			// aapt resource value: 0x7f0f007f
-			public const int fresh_fragment_title = 2131689599;
+			public const int fresh_fragment_id = 2131689599;
 			
-			// aapt resource value: 0x7f0f008d
-			public const int fresh_title = 2131689613;
+			// aapt resource value: 0x7f0f007e
+			public const int fresh_fragment_title = 2131689598;
 			
-			// aapt resource value: 0x7f0f0094
-			public const int genre_detail_title = 2131689620;
+			// aapt resource value: 0x7f0f008c
+			public const int fresh_title = 2131689612;
 			
 			// aapt resource value: 0x7f0f0093
-			public const int genres_title = 2131689619;
+			public const int genre_detail_title = 2131689619;
 			
-			// aapt resource value: 0x7f0f0078
-			public const int hello = 2131689592;
-			
-			// aapt resource value: 0x7f0f0086
-			public const int local_albums_fragment_id = 2131689606;
+			// aapt resource value: 0x7f0f0092
+			public const int genres_title = 2131689618;
 			
 			// aapt resource value: 0x7f0f0085
-			public const int local_albums_fragment_title = 2131689605;
+			public const int local_albums_fragment_id = 2131689605;
 			
 			// aapt resource value: 0x7f0f0084
-			public const int local_artists_fragment_id = 2131689604;
+			public const int local_albums_fragment_title = 2131689604;
 			
 			// aapt resource value: 0x7f0f0083
-			public const int local_artists_fragment_title = 2131689603;
+			public const int local_artists_fragment_id = 2131689603;
 			
-			// aapt resource value: 0x7f0f0088
-			public const int local_genres_fragment_id = 2131689608;
+			// aapt resource value: 0x7f0f0082
+			public const int local_artists_fragment_title = 2131689602;
 			
 			// aapt resource value: 0x7f0f0087
-			public const int local_genres_fragment_title = 2131689607;
+			public const int local_genres_fragment_id = 2131689607;
 			
-			// aapt resource value: 0x7f0f007d
-			public const int local_music_header = 2131689597;
+			// aapt resource value: 0x7f0f0086
+			public const int local_genres_fragment_title = 2131689606;
 			
-			// aapt resource value: 0x7f0f0079
-			public const int master_salt = 2131689593;
+			// aapt resource value: 0x7f0f007c
+			public const int local_music_header = 2131689596;
 			
-			// aapt resource value: 0x7f0f00a6
-			public const int media_route_menu_title = 2131689638;
+			// aapt resource value: 0x7f0f0078
+			public const int master_salt = 2131689592;
+			
+			// aapt resource value: 0x7f0f00a5
+			public const int media_route_menu_title = 2131689637;
 			
 			// aapt resource value: 0x7f0f003b
 			public const int mr_button_content_description = 2131689531;
@@ -9282,20 +7698,20 @@ namespace Alloy
 			// aapt resource value: 0x7f0f004f
 			public const int mr_user_route_category_name = 2131689551;
 			
-			// aapt resource value: 0x7f0f00a3
-			public const int nav_favorites = 2131689635;
-			
-			// aapt resource value: 0x7f0f00a5
-			public const int nav_stations = 2131689637;
+			// aapt resource value: 0x7f0f00a2
+			public const int nav_favorites = 2131689634;
 			
 			// aapt resource value: 0x7f0f00a4
-			public const int nav_stream = 2131689636;
+			public const int nav_stations = 2131689636;
 			
-			// aapt resource value: 0x7f0f008b
-			public const int navigation_drawer_close = 2131689611;
+			// aapt resource value: 0x7f0f00a3
+			public const int nav_stream = 2131689635;
 			
 			// aapt resource value: 0x7f0f008a
-			public const int navigation_drawer_open = 2131689610;
+			public const int navigation_drawer_close = 2131689610;
+			
+			// aapt resource value: 0x7f0f0089
+			public const int navigation_drawer_open = 2131689609;
 			
 			// aapt resource value: 0x7f0f0071
 			public const int password_toggle_content_description = 2131689585;
@@ -9312,44 +7728,44 @@ namespace Alloy
 			// aapt resource value: 0x7f0f0075
 			public const int path_password_strike_through = 2131689589;
 			
+			// aapt resource value: 0x7f0f0098
+			public const int play_item = 2131689624;
+			
 			// aapt resource value: 0x7f0f0099
-			public const int play_item = 2131689625;
+			public const int play_pause = 2131689625;
 			
-			// aapt resource value: 0x7f0f009a
-			public const int play_pause = 2131689626;
+			// aapt resource value: 0x7f0f007b
+			public const int quick_access_header = 2131689595;
 			
-			// aapt resource value: 0x7f0f007c
-			public const int quick_access_header = 2131689596;
+			// aapt resource value: 0x7f0f009f
+			public const int random_queue_title = 2131689631;
 			
-			// aapt resource value: 0x7f0f00a0
-			public const int random_queue_title = 2131689632;
-			
-			// aapt resource value: 0x7f0f007e
-			public const int remote_media_header = 2131689598;
+			// aapt resource value: 0x7f0f007d
+			public const int remote_media_header = 2131689597;
 			
 			// aapt resource value: 0x7f0f0061
 			public const int search_menu_title = 2131689569;
 			
-			// aapt resource value: 0x7f0f00a1
-			public const int search_queue_title = 2131689633;
+			// aapt resource value: 0x7f0f00a0
+			public const int search_queue_title = 2131689632;
 			
-			// aapt resource value: 0x7f0f0095
-			public const int settings_title = 2131689621;
+			// aapt resource value: 0x7f0f0094
+			public const int settings_title = 2131689620;
+			
+			// aapt resource value: 0x7f0f009a
+			public const int skip_next = 2131689626;
 			
 			// aapt resource value: 0x7f0f009b
-			public const int skip_next = 2131689627;
-			
-			// aapt resource value: 0x7f0f009c
-			public const int skip_prev = 2131689628;
-			
-			// aapt resource value: 0x7f0f0082
-			public const int starred_fragment_id = 2131689602;
+			public const int skip_prev = 2131689627;
 			
 			// aapt resource value: 0x7f0f0081
-			public const int starred_fragment_title = 2131689601;
+			public const int starred_fragment_id = 2131689601;
 			
-			// aapt resource value: 0x7f0f008e
-			public const int starred_title = 2131689614;
+			// aapt resource value: 0x7f0f0080
+			public const int starred_fragment_title = 2131689600;
+			
+			// aapt resource value: 0x7f0f008d
+			public const int starred_title = 2131689613;
 			
 			// aapt resource value: 0x7f0f0076
 			public const int status_bar_notification_info_overflow = 2131689590;
@@ -12100,18 +10516,18 @@ namespace Alloy
 			public const int DrawerArrowToggle_thickness = 7;
 			
 			public static int[] FastScrollRecyclerView = new int[] {
-					2130772463,
-					2130772464,
-					2130772465,
-					2130772466,
-					2130772467,
-					2130772468,
-					2130772469,
-					2130772470,
-					2130772471,
-					2130772472,
-					2130772473,
-					2130772474};
+					2130772451,
+					2130772452,
+					2130772453,
+					2130772454,
+					2130772455,
+					2130772456,
+					2130772457,
+					2130772458,
+					2130772459,
+					2130772460,
+					2130772461,
+					2130772462};
 			
 			// aapt resource value: 8
 			public const int FastScrollRecyclerView_fastScrollAutoHide = 8;
@@ -12256,23 +10672,23 @@ namespace Alloy
 			public const int ForegroundLinearLayout_foregroundInsidePadding = 2;
 			
 			public static int[] IndexFastScrollRecyclerView = new int[] {
+					2130772434,
+					2130772435,
+					2130772436,
+					2130772437,
+					2130772438,
+					2130772439,
+					2130772440,
+					2130772441,
+					2130772442,
+					2130772443,
+					2130772444,
+					2130772445,
 					2130772446,
 					2130772447,
 					2130772448,
 					2130772449,
-					2130772450,
-					2130772451,
-					2130772452,
-					2130772453,
-					2130772454,
-					2130772455,
-					2130772456,
-					2130772457,
-					2130772458,
-					2130772459,
-					2130772460,
-					2130772461,
-					2130772462};
+					2130772450};
 			
 			// aapt resource value: 11
 			public const int IndexFastScrollRecyclerView_indexBarColor = 11;
@@ -13136,18 +11552,18 @@ namespace Alloy
 			public const int SignInButton_scopeUris = 2;
 			
 			public static int[] SlidingUpPanelLayout = new int[] {
-					2130772434,
-					2130772435,
-					2130772436,
-					2130772437,
-					2130772438,
-					2130772439,
-					2130772440,
-					2130772441,
-					2130772442,
-					2130772443,
-					2130772444,
-					2130772445};
+					2130772463,
+					2130772464,
+					2130772465,
+					2130772466,
+					2130772467,
+					2130772468,
+					2130772469,
+					2130772470,
+					2130772471,
+					2130772472,
+					2130772473,
+					2130772474};
 			
 			// aapt resource value: 9
 			public const int SlidingUpPanelLayout_umanoAnchorPoint = 9;

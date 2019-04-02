@@ -164,6 +164,11 @@
     <Compile Include="Widgets\FastScrollRecyclerView.cs" />
     <Compile Include="Widgets\IndexFastScrollRecyclerSection.cs" />
     <Compile Include="Widgets\IndexFastScrollRecyclerView.cs" />
+    <Compile Include="Widgets\PanelSlideListener.cs" />
+    <Compile Include="Widgets\ScrollableViewHelper.cs" />
+    <Compile Include="Widgets\SimplePanelSlideListener.cs" />
+    <Compile Include="Widgets\SlidingUpPanelLayout.cs" />
+    <Compile Include="Widgets\ViewDragHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
@@ -661,12 +666,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\emby.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\Users\ic3y8\Desktop\AndroidUISamples\src\SlideUpPanelLibrary\SlideUpPanelLibrary.csproj">
-      <Project>{873ba868-2f1b-4257-9628-d1cd6fb0d36e}</Project>
-      <Name>SlideUpPanelLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\magnifier.png" />
   </ItemGroup>
   <ItemGroup>
@@ -674,6 +673,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\trash.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\below_shadow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\above_shadow.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

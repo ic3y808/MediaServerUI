@@ -26,6 +26,7 @@ using Spotlight;
 using Alloy.Adapters;
 using Alloy.Interfaces;
 using Alloy.Models;
+using Alloy.Widgets;
 using SlideUpPanelLibrary;
 using Exception = System.Exception;
 using Object = Java.Lang.Object;

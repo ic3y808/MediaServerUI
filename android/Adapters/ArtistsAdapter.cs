@@ -48,6 +48,9 @@ namespace Alloy.Adapters
 			else
 				h.comment.SetText(MusicProvider.Artists[position].Biography, TextView.BufferType.Normal);
 
+			
+			
+
 			//h.reposts.SetText(MusicProvider.Artists[position].RepostsCount.ToString(), TextView.BufferType.Normal);
 			//h.likes.SetText(MusicProvider.Artists[position].FavoritingsCount.ToString(), TextView.BufferType.Normal);
 			//h.duration.SetText(MusicProvider.Artists[position].Duration.ToTime(), TextView.BufferType.Normal);
