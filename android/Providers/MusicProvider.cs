@@ -36,7 +36,7 @@ namespace Alloy.Providers
 		public static List<Album> Albums { get; set; }
 		public static ArtistsQueue Artists { get; set; }
 
-		public static int MaxCachedArtists = 15;
+		public static int MaxCachedArtists = 50;
 
 		public static event EventHandler LibraryLoaded;
 
@@ -248,7 +248,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				Alloy.Adapters.Adapters.UpdateAdapters();
-				MusicProvider.LibraryLoaded?.Invoke(null, null);
+				ArtistsRefreshed?.Invoke(null, null);
 				base.OnPostExecute(result);
 			}
 		}
@@ -340,6 +340,7 @@ namespace Alloy.Providers
 		public static void RefreshArtists(bool initial)
 		{
 			////if (initial) Artists = new ArtistsQueue();
+			ArtistsStartRefresh?.Invoke(null, null);
 			var artists = (ArtistsLoader)new ArtistsLoader(initial).Execute();
 		}
 

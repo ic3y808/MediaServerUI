@@ -48,6 +48,8 @@ namespace Alloy.Models
 				favoriteButton.Click += (sender, e) => { SetFavorite(true); };
 			}
 
+		
+
 			//moveHandle = v.FindViewById<ImageView>(Resource.Id.handle);
 
 			v.Click += (sender, e) => listener(new CustomViewHolderEvent() { Position = base.LayoutPosition, CustomViewHolder = this });
@@ -69,8 +71,15 @@ namespace Alloy.Models
 			{
 				//if (Song.Art == null)
 				//	Song.Art = Extensions.GetDefaultAlbumArtEfficiently();
-				if (Song.Art == null) return;
-				cardLayout?.SetBackgroundColor(Song.Art.GetDominateColor().Contrasting(64));
+				if (Song.Art != null)
+				{
+					cardLayout?.SetBackgroundColor(Song.Art.GetDominateColor().Contrasting(64));
+				}
+				if (Artist.Art != null)
+				{
+					cardLayout?.SetBackgroundColor(Artist.Art.GetDominateColor().Contrasting(64));
+				}
+				
 				cardLayout?.SetPadding(20, 20, 20, 20);
 			}
 			else
