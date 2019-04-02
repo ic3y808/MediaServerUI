@@ -53,7 +53,7 @@ steps:
     action: 'create'
     target: '$(Build.SourceVersion)' 
     tagSource: 'manual' # Required when action == Create# Options: auto, manual
-    tag: '$(MajorVersion).$(MinorVersion).$(PatchVersion)'
+    tag: 'v$(Build.BuildNumber)'
     title: 'Automated Release'
     #releaseNotesSource: 'file' # Optional. Options: file, input
     #releaseNotesFile: # Optional
