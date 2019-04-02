@@ -48,12 +48,18 @@ steps:
 - task: CopyFiles@2
   inputs:
     sourceFolder: '$(System.DefaultWorkingDirectory)'
-    #contents: '**/' 
+    contents: '**/web' 
     targetFolder: '$(Build.ArtifactStagingDirectory)'
     cleanTargetFolder: true # Optional
     overWrite: true # Optional
-    #flattenFolders: false # Optional
+    
+- task: CopyFiles@2
+  inputs:
+    sourceFolder: '$(System.DefaultWorkingDirectory)'
+    contents: '**/dist' 
+    targetFolder: '$(Build.ArtifactStagingDirectory)'
 
+    overWrite: true # Optional
 # GitHub Release
 # Create, edit, or delete a GitHub release.
 - task: GitHubRelease@0
