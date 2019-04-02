@@ -19,23 +19,23 @@ steps:
 - script: |
     npm run setup
 
-#- task: Npm@1
-#  displayName: 'npm test'
-#  inputs:
-#    command: custom
-#    customCommand: 'test'
+- task: Npm@1
+  displayName: 'npm test'
+  inputs:
+    command: custom
+    customCommand: 'test'
 
-#- task: PublishTestResults@2
-#  inputs:
-#    testResultsFiles: '**/TEST-RESULTS.xml'
-#    testRunTitle: 'Test results for JavaScript'
-#  condition: succeededOrFailed()
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TEST-RESULTS.xml'
+    testRunTitle: 'Test results for JavaScript'
+  condition: succeededOrFailed()
 
-#- task: PublishCodeCoverageResults@1
-#  inputs: 
-#    codeCoverageTool: Cobertura
-#    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-#    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
     
 #- task: ArchiveFiles@2
 #  inputs:
@@ -43,22 +43,7 @@ steps:
 #    includeRootFolder: false
 
 #- task: PublishBuildArtifacts@1
-
-# Copy Files
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(System.DefaultWorkingDirectory)/web'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/web'
-    cleanTargetFolder: true # Optional
-    overWrite: true # Optional
-    
-- task: CopyFiles@2
-  inputs:
-    sourceFolder: '$(System.DefaultWorkingDirectory)/dist'
-    targetFolder: '$(Build.ArtifactStagingDirectory)/dist'
-    cleanTargetFolder: true # Optional
-    overWrite: true # Optional
-    
+   
 # GitHub Release
 # Create, edit, or delete a GitHub release.
 - task: GitHubRelease@0
@@ -73,7 +58,7 @@ steps:
     #releaseNotesSource: 'file' # Optional. Options: file, input
     #releaseNotesFile: # Optional
     #releaseNotes: # Optional
-    assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
+    #assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
     #assetUploadMode: 'delete' # Optional. Options: delete, replace
     isDraft: true # Optional
     isPreRelease: false # Optional
