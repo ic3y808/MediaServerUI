@@ -140,83 +140,49 @@ namespace Alloy.Helpers
 			return outputBitmap;
 		}
 
-		public static Bitmap GetAlbumart(this Song song)
-		{
-			var ar= GetAlbumart(song.AlbumId);
-			if(ar != null)
-			song.HasArt = true;
-			return ar;
-		}
+		public static Dictionary<string, Bitmap> ImageCache { get; set; }
 
-		public static Bitmap GetAlbumart(this Artist artist)
+		public static Bitmap GetImageBitmapFromUrl(string url)
 		{
-			//if (MusicProvider.AllSongs.Any(t => t.HasArt && t.ArtistId.Equals(artist.Id)))
-			//{
-			//	var firstSong = MusicProvider.AllSongs.First(t => t.HasArt && t.ArtistId.Equals(artist.Id));
-			//	firstSong.HasArt = true;
-			//	return GetAlbumart(firstSong.AlbumId);
-			//}
-			//if (MusicProvider.AllSongs.Any(t => t.HasArt && t.Artist.Equals(artist.Name)))
-			//{
-			//	var firstSong = MusicProvider.AllSongs.First(t => t.HasArt && t.Artist.Equals(artist.Name));
-			//	firstSong.HasArt = true;
-			//	return GetAlbumart(firstSong.AlbumId);
-			//}
-			return GetDefaultAlbumArtEfficiently();
-		}
-
-		public static Bitmap GetAlbumart(this Genre genre)
-		{
-			if(genre == null) return GetDefaultAlbumArtEfficiently();
-			if (MusicProvider.AllSongs == null || MusicProvider.AllSongs.Count == 0) return GetDefaultAlbumArtEfficiently();
-			//if (MusicProvider.AllSongs.Any(t => t.Genre != null && t.HasArt && t.Genre.Equals(genre.Title)))
-			//{
-			//	var firstSong = MusicProvider.AllSongs.First(t => t.Genre != null && t.Genre.Equals(genre.Title));
-			//	firstSong.HasArt = true;
-			//	return GetAlbumart(firstSong.AlbumId);
-			//}
-			return GetDefaultAlbumArtEfficiently();
-		}
-
-		public static Bitmap GetAlbumart(this Album album)
-		{
-			if(album == null) return GetDefaultAlbumArtEfficiently();
-			if (MusicProvider.AllSongs == null || MusicProvider.AllSongs.Count == 0) return GetDefaultAlbumArtEfficiently();
-
-			//foreach (var allSong in MusicProvider.AllSongs)
-			//{
-			//	if (allSong.HasArt && allSong.AlbumId.Equals(album.Id))
-			//	{
-			//		return GetAlbumart(allSong.AlbumId);
-			//	}
-			//	else if (allSong.HasArt && allSong.Album.Equals(album.AlbumName))
-			//	{
-			//		return GetAlbumart(allSong.AlbumId);
-			//	}
-			//}
-			return GetDefaultAlbumArtEfficiently();
-		}
-
-		public static Bitmap GetAlbumart(this string id)
-		{
-			BitmapFactory.Options options = new BitmapFactory.Options() { InPreferQualityOverSpeed = true, InDither = false, InScaled = false, OutWidth = 500, OutHeight = 500 };
-			ICursor albumCursor = Application.Context.ContentResolver.Query(
-				MediaStore.Audio.Albums.ExternalContentUri,
-				new String[] { MediaStore.Audio.Albums.InterfaceConsts.AlbumArt },
-				MediaStore.Audio.Albums.InterfaceConsts.Id + " = ?",
-				new String[] { id },
-				null
-			);
-			bool queryResult = albumCursor.MoveToFirst();
-			String result = null;
-			if (queryResult)
+			if (ImageCache == null) ImageCache = new Dictionary<string, Bitmap>();
+			if (ImageCache.ContainsKey(url))
 			{
-				result = albumCursor.GetString(0);
+				return ImageCache[url];
 			}
-			albumCursor.Close();
 
-			var albumArtBitMap = BitmapFactory.DecodeFile(result, options);
-			return albumArtBitMap;//GetDefaultAlbumArtEfficiently();
+			Bitmap imageBitmap = null;
+
+			using (var webClient = new WebClient())
+			{
+				var imageBytes = webClient.DownloadData(url);
+				if (imageBytes != null && imageBytes.Length > 0)
+				{
+					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
+				}
+			}
+			if(imageBitmap == null) imageBitmap = GetDefaultAlbumArtEfficiently();
+			ImageCache[url] = imageBitmap;
+			return imageBitmap;
+		}
+
+		public static Bitmap GetAlbumArt(this Song song)
+		{
+			return Extensions.GetImageBitmapFromUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } }));
+		}
+
+		public static Bitmap GetAlbumArt(this Artist artist)
+		{
+			return Extensions.GetImageBitmapFromUrl( MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", artist.Id } }));
+		}
+
+		public static Bitmap GetAlbumArt(this Genre genre)
+		{
+			return Extensions.GetImageBitmapFromUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "genre_id", genre.Id } }));
+		}
+
+		public static Bitmap GetAlbumArt(this Album album)
+		{
+			return Extensions.GetImageBitmapFromUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "album_id", album.Id } }));
 		}
 
 		public static Bitmap GetDefaultAlbumArtEfficiently()

@@ -62,9 +62,9 @@ namespace Alloy.Adapters
 
 			var h = (CustomViewHolder)holder;
 			if (position >= MusicProvider.AllSongs.Count) return;
-			h.Song = MusicProvider.AllSongs[position];
+			//h.Song = MusicProvider.AllSongs[position];
 
-			h.title.SetText(MusicProvider.AllSongs[position].Title, TextView.BufferType.Normal);
+			//h.title.SetText(MusicProvider.AllSongs[position].Title, TextView.BufferType.Normal);
 			h.artist.SetText(MusicProvider.AllSongs[position].Artist, TextView.BufferType.Normal);
 			//h.duration.SetText(MusicProvider.AllSongs[position].Duration.ToTimeFromSeconds(), TextView.BufferType.Normal);
 			//if (string.IsNullOrEmpty(MusicProvider.AllSongs[position].Description))
@@ -74,17 +74,10 @@ namespace Alloy.Adapters
 			//h.likes.Visibility = ViewStates.Gone;
 			//h.reposts.Visibility = ViewStates.Gone;
 
-			if (MusicProvider.AllSongs[position].Art == null)
-			{
-				h.imageView.SetImageResource(Resource.Drawable.wave);
-			}
-			else
-			{
-				h.imageView.SetImageBitmap(MusicProvider.AllSongs[position].Art);
-			}
+			
 
-			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(h.Song.Id)) h.Song.IsSelected = true;
-			h.SetFavorite();
+			//if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(h.Song.Id)) h.Song.IsSelected = true;
+			
 			h.SetSelected();
 			//h.moveHandle.SetOnTouchListener(new OnTouchListener(h, DragStartListener));
 		}

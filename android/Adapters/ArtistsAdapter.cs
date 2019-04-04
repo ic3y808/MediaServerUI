@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Alloy.Helpers;
 using Alloy.Interfaces;
 using Android.App;
@@ -9,19 +10,22 @@ using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Alloy.Widgets;
 using Android.Support.V7.Widget;
 using Android.Views.Animations;
+using Java.Util;
+using Object = Java.Lang.Object;
 
 namespace Alloy.Adapters
 {
-	public class ArtistsAdapter : RecyclerView.Adapter, ItemTouchHelperAdapter
+	public class ArtistsAdapter : RecyclerView.Adapter, ItemTouchHelperAdapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
 	{
 		public event EventHandler<CustomViewHolderEvent> ItemClick;
 		public OnStartDragListener DragStartListener;
 		private LayoutInflater layoutInflater;
 		public BackgroundAudioServiceConnection serviceConnection;
 		private int lastPosition = -1;
-		
+		private ArrayList mSectionPositions;
 
 		public ArtistsAdapter(BackgroundAudioServiceConnection connection)
 		{
@@ -34,80 +38,53 @@ namespace Alloy.Adapters
 			return position;
 		}
 
+		private class OnTouchListener : Java.Lang.Object, View.IOnTouchListener
+		{
+			private OnStartDragListener DragStartListener;
+			private CustomViewHolder holder;
+			public OnTouchListener(CustomViewHolder h, OnStartDragListener dragStartListener)
+			{
+				holder = h;
+				DragStartListener = dragStartListener;
+			}
+			public bool OnTouch(View v, MotionEvent e)
+			{
+				if (e.ActionMasked == MotionEventActions.Down)
+				{
+					DragStartListener.OnStartDrag(holder);
+				}
+				return false;
+			}
+		}
+
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			setAnimation(holder.ItemView, position);
 
 			var h = (CustomViewHolder)holder;
-
-			if (MusicProvider.Artists.Count == 0 || position >= MusicProvider.Artists.Count) return;
-			h.title.SetText(MusicProvider.Artists[position].Name, TextView.BufferType.Normal);
-			h.artist.SetText(MusicProvider.Artists[position].Name, TextView.BufferType.Normal);
-			if (string.IsNullOrEmpty(MusicProvider.Artists[position].Biography))
-				h.comment.Visibility = ViewStates.Gone;
-			else
-				h.comment.SetText(MusicProvider.Artists[position].Biography, TextView.BufferType.Normal);
-
-			
-			
-
-			//h.reposts.SetText(MusicProvider.Artists[position].RepostsCount.ToString(), TextView.BufferType.Normal);
-			//h.likes.SetText(MusicProvider.Artists[position].FavoritingsCount.ToString(), TextView.BufferType.Normal);
-			//h.duration.SetText(MusicProvider.Artists[position].Duration.ToTime(), TextView.BufferType.Normal);
+			if (position >= MusicProvider.Artists.Count) return;
 			h.Artist = MusicProvider.Artists[position];
+			
+			h.artist.SetText(MusicProvider.Artists[position].Name, TextView.BufferType.Normal);
+			//h.duration.SetText(MusicProvider.Artists[position].Duration.ToTime(), TextView.BufferType.Normal);
+			//if (string.IsNullOrEmpty(MusicProvider.Artists[position].Description))
+			//	h.comment.Visibility = ViewStates.Gone;
+			//else
+			//	h.comment.SetText(MusicProvider.Artists[position].Description, TextView.BufferType.Normal);
+			//h.likes.Visibility = ViewStates.Gone;
+			//h.reposts.Visibility = ViewStates.Gone;
 
-			h.SetFavorite();
+
+			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(h.Artist.Id)) h.Artist.IsSelected = true;
+
 			h.SetSelected();
-			//h.moveHandle.Visibility = ViewStates.Gone;
-			if (h.Artist.Art == null)
-			{
-				h.imageView.SetImageResource(Resource.Drawable.wave);
-			}
-			else
-			{
-				h.imageView.SetImageBitmap(h.Artist.Art);
-			}
-
-
+			//h.moveHandle.SetOnTouchListener(new OnTouchListener(h, DragStartListener));
 		}
-
-		private void setAnimation(View viewToAnimate, int position)
-		{
-			if (position > lastPosition)
-			{
-				Animation animation = AnimationUtils.LoadAnimation(viewToAnimate.Context, Android.Resource.Animation.FadeIn);
-				viewToAnimate.StartAnimation(animation);
-				lastPosition = position;
-			}
-		}
-
-		//public override View GetView(int position, View convertView, ViewGroup parent)
-		//{
-		//	if (MusicProvider.Artists == null || MusicProvider.Artists.Count == 0) return convertView;
-
-		//	if (convertView == null) // otherwise create a new one
-		//	{
-		//		convertView = layoutInflater.Inflate(Resource.Layout.general_list_row, null);
-		//	}
-		//	convertView.FindViewById<TextView>(Resource.Id.title).Text = MusicProvider.Artists[position].Name;
-		//	convertView.FindViewById<TextView>(Resource.Id.artist).Visibility = ViewStates.Gone;
-		//	convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = MusicProvider.Artists[position].TrackCount.ToString();
-		//	//convertView.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(MusicProvider.Artists[position].Art);
-
-		//	if (MusicProvider.Artists[position].IsSelected)
-		//	{
-		//		convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundResource(Resource.Color.menu_selection_color);
-		//	}
-		//	else convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundColor(Color.Transparent);
-
-		//	return convertView;
-		//}
-
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.song_card, parent, false);
-			var holder = new CustomViewHolder(v, OnClick, false);
+			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_row, parent, false);
+			var holder = new CustomViewHolder(v, OnClick, true);
 			return holder;
 		}
 
@@ -119,6 +96,32 @@ namespace Alloy.Adapters
 			{
 				ItemClick(this, e);
 			}
+		}
+
+		private void setAnimation(View viewToAnimate, int position)
+		{
+			// If the bound view wasn't previously displayed on screen, it's animated
+			if (position > lastPosition)
+			{
+				Animation animation = AnimationUtils.LoadAnimation(viewToAnimate.Context, Android.Resource.Animation.FadeIn);
+				viewToAnimate.StartAnimation(animation);
+				lastPosition = position;
+			}
+		}
+
+		public override void OnViewAttachedToWindow(Java.Lang.Object holder)
+		{
+			base.OnViewAttachedToWindow(holder);
+			var cHolder = (CustomViewHolder)holder;
+			cHolder?.SetSelected();
+		}
+
+		public override void OnViewDetachedFromWindow(Object holder)
+		{
+			base.OnViewDetachedFromWindow(holder);
+			var cHolder = (CustomViewHolder)holder;
+			cHolder?.ClearAnimation();
+			cHolder?.SetSelected();
 		}
 
 		public bool OnItemMove(int fromPosition, int toPosition)
@@ -138,6 +141,48 @@ namespace Alloy.Adapters
 			else MusicProvider.Artists.RemoveAt(position);
 
 			NotifyItemRemoved(position);
+
+		}
+
+		public int GetPositionForSection(int sectionIndex)
+		{
+			return (int)mSectionPositions.Get(sectionIndex);
+		}
+
+		public int GetSectionForPosition(int position)
+		{
+			return 0;
+		}
+
+		public Object[] GetSections()
+		{
+			var sections = new ArrayList(26);
+			mSectionPositions = new ArrayList(26);
+			for (int i = 0, size = MusicProvider.Artists.Count; i < size; i++)
+			{
+				if (i >= MusicProvider.Artists.Count) return sections.ToArray();
+				string section = MusicProvider.Artists[i]?.Name?.Substring(0, 1)?.ToUpper();
+				if (!sections.Contains(section))
+				{
+					sections.Add(section);
+					mSectionPositions.Add(i);
+				}
+			}
+			return sections.ToArray();
+		}
+
+		public string getSectionName(int position)
+		{
+			try
+			{
+				var a = MusicProvider.Artists[position].Name;
+				var b = a.Substring(0, 1);
+				return b.Any(char.IsLower) ? b.ToUpper() : b;
+			}
+			catch
+			{
+				return "";
+			}
 		}
 	}
 }

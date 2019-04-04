@@ -21,7 +21,7 @@ namespace Alloy.Models
 		public Album Album { get; set; }
 
 		[JsonProperty("tracks")]
-		public List<Song> Tracks { get; set; }
+		public MusicQueue Tracks { get; set; }
 	}
 
 	public class Album : Object, IParcelable
@@ -54,6 +54,9 @@ namespace Alloy.Models
 		public string Type { get; set; }
 		[JsonProperty("track_count"), JsonConverter(typeof(NullIntConverter))]
 		public int TrackCount { get; set; }
+
+		[JsonProperty("tracks")]
+		public MusicQueue Tracks { get; set; }
 
 		public bool IsSelected { get; set; }
 		public bool IsLabel { get; set; }

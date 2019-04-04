@@ -59,7 +59,7 @@ namespace Alloy
 		private ImageButton playPauseImageButton;
 		private ImageButton nextImageButton;
 		private ImageButton previousImageButton;
-		private SimpleHTTPServer castServer;
+		//private SimpleHTTPServer castServer;
 		private MainPlaylistAdapter playlistAdapter;
 		private CastStates lastState = CastStates.NoDevicesAvailable;
 
@@ -698,12 +698,12 @@ namespace Alloy
 			var pathFile = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryMusic);
 			var absolutePath = pathFile.AbsolutePath;
 
-			if (castServer == null) castServer = new SimpleHTTPServer(absolutePath, 8001);
+			//if (castServer == null) castServer = new SimpleHTTPServer(absolutePath, 8001);
 		}
 
 		private void StopServer()
 		{
-			if (castServer != null) castServer.Stop();
+			//if (castServer != null) castServer.Stop();
 		}
 
 		public void OnActiveViewChanged(View v)

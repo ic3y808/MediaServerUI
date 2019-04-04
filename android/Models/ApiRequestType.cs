@@ -4,11 +4,16 @@
 	{
 		Artist,
 		Artists,
+		ArtistsIndex,
 		Albums,
 		Album,
 		Genres,
 		Genre,
 		Stream,
 		CoverArt,
+		Star,
+		UnStar,
+		AddPlay,
+		AddHistory,
 	}
 }
