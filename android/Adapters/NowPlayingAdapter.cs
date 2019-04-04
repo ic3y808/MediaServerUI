@@ -9,14 +9,11 @@ namespace Alloy.Adapters
 {
 	public class NowPlayingAdapter : RecyclerView.Adapter
 	{
-		public event EventHandler<CustomViewHolderEvent> ItemClick;
+		public event EventHandler<NowPlayingViewHolderEvent> ItemClick;
 		private BackgroundAudioServiceConnection serviceConnection;
-
-		private int textViewId;
-
-		public NowPlayingAdapter(int textViewResourceId, BackgroundAudioServiceConnection service)
+		
+		public NowPlayingAdapter(BackgroundAudioServiceConnection service)
 		{
-			textViewId = textViewResourceId;
 			serviceConnection = service;
 		}
 
@@ -27,7 +24,7 @@ namespace Alloy.Adapters
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			var h = (CustomViewHolder)holder;
+			var h = (NowPlayingViewHolder)holder;
 			h.title.SetText(serviceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
 			h.artist.SetText(serviceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
 			h.imageView.SetImageBitmap(serviceConnection.MainQueue[position].Art);
@@ -37,9 +34,9 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View v = LayoutInflater.From(parent.Context).Inflate(textViewId, parent, false);
+			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.now_playing_row, parent, false);
 			v.Clickable = true;
-			var holder = new CustomViewHolder(v, OnClick, false);
+			var holder = new NowPlayingViewHolder(v, OnClick, false);
 			return holder;
 		}
 
@@ -52,7 +49,7 @@ namespace Alloy.Adapters
 			}
 		}
 
-		void OnClick(CustomViewHolderEvent e)
+		void OnClick(NowPlayingViewHolderEvent e)
 		{
 			ItemClick?.Invoke(this, e);
 		}

@@ -92,10 +92,9 @@ namespace Alloy.Services
 			MainQueue = null;
 			notificationService = new NotificationService(this);
 			InitMediaPlayer();
-			//InitBluetoothReceiver();
+			InitBluetoothReceiver();
 			InitMediaButtonReceiver();
 			InitMusicSyncReceiver();
-			//InitNoisyReceiver();
 			InitHeadsetPlugReceiver();
 			InitMediaSession();
 			InitCast();
@@ -462,20 +461,20 @@ namespace Alloy.Services
 		{
 			try
 			{
-				//if (CurrentSong.IsSubsonicTrack)
-				//{
 				Utils.UnlockSsl(true);
-				//}
 				MediaPlayer.Start();
-
 				loading = false;
 				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
 				notificationService.ShowPlayingNotification();
 				notificationService.UpdateMediaSessionMeta();
-				//if (CurrentSong.IsSubsonicTrack)
-				//{
+				Utils.Run(()=>
+				{
+					MusicProvider.AddPlay(CurrentSong.Id);
+					MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
+				});
+			
 				Utils.UnlockSsl(false);
-				//}
+
 			}
 			catch (Exception ee)
 			{
@@ -500,8 +499,7 @@ namespace Alloy.Services
 
 				InitMediaPlayer();
 				InitHeadsetPlugReceiver();
-				//InitNoisyReceiver();
-				//	InitBluetoothReceiver();
+				InitBluetoothReceiver();
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}

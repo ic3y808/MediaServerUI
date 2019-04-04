@@ -20,9 +20,11 @@ namespace Alloy.Fragments
 			Album album = Arguments.GetParcelable("artist") as Album;
 			root_view = inflater.Inflate(Resource.Layout.album_detail_layout, container, false);
 			listView = root_view.FindViewById<ListView>(Resource.Id.album_tracks_list);
+
 			if (album != null)
 			{
 				root_view.FindViewById<TextView>(Resource.Id.title).SetText(album.Name, TextView.BufferType.Normal);
+				root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(album.Art);
 				root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(album.Art);
 				adapter = new AlbumDetailAdapter(album);
 			}

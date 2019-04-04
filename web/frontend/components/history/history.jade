@@ -26,8 +26,12 @@ section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
                   th(style='width: 1px;', rowspan='1', colspan='1') Date
               tbody(ng-repeat="item in $root.history")
                 tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                  td {{item.title}}
-                  td {{item.artist}}
-                  td {{item.album}}
-                  td {{item.genre}}
+                  td 
+                    a(href="/album/{{item.album_id}}") {{item.title}}
+                  td 
+                    a(href="/artist/{{item.artist_id}}") {{item.artist}}
+                  td 
+                    a(href="/album/{{item.album_id}}") {{item.album}}
+                  td
+                    a(href="/genre/{{item.genre_id}}") {{item.genre}}
                   td {{$root.formatUnixTime(item.time)}}

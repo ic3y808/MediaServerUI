@@ -153,7 +153,7 @@ namespace Alloy
 
 			if (nowPlayingAdapter == null)
 			{
-				nowPlayingAdapter = new NowPlayingAdapter(Resource.Layout.now_playing_row, serviceConnection);
+				nowPlayingAdapter = new NowPlayingAdapter(serviceConnection);
 				nowPlayingAdapter.ItemClick += OnItemClick;
 				nowPlayingList.SetAdapter(nowPlayingAdapter);
 			}
@@ -349,7 +349,7 @@ namespace Alloy
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
-		private void OnItemClick(object sender, CustomViewHolderEvent e)
+		private void OnItemClick(object sender, NowPlayingViewHolderEvent e)
 		{
 		}
 

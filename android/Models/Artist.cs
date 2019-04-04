@@ -13,19 +13,55 @@ namespace Alloy.Models
 	public class ArtistList
 	{
 		[JsonProperty("artists")]
-		public ArtistsQueue Artists { get; set; }
+		public List<Artist> Artists { get; set; }
 		[JsonProperty("next_offset")]
 		public int NextOffset { get; set; }
 		[JsonProperty("limit")]
 		public int Limit { get; set; }
 	}
+
 	public class ArtistContainer
 	{
 		[JsonProperty("artist")]
 		public Artist Artist { get; set; }
 
+		[JsonProperty("popular_tracks")]
+		public MusicQueue PopularTracks { get; set; }
+
 		[JsonProperty("tracks")]
-		public List<Song> Tracks { get; set; }
+		public MusicQueue Tracks { get; set; }
+
+		[JsonProperty("links")]
+		public List<Link> Links { get; set; }
+
+		[JsonProperty("albums")]
+		public List<Album> Albums { get; set; }
+
+		[JsonProperty("EPs")]
+		public List<Album> EPs { get; set; }
+
+		[JsonProperty("singles")]
+		public List<Album> Singles { get; set; }
+
+		[JsonProperty("total_plays")]
+		public int TotalPlays { get; set; }
+
+		[JsonProperty("size")]
+		public string Size { get; set; }
+	}
+
+	public class ArtistIndex
+	{
+		[JsonProperty("index")]
+		public ArtistIndexContainer[] Index { get; set; }
+	}
+
+	public class ArtistIndexContainer
+	{
+		[JsonProperty("name")]
+		public string Name { get; set; }
+		[JsonProperty("value")]
+		public Artist[] Value { get; set; }
 	}
 
 	public class Artist : Object, IParcelable
@@ -38,7 +74,7 @@ namespace Alloy.Models
 			set
 			{
 				_id = value;
-				if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", _id }, { "width", "50" }, { "height", "50" } });
+				//if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", _id }, { "width", "50" }, { "height", "50" } });
 			}
 		}
 		[JsonIgnore]

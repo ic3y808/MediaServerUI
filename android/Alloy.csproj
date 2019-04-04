@@ -52,7 +52,7 @@
     <JavaMaximumHeapSize>
     </JavaMaximumHeapSize>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
-    <AndroidCreatePackagePerAbi>true</AndroidCreatePackagePerAbi>
+    <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -85,8 +85,8 @@
     <Compile Include="Adapters\AlbumDetailAdapter.cs" />
     <Compile Include="Adapters\AlbumsAdapter.cs" />
     <Compile Include="Adapters\AllMusicAdapter.cs" />
+    <Compile Include="Adapters\ArtistDetailAdapters.cs" />
     <Compile Include="Adapters\ArtistsAdapter.cs" />
-    <Compile Include="Adapters\ArtistsDetailAdapter.cs" />
     <Compile Include="Adapters\GenreDetailAdapter.cs" />
     <Compile Include="Adapters\GenresAdapter.cs" />
     <Compile Include="Adapters\MainPlaylistAdapter.cs" />
@@ -113,8 +113,11 @@
     <Compile Include="Models\HeadsetDeviceManager.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemClickEventArgs.cs" />
+    <Compile Include="Models\Link.cs" />
     <Compile Include="Models\MinDateTimeConverter.cs" />
     <Compile Include="Models\MusicQueue.cs" />
+    <Compile Include="Models\NowPlayingViewHolder.cs" />
+    <Compile Include="Models\NowPlayingViewHolderEvent.cs" />
     <Compile Include="Models\NullIntConverter.cs" />
     <Compile Include="Models\SlideDrawable.cs" />
     <Compile Include="Models\StringToBooleanConverter.cs" />
@@ -166,6 +169,7 @@
     <Compile Include="Services\SimpleHTTPServer.cs" />
     <Compile Include="Services\StatusEventArg.cs" />
     <Compile Include="SplashScreen.cs" />
+    <Compile Include="Widgets\CircleImageView.cs" />
     <Compile Include="Widgets\FastScroller.cs" />
     <Compile Include="Widgets\FastScrollPopup.cs" />
     <Compile Include="Widgets\FastScrollRecyclerView.cs" />
@@ -346,7 +350,7 @@
     <AndroidResource Include="Resources\drawable\previous.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\song_card.xml" />
+    <AndroidResource Include="Resources\layout\row_item.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\pause.png" />
@@ -686,6 +690,42 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\above_shadow.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\row_section.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\artist_row.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\artist_details_layout.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\circle.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\circle_border.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\grad.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\artist_detail_album_item.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\artist_detail_song_item.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

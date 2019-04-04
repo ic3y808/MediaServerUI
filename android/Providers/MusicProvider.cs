@@ -34,14 +34,14 @@ namespace Alloy.Providers
 		public static IQueue Favorites { get; set; }
 		public static List<Genre> Genres { get; set; }
 		public static List<Album> Albums { get; set; }
-		public static ArtistsQueue Artists { get; set; }
-
-		public static int MaxCachedArtists = 50;
+		public static List<Artist> Artists { get; set; }
 
 		public static event EventHandler LibraryLoaded;
 
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler<string> ArtistsRefreshed;
+		public static event EventHandler ArtistStartRefresh;
+		public static event EventHandler<ArtistContainer> ArtistRefreshed;
 
 		static MusicProvider()
 		{
@@ -49,7 +49,7 @@ namespace Alloy.Providers
 			Favorites = new MusicQueue();
 			Genres = new List<Genre>();
 			Albums = new List<Album>();
-			Artists = new ArtistsQueue();
+			Artists = new List<Artist>();
 		}
 
 		public static string GetHost()
@@ -75,6 +75,8 @@ namespace Alloy.Providers
 					return $"{GetHost()}/api/v1/browse/artist";
 				case ApiRequestType.Artists:
 					return $"{GetHost()}/api/v1/browse/artists";
+				case ApiRequestType.ArtistsIndex:
+					return $"{GetHost()}/api/v1/browse/artists_index";
 				case ApiRequestType.Album:
 					return $"{GetHost()}/api/v1/browse/album";
 				case ApiRequestType.Albums:
@@ -87,6 +89,14 @@ namespace Alloy.Providers
 					return $"{GetHost()}/api/v1/media/stream";
 				case ApiRequestType.CoverArt:
 					return $"{GetHost()}/api/v1/media/cover_art";
+				case ApiRequestType.Star:
+					return $"{GetHost()}/api/v1/annotation/star";
+				case ApiRequestType.UnStar:
+					return $"{GetHost()}/api/v1/annotation/unstar";
+				case ApiRequestType.AddHistory:
+					return $"{GetHost()}/api/v1/browse/history";
+				case ApiRequestType.AddPlay:
+					return $"{GetHost()}/api/v1/annotation/add_play";
 
 				default:
 					return null;
@@ -215,29 +225,82 @@ namespace Alloy.Providers
 			}
 		}
 
-		public class ArtistsLoader : AsyncTask<object, Song, int>
+		public class ArtistLoader : AsyncTask<object, object, int>
 		{
-			private bool initial;
-			public ArtistsLoader(bool initial)
+			private Artist artist;
+			private ArtistContainer result;
+			public ArtistLoader(Artist artist)
 			{
-				this.initial = initial;
+				this.artist = artist;
 			}
+
 			protected override int RunInBackground(params object[] @params)
 			{
 				try
 				{
 					Utils.UnlockSsl(true);
-					var p = new Dictionary<string, object> { { "limit", MaxCachedArtists.ToString() } };
-					if (!initial || Artists.NextOffset != 0)
+					var request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
+					result = JsonConvert.DeserializeObject<ArtistContainer>(request);
+
+					foreach (Album album in result.Albums)
 					{
-						p.Add("offset", Artists.NextOffset.ToString());
+						album.Art = album.GetAlbumArt();
+						foreach (Song albumTrack in album.Tracks)
+						{
+							if (albumTrack.Art == null) albumTrack.Art = album.Art;
+
+						}
 					}
-					var request = ApiRequest(ApiRequestType.Artists, p, RequestType.GET);
+					foreach (Album album in result.EPs)
+					{
+						album.Art = album.GetAlbumArt();
+						foreach (Song albumTrack in album.Tracks)
+						{
+							if (albumTrack.Art == null) albumTrack.Art = album.Art;
 
-					ArtistList result = JsonConvert.DeserializeObject<ArtistList>(request);
+						}
+					}
+					foreach (Album album in result.Singles)
+					{
+						album.Art = album.GetAlbumArt();
+						foreach (Song albumTrack in album.Tracks)
+						{
+							if (albumTrack.Art == null) albumTrack.Art = album.Art;
 
-					Artists.AddRange(result.Artists);
-					Artists.NextOffset = result.NextOffset;
+						}
+					}
+					foreach (Song track in result.PopularTracks)
+					{
+						track.Art = track.GetAlbumArt();
+					}
+
+					Utils.UnlockSsl(false);
+					return 0;
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
+				return 1;
+			}
+
+			protected override void OnPostExecute(int refreshResult)
+			{
+				base.OnPostExecute(refreshResult);
+				if (refreshResult != 0) return;
+				ArtistRefreshed?.Invoke(null, result);
+				Alloy.Adapters.Adapters.UpdateAdapters();
+			}
+		}
+
+		public class ArtistsLoader : AsyncTask<object, Song, int>
+		{
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+
+					var request = ApiRequest(ApiRequestType.Artists, null, RequestType.GET);
+
+					Artists = JsonConvert.DeserializeObject<ArtistList>(request).Artists;
 
 					Utils.UnlockSsl(false);
 				}
@@ -337,11 +400,11 @@ namespace Alloy.Providers
 			var allMusic = (AllMusicLoader)new AllMusicLoader().Execute();
 		}
 
-		public static void RefreshArtists(bool initial)
+		public static void RefreshArtists()
 		{
 			////if (initial) Artists = new ArtistsQueue();
 			ArtistsStartRefresh?.Invoke(null, null);
-			var artists = (ArtistsLoader)new ArtistsLoader(initial).Execute();
+			var artists = (ArtistsLoader)new ArtistsLoader().Execute();
 		}
 
 		public static void RefreshAlbums()
@@ -360,27 +423,18 @@ namespace Alloy.Providers
 		{
 			Genres = new List<Genre>();
 			Albums = new List<Album>();
-			Artists = new ArtistsQueue();
+			Artists = new List<Artist>();
 
 			var albums = (AlbumsLoader)new AlbumsLoader().Execute();
-			var artists = (ArtistsLoader)new ArtistsLoader(true).Execute();
+			var artists = (ArtistsLoader)new ArtistsLoader().Execute();
 			var genres = (GenreLoader)new GenreLoader().Execute();
 		}
 
-		public static MusicQueue GetArtistTracks(Artist artist)
+		public static void GetArtist(Artist artist)
 		{
-			var tracks = new MusicQueue();
-			try
-			{
-				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
-				ArtistContainer result = JsonConvert.DeserializeObject<ArtistContainer>(request);
-				tracks.AddRange(result.Tracks);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
-
-			return tracks;
+			ArtistStartRefresh?.Invoke(null, null);
+			Adapters.Adapters.Clear();
+			var a = (ArtistLoader)new ArtistLoader(artist).Execute();
 		}
 
 		public static MusicQueue GetGenreTracks(Genre genre)
@@ -427,25 +481,8 @@ namespace Alloy.Providers
 			uriBuilder.Query = parameters.ToString();
 			return Android.Net.Uri.Parse(uriBuilder.Uri.ToString());
 		}
-
-		public static Bitmap GetImageBitmapFromUrl(string url)
-		{
-			Bitmap imageBitmap = null;
-
-			using (var webClient = new WebClient())
-			{
-				var imageBytes = webClient.DownloadData(url);
-				if (imageBytes != null && imageBytes.Length > 0)
-				{
-					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-				}
-			}
-
-			return imageBitmap;
-		}
-
-
-		public static Android.Graphics.Bitmap GetAlbumArt(Dictionary<string, object> paramsDictionary)
+		
+		public static string GetAlbumArt(Dictionary<string, object> paramsDictionary)
 		{
 			UriBuilder uriBuilder;
 			var parameters = new Extensions.HttpValueCollection();
@@ -461,22 +498,66 @@ namespace Alloy.Providers
 			}
 
 			uriBuilder.Query = parameters.ToString();
-			return GetImageBitmapFromUrl(uriBuilder.Uri.ToString());
+			return uriBuilder.Uri.ToString();
 		}
-	}
 
-	public class ArtistsQueue : IArtistQueue
-	{
-		public override void GetMoreData()
+		public static void AddPlay(string id)
 		{
-			MusicProvider.RefreshArtists(true);
+			try
+			{
+				Utils.UnlockSsl(true);
+				var request = ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", id } }, RequestType.PUT);
+				var result = JsonConvert.DeserializeObject(request);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
 		}
 
-		public override void Refresh()
+		public static void AddHistory(string type, string action, string id, string title , string artist, string artist_id, string album, string album_id, string genre, string genre_id)
 		{
-			MusicProvider.RefreshArtists(true);
+			try
+			{
+				Utils.UnlockSsl(true);
+				var request = ApiRequest(ApiRequestType.AddHistory, new Dictionary<string, object>
+				{
+					{ "type", type },
+					{ "action", action },
+					{ "id", id },
+					{ "title", title },
+					{ "artist", artist },
+					{ "artist_id", artist_id },
+					{ "album", album },
+					{ "album_id", album_id },
+					{ "genre", genre },
+					{ "genre_id", genre_id },
+				}, RequestType.PUT);
+				var result = JsonConvert.DeserializeObject(request);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
 		}
 
-		public override int NextOffset { get; set; }
+		public static void Star(string type, string id)
+		{
+			try
+			{
+				Utils.UnlockSsl(true);
+				var request = ApiRequest(ApiRequestType.Star, new Dictionary<string, object> { { type, id } }, RequestType.PUT);
+				var result = JsonConvert.DeserializeObject(request);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+		}
+		public static void UnStar(string type, string id)
+		{
+			try
+			{
+				Utils.UnlockSsl(true);
+				var request = ApiRequest(ApiRequestType.UnStar, new Dictionary<string, object> { { type, id } }, RequestType.PUT);
+				var result = JsonConvert.DeserializeObject(request);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+		}
 	}
 }

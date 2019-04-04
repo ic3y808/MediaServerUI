@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Android.App;
 using Android.OS;
 using Android.Support.V7.Widget;
@@ -13,79 +15,110 @@ namespace Alloy.Adapters
 {
 	public static class Adapters
 	{
-		public static RecyclerView.Adapter[] RecyclerAdapters { get; set; }
-		public static BaseAdapter<Song>[] PlaylistAdapters { get; set; }
-		public static BaseAdapter<Song>[] ListAdapters { get; set; }
-		public static BaseAdapter<Album>[] AlbumAdapters { get; set; }
-		public static BaseAdapter<Artist>[] ArtistAdapters { get; set; }
-		public static BaseAdapter<Genre>[] GenreAdapters { get; set; }
+		public static List<RecyclerView.Adapter> RecyclerAdapters { get; set; }
+		public static List<BaseAdapter<Song>> PlaylistAdapters { get; set; }
+		public static List<BaseAdapter<Song>> ListAdapters { get; set; }
+		public static List<BaseAdapter<Album>> AlbumAdapters { get; set; }
+		public static List<BaseAdapter<Artist>> ArtistAdapters { get; set; }
+		public static List<BaseAdapter<Genre>> GenreAdapters { get; set; }
 		public static Activity CurrentActivity { get; set; }
 
 		public static void SetAdapters(Activity activity, params RecyclerView.Adapter[] addedAdapters)
 		{
+			if(RecyclerAdapters == null) RecyclerAdapters = new List<RecyclerView.Adapter>();
 			CurrentActivity = activity;
-			RecyclerAdapters = addedAdapters;
+			RecyclerAdapters.AddRange(addedAdapters);
 		}
 
 		public static void SetAdapters(Activity activity, params BaseAdapter<Song>[] addedAdapters)
 		{
+			if (ListAdapters == null) ListAdapters = new List<BaseAdapter<Song>>();
 			CurrentActivity = activity;
-			ListAdapters = addedAdapters;
+			ListAdapters.AddRange(addedAdapters);
 		}
 
 		public static void SetAdapters(Activity activity, params BaseAdapter<Album>[] addedAdapters)
 		{
+			if (AlbumAdapters == null) AlbumAdapters = new List<BaseAdapter<Album>>();
 			CurrentActivity = activity;
-			AlbumAdapters = addedAdapters;
+			AlbumAdapters.AddRange(addedAdapters);
 		}
 
 		public static void SetAdapters(Activity activity, params BaseAdapter<Artist>[] addedAdapters)
 		{
+			if (ArtistAdapters == null) ArtistAdapters = new List<BaseAdapter<Artist>>();
 			CurrentActivity = activity;
-			ArtistAdapters = addedAdapters;
+			ArtistAdapters.AddRange(addedAdapters);
 		}
 
 		public static void SetAdapters(Activity activity, params BaseAdapter<Genre>[] addedAdapters)
 		{
+			if (GenreAdapters == null) GenreAdapters = new List<BaseAdapter<Genre>>();
 			CurrentActivity = activity;
-			GenreAdapters = addedAdapters;
+			GenreAdapters.AddRange(addedAdapters);
 		}
 
 		public static void SetPlaylistAdapters(Activity activity, params BaseAdapter<Song>[] addedAdapters)
 		{
+			if (PlaylistAdapters == null) PlaylistAdapters = new List<BaseAdapter<Song>>();
 			CurrentActivity = activity;
-			PlaylistAdapters = addedAdapters;
+			PlaylistAdapters.AddRange(addedAdapters);
 		}
 
 		private static void Update()
 		{
 			try
 			{
-				if (Alloy.Adapters.Adapters.RecyclerAdapters != null)
+				if (RecyclerAdapters != null)
 				{
-					lock (Alloy.Adapters.Adapters.RecyclerAdapters)
-						foreach (var adapter in Alloy.Adapters.Adapters.RecyclerAdapters) { adapter.NotifyDataSetChanged(); }
+					lock (RecyclerAdapters)
+						foreach (var adapter in RecyclerAdapters) { adapter.NotifyDataSetChanged(); }
 				}
 
-				if (Alloy.Adapters.Adapters.PlaylistAdapters != null)
-					lock (Alloy.Adapters.Adapters.PlaylistAdapters)
-						foreach (var adapter in Alloy.Adapters.Adapters.PlaylistAdapters) { adapter.NotifyDataSetChanged(); }
+				if (PlaylistAdapters != null)
+					lock (PlaylistAdapters)
+						foreach (var adapter in PlaylistAdapters) { adapter.NotifyDataSetChanged(); }
 
-				if (Alloy.Adapters.Adapters.ListAdapters != null)
-					lock (Alloy.Adapters.Adapters.ListAdapters)
-						foreach (var adapter in Alloy.Adapters.Adapters.ListAdapters) { adapter.NotifyDataSetChanged(); }
+				if (ListAdapters != null)
+					lock (ListAdapters)
+						foreach (var adapter in ListAdapters) { adapter.NotifyDataSetChanged(); }
 
-				if (Alloy.Adapters.Adapters.ArtistAdapters != null)
-					lock (Alloy.Adapters.Adapters.ArtistAdapters)
-						foreach (var adapter in Alloy.Adapters.Adapters.ArtistAdapters) { adapter.NotifyDataSetChanged(); }
+				if (ArtistAdapters != null)
+					lock (ArtistAdapters)
+						foreach (var adapter in ArtistAdapters) { adapter.NotifyDataSetChanged(); }
 
-				if (Alloy.Adapters.Adapters.AlbumAdapters != null)
-					lock (Alloy.Adapters.Adapters.AlbumAdapters)
-						foreach (var adapter in Alloy.Adapters.Adapters.AlbumAdapters) { adapter.NotifyDataSetChanged(); }
+				if (AlbumAdapters != null)
+					lock (AlbumAdapters)
+						foreach (var adapter in AlbumAdapters) { adapter.NotifyDataSetChanged(); }
 
-				if (Alloy.Adapters.Adapters.GenreAdapters != null)
-					lock (Alloy.Adapters.Adapters.GenreAdapters)
-						foreach (var adapter in Alloy.Adapters.Adapters.GenreAdapters) { adapter.NotifyDataSetChanged(); }
+				if (GenreAdapters != null)
+					lock (GenreAdapters)
+						foreach (var adapter in GenreAdapters) { adapter.NotifyDataSetChanged(); }
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+		}
+		public static void Clear()
+		{
+			try
+			{
+				if (RecyclerAdapters != null)
+					lock (RecyclerAdapters)
+						RecyclerAdapters.Clear();
+				if (PlaylistAdapters != null)
+					lock (PlaylistAdapters)
+						PlaylistAdapters.Clear();
+				if (ListAdapters != null)
+					lock (ListAdapters)
+						ListAdapters.Clear();
+				if (ArtistAdapters != null)
+					lock (ArtistAdapters)
+						ArtistAdapters.Clear();
+				if (AlbumAdapters != null)
+					lock (AlbumAdapters)
+						AlbumAdapters.Clear();
+				if (GenreAdapters != null)
+					lock (GenreAdapters)
+						GenreAdapters.Clear();
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}

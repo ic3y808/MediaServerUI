@@ -23,7 +23,7 @@ namespace Alloy.Models
 			set
 			{
 				_id = value;
-				if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", _id }, { "width", "50" }, { "height", "50" } });
+				//if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", _id }, { "width", "50" }, { "height", "50" } });
 			}
 		}
 
