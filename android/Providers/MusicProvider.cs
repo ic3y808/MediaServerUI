@@ -22,6 +22,7 @@ using Debug = System.Diagnostics.Debug;
 using Extensions = Alloy.Helpers.Extensions;
 using IQueue = Alloy.Interfaces.IQueue;
 using Path = System.IO.Path;
+using Stream = System.IO.Stream;
 
 
 namespace Alloy.Providers
@@ -40,8 +41,13 @@ namespace Alloy.Providers
 
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler<string> ArtistsRefreshed;
+		public static event EventHandler AlbumsStartRefresh;
+		public static event EventHandler<string> AlbumsRefreshed;
 		public static event EventHandler ArtistStartRefresh;
 		public static event EventHandler<ArtistContainer> ArtistRefreshed;
+		public static event EventHandler AlbumStartRefresh;
+		public static event EventHandler<AlbumContainer> AlbumRefreshed;
+	
 
 		static MusicProvider()
 		{
@@ -107,11 +113,11 @@ namespace Alloy.Providers
 
 		public static string ApiRequest(ApiRequestType rt, Dictionary<string, object> paramsDictionary, RequestType requestType, string jsonObject = "", object id2 = null)
 		{
-			var json = "";
+			string json = "";
 			try
 			{
 				UriBuilder uriBuilder;
-				var parameters = new Extensions.HttpValueCollection();
+				Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection();
 
 				parameters["api_key"] = GetApiKey();
 
@@ -119,7 +125,7 @@ namespace Alloy.Providers
 
 				if (paramsDictionary != null)
 				{
-					foreach (var o in paramsDictionary)
+					foreach (KeyValuePair<string, object> o in paramsDictionary)
 					{
 						parameters[o.Key] = o.Value as string;
 					}
@@ -130,14 +136,14 @@ namespace Alloy.Providers
 				Debug.WriteLine("API REQUEST: " + uriBuilder.Uri + "\n");
 
 
-				var request = (HttpWebRequest)WebRequest.Create(uriBuilder.Uri);
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uriBuilder.Uri);
 
 				request.Method = requestType.ToString();
 				request.ContentType = "application/x-www-form-urlencoded";
 
 				if (requestType.ToString() == "PUT" && jsonObject != "")
 				{
-					using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+					using (StreamWriter streamWriter = new StreamWriter(request.GetRequestStream()))
 						streamWriter.Write(jsonObject);
 				}
 
@@ -149,7 +155,7 @@ namespace Alloy.Providers
 					return string.Empty;
 				}
 
-				var stream = response.GetResponseStream();
+				Stream stream = response.GetResponseStream();
 				try
 				{
 					if (response.Headers["Content-Encoding"] != null && (response.Headers["Content-Encoding"].Equals("gzip") || response.Headers["Content-Encoding"].Equals("deflate")))
@@ -161,7 +167,7 @@ namespace Alloy.Providers
 
 
 				if (stream == null) return null;
-				using (var reader = new StreamReader(stream))
+				using (StreamReader reader = new StreamReader(stream))
 				{
 					try { json = reader.ReadToEnd(); }
 					catch (Exception e) { Crashes.TrackError(e); }
@@ -173,32 +179,41 @@ namespace Alloy.Providers
 			return json;
 		}
 
-		public class AllMusicLoader : AsyncTask<object, Song, int>
+		public class AlbumLoader : AsyncTask<object, object, int>
 		{
+			private Album album;
+			private AlbumContainer result;
+			public AlbumLoader(Album album)
+			{
+				this.album = album;
+			}
+
 			protected override int RunInBackground(params object[] @params)
 			{
-
-
-				return 0;
-			}
-
-			protected override void OnProgressUpdate(params Song[] values)
-			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
-				base.OnProgressUpdate(values);
-			}
-
-			protected override void OnPostExecute(int result)
-			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
-				foreach (var s in AllSongs)
+				try
 				{
-					if (!s.Starred) continue;
-					if (Favorites.Any(aaa => aaa.Id.Equals(s.Id))) continue;
-					Favorites.Add(s);
+					Utils.UnlockSsl(true);
+					string request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
+					result = JsonConvert.DeserializeObject<AlbumContainer>(request);
+					result.Album.Art = result.Album.GetAlbumArt();
+					foreach (Song track in result.Tracks)
+					{
+						track.Art = result.Album.Art;
+					}
+
+					Utils.UnlockSsl(false);
+					return 0;
 				}
-				MusicProvider.LibraryLoaded?.Invoke(null, null);
-				base.OnPostExecute(result);
+				catch (Exception e) { Crashes.TrackError(e); }
+				return 1;
+			}
+
+			protected override void OnPostExecute(int refreshResult)
+			{
+				base.OnPostExecute(refreshResult);
+				if (refreshResult != 0) return;
+				AlbumRefreshed?.Invoke(null, result);
+				Alloy.Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
@@ -209,7 +224,7 @@ namespace Alloy.Providers
 				try
 				{
 					Utils.UnlockSsl(true);
-					var request = ApiRequest(ApiRequestType.Albums, null, RequestType.GET);
+					string request = ApiRequest(ApiRequestType.Albums, null, RequestType.GET);
 					Albums = JsonConvert.DeserializeObject<AlbumList>(request).Albums;
 					Utils.UnlockSsl(false);
 				}
@@ -220,7 +235,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				Alloy.Adapters.Adapters.UpdateAdapters();
-				MusicProvider.LibraryLoaded?.Invoke(null, null);
+				AlbumsRefreshed?.Invoke(null, null);
 				base.OnPostExecute(result);
 			}
 		}
@@ -239,7 +254,7 @@ namespace Alloy.Providers
 				try
 				{
 					Utils.UnlockSsl(true);
-					var request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
+					string request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
 					result = JsonConvert.DeserializeObject<ArtistContainer>(request);
 
 					foreach (Album album in result.Albums)
@@ -298,7 +313,7 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 
-					var request = ApiRequest(ApiRequestType.Artists, null, RequestType.GET);
+					string request = ApiRequest(ApiRequestType.Artists, null, RequestType.GET);
 
 					Artists = JsonConvert.DeserializeObject<ArtistList>(request).Artists;
 
@@ -323,7 +338,7 @@ namespace Alloy.Providers
 				try
 				{
 					Utils.UnlockSsl(true);
-					var request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
+					string request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
 					Genres = JsonConvert.DeserializeObject<GenreList>(request).Genres;
 					Utils.UnlockSsl(false);
 				}
@@ -339,84 +354,25 @@ namespace Alloy.Providers
 			}
 		}
 
-		public static void HardRefresh()
-		{
-			var mediaUri = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory("Music").Path);
-			List<string> items = new List<string>();
-
-			object[] attributes = Assembly.GetCallingAssembly().GetCustomAttributes(typeof(SupportedFormatAttribute), false);
-			List<string> extensions = attributes.Cast<SupportedFormatAttribute>().SelectMany(attribute => attribute.Extensions).ToList();
-
-
-
-			//foreach (var allSong in AllSongs)
-			//{
-			//	Java.IO.File f = new Java.IO.File(allSong.Uri.RealPath());
-			//	if (!f.Exists())
-			//		allSong.Delete(song => { });
-
-
-			//}
-
-			foreach (var enumerateFile in Directory.EnumerateFiles(mediaUri, "*", SearchOption.AllDirectories))
-			{
-				foreach (var extension in extensions)
-				{
-					if (enumerateFile.EndsWith(extension))
-						items.Add(enumerateFile);
-				}
-			}
-
-			MediaScannerConnection.ScanFile(Application.Context, items.ToArray(), null, new HardScanCallback(RefreshAllSongs));
-		}
-
-		public class HardScanCallback : Java.Lang.Object, MediaScannerConnection.IOnScanCompletedListener
-		{
-			private Action callback;
-			private Song song;
-			public HardScanCallback(Action callbackAction)
-			{
-				callback = callbackAction;
-			}
-
-			public void OnScanCompleted(string path, Android.Net.Uri uri)
-			{
-				callback();
-
-				Adapters.Adapters.CurrentActivity.RunOnUiThread(new Action(() =>
-				{
-					Toast.MakeText(Application.Context, "Rescan complete", ToastLength.Short).Show();
-				}));
-
-
-			}
-		}
-
-		public static void RefreshAllSongs()
-		{
-			AllSongs = new MusicQueue();
-			Favorites = new MusicQueue();
-
-			var allMusic = (AllMusicLoader)new AllMusicLoader().Execute();
-		}
-
+		
 		public static void RefreshArtists()
 		{
 			////if (initial) Artists = new ArtistsQueue();
 			ArtistsStartRefresh?.Invoke(null, null);
-			var artists = (ArtistsLoader)new ArtistsLoader().Execute();
+			ArtistsLoader artists = (ArtistsLoader)new ArtistsLoader().Execute();
 		}
 
 		public static void RefreshAlbums()
 		{
 			Albums = new List<Album>();
-			var albums = (AlbumsLoader)new AlbumsLoader().Execute();
+			AlbumsStartRefresh?.Invoke(null, null);
+			AlbumsLoader albums = (AlbumsLoader)new AlbumsLoader().Execute();
 		}
 
 		public static void RefreshGenres()
 		{
 			Genres = new List<Genre>();
-			var genres = (GenreLoader)new GenreLoader().Execute();
+			GenreLoader genres = (GenreLoader)new GenreLoader().Execute();
 		}
 
 		public static void QuickRefresh()
@@ -425,25 +381,32 @@ namespace Alloy.Providers
 			Albums = new List<Album>();
 			Artists = new List<Artist>();
 
-			var albums = (AlbumsLoader)new AlbumsLoader().Execute();
-			var artists = (ArtistsLoader)new ArtistsLoader().Execute();
-			var genres = (GenreLoader)new GenreLoader().Execute();
+			AlbumsLoader albums = (AlbumsLoader)new AlbumsLoader().Execute();
+			ArtistsLoader artists = (ArtistsLoader)new ArtistsLoader().Execute();
+			GenreLoader genres = (GenreLoader)new GenreLoader().Execute();
 		}
 
 		public static void GetArtist(Artist artist)
 		{
 			ArtistStartRefresh?.Invoke(null, null);
 			Adapters.Adapters.Clear();
-			var a = (ArtistLoader)new ArtistLoader(artist).Execute();
+			ArtistLoader a = (ArtistLoader)new ArtistLoader(artist).Execute();
+		}
+
+		public static void GetAlbum(Album album)
+		{
+			AlbumStartRefresh?.Invoke(null, null);
+			Adapters.Adapters.Clear();
+			AlbumLoader a = (AlbumLoader)new AlbumLoader(album).Execute();
 		}
 
 		public static MusicQueue GetGenreTracks(Genre genre)
 		{
-			var tracks = new MusicQueue();
+			MusicQueue tracks = new MusicQueue();
 			try
 			{
 				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
+				string request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
 				GenreContainer result = JsonConvert.DeserializeObject<GenreContainer>(request);
 				tracks.AddRange(result.Tracks);
 				Utils.UnlockSsl(false);
@@ -455,11 +418,11 @@ namespace Alloy.Providers
 
 		public static MusicQueue GetAlbumTracks(Album album)
 		{
-			var tracks = new MusicQueue();
+			MusicQueue tracks = new MusicQueue();
 			try
 			{
 				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
+				string request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
 				AlbumContainer result = JsonConvert.DeserializeObject<AlbumContainer>(request);
 				tracks.AddRange(result.Tracks);
 				Utils.UnlockSsl(false);
@@ -472,7 +435,7 @@ namespace Alloy.Providers
 		public static Android.Net.Uri GetStreamUri(Song song)
 		{
 			UriBuilder uriBuilder;
-			var parameters = new Extensions.HttpValueCollection();
+			Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection();
 
 			parameters["api_key"] = GetApiKey();
 			uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.Stream));
@@ -481,17 +444,17 @@ namespace Alloy.Providers
 			uriBuilder.Query = parameters.ToString();
 			return Android.Net.Uri.Parse(uriBuilder.Uri.ToString());
 		}
-		
+
 		public static string GetAlbumArt(Dictionary<string, object> paramsDictionary)
 		{
 			UriBuilder uriBuilder;
-			var parameters = new Extensions.HttpValueCollection();
+			Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection();
 
 			parameters["api_key"] = GetApiKey();
 			uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.CoverArt));
 			if (paramsDictionary != null)
 			{
-				foreach (var o in paramsDictionary)
+				foreach (KeyValuePair<string, object> o in paramsDictionary)
 				{
 					parameters[o.Key] = o.Value as string;
 				}
@@ -506,19 +469,99 @@ namespace Alloy.Providers
 			try
 			{
 				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", id } }, RequestType.PUT);
-				var result = JsonConvert.DeserializeObject(request);
+				string request = ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", id } }, RequestType.PUT);
+				object result = JsonConvert.DeserializeObject(request);
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
 
-		public static void AddHistory(string type, string action, string id, string title , string artist, string artist_id, string album, string album_id, string genre, string genre_id)
+		public static void AddStar(Dictionary<string, object> @params)
 		{
 			try
 			{
 				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.AddHistory, new Dictionary<string, object>
+				string request = ApiRequest(ApiRequestType.Star, @params, RequestType.PUT);
+				object result = JsonConvert.DeserializeObject(request);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+		}
+
+		public static void RemoveStar(Dictionary<string, object> @params)
+		{
+			try
+			{
+				Utils.UnlockSsl(true);
+				string request = ApiRequest(ApiRequestType.UnStar, @params, RequestType.PUT);
+				object result = JsonConvert.DeserializeObject(request);
+				Utils.UnlockSsl(false);
+			}
+			catch (Exception e) { Crashes.TrackError(e); }
+		}
+
+		public static void AddStar(Artist artist)
+		{
+			artist.Starred = true;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["artist"] = artist.Id };
+			AddStar(p);
+		}
+
+		public static void AddStar(Song song)
+		{
+			song.Starred = true;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["id"] = song.Id };
+			AddStar(p);
+		}
+
+		public static void AddStar(Album album)
+		{
+			album.Starred = true;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["album"] = album.Id };
+			AddStar(p);
+		}
+
+		public static void AddStar(Genre genre)
+		{
+			genre.Starred = true;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["genre"] = genre.Id };
+			AddStar(p);
+		}
+
+		public static void RemoveStar(Artist artist)
+		{
+			artist.Starred = false;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["artist"] = artist.Id };
+			RemoveStar(p);
+		}
+
+		public static void RemoveStar(Song song)
+		{
+			song.Starred = false;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["id"] = song.Id };
+			RemoveStar(p);
+		}
+
+		public static void RemoveStar(Album album)
+		{
+			album.Starred = false;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["album"] = album.Id };
+			RemoveStar(p);
+		}
+
+		public static void RemoveStar(Genre genre)
+		{
+			genre.Starred = false;
+			Dictionary<string, object> p = new Dictionary<string, object> { ["genre"] = genre.Id };
+			RemoveStar(p);
+		}
+
+		public static void AddHistory(string type, string action, string id, string title, string artist, string artist_id, string album, string album_id, string genre, string genre_id)
+		{
+			try
+			{
+				Utils.UnlockSsl(true);
+				string request = ApiRequest(ApiRequestType.AddHistory, new Dictionary<string, object>
 				{
 					{ "type", type },
 					{ "action", action },
@@ -531,30 +574,7 @@ namespace Alloy.Providers
 					{ "genre", genre },
 					{ "genre_id", genre_id },
 				}, RequestType.PUT);
-				var result = JsonConvert.DeserializeObject(request);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
-		}
-
-		public static void Star(string type, string id)
-		{
-			try
-			{
-				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.Star, new Dictionary<string, object> { { type, id } }, RequestType.PUT);
-				var result = JsonConvert.DeserializeObject(request);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
-		}
-		public static void UnStar(string type, string id)
-		{
-			try
-			{
-				Utils.UnlockSsl(true);
-				var request = ApiRequest(ApiRequestType.UnStar, new Dictionary<string, object> { { type, id } }, RequestType.PUT);
-				var result = JsonConvert.DeserializeObject(request);
+				object result = JsonConvert.DeserializeObject(request);
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }

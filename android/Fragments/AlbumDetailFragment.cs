@@ -2,124 +2,196 @@
 using Android.Views;
 using Android.Widget;
 using Alloy.Adapters;
+using Alloy.Helpers;
 using Alloy.Models;
+using Alloy.Providers;
 using Alloy.Services;
+using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Support.V4.Widget;
+using Android.Support.V7.Widget;
 
 namespace Alloy.Fragments
 {
 	public class AlbumDetailFragment : FragmentBase
 	{
 		private View root_view;
-		private ListView listView;
-		private AlbumDetailAdapter adapter;
-		private SwipeRefreshLayout refreshLayout;
+		private Context context;
+	
+		private AlbumDetailTrackAdapter albumTracksAdapter;
+		private RecyclerView albumtracksRecycleView;
+
+		private AlbumContainer album;
+
+		private TextView albumName;
+		private TextView albumSize;
+		private TextView trackCount;
+		private TextView playCount;
+		private ImageView albumImage;
+		private ImageView backgroundImage;
+		private ImageView favoriteButton;	
+		private Drawable favorite, notFavorite;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			Album album = Arguments.GetParcelable("artist") as Album;
+			MusicProvider.AlbumStartRefresh += MusicProvider_AlbumStartRefresh;
+			MusicProvider.AlbumRefreshed += MusicProvider_AlbumRefreshed;
 			root_view = inflater.Inflate(Resource.Layout.album_detail_layout, container, false);
-			listView = root_view.FindViewById<ListView>(Resource.Id.album_tracks_list);
+			Album bundle = (Album)Arguments.GetParcelable("album");
 
-			if (album != null)
-			{
-				root_view.FindViewById<TextView>(Resource.Id.title).SetText(album.Name, TextView.BufferType.Normal);
-				root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(album.Art);
-				root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(album.Art);
-				adapter = new AlbumDetailAdapter(album);
-			}
 
-			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
-			refreshLayout.SetOnRefreshListener(this);
-			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
+			albumName = root_view.FindViewById<TextView>(Resource.Id.album_name);
 
-			RegisterForContextMenu(listView);
+			albumSize = root_view.FindViewById<TextView>(Resource.Id.album_size);
+			trackCount = root_view.FindViewById<TextView>(Resource.Id.album_track_count);
+			playCount = root_view.FindViewById<TextView>(Resource.Id.album_play_count);
+			albumImage = root_view.FindViewById<ImageView>(Resource.Id.album_image);
+			backgroundImage = root_view.FindViewById<ImageView>(Resource.Id.album_header_image);
+			favoriteButton = root_view.FindViewById<ImageView>(Resource.Id.album_favorite_button);
+			favoriteButton.Click += FavoriteButton_Click;
+			favorite = Context.GetDrawable(Resource.Drawable.favorite);
+			notFavorite = Context.GetDrawable(Resource.Drawable.not_favorite);
 
-			AlbumDetailAdapter.AlbumLoaded += AlbumDetailAdapter_AlbumLoaded;
-			listView.Adapter = adapter;
-			listView.ItemClick += ListView_ItemClick;
+			LinearLayoutManager layoutManager = new LinearLayoutManager(Context, LinearLayoutManager.Vertical, false);
+			albumtracksRecycleView = root_view.FindViewById<RecyclerView>(Resource.Id.album_tracks_list);
+			albumtracksRecycleView.SetLayoutManager(layoutManager);
+			RegisterForContextMenu(albumtracksRecycleView);
 
-			CreateToolbar(root_view, Resource.String.album_detail_title, true);
+			CreateToolbar(root_view, Resource.String.artist_detail_title, true);
 
-			if (adapter.AlbumTracks.Count == 0)
-			{
-				refreshLayout.Refreshing = true;
-				adapter.RefreshAlbum();
-			}
+
+			albumName.SetText(bundle.Name, TextView.BufferType.Normal);
+			albumSize.SetText("Loading...", TextView.BufferType.Normal);
+
+
+			CheckFavorite(bundle);
+			MusicProvider.GetAlbum(bundle);
 
 			return root_view;
 		}
 
-		private void AlbumDetailAdapter_AlbumLoaded(object sender, System.EventArgs e)
+		private void FavoriteButton_Click(object sender, System.EventArgs e)
 		{
-			refreshLayout.Refreshing = false;
+			if (album.Album.Starred)
+			{
+				MusicProvider.RemoveStar(album.Album);
+			}
+			else
+			{
+				MusicProvider.AddStar(album.Album);
+			}
+			CheckFavorite();
+		}
+
+		private void CheckFavorite(Album a = null)
+		{
+			if (a != null)
+			{
+				favoriteButton.SetImageDrawable(a.Starred ? favorite : notFavorite);
+			}
+			else
+			{
+				favoriteButton.SetImageDrawable(album.Album.Starred ? favorite : notFavorite);
+			}
+		}
+
+		private void MusicProvider_AlbumRefreshed(object sender, AlbumContainer e)
+		{
+			if (e != null)
+			{
+				album = e;
+
+				albumName.SetText(album.Album.Name, TextView.BufferType.Normal);
+				albumSize.SetText(album.Size, TextView.BufferType.Normal);
+				trackCount.SetText(album.Tracks.Count.ToString(), TextView.BufferType.Normal);
+				playCount.SetText(album.TotalPlays.ToString(), TextView.BufferType.Normal);
+
+				Bitmap art = album.Album.GetAlbumArt();
+				Bitmap art2 = art.Blur(50);
+
+				albumImage.SetImageBitmap(art);
+				backgroundImage.SetImageBitmap(art2);
+				CheckFavorite();
+
+			
+				if (album.Tracks.Count > 0)
+				{
+					albumTracksAdapter = new AlbumDetailTrackAdapter(album.Tracks, ServiceConnection);
+					albumTracksAdapter.ItemClick += Song_ItemClick;
+					albumtracksRecycleView.SetAdapter(albumTracksAdapter);
+					Adapters.Adapters.SetAdapters(Activity, albumTracksAdapter);
+				}
+			}
+		}
+
+		private void MusicProvider_AlbumStartRefresh(object sender, System.EventArgs e)
+		{
+
 		}
 
 		public override void OnRefreshed()
 		{
-			refreshLayout.Refreshing = true;
-			adapter.RefreshAlbum();
+			MusicProvider.GetArtist((Artist)Arguments.GetParcelable("artist"));
 		}
 
 		public override void ScrollToNowPlaying()
 		{
 			base.ScrollToNowPlaying();
-			listView.ClearChoices();
-			for (int i = 0; i < adapter.Count; i++)
-			{
-				Song item = adapter[i];
-				item.IsSelected = false;
-			}
 
-			if (ServiceConnection.CurrentSong != null)
-			{
-				for (int i = 0; i < adapter.Count; i++)
-				{
-					Song item = adapter[i];
-					if (ServiceConnection.CurrentSong.Id.Equals(item.Id))
-					{
-						item.IsSelected = true;
-						//listView.SetItemChecked(i, true);
-						break;
-					}
-				}
-			}
+
 			Adapters.Adapters.UpdateAdapters();
-			listView.Invalidate();
+			albumtracksRecycleView.Invalidate();
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
-			adapter.NotifyDataSetChanged();
+			Adapters.Adapters.UpdateAdapters();
+			albumtracksRecycleView.Invalidate();
 		}
 
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
-			Adapters.Adapters.SetAdapters(Activity, adapter);
+			Adapters.Adapters.SetAdapters(Activity, albumTracksAdapter);
+			ScrollToNowPlaying();
 		}
 
 		public override void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
 		{
 			base.ContextMenuCreated(menu, v, menuInfo);
-			if (v.Id == Resource.Id.album_tracks_list)
+			if (v.Id == Resource.Id.artist_albums_list)
 			{
 				MenuInflater inflater = Activity.MenuInflater;
-				inflater.Inflate(Resource.Menu.song_context_menu, menu);
+				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
+			}
+			if (v.Id == Resource.Id.artist_singles_list)
+			{
+				MenuInflater inflater = Activity.MenuInflater;
+				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
+			}
+			if (v.Id == Resource.Id.artist_eps_list)
+			{
+				MenuInflater inflater = Activity.MenuInflater;
+				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
+			}
+			if (v.Id == Resource.Id.artist_top_tracks_list)
+			{
+				MenuInflater inflater = Activity.MenuInflater;
+				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
 			}
 		}
 
-		private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+		public override void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info)
 		{
-			if (adapter.AlbumTracks[e.Position].IsSelected)
-			{
 
-			}
-			else
-			{
-				ServiceConnection.Play(e.Position, adapter.AlbumTracks);
-			}
+
+		}
+
+		private void Song_ItemClick(object sender, AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent e)
+		{
+			ServiceConnection?.Play(e.Position, e.Songs);
 		}
 	}
 }

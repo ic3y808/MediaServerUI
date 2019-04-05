@@ -19,7 +19,7 @@ namespace Alloy.Fragments
 	{
 		private View root_view;
 		private FastScrollRecyclerView freshTracksList;
-		private AllMusicAdapter adapter;
+
 		private LinearLayoutManager mainLayoutManager;
 		private SwipeRefreshLayout refreshLayout;
 
@@ -30,16 +30,13 @@ namespace Alloy.Fragments
 			root_view = inflater.Inflate(Resource.Layout.all_music_layout, container, false);
 
 			mainLayoutManager = new LinearLayoutManager(Context) { AutoMeasureEnabled = false };
-
-			adapter = new AllMusicAdapter(Resource.Layout.song_card2, this, ServiceConnection);
-			adapter.ItemClick += OnItemClick;
-
+			
 			freshTracksList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.all_music_list);
 			freshTracksList.HasFixedSize = true;
 			freshTracksList.SetLayoutManager(mainLayoutManager);
 			freshTracksList.SetItemAnimator(new DefaultItemAnimator());
 			freshTracksList.FocusableInTouchMode = true;
-			freshTracksList.SetAdapter(adapter);
+			//freshTracksList.SetAdapter(adapter);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);
@@ -54,7 +51,7 @@ namespace Alloy.Fragments
 			if (MusicProvider.AllSongs.Count == 0)
 			{
 				refreshLayout.Refreshing = true;
-				Utils.Run(MusicProvider.RefreshAllSongs);
+		
 			}
 
 			return root_view;
@@ -75,13 +72,12 @@ namespace Alloy.Fragments
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
-			adapter.NotifyDataSetChanged();
+			
 		}
 
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
-			Adapters.Adapters.SetAdapters(Activity, adapter);
 		}
 
 		public override void LibraryLoaded()
@@ -112,7 +108,7 @@ namespace Alloy.Fragments
 		public override void OnRefreshed()
 		{
 			refreshLayout.Refreshing = true;
-			MusicProvider.RefreshAllSongs();
+			
 		}
 	}
 }

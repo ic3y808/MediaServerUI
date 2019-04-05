@@ -82,16 +82,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\Adapters.cs" />
-    <Compile Include="Adapters\AlbumDetailAdapter.cs" />
+    <Compile Include="Adapters\AlbumDetailAdapters.cs" />
     <Compile Include="Adapters\AlbumsAdapter.cs" />
-    <Compile Include="Adapters\AllMusicAdapter.cs" />
     <Compile Include="Adapters\ArtistDetailAdapters.cs" />
     <Compile Include="Adapters\ArtistsAdapter.cs" />
     <Compile Include="Adapters\GenreDetailAdapter.cs" />
     <Compile Include="Adapters\GenresAdapter.cs" />
     <Compile Include="Adapters\MainPlaylistAdapter.cs" />
     <Compile Include="Adapters\NowPlayingAdapter.cs" />
-    <Compile Include="Adapters\FavoritesAdapter.cs" />
     <Compile Include="Common\PackageUtil.cs" />
     <Compile Include="Common\ShortcutHelper.cs" />
     <Compile Include="Common\SupportedFormatAttribute.cs" />
@@ -106,7 +104,7 @@
     <Compile Include="Adapters\MenuAdapter.cs" />
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
     <Compile Include="Models\BackgroundAudioStatus.cs" />
-    <Compile Include="Models\DatabaseTableAttribute.cs" />
+    <Compile Include="Models\AlbumViewHolder.cs" />
     <Compile Include="Models\Divider.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CustomToggle.cs" />
@@ -121,6 +119,7 @@
     <Compile Include="Models\NullIntConverter.cs" />
     <Compile Include="Models\SlideDrawable.cs" />
     <Compile Include="Models\StringToBooleanConverter.cs" />
+    <Compile Include="Providers\CastContentProvider.cs" />
     <Compile Include="Providers\CastOptionsProvider.cs" />
     <Compile Include="Fragments\AlbumDetailFragment.cs" />
     <Compile Include="Fragments\ArtistDetailFragment.cs" />
@@ -134,7 +133,6 @@
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\CurrentBackground.cs" />
     <Compile Include="NowPlayingActivity.cs" />
-    <Compile Include="Providers\DatabaseProvider.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\SimpleItemTouchHelperCallback.cs" />
     <Compile Include="Helpers\StorageHelpers.cs" />
@@ -148,10 +146,9 @@
     <Compile Include="Recievers\HeadsetPlugReceiver.cs" />
     <Compile Include="Recievers\MediaButtonReciever.cs" />
     <Compile Include="Recievers\BluetoothIntentReceiver.cs" />
-    <Compile Include="Recievers\MusicSyncReceiver.cs" />
     <Compile Include="Services\BackgroundAudioService.cs" />
     <Compile Include="Fragments\FreshFragment.cs" />
-    <Compile Include="Fragments\FavoritesFragment.cs" />
+    <Compile Include="Fragments\StarredFragment.cs" />
     <Compile Include="Fragments\AlbumsFragment.cs" />
     <Compile Include="Fragments\GenresFragment.cs" />
     <Compile Include="Interfaces\IMediaController.cs" />
@@ -184,7 +181,6 @@
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
-    <None Include="Assets\AboutAssets.txt" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\activity_main.xml">
@@ -338,7 +334,10 @@
     <AndroidResource Include="Resources\drawable\wave.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable-xxhdpi\" />
+    <AndroidResource Include="Resources\layout\album_detail_song_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\next.png" />
@@ -726,6 +725,9 @@
     <AndroidResource Include="Resources\layout\artist_detail_song_item.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

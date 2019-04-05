@@ -242,7 +242,7 @@ namespace Alloy
 			{
 				Utils.Run(new Action(() =>
 				{
-					
+
 					Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
 					fadeOut.Duration = 3000;
 					Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
@@ -448,13 +448,16 @@ namespace Alloy
 			Utils.Run(() =>
 			{
 				if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			
-				
-					serviceConnection.CurrentSong.Starred = !serviceConnection.CurrentSong.Starred;
-					DatabaseProvider.SetSongFavorite(serviceConnection.CurrentSong, serviceConnection.CurrentSong.Starred);
-					if (serviceConnection.CurrentSong.Starred && !MusicProvider.Favorites.Any(t => t.Id.Equals(serviceConnection.CurrentSong.Id))) MusicProvider.Favorites.Insert(0, serviceConnection.CurrentSong);
-					
-				
+
+				if (serviceConnection.CurrentSong.Starred)
+				{
+					MusicProvider.RemoveStar(serviceConnection.CurrentSong);
+				}
+				else
+				{
+					MusicProvider.AddStar(serviceConnection.CurrentSong);
+				}
+				serviceConnection.CurrentSong.Starred = !serviceConnection.CurrentSong.Starred;
 
 				SetFavorite();
 			});

@@ -40,7 +40,15 @@ namespace Alloy.Recievers
 					service?.PlayNextSong();
 					break;
 				case BackgroundAudioService.ActionFavorite:
-					DatabaseProvider.SetSongFavorite(service.CurrentSong, !service.CurrentSong.Starred);
+					if (service.CurrentSong.Starred)
+					{
+						MusicProvider.RemoveStar(service.CurrentSong);
+					}
+					else
+					{
+						MusicProvider.AddStar(service.CurrentSong);
+					}
+					service.CurrentSong.Starred = !service.CurrentSong.Starred;
 					break;
 				case BackgroundAudioService.ActionExit:
 					NotificationService.CloseNotification();
