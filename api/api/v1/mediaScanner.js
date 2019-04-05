@@ -258,57 +258,57 @@ class MediaScanner extends MediaScannerBase {
       var allMetaPromises = [];
       albums.forEach(album => {
 
-
-        const albumTracks = klawSync(album.path, { nodir: true });
-
-
-        albumTracks.forEach(track => {
-          try {
-            if (utils.isFileValid(track.path)) {
-              allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
-                var processed_track = new structures.Song();
-                processed_track.path = track.path;
-                processed_track.artist = utils.isStringValid(artist.name, '');
-                processed_track.artist_id = artist.id;
-                processed_track.album = utils.isStringValid(album.name, '');
+        if (fs.existsSync(album.path)) {
+          const albumTracks = klawSync(album.path, { nodir: true });
 
 
-                processed_track.album_path = album.path;
-                processed_track.getStats();
-                processed_track = this.checkExistingTrack(processed_track, metadata);
-                processed_track.album_id = album.id;
+          albumTracks.forEach(track => {
+            try {
+              if (utils.isFileValid(track.path)) {
+                allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
+                  var processed_track = new structures.Song();
+                  processed_track.path = track.path;
+                  processed_track.artist = utils.isStringValid(artist.name, '');
+                  processed_track.artist_id = artist.id;
+                  processed_track.album = utils.isStringValid(album.name, '');
+                  processed_track.album_path = album.path;
+                  processed_track.getStats();
+                  processed_track = this.checkExistingTrack(processed_track, metadata);
+                  processed_track.album_id = album.id;
 
-                album.releases.forEach(release => {
-                  release.Tracks.forEach(albumTrack => {
-                    if (!processed_track.id) {
-                      var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000);
-                      var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
-                      var mediumCompare = processed_track.of == release.TrackCount;
+                  album.releases.forEach(release => {
+                    release.Tracks.forEach(albumTrack => {
+                      if (!processed_track.id) {
+                        var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000);
+                        var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
+                        var mediumCompare = processed_track.of == release.TrackCount;
 
-                      if (msCompare && tracknumCompare && mediumCompare) {
-                        processed_track.id = albumTrack.RecordingId;
-                        processed_track.title = albumTrack.TrackName;
+                        if (msCompare && tracknumCompare && mediumCompare) {
+                          processed_track.id = albumTrack.RecordingId;
+                          processed_track.title = albumTrack.TrackName;
+                        }
+                      } else {
+                        if (processed_track.id === albumTrack.RecordingId) {
+                          processed_track.title = albumTrack.TrackName;
+                        }
                       }
-                    } else {
-                      if (processed_track.id === albumTrack.RecordingId) {
-                        processed_track.title = albumTrack.TrackName;
-                      }
-                    }
+                    });
                   });
-                });
 
-                processed_track = this.checkAlbumArt(processed_track, metadata);
+                  processed_track = this.checkAlbumArt(processed_track, metadata);
 
-                this.writeDb(processed_track, "Tracks");
-                this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
-                this.updateStatus('Scanning track ' + processed_track.path, true);
-              }));
+                  this.writeDb(processed_track, "Tracks");
+                  this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
+                  this.updateStatus('Scanning track ' + processed_track.path, true);
+                }));
+              }
+            } catch (err) {
+              logger.error("alloydb", err.message);
+              this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
             }
-          } catch (err) {
-            logger.error("alloydb", err.message);
-            this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
-          }
-        });
+          });
+        }
+
 
       });
 

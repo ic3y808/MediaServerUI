@@ -10,10 +10,10 @@ using Alloy.Services;
 
 namespace Alloy.Fragments
 {
-	public class FavoritesFragment : FragmentBase
+	public class StarredFragment : FragmentBase
 	{
 		private ListView listView;
-		private FavoritesAdapter adapter;
+	
 		private SwipeRefreshLayout refreshLayout;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -27,10 +27,8 @@ namespace Alloy.Fragments
 			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
 
 			RegisterForContextMenu(listView);
-			adapter = new FavoritesAdapter(Activity, ServiceConnection);
+			
 
-			listView.Adapter = adapter;
-			listView.ItemClick += MListView_ItemClick;
 
 			CreateToolbar(root_view, Resource.String.starred_title);
 
@@ -40,42 +38,19 @@ namespace Alloy.Fragments
 		public override void ScrollToNowPlaying()
 		{
 			base.ScrollToNowPlaying();
-			try
-			{
-				for (int i = 0; i < adapter.Count; i++)
-				{
-					var item = adapter[i];
-					item.IsSelected = false;
-				}
-
-				if (ServiceConnection.CurrentSong != null)
-				{
-					for (int i = 0; i < adapter.Count; i++)
-					{
-						var item = adapter[i];
-						if (ServiceConnection.CurrentSong.Id.Equals(item.Id))
-						{
-							item.IsSelected = true;
-							break;
-						}
-					}
-				}
-				Adapters.Adapters.UpdateAdapters();
-				listView.Invalidate();
-			}
-			catch (Exception ee) { Crashes.TrackError(ee); }
+			
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
-			adapter.NotifyDataSetChanged();
+			
 		}
 
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
-			Adapters.Adapters.SetAdapters(Activity, adapter);
+		
 		}
 
 		public override void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)

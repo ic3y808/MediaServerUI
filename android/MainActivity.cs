@@ -38,7 +38,7 @@ namespace Alloy
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "content", DataMimeTypes = new[] { "audio/*", "application/ogg", "application/x-ogg", "application/x-vorbis", "application/x-flac" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "http", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm", "audio/x-wav", "audio/ogg", "audio/webm", "application/ogg", "application/x-ogg" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "sshttp", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm" })]
-	public class MainActivity : AppCompatActivity, ICastStateListener, IAppVisibilityListener, ISessionManagerListener, IMenuListener, PanelSlideListener, View.IOnClickListener
+	public class MainActivity : AppCompatActivity, IMenuListener, PanelSlideListener, View.IOnClickListener
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
 		private ImageView primaryBackground;
@@ -48,8 +48,7 @@ namespace Alloy
 		private SlidingUpPanelLayout mainLayout;
 		private NavigationView navigationView;
 		private CurrentBackground currentBackground;
-		private CastContext castContext;
-		private CastSession castSession;
+		private CastContentProvider castContentProvider;
 		private ListView mainMenu;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
@@ -59,10 +58,9 @@ namespace Alloy
 		private ImageButton playPauseImageButton;
 		private ImageButton nextImageButton;
 		private ImageButton previousImageButton;
-		//private SimpleHTTPServer castServer;
+		
 		private MainPlaylistAdapter playlistAdapter;
-		private CastStates lastState = CastStates.NoDevicesAvailable;
-
+	
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -120,10 +118,12 @@ namespace Alloy
 			items.Add(new Category(Resource.String.quick_access_header));
 			items.Add(new Item(Resource.String.fresh_fragment_id, Resource.String.fresh_fragment_title, Resource.Drawable.all_music));
 			items.Add(new Item(Resource.String.starred_fragment_id, Resource.String.starred_fragment_title, Resource.Drawable.favorites));
-			items.Add(new Category(Resource.String.local_music_header));
-			items.Add(new Item(Resource.String.local_artists_fragment_id, Resource.String.local_artists_fragment_title, Resource.Drawable.artists));
-			items.Add(new Item(Resource.String.local_albums_fragment_id, Resource.String.local_albums_fragment_title, Resource.Drawable.albums));
-			items.Add(new Item(Resource.String.local_genres_fragment_id, Resource.String.local_genres_fragment_title, Resource.Drawable.genres));
+			items.Add(new Item(Resource.String.charts_fragment_id, Resource.String.charts_title, Resource.Drawable.favorites));
+			items.Add(new Category(Resource.String.music_header));
+			items.Add(new Item(Resource.String.artists_fragment_id, Resource.String.artists_fragment_title, Resource.Drawable.artists));
+			items.Add(new Item(Resource.String.albums_fragment_id, Resource.String.albums_fragment_title, Resource.Drawable.albums));
+			items.Add(new Item(Resource.String.genres_fragment_id, Resource.String.genres_fragment_title, Resource.Drawable.genres));
+			items.Add(new Item(Resource.String.history_fragment_id, Resource.String.history_title, Resource.Drawable.genres));
 
 		
 			mainMenuaAdapter = new MenuAdapter(this, items);
@@ -136,23 +136,19 @@ namespace Alloy
 			drawerLayout.AddDrawerListener(drawerToggle);
 			currentBackground = CurrentBackground.None;
 
-			CastContext.GetSharedInstance(this).AddCastStateListener(this);
-			CastContext.GetSharedInstance(this).AddAppVisibilityListener(this);
-			CastContext.GetSharedInstance(this).SessionManager.AddSessionManagerListener(this);
-
-			DatabaseProvider.StartDatabase();
+			castContentProvider = new CastContentProvider(this);
 
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
 			//if (Intent != null)
 			//{
-			//	var tab_name = Intent.GetStringExtra("tab_name");
-			//	if (!string.IsNullOrEmpty(tab_name))
-			//		ChangeFragment(tab_name);
-			//	else ChangeFragment(Resource.String.fresh_fragment_id, false);
+				//var tab_name = Intent.GetStringExtra("tab_name");
+				//if (!string.IsNullOrEmpty(tab_name))
+				//	ChangeFragment(tab_name);
+				//else ChangeFragment(Resource.String.fresh_fragment_id, false);
 			//}
 			//else
 			//{
-				ChangeFragment(Resource.String.local_artists_fragment_id, false);
+				ChangeFragment(Resource.String.artists_fragment_id, false);
 			//}
 		}
 
@@ -162,6 +158,77 @@ namespace Alloy
 
 			//ChangeFragment(tab_name);
 			base.OnNewIntent(intent);
+		}
+		
+		protected override void OnResume()
+		{
+			base.OnResume();
+			castContentProvider.OnResume();
+			View settingsFooter = FindViewById(Resource.Id.settings_footer);
+			settingsFooter.Click += SettingsFooter_Click;
+			BindService();
+		}
+
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+			//DatabaseProvider.StopDatabase();
+			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
+		}
+
+		protected override void OnStop()
+		{
+			base.OnStop();
+			if (serviceConnection != null && serviceConnection.IsConnected)
+			{
+				UnbindService(serviceConnection);
+				serviceConnection = null;
+			}
+			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
+			castContentProvider.OnStop();
+		}
+
+		public override void OnBackPressed()
+		{
+			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+			if (drawer.IsDrawerOpen(GravityCompat.Start)) { drawer.CloseDrawer(GravityCompat.Start); }
+			else
+			{
+				if (FragmentManager.BackStackEntryCount > 0)
+				{
+					FragmentManager.PopBackStack();
+				}
+				else
+				{
+					MoveTaskToBack(true);
+					BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
+				}
+			}
+		}
+
+		protected override void OnPause()
+		{
+			base.OnPause();
+			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
+		}
+
+		public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
+		{
+
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
+			{
+				return base.OnKeyDown(keyCode, e);
+			}
+			switch (keyCode)
+			{
+				case Keycode.MediaPlay:
+					//yourMediaController.dispatchMediaButtonEvent(event);
+
+					return true;
+
+
+			}
+			return base.OnKeyDown(keyCode, e);
 		}
 
 		private void MainMenu_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -187,46 +254,24 @@ namespace Alloy
 					fragment = new FreshFragment();
 					break;
 				case Resource.String.starred_fragment_id:
-					fragment = new FavoritesFragment();
+					fragment = new StarredFragment();
 					break;
-				case Resource.String.local_artists_fragment_id:
+				case Resource.String.artists_fragment_id:
 					fragment = new ArtistsFragment();
 					break;
-				case Resource.String.local_albums_fragment_id:
+				case Resource.String.albums_fragment_id:
 					fragment = new AlbumsFragment();
 					break;
-				case Resource.String.local_genres_fragment_id:
+				case Resource.String.genres_fragment_id:
 					fragment = new GenresFragment();
 					break;
-		
+
 			}
 
 			if (fragment != null)
 			{
 				FragmentManager.ChangeTo(fragment, backstack);
 			}
-		}
-
-
-		protected override void OnResume()
-		{
-			base.OnResume();
-
-			DatabaseProvider.StartDatabase();
-
-			//mediaRouteButton = (MediaRouteButton)FindViewById(Resource.Id.media_route_button);
-			//CastButtonFactory.SetUpMediaRouteButton(Application.Context, mediaRouteButton);
-			//mediaRouteButton.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_default));
-			castContext = CastContext.GetSharedInstance(this);
-
-			if (castSession == null)
-			{
-				castSession = CastContext.GetSharedInstance(this).SessionManager.CurrentCastSession;
-			}
-
-			View settingsFooter = FindViewById(Resource.Id.settings_footer);
-			settingsFooter.Click += SettingsFooter_Click;
-			BindService();
 		}
 
 		private void BindService()
@@ -353,36 +398,7 @@ namespace Alloy
 			intent.AddFlags(ActivityFlags.ClearTop);
 			StartActivity(intent);
 		}
-
-		public void SetPlaying()
-		{
-			if (serviceConnection != null && serviceConnection.IsConnected)
-			{
-				if (serviceConnection.Remote != null)
-				{
-					if (serviceConnection.Remote.IsPlaying)
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
-					}
-					else
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.play);
-					}
-				}
-				else if (serviceConnection.MediaPlayer != null)
-				{
-					if (serviceConnection.MediaPlayer.IsPlaying)
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
-					}
-					else
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.play);
-					}
-				}
-			}
-		}
-
+		
 		private void PlayPauseImageButton_Click(object sender, System.EventArgs e)
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
@@ -431,104 +447,6 @@ namespace Alloy
 			}
 		}
 
-		public void SetMetaData()
-		{
-			if (serviceConnection?.CurrentSong != null)
-			{
-				albumArtImageView?.SetImageBitmap(serviceConnection.CurrentSong.Art);
-				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
-				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
-			}
-
-			SetPlaying();
-		}
-
-		public void SetMainPlaylist()
-		{
-			ListView lv = (ListView)FindViewById(Resource.Id.main_playlist);
-			if (playlistAdapter == null)
-			{
-				playlistAdapter = new MainPlaylistAdapter(serviceConnection);
-				lv.Adapter = playlistAdapter;
-				lv.ItemClick += (sender, e) =>
-				{
-					serviceConnection.Play(e.Position, serviceConnection.MainQueue);
-				};
-
-			}
-			
-			if (serviceConnection?.MainQueue != null)
-			{
-				Adapters.Adapters.SetAdapters(this, playlistAdapter);
-			}
-		}
-
-		protected override void OnDestroy()
-		{
-			base.OnDestroy();
-			DatabaseProvider.StopDatabase();
-			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-		}
-
-		protected override void OnStop()
-		{
-			base.OnStop();
-			if (serviceConnection != null && serviceConnection.IsConnected)
-			{
-				UnbindService(serviceConnection);
-				serviceConnection = null;
-			}
-			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-
-			CastContext.GetSharedInstance(this).RemoveAppVisibilityListener(this);
-			CastContext.GetSharedInstance(this).RemoveCastStateListener(this);
-			CastContext.GetSharedInstance(this).SessionManager.RemoveSessionManagerListener(this);
-		}
-
-		public override void OnBackPressed()
-		{
-			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-			if (drawer.IsDrawerOpen(GravityCompat.Start)) { drawer.CloseDrawer(GravityCompat.Start); }
-			else
-			{
-				if (FragmentManager.BackStackEntryCount > 0)
-				{
-					FragmentManager.PopBackStack();
-				}
-				else
-				{
-					MoveTaskToBack(true);
-					BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-				}
-			}
-		}
-
-		protected override void OnPause()
-		{
-			base.OnPause();
-			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			CastContext.GetSharedInstance(this).SessionManager.RemoveSessionManagerListener(this);
-		}
-
-		public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
-		{
-
-			if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-			{
-				return base.OnKeyDown(keyCode, e);
-			}
-			switch (keyCode)
-			{
-				case Keycode.MediaPlay:
-					//yourMediaController.dispatchMediaButtonEvent(event);
-
-					return true;
-
-
-			}
-			return base.OnKeyDown(keyCode, e);
-		}
-
 		private void FragmentManager_BackStackChanged(object sender, EventArgs e)
 		{
 			//activeMenuItem?.SetChecked(false);
@@ -561,151 +479,6 @@ namespace Alloy
 			drawer.CloseDrawer(GravityCompat.Start);
 		}
 
-		public void OnCastStateChanged(int newState)
-		{
-			CastStates cs = (CastStates)newState;
-			if (cs != CastStates.NoDevicesAvailable)
-			{
-
-				//var overlay = new Android.Gms.Cast.Framework.IntroductoryOverlayBuilder(this, FragmentBase.MediaRouteButton);
-				//overlay.SetTitleText("Cast");
-				//var aa = overlay.Build();
-				//aa.Show();
-				//IntroductoryOverlayBuilder.Build()
-				//IIntroductoryOverlay overlay = new IIntroductoryOverlay.Builder(activity, mMediaRouteMenuItem)
-				//	.setTitleText(R.string.cast_intro_overlay_text)
-				//	.setOnDismissed(onOverlayDismissedListener)
-				//	.setSingleTime()
-				//	.build();
-				//overlay.show();
-				Utils.Run(() =>
-				{
-					var spotLight = new SpotlightView.Builder(this)
-						.IntroAnimationDuration(400)
-						.EnableRevealAnimation(true)
-						.PerformClick(true)
-						.FadeinTextDuration(200)
-						//.setTypeface(FontUtil.get(this, "RemachineScript_Personal_Use"))
-						.HeadingTvColor(Color.ParseColor("#eb273f"))
-						.HeadingTvSize(32)
-						.HeadingTvText("Cast?")
-						.SubHeadingTvColor(Color.ParseColor("#ffffff"))
-						.SubHeadingTvSize(16)
-						.SubHeadingTvText("You know you want to")
-						.MaskColor(Color.ParseColor("#dc000000"))
-						.Target(FragmentBase.MediaRouteButton.ActionView)
-						.LineAnimDuration(200)
-						.LineAndArcColor(Color.ParseColor("#eb273f"))
-						.DismissOnTouch(true)
-						.DismissOnBackPress(true)
-						.EnableDismissAfterShown(true)
-						.UsageId("castspotlight") //UNIQUE ID
-						.ShowTargetArc(true)
-						.Show();
-
-				});
-
-			}
-			if (cs != CastStates.Connected) { StartServer(); }
-			if (lastState == CastStates.Connected && (cs == CastStates.NotConnected || cs == CastStates.NoDevicesAvailable)) { StopServer(); }
-
-			lastState = cs;
-			System.Diagnostics.Debug.WriteLine("OnCastStateChanged " + cs);
-		}
-
-		public void OnAppEnteredBackground()
-		{
-			System.Diagnostics.Debug.WriteLine("OnAppEnteredBackground");
-		}
-
-		public void OnAppEnteredForeground()
-		{
-			System.Diagnostics.Debug.WriteLine("OnAppEnteredForeground");
-		}
-
-		public void OnSessionEnded(Object session, int error)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionEnded");
-			//mediaRouteButton?.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_default));
-			if (session == castSession)
-			{
-				castSession = null;
-			}
-		}
-
-		public void OnSessionEnding(Object session)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionEnding");
-		}
-
-		public void OnSessionResumeFailed(Object session, int error)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionResumeFailed");
-			//mediaRouteButton?.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_default));
-		}
-
-		public void OnSessionResumed(Object session, bool wasSuspended)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionResumed");
-			castSession = (CastSession)session;
-			//mediaRouteButton?.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_connected));
-			StartServer();
-		}
-
-		public void OnSessionResuming(Object session, string sessionId)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionResuming");
-		}
-
-		public void OnSessionStartFailed(Object session, int error)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionStartFailed");
-			//mediaRouteButton?.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_default));
-		}
-
-		public void OnSessionStarted(Object session, string sessionId)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionStarted");
-			castSession = (CastSession)session;
-			//mediaRouteButton?.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_connected));
-			StartServer();
-		}
-
-		public void OnSessionStarting(Object session)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionStarting");
-		}
-
-		public void OnSessionSuspended(Object session, int reason)
-		{
-			System.Diagnostics.Debug.WriteLine("OnSessionSuspended");
-			//mediaRouteButton?.SetRemoteIndicatorDrawable(Application.Context.GetDrawable(Resource.Drawable.cast_default));
-		}
-
-		public void OnStatusUpdated()
-		{
-			if (serviceConnection.Remote != null)
-			{
-				if (serviceConnection.Remote.IdleReason == Android.Gms.Cast.MediaStatus.IdleReasonFinished)
-				{
-					serviceConnection.PlayNextSong();
-				}
-			}
-		}
-
-		private void StartServer()
-		{
-			var pathFile = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryMusic);
-			var absolutePath = pathFile.AbsolutePath;
-
-			//if (castServer == null) castServer = new SimpleHTTPServer(absolutePath, 8001);
-		}
-
-		private void StopServer()
-		{
-			//if (castServer != null) castServer.Stop();
-		}
-
 		public void OnActiveViewChanged(View v)
 		{
 
@@ -713,7 +486,7 @@ namespace Alloy
 
 		public void onPanelSlide(View panel, float slideOffset)
 		{
-			
+
 		}
 
 		public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState)
@@ -723,7 +496,78 @@ namespace Alloy
 
 		public void OnClick(View v)
 		{
+
+		}
+
+		public void SetPlaying()
+		{
+			if (serviceConnection != null && serviceConnection.IsConnected)
+			{
+				if (serviceConnection.Remote != null)
+				{
+					if (serviceConnection.Remote.IsPlaying)
+					{
+						playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
+					}
+					else
+					{
+						playPauseImageButton?.SetImageResource(Resource.Drawable.play);
+					}
+				}
+				else if (serviceConnection.MediaPlayer != null)
+				{
+					if (serviceConnection.MediaPlayer.IsPlaying)
+					{
+						playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
+					}
+					else
+					{
+						playPauseImageButton?.SetImageResource(Resource.Drawable.play);
+					}
+				}
+			}
+		}
+
+		public void SetMetaData()
+		{
+			if (serviceConnection?.CurrentSong != null)
+			{
+				albumArtImageView?.SetImageBitmap(serviceConnection.CurrentSong.Art);
+				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
+				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
+			}
+
+			SetPlaying();
+		}
+
+		public void SetMainPlaylist()
+		{
+			ListView lv = (ListView)FindViewById(Resource.Id.main_playlist);
+			if (playlistAdapter == null)
+			{
+				playlistAdapter = new MainPlaylistAdapter(serviceConnection);
+				lv.Adapter = playlistAdapter;
+				lv.ItemClick += (sender, e) =>
+				{
+					serviceConnection.Play(e.Position, serviceConnection.MainQueue);
+				};
+				Adapters.Adapters.SetAdapters(this, playlistAdapter);
+			}
+			playlistAdapter?.NotifyDataSetChanged();
+
+
 			
+		}
+		
+		public void OnStatusUpdated()
+		{
+			if (serviceConnection.Remote != null)
+			{
+				if (serviceConnection.Remote.IdleReason == Android.Gms.Cast.MediaStatus.IdleReasonFinished)
+				{
+					serviceConnection.PlayNextSong();
+				}
+			}
 		}
 	}
 }

@@ -44,7 +44,6 @@ namespace Alloy.Services
 		private BluetoothIntentReceiver bluetoothReceiver;
 		private MediaButtonReciever mediaButtonReciever;
 		public NotificationService notificationService;
-		public MusicSyncReceiver musicSyncReceiver;
 		private CastSession castSession;
 		public MediaSessionCompat MediaSession { get; set; }
 		private PlaybackStateCompat.Builder mediaStateBuilder;
@@ -71,6 +70,7 @@ namespace Alloy.Services
 			{
 				currentSong = value;
 				currentSong.IsSelected = true;
+				if (currentSong.Art == null) currentSong.Art = currentSong.GetAlbumArt();
 				if (Remote != null)
 					CurrentQueueSong = currentSong.QueueItem();
 			}
@@ -94,7 +94,6 @@ namespace Alloy.Services
 			InitMediaPlayer();
 			InitBluetoothReceiver();
 			InitMediaButtonReceiver();
-			InitMusicSyncReceiver();
 			InitHeadsetPlugReceiver();
 			InitMediaSession();
 			InitCast();
@@ -107,7 +106,6 @@ namespace Alloy.Services
 			if (mediaButtonReciever != null) UnregisterReceiver(mediaButtonReciever);
 			if (headsetPlugReceiver != null) UnregisterReceiver(headsetPlugReceiver);
 			if (noisyReceiver != null) UnregisterReceiver(noisyReceiver);
-			if (musicSyncReceiver != null) UnregisterReceiver(musicSyncReceiver);
 			StopCast();
 			Services.NotificationService.CloseNotification();
 		}
@@ -254,44 +252,42 @@ namespace Alloy.Services
 		{
 			if (loading) return;
 			loading = true;
-			//try
-			//{
-			if (Remote == null) Reset();
-
-
-
-			if (MainQueue != null && MainQueue.Count > 0)
+			try
 			{
-				foreach (var item in MainQueue) { item.IsSelected = false; }
-			}
+				if (Remote == null) Reset();
 
-			MainQueue = queue;
-
-			if (index > MainQueue.Count)
-			{
-				loading = false;
-				return;
-			}
-
-			if (index < MainQueue.Count)
-				CurrentSong = MainQueue[index];
-
-			//if (CurrentSong.IsSubsonicTrack)
-			//{
-			Utils.UnlockSsl(true);
-			//}
-			JSONObject jsonObj = null;
-			if (Remote != null)
-			{
-				CurrentSong = MainQueue[index];
-				Adapters.Adapters.CurrentActivity.RunOnUiThread(new Action(async () =>
+				if (MainQueue != null && MainQueue.Count > 0)
 				{
-					Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
-					meta.PutString(MediaMetadata.MetadataKeyArtist, CurrentSong.Artist);
-					meta.PutString(MediaMetadata.MetadataKeyAlbumArtist, CurrentSong.Artist);
-					meta.PutString(MediaMetadata.MetadataKeyAlbum, CurrentSong.Album);
-					meta.PutString(MediaMetadata.MetadataKeyTitle, CurrentSong.Title);
-					meta.PutString(MediaMetadata.MetadataKeyDisplayTitle, CurrentSong.Title);
+					foreach (var item in MainQueue) { item.IsSelected = false; }
+				}
+
+				MainQueue = queue;
+
+				if (index > MainQueue.Count)
+				{
+					loading = false;
+					return;
+				}
+
+				if (index < MainQueue.Count)
+					CurrentSong = MainQueue[index];
+
+				//if (CurrentSong.IsSubsonicTrack)
+				//{
+				Utils.UnlockSsl(true);
+				//}
+				JSONObject jsonObj = null;
+				if (Remote != null)
+				{
+					CurrentSong = MainQueue[index];
+					Adapters.Adapters.CurrentActivity.RunOnUiThread(new Action(async () =>
+					{
+						Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
+						meta.PutString(MediaMetadata.MetadataKeyArtist, CurrentSong.Artist);
+						meta.PutString(MediaMetadata.MetadataKeyAlbumArtist, CurrentSong.Artist);
+						meta.PutString(MediaMetadata.MetadataKeyAlbum, CurrentSong.Album);
+						meta.PutString(MediaMetadata.MetadataKeyTitle, CurrentSong.Title);
+						meta.PutString(MediaMetadata.MetadataKeyDisplayTitle, CurrentSong.Title);
 
 					//if (!string.IsNullOrEmpty(CurrentSong.Artwork)) meta.AddImage(new WebImage(Uri.Parse(CurrentSong.Artwork.Replace("large", "t500x500"))));
 
@@ -302,18 +298,18 @@ namespace Alloy.Services
 					var url = "";
 
 
-					var info = new Android.Gms.Cast.MediaInfo.Builder(url)
-					.SetCustomData(jsonObj)
-					.SetMetadata(meta)
-					.SetStreamDuration(CurrentSong.Duration)
-					.SetStreamType(Android.Gms.Cast.MediaInfo.StreamTypeBuffered)
-					.SetContentType("audio/mp3")
-					.Build();
-
-					MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
-						.SetAutoplay(true)
-						.SetPreloadTime(20)
+						var info = new Android.Gms.Cast.MediaInfo.Builder(url)
+						.SetCustomData(jsonObj)
+						.SetMetadata(meta)
+						.SetStreamDuration(CurrentSong.Duration)
+						.SetStreamType(Android.Gms.Cast.MediaInfo.StreamTypeBuffered)
+						.SetContentType("audio/mp3")
 						.Build();
+
+						MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
+							.SetAutoplay(true)
+							.SetPreloadTime(20)
+							.Build();
 					//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
 					//{
 					//	MainQueue.ToRemoteMediaQueue();
@@ -326,35 +322,35 @@ namespace Alloy.Services
 					var result = await Remote.QueueLoad(MainQueue.MediaQueue, index, 0, jsonObj);
 					//Android.Gms.Common.Apis.IResult result = await Remote.LoadAsync(info, true, 0, jsonObj);
 					if (result.Status.IsSuccess)
-					{
+						{
 						//notificationService.ShowPlayingNotification();
 						//PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong });
 					}
-					loading = false;
-				}));
+						loading = false;
+					}));
+				}
+				else
+				{
+					//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
+					//{
+					//	MediaPlayer.SetDataSource(Application.Context, Uri.Parse(CurrentSong.Url));
+					//}
+					//else
+					//{
+					MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(CurrentSong));
+					//}
+
+
+					MediaPlayer.Prepare();
+				}
+
+				Utils.UnlockSsl(false);
 			}
-			else
+			catch (Exception e)
 			{
-				//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
-				//{
-				//	MediaPlayer.SetDataSource(Application.Context, Uri.Parse(CurrentSong.Url));
-				//}
-				//else
-				//{
-				MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(CurrentSong));
-				//}
-
-
-				MediaPlayer.Prepare();
+				Crashes.TrackError(e);
+				loading = false;
 			}
-
-			Utils.UnlockSsl(false);
-			//}
-			//catch (Exception e)
-			//{
-			//	Crashes.TrackError(e);
-			//	loading = false;
-			//}
 		}
 
 		public class CastPlayResult : Java.Lang.Object, IResultCallback, RemoteMediaClient.IMediaChannelResult
@@ -467,12 +463,12 @@ namespace Alloy.Services
 				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
 				notificationService.ShowPlayingNotification();
 				notificationService.UpdateMediaSessionMeta();
-				Utils.Run(()=>
+				Utils.Run(() =>
 				{
 					MusicProvider.AddPlay(CurrentSong.Id);
 					MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
 				});
-			
+
 				Utils.UnlockSsl(false);
 
 			}
@@ -579,21 +575,6 @@ namespace Alloy.Services
 				filter.AddAction(ActionExit);
 				mediaButtonReciever = new MediaButtonReciever(this);
 				RegisterReceiver(mediaButtonReciever, filter);
-			}
-			catch (Exception ee) { Crashes.TrackError(ee); }
-		}
-
-		public void InitMusicSyncReceiver()
-		{
-			try
-			{
-				IntentFilter filter = new IntentFilter();
-				filter.AddAction(Intent.ActionMediaScannerScanFile);
-				filter.AddAction(Intent.ActionMediaScannerStarted);
-				filter.AddAction(Intent.ActionMediaScannerFinished);
-				filter.AddDataScheme("file");
-				musicSyncReceiver = new MusicSyncReceiver(this);
-				RegisterReceiver(musicSyncReceiver, filter);
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
@@ -802,8 +783,6 @@ namespace Alloy.Services
 		{
 		}
 
-
-
 		public void OnStatusUpdated()
 		{
 			if (Remote != null)
@@ -845,8 +824,5 @@ namespace Alloy.Services
 		{
 			System.Diagnostics.Debug.WriteLine("OnProgressUpdated " + progressMs + "  " + durationMs);
 		}
-
-
-
 	}
 }

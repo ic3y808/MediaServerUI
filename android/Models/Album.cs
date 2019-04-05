@@ -22,6 +22,12 @@ namespace Alloy.Models
 
 		[JsonProperty("tracks")]
 		public MusicQueue Tracks { get; set; }
+
+		[JsonProperty("total_plays")]
+		public int TotalPlays { get; set; }
+
+		[JsonProperty("size")]
+		public string Size { get; set; }
 	}
 
 	public class Album : Object, IParcelable

@@ -2,13 +2,7 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 	<item>
 		<bitmap
-			android:src="@drawable/logo"
-			android:tileMode="repeat"
-		/>
-	</item>
-	<item>
-		<bitmap
-			android:src="@drawable/logo_text"
+			android:src="@drawable/ic_launcher"
 			android:gravity="center_vertical|center_horizontal"
 		/>
 	</item>

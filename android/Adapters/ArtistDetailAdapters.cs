@@ -13,12 +13,10 @@ namespace Alloy.Adapters
 	{
 		public Context context;
 		public List<Album> Albums;
-		private BackgroundAudioServiceConnection serviceConnection;
 
-		public ArtistDetailAlbumAdapter(List<Album> albums, BackgroundAudioServiceConnection serviceConnection)
+		public ArtistDetailAlbumAdapter(List<Album> albums)
 		{
 			Albums = albums;
-			this.serviceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -28,10 +26,7 @@ namespace Alloy.Adapters
 			h.Album = Albums[position];
 			h.image.SetImageBitmap(Albums[position].Art);
 			h.name.SetText(Albums[position].Name, TextView.BufferType.Normal);
-			h.ItemView.Click += (sender, args) =>
-			{
-				serviceConnection.Play(position, Albums[position].Tracks);
-			};
+	
 			h.configured = true;
 		}
 
@@ -46,10 +41,7 @@ namespace Alloy.Adapters
 
 		void OnClick(ViewHolder.ViewHolderEvent e)
 		{
-			if (ItemClick != null)
-			{
-				ItemClick(this, e);
-			}
+			ItemClick?.Invoke(this, e);
 		}
 		public event EventHandler<ViewHolder.ViewHolderEvent> ItemClick;
 
@@ -98,13 +90,10 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			if (h.configured) return;
+			h.Songs = Songs;
 			h.image.SetImageBitmap(Songs[position].Art);
 			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
 			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
-			h.image.Click += (sender, args) =>
-			{
-				serviceConnection.Play(position, Songs);
-			};
 			h.configured = true;
 		}
 
@@ -112,10 +101,17 @@ namespace Alloy.Adapters
 		{
 			context = parent.Context;
 			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
-			return new ViewHolder(view);
+			return new ViewHolder(view, OnClick);
 		}
 
 		public override int ItemCount => Songs.Count;
+
+		void OnClick(ViewHolder.ViewHolderEvent e)
+		{
+			ItemClick?.Invoke(this, e);
+		}
+
+		public event EventHandler<ViewHolder.ViewHolderEvent> ItemClick;
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
@@ -123,13 +119,21 @@ namespace Alloy.Adapters
 			public ImageView image;
 			public TextView title;
 			public TextView album;
+			public MusicQueue Songs;
 			public bool configured;
 
-			public ViewHolder(View itemView) : base(itemView)
+			public ViewHolder(View itemView, Action<ArtistDetailTrackAdapter.ViewHolder.ViewHolderEvent> listener) : base(itemView)
 			{
 				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				title = itemView.FindViewById<TextView>(Resource.Id.title);
 				album = itemView.FindViewById<TextView>(Resource.Id.album);
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
+			}
+
+			public class ViewHolderEvent
+			{
+				public int Position { get; set; }
+				public MusicQueue Songs { get; set; }
 			}
 		}
 	}
