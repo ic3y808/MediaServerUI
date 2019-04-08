@@ -37,7 +37,6 @@ namespace Alloy.Providers
 		public static List<Album> Albums { get; set; }
 		public static List<Artist> Artists { get; set; }
 
-		public static event EventHandler LibraryLoaded;
 
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler<string> ArtistsRefreshed;
@@ -47,7 +46,9 @@ namespace Alloy.Providers
 		public static event EventHandler<ArtistContainer> ArtistRefreshed;
 		public static event EventHandler AlbumStartRefresh;
 		public static event EventHandler<AlbumContainer> AlbumRefreshed;
-	
+		public static event EventHandler SearchStart;
+		public static event EventHandler<SearchResult> SearchResultsRecieved;
+
 
 		static MusicProvider()
 		{
@@ -103,6 +104,8 @@ namespace Alloy.Providers
 					return $"{GetHost()}/api/v1/browse/history";
 				case ApiRequestType.AddPlay:
 					return $"{GetHost()}/api/v1/annotation/add_play";
+				case ApiRequestType.Search:
+					return $"{GetHost()}/api/v1/search";
 
 				default:
 					return null;
@@ -263,7 +266,11 @@ namespace Alloy.Providers
 						foreach (Song albumTrack in album.Tracks)
 						{
 							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-
+						}
+						if (result.Tracks.Count <= 0) continue;
+						foreach (Song resultTrack in result.Tracks)
+						{
+							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
 						}
 					}
 					foreach (Album album in result.EPs)
@@ -349,12 +356,44 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				Alloy.Adapters.Adapters.UpdateAdapters();
-				MusicProvider.LibraryLoaded?.Invoke(null, null);
+			//	MusicProvider.GenreLoaded?.Invoke(null, null);
 				base.OnPostExecute(result);
 			}
 		}
 
-		
+		public class SearchLoader : AsyncTask<object, Song, int>
+		{
+			private string query;
+			private SearchResult results;
+			public SearchLoader(string query)
+			{
+				this.query = query;
+			}
+
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+
+					string request = ApiRequest(ApiRequestType.Search, new Dictionary<string, object> { { "any", query } }, RequestType.GET);
+
+					results = JsonConvert.DeserializeObject<SearchResult>(request);
+
+					Utils.UnlockSsl(false);
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
+				return 0;
+			}
+
+			protected override void OnPostExecute(int result)
+			{
+				SearchResultsRecieved?.Invoke(null, results);
+				Alloy.Adapters.Adapters.UpdateAdapters();
+				base.OnPostExecute(result);
+			}
+		}
+
 		public static void RefreshArtists()
 		{
 			////if (initial) Artists = new ArtistsQueue();
@@ -578,6 +617,13 @@ namespace Alloy.Providers
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
+		}
+
+		public static void Search(string query)
+		{
+			SearchStart?.Invoke(null, null);
+			Adapters.Adapters.Clear();
+			SearchLoader a = (SearchLoader)new SearchLoader(query).Execute();
 		}
 	}
 }

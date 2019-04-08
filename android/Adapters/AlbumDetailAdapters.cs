@@ -1,14 +1,9 @@
 ﻿using System;
-using Android.App;
-using Android.Graphics;
 using Android.Views;
 using Android.Widget;
-using Alloy.Helpers;
 using Alloy.Models;
-using Alloy.Providers;
 using Alloy.Services;
 using Android.Content;
-using Android.OS;
 using Android.Support.V7.Widget;
 
 namespace Alloy.Adapters

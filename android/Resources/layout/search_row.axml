@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					xmlns:tools="http://schemas.android.com/tools"
+					android:layout_width="match_parent"
+					android:layout_height="50dp"					
+					android:background="@color/menu_default_background"
+					android:padding="@dimen/playback_controls_padding">
+
+	
+	<LinearLayout
+		android:id="@+id/artist_result_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone">
+		<TextView 
+			android:id="@+id/artist_name"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:gravity="center_vertical|left"/>
+	</LinearLayout>	
+	<LinearLayout
+		android:id="@+id/album_result_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone">
+		<TextView 
+			android:id="@+id/album_name"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:gravity="center_vertical|left"/>
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/genre_result_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone">
+		<TextView 
+			android:id="@+id/genre_name"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:gravity="center_vertical|left"/>
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/track_result_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:visibility="gone">
+		<TextView 
+			android:id="@+id/title"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:gravity="center_vertical|left"/>
+		<TextView 
+			android:id="@+id/track_artist"
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:gravity="center_vertical|left"/>
+	</LinearLayout>
+</LinearLayout>
+
+

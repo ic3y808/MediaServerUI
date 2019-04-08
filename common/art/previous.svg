@@ -12,9 +12,10 @@
    enable-background="new 0 0 48 48"
    id="svg4"
    sodipodi:docname="previous.svg"
-   inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
    inkscape:export-xdpi="96"
-   inkscape:export-ydpi="96">
+   inkscape:export-ydpi="96"
+   inkscape:export-filename="D:\Source\Github\Alloy\android\Resources\drawable\previous.png">
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -46,12 +47,12 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1017"
+     inkscape:window-width="2560"
+     inkscape:window-height="1027"
      id="namedview6"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="-6.9586596"
+     inkscape:cx="-23.484083"
      inkscape:cy="20.167605"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
@@ -60,20 +61,12 @@
      inkscape:snap-global="false" />
   <path
      id="path73"
-     d="M 46.359835,34.201287 25.959986,24.041362 46.359835,13.801438 Z"
-     style="fill:#000000;fill-opacity:0.78431374;fill-rule:evenodd;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431374"
+     d="M 46.700561,41.646366 23.995852,24.072601 46.700561,6.3604569 Z"
+     style="fill:#000000;fill-opacity:0.78431373;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.38749576;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431373"
      inkscape:connector-curvature="0" />
   <path
      id="path75"
-     d="M 26.359983,34.201287 5.9601335,24.041362 26.359983,13.801438 Z"
-     style="fill:#000000;fill-opacity:0.78431374;fill-rule:evenodd;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431374"
+     d="M 24.441042,41.646366 1.7363341,24.072601 24.441042,6.3604569 Z"
+     style="fill:#000000;fill-opacity:0.78431373;fill-rule:evenodd;stroke:#ffffff;stroke-width:1.38749576;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431373"
      inkscape:connector-curvature="0" />
-  <path
-     id="path77"
-     d="M 6.2001325,34.281286 H 1.6401655 V 13.64144 h 4.559967 z"
-     style="fill:#000000;fill-opacity:0.78431374;fill-rule:evenodd;stroke:#ffffff;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.78431374"
-     inkscape:connector-curvature="0"
-     inkscape:export-filename="C:\Users\Lordkoi\Desktop\TuneScape\TuneScape\Resources\drawable-nodpi\previous.png"
-     inkscape:export-xdpi="96"
-     inkscape:export-ydpi="96" />
 </svg>

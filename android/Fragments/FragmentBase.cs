@@ -1,4 +1,5 @@
-﻿using Android.App;
+﻿using Alloy.Adapters;
+using Android.App;
 using Android.Content;
 using Android.Gms.Cast.Framework;
 using Android.Hardware;
@@ -12,7 +13,14 @@ using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Android.Database;
+using Android.OS;
+using Android.Provider;
+using Android.Views.InputMethods;
+using Java.Interop;
+using SimpleCursorAdapter = Android.Support.V4.Widget.SimpleCursorAdapter;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
+using Newtonsoft.Json;
 
 namespace Alloy.Fragments
 {
@@ -20,6 +28,7 @@ namespace Alloy.Fragments
 	{
 		public BackgroundAudioServiceConnection ServiceConnection;
 		public static IMenuItem MediaRouteButton;
+		private Android.Support.V7.Widget.SearchView searchView;
 		public bool HasBack { get; set; }
 
 		public override void OnResume()
@@ -59,13 +68,15 @@ namespace Alloy.Fragments
 		private void Removehanders()
 		{
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			MusicProvider.LibraryLoaded -= LibraryLoaded;
+			MusicProvider.SearchStart -= MusicProvider_SearchStart;
+			MusicProvider.SearchResultsRecieved -= MusicProvider_SearchResultsRecieved;
 		}
 
 		private void AddHandlers()
 		{
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			MusicProvider.LibraryLoaded += LibraryLoaded;
+			MusicProvider.SearchStart += MusicProvider_SearchStart;
+			MusicProvider.SearchResultsRecieved += MusicProvider_SearchResultsRecieved;
 		}
 
 		public override bool OnContextItemSelected(IMenuItem item)
@@ -118,7 +129,6 @@ namespace Alloy.Fragments
 			{
 				ServiceConnection = new BackgroundAudioServiceConnection();
 				ServiceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
-
 				Intent serviceToStart = new Intent(Application.Context, typeof(BackgroundAudioService));
 				Activity.BindService(serviceToStart, ServiceConnection, Bind.AutoCreate);
 
@@ -128,6 +138,48 @@ namespace Alloy.Fragments
 			{
 				ServiceConnection_ServiceConnected(null, true);
 			}
+		}
+
+		private void MusicProvider_SearchStart(object sender, System.EventArgs e)
+		{
+
+		}
+
+		private void MusicProvider_SearchResultsRecieved(object sender, SearchResult e)
+		{
+			if (e == null) return;
+			string[] columns = { "type",
+				BaseColumns.Id,
+				SearchManager.SuggestColumnText1,
+				SearchManager.SuggestColumnDuration,
+				SearchManager.SuggestColumnIntentData,
+			};
+			MatrixCursor cursor = new MatrixCursor(columns);
+
+			for (int i = 0; i < e.Artists.Count; i++)
+			{
+				Java.Lang.Object[] tmp = { "artist", i.ToString(), e.Artists[i].Name, null, JsonConvert.SerializeObject(e.Artists[i]) };
+				cursor.AddRow(tmp);
+			}
+			for (int i = 0; i < e.Albums.Count; i++)
+			{
+				Java.Lang.Object[] tmp = { "album", i.ToString(), e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i]) };
+				cursor.AddRow(tmp);
+			}
+			for (int i = 0; i < e.Genres.Count; i++)
+			{
+				Java.Lang.Object[] tmp = { "genre", i.ToString(), e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i]) };
+				cursor.AddRow(tmp);
+			}
+			for (int i = 0; i < e.Tracks.Count; i++)
+			{
+				Java.Lang.Object[] tmp = { "track", i.ToString(), e.Tracks[i].Title, e.Tracks[i].Duration, JsonConvert.SerializeObject(e.Tracks[i]) };
+				cursor.AddRow(tmp);
+			}
+
+			searchView.SuggestionsAdapter.ChangeCursor(cursor);
+			//searchView.SuggestionsAdapter.SwapCursor(cursor);
+
 		}
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
@@ -160,9 +212,85 @@ namespace Alloy.Fragments
 
 		public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
 		{
+
 			base.OnCreateOptionsMenu(menu, inflater);
 			inflater.Inflate(Resource.Menu.general_toolbar, menu);
 			MediaRouteButton = CastButtonFactory.SetUpMediaRouteButton(Application.Context, menu, Resource.Id.media_route_menu_item);
+			IMenuItem search = menu.FindItem(Resource.Id.action_search);
+			searchView = (Android.Support.V7.Widget.SearchView)search.ActionView;
+			searchView.QueryTextChange += SearchView_QueryTextChange;
+			searchView.QueryTextSubmit += SearchView_QueryTextSubmit;
+
+			SearchAdapter suggestionAdapter = new SearchAdapter(Context, null);
+
+			searchView.SuggestionsAdapter = suggestionAdapter;
+			searchView.SuggestionClick += SearchView_SuggestionClick;
+			searchView.SuggestionSelect += SearchView_SuggestionSelect;
+			//SearchManager searchManager = Context.GetSystemService(Context.SearchService).JavaCast<SearchManager>();
+			//searchView.SetSearchableInfo(searchManager.GetSearchableInfo(ComponentName()));
+
+		}
+
+		private void SearchView_SuggestionSelect(object sender, Android.Support.V7.Widget.SearchView.SuggestionSelectEventArgs e)
+		{
+			var res = e;
+		}
+
+		private void SearchView_SuggestionClick(object sender, Android.Support.V7.Widget.SearchView.SuggestionClickEventArgs e)
+		{
+			ICursor item = searchView.SuggestionsAdapter.GetItem(e.Position).JavaCast<ICursor>();
+			string type = item.GetString(0);
+			string data = item.GetString(4);
+			Bundle b = new Bundle();
+			if (!string.IsNullOrEmpty(data))
+			{
+				switch (type)
+				{
+					case "artist":
+						Artist artist = JsonConvert.DeserializeObject<Artist>(data);
+						searchView.SetQuery(artist.Name, true);
+						b.PutParcelable("artist", artist);
+						FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
+						break;
+					case "album":
+						Album album = JsonConvert.DeserializeObject<Album>(data);
+						searchView.SetQuery(album.Name, true);
+						b.PutParcelable("album", album);
+						FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
+						break;
+					case "genre":
+						Genre genre = JsonConvert.DeserializeObject<Genre>(data);
+						searchView.SetQuery(genre.Name, true);
+						b.PutParcelable("genre", genre);
+						FragmentManager.ChangeTo(new GenreDetailFragment(), true, "Genre Details", b);
+						break;
+					case "track":
+						Song track = JsonConvert.DeserializeObject<Song>(data);
+						searchView.SetQuery(track.Title, true);
+						b.PutParcelable("album", track);
+						FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
+						break;
+				}
+			}
+			InputMethodManager imm = (InputMethodManager)Context.GetSystemService(Context.InputMethodService);
+			View currentFocus = Activity.CurrentFocus;
+			if (currentFocus != null)
+			{
+				imm.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
+			}
+			e.Handled = true;
+		}
+
+		private void SearchView_QueryTextSubmit(object sender, Android.Support.V7.Widget.SearchView.QueryTextSubmitEventArgs e)
+		{
+			var q = e.Query;
+		}
+
+		private void SearchView_QueryTextChange(object sender, Android.Support.V7.Widget.SearchView.QueryTextChangeEventArgs e)
+		{
+			if (string.IsNullOrEmpty(e.NewText)) return;
+			e.Handled = true;
+			MusicProvider.Search(e.NewText);
 		}
 
 		private void BackgroundAudioServiceConnection_PlaybackStatusChanged(object sender, StatusEventArg e)

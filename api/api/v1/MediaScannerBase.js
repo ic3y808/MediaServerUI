@@ -1,9 +1,12 @@
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const logger = require('../../../common/logger');
+const mm = require('../../music-metadata');
 const moment = require('moment');
+const path = require('path');
 const mime = require('mime-types');
 const fs = require('fs');
 const _ = require('lodash');
+
 class MediaScannerBase {
 
   constructor(database) {
@@ -163,6 +166,7 @@ class MediaScannerBase {
   }
 
   checkTracksExist() {
+    logger.info("alloydb", 'checking missing tracks');
     var allTracks = this.db.prepare('SELECT * FROM Tracks').all();
     allTracks.forEach(track => {
       if (!fs.existsSync(track.path)) {
@@ -173,6 +177,7 @@ class MediaScannerBase {
   }
 
   checkHistory() {
+    logger.info("alloydb", 'checking history');
     var allHistory = this.db.prepare('SELECT * FROM History').all();
     allHistory.forEach(item => {
       var track = this.db.prepare('SELECT * FROM Tracks WHERE id=?').get(item.id);
@@ -200,8 +205,49 @@ class MediaScannerBase {
     });
   }
 
+
+
+  parseFiles(audioFiles) {
+
+    const track = audioFiles.shift();
+
+    if (track) {
+      var coverId = 'cvr_' + track.album_id;
+      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
+
+      var stmt = this.db.prepare('SELECT * FROM CoverArt WHERE id = ?');
+      var existingCover = stmt.all(coverId);
+      if (!fs.existsSync(coverFile)) {
+        return mm.parseFile(track.path).then(metadata => {
+          if (existingCover.length === 0) {
+            this.db.prepare('INSERT INTO CoverArt (id, album) VALUES (?, ?)').run(coverId, track.album);
+          }
+
+          if (metadata.common.picture) {
+
+            fs.writeFile(coverFile, metadata.common.picture[0].data, err => {
+              if (err) {
+                logger.error("alloydb", JSON.stringify(err));
+              }
+              this.db.prepare('UPDATE Tracks SET cover_art=? WHERE id=?').run(coverId, track.id);
+            });
+
+          }
+          return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
+        })
+      } return this.parseFiles(audioFiles); 
+    } else return Promise.resolve();
+  }
+
+  createAlbumArt() {
+    logger.info("alloydb", 'checking missing art');
+    var allTracks = this.db.prepare('SELECT * FROM Tracks').all();
+    return this.parseFiles(allTracks);
+  }
+
   cleanup() {
     logger.info("alloydb", 'Starting cleanup');
+    this.updateStatus('Cleanup', false);
     this.checkTracksExist();
     this.checkEmptyPlaylists();
     this.checkEmptyArtists();
@@ -210,15 +256,20 @@ class MediaScannerBase {
     this.checkCounts();
     this.checkHistory();
     logger.info("alloydb", 'Cleanup complete');
-    this.updateStatus('Scan Complete', false);
+    this.updateStatus('Cleanup Complete', false);
   }
 
   incrementalCleanup() {
     if (this.isScanning()) {
       logger.debug("alloydb", 'scan in progress');
     } else {
+      this.updateStatus('incremental Cleanup', false);
       logger.info("alloydb", 'incrementalCleanup');
-      this.cleanup();
+      // this.cleanup();
+      this.createAlbumArt().then(() => {
+        logger.info("alloydb", 'Incremental Cleanup complete');
+        this.updateStatus('Cleanup Complete', false);
+      });
     }
   }
 

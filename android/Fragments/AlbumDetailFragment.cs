@@ -1,4 +1,5 @@
-﻿using Android.OS;
+﻿using System;
+using Android.OS;
 using Android.Views;
 using Android.Widget;
 using Alloy.Adapters;
@@ -18,7 +19,7 @@ namespace Alloy.Fragments
 	{
 		private View root_view;
 		private Context context;
-	
+
 		private AlbumDetailTrackAdapter albumTracksAdapter;
 		private RecyclerView albumtracksRecycleView;
 
@@ -30,7 +31,7 @@ namespace Alloy.Fragments
 		private TextView playCount;
 		private ImageView albumImage;
 		private ImageView backgroundImage;
-		private ImageView favoriteButton;	
+		private ImageView favoriteButton;
 		private Drawable favorite, notFavorite;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -38,9 +39,27 @@ namespace Alloy.Fragments
 			MusicProvider.AlbumStartRefresh += MusicProvider_AlbumStartRefresh;
 			MusicProvider.AlbumRefreshed += MusicProvider_AlbumRefreshed;
 			root_view = inflater.Inflate(Resource.Layout.album_detail_layout, container, false);
-			Album bundle = (Album)Arguments.GetParcelable("album");
 
+			Album bundle = null;
 
+			try
+			{
+				bundle = (Album)Arguments.GetParcelable("album");
+			}
+			catch (Exception e)
+			{
+				try
+				{
+					Song bundle2 = (Song)Arguments.GetParcelable("track");
+					if (bundle2 != null)
+					{ bundle = new Album { Id = bundle2.AlbumId }; }
+				}
+				catch (Exception e2)
+				{
+
+				}
+			}
+			
 			albumName = root_view.FindViewById<TextView>(Resource.Id.album_name);
 
 			albumSize = root_view.FindViewById<TextView>(Resource.Id.album_size);
@@ -50,8 +69,8 @@ namespace Alloy.Fragments
 			backgroundImage = root_view.FindViewById<ImageView>(Resource.Id.album_header_image);
 			favoriteButton = root_view.FindViewById<ImageView>(Resource.Id.album_favorite_button);
 			favoriteButton.Click += FavoriteButton_Click;
-			favorite = Context.GetDrawable(Resource.Drawable.favorite);
-			notFavorite = Context.GetDrawable(Resource.Drawable.not_favorite);
+			favorite = Context.GetDrawable(Resource.Drawable.star_g);
+			notFavorite = Context.GetDrawable(Resource.Drawable.star_o);
 
 			LinearLayoutManager layoutManager = new LinearLayoutManager(Context, LinearLayoutManager.Vertical, false);
 			albumtracksRecycleView = root_view.FindViewById<RecyclerView>(Resource.Id.album_tracks_list);
@@ -60,11 +79,10 @@ namespace Alloy.Fragments
 
 			CreateToolbar(root_view, Resource.String.artist_detail_title, true);
 
+			if (bundle == null) return root_view;
 
 			albumName.SetText(bundle.Name, TextView.BufferType.Normal);
 			albumSize.SetText("Loading...", TextView.BufferType.Normal);
-
-
 			CheckFavorite(bundle);
 			MusicProvider.GetAlbum(bundle);
 
@@ -114,7 +132,7 @@ namespace Alloy.Fragments
 				backgroundImage.SetImageBitmap(art2);
 				CheckFavorite();
 
-			
+
 				if (album.Tracks.Count > 0)
 				{
 					albumTracksAdapter = new AlbumDetailTrackAdapter(album.Tracks, ServiceConnection);

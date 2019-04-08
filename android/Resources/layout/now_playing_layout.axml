@@ -74,6 +74,7 @@
 			android:layout_height="wrap_content"
 			android:layout_alignParentBottom="true"
 			android:layout_centerHorizontal="true"
+			android:layout_centerVertical="true"
 			android:gravity="center">
 
 			<LinearLayout
@@ -131,7 +132,7 @@
 					android:scaleType="centerCrop"
 					android:layout_centerInParent="true"
 					android:adjustViewBounds="true"
-					android:src="@drawable/not_favorite"/>
+					android:src="@drawable/star_o"/>
 
 
 			</RelativeLayout>
@@ -168,42 +169,40 @@
 				xmlns:tools="http://schemas.android.com/tools"
 				android:layout_width="match_parent"
 				android:layout_height="@dimen/playback_controller_size_large"
-				android:padding="@dimen/playback_controls_padding">
-				<ImageButton
-					android:id="@+id/previous_button"
-					android:layout_centerVertical="true"
-					android:layout_width="@dimen/skip_buttons_height_large"
-					android:layout_height="@dimen/skip_buttons_height_large"
-					android:layout_toLeftOf="@id/play_pause_button"
-					android:layout_marginRight="@dimen/button_spacing_large"
-					android:scaleType="fitCenter"
-					android:background="?selectableItemBackgroundBorderless"
-					android:src="@drawable/previous"
-					android:contentDescription="@string/play_pause"/>
+				android:padding="@dimen/playback_controls_padding"
+				android:layout_centerHorizontal="true"
+				android:layout_centerVertical="true">
 
 				<ImageButton
 					android:id="@+id/play_pause_button"
 					android:layout_height="@dimen/play_button_height_large"
-					android:layout_width="@dimen/play_button_height_large"
+					android:layout_width="wrap_content"
 					android:scaleType="fitCenter"
 					android:layout_centerInParent="true"
 					android:background="?selectableItemBackgroundBorderless"
-					android:src="@drawable/play"
-					android:contentDescription="@string/play_pause"/>
+					android:src="@drawable/play"/>
+
+				<ImageButton
+					android:id="@+id/previous_button"
+					android:layout_centerVertical="true"
+					android:layout_width="wrap_content"
+					android:layout_height="@dimen/skip_buttons_height_large"
+					android:scaleType="fitCenter"
+					android:background="?selectableItemBackgroundBorderless"
+					android:layout_marginRight="20dp"
+					android:src="@drawable/previous"
+					android:layout_toLeftOf="@+id/play_pause_button"/>
 
 				<ImageButton
 					android:id="@+id/next_button"
 					android:layout_centerVertical="true"
-					android:layout_width="@dimen/skip_buttons_height_large"
+					android:layout_width="wrap_content"
 					android:layout_height="@dimen/skip_buttons_height_large"
-					android:layout_toRightOf="@id/play_pause_button"
-					android:layout_marginLeft="@dimen/button_spacing_large"
 					android:scaleType="fitCenter"
 					android:background="?selectableItemBackgroundBorderless"
-					android:layout_marginRight="15dp"
+					android:layout_marginLeft="20dp"
 					android:src="@drawable/next"
-					android:contentDescription="@string/play_pause"/>
-
+					android:layout_toRightOf="@+id/play_pause_button"/>
 			</RelativeLayout>
 		</LinearLayout>
 	</RelativeLayout>

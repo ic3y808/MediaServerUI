@@ -65,11 +65,11 @@ namespace Alloy.Adapters
 			h.Album = MusicProvider.Albums[position];
 
 			h.name.SetText(MusicProvider.Albums[position].Name, TextView.BufferType.Normal);
-			//h.duration.SetText(MusicProvider.Artists[position].Duration.ToTime(), TextView.BufferType.Normal);
-			//if (string.IsNullOrEmpty(MusicProvider.Artists[position].Description))
+			//h.duration.SetText(MusicProvider.Albums[position].Duration.ToTime(), TextView.BufferType.Normal);
+			//if (string.IsNullOrEmpty(MusicProvider.Albums[position].Description))
 			//	h.comment.Visibility = ViewStates.Gone;
 			//else
-			//	h.comment.SetText(MusicProvider.Artists[position].Description, TextView.BufferType.Normal);
+			//	h.comment.SetText(MusicProvider.Albums[position].Description, TextView.BufferType.Normal);
 			//h.likes.Visibility = ViewStates.Gone;
 			//h.reposts.Visibility = ViewStates.Gone;
 
@@ -87,7 +87,7 @@ namespace Alloy.Adapters
 			return holder;
 		}
 
-		public override int ItemCount => MusicProvider.Artists.Count;
+		public override int ItemCount => MusicProvider.Albums.Count;
 
 		void OnClick(AlbumViewHolder.AlbumViewHolderEvent e)
 		{
@@ -125,19 +125,19 @@ namespace Alloy.Adapters
 
 		public bool OnItemMove(int fromPosition, int toPosition)
 		{
-			MusicProvider.Artists.Move(fromPosition, toPosition);
+			MusicProvider.Albums.Move(fromPosition, toPosition);
 			NotifyItemMoved(fromPosition, toPosition);
 			return true;
 		}
 
 		public void OnItemDismiss(int position)
 		{
-			if (MusicProvider.Artists[position].IsSelected)
+			if (MusicProvider.Albums[position].IsSelected)
 			{
 				serviceConnection.PlayNextSong();
-				MusicProvider.Artists.RemoveAt(position);
+				MusicProvider.Albums.RemoveAt(position);
 			}
-			else MusicProvider.Artists.RemoveAt(position);
+			else MusicProvider.Albums.RemoveAt(position);
 
 			NotifyItemRemoved(position);
 
@@ -157,10 +157,10 @@ namespace Alloy.Adapters
 		{
 			var sections = new ArrayList(26);
 			mSectionPositions = new ArrayList(26);
-			for (int i = 0, size = MusicProvider.Artists.Count; i < size; i++)
+			for (int i = 0, size = MusicProvider.Albums.Count; i < size; i++)
 			{
-				if (i >= MusicProvider.Artists.Count) return sections.ToArray();
-				string section = MusicProvider.Artists[i]?.Name?.Substring(0, 1)?.ToUpper();
+				if (i >= MusicProvider.Albums.Count) return sections.ToArray();
+				string section = MusicProvider.Albums[i]?.Name?.Substring(0, 1)?.ToUpper();
 				if (!sections.Contains(section))
 				{
 					sections.Add(section);
@@ -174,7 +174,7 @@ namespace Alloy.Adapters
 		{
 			try
 			{
-				var a = MusicProvider.Artists[position].Name;
+				var a = MusicProvider.Albums[position].Name;
 				var b = a.Substring(0, 1);
 				return b.Any(char.IsLower) ? b.ToUpper() : b;
 			}

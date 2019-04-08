@@ -89,6 +89,10 @@ class App {
             caption: "Cleanup"
           },
           {
+            id: "inccleanup",
+            caption: "Inc. Cleanup"
+          },
+          {
             id: "item-4-id-exit",
             caption: "Exit"
           }
@@ -108,8 +112,11 @@ class App {
             break;
           }
           case "cleanup": {
+            this.mediaScanner.cleanup();
+            break;
+          }
+          case "inccleanup": {
             this.mediaScanner.incrementalCleanup();
-
             break;
           }
           case "cancel_scan": {

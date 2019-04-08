@@ -38,25 +38,6 @@ namespace Alloy.Adapters
 			return position;
 		}
 
-		private class OnTouchListener : Java.Lang.Object, View.IOnTouchListener
-		{
-			private OnStartDragListener DragStartListener;
-			private CustomViewHolder holder;
-			public OnTouchListener(CustomViewHolder h, OnStartDragListener dragStartListener)
-			{
-				holder = h;
-				DragStartListener = dragStartListener;
-			}
-			public bool OnTouch(View v, MotionEvent e)
-			{
-				if (e.ActionMasked == MotionEventActions.Down)
-				{
-					DragStartListener.OnStartDrag(holder);
-				}
-				return false;
-			}
-		}
-
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			setAnimation(holder.ItemView, position);
