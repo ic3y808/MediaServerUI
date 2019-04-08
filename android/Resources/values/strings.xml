@@ -8,9 +8,11 @@
 	<string name="cast_app_id">DAB06F7C</string>
 
 	<!-- Main Menu. -->
-	<!-- Headers. -->
 	<string name="quick_access_header">Quick Access</string>
 	<string name="music_header">Media</string>
+
+	<!-- Toolbar. -->
+	<string name="toolbar_search_text">Search</string>
 
 	<!-- Fragments. -->
 	<string name="fresh_fragment_title">Whats New</string>
@@ -71,6 +73,18 @@
 	<string name="search_queue_title">Search results</string>
 
 	<string name="fragment_image_trans">fragment_image_transition</string>
+
+
+	<string name="artist_details_top_list_label">Top Tracks</string>
+	<string name="artist_details_albums_list_label">Albums</string>
+	<string name="artist_details_eps_list_label">EPs</string>
+	<string name="artist_details_singles_list_label">Singles</string>
+	<string name="artist_details_all_tracks_list_label">All Tracks</string>
+	<string name="artist_details_metrics_plays_label">Plays</string>
+	<string name="artist_details_metrics_tracks_label">Tracks</string>
+	<string name="artist_details_info_play_button_text">Play</string>
+	
+
 
 
 	<string name="nav_favorites">Favorites</string>

@@ -15,5 +15,6 @@
 		UnStar,
 		AddPlay,
 		AddHistory,
+		Search,
 	}
 }

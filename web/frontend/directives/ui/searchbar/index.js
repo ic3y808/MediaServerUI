@@ -34,10 +34,10 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
       html += '     <p>{{item.value.title}} - {{item.value.data.length}}</p>';
       html += '     <ul class="list-group">';
       html += '       <li ng-if="item.value.data.length" ng-repeat="renderItem in item.value.data" ng-click="ctrl.selectItem(renderItem, item.value, true)" class="list-group-item" ng-class="ctrl.getSelectedCssClass(renderItem)">';
-      html += '         <p class="search-list-item" ng-if="item.value.title==\'Artists\'">{{renderItem.artist}}</p>';
+      html += '         <p class="search-list-item" ng-if="item.value.title==\'Artists\'">{{renderItem.name}}</p>';
       html += '         <p class="search-list-item" ng-if="item.value.title==\'Songs\'">{{renderItem.title}} - {{renderItem.artist}}</p>';
       html += '         <p class="search-list-item" ng-if="item.value.title==\'Albums\'">{{renderItem.name}} - {{renderItem.artist}}</p>';
-      html += '         <p class="search-list-item" ng-if="item.value.title==\'Genres\'">{{renderItem.genre}}</p>';
+      html += '         <p class="search-list-item" ng-if="item.value.title==\'Genres\'">{{renderItem.name}}</p>';
       html += '       </li>';
       html += '     </ul>';
       html += '   </li>';
@@ -62,7 +62,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
           switch (e.type.title) {
             case "Artists":
-              $location.path("/artist/" + e.item.artist_id);
+              $location.path("/artist/" + e.item.id);
               break;
             case "Songs":
               $location.path("/album/" + e.item.album_id + "/" + e.item.id);
@@ -71,7 +71,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
               $location.path("/album/" + e.item.id);
               break;
             case "Genres":
-              $location.path("/genre/" + e.item.genre);
+              $location.path("/genre/" + e.item.id);
               break;
           }
 

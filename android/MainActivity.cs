@@ -38,7 +38,7 @@ namespace Alloy
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "content", DataMimeTypes = new[] { "audio/*", "application/ogg", "application/x-ogg", "application/x-vorbis", "application/x-flac" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "http", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm", "audio/x-wav", "audio/ogg", "audio/webm", "application/ogg", "application/x-ogg" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "sshttp", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm" })]
-	public class MainActivity : AppCompatActivity, IMenuListener, PanelSlideListener, View.IOnClickListener
+	public class MainActivity : AppCompatActivity, IMenuListener, PanelSlideListener
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
 		private ImageView primaryBackground;
@@ -53,11 +53,11 @@ namespace Alloy
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
 		private TextView subtitleTextView;
-		private TextView extraInfoTextView;
 		private ImageView albumArtImageView;
 		private ImageButton playPauseImageButton;
 		private ImageButton nextImageButton;
-		private ImageButton previousImageButton;
+		private ImageButton starImageButton;
+		private Drawable starred, notStarred, play, pause;
 		
 		private MainPlaylistAdapter playlistAdapter;
 	
@@ -75,16 +75,13 @@ namespace Alloy
 			mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
 			mainLayout.setAnchorPoint(0.7f);
 			mainLayout.addPanelSlideListener(this);
-			mainLayout.setFadeOnClickListener(this);
-
+			
 			mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
-
-
+			
 			titleTextView = FindViewById<TextView>(Resource.Id.title);
 			titleTextView.Selected = true;
 
 			subtitleTextView = FindViewById<TextView>(Resource.Id.artist);
-			extraInfoTextView = FindViewById<TextView>(Resource.Id.extra_info);
 			albumArtImageView = FindViewById<ImageView>(Resource.Id.album_art);
 
 			if (albumArtImageView != null)
@@ -98,6 +95,8 @@ namespace Alloy
 			{
 				playPauseImageButton.Click += PlayPauseImageButton_Click;
 				playPauseImageButton.Enabled = true;
+				play = GetDrawable(Resource.Drawable.play);
+				pause = GetDrawable(Resource.Drawable.pause);
 			}
 
 			nextImageButton = (ImageButton)FindViewById(Resource.Id.next_button);
@@ -107,23 +106,25 @@ namespace Alloy
 				nextImageButton.Enabled = true;
 			}
 
-			previousImageButton = (ImageButton)FindViewById(Resource.Id.previous_button);
-			if (previousImageButton != null)
+			starImageButton = (ImageButton)FindViewById(Resource.Id.star_button);
+			if (starImageButton != null)
 			{
-				previousImageButton.Click += PreviousImageButton_Click;
-				previousImageButton.Enabled = true;
+				starImageButton.Click += StarImageButton_Click;
+				starImageButton.Enabled = true;
+				starred = GetDrawable(Resource.Drawable.star_g);
+				notStarred = GetDrawable(Resource.Drawable.star_o);
 			}
 
 			ArrayList items = new ArrayList();
 			items.Add(new Category(Resource.String.quick_access_header));
-			items.Add(new Item(Resource.String.fresh_fragment_id, Resource.String.fresh_fragment_title, Resource.Drawable.all_music));
-			items.Add(new Item(Resource.String.starred_fragment_id, Resource.String.starred_fragment_title, Resource.Drawable.favorites));
-			items.Add(new Item(Resource.String.charts_fragment_id, Resource.String.charts_title, Resource.Drawable.favorites));
+			items.Add(new Item(Resource.String.fresh_fragment_id, Resource.String.fresh_fragment_title, Resource.Drawable.fresh));
+			items.Add(new Item(Resource.String.starred_fragment_id, Resource.String.starred_fragment_title, Resource.Drawable.starred));
+			items.Add(new Item(Resource.String.charts_fragment_id, Resource.String.charts_title, Resource.Drawable.charts));
 			items.Add(new Category(Resource.String.music_header));
 			items.Add(new Item(Resource.String.artists_fragment_id, Resource.String.artists_fragment_title, Resource.Drawable.artists));
 			items.Add(new Item(Resource.String.albums_fragment_id, Resource.String.albums_fragment_title, Resource.Drawable.albums));
 			items.Add(new Item(Resource.String.genres_fragment_id, Resource.String.genres_fragment_title, Resource.Drawable.genres));
-			items.Add(new Item(Resource.String.history_fragment_id, Resource.String.history_title, Resource.Drawable.genres));
+			items.Add(new Item(Resource.String.history_fragment_id, Resource.String.history_title, Resource.Drawable.history));
 
 		
 			mainMenuaAdapter = new MenuAdapter(this, items);
@@ -373,7 +374,6 @@ namespace Alloy
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			SetBackground();
-			SetPlaying();
 			SetMetaData();
 			SetMainPlaylist();
 		}
@@ -387,7 +387,6 @@ namespace Alloy
 			}
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			SetBackground();
-			SetPlaying();
 			SetMetaData();
 			SetMainPlaylist();
 		}
@@ -417,19 +416,26 @@ namespace Alloy
 			SetPlaying();
 		}
 
-		private void PreviousImageButton_Click(object sender, System.EventArgs e)
+		private void StarImageButton_Click(object sender, System.EventArgs e)
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
 			{
-				if (serviceConnection.Remote != null)
+				if (serviceConnection.CurrentSong.Starred)
 				{
-					if (serviceConnection.Remote.IsPlaying) { serviceConnection.PlayPreviousSong(); }
+					MusicProvider.RemoveStar(serviceConnection.CurrentSong);
 				}
-				else if (serviceConnection.MediaPlayer != null)
+				else
 				{
-					if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.PlayPreviousSong(); }
+					MusicProvider.AddStar(serviceConnection.CurrentSong);
 				}
+
+				CheckFavorite();
 			}
+		}
+
+		private void CheckFavorite()
+		{
+			if (serviceConnection != null && serviceConnection.IsConnected) { starImageButton?.SetImageDrawable(serviceConnection.CurrentSong.Starred ? starred : notStarred); }
 		}
 
 		private void NextImageButton_Click(object sender, System.EventArgs e)
@@ -494,38 +500,11 @@ namespace Alloy
 
 		}
 
-		public void OnClick(View v)
-		{
-
-		}
-
 		public void SetPlaying()
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected)
-			{
-				if (serviceConnection.Remote != null)
-				{
-					if (serviceConnection.Remote.IsPlaying)
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
-					}
-					else
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.play);
-					}
-				}
-				else if (serviceConnection.MediaPlayer != null)
-				{
-					if (serviceConnection.MediaPlayer.IsPlaying)
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
-					}
-					else
-					{
-						playPauseImageButton?.SetImageResource(Resource.Drawable.play);
-					}
-				}
-			}
+			if (serviceConnection == null || !serviceConnection.IsConnected) return;
+			if (serviceConnection.Remote != null) { playPauseImageButton?.SetImageDrawable(serviceConnection.Remote.IsPlaying ? pause : play); }
+			else if (serviceConnection.MediaPlayer != null) { playPauseImageButton?.SetImageDrawable(serviceConnection.MediaPlayer.IsPlaying ? pause : play); }
 		}
 
 		public void SetMetaData()
@@ -538,6 +517,7 @@ namespace Alloy
 			}
 
 			SetPlaying();
+			CheckFavorite();
 		}
 
 		public void SetMainPlaylist()
@@ -554,19 +534,13 @@ namespace Alloy
 				Adapters.Adapters.SetAdapters(this, playlistAdapter);
 			}
 			playlistAdapter?.NotifyDataSetChanged();
-
-
-			
 		}
 		
 		public void OnStatusUpdated()
 		{
-			if (serviceConnection.Remote != null)
+			if (serviceConnection.Remote?.IdleReason == Android.Gms.Cast.MediaStatus.IdleReasonFinished)
 			{
-				if (serviceConnection.Remote.IdleReason == Android.Gms.Cast.MediaStatus.IdleReasonFinished)
-				{
-					serviceConnection.PlayNextSong();
-				}
+				serviceConnection.PlayNextSong();
 			}
 		}
 	}

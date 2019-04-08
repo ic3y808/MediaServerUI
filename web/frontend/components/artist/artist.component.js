@@ -64,7 +64,7 @@ class ArtistController {
             });
 
             if (coverArt) {
-              $scope.info.artist.image = coverArt;
+              $scope.info.image = coverArt;
               this.AppUtilities.apply();
             }
 

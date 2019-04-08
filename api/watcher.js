@@ -1,24 +1,35 @@
+const _ = require('lodash');
 const fs = require('fs');
+const path = require('path');
 const watch = require('node-watch');
-const Queue = require('better-queue');
 const logger = require("../common/logger");
 var watchers = [];
 var mediaScanner = {};
+var currentQueue = [];
 
 class Watcher {
   constructor(database, scanner) {
     this.db = database;
     mediaScanner = scanner;
-    this.processingQueue = new Queue(this.fileChange, { concurrent: 1 })
-    //this.processingQueue.on('drain', cleanup);
   }
 
-  fileChange(input, cb) {
-    if (input.evt === 'update') {
-      mediaScanner.scanPath(input.name)
+  startQueue(event) {
+    clearTimeout(this.timeout);
+    currentQueue.push(event);
+    this.timeout = setTimeout(this.processQueue, 5000)
+  }
+
+  processQueue() {
+    var queue = _.uniq(currentQueue, 'name');
+    currentQueue = [];
+    for (var i = queue.length - 1; i >= 0; --i) {
+
+      mediaScanner.scanPath(queue[i].path)
+
+      queue.splice(i, 1);
     }
 
-    cb(null, input);
+    clearTimeout(this.timeout);
   }
 
   configFileWatcher() {
@@ -37,7 +48,12 @@ class Watcher {
     mediaPaths.forEach(mediaPath => {
       if (mediaPath.path && fs.existsSync(mediaPath.path)) {
         watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
-          this.processingQueue.push({ evt: evt, name: name })
+          if (fs.existsSync(name)) {
+            if (fs.lstatSync(name).isDirectory())
+              this.startQueue({ evt: evt, name: name, path: name })
+            else
+              this.startQueue({ evt: evt, name: path.dirname(name), path: name })
+          }
         }));
       }
     });

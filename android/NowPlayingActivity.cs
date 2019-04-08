@@ -18,6 +18,7 @@ using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Android.Gms.Cast;
 using Extensions = Alloy.Helpers.Extensions;
 
 namespace Alloy
@@ -58,7 +59,7 @@ namespace Alloy
 
 			nowPlayingList.AddOnChildAttachStateChangeListener(this);
 
-			var helper = new PageHelper();
+			PageHelper helper = new PageHelper();
 			helper.AttachToRecyclerView(nowPlayingList);
 
 			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
@@ -103,7 +104,7 @@ namespace Alloy
 			updateTimer.Elapsed -= UpdateTimer_Elapsed;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			UnbindService();
-			var intent = new Intent(Application.Context, typeof(MainActivity));
+			Intent intent = new Intent(Application.Context, typeof(MainActivity));
 			StartActivity(intent);
 			base.OnBackPressed();
 		}
@@ -147,7 +148,7 @@ namespace Alloy
 			{
 				serviceConnection = new BackgroundAudioServiceConnection();
 				serviceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
-				var serviceToStart = new Intent(Application.Context, typeof(BackgroundAudioService));
+				Intent serviceToStart = new Intent(Application.Context, typeof(BackgroundAudioService));
 				BindService(serviceToStart, serviceConnection, Bind.AutoCreate);
 			}
 
@@ -212,10 +213,10 @@ namespace Alloy
 			{
 				if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 
-				var item = nowPlayingLayoutManager.FindFirstCompletelyVisibleItemPosition();
+				int item = nowPlayingLayoutManager.FindFirstCompletelyVisibleItemPosition();
 				if (item < 0) return;
 				if (item >= serviceConnection.MainQueue.Count - 1) serviceConnection.MainQueue.GetMoreData();
-				var index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
+				int index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
 
 				if (item == index) return;
 				if (item < index)
@@ -249,7 +250,7 @@ namespace Alloy
 					fadeIn.Duration = 3000;
 
 					if (serviceConnection == null || !serviceConnection.IsConnected) return;
-					var newArt = song == null ? serviceConnection.CurrentSong.Art.Blur() : song.Art.Blur();
+					Bitmap newArt = song == null ? serviceConnection.CurrentSong.Art.Blur() : song.Art.Blur();
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{
@@ -261,10 +262,10 @@ namespace Alloy
 							case CurrentBackground.Primary:
 								if (primaryBackground.Background != null)
 								{
-									var a = primaryBackground.Background as BitmapDrawable;
-									a?.Bitmap.Recycle();
-									a?.Bitmap.Dispose();
-									primaryBackground.Background.Dispose();
+									BitmapDrawable a = primaryBackground.Background as BitmapDrawable;
+									a?.Bitmap?.Recycle();
+									a?.Bitmap?.Dispose();
+									primaryBackground?.Background?.Dispose();
 									primaryBackground.Background = null;
 								}
 								currentBackground = CurrentBackground.Secondary;
@@ -272,10 +273,10 @@ namespace Alloy
 							case CurrentBackground.Secondary:
 								if (secondaryBackground.Background != null)
 								{
-									var a = secondaryBackground.Background as BitmapDrawable;
-									a?.Bitmap.Recycle();
-									a?.Bitmap.Dispose();
-									secondaryBackground.Background.Dispose();
+									BitmapDrawable a = secondaryBackground.Background as BitmapDrawable;
+									a?.Bitmap?.Recycle();
+									a?.Bitmap?.Dispose();
+									secondaryBackground?.Background?.Dispose();
 									secondaryBackground.Background = null;
 								}
 								currentBackground = CurrentBackground.Primary;
@@ -320,10 +321,10 @@ namespace Alloy
 			try
 			{
 				if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-				var index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
+				int index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
 				if (index >= 0) nowPlayingLayoutManager.ScrollToPosition(index);
 
-				foreach (var item in serviceConnection.MainQueue.MediaQueue)
+				foreach (MediaQueueItem item in serviceConnection.MainQueue.MediaQueue)
 				{
 					if (!serviceConnection.CurrentSong.QueueItem().ItemId.Equals(item.ItemId)) continue;
 					nowPlayingLayoutManager.ScrollToPosition(index);
@@ -340,7 +341,7 @@ namespace Alloy
 			try
 			{
 				if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-				var index = serviceConnection.MainQueue.IndexOf(song);
+				int index = serviceConnection.MainQueue.IndexOf(song);
 				if (index >= 0) nowPlayingLayoutManager.ScrollToPosition(index);
 				SetBackground(song);
 				UpdateColors(song);
@@ -355,7 +356,7 @@ namespace Alloy
 
 		public bool Closer(float a, float b)
 		{
-			var diff = b - a;
+			float diff = b - a;
 			return diff > 0.5f;
 		}
 
@@ -363,10 +364,10 @@ namespace Alloy
 		{
 			try
 			{
-				var thumb = seekBar.Thumb;
-				var color = Color.White;
-				var contrasting = Color.Black;
-				var textContrasting = Color.Black;
+				Drawable thumb = seekBar.Thumb;
+				Color color = Color.White;
+				Color contrasting = Color.Black;
+				Color textContrasting = Color.Black;
 
 				if (song != null)
 				{
@@ -380,7 +381,7 @@ namespace Alloy
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 
-				var closer = Closer(contrasting.GetBrightness(), 1.0f);
+				bool closer = Closer(contrasting.GetBrightness(), 1.0f);
 
 				textContrasting = closer ? Color.Black : Color.White;
 
@@ -404,9 +405,9 @@ namespace Alloy
 		{
 			try
 			{
-				var title = "";
-				var artist = "";
-				var duration = "";
+				string title = "";
+				string artist = "";
+				string duration = "";
 				if (serviceConnection?.Remote != null)
 				{
 					//serviceConnection.Remote.MediaInfo.Metadata.
@@ -468,7 +469,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.MediaPlayer != null)
 			{
-				var val = serviceConnection.MediaPlayer.CurrentPosition.GetProgressPercentage(serviceConnection.MediaPlayer.Duration);
+				int val = serviceConnection.MediaPlayer.CurrentPosition.GetProgressPercentage(serviceConnection.MediaPlayer.Duration);
 				RunOnUiThread(() =>
 				{
 					seekBar.Progress = val;
@@ -486,7 +487,7 @@ namespace Alloy
 			}
 			else if (serviceConnection.MediaPlayer != null)
 			{
-				var time = e.Progress.ProgressToTimer(serviceConnection.MediaPlayer.Duration);
+				int time = e.Progress.ProgressToTimer(serviceConnection.MediaPlayer.Duration);
 				serviceConnection.MediaPlayer.SeekTo(time);
 			}
 
@@ -571,7 +572,7 @@ namespace Alloy
 
 		private void SetFavorite()
 		{
-			favoritesButton.SetImageResource(Resource.Drawable.not_favorite);
+			favoritesButton.SetImageResource(Resource.Drawable.star_o);
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			if (serviceConnection.CurrentSong.Starred) favoritesButton.SetImageResource(Resource.Drawable.favorite);
 		}
@@ -581,7 +582,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.Remote != null)
 			{
-				var val = progressMs.GetProgressPercentage(durationMs);
+				int val = progressMs.GetProgressPercentage(durationMs);
 				RunOnUiThread(() =>
 				{
 					seekBar.Progress = (int)val;

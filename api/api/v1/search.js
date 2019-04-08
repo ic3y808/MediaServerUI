@@ -41,18 +41,12 @@ router.get('/', function (req, res) {
   if (req.query.newerThan) newerThan = req.query.newerThan;
 
   if (any) {
-
-
-
-
-    var artists = res.locals.db.prepare('SELECT DISTINCT artist, artist_id FROM Tracks WHERE instr(UPPER(artist), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), count, offset);
-        
-    var albums = res.locals.db.prepare('SELECT * FROM Albums WHERE instr(UPPER(name), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), count, offset);
-
-    var tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE instr(UPPER(title), ?) > 0 OR instr(UPPER(artist), ?) > 0 AND year >= ? LIMIT ? OFFSET ?').all(any.toUpperCase(), any.toUpperCase(), newerThan, count, offset);
-    var genres = res.locals.db.prepare('SELECT DISTINCT genre FROM Tracks WHERE instr(UPPER(album), ?) > 0 OR instr(UPPER(artist), ?) > 0 OR instr(UPPER(title), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), any.toUpperCase(), any.toUpperCase(), count, offset);
-
-    res.json({ artists: artists, albums: albums, tracks: tracks, genres: genres });
+    var result = { artists: [], albums: [], tracks: [], genres: [] };
+    result.artists = res.locals.db.prepare('SELECT * FROM Artists WHERE instr(UPPER(name), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), count, offset);
+    result.albums = res.locals.db.prepare('SELECT * FROM Albums WHERE instr(UPPER(name), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), count, offset);
+    result.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE instr(UPPER(title), ?) > 0 OR instr(UPPER(artist), ?) > 0 OR instr(UPPER(album), ?) > 0 OR instr(UPPER(genre), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), any.toUpperCase(), any.toUpperCase(), any.toUpperCase(), count, offset);
+    result.genres = res.locals.db.prepare('SELECT * FROM Genres WHERE instr(UPPER(name), ?) > 0 LIMIT ? OFFSET ?').all(any.toUpperCase(), count, offset);
+    res.json(result);
   } else if (artist) {
     res.json(res.locals.db.prepare('SELECT * FROM Tracks WHERE instr(artist, ?  > 0 AND year >= ? LIMIT ? OFFSET ?').all(artist, newerThan, count, offset));
   } else if (album) {
