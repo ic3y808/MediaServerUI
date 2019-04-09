@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\Adapters.cs" />
+    <Compile Include="Adapters\StarredDetailAdapter.cs" />
     <Compile Include="Adapters\AlbumDetailAdapters.cs" />
     <Compile Include="Adapters\AlbumsAdapter.cs" />
     <Compile Include="Adapters\ArtistDetailAdapters.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Models\NullIntConverter.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SlideDrawable.cs" />
+    <Compile Include="Models\Starred.cs" />
     <Compile Include="Models\StringToBooleanConverter.cs" />
     <Compile Include="Providers\CastContentProvider.cs" />
     <Compile Include="Providers\CastOptionsProvider.cs" />
@@ -440,7 +442,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\album_detail_layout.xml">
+    <AndroidResource Include="Resources\layout\album_detail_layout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
@@ -511,7 +513,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\artist_detail_layout.xml">
+    <AndroidResource Include="Resources\layout\artist_detail_layout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -787,6 +789,36 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\search_row.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\album_detail_album_info.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\album_detail_album_metrics.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\album_detail_album_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_layout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_albums.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

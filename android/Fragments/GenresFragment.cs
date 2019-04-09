@@ -109,10 +109,5 @@ namespace Alloy.Fragments
 			MusicProvider.RefreshGenres();
 		}
 
-		public override void LibraryLoaded()
-		{
-			base.LibraryLoaded();
-			refreshLayout.Refreshing = false;
-		}
 	}
 }

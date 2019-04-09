@@ -1,4 +1,6 @@
-﻿using Alloy.Adapters;
+﻿using System;
+using System.Collections.Generic;
+using Alloy.Adapters;
 using Android.App;
 using Android.Content;
 using Android.Gms.Cast.Framework;
@@ -145,39 +147,84 @@ namespace Alloy.Fragments
 
 		}
 
+		public void getCursorFromList(List<Tuple<string, string, string, string, string>> items, ref MatrixCursor cursor)
+		{
+			foreach (var item in items)
+			{
+				cursor.NewRow()
+
+					.Add(BaseColumns.Id, item.Item1)
+					.Add("type", item.Item2)
+					.Add(SearchManager.SuggestColumnText1, item.Item3)
+					.Add(SearchManager.SuggestColumnDuration, item.Item4)
+					.Add(SearchManager.SuggestColumnIntentData, JsonConvert.SerializeObject(item.Item5));
+			}
+		}
+
+
 		private void MusicProvider_SearchResultsRecieved(object sender, SearchResult e)
 		{
 			if (e == null) return;
-			string[] columns = { "type",
-				BaseColumns.Id,
+			int id = 0;
+			string[] columns = { BaseColumns.Id,
+				"type",
 				SearchManager.SuggestColumnText1,
 				SearchManager.SuggestColumnDuration,
 				SearchManager.SuggestColumnIntentData,
 			};
-			MatrixCursor cursor = new MatrixCursor(columns);
 
+			MatrixCursor matrix = new MatrixCursor(columns);
+
+			List<Tuple<string, string, string, string, string>> items = new List<Tuple<string, string, string, string, string>>();
+
+			items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "seperator", "Albums", null, null));
 			for (int i = 0; i < e.Artists.Count; i++)
 			{
-				Java.Lang.Object[] tmp = { "artist", i.ToString(), e.Artists[i].Name, null, JsonConvert.SerializeObject(e.Artists[i]) };
-				cursor.AddRow(tmp);
-			}
-			for (int i = 0; i < e.Albums.Count; i++)
-			{
-				Java.Lang.Object[] tmp = { "album", i.ToString(), e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i]) };
-				cursor.AddRow(tmp);
-			}
-			for (int i = 0; i < e.Genres.Count; i++)
-			{
-				Java.Lang.Object[] tmp = { "genre", i.ToString(), e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i]) };
-				cursor.AddRow(tmp);
-			}
-			for (int i = 0; i < e.Tracks.Count; i++)
-			{
-				Java.Lang.Object[] tmp = { "track", i.ToString(), e.Tracks[i].Title, e.Tracks[i].Duration, JsonConvert.SerializeObject(e.Tracks[i]) };
-				cursor.AddRow(tmp);
+				items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "artist", e.Artists[i].Name, null, JsonConvert.SerializeObject(e.Artists[i])));
 			}
 
-			searchView.SuggestionsAdapter.ChangeCursor(cursor);
+			//for (int i = 0; i < e.Albums.Count; i++)
+			//{
+			//	items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "album", e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i])));
+			//}
+
+			//for (int i = 0; i < e.Genres.Count; i++)
+			//{
+			//	items.Add(new Tuple<string, string, string, string, string>( id++.ToString(), "genre", e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i])));
+			//}
+
+			//for (int i = 0; i < e.Tracks.Count; i++)
+			//{
+			//	items.Add(new Tuple<string, string, string, string, string>( id++.ToString(), "track", e.Tracks[i].Title, null, JsonConvert.SerializeObject(e.Tracks[i])));
+			//}
+
+			getCursorFromList(items, ref matrix);
+
+
+			//cursor.NewRow().Add()
+
+			//cursor.AddRow(new Java.Lang.Object[] { "seperator", id++, "Albums", null, null });
+			//for (int i = 0; i < e.Albums.Count; i++)
+			//{
+			//	Java.Lang.Object[] tmp = { "album", id++, e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i]) };
+			//	cursor.AddRow(tmp);
+			//}
+			//cursor.AddRow(new Java.Lang.Object[] { "seperator", id++, "Genres", null, null });
+			//for (int i = 0; i < e.Genres.Count; i++)
+			//{
+			//	Java.Lang.Object[] tmp = { "genre", id++, e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i]) };
+			//	cursor.AddRow(tmp);
+			//}
+			//cursor.AddRow(new Java.Lang.Object[] { "seperator", id++, "Tracks", null, null });
+			//for (int i = 0; i < e.Tracks.Count; i++)
+			//{
+			//	Java.Lang.Object[] tmp = { "track", id++, e.Tracks[i].Title, e.Tracks[i].Duration, JsonConvert.SerializeObject(e.Tracks[i]) };
+			//	cursor.AddRow(tmp);
+			//}
+			SearchAdapter suggestionAdapter = new SearchAdapter(Context, matrix);
+
+			searchView.SuggestionsAdapter = suggestionAdapter;
+			//searchView.SuggestionsAdapter.ChangeCursor(matrix);
 			//searchView.SuggestionsAdapter.SwapCursor(cursor);
 
 		}
@@ -221,9 +268,7 @@ namespace Alloy.Fragments
 			searchView.QueryTextChange += SearchView_QueryTextChange;
 			searchView.QueryTextSubmit += SearchView_QueryTextSubmit;
 
-			SearchAdapter suggestionAdapter = new SearchAdapter(Context, null);
-
-			searchView.SuggestionsAdapter = suggestionAdapter;
+	
 			searchView.SuggestionClick += SearchView_SuggestionClick;
 			searchView.SuggestionSelect += SearchView_SuggestionSelect;
 			//SearchManager searchManager = Context.GetSystemService(Context.SearchService).JavaCast<SearchManager>();
@@ -310,11 +355,6 @@ namespace Alloy.Fragments
 			}
 		}
 
-		private void LibraryLoaded(object sender, System.EventArgs e)
-		{
-			LibraryLoaded();
-		}
-
 		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
 		{
 
@@ -332,7 +372,6 @@ namespace Alloy.Fragments
 
 		public virtual void ScrollToNowPlaying() { }
 		public virtual void PlaybackStatusChanged(StatusEventArg args) { }
-		public virtual void LibraryLoaded() { }
 		public virtual void ServiceConnected() { }
 		public virtual void OnRefreshed() { }
 		public virtual void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo) { }

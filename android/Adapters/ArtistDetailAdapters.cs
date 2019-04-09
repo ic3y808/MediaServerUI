@@ -224,11 +224,6 @@ namespace Alloy.Adapters
 					starButton?.SetImageDrawable(artist.Starred ? starred : notStarred);
 				}
 			}
-
-			public class PlayArtistEvent
-			{
-				public Artist Artist;
-			}
 		}
 
 		public class ArtistMetricsViewHolder : RecyclerView.ViewHolder

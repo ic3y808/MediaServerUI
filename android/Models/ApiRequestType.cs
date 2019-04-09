@@ -16,5 +16,6 @@
 		AddPlay,
 		AddHistory,
 		Search,
+		Starred,
 	}
 }

@@ -1,92 +1,109 @@
-﻿using System;
-using Android.OS;
+﻿using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Views;
-using Android.Widget;
-using Microsoft.AppCenter.Crashes;
 using Alloy.Adapters;
+using Alloy.Helpers;
+using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Android.Support.V7.Widget;
 
 namespace Alloy.Fragments
 {
 	public class StarredFragment : FragmentBase
 	{
-		private ListView listView;
-	
+		private View root_view;
+		private StarredDetailAdapter starredDetailAdapter;
+		private RecyclerView starredContentView;
 		private SwipeRefreshLayout refreshLayout;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			base.OnCreateView(inflater, container, savedInstanceState);
-			View root_view = inflater.Inflate(Resource.Layout.favorites_layout, container, false);
-			listView = root_view.FindViewById<ListView>(Resource.Id.favorites_list);
+			MusicProvider.StarredStartRefresh += MusicProvider_StarredStartRefresh;
+			MusicProvider.StarredRefreshed += MusicProvider_StarredRefreshed;
+			root_view = inflater.Inflate(Resource.Layout.starred_layout, container, false);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);
 			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
 
-			RegisterForContextMenu(listView);
-			
-
-
-			CreateToolbar(root_view, Resource.String.starred_title);
+			LinearLayoutManager layoutManager = new LinearLayoutManager(Context, LinearLayoutManager.Vertical, false);
+			starredContentView = root_view.FindViewById<RecyclerView>(Resource.Id.starred_content_list);
+			starredContentView.SetLayoutManager(layoutManager);
+			RegisterForContextMenu(starredContentView);
+			CreateToolbar(root_view, Resource.String.starred_title, true);
 
 			return root_view;
+		}
+
+		private void MusicProvider_StarredStartRefresh(object sender, System.EventArgs e)
+		{
+			refreshLayout.Refreshing = true;
+		}
+
+		private void MusicProvider_StarredRefreshed(object sender, Starred e)
+		{
+			refreshLayout.Refreshing = false;
 		}
 
 		public override void ScrollToNowPlaying()
 		{
 			base.ScrollToNowPlaying();
-			
+			Adapters.Adapters.UpdateAdapters();
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
-			
+			Adapters.Adapters.UpdateAdapters();
 		}
 
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
-		
-		}
 
-		public override void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
-		{
-			base.ContextMenuCreated(menu, v, menuInfo);
-			if (v.Id == Resource.Id.favorites_list)
-			{
-				MenuInflater inflater = Activity.MenuInflater;
-				inflater.Inflate(Resource.Menu.song_context_menu, menu);
-			}
-		}
+			ScrollToNowPlaying();
 
-		private void MListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
-		{
-			if (MusicProvider.Favorites[e.Position].IsSelected)
-			{
+			starredDetailAdapter = new StarredDetailAdapter(Activity);
+			starredContentView.SetAdapter(starredDetailAdapter);
+			starredDetailAdapter.TrackClick += Track_ItemClick;
+			starredDetailAdapter.AlbumClick += Album_ItemClick;
+			starredDetailAdapter.PlayArtist += PlayArtist_Click;
+			Adapters.Adapters.SetAdapters(Activity, starredDetailAdapter);
 
-			}
-			else
+
+			if (MusicProvider.Starred == null ||
+				MusicProvider.Starred.Albums == null ||
+				MusicProvider.Starred.Artists == null ||
+				MusicProvider.Starred.TopAlbums == null ||
+				MusicProvider.Starred.TopArtists == null ||
+				MusicProvider.Starred.TopTracks == null ||
+				MusicProvider.Starred.Tracks == null)
 			{
-				
-					ServiceConnection.Play(e.Position, MusicProvider.Favorites);
-				
+				Utils.Run(MusicProvider.RefreshStarred);
 			}
 		}
 
 		public override void OnRefreshed()
 		{
-			refreshLayout.Refreshing = true;
-			//MusicProvider.RefreshFavorites();
+			MusicProvider.RefreshStarred();
 		}
 
-		public override void LibraryLoaded()
+		private void PlayArtist_Click(object sender, ArtistContainer e)
 		{
-			base.LibraryLoaded();
-			refreshLayout.Refreshing = false;
+			ServiceConnection.Play(0, e.Tracks);
+		}
+
+		private void Album_ItemClick(object sender, StarredAlbumAdapter.ViewHolder.ViewHolderEvent e)
+		{
+			Bundle b = new Bundle();
+			b.PutParcelable("album", e.Album);
+			FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
+		}
+
+		private void Track_ItemClick(object sender, StarredTrackAdapter.ViewHolder.ViewHolderEvent e)
+		{
+			ServiceConnection?.Play(e.Position, e.Songs);
 		}
 	}
 }

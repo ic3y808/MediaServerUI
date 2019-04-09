@@ -384,6 +384,7 @@ namespace Alloy
 			{
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
 				MediaControllerCompat.SetMediaController(this, serviceConnection.MediaSession.Controller);
+				MusicProvider.FullRefresh();
 			}
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			SetBackground();
@@ -418,19 +419,16 @@ namespace Alloy
 
 		private void StarImageButton_Click(object sender, System.EventArgs e)
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected)
+			Utils.Run(() =>
 			{
-				if (serviceConnection.CurrentSong.Starred)
+				if (serviceConnection != null && serviceConnection.IsConnected)
 				{
-					MusicProvider.RemoveStar(serviceConnection.CurrentSong);
-				}
-				else
-				{
-					MusicProvider.AddStar(serviceConnection.CurrentSong);
-				}
+					if (serviceConnection.CurrentSong.Starred) { MusicProvider.RemoveStar(serviceConnection.CurrentSong); }
+					else { MusicProvider.AddStar(serviceConnection.CurrentSong); }
 
-				CheckFavorite();
-			}
+					CheckFavorite();
+				}
+			});
 		}
 
 		private void CheckFavorite()

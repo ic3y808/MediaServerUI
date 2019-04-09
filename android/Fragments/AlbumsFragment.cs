@@ -50,8 +50,6 @@ namespace Alloy.Fragments
 
 			CreateToolbar(root_view, Resource.String.albums_title);
 
-
-
 			return root_view;
 		}
 		public override void ScrollToNowPlaying()

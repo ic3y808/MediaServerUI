@@ -36,6 +36,7 @@ namespace Alloy.Providers
 		public static List<Genre> Genres { get; set; }
 		public static List<Album> Albums { get; set; }
 		public static List<Artist> Artists { get; set; }
+		public static Starred Starred { get; set; }
 
 
 		public static event EventHandler ArtistsStartRefresh;
@@ -46,6 +47,8 @@ namespace Alloy.Providers
 		public static event EventHandler<ArtistContainer> ArtistRefreshed;
 		public static event EventHandler AlbumStartRefresh;
 		public static event EventHandler<AlbumContainer> AlbumRefreshed;
+		public static event EventHandler StarredStartRefresh;
+		public static event EventHandler<Starred> StarredRefreshed;
 		public static event EventHandler SearchStart;
 		public static event EventHandler<SearchResult> SearchResultsRecieved;
 
@@ -106,6 +109,8 @@ namespace Alloy.Providers
 					return $"{GetHost()}/api/v1/annotation/add_play";
 				case ApiRequestType.Search:
 					return $"{GetHost()}/api/v1/search";
+				case ApiRequestType.Starred:
+					return $"{GetHost()}/api/v1/browse/starred";
 
 				default:
 					return null;
@@ -394,6 +399,79 @@ namespace Alloy.Providers
 			}
 		}
 
+		public class StarredLoader : AsyncTask<object, object, int>
+		{
+			private StarredContainer result;
+
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+					string request = ApiRequest(ApiRequestType.Starred, null, RequestType.GET);
+					result = JsonConvert.DeserializeObject<StarredContainer>(request);
+					
+					foreach (Album album in result.Starred.Albums)
+					{
+						album.Art = album.GetAlbumArt();
+						foreach (Song albumTrack in album.Tracks)
+						{
+							if (albumTrack.Art == null) albumTrack.Art = album.Art;
+						}
+						if (result.Starred.Tracks.Count <= 0) continue;
+						foreach (Song resultTrack in result.Starred.Tracks)
+						{
+							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
+						}
+					}
+					foreach (Album album in result.Starred.TopAlbums)
+					{
+						album.Art = album.GetAlbumArt();
+						foreach (Song albumTrack in album.Tracks)
+						{
+							if (albumTrack.Art == null) albumTrack.Art = album.Art;
+						}
+						if (result.Starred.Tracks.Count <= 0) continue;
+						foreach (Song resultTrack in result.Starred.Tracks)
+						{
+							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
+						}
+					}
+					foreach (Song track in result.Starred.Tracks)
+					{
+						track.Art = track.GetAlbumArt();
+					}
+					foreach (Song track in result.Starred.TopTracks)
+					{
+						track.Art = track.GetAlbumArt();
+					}
+					foreach (Artist artist in result.Starred.Artists)
+					{
+						artist.Art = artist.GetAlbumArt();
+					}
+					foreach (Artist artist in result.Starred.TopArtists)
+					{
+						artist.Art = artist.GetAlbumArt();
+					}
+
+					Starred = result.Starred;
+
+					Utils.UnlockSsl(false);
+					return 0;
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
+				return 1;
+			}
+
+			protected override void OnPostExecute(int refreshResult)
+			{
+				base.OnPostExecute(refreshResult);
+				if (refreshResult != 0) return;
+				StarredRefreshed?.Invoke(null, Starred);
+				Alloy.Adapters.Adapters.UpdateAdapters();
+			}
+		}
+
 		public static void RefreshArtists()
 		{
 			////if (initial) Artists = new ArtistsQueue();
@@ -414,15 +492,18 @@ namespace Alloy.Providers
 			GenreLoader genres = (GenreLoader)new GenreLoader().Execute();
 		}
 
-		public static void QuickRefresh()
+		public static void RefreshStarred()
 		{
-			Genres = new List<Genre>();
-			Albums = new List<Album>();
-			Artists = new List<Artist>();
+			StarredStartRefresh?.Invoke(null,null);
+			StarredLoader starred = (StarredLoader)new StarredLoader().Execute();
+		}
 
-			AlbumsLoader albums = (AlbumsLoader)new AlbumsLoader().Execute();
-			ArtistsLoader artists = (ArtistsLoader)new ArtistsLoader().Execute();
-			GenreLoader genres = (GenreLoader)new GenreLoader().Execute();
+		public static void FullRefresh()
+		{
+			RefreshArtists();
+			RefreshAlbums();
+			RefreshGenres();
+			RefreshStarred();
 		}
 
 		public static void GetArtist(Artist artist)

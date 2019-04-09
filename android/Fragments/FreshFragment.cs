@@ -80,12 +80,6 @@ namespace Alloy.Fragments
 			base.ServiceConnected();
 		}
 
-		public override void LibraryLoaded()
-		{
-			base.LibraryLoaded();
-			Adapters.Adapters.UpdateAdapters();
-			refreshLayout.Refreshing = false;
-		}
 
 		void OnItemClick(object sender, CustomViewHolderEvent e)
 		{
