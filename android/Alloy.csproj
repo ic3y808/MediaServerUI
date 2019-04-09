@@ -82,7 +82,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\Adapters.cs" />
-    <Compile Include="Adapters\StarredDetailAdapter.cs" />
+    <Compile Include="Adapters\FreshAdapter.cs" />
+    <Compile Include="Adapters\StarredAdapter.cs" />
     <Compile Include="Adapters\AlbumDetailAdapters.cs" />
     <Compile Include="Adapters\AlbumsAdapter.cs" />
     <Compile Include="Adapters\ArtistDetailAdapters.cs" />
@@ -107,9 +108,11 @@
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
     <Compile Include="Models\BackgroundAudioStatus.cs" />
     <Compile Include="Models\AlbumViewHolder.cs" />
+    <Compile Include="Models\Charts.cs" />
     <Compile Include="Models\Divider.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CustomToggle.cs" />
+    <Compile Include="Models\Fresh.cs" />
     <Compile Include="Models\HeadsetDeviceManager.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemClickEventArgs.cs" />
@@ -123,6 +126,7 @@
     <Compile Include="Models\SlideDrawable.cs" />
     <Compile Include="Models\Starred.cs" />
     <Compile Include="Models\StringToBooleanConverter.cs" />
+    <Compile Include="Models\Tag.cs" />
     <Compile Include="Providers\CastContentProvider.cs" />
     <Compile Include="Providers\CastOptionsProvider.cs" />
     <Compile Include="Fragments\AlbumDetailFragment.cs" />
@@ -277,10 +281,10 @@
       <Version>2018.7.18.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Analytics">
-      <Version>1.8.0</Version>
+      <Version>1.14.0</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.AppCenter.Crashes">
-      <Version>1.8.0</Version>
+      <Version>1.14.0</Version>
     </PackageReference>
     <PackageReference Include="Newtonsoft.Json">
       <Version>11.0.2</Version>
@@ -819,6 +823,84 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\starred_albums.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_top_albums.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_top_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_artists.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_top_artists.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_artist_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_layout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_new_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_song_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_song_item_horizontal.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_new_artists.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_artist_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_new_albums.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
