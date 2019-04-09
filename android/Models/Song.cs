@@ -59,11 +59,11 @@ namespace Alloy.Models
 		public int Rating { get; set; }
 		[JsonProperty("bpm")]
 		public string Bpm { get; set; }
-		[JsonProperty("year")]
+		[JsonProperty("year"), JsonConverter(typeof(NullIntConverter))]
 		public int Year { get; set; }
-		[JsonProperty("play_count")]
+		[JsonProperty("play_count"), JsonConverter(typeof(NullIntConverter))]
 		public int PlayCount { get; set; }
-		[JsonProperty("size")]
+		[JsonProperty("size"), JsonConverter(typeof(NullIntConverter))]
 		public int Size { get; set; }
 		[JsonProperty("content_type")]
 		public string ContentType { get; set; }
@@ -71,7 +71,7 @@ namespace Alloy.Models
 		public DateTime Created { get; set; }
 		[JsonProperty("last_modified"), JsonConverter(typeof(MinDateTimeConverter))]
 		public DateTime LastModified { get; set; }
-		[JsonProperty("duration")]
+		[JsonProperty("duration"), JsonConverter(typeof(NullIntConverter))]
 		public int Duration { get; set; }
 		[JsonProperty("bitrate")]
 		public string Bitrate { get; set; }

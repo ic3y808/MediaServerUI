@@ -67,7 +67,7 @@ namespace Alloy
 			base.OnCreate(savedInstanceState);
 			if (!Debugger.IsAttached)
 			{
-				//AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
+				AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
 			}
 			
 			Utils.UnlockSsl(true);

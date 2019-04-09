@@ -5,7 +5,7 @@ namespace Alloy.Models
 {
 	public class ChartsContainer
 	{
-		[JsonProperty("albums")]
+		[JsonProperty("charts")]
 		public Charts Charts { get; set; }
 	}
 

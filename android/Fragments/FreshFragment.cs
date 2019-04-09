@@ -126,7 +126,7 @@ namespace Alloy.Fragments
 			FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
 		}
 
-		private void Track_ItemClick(object sender, FreshHorizontalTrackAdapter.ViewHolder.ViewHolderEvent e)
+		private void Track_ItemClick(object sender, TrackViewHolderEvent e)
 		{
 			ServiceConnection?.Play(e.Position, e.Songs);
 		}
