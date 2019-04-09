@@ -330,7 +330,7 @@ router.get('/fresh', function (req, res) {
  * @route GET /browse/random_songs
  * @produces application/json 
  * @consumes application/json 
- * @group list - List API
+ * @group browse - Browse API
  * @param {int} size.query The number of songs to return. default 100
  * @param {int} fromYear.query Only return songs published after or in this year.
  * @param {int} toYear.query 	Only return songs published before or in this year.
@@ -367,7 +367,7 @@ router.get('/random_songs', function (req, res) {
  * @route GET /browse/starred
  * @produces application/json 
  * @consumes application/json 
- * @group list - List API
+ * @group browse - Browse API
  * @returns {StarredMedia} 200 - Returns a collection of starred media.
  * @security ApiKeyAuth
  */

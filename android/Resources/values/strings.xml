@@ -84,6 +84,14 @@
 	<string name="artist_details_metrics_tracks_label">Tracks</string>
 	<string name="artist_details_info_play_button_text">Play</string>
 	
+	<string name="album_details_metrics_plays_label">Plays</string>
+	<string name="album_details_metrics_tracks_label">Tracks</string>
+	<string name="album_details_info_play_button_text">Play</string>
+	<string name="album_details_tracks_list_label">Tracks</string>
+	
+	
+	<string name="starred_albums_label">Albums</string>
+	
 
 
 

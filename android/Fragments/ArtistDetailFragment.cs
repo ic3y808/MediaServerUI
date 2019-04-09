@@ -1,15 +1,10 @@
-﻿using System.Collections.Generic;
-using Android.OS;
+﻿using Android.OS;
 using Android.Views;
-using Android.Widget;
 using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
-using Android.Content;
-using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 
@@ -50,6 +45,12 @@ namespace Alloy.Fragments
 			if (e != null)
 			{
 				artist = e;
+				if (artistDetailAdapter != null)
+				{
+					artistDetailAdapter.TrackClick -= Track_ItemClick;
+					artistDetailAdapter.AlbumClick -= Album_ItemClick;
+					artistDetailAdapter.PlayArtist -= PlayArtist_Click;
+				}
 				artistDetailAdapter = new ArtistDetailAdapter(Activity, artist);
 				artistContentView.SetAdapter(artistDetailAdapter);
 				artistDetailAdapter.TrackClick += Track_ItemClick;
