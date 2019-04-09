@@ -521,8 +521,8 @@ namespace Alloy.Providers
 					{
 						artist.Art = artist.GetAlbumArt();
 					}
-					
 
+					result.Fresh.Tracks.Shuffle();
 					Fresh = result.Fresh;
 
 					Utils.UnlockSsl(false);
@@ -550,7 +550,7 @@ namespace Alloy.Providers
 				try
 				{
 					Utils.UnlockSsl(true);
-					string request = ApiRequest(ApiRequestType.Fresh, null, RequestType.GET);
+					string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
 					result = JsonConvert.DeserializeObject<ChartsContainer>(request);
 
 					foreach (Album album in result.Charts.NeverPlayedAlbums)
@@ -560,32 +560,39 @@ namespace Alloy.Providers
 						{
 							if (albumTrack.Art == null) albumTrack.Art = album.Art;
 						}
-						
+
 						foreach (Song resultTrack in result.Charts.NeverPlayed)
 						{
 							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
 						}
+
 						foreach (Song resultTrack in result.Charts.TopTracks)
 						{
 							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
 						}
 					}
+
 					foreach (Song track in result.Charts.NeverPlayed)
 					{
 						if (track.Art == null) track.Art = track.GetAlbumArt();
 					}
+
 					foreach (Song track in result.Charts.TopTracks)
 					{
 						if (track.Art == null) track.Art = track.GetAlbumArt();
 					}
 
-				
+
 					Charts = result.Charts;
 
 					Utils.UnlockSsl(false);
 					return 0;
 				}
-				catch (Exception e) { Crashes.TrackError(e); }
+				catch (Exception e)
+				{
+					Crashes.TrackError(e);
+					Debug.WriteLine(e.Message);
+				}
 				return 1;
 			}
 

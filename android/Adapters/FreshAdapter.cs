@@ -71,11 +71,57 @@ namespace Alloy.Adapters
 						}
 					}
 					break;
+				case 3:
+					FreshNeverPlayedAlbumsViewHolder freshNeverPlayedAlbumsViewHolder = holder as FreshNeverPlayedAlbumsViewHolder;
+					if (MusicProvider.Charts != null && MusicProvider.Charts.NeverPlayedAlbums != null && MusicProvider.Charts.NeverPlayedAlbums.Count > 0)
+					{
+						if (freshNeverPlayedAlbumsViewHolder != null)
+						{
 
+							freshNeverPlayedAlbumsViewHolder.fresNeverPlayedAlbumsListContainer.Visibility = ViewStates.Visible;
+							FreshAlbumAdapter freshNeverPlayedAlbumsAdapter = new FreshAlbumAdapter(MusicProvider.Charts.NeverPlayedAlbums);
+							freshNeverPlayedAlbumsViewHolder?.freshNeverPlayedAlbumRecycleView?.SetAdapter(freshNeverPlayedAlbumsAdapter);
+							freshNeverPlayedAlbumsAdapter.ItemClick += AlbumClick;
+							Adapters.SetAdapters(Activity, freshNeverPlayedAlbumsAdapter);
+						}
+					}
+					break;
+				case 4:
+					FreshNeverPlayedTracksViewHolder freshNeverPlayedTracksViewHolder = holder as FreshNeverPlayedTracksViewHolder;
+					if (MusicProvider.Charts != null && MusicProvider.Charts.NeverPlayed != null && MusicProvider.Charts.NeverPlayed.Count > 0)
+					{
+						if (freshNeverPlayedTracksViewHolder != null)
+						{
+
+							freshNeverPlayedTracksViewHolder.freshNeverPlayedTracksListContainer.Visibility = ViewStates.Visible;
+							FreshTrackAdapter freshNeverPlayedTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.NeverPlayed);
+							freshNeverPlayedTracksViewHolder?.freshNeverPlayedTracksRecycleView?.SetAdapter(freshNeverPlayedTracksAdapter);
+							freshNeverPlayedTracksAdapter.ItemClick += TrackClick;
+							Adapters.SetAdapters(Activity, freshNeverPlayedTracksAdapter);
+						}
+					}
+					break;
+				case 5:
+					FreshTopPlayedTracksViewHolder freshTopPlayedTracksViewHolder = holder as FreshTopPlayedTracksViewHolder;
+					if (MusicProvider.Charts != null && MusicProvider.Charts.TopTracks != null && MusicProvider.Charts.TopTracks.Count > 0)
+					{
+						if (freshTopPlayedTracksViewHolder != null)
+						{
+
+							freshTopPlayedTracksViewHolder.freshTopPlayedTracksListContainer.Visibility = ViewStates.Visible;
+							FreshTrackAdapter freshTopTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.TopTracks);
+							freshTopPlayedTracksViewHolder?.freshTopPlayedTracksRecycleView?.SetAdapter(freshTopTracksAdapter);
+							freshTopTracksAdapter.ItemClick += TrackClick;
+							Adapters.SetAdapters(Activity, freshTopTracksAdapter);
+						}
+					}
+					break;
 
 
 			}
 		}
+
+		
 
 		public override int GetItemViewType(int position)
 		{
@@ -98,6 +144,12 @@ namespace Alloy.Adapters
 					return new FreshNewArtistsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_new_artists, parent, false));
 				case 2:
 					return new FreshNewAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_new_albums, parent, false));
+				case 3:
+					return new FreshNeverPlayedAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_never_played_albums, parent, false));
+				case 4:
+					return new FreshNeverPlayedTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_never_played_tracks, parent, false));
+				case 5:
+					return new FreshTopPlayedTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_top_played_tracks, parent, false));
 
 			}
 			return null;
@@ -105,10 +157,10 @@ namespace Alloy.Adapters
 
 		public override int ItemCount
 		{
-			get { return 3; }
+			get { return 6; }
 		}
 
-		public event EventHandler<FreshHorizontalTrackAdapter.ViewHolder.ViewHolderEvent> TrackClick;
+		public event EventHandler<TrackViewHolderEvent> TrackClick;
 		public event EventHandler<FreshArtistAdapter.ViewHolder.ViewHolderEvent> ArtistClick;
 		public event EventHandler<ArtistContainer> PlayArtist;
 		public event EventHandler<AlbumContainer> PlayAlbum;
@@ -161,6 +213,51 @@ namespace Alloy.Adapters
 				freshNewAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.fresh_new_albums_list);
 				freshNewAlbumRecycleView.SetLayoutManager(layoutManager);
 				//RegisterForContextMenu(albumRecycleView);
+			}
+		}
+
+		public class FreshNeverPlayedAlbumsViewHolder : RecyclerView.ViewHolder
+		{
+			public LinearLayout fresNeverPlayedAlbumsListContainer;
+			public RecyclerView freshNeverPlayedAlbumRecycleView;
+			public Album album;
+
+			public FreshNeverPlayedAlbumsViewHolder(View itemView) : base(itemView)
+			{
+				fresNeverPlayedAlbumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.fresh_never_played_albums_list_container);
+				fresNeverPlayedAlbumsListContainer.Visibility = ViewStates.Gone;
+				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
+				freshNeverPlayedAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.fresh_never_played_albums_list);
+				freshNeverPlayedAlbumRecycleView.SetLayoutManager(layoutManager);
+				//RegisterForContextMenu(albumRecycleView);
+			}
+		}
+
+		public class FreshNeverPlayedTracksViewHolder : RecyclerView.ViewHolder
+		{
+			public LinearLayout freshNeverPlayedTracksListContainer;
+			public RecyclerView freshNeverPlayedTracksRecycleView;
+			public FreshNeverPlayedTracksViewHolder(View itemView) : base(itemView)
+			{
+				freshNeverPlayedTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.fresh_never_played_tracks_list_container);
+				freshNeverPlayedTracksListContainer.Visibility = ViewStates.Gone;
+				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
+				freshNeverPlayedTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.fresh_never_played_tracks_list);
+				freshNeverPlayedTracksRecycleView.SetLayoutManager(layoutManager);
+			}
+		}
+
+		public class FreshTopPlayedTracksViewHolder : RecyclerView.ViewHolder
+		{
+			public LinearLayout freshTopPlayedTracksListContainer;
+			public RecyclerView freshTopPlayedTracksRecycleView;
+			public FreshTopPlayedTracksViewHolder(View itemView) : base(itemView)
+			{
+				freshTopPlayedTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.fresh_top_played_tracks_list_container);
+				freshTopPlayedTracksListContainer.Visibility = ViewStates.Gone;
+				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
+				freshTopPlayedTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.fresh_top_played_tracks_list);
+				freshTopPlayedTracksRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 	}
@@ -285,6 +382,69 @@ namespace Alloy.Adapters
 		}
 	}
 
+	public class FreshTrackAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	{
+		public Context context;
+		public MusicQueue Songs;
+
+		public FreshTrackAdapter(MusicQueue songs)
+		{
+			Songs = songs;
+		}
+
+		public override long GetItemId(int position)
+		{
+			return position;
+		}
+
+		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		{
+			ViewHolder h = (ViewHolder)holder;
+			if (h.configured) return;
+			h.Songs = Songs;
+			h.image.SetImageBitmap(Songs[position].Art);
+			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
+			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
+			h.configured = true;
+		}
+
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+		{
+			context = parent.Context;
+			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
+			return new ViewHolder(view, OnClick);
+		}
+
+		public override int ItemCount => Songs.Count;
+
+		void OnClick(TrackViewHolderEvent e)
+		{
+			ItemClick?.Invoke(this, e);
+		}
+
+		public event EventHandler<TrackViewHolderEvent> ItemClick;
+
+		public class ViewHolder : RecyclerView.ViewHolder
+		{
+
+			public ImageView image;
+			public TextView title;
+			public TextView album;
+			public MusicQueue Songs;
+			public bool configured;
+
+			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener) : base(itemView)
+			{
+				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
+				title = itemView.FindViewById<TextView>(Resource.Id.title);
+				album = itemView.FindViewById<TextView>(Resource.Id.album);
+				itemView.Click += (sender, e) => listener(new TrackViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
+			}
+
+		
+		}
+	}
+
 	public class FreshHorizontalTrackAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
 	{
 		public Context context;
@@ -315,11 +475,11 @@ namespace Alloy.Adapters
 
 		public override int ItemCount => Songs.Count;
 
-		void OnClick(ViewHolder.ViewHolderEvent e)
+		void OnClick(TrackViewHolderEvent e)
 		{
 			ItemClick?.Invoke(this, e);
 		}
-		public event EventHandler<ViewHolder.ViewHolderEvent> ItemClick;
+		public event EventHandler<TrackViewHolderEvent> ItemClick;
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
@@ -329,20 +489,19 @@ namespace Alloy.Adapters
 			public bool configured;
 			public MusicQueue Songs;
 
-			public ViewHolder(View itemView, Action<ViewHolderEvent> listener) : base(itemView)
+			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener) : base(itemView)
 			{
 				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				name = itemView.FindViewById<TextView>(Resource.Id.name);
 
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
-			}
-
-			public class ViewHolderEvent
-			{
-				public int Position { get; set; }
-				public MusicQueue Songs { get; set; }
+				itemView.Click += (sender, e) => listener(new TrackViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
 			}
 		}
 	}
 
+	public class TrackViewHolderEvent
+	{
+		public int Position { get; set; }
+		public MusicQueue Songs { get; set; }
+	}
 }

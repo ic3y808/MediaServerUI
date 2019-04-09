@@ -100,6 +100,9 @@
 	<string name="fresh_new_tracks_list_label">New Tracks</string>
 	<string name="fresh_new_artists_list_label">New Artists</string>
 	<string name="fresh_new_albums_list_label">New Albums</string>
+	<string name="fresh_never_played_albums_list_label">Never Played Albums</string>
+	<string name="fresh_never_played_tracks_list_label">Never Played Tracks</string>
+	<string name="fresh_top_played_tracks_list_label">Top Played Tracks</string>
 	
 
 
