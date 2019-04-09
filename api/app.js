@@ -202,6 +202,7 @@ class App {
       }
 
       this.app.use("/api/v1", (req, res, next) => {
+        console.log(req.url)
         if (req.query.api_key !== process.env.API_KEY) return res.sendStatus(401);
         next();
       });

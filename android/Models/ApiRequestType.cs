@@ -17,5 +17,7 @@
 		AddHistory,
 		Search,
 		Starred,
+		Fresh,
+		Charts,
 	}
 }

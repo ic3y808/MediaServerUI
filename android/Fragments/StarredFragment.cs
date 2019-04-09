@@ -13,7 +13,7 @@ namespace Alloy.Fragments
 	public class StarredFragment : FragmentBase
 	{
 		private View root_view;
-		private StarredDetailAdapter starredDetailAdapter;
+		private StarredAdapter starredAdapter;
 		private RecyclerView starredContentView;
 		private SwipeRefreshLayout refreshLayout;
 
@@ -31,7 +31,7 @@ namespace Alloy.Fragments
 			starredContentView = root_view.FindViewById<RecyclerView>(Resource.Id.starred_content_list);
 			starredContentView.SetLayoutManager(layoutManager);
 			RegisterForContextMenu(starredContentView);
-			CreateToolbar(root_view, Resource.String.starred_title, true);
+			CreateToolbar(root_view, Resource.String.starred_title);
 
 			return root_view;
 		}
@@ -64,12 +64,12 @@ namespace Alloy.Fragments
 
 			ScrollToNowPlaying();
 
-			starredDetailAdapter = new StarredDetailAdapter(Activity);
-			starredContentView.SetAdapter(starredDetailAdapter);
-			starredDetailAdapter.TrackClick += Track_ItemClick;
-			starredDetailAdapter.AlbumClick += Album_ItemClick;
-			starredDetailAdapter.PlayArtist += PlayArtist_Click;
-			Adapters.Adapters.SetAdapters(Activity, starredDetailAdapter);
+			starredAdapter = new StarredAdapter(Activity);
+			starredContentView.SetAdapter(starredAdapter);
+			starredAdapter.TrackClick += Track_ItemClick;
+			starredAdapter.AlbumClick += Album_ItemClick;
+			starredAdapter.ArtistClick += Artist_ItemClick;
+			Adapters.Adapters.SetAdapters(Activity, starredAdapter);
 
 
 			if (MusicProvider.Starred == null ||
@@ -89,6 +89,13 @@ namespace Alloy.Fragments
 			MusicProvider.RefreshStarred();
 		}
 
+		private void Artist_ItemClick(object sender, StarredArtistAdapter.ViewHolder.ViewHolderEvent e)
+		{
+			Bundle b = new Bundle();
+			b.PutParcelable("artist", e.Artist);
+			FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
+		}
+		
 		private void PlayArtist_Click(object sender, ArtistContainer e)
 		{
 			ServiceConnection.Play(0, e.Tracks);

@@ -90,7 +90,16 @@
 	<string name="album_details_tracks_list_label">Tracks</string>
 	
 	
-	<string name="starred_albums_label">Albums</string>
+	<string name="starred_albums_label">All Albums</string>
+	<string name="starred_top_albums_label">Top Albums</string>
+	<string name="starred_tracks_list_label">All Tracks</string>
+	<string name="starred_top_tracks_list_label">Top Tracks</string>
+	<string name="starred_artists_label">All Artists</string>
+	<string name="starred_top_artists_label">Top Artists</string>
+
+	<string name="fresh_new_tracks_list_label">New Tracks</string>
+	<string name="fresh_new_artists_list_label">New Artists</string>
+	<string name="fresh_new_albums_list_label">New Albums</string>
 	
 
 

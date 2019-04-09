@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -64,7 +65,12 @@ namespace Alloy
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
+			if (!Debugger.IsAttached)
+			{
+				AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
+			}
+			
+			Utils.UnlockSsl(true);
 			SetContentView(Resource.Layout.activity_main);
 
 			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
@@ -149,7 +155,7 @@ namespace Alloy
 			//}
 			//else
 			//{
-				ChangeFragment(Resource.String.artists_fragment_id, false);
+				ChangeFragment(Resource.String.fresh_fragment_id);
 			//}
 		}
 
