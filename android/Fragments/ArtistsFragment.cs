@@ -59,14 +59,6 @@ namespace Alloy.Fragments
 
 		public override void ScrollToNowPlaying()
 		{
-			//try
-			//{
-			//	int first = mainLayoutManager.FindFirstCompletelyVisibleItemPosition();
-			//	int last = mainLayoutManager.FindLastVisibleItemPosition();
-			//	if (MusicProvider.AllSongs.IndexOf(ServiceConnection.CurrentSong) < first || MusicProvider.AllSongs.IndexOf(ServiceConnection.CurrentSong) > last)
-			//		mainLayoutManager.ScrollToPosition(MusicProvider.AllSongs.IndexOf(ServiceConnection.CurrentSong));
-			//}
-			//catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
@@ -99,22 +91,7 @@ namespace Alloy.Fragments
 			adapter?.NotifyDataSetChanged();
 		}
 
-		public override void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
-		{
-			base.ContextMenuCreated(menu, v, menuInfo);
-			if (v.Id == Resource.Id.artists_list)
-			{
-				MenuInflater inflater = Activity.MenuInflater;
-				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
-			}
-		}
-
-		public override void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info)
-		{
-
-		}
-
-		private void OnItemClick(object sender, CustomViewHolderEvent e)
+		private void OnItemClick(object sender, ArtistsAdapter.ArtistViewHolder.ArtistViewHolderEvent e)
 		{
 			Artist artist = MusicProvider.Artists[e.Position];
 			Bundle b = new Bundle();

@@ -153,8 +153,6 @@
     <Compile Include="Interfaces\ItemTouchHelperAdapter.cs" />
     <Compile Include="Interfaces\ItemTouchHelperViewHolder.cs" />
     <Compile Include="Interfaces\OnStartDragListener.cs" />
-    <Compile Include="Models\CustomViewHolder.cs" />
-    <Compile Include="Models\CustomViewHolderEvent.cs" />
     <Compile Include="Models\RequestType.cs" />
     <Compile Include="Models\ApiRequestType.cs" />
     <Compile Include="Recievers\HeadsetPlugReceiver.cs" />
@@ -925,6 +923,21 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\fresh_top_played_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_album_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\no_art.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\genre_row.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

@@ -15,6 +15,8 @@ using Android.Widget;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Models;
 using Alloy.Providers;
+using Android.Views;
+using Bumptech.Glide;
 using Double = System.Double;
 using Exception = System.Exception;
 using Math = System.Math;
@@ -165,24 +167,40 @@ namespace Alloy.Helpers
 			return imageBitmap;
 		}
 
-		public static Bitmap GetAlbumArt(this Song song)
+		public static void GetAlbumArt(this Song song, ImageView view)
 		{
-			return Extensions.GetImageBitmapFromUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } }));
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } })).Into(view); }
+			catch (Exception e)
+			{
+				Crashes.TrackError(e);
+			}
 		}
 
-		public static Bitmap GetAlbumArt(this Artist artist)
+		public static void GetAlbumArt(this Artist artist, ImageView view)
 		{
-			return Extensions.GetImageBitmapFromUrl( MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", artist.Id } }));
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", artist.Id } })).Into(view); }
+			catch (Exception e)
+			{
+				Crashes.TrackError(e);
+			}
 		}
 
-		public static Bitmap GetAlbumArt(this Genre genre)
+		public static void GetAlbumArt(this Genre genre, ImageView view)
 		{
-			return Extensions.GetImageBitmapFromUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "genre_id", genre.Id } }));
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "genre_id", genre.Id } })).Into(view); }
+			catch (Exception e)
+			{
+				Crashes.TrackError(e);
+			}
 		}
 
-		public static Bitmap GetAlbumArt(this Album album)
+		public static void GetAlbumArt(this Album album, ImageView view)
 		{
-			return Extensions.GetImageBitmapFromUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "album_id", album.Id } }));
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "album_id", album.Id } })).Into(view); }
+			catch (Exception e)
+			{
+				Crashes.TrackError(e);
+			}
 		}
 
 		public static Bitmap GetDefaultAlbumArtEfficiently()

@@ -87,7 +87,7 @@ namespace Alloy.Fragments
 
 		private void PlayAlbum_Click(object sender, AlbumContainer e)
 		{
-			ServiceConnection?.Play(0, e.Album.Tracks);
+			ServiceConnection?.Play(0, e.Tracks);
 		}
 
 		private void Track_ItemClick(object sender, AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent e)

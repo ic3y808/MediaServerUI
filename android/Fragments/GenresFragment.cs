@@ -1,4 +1,5 @@
-﻿using Android.OS;
+﻿using System;
+using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
@@ -7,70 +8,53 @@ using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Alloy.Widgets;
+using Android.App;
+using Android.Support.V7.Widget;
 
 namespace Alloy.Fragments
 {
 	public class GenresFragment : FragmentBase
 	{
 		private View root_view;
-		private ListView listView;
+		private FastScrollRecyclerView genresList;
+		private LinearLayoutManager mainLayoutManager;
 		private GenresAdapter adapter;
 		private SwipeRefreshLayout refreshLayout;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
-			root_view = inflater.Inflate(Resource.Layout.genres_layout, container, false);
-			listView = root_view.FindViewById<ListView>(Resource.Id.genres_list);
+			root_view = inflater.Inflate(Resource.Layout.artists_layout, container, false);
+			genresList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.artists_list);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);
 			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
 
+			RegisterForContextMenu(genresList);
+			adapter = new GenresAdapter(ServiceConnection);
+			adapter.ItemClick += OnItemClick;
 
-			RegisterForContextMenu(listView);
-			adapter = new GenresAdapter();
-			
-			listView.Adapter = adapter;
-			listView.ItemClick += MListView_ItemClick;
+			mainLayoutManager = new LinearLayoutManager(Context) { AutoMeasureEnabled = false };
+
+			genresList.HasFixedSize = true;
+			genresList.SetLayoutManager(mainLayoutManager);
+			genresList.SetItemAnimator(new DefaultItemAnimator());
+			genresList.FocusableInTouchMode = true;
+			genresList.SetAdapter(adapter);
+
+			DividerItemDecoration itemDecoration = new DividerItemDecoration(Context, DividerItemDecoration.Vertical);
+			itemDecoration.SetDrawable(Application.Context.GetDrawable(Resource.Drawable.list_divider));
+			genresList.AddItemDecoration(itemDecoration);
 
 			CreateToolbar(root_view, Resource.String.genres_title);
-
-			if (MusicProvider.Genres.Count == 0)
-			{
-				refreshLayout.Refreshing = true;
-				Utils.Run(MusicProvider.RefreshGenres);
-			}
 
 			return root_view;
 		}
 
-	
-
 		public override void ScrollToNowPlaying()
 		{
-			base.ScrollToNowPlaying();
-			listView.ClearChoices();
-			for (int i = 0; i < adapter.Count; i++)
-			{
-				Genre item = adapter[i];
-				item.IsSelected = false;
-			}
-
-			if (ServiceConnection.CurrentSong?.Genre != null)
-			{
-				for (int i = 0; i < adapter.Count; i++)
-				{
-					var item = adapter[i];
-					if (ServiceConnection.CurrentSong.Genre.Equals(item.Name))
-					{
-						item.IsSelected = true;
-						break;
-					}
-				}
-			}
-			Adapters.Adapters.UpdateAdapters();
-			listView.Invalidate();
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
@@ -82,20 +66,28 @@ namespace Alloy.Fragments
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
+			MusicProvider.GenresRefreshed += MusicProvider_GenresRefreshed;
+			MusicProvider.GenresStartRefresh += MusicProvider_GenresStartRefresh;
 			Adapters.Adapters.SetAdapters(Activity, adapter);
-		}
 
-		public override void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
-		{
-			base.ContextMenuCreated(menu, v, menuInfo);
-			if (v.Id == Resource.Id.genres_list)
+			if (MusicProvider.Genres == null || MusicProvider.Genres.Count == 0)
 			{
-				MenuInflater inflater = Activity.MenuInflater;
-				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
+				Utils.Run(MusicProvider.RefreshGenres);
 			}
 		}
 
-		private void MListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
+		private void MusicProvider_GenresStartRefresh(object sender, EventArgs e)
+		{
+			refreshLayout.Refreshing = true;
+		}
+
+		private void MusicProvider_GenresRefreshed(object sender, string e)
+		{
+			refreshLayout.Refreshing = false;
+			adapter?.NotifyDataSetChanged();
+		}
+		
+		private void OnItemClick(object sender, GenresAdapter.GenreViewHolder.GenreViewHolderEvent e)
 		{
 			Genre genre = MusicProvider.Genres[e.Position];
 			Bundle b = new Bundle();
@@ -108,6 +100,5 @@ namespace Alloy.Fragments
 			refreshLayout.Refreshing = true;
 			MusicProvider.RefreshGenres();
 		}
-
 	}
 }

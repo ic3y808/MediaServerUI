@@ -7,7 +7,7 @@ using Alloy.Services;
 namespace Alloy.Recievers
 {
 	[BroadcastReceiver(Enabled = true)]
-	[IntentFilter(new[] { Intent.ActionMediaButton, BackgroundAudioService.ActionNext, BackgroundAudioService.ActionPlayPause,BackgroundAudioService.ActionFavorite, BackgroundAudioService.ActionPrevious, BackgroundAudioService.ActionExit })]
+	[IntentFilter(new[] { Intent.ActionMediaButton, BackgroundAudioService.ActionNext, BackgroundAudioService.ActionPlayPause,BackgroundAudioService.ActionStarTrack, BackgroundAudioService.ActionPrevious, BackgroundAudioService.ActionExit })]
 	public class MediaButtonReciever : BroadcastReceiver
 	{
 		private readonly BackgroundAudioService service;
@@ -39,7 +39,8 @@ namespace Alloy.Recievers
 				case BackgroundAudioService.ActionNext:
 					service?.PlayNextSong();
 					break;
-				case BackgroundAudioService.ActionFavorite:
+				case BackgroundAudioService.ActionStarTrack:
+					if (service.CurrentSong == null) return;
 					if (service.CurrentSong.Starred)
 					{
 						MusicProvider.RemoveStar(service.CurrentSong);
@@ -48,7 +49,7 @@ namespace Alloy.Recievers
 					{
 						MusicProvider.AddStar(service.CurrentSong);
 					}
-					service.CurrentSong.Starred = !service.CurrentSong.Starred;
+					service.notificationService.ShowNotification();
 					break;
 				case BackgroundAudioService.ActionExit:
 					NotificationService.CloseNotification();

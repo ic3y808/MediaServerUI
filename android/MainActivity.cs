@@ -70,7 +70,6 @@ namespace Alloy
 				AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
 			}
 			
-			Utils.UnlockSsl(true);
 			SetContentView(Resource.Layout.activity_main);
 
 			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
@@ -515,13 +514,14 @@ namespace Alloy
 		{
 			if (serviceConnection?.CurrentSong != null)
 			{
-				albumArtImageView?.SetImageBitmap(serviceConnection.CurrentSong.Art);
+				serviceConnection.CurrentSong.GetAlbumArt(albumArtImageView);
 				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
 				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
 			}
 
 			SetPlaying();
 			CheckFavorite();
+			
 		}
 
 		public void SetMainPlaylist()

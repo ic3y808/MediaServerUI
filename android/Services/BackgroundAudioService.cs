@@ -23,15 +23,15 @@ using Object = Java.Lang.Object;
 namespace Alloy.Services
 {
 	[Service]
-	[IntentFilter(new[] { ActionPlayNew, ActionPlayPause, ActionPrevious, ActionNext, ActionUpdateMetaData, ActionFavorite, ActionExit })]
+	[IntentFilter(new[] { ActionPlayNew, ActionPlayPause, ActionPrevious, ActionNext, ActionUpdateMetaData, ActionStarTrack, ActionExit })]
 	public class BackgroundAudioService : Service, AudioManager.IOnAudioFocusChangeListener, IMediaController, ICastStateListener, IAppVisibilityListener, ISessionManagerListener, RemoteMediaClient.IListener, RemoteMediaClient.IProgressListener
 	{
 		public const string ActionPlayNew = "com.xamarin.action.PLAY_NEW";
 		public const string ActionPlayPause = "com.xamarin.action.PLAY_PAUSE";
+		public const string ActionStarTrack = "com.xamarin.action.STAR_TRACK";
 		public const string ActionNext = "com.xamarin.action.NEXT";
 		public const string ActionPrevious = "com.xamarin.action.PREVIOUS";
 		public const string ActionExit = "com.xamarin.action.EXIT";
-		public const string ActionFavorite = "com.xamarin.action.FAVORITE";
 		public const string ActionUpdateMetaData = "com.xamarin.action.UPDATE_META";
 
 		public event EventHandler<StatusEventArg> PlaybackStatusChanged;
@@ -70,7 +70,6 @@ namespace Alloy.Services
 			{
 				currentSong = value;
 				currentSong.IsSelected = true;
-				if (currentSong.Art == null) currentSong.Art = currentSong.GetAlbumArt();
 				if (Remote != null)
 					CurrentQueueSong = currentSong.QueueItem();
 			}
@@ -192,7 +191,7 @@ namespace Alloy.Services
 					MediaPlayer.Start();
 					MediaPlayer.SeekTo((int)pausedPosition);
 				}
-				notificationService.ShowPlayingNotification();
+				notificationService.ShowNotification();
 				RequestAudioFocus();
 				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading });
 			}
@@ -214,7 +213,7 @@ namespace Alloy.Services
 					pausedPosition = MediaPlayer.CurrentPosition;
 				}
 
-				notificationService.ShowPausedNotification();
+				notificationService.ShowNotification();
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -228,18 +227,8 @@ namespace Alloy.Services
 			{
 				Reset();
 				CurrentSong = song;
-				//if (CurrentSong.Uri == null)
-				//{
-				//	Dictionary<string, string> stuff = new Dictionary<string, string>();
-				//	stuff["song"] = CurrentSong.ToString();
-				//	Analytics.TrackEvent("Song URI Null", stuff);
-				//	loading = false;
-				//	return;
-				//}
-
 				MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(song));
 				MediaPlayer.Prepare();
-
 			}
 			catch (Exception e)
 			{
@@ -272,10 +261,7 @@ namespace Alloy.Services
 				if (index < MainQueue.Count)
 					CurrentSong = MainQueue[index];
 
-				//if (CurrentSong.IsSubsonicTrack)
-				//{
 				Utils.UnlockSsl(true);
-				//}
 				JSONObject jsonObj = null;
 				if (Remote != null)
 				{
@@ -331,16 +317,7 @@ namespace Alloy.Services
 				}
 				else
 				{
-					//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
-					//{
-					//	MediaPlayer.SetDataSource(Application.Context, Uri.Parse(CurrentSong.Url));
-					//}
-					//else
-					//{
 					MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(CurrentSong));
-					//}
-
-
 					MediaPlayer.Prepare();
 				}
 
@@ -461,7 +438,7 @@ namespace Alloy.Services
 				MediaPlayer.Start();
 				loading = false;
 				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
-				notificationService.ShowPlayingNotification();
+				notificationService.ShowNotification();
 				notificationService.UpdateMediaSessionMeta();
 				Utils.Run(() =>
 				{
@@ -571,7 +548,7 @@ namespace Alloy.Services
 				filter.AddAction(ActionNext);
 				filter.AddAction(ActionPrevious);
 				filter.AddAction(ActionPlayPause);
-				filter.AddAction(ActionFavorite);
+				filter.AddAction(ActionStarTrack);
 				filter.AddAction(ActionExit);
 				mediaButtonReciever = new MediaButtonReciever(this);
 				RegisterReceiver(mediaButtonReciever, filter);
