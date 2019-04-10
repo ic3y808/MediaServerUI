@@ -1,4 +1,5 @@
 ﻿using System;
+using Alloy.Helpers;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -27,7 +28,7 @@ namespace Alloy.Adapters
 			var h = (NowPlayingViewHolder)holder;
 			h.title.SetText(serviceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
 			h.artist.SetText(serviceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
-			h.imageView.SetImageBitmap(serviceConnection.MainQueue[position].Art);
+			serviceConnection.MainQueue[position].GetAlbumArt(h.imageView);
 
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { h.SetSelected();};
 		}

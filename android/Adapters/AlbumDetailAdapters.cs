@@ -36,11 +36,7 @@ namespace Alloy.Adapters
 						albumInfoHolder.album = Album.Album;
 						albumInfoHolder?.albumName?.SetText(Album.Album.Name, TextView.BufferType.Normal);
 						albumInfoHolder?.albumSize?.SetText(Album.Size, TextView.BufferType.Normal);
-
-						Bitmap art = Album.Album.GetAlbumArt();
-
-						albumInfoHolder?.albumImage.SetImageBitmap(art);
-
+						Album.Album.GetAlbumArt(albumInfoHolder?.albumImage);
 						albumInfoHolder.CheckStarred();
 					}
 
@@ -203,7 +199,7 @@ namespace Alloy.Adapters
 			ViewHolder h = (ViewHolder)holder;
 			if (h.configured) return;
 			h.Songs = Songs;
-			h.image.SetImageBitmap(Songs[position].Art);
+			Songs[position].GetAlbumArt(h.image);
 			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
 			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
 			h.configured = true;

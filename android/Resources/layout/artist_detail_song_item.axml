@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+	android:id="@+id/item_root"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,13 +8,12 @@
     android:padding="10dp">
 
 	 <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:scaleType="centerCrop"
-                android:gravity="left"
-                android:id="@+id/image_view"
-				android:src="@drawable/abc_ab_share_pack_mtrl_alpha"
-                />
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:scaleType="centerCrop"
+        android:gravity="left"
+        android:id="@+id/image_view"
+        android:src="@drawable/no_art"/>
 
      <RelativeLayout
             android:layout_width="wrap_content"

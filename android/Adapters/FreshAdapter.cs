@@ -10,6 +10,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V7.Widget;
+using Bumptech.Glide;
 
 namespace Alloy.Adapters
 {
@@ -47,7 +48,6 @@ namespace Alloy.Adapters
 					{
 						if (freshNewArtistsHolder != null)
 						{
-
 							freshNewArtistsHolder.freshNewArtistsListContainer.Visibility = ViewStates.Visible;
 							FreshArtistAdapter freshNewArtistsAdapter = new FreshArtistAdapter(MusicProvider.Fresh.Artists);
 							freshNewArtistsHolder?.freshNewArtistsRecycleView?.SetAdapter(freshNewArtistsAdapter);
@@ -62,7 +62,6 @@ namespace Alloy.Adapters
 					{
 						if (freshNewAlbumsViewHolder != null)
 						{
-
 							freshNewAlbumsViewHolder.freshNewAlbumsListContainer.Visibility = ViewStates.Visible;
 							FreshAlbumAdapter freshNewArtistsAdapter = new FreshAlbumAdapter(MusicProvider.Fresh.Albums);
 							freshNewAlbumsViewHolder?.freshNewAlbumRecycleView?.SetAdapter(freshNewArtistsAdapter);
@@ -120,8 +119,6 @@ namespace Alloy.Adapters
 
 			}
 		}
-
-		
 
 		public override int GetItemViewType(int position)
 		{
@@ -275,12 +272,16 @@ namespace Alloy.Adapters
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
-			if (h.configured) return;
-			h.Artist = Artists[position];
-			h.image.SetImageBitmap(Artists[position].Art);
-			h.name.SetText(Artists[position].Name, TextView.BufferType.Normal);
 
-			h.configured = true;
+			h.Artist = Artists[position];
+			Artists[position].GetAlbumArt(h.image);
+			h.name.SetText(Artists[position].Name, TextView.BufferType.Normal);
+		
+			if (Artists[position].IsSelected)
+			{
+				h.ItemView.FindViewById<RelativeLayout>(Resource.Id.item_root).SetBackgroundResource(Resource.Color.menu_selection_color);
+			}
+			else h.ItemView.FindViewById<RelativeLayout>(Resource.Id.item_root).SetBackgroundColor(Color.Transparent);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -335,18 +336,21 @@ namespace Alloy.Adapters
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
-			if (h.configured) return;
 			h.Album = Albums[position];
-			h.image.SetImageBitmap(Albums[position].Art);
+			Albums[position].GetAlbumArt(h.image);
 			h.name.SetText(Albums[position].Name, TextView.BufferType.Normal);
 
-			h.configured = true;
+			if (Albums[position].IsSelected)
+			{
+				h.ItemView.FindViewById<RelativeLayout>(Resource.Id.item_root).SetBackgroundResource(Resource.Color.menu_selection_color);
+			}
+			else h.ItemView.FindViewById<RelativeLayout>(Resource.Id.item_root).SetBackgroundColor(Color.Transparent);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_album_item, parent, false);
+			View view = LayoutInflater.From(context).Inflate(Resource.Layout.fresh_album_item, parent, false);
 			return new FreshAlbumAdapter.ViewHolder(view, OnClick);
 		}
 
@@ -363,7 +367,6 @@ namespace Alloy.Adapters
 
 			public ImageView image;
 			public TextView name;
-			public bool configured;
 			public Album Album;
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener) : base(itemView)
@@ -400,18 +403,21 @@ namespace Alloy.Adapters
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
-			if (h.configured) return;
 			h.Songs = Songs;
-			h.image.SetImageBitmap(Songs[position].Art);
+			Songs[position].GetAlbumArt(h.image);
 			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
 			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
-			h.configured = true;
+			if (Songs[position].IsSelected)
+			{
+				h.ItemView.FindViewById<LinearLayout>(Resource.Id.item_root).SetBackgroundResource(Resource.Color.menu_selection_color);
+			}
+			else h.ItemView.FindViewById<LinearLayout>(Resource.Id.item_root).SetBackgroundColor(Color.Transparent);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
+			View view = LayoutInflater.From(context).Inflate(Resource.Layout.fresh_song_item, parent, false);
 			return new ViewHolder(view, OnClick);
 		}
 
@@ -431,7 +437,6 @@ namespace Alloy.Adapters
 			public TextView title;
 			public TextView album;
 			public MusicQueue Songs;
-			public bool configured;
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener) : base(itemView)
 			{
@@ -458,12 +463,14 @@ namespace Alloy.Adapters
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
-			if (h.configured) return;
 			h.Songs = Songs;
-			h.image.SetImageBitmap(Songs[position].Art);
+			Songs[position].GetAlbumArt(h.image);
 			h.name.SetText(Songs[position].Title, TextView.BufferType.Normal);
-
-			h.configured = true;
+			if (Songs[position].IsSelected)
+			{
+				h.ItemView.FindViewById<RelativeLayout>(Resource.Id.item_root).SetBackgroundResource(Resource.Color.menu_selection_color);
+			}
+			else h.ItemView.FindViewById<RelativeLayout>(Resource.Id.item_root).SetBackgroundColor(Color.Transparent);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -486,7 +493,6 @@ namespace Alloy.Adapters
 
 			public ImageView image;
 			public TextView name;
-			public bool configured;
 			public MusicQueue Songs;
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener) : base(itemView)

@@ -42,7 +42,7 @@ namespace Alloy.Adapters
 			convertView.FindViewById<TextView>(Resource.Id.title).Text = serviceConnection.MainQueue[position].Title;
 			convertView.FindViewById<TextView>(Resource.Id.artist).Text = serviceConnection.MainQueue[position].Artist;
 			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = serviceConnection.MainQueue[position].Duration.ToTimeFromSeconds();
-			convertView.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(serviceConnection.MainQueue[position].Art);
+			serviceConnection.MainQueue[position].GetAlbumArt(convertView.FindViewById<ImageView>(Resource.Id.album_art));
 
 			if (serviceConnection.MainQueue[position].IsSelected)
 			{

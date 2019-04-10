@@ -16,9 +16,12 @@ using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
 using Android.Database;
+using Android.Graphics;
 using Android.OS;
 using Android.Provider;
 using Android.Views.InputMethods;
+using Bumptech.Glide;
+using Bumptech.Glide.Load.Engine;
 using Java.Interop;
 using SimpleCursorAdapter = Android.Support.V4.Widget.SimpleCursorAdapter;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
@@ -118,8 +121,6 @@ namespace Alloy.Fragments
 				mActionBarHelper.setActionBarUpIndicator(mSlideDrawable, title);
 				mActionBarHelper.setDisplayShowHomeAsUpEnabled(true);
 			}
-
-
 		}
 
 		private void BindService()
@@ -357,7 +358,7 @@ namespace Alloy.Fragments
 
 		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
 		{
-
+			
 		}
 
 		public void OnSensorChanged(SensorEvent e)
@@ -376,6 +377,14 @@ namespace Alloy.Fragments
 		public virtual void OnRefreshed() { }
 		public virtual void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo) { }
 		public virtual void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info) { }
+
+		public Bitmap GetArtwork(string url)
+		{
+			return (Bitmap) Glide.With(Application.Context)
+				.AsBitmap()
+				.Load(url)
+				.Submit(-1, -1).Get();
+		}
 	}
 
 

@@ -19,7 +19,8 @@
 		<ImageView
             android:id="@+id/album_art"
             android:layout_width="50dip"
-            android:layout_height="50dip"/>
+            android:layout_height="50dip"
+			android:src="@drawable/no_art"/>
 
 	</LinearLayout>
 

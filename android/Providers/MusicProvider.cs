@@ -27,20 +27,15 @@ using Stream = System.IO.Stream;
 
 namespace Alloy.Providers
 {
-
-
 	public class MusicProvider
 	{
-		public static IQueue AllSongs { get; set; }
-		public static IQueue Favorites { get; set; }
 		public static List<Genre> Genres { get; set; }
 		public static List<Album> Albums { get; set; }
 		public static List<Artist> Artists { get; set; }
 		public static Starred Starred { get; set; }
 		public static Fresh Fresh { get; set; }
 		public static Charts Charts { get; set; }
-
-
+		
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler<string> ArtistsRefreshed;
 		public static event EventHandler AlbumsStartRefresh;
@@ -60,16 +55,12 @@ namespace Alloy.Providers
 		public static event EventHandler SearchStart;
 		public static event EventHandler<SearchResult> SearchResultsRecieved;
 
-
 		static MusicProvider()
 		{
-			AllSongs = new MusicQueue();
-			Favorites = new MusicQueue();
-			Genres = new List<Genre>();
-			Albums = new List<Album>();
-			Artists = new List<Artist>();
+			Genres = new  List<Genre>();
+			Albums = new  List<Album>();
+			Artists = new  List<Artist>();
 		}
-
 		public static string GetHost()
 		{
 			return "http://127.0.0.1:4000";
@@ -77,6 +68,7 @@ namespace Alloy.Providers
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
 			return sp.GetString("alloydbhost", "");
 		}
+
 		public static string GetApiKey()
 		{
 			return "b1413ebe481e48880a466ffe8523060a";
@@ -128,8 +120,6 @@ namespace Alloy.Providers
 					return null;
 			}
 		}
-
-
 
 		public static string ApiRequest(ApiRequestType rt, Dictionary<string, object> paramsDictionary, RequestType requestType, string jsonObject = "", object id2 = null)
 		{
@@ -215,12 +205,6 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
 					result = JsonConvert.DeserializeObject<AlbumContainer>(request);
-					result.Album.Art = result.Album.GetAlbumArt();
-					foreach (Song track in result.Tracks)
-					{
-						track.Art = result.Album.Art;
-					}
-
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -276,43 +260,6 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
 					result = JsonConvert.DeserializeObject<ArtistContainer>(request);
-
-					foreach (Album album in result.Albums)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-						}
-						if (result.Tracks.Count <= 0) continue;
-						foreach (Song resultTrack in result.Tracks)
-						{
-							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
-						}
-					}
-					foreach (Album album in result.EPs)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-
-						}
-					}
-					foreach (Album album in result.Singles)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-
-						}
-					}
-					foreach (Song track in result.PopularTracks)
-					{
-						track.Art = track.GetAlbumArt();
-					}
-
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -366,7 +313,8 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
-					Genres = JsonConvert.DeserializeObject<GenreList>(request).Genres;
+					var result = JsonConvert.DeserializeObject<GenreList>(request).Genres;
+					Genres = result.OrderBy(x => x.Name).ToList();
 					Utils.UnlockSsl(false);
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -425,52 +373,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Starred, null, RequestType.GET);
 					result = JsonConvert.DeserializeObject<StarredContainer>(request);
-					
-					foreach (Album album in result.Starred.Albums)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-						}
-						if (result.Starred.Tracks.Count <= 0) continue;
-						foreach (Song resultTrack in result.Starred.Tracks)
-						{
-							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
-						}
-					}
-					foreach (Album album in result.Starred.TopAlbums)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-						}
-						if (result.Starred.Tracks.Count <= 0) continue;
-						foreach (Song resultTrack in result.Starred.Tracks)
-						{
-							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
-						}
-					}
-					foreach (Song track in result.Starred.Tracks)
-					{
-						track.Art = track.GetAlbumArt();
-					}
-					foreach (Song track in result.Starred.TopTracks)
-					{
-						track.Art = track.GetAlbumArt();
-					}
-					foreach (Artist artist in result.Starred.Artists)
-					{
-						artist.Art = artist.GetAlbumArt();
-					}
-					foreach (Artist artist in result.Starred.TopArtists)
-					{
-						artist.Art = artist.GetAlbumArt();
-					}
-
 					Starred = result.Starred;
-
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -490,41 +393,17 @@ namespace Alloy.Providers
 		public class FreshLoader : AsyncTask<object, object, int>
 		{
 			private FreshContainer result;
-
+			private static bool isLoading;
 			protected override int RunInBackground(params object[] @params)
 			{
+				if (isLoading) return 1;
 				try
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Fresh, null, RequestType.GET);
 					result = JsonConvert.DeserializeObject<FreshContainer>(request);
-
-					foreach (Album album in result.Fresh.Albums)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-						}
-						if (result.Fresh.Tracks.Count <= 0) continue;
-						foreach (Song resultTrack in result.Fresh.Tracks)
-						{
-							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
-						}
-					}
-					foreach (Song track in result.Fresh.Tracks)
-					{
-						if(track.Art == null) track.Art = track.GetAlbumArt();
-					}
-					
-					foreach (Artist artist in result.Fresh.Artists)
-					{
-						artist.Art = artist.GetAlbumArt();
-					}
-
 					result.Fresh.Tracks.Shuffle();
 					Fresh = result.Fresh;
-
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -535,7 +414,8 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int refreshResult)
 			{
 				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) return;
+				if (refreshResult != 0) {return;}
+				isLoading = false;
 				FreshRefreshed?.Invoke(null, Fresh);
 				Alloy.Adapters.Adapters.UpdateAdapters();
 			}
@@ -552,39 +432,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
 					result = JsonConvert.DeserializeObject<ChartsContainer>(request);
-
-					foreach (Album album in result.Charts.NeverPlayedAlbums)
-					{
-						album.Art = album.GetAlbumArt();
-						foreach (Song albumTrack in album.Tracks)
-						{
-							if (albumTrack.Art == null) albumTrack.Art = album.Art;
-						}
-
-						foreach (Song resultTrack in result.Charts.NeverPlayed)
-						{
-							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
-						}
-
-						foreach (Song resultTrack in result.Charts.TopTracks)
-						{
-							if (resultTrack.AlbumId == album.Id) { resultTrack.Art = album.Art ?? resultTrack.GetAlbumArt(); }
-						}
-					}
-
-					foreach (Song track in result.Charts.NeverPlayed)
-					{
-						if (track.Art == null) track.Art = track.GetAlbumArt();
-					}
-
-					foreach (Song track in result.Charts.TopTracks)
-					{
-						if (track.Art == null) track.Art = track.GetAlbumArt();
-					}
-
-
 					Charts = result.Charts;
-
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -673,22 +521,6 @@ namespace Alloy.Providers
 				Utils.UnlockSsl(true);
 				string request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
 				GenreContainer result = JsonConvert.DeserializeObject<GenreContainer>(request);
-				tracks.AddRange(result.Tracks);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
-
-			return tracks;
-		}
-
-		public static MusicQueue GetAlbumTracks(Album album)
-		{
-			MusicQueue tracks = new MusicQueue();
-			try
-			{
-				Utils.UnlockSsl(true);
-				string request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
-				AlbumContainer result = JsonConvert.DeserializeObject<AlbumContainer>(request);
 				tracks.AddRange(result.Tracks);
 				Utils.UnlockSsl(false);
 			}

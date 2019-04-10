@@ -45,7 +45,7 @@ namespace Alloy.Adapters
 			convertView.FindViewById<TextView>(Resource.Id.title).Text = GenreTracks[position].Title;
 			convertView.FindViewById<TextView>(Resource.Id.artist).Text = GenreTracks[position].Artist;
 			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = GenreTracks[position].Duration.ToTimeFromSeconds();
-			convertView.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(GenreTracks[position].Art);
+			GenreTracks[position].GetAlbumArt(convertView.FindViewById<ImageView>(Resource.Id.album_art));
 
 			if (GenreTracks[position].IsSelected)
 			{

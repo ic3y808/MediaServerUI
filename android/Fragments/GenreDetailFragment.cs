@@ -2,6 +2,7 @@
 using Android.Views;
 using Android.Widget;
 using Alloy.Adapters;
+using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Services;
 using Android.Support.V4.Widget;
@@ -23,7 +24,7 @@ namespace Alloy.Fragments
 			root_view = inflater.Inflate(Resource.Layout.genre_detail_layout, container, false);
 			listView = root_view.FindViewById<ListView>(Resource.Id.genre_track_list);
 			root_view.FindViewById<TextView>(Resource.Id.title).SetText(genre.Name, TextView.BufferType.Normal);
-			root_view.FindViewById<ImageView>(Resource.Id.album_art).SetImageBitmap(genre.Art);
+			genre.GetAlbumArt(root_view.FindViewById<ImageView>(Resource.Id.album_art));
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);

@@ -61,7 +61,6 @@ namespace Alloy.Fragments
 
 		public override void ScrollToNowPlaying()
 		{
-			base.ScrollToNowPlaying();
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -73,10 +72,6 @@ namespace Alloy.Fragments
 
 		public override void ServiceConnected()
 		{
-			base.ServiceConnected();
-
-			ScrollToNowPlaying();
-
 			freshAdapter = new FreshAdapter(Activity);
 			freshContentView.SetAdapter(freshAdapter);
 			freshAdapter.TrackClick += Track_ItemClick;
@@ -84,27 +79,28 @@ namespace Alloy.Fragments
 			freshAdapter.ArtistClick += Artist_ItemClick;
 			Adapters.Adapters.SetAdapters(Activity, freshAdapter);
 
+			ScrollToNowPlaying();
 
-			//if (MusicProvider.Fresh == null ||
-			//	MusicProvider.Fresh.Albums == null ||
-			//	MusicProvider.Fresh.Artists == null ||
-			//	MusicProvider.Fresh.Tracks == null)
-			//{
-			//	Utils.Run(MusicProvider.RefreshFresh);
-			//}
-			//if (MusicProvider.Charts == null ||
-			//	MusicProvider.Charts.NeverPlayed == null ||
-			//    MusicProvider.Charts.NeverPlayedAlbums == null ||
-			//    MusicProvider.Charts.TopTracks == null)
-			//{
-			//	Utils.Run(MusicProvider.RefreshCharts);
-			//}
+			if (MusicProvider.Fresh == null ||
+				MusicProvider.Fresh.Albums == null ||
+				MusicProvider.Fresh.Artists == null ||
+				MusicProvider.Fresh.Tracks == null)
+			{
+				Utils.Run(MusicProvider.RefreshFresh);
+			}
+			if (MusicProvider.Charts == null ||
+				MusicProvider.Charts.NeverPlayed == null ||
+				MusicProvider.Charts.NeverPlayedAlbums == null ||
+				MusicProvider.Charts.TopTracks == null)
+			{
+				Utils.Run(MusicProvider.RefreshCharts);
+			}
 		}
 
 		public override void OnRefreshed()
 		{
-			//Utils.Run(MusicProvider.RefreshFresh);
-			//Utils.Run(MusicProvider.RefreshCharts);
+			Utils.Run(MusicProvider.RefreshFresh);
+			Utils.Run(MusicProvider.RefreshCharts);
 		}
 
 		private void Artist_ItemClick(object sender, FreshArtistAdapter.ViewHolder.ViewHolderEvent e)
@@ -116,7 +112,7 @@ namespace Alloy.Fragments
 
 		private void PlayArtist_Click(object sender, ArtistContainer e)
 		{
-			ServiceConnection.Play(0, e.Tracks);
+			Utils.Run(() => ServiceConnection.Play(0, e.Tracks));
 		}
 
 		private void Album_ItemClick(object sender, FreshAlbumAdapter.ViewHolder.ViewHolderEvent e)
@@ -128,7 +124,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, TrackViewHolderEvent e)
 		{
-			ServiceConnection?.Play(e.Position, e.Songs);
+			Utils.Run(() => ServiceConnection?.Play(e.Position, e.Songs));
 		}
 	}
 }
