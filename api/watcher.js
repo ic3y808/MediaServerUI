@@ -50,9 +50,9 @@ class Watcher {
         watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
           if (fs.existsSync(name)) {
             if (fs.lstatSync(name).isDirectory())
-              this.startQueue({ evt: evt, name: name, path: name })
+              this.startQueue({ evt: evt, name: name, path: name });
             else
-              this.startQueue({ evt: evt, name: path.dirname(name), path: name })
+              this.startQueue({ evt: evt, name: path.dirname(name), path: name });
           }
         }));
       }
