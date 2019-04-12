@@ -9,10 +9,9 @@ export default function ($rootScope, $location, $timeout, $window) {
     link: function (scope, element, attrs) {
       "ngInject";
       var observer = new MutationObserver(function (mutations) {
-        console.log('changed')
         $timeout(function () {
           var pos = $rootScope.scrollPos[$location.path()];
-          console.log($location.path() + " " + pos);
+         // console.log($location.path() + " " + pos);
           $(".scrollsaver").scrollTop(pos);
           $rootScope.okSaveScroll = true;
         });

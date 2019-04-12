@@ -16,17 +16,7 @@ class MediaScanner extends MediaScannerBase {
     super(database);
   }
 
-  startQuickScan() {
-    if (this.isScanning()) {
-      this.updateStatus("Scan in progress", true);
-      logger.debug("alloydb", 'scan in progress');
-    } else {
-      logger.info("alloydb", 'start Quick Scan');
-      this.resetStatus();
-    }
-  }
-
-  startFullScan() {
+  startScan() {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
       logger.debug("alloydb", 'scan in progress');
@@ -232,7 +222,7 @@ class MediaScanner extends MediaScannerBase {
 
   scanArtist(artist) {
     return new Promise((resolve, reject) => {
-
+      if (this.shouldCancel()) return;
       this.updateStatus('Scanning artist ' + artist.path, true);
       if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) return;
       var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
@@ -322,14 +312,14 @@ class MediaScanner extends MediaScannerBase {
   scanArtists(artists) {
     const artist = artists.shift();
 
-    if (artist) {
-
+    if (artist && !this.shouldCancel()) {
       this.scanArtist(artist).then(() => {
         this.scanArtists(artists);
       })
 
     } else {
       this.db.checkpoint();
+      this.resetStatus();
       this.updateStatus('Scan Complete', false);
     }
   }
@@ -344,6 +334,7 @@ class MediaScanner extends MediaScannerBase {
           if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
             this.scanArtist({ path: dir }).then(() => {
               this.db.checkpoint();
+              this.resetStatus();
               this.updateStatus('Scan Complete', false);
             })
           }
@@ -358,10 +349,11 @@ class MediaScanner extends MediaScannerBase {
 
         if (artistDirs.length > 0) {
           artistDirs.forEach(dir => {
-            if (dir !== undefined && dir !== null && typeof(dir) === 'string' && dir !== '') {
+            if (dir !== undefined && dir !== null && typeof (dir) === 'string' && dir !== '') {
               if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
                 this.scanArtist({ path: dir }).then(() => {
                   this.db.checkpoint();
+                  this.resetStatus();
                   this.updateStatus('Scan Complete', false);
                 })
               }
@@ -370,6 +362,7 @@ class MediaScanner extends MediaScannerBase {
         } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
           this.scanArtist({ path: path.dirname(root) }).then(() => {
             this.db.checkpoint();
+            this.resetStatus();
             this.updateStatus('Scan Complete', false);
             this.cleanup();
           })

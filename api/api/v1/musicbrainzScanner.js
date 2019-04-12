@@ -178,6 +178,7 @@ function resetStatus() {
 
 function cleanup() {
 
+  resetStatus();
   updateStatus('Scan Complete', false);
 }
 
@@ -229,7 +230,7 @@ MusicbrainzScanner.prototype.startScan = function startScan() {
   if (isScanning()) {
     logger.debug("alloydb", 'scan in progress');
   } else {
-    logger.info("alloydb", 'startFullScan');
+    logger.info("alloydb", 'startScan');
     resetStatus();
     scan();
   }

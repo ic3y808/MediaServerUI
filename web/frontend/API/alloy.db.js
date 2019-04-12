@@ -71,6 +71,22 @@ export default class AlloyApi {
     });
   }
 
+  _xhrpost(url, data, dataType) {
+    var _this2 = this;
+
+    return new Promise((resolve, reject) => {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", url, true);
+      //xhr.responseType = dataType || 'json';
+      xhr.onload = resolve;
+      xhr.onerror = reject;
+      var formData = new FormData();
+      formData.append("data", data);
+      xhr.send(formData);
+      _this2._lastXhr = xhr;
+    });
+  }
+
   _xhrdel(url, dataType) {
     var _this2 = this;
 
@@ -116,6 +132,24 @@ export default class AlloyApi {
       });
     });
   }
+
+  _post(method, data, options) {
+    var opt = {};
+    Object.assign(opt, {
+      api_key: this._settings.alloydb_apikey
+    }, options);
+    return new Promise((resolve, reject) => {
+      var url = this._buildUrl(method, opt);
+        this._xhrpost(url, data).then(e => {
+        var res = e.target.response;
+        resolve(res);
+      }, fe => {
+        reject(fe);
+      });
+    });
+  }
+
+
   _delete(method, options) {
     var opt = {};
     Object.assign(opt, {
@@ -245,12 +279,8 @@ export default class AlloyApi {
     });
   }
 
-  scanFullStart() {
-    return this._get('system/start_full_scan');
-  }
-
-  scanQuickStart() {
-    return this._get('system/start_quick_scan');
+  scanStart() {
+    return this._get('system/scan_start');
   }
 
   scanStatus() {
@@ -258,7 +288,15 @@ export default class AlloyApi {
   }
 
   scanCancel() {
-    return this._get('system/cancel_scan');
+    return this._get('system/scan_cancel');
+  }
+
+  backup() {
+    return this._get('system/do_backup');
+  }
+
+  restore(data) {
+    return this._post('system/do_restore', data);
   }
 
   getCharts() {
