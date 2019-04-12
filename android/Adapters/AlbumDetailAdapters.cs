@@ -13,11 +13,11 @@ using Android.Support.V7.Widget;
 
 namespace Alloy.Adapters
 {
-	public class AlbumDetailAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class AlbumDetailAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public Activity Activity;
-		public AlbumContainer Album;
+		private Context context;
+		private readonly Activity Activity;
+		private readonly AlbumContainer Album;
 		private BackgroundAudioServiceConnection serviceConnection;
 
 		public AlbumDetailAdapter(Activity activity, AlbumContainer album, BackgroundAudioServiceConnection serviceConnection)
@@ -32,38 +32,38 @@ namespace Alloy.Adapters
 			switch (position)
 			{
 				case 0:
-					AlbumInformationViewHolder albumInfoHolder = holder as AlbumInformationViewHolder;
 
-					if (albumInfoHolder != null)
+					if (holder is AlbumInformationViewHolder albumInfoHolder)
 					{
 						albumInfoHolder.album = Album.Album;
-						albumInfoHolder?.albumName?.SetText(Album.Album.Name, TextView.BufferType.Normal);
-						albumInfoHolder?.albumSize?.SetText(Album.Size, TextView.BufferType.Normal);
-						albumInfoHolder?.artistName?.SetText(Album.Album.Artist, TextView.BufferType.Normal);
-						Album.Album.GetAlbumArt(albumInfoHolder?.albumImage);
+						albumInfoHolder.albumName.SetText(Album.Album.Name, TextView.BufferType.Normal);
+						albumInfoHolder.albumSize.SetText(Album.Size, TextView.BufferType.Normal);
+						albumInfoHolder.artistName.SetText(Album.Album.Artist, TextView.BufferType.Normal);
+						Album.Album.GetAlbumArt(albumInfoHolder.albumImage);
 						albumInfoHolder.CheckStarred();
 					}
-
 					break;
 				case 1:
-					AlbumMetricsViewHolder artistMetricsHolder = holder as AlbumMetricsViewHolder;
-					artistMetricsHolder?.trackCount?.SetText(Album.Tracks.Count.ToString(), TextView.BufferType.Normal);
-					artistMetricsHolder?.playCount?.SetText(Album.TotalPlays.ToString(), TextView.BufferType.Normal);
+					if (holder is AlbumMetricsViewHolder artistMetricsHolder)
+					{
+						artistMetricsHolder.trackCount.SetText(Album.Tracks.Count.ToString(), TextView.BufferType.Normal);
+						artistMetricsHolder.playCount.SetText(Album.TotalPlays.ToString(), TextView.BufferType.Normal);
+					}
 					break;
 				case 2:
-					AlbumTracksViewHolder albumTracksHolder = holder as AlbumTracksViewHolder;
-					if (Album.Tracks.Count > 0)
+					if (holder is AlbumTracksViewHolder albumTracksHolder)
 					{
-						if (albumTracksHolder != null)
+						if (Album.Tracks.Count > 0)
 						{
 							albumTracksHolder.allTracksListContainer.Visibility = ViewStates.Visible;
 							AlbumDetailTrackAdapter albumTracksAdapter = new AlbumDetailTrackAdapter(Album.Tracks, serviceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumTracksAdapter.NotifyDataSetChanged(); };
-							albumTracksHolder?.allTracksRecycleView?.SetAdapter(albumTracksAdapter);
+							albumTracksHolder.allTracksRecycleView?.SetAdapter(albumTracksAdapter);
 							albumTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, albumTracksAdapter);
 						}
 					}
+
 					break;
 			}
 		}
@@ -134,7 +134,7 @@ namespace Alloy.Adapters
 				notStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
 			}
 
-			private void StarButtonClick(object sender, System.EventArgs e)
+			private void StarButtonClick(object sender, EventArgs e)
 			{
 				if (album.Starred)
 				{
@@ -186,7 +186,7 @@ namespace Alloy.Adapters
 		}
 	}
 
-	public class AlbumDetailTrackAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class AlbumDetailTrackAdapter : RecyclerView.Adapter
 	{
 		public Context context;
 		public MusicQueue Songs;
@@ -239,10 +239,10 @@ namespace Alloy.Adapters
 			public MusicQueue Songs;
 			public BackgroundAudioServiceConnection ServiceConnection;
 
-			public ViewHolder(View itemView, Action<AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
+			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
 				rootLayout = itemView.FindViewById<LinearLayout>(Resource.Id.root_view);
-				rootLayout.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
+				rootLayout.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
 				title = itemView.FindViewById<TextView>(Resource.Id.title);
 				artist = itemView.FindViewById<TextView>(Resource.Id.artist);
 				trackNo = itemView.FindViewById<TextView>(Resource.Id.trackno);

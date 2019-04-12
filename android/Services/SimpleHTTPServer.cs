@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -18,7 +19,7 @@ namespace Alloy.Services
 
 		public SimpleHTTPServer(string path, int port)
 		{
-			this.Initialize(path, port);
+			Initialize(path, port);
 		}
 
 		public SimpleHTTPServer(string path)
@@ -27,7 +28,7 @@ namespace Alloy.Services
 			l.Start();
 			int port = ((IPEndPoint)l.LocalEndpoint).Port;
 			l.Stop();
-			this.Initialize(path, port);
+			Initialize(path, port);
 		}
 
 		public void Stop()
@@ -40,7 +41,7 @@ namespace Alloy.Services
 		{
 			RootDirectory = path;
 			Port = port;
-			_serverThread = new Thread(this.Listen);
+			_serverThread = new Thread(Listen);
 			_serverThread.Start();
 		}
 
@@ -61,14 +62,10 @@ namespace Alloy.Services
 			filename = filename.Substring(1);
 			if (string.IsNullOrEmpty(filename))
 			{
-				var mediaUri = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory("Music").Path);
-				var di = new DirectoryInfo(mediaUri);
-				var files = di.GetFiles("*.mp3", SearchOption.AllDirectories);
-				string response = "<!DOCTYPE html>\n<body>\n";
-				foreach (FileInfo file in files)
-				{
-					response += string.Format("<a href=\"{0}\">{1}</a>\n", file.FullName.Replace(RootDirectory, ""), file.Name);
-				}
+				string mediaUri = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory("Music").Path);
+				DirectoryInfo di = new DirectoryInfo(mediaUri);
+				FileInfo[] files = di.GetFiles("*.mp3", SearchOption.AllDirectories);
+				string response = files.Aggregate("<!DOCTYPE html>\n<body>\n", (current, file) => current + $"<a href=\"{file.FullName.Replace(RootDirectory, "")}\">{file.Name}</a>\n");
 				response += "</body>\n</html>\n";
 				byte[] buffer = Encoding.UTF8.GetBytes(response);
 
@@ -84,10 +81,10 @@ namespace Alloy.Services
 				{
 					Stream input = new FileStream(filename, FileMode.Open);
 
-					context.Response.ContentType = WebHelpers.MimeTypeMappings.TryGetValue(Path.GetExtension(filename), out var mime) ? mime : "application/octet-stream";
+					context.Response.ContentType = WebHelpers.MimeTypeMappings.TryGetValue(Path.GetExtension(filename), out string mime) ? mime : "application/octet-stream";
 					context.Response.ContentLength64 = input.Length;
 					context.Response.AddHeader("Date", DateTime.Now.ToString("r"));
-					context.Response.AddHeader("Last-Modified", System.IO.File.GetLastWriteTime(filename).ToString("r"));
+					context.Response.AddHeader("Last-Modified", File.GetLastWriteTime(filename).ToString("r"));
 
 					byte[] buffer = new byte[1024 * 16];
 					int nbytes;

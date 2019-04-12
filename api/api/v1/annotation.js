@@ -1,10 +1,8 @@
-'use strict';
-var express = require('express');
+"use strict";
+var express = require("express");
 var router = express.Router();
-var structures = require('./structures');
-var Lastfm = require('./simple-lastfm');
-var logger = require('../../../common/logger');
-var moment = require('moment');
+var structures = require("./structures");
+var moment = require("moment");
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/star
@@ -19,7 +17,7 @@ var moment = require('moment');
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/star', function (req, res) {
+router.put("/star", function (req, res) {
   var id = req.query.id;
   var album = req.query.album;
   var artist = req.query.artist;
@@ -27,19 +25,19 @@ router.put('/star', function (req, res) {
 
   var time = moment().unix();
   if (id) {
-    res.locals.db.prepare('UPDATE Tracks SET starred="true", starred_date=? WHERE id=?').run(time, id);
+    res.locals.db.prepare("UPDATE Tracks SET starred='true', starred_date=? WHERE id=?").run(time, id);
     res.send(new structures.StatusResult("Updated track"));
   }
   if (album) {
-    res.locals.db.prepare('UPDATE Albums SET starred="true", starred_date=? WHERE id=?').run(time, album);
+    res.locals.db.prepare("UPDATE Albums SET starred='true', starred_date=? WHERE id=?").run(time, album);
     res.send(new structures.StatusResult("Updated album"));
   }
   if (artist) {
-    res.locals.db.prepare('UPDATE Artists SET starred="true", starred_date=? WHERE id=?').run(time, artist);
+    res.locals.db.prepare("UPDATE Artists SET starred='true', starred_date=? WHERE id=?").run(time, artist);
     res.send(new structures.StatusResult("Updated artist"));
   }
   if (genre) {
-    res.locals.db.prepare('UPDATE Genres SET starred="true", starred_date=? WHERE genre_id=?').run(time, genre);
+    res.locals.db.prepare("UPDATE Genres SET starred='true', starred_date=? WHERE genre_id=?").run(time, genre);
     res.send(new structures.StatusResult("Updated genre"));
   }
 });
@@ -58,26 +56,26 @@ router.put('/star', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/unstar', function (req, res) {
+router.put("/unstar", function (req, res) {
   var id = req.query.id;
   var album = req.query.album;
   var artist = req.query.artist;
   var genre = req.query.genre;
 
   if (id) {
-    res.locals.db.prepare('UPDATE Tracks SET starred="false", starred_date="" WHERE id=?').run(id);
+    res.locals.db.prepare("UPDATE Tracks SET starred='false', starred_date='' WHERE id=?").run(id);
     res.send(new structures.StatusResult("Updated track"));
   }
   if (album) {
-    res.locals.db.prepare('UPDATE Albums SET starred="false", starred_date="" WHERE id=?').run(album);
+    res.locals.db.prepare("UPDATE Albums SET starred='false', starred_date='' WHERE id=?").run(album);
     res.send(new structures.StatusResult("Updated album"));
   }
   if (artist) {
-    res.locals.db.prepare('UPDATE Artists SET starred="false", starred_date="" WHERE id=?').run(artist);
+    res.locals.db.prepare("UPDATE Artists SET starred='false', starred_date='' WHERE id=?").run(artist);
     res.send(new structures.StatusResult("Updated artist"));
   }
   if (genre) {
-    res.locals.db.prepare('UPDATE Genres SET starred="false", starred_date="" WHERE genre_id=?').run(genre);
+    res.locals.db.prepare("UPDATE Genres SET starred='false', starred_date='' WHERE genre_id=?").run(genre);
     res.send(new structures.StatusResult("Updated genre"));
   }
 });
@@ -96,22 +94,22 @@ router.put('/unstar', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/set_rating', function (req, res) {
+router.put("/set_rating", function (req, res) {
   var artist_id = req.query.artist_id;
   var track_id = req.query.track_id;
   var album_id = req.query.album_id;
   var rating = req.query.rating;
   var status = null;
   if (artist_id) {
-    res.locals.db.prepare('UPDATE Artists SET rating=? WHERE id=?').run(rating, artist_id);
+    res.locals.db.prepare("UPDATE Artists SET rating=? WHERE id=?").run(rating, artist_id);
     status = true;
   }
   if (track_id) {
-    res.locals.db.prepare('UPDATE Tracks SET rating=? WHERE id=?').run(rating, track_id);
+    res.locals.db.prepare("UPDATE Tracks SET rating=? WHERE id=?").run(rating, track_id);
     status = true;
   }
   if (album_id) {
-    res.locals.db.prepare('UPDATE Albums SET rating=? WHERE id=?').run(rating, album_id);
+    res.locals.db.prepare("UPDATE Albums SET rating=? WHERE id=?").run(rating, album_id);
     status = true;
   }
 
@@ -133,10 +131,10 @@ router.put('/set_rating', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/add_play', function (req, res) {
+router.put("/add_play", function (req, res) {
   var id = req.query.id;
   if (id) {
-    res.locals.db.prepare('UPDATE Tracks SET play_count = play_count + 1 WHERE id=?').run(id);
+    res.locals.db.prepare("UPDATE Tracks SET play_count = play_count + 1 WHERE id=?").run(id);
     res.send(new structures.StatusResult("Updated track"));
   } else {
     res.send(new structures.StatusResult("Id is required"));

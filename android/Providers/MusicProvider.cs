@@ -393,7 +393,7 @@ namespace Alloy.Providers
 		public class FreshLoader : AsyncTask<object, object, int>
 		{
 			private FreshContainer result;
-			private static bool isLoading;
+			private bool isLoading;
 			protected override int RunInBackground(params object[] @params)
 			{
 				if (isLoading) return 1;
