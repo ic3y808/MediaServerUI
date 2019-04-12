@@ -5,10 +5,6 @@ section.scrollable.padder
       table.table.table-striped.b-t.b-light
         thead
           tr
-            th(style='width:20px;')
-              label.checkbox.m-n.i-checks
-                input(type='checkbox')
-                i
             th.th-sortable(data-toggle='class')
               | Task Name 
               span.th-sort
@@ -22,10 +18,6 @@ section.scrollable.padder
             th Run
         tbody(ng-repeat='task in schedulerStatus')
           tr
-            td
-              label.checkbox.m-n.i-checks
-                input(type='checkbox', name='post[]')
-                i
             td {{task.name}}
             td {{task.lastExecution}}
             td {{task.nextExecution}}
@@ -36,32 +28,3 @@ section.scrollable.padder
                 i.fa.fa-check.text-success.text-active
                 i.fa.fa-times.text-danger.text
           
-    footer.panel-footer
-      .row
-        .col-sm-4.hidden-xs
-          select.input-sm.form-control.input-s-sm.inline.v-middle
-            option(value='0') Bulk action
-            option(value='1') Delete selected
-            option(value='2') Bulk edit
-            option(value='3') Export
-          button.btn.btn-sm.btn-default Apply
-        .col-sm-4.text-center
-          small.text-muted.inline.m-t-sm.m-b-sm showing 20-30 of 50 items
-        .col-sm-4.text-right.text-center-xs
-          ul.pagination.pagination-sm.m-t-none.m-b-none
-            li
-              a(href='#')
-                i.fa.fa-chevron-left
-            li
-              a(href='#') 1
-            li
-              a(href='#') 2
-            li
-              a(href='#') 3
-            li
-              a(href='#') 4
-            li
-              a(href='#') 5
-            li
-              a(href='#')
-                i.fa.fa-chevron-right
