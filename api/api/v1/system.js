@@ -184,18 +184,14 @@ router.post('/do_restore', function (req, res) {
   var sampleFile = req.files.data;
   var restoreFile = path.join(process.env.BACKUP_DATA_DIR, sampleFile.name);
   sampleFile.mv(restoreFile, function (err) {
-    if (err)
-      return res.status(500).send(err);
+    if (err) { return res.status(500).send(err); }
 
-    if (fs.existsSync(process.env.DATABASE))
-      fs.renameSync(process.env.DATABASE, process.env.DATABASE + ".old");
-    if (fs.existsSync(process.env.DATABASE_WAL))
-      fs.renameSync(process.env.DATABASE_WAL, process.env.DATABASE_WAL + ".old");
-    if (fs.existsSync(process.env.DATABASE_SHM))
-      fs.renameSync(process.env.DATABASE_SHM, process.env.DATABASE_SHM + ".old");
+    if (fs.existsSync(process.env.DATABASE)) { fs.renameSync(process.env.DATABASE, process.env.DATABASE + ".old"); }
+    if (fs.existsSync(process.env.DATABASE_WAL)) { fs.renameSync(process.env.DATABASE_WAL, process.env.DATABASE_WAL + ".old"); }
+    if (fs.existsSync(process.env.DATABASE_SHM)) { fs.renameSync(process.env.DATABASE_SHM, process.env.DATABASE_SHM + ".old"); }
 
     fs.renameSync(restoreFile, process.env.DATABASE);
-    
+
     logger.info("alloydb", "shutting down.... restart server");
     setTimeout(() => {
       process.exit(0);
