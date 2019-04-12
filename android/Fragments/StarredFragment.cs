@@ -55,6 +55,7 @@ namespace Alloy.Fragments
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
+			starredAdapter.NotifyDataSetChanged();
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -64,7 +65,7 @@ namespace Alloy.Fragments
 
 			ScrollToNowPlaying();
 
-			starredAdapter = new StarredAdapter(Activity);
+			starredAdapter = new StarredAdapter(Activity, ServiceConnection);
 			starredContentView.SetAdapter(starredAdapter);
 			starredAdapter.TrackClick += Track_ItemClick;
 			starredAdapter.AlbumClick += Album_ItemClick;

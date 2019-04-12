@@ -19,11 +19,14 @@ namespace Alloy.Adapters
 		public Context context;
 		public Activity Activity;
 		public ArtistContainer Artist;
+		private BackgroundAudioServiceConnection serviceConnection;
 
-		public ArtistDetailAdapter(Activity activity, ArtistContainer artist)
+		public ArtistDetailAdapter(Activity activity, ArtistContainer artist, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Artist = artist;
 			Activity = activity;
+			this.serviceConnection = serviceConnection;
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -55,10 +58,11 @@ namespace Alloy.Adapters
 						if (artistAlbumsHolder != null)
 						{
 							artistAlbumsHolder.albumsListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailAlbumAdapter albumsAdapter = new ArtistDetailAlbumAdapter(Artist.Albums);
-							artistAlbumsHolder?.albumRecycleView?.SetAdapter(albumsAdapter);
-							albumsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, albumsAdapter);
+							ArtistDetailAlbumAdapter artistDetailAlbumsAdapter = new ArtistDetailAlbumAdapter(Artist.Albums, serviceConnection);
+							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailAlbumsAdapter.NotifyDataSetChanged(); };
+							artistAlbumsHolder?.albumRecycleView?.SetAdapter(artistDetailAlbumsAdapter);
+							artistDetailAlbumsAdapter.ItemClick += AlbumClick;
+							Adapters.SetAdapters(Activity, artistDetailAlbumsAdapter);
 						}
 					}
 					break;
@@ -69,10 +73,11 @@ namespace Alloy.Adapters
 						if (artistEpsHolder != null)
 						{
 							artistEpsHolder.epsListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailAlbumAdapter albumsAdapter = new ArtistDetailAlbumAdapter(Artist.EPs);
-							artistEpsHolder?.epsRecycleView?.SetAdapter(albumsAdapter);
-							albumsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, albumsAdapter);
+							ArtistDetailAlbumAdapter artistDetailEpsAdapter = new ArtistDetailAlbumAdapter(Artist.EPs, serviceConnection);
+							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailEpsAdapter.NotifyDataSetChanged(); };
+							artistEpsHolder?.epsRecycleView?.SetAdapter(artistDetailEpsAdapter);
+							artistDetailEpsAdapter.ItemClick += AlbumClick;
+							Adapters.SetAdapters(Activity, artistDetailEpsAdapter);
 						}
 					}
 					break;
@@ -83,10 +88,11 @@ namespace Alloy.Adapters
 						if (artistSinglesHolder != null)
 						{
 							artistSinglesHolder.singlesListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailAlbumAdapter albumsAdapter = new ArtistDetailAlbumAdapter(Artist.Singles);
-							artistSinglesHolder?.singlesRecycleView?.SetAdapter(albumsAdapter);
-							albumsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, albumsAdapter);
+							ArtistDetailAlbumAdapter artistDetailSinglesAdapter = new ArtistDetailAlbumAdapter(Artist.Singles, serviceConnection);
+							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailSinglesAdapter.NotifyDataSetChanged(); };
+							artistSinglesHolder?.singlesRecycleView?.SetAdapter(artistDetailSinglesAdapter);
+							artistDetailSinglesAdapter.ItemClick += AlbumClick;
+							Adapters.SetAdapters(Activity, artistDetailSinglesAdapter);
 						}
 					}
 					break;
@@ -97,7 +103,8 @@ namespace Alloy.Adapters
 						if (artistTopTracksHolder != null)
 						{
 							artistTopTracksHolder.topTracksListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailTrackAdapter topAdapter = new ArtistDetailTrackAdapter(Artist.PopularTracks);
+							ArtistDetailTrackAdapter topAdapter = new ArtistDetailTrackAdapter(Artist.PopularTracks, serviceConnection);
+							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { topAdapter.NotifyDataSetChanged(); };
 							artistTopTracksHolder?.topTrackRecycleView?.SetAdapter(topAdapter);
 							topAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, topAdapter);
@@ -111,7 +118,8 @@ namespace Alloy.Adapters
 						if (allTracksHolder != null)
 						{
 							allTracksHolder.allTracksListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailTrackAdapter allTracksAdapter = new ArtistDetailTrackAdapter(Artist.Tracks);
+							ArtistDetailTrackAdapter allTracksAdapter = new ArtistDetailTrackAdapter(Artist.Tracks, serviceConnection);
+							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { allTracksAdapter.NotifyDataSetChanged(); };
 							allTracksHolder?.allTracksRecycleView?.SetAdapter(allTracksAdapter);
 							allTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, allTracksAdapter);
@@ -311,28 +319,28 @@ namespace Alloy.Adapters
 	{
 		public Context context;
 		public List<Album> Albums;
+		private BackgroundAudioServiceConnection serviceConnection;
 
-		public ArtistDetailAlbumAdapter(List<Album> albums)
+		public ArtistDetailAlbumAdapter(List<Album> albums, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Albums = albums;
+			this.serviceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
-			if (h.configured) return;
 			h.Album = Albums[position];
 			Albums[position].GetAlbumArt(h.image);
 			h.name.SetText(Albums[position].Name, TextView.BufferType.Normal);
-
-			h.configured = true;
+			h.SetSelected();
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			context = parent.Context;
 			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_album_item, parent, false);
-			return new ArtistDetailAlbumAdapter.ViewHolder(view, OnClick);
+			return new ViewHolder(view, OnClick, serviceConnection);
 		}
 
 		public override int ItemCount => Albums.Count;
@@ -345,18 +353,47 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-
+			public RelativeLayout itemRoot;
 			public ImageView image;
 			public TextView name;
-			public bool configured;
 			public Album Album;
+			private BackgroundAudioServiceConnection serviceConnection;
 
-			public ViewHolder(View itemView, Action<ViewHolderEvent> listener) : base(itemView)
+			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
+				itemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
 				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				name = itemView.FindViewById<TextView>(Resource.Id.name);
-
+				this.serviceConnection = serviceConnection;
 				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Album = Album });
+				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) =>
+				{
+					SetSelected();
+				};			
+			}
+
+			public void SetSelected()
+			{
+				if (Album == null) return;
+
+				bool selected = Album.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.AlbumId.Equals(Album.Id);
+
+				if (Album.Tracks != null && Album.Tracks.Count != 0)
+				{
+					foreach (Song albumTrack in Album.Tracks)
+					{
+						if (albumTrack.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
+					}
+				}
+
+				if (selected)
+				{
+					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+				}
+				else
+				{
+					itemRoot.SetBackgroundColor(Color.Transparent);
+				}
 			}
 
 			public class ViewHolderEvent
@@ -371,10 +408,12 @@ namespace Alloy.Adapters
 	{
 		public Context context;
 		public MusicQueue Songs;
+		private BackgroundAudioServiceConnection serviceConnection;
 
-		public ArtistDetailTrackAdapter(MusicQueue songs)
+		public ArtistDetailTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
+			this.serviceConnection = serviceConnection;
 		}
 
 		public override long GetItemId(int position)
@@ -385,19 +424,18 @@ namespace Alloy.Adapters
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
-			if (h.configured) return;
 			h.Songs = Songs;
 			Songs[position].GetAlbumArt(h.image);
 			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
 			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
-			h.configured = true;
+			h.SetSelected(position);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			context = parent.Context;
 			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
-			return new ViewHolder(view, OnClick);
+			return new ViewHolder(view, OnClick, serviceConnection);
 		}
 
 		public override int ItemCount => Songs.Count;
@@ -411,19 +449,38 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-
+			public LinearLayout itemRoot;
 			public ImageView image;
 			public TextView title;
 			public TextView album;
 			public MusicQueue Songs;
 			public bool configured;
+			private BackgroundAudioServiceConnection serviceConnection;
 
-			public ViewHolder(View itemView, Action<ArtistDetailTrackAdapter.ViewHolder.ViewHolderEvent> listener) : base(itemView)
+			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
+				itemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
 				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				title = itemView.FindViewById<TextView>(Resource.Id.title);
 				album = itemView.FindViewById<TextView>(Resource.Id.album);
+				this.serviceConnection = serviceConnection;
 				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
+				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(base.LayoutPosition); };
+			}
+
+			public void SetSelected(int position)
+			{
+				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
+				bool selected = Songs[position].IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(Songs[position].Id);
+
+				if (selected)
+				{
+					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+				}
+				else
+				{
+					itemRoot.SetBackgroundColor(Color.Transparent);
+				}
 			}
 
 			public class ViewHolderEvent

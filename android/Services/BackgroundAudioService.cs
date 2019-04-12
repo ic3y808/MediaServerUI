@@ -189,13 +189,18 @@ namespace Alloy.Services
 				else
 				{
 					MediaPlayer.Start();
-					MediaPlayer.SeekTo((int)pausedPosition);
+					MediaPlayer.SeekTo((int) pausedPosition);
 				}
+
 				notificationService.ShowNotification();
 				RequestAudioFocus();
-				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading });
+				PlaybackStatusChanged(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading});
 			}
-			catch (Exception e) { Crashes.TrackError(e); }
+			catch (Exception e)
+			{
+				System.Diagnostics.Debug.WriteLine(e);
+				Crashes.TrackError(e);
+			}
 		}
 
 		public void Pause()
@@ -227,11 +232,12 @@ namespace Alloy.Services
 			{
 				Reset();
 				CurrentSong = song;
-				MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(song));
+				MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(song));
 				MediaPlayer.Prepare();
 			}
 			catch (Exception e)
 			{
+				System.Diagnostics.Debug.WriteLine(e);
 				Crashes.TrackError(e);
 				loading = false;
 			}
@@ -317,7 +323,7 @@ namespace Alloy.Services
 				}
 				else
 				{
-					MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(CurrentSong));
+					MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(CurrentSong));
 					MediaPlayer.Prepare();
 				}
 
@@ -325,6 +331,7 @@ namespace Alloy.Services
 			}
 			catch (Exception e)
 			{
+				System.Diagnostics.Debug.WriteLine(e);
 				Crashes.TrackError(e);
 				loading = false;
 			}
@@ -342,7 +349,7 @@ namespace Alloy.Services
 				var res = result;
 				loading = false;
 
-				service.MediaPlayer.SetDataSource(Application.Context, MusicProvider.GetStreamUri(service.CurrentSong));
+				service.MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(service.CurrentSong));
 				service.MediaPlayer.Prepare();
 			}
 
@@ -367,13 +374,14 @@ namespace Alloy.Services
 					}
 
 					var song = index + 1 >= MainQueue.Count ? MainQueue[0] : MainQueue[index + 1];
-					if (song != null)
-					{
-						Play(song);
-					}
+					if (song != null) { Play(song); }
 				}
 			}
-			catch (Exception e) { Crashes.TrackError(e); }
+			catch (Exception e)
+			{
+				System.Diagnostics.Debug.WriteLine(e);
+				Crashes.TrackError(e);
+			}
 		}
 
 		public Song GetNextSong()
@@ -391,7 +399,11 @@ namespace Alloy.Services
 				var song = index + 1 >= MainQueue.Count - 1 ? MainQueue[0] : MainQueue[index + 1];
 				return song;
 			}
-			catch (Exception e) { Crashes.TrackError(e); }
+			catch (Exception e)
+			{
+				System.Diagnostics.Debug.WriteLine(e);
+				Crashes.TrackError(e);
+			}
 
 			return null;
 		}
@@ -445,12 +457,13 @@ namespace Alloy.Services
 					MusicProvider.AddPlay(CurrentSong.Id);
 					MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
 				});
-
+				
 				Utils.UnlockSsl(false);
 
 			}
 			catch (Exception ee)
 			{
+				System.Diagnostics.Debug.WriteLine(ee);
 				Crashes.TrackError(ee);
 				loading = false;
 			}

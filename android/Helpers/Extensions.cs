@@ -167,6 +167,21 @@ namespace Alloy.Helpers
 			return imageBitmap;
 		}
 
+		public static Bitmap GetAlbumArt(this Song song)
+		{
+			try
+			{
+				return GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } }));
+			}
+			catch (Exception e)
+			{
+				Crashes.TrackError(e);
+				return null;
+			}
+			return null;
+
+		}
+
 		public static void GetAlbumArt(this Song song, ImageView view)
 		{
 			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } })).Into(view); }

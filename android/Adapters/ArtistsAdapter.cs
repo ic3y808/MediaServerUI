@@ -6,6 +6,7 @@ using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
 using Alloy.Widgets;
+using Android.Graphics;
 using Android.Support.V7.Widget;
 using Java.Util;
 using Object = Java.Lang.Object;
@@ -20,6 +21,7 @@ namespace Alloy.Adapters
 		public ArtistsAdapter(BackgroundAudioServiceConnection connection)
 		{
 			serviceConnection = connection;
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
 		public override long GetItemId(int position)
@@ -33,7 +35,7 @@ namespace Alloy.Adapters
 			if (position >= MusicProvider.Artists.Count) return;
 			h.Artist = MusicProvider.Artists[position];
 			h.artist.SetText(MusicProvider.Artists[position].Name, TextView.BufferType.Normal);
-			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(h.Artist.Id)) h.Artist.IsSelected = true;
+			h.SetSelected();
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -94,8 +96,12 @@ namespace Alloy.Adapters
 
 		public class ArtistViewHolder : RecyclerView.ViewHolder
 		{
+			public FrameLayout itemRoot;
+			private BackgroundAudioServiceConnection serviceConnection;
+
 			public ArtistViewHolder(View v, Action<ArtistViewHolderEvent> listener, bool hasScroller) : base(v)
 			{
+				itemRoot = v.FindViewById<FrameLayout>(Resource.Id.item_root);
 				artist = v.FindViewById<TextView>(Resource.Id.artist);
 				if (artist != null) artist.Selected = true;
 				v.Click += (sender, e) => listener(new ArtistViewHolderEvent() { Position = base.LayoutPosition, CustomViewHolder = this });
@@ -105,6 +111,23 @@ namespace Alloy.Adapters
 			{
 				public int Position { get; set; }
 				public ArtistViewHolder CustomViewHolder { get; set; }
+			}
+
+			public void SetSelected()
+			{
+				if (Artist == null) return;
+
+				bool selected = Artist.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.ArtistId.Equals(Artist.Id);
+
+				if (selected)
+				{
+					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+				}
+				else
+				{
+					itemRoot.SetBackgroundColor(Color.Transparent);
+				}
+
 			}
 
 			public TextView artist;

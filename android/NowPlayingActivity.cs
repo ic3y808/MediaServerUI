@@ -78,7 +78,7 @@ namespace Alloy
 			previousImageButton.Enabled = true;
 
 			favoritesButton = (ImageView)FindViewById(Resource.Id.favorite_button);
-			favoritesButton.Click += FavoritesButton_Click;
+			favoritesButton.Click += StarButton_Click;
 			favoritesButton.Enabled = true;
 
 			seekBar = (SeekBar)FindViewById(Resource.Id.seekBar);
@@ -250,7 +250,7 @@ namespace Alloy
 					fadeIn.Duration = 3000;
 
 					if (serviceConnection == null || !serviceConnection.IsConnected) return;
-					Bitmap newArt = song == null ? serviceConnection.CurrentSong.Art.Blur() : song.Art.Blur();
+					Bitmap newArt = song == null ? serviceConnection.CurrentSong.GetAlbumArt().Blur() : song.GetAlbumArt().Blur();
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{
@@ -371,7 +371,8 @@ namespace Alloy
 
 				if (song != null)
 				{
-					color = Extensions.GetDominateColor(song.Art);
+					var art = song.GetAlbumArt();
+					color = Extensions.GetDominateColor(art);
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 				else if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) { return; }
@@ -444,7 +445,7 @@ namespace Alloy
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
-		private void FavoritesButton_Click(object sender, EventArgs e)
+		private void StarButton_Click(object sender, EventArgs e)
 		{
 			Utils.Run(() =>
 			{

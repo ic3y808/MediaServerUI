@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Alloy.Helpers;
+﻿using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Services;
 using Android.App;
-using Android.Content;
 using Android.Graphics;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
@@ -18,12 +11,11 @@ namespace Alloy.Adapters
 	public class MainPlaylistAdapter : BaseAdapter<Song>
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
-		private LayoutInflater layoutInflater;
 
 		public MainPlaylistAdapter(BackgroundAudioServiceConnection serviceConnection)
 		{
 			this.serviceConnection = serviceConnection;
-			layoutInflater = LayoutInflater.From(Application.Context);
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 		public override long GetItemId(int position)
 		{
@@ -36,7 +28,7 @@ namespace Alloy.Adapters
 
 			if (convertView == null) // otherwise create a new one
 			{
-				convertView = layoutInflater.Inflate(Resource.Layout.general_list_row, null);
+				convertView = LayoutInflater.From(Application.Context).Inflate(Resource.Layout.general_list_row, null);
 			}
 
 			convertView.FindViewById<TextView>(Resource.Id.title).Text = serviceConnection.MainQueue[position].Title;

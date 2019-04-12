@@ -54,8 +54,8 @@ namespace Alloy.Fragments
 
 				}
 			}
-			
-		
+
+
 			LinearLayoutManager layoutManager = new LinearLayoutManager(Context, LinearLayoutManager.Vertical, false);
 			albumContentView = root_view.FindViewById<RecyclerView>(Resource.Id.album_content_list);
 			albumContentView.SetLayoutManager(layoutManager);
@@ -76,7 +76,11 @@ namespace Alloy.Fragments
 					albumDetailAdapter.PlayAlbum -= PlayAlbum_Click;
 
 				}
-				albumDetailAdapter = new AlbumDetailAdapter(Activity, album);
+				albumDetailAdapter = new AlbumDetailAdapter(Activity, album, ServiceConnection);
+				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, arg) =>
+				{
+					albumDetailAdapter.NotifyDataSetChanged();
+				};
 				albumContentView.SetAdapter(albumDetailAdapter);
 				albumDetailAdapter.TrackClick += Track_ItemClick;
 				albumDetailAdapter.PlayAlbum += PlayAlbum_Click;

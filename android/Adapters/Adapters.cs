@@ -6,6 +6,7 @@ using Android.Support.V7.Widget;
 using Android.Widget;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Models;
+using Alloy.Services;
 using Album = Alloy.Models.Album;
 using Artist = Alloy.Models.Artist;
 using Genre = Alloy.Models.Genre;
@@ -21,6 +22,16 @@ namespace Alloy.Adapters
 		public static List<BaseAdapter<Artist>> ArtistAdapters { get; set; }
 		public static List<BaseAdapter<Genre>> GenreAdapters { get; set; }
 		public static Activity CurrentActivity { get; set; }
+
+		static Adapters()
+		{
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
+		}
+
+		private static void BackgroundAudioServiceConnection_PlaybackStatusChanged(object sender, StatusEventArg e)
+		{
+			UpdateAdapters();
+		}
 
 		public static void SetAdapters(Activity activity, params RecyclerView.Adapter[] addedAdapters)
 		{

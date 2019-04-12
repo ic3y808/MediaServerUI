@@ -51,7 +51,7 @@ namespace Alloy.Fragments
 					artistDetailAdapter.AlbumClick -= Album_ItemClick;
 					artistDetailAdapter.PlayArtist -= PlayArtist_Click;
 				}
-				artistDetailAdapter = new ArtistDetailAdapter(Activity, artist);
+				artistDetailAdapter = new ArtistDetailAdapter(Activity, artist, ServiceConnection);
 				artistContentView.SetAdapter(artistDetailAdapter);
 				artistDetailAdapter.TrackClick += Track_ItemClick;
 				artistDetailAdapter.AlbumClick += Album_ItemClick;

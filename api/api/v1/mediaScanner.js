@@ -339,12 +339,14 @@ class MediaScanner extends MediaScannerBase {
       this.updateStatus("Scan in progress", true);
       logger.debug("alloydb", 'scan in progress');
     } else {
-      if (fs.lstatSync(dir).isDirectory()) {
-        if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-          this.scanArtist({ path: dir }).then(() => {
-            this.db.checkpoint();
-            this.updateStatus('Scan Complete', false);
-          })
+      if (fs.existsSync(dir)) {
+        if (fs.lstatSync(dir).isDirectory()) {
+          if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
+            this.scanArtist({ path: dir }).then(() => {
+              this.db.checkpoint();
+              this.updateStatus('Scan Complete', false);
+            })
+          }
         }
       } else {
         var root = path.dirname(dir)
@@ -356,11 +358,13 @@ class MediaScanner extends MediaScannerBase {
 
         if (artistDirs.length > 0) {
           artistDirs.forEach(dir => {
-            if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-              this.scanArtist({ path: dir }).then(() => {
-                this.db.checkpoint();
-                this.updateStatus('Scan Complete', false);
-              })
+            if (dir !== undefined && dir !== null && typeof(dir) === 'string' && dir !== '') {
+              if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
+                this.scanArtist({ path: dir }).then(() => {
+                  this.db.checkpoint();
+                  this.updateStatus('Scan Complete', false);
+                })
+              }
             }
           });
         } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
