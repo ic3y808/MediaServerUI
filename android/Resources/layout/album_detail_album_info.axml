@@ -40,24 +40,34 @@
 		android:fontFamily="sans-serif-light"
 		android:textColor="@color/white"
 		android:textSize="32sp"
-		android:text="Artist Name"
+		android:text="Album Name"
 		android:paddingTop="5dp"
 		android:paddingBottom="5dp"/>
 
+	<TextView
+		android:id="@+id/artist_name"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/album_name"
+		android:layout_centerHorizontal="true"
+		android:fontFamily="sans-serif-light"
+		android:textColor="@color/white"
+		android:textSize="15sp"
+		android:text="Artist Name"/>
 
 	<TextView
 		android:id="@+id/album_size"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:layout_below="@+id/album_name"
+		android:layout_below="@+id/artist_name"
 		android:layout_centerHorizontal="true"
 		android:fontFamily="sans-serif"
 		android:textAllCaps="true"
 		android:textColor="@color/white"
 		android:textSize="14sp"
 		android:text="1.2gb"
-		android:paddingTop="5dp"
-		android:paddingBottom="5dp"/>
+		android:paddingTop="10dp"
+		android:paddingBottom="15dp"/>
 	
 	<Button
 		android:id="@+id/album_play_button"

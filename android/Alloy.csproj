@@ -113,7 +113,6 @@
     <Compile Include="Adapters\MenuAdapter.cs" />
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
     <Compile Include="Models\BackgroundAudioStatus.cs" />
-    <Compile Include="Models\AlbumViewHolder.cs" />
     <Compile Include="Models\Charts.cs" />
     <Compile Include="Models\Divider.cs" />
     <Compile Include="Models\Category.cs" />
@@ -938,6 +937,12 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\genre_row.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\starred_album_item.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

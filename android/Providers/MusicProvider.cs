@@ -529,7 +529,7 @@ namespace Alloy.Providers
 			return tracks;
 		}
 
-		public static Android.Net.Uri GetStreamUri(Song song)
+		public static string GetStreamUri(Song song)
 		{
 			UriBuilder uriBuilder;
 			Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection();
@@ -539,7 +539,7 @@ namespace Alloy.Providers
 			parameters["id"] = song.Id;
 
 			uriBuilder.Query = parameters.ToString();
-			return Android.Net.Uri.Parse(uriBuilder.Uri.ToString());
+			return uriBuilder.Uri.ToString();
 		}
 
 		public static string GetAlbumArt(Dictionary<string, object> paramsDictionary)

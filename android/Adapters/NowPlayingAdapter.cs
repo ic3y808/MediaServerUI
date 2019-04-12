@@ -12,7 +12,7 @@ namespace Alloy.Adapters
 	{
 		public event EventHandler<NowPlayingViewHolderEvent> ItemClick;
 		private BackgroundAudioServiceConnection serviceConnection;
-		
+
 		public NowPlayingAdapter(BackgroundAudioServiceConnection service)
 		{
 			serviceConnection = service;
@@ -29,8 +29,7 @@ namespace Alloy.Adapters
 			h.title.SetText(serviceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
 			h.artist.SetText(serviceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
 			serviceConnection.MainQueue[position].GetAlbumArt(h.imageView);
-
-			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { h.SetSelected();};
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { h.SetSelected(); };
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -45,7 +44,7 @@ namespace Alloy.Adapters
 		{
 			get
 			{
-				if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.MainQueue == null) return 0;
+				if (serviceConnection == null || serviceConnection?.MainQueue == null) return 0;
 				return serviceConnection.MainQueue.Count;
 			}
 		}

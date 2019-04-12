@@ -109,7 +109,7 @@ namespace Alloy.Fragments
 
 		}
 
-		private void OnItemClick(object sender, AlbumViewHolder.AlbumViewHolderEvent e)
+		private void OnItemClick(object sender, AlbumsAdapter.AlbumViewHolder.AlbumViewHolderEvent e)
 		{
 			Bundle b = new Bundle();
 			b.PutParcelable("album", MusicProvider.Albums[e.Position]);

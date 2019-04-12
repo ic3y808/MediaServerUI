@@ -72,7 +72,7 @@ namespace Alloy.Fragments
 
 		public override void ServiceConnected()
 		{
-			freshAdapter = new FreshAdapter(Activity);
+			freshAdapter = new FreshAdapter(Activity, ServiceConnection);
 			freshContentView.SetAdapter(freshAdapter);
 			freshAdapter.TrackClick += Track_ItemClick;
 			freshAdapter.AlbumClick += Album_ItemClick;

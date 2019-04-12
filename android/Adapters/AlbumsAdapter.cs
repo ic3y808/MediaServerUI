@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Alloy.Helpers;
 using Alloy.Interfaces;
-using Android.App;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
@@ -11,25 +9,22 @@ using Alloy.Providers;
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.Support.V7.Widget;
-using Android.Views.Animations;
 using Java.Util;
 using Object = Java.Lang.Object;
 
 namespace Alloy.Adapters
 {
-	public class AlbumsAdapter : RecyclerView.Adapter, ItemTouchHelperAdapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
+	public class AlbumsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
 	{
 		public event EventHandler<AlbumViewHolder.AlbumViewHolderEvent> ItemClick;
 		public OnStartDragListener DragStartListener;
-		private LayoutInflater layoutInflater;
 		public BackgroundAudioServiceConnection serviceConnection;
-		private int lastPosition = -1;
 		private ArrayList mSectionPositions;
 
 		public AlbumsAdapter(BackgroundAudioServiceConnection connection)
 		{
-			layoutInflater = LayoutInflater.From(Application.Context);
 			serviceConnection = connection;
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
 		public override long GetItemId(int position)
@@ -37,53 +32,19 @@ namespace Alloy.Adapters
 			return position;
 		}
 
-		private class OnTouchListener : Java.Lang.Object, View.IOnTouchListener
-		{
-			private OnStartDragListener DragStartListener;
-			private AlbumViewHolder holder;
-			public OnTouchListener(AlbumViewHolder h, OnStartDragListener dragStartListener)
-			{
-				holder = h;
-				DragStartListener = dragStartListener;
-			}
-			public bool OnTouch(View v, MotionEvent e)
-			{
-				if (e.ActionMasked == MotionEventActions.Down)
-				{
-					DragStartListener.OnStartDrag(holder);
-				}
-				return false;
-			}
-		}
-
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			setAnimation(holder.ItemView, position);
-
-			var h = (AlbumViewHolder)holder;
+			AlbumViewHolder h = (AlbumViewHolder)holder;
 			if (position >= MusicProvider.Albums.Count) return;
 			h.Album = MusicProvider.Albums[position];
-
 			h.name.SetText(MusicProvider.Albums[position].Name, TextView.BufferType.Normal);
-			//h.duration.SetText(MusicProvider.Albums[position].Duration.ToTime(), TextView.BufferType.Normal);
-			//if (string.IsNullOrEmpty(MusicProvider.Albums[position].Description))
-			//	h.comment.Visibility = ViewStates.Gone;
-			//else
-			//	h.comment.SetText(MusicProvider.Albums[position].Description, TextView.BufferType.Normal);
-			//h.likes.Visibility = ViewStates.Gone;
-			//h.reposts.Visibility = ViewStates.Gone;
-
-
-			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(h.Album.Id)) h.Album.IsSelected = true;
-
 			h.SetSelected();
-			//h.moveHandle.SetOnTouchListener(new OnTouchListener(h, DragStartListener));
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_row, parent, false);
-			var holder = new AlbumViewHolder(v, OnClick, true);
+			var holder = new AlbumViewHolder(v, OnClick, serviceConnection);
 			return holder;
 		}
 
@@ -95,52 +56,6 @@ namespace Alloy.Adapters
 			{
 				ItemClick(this, e);
 			}
-		}
-
-		private void setAnimation(View viewToAnimate, int position)
-		{
-			// If the bound view wasn't previously displayed on screen, it's animated
-			if (position > lastPosition)
-			{
-				Animation animation = AnimationUtils.LoadAnimation(viewToAnimate.Context, Android.Resource.Animation.FadeIn);
-				viewToAnimate.StartAnimation(animation);
-				lastPosition = position;
-			}
-		}
-
-		public override void OnViewAttachedToWindow(Java.Lang.Object holder)
-		{
-			base.OnViewAttachedToWindow(holder);
-			var cHolder = (AlbumViewHolder)holder;
-			cHolder?.SetSelected();
-		}
-
-		public override void OnViewDetachedFromWindow(Java.Lang.Object holder)
-		{
-			base.OnViewDetachedFromWindow(holder);
-			var cHolder = (AlbumViewHolder)holder;
-			cHolder?.ClearAnimation();
-			cHolder?.SetSelected();
-		}
-
-		public bool OnItemMove(int fromPosition, int toPosition)
-		{
-			MusicProvider.Albums.Move(fromPosition, toPosition);
-			NotifyItemMoved(fromPosition, toPosition);
-			return true;
-		}
-
-		public void OnItemDismiss(int position)
-		{
-			if (MusicProvider.Albums[position].IsSelected)
-			{
-				serviceConnection.PlayNextSong();
-				MusicProvider.Albums.RemoveAt(position);
-			}
-			else MusicProvider.Albums.RemoveAt(position);
-
-			NotifyItemRemoved(position);
-
 		}
 
 		public int GetPositionForSection(int sectionIndex)
@@ -181,6 +96,55 @@ namespace Alloy.Adapters
 			catch
 			{
 				return "";
+			}
+		}
+
+		public class AlbumViewHolder : RecyclerView.ViewHolder
+		{
+			public BackgroundAudioServiceConnection serviceConnection;
+			public RelativeLayout itemRoot;
+			public TextView name;
+			public Album Album;
+
+			public AlbumViewHolder(View v, Action<AlbumViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(v)
+			{
+				itemRoot = v.FindViewById<RelativeLayout>(Resource.Id.item_root);
+				name = v.FindViewById<TextView>(Resource.Id.artist);
+				this.serviceConnection = serviceConnection;
+				v.Click += (sender, e) => listener(new AlbumViewHolderEvent() { Position = base.LayoutPosition, ViewHolder = this });
+				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
+			}
+
+			public void SetSelected()
+			{
+				if (Album == null) return;
+
+				bool selected = Album.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.AlbumId.Equals(Album.Id);
+
+				if (Album.Tracks != null && Album.Tracks.Count != 0)
+				{
+					foreach (Song albumTrack in Album.Tracks)
+					{
+						if (albumTrack.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
+					}
+				}
+
+				if (selected)
+				{
+					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+				}
+				else
+				{
+					itemRoot.SetBackgroundColor(Color.Transparent);
+				}
+			}
+
+
+
+			public class AlbumViewHolderEvent
+			{
+				public int Position { get; set; }
+				public AlbumViewHolder ViewHolder { get; set; }
 			}
 		}
 	}
