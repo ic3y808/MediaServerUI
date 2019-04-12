@@ -4,6 +4,8 @@ var router = express.Router();
 var structures = require('./structures');
 
 var fs = require('fs');
+var path = require('path');
+var shell = require("shelljs");
 var klawSync = require('klaw-sync');
 var logger = require('../../../common/logger');
 
@@ -57,7 +59,7 @@ router.get('/license', function (req, res) {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /system/start_full_scan
+ * @route GET /system/scan_start
  * @produces application/json
  * @consumes application/json
  * @group system - System API 
@@ -65,24 +67,9 @@ router.get('/license', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/start_full_scan', function (req, res) {
+router.get('/scan_start', function (req, res) {
   res.locals.notify('Rescan Requested', 'Full recan requested through API');
-  res.send(new structures.StatusResult(res.locals.mediaScanner.startFullScan()));
-});
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /system/start_quick_scan
- * @produces application/json
- * @consumes application/json
- * @group system - System API 
- * @returns {StatusResult} 200 - Starts a new library rescan
- * @returns {Error}  default - Unexpected error
- * @security ApiKeyAuth
- */
-router.get('/start_quick_scan', function (req, res) {
-  res.locals.notify('Rescan Requested', 'Quick recan requested through API');
-  res.send(new structures.StatusResult(res.locals.mediaScanner.startQuickScan()));
+  res.send(new structures.StatusResult(res.locals.mediaScanner.startScan()));
 });
 
 /**
@@ -102,7 +89,7 @@ router.get('/scan_status', function (req, res) {
 
 /**
  * This function comment is parsed by doctrine
- * @route GET /system/cancel_scan
+ * @route GET /system/scan_cancel
  * @produces application/json
  * @consumes application/json
  * @group system - System API 
@@ -110,7 +97,7 @@ router.get('/scan_status', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/cancel_scan', function (req, res) {
+router.get('/scan_cancel', function (req, res) {
   res.locals.notify('Cancelled Scan', 'Requested scan to be cancelled');
   var status = new structures.StatusResult(res.locals.mediaScanner.cancelScan())
   res.send(status);
@@ -161,6 +148,60 @@ router.get('/stats', function (req, res) {
   }
 
   res.json(libraryStats);
+});
+
+/**
+ * @route GET /system/do_backup
+ * @produces application/json
+ * @consumes application/json
+ * @group system - System API 
+ * @returns {StatusResult} 200 - Cancels the current rescan
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.get('/do_backup', function (req, res) {
+  res.locals.notify('Starting Backup', 'Backup requested');
+  res.locals.backup.doBackup().then(() => {
+    logger.info("alloydb", "Backup Complete");
+    res.send(new structures.StatusResult("success"));
+  }).catch((err) => {
+    logger.error("alloydb", JSON.stringify(err));
+    res.send(new structures.StatusResult("failed"));
+  });
+});
+
+/**
+ * @route POST /system/do_restore
+ * @group system - System API 
+ * @returns {StatusResult} 200 - Cancels the current rescan
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.post('/do_restore', function (req, res) {
+  res.locals.notify('Restoring backup', 'Restore requested');
+  logger.info("alloydb", "Restore requested");
+  res.locals.db.close();
+  var sampleFile = req.files.data;
+  var restoreFile = path.join(process.env.BACKUP_DATA_DIR, sampleFile.name);
+  sampleFile.mv(restoreFile, function (err) {
+    if (err)
+      return res.status(500).send(err);
+
+    if (fs.existsSync(process.env.DATABASE))
+      fs.renameSync(process.env.DATABASE, process.env.DATABASE + ".old");
+    if (fs.existsSync(process.env.DATABASE_WAL))
+      fs.renameSync(process.env.DATABASE_WAL, process.env.DATABASE_WAL + ".old");
+    if (fs.existsSync(process.env.DATABASE_SHM))
+      fs.renameSync(process.env.DATABASE_SHM, process.env.DATABASE_SHM + ".old");
+
+    fs.renameSync(restoreFile, process.env.DATABASE);
+    
+    logger.info("alloydb", "shutting down.... restart server");
+    setTimeout(() => {
+      process.exit(0);
+    }, 5000);
+    res.send(new structures.StatusResult("success"));
+  });
 });
 
 module.exports = router;

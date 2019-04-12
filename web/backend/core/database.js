@@ -17,13 +17,15 @@ module.exports.init = function () {
 };
 
 module.exports.loadSettings = function (key, callback) {
-  var settingsResult = db.prepare('SELECT * from Settings WHERE settings_key=?').get(key);
-  if (settingsResult && settingsResult.settings_value) {
-    var settings = JSON.parse(settingsResult.settings_value);
-    if (settings) {
-      callback({ key: key, data: settings });
+  try {
+    var settingsResult = db.prepare('SELECT * from Settings WHERE settings_key=?').get(key);
+    if (settingsResult && settingsResult.settings_value) {
+      var settings = JSON.parse(settingsResult.settings_value);
+      if (settings) {
+        callback({ key: key, data: settings });
+      } else callback(null);
     } else callback(null);
-  } else callback(null);
+  } catch { callback(null); }
 };
 
 module.exports.saveSettings = function (key, value, callback) {
@@ -33,7 +35,18 @@ module.exports.saveSettings = function (key, value, callback) {
     const info = stmt.run(key, obj, obj);
   } catch (error) {
     if (error) {
-      log.error("alloyui",  JSON.stringify(error));
+      log.error("alloyui", JSON.stringify(error));
+    }
+  }
+  callback();
+};
+
+module.exports.disconnectDb = function (callback) {
+  try {
+    db.close();
+  } catch (error) {
+    if (error) {
+      log.error("alloyui", JSON.stringify(error));
     }
   }
   callback();
@@ -52,6 +65,15 @@ module.exports.socketConnect = function (socket) {
     module.exports.saveSettings(settings.key, settings.data, function () {
       log.debug('alloyui', 'Settings Saved');
       socket.emit('settings_saved_event');
+    });
+  });
+  socket.on('disconnect_db', function () {
+    log.into('alloyui', 'UI requested db to disconnect: ');
+    module.exports.disconnectDb(function () {
+      log.into('alloyui', 'shutting down.... restart server');
+      setTimeout(() => {
+        process.exit(0);
+      }, 5000);
     });
   });
 };

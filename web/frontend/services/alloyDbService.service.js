@@ -207,17 +207,10 @@ export default class AlloyDbService {
     else return false;
   }
 
-  scanFullStart() {
+  scanStart() {
     this.doLogin();
     if (this.isLoggedIn)
-      return this.alloydb.scanFullStart();
-    else return false;
-  }
-
-  scanQuickStart() {
-    this.doLogin();
-    if (this.isLoggedIn)
-      return this.alloydb.scanQuickStart();
+      return this.alloydb.scanStart();
     else return false;
   }
 
@@ -232,6 +225,20 @@ export default class AlloyDbService {
     this.doLogin();
     if (this.isLoggedIn)
       return this.alloydb.scanCancel();
+    else return false;
+  }
+
+  backup() {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.backup();
+    else return false;
+  }
+
+  restore(data) {
+    this.doLogin();
+    if (this.isLoggedIn)
+      return this.alloydb.restore(data);
     else return false;
   }
 

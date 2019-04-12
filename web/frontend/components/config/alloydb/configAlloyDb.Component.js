@@ -14,8 +14,9 @@ class ConfigAlloyDbController {
     $scope.settings = {};
     $scope.currentpath = '';
     $scope.display_name = '';
-  
-    $scope.generateConnectionString = () =>  {
+    $scope.selectedBackup = {};
+
+    $scope.generateConnectionString = () => {
       var url = 'http://';
       if ($rootScope.settings.alloydb) {
         if ($rootScope.settings.alloydb.alloydb_use_ssl)
@@ -29,42 +30,54 @@ class ConfigAlloyDbController {
       return url;
     };
 
-    $scope.previewConnectionString = () =>  {
+    $scope.previewConnectionString = () => {
       $scope.connectionStringPreview = $scope.generateConnectionString();
     };
 
     $scope.testSettings = () => {
-      if(this.$rootScope.socket)
-       this.$rootScope.socket.emit('test_alloydb_settings', $rootScope.settings.sabnzbd);
+      if (this.$rootScope.socket)
+        this.$rootScope.socket.emit('test_alloydb_settings', $rootScope.settings.sabnzbd);
+    };
+
+    $scope.startBackup = () => {
+      this.$scope.backup_results = "Starting Backup";
+      this.AlloyDbService.backup().then(result => {
+        this.$scope.backup_results = result.result;
+        this.AppUtilities.apply();
+        setTimeout(() => {
+          this.$scope.backup_results = null;
+          this.AppUtilities.apply();
+        }, 5000);
+      })
     };
 
     $scope.removePath = mediaPath => {
       var removeMediaPath = AlloyDbService.removeMediaPath(mediaPath);
-      if(removeMediaPath){
-        removeMediaPath.then(function(result){
+      if (removeMediaPath) {
+        removeMediaPath.then(function (result) {
           $scope.reload();
         });
       }
     }
 
-    $scope.browsePaths = () =>  {
+    $scope.browsePaths = () => {
       $scope.currentpath = '';
       $scope.display_name = '';
       AppUtilities.apply();
 
       var $this = $(this)
-              , $remote = $this.data('remote') || $this.attr('href')
-              , $modal = $('#addMediaPathModal')
-            $('#primary-content').append($modal);
-            $modal.modal();
-           // $modal.load($remote);
+        , $remote = $this.data('remote') || $this.attr('href')
+        , $modal = $('#addMediaPathModal')
+      $('#primary-content').append($modal);
+      $modal.modal();
+      // $modal.load($remote);
 
-     // $('#addMediaPathModal').modal()
+      // $('#addMediaPathModal').modal()
     }
 
-    $scope.addCurrentPath = () =>  {
+    $scope.addCurrentPath = () => {
       var addMediaPath = AlloyDbService.addMediaPath({ display_name: $scope.display_name, path: $scope.currentpath });
-      if(addMediaPath){
+      if (addMediaPath) {
         addMediaPath.then(result => {
 
           $scope.reload();
@@ -73,7 +86,7 @@ class ConfigAlloyDbController {
       $('#addMediaPathModal').modal('hide')
     }
 
-    $scope.reload = () =>  {
+    $scope.reload = () => {
       if (AlloyDbService.isLoggedIn) {
         var mediaPaths = AlloyDbService.getMediaPaths();
         if (mediaPaths) {
@@ -86,26 +99,61 @@ class ConfigAlloyDbController {
       }
     }
 
-    if(this.$rootScope.socket)
-       this.$rootScope.socket.emit('load_settings', 'alloydb_settings');
+    $scope.scanStart = () => {
+      this.$scope.scan_status = { status: "starting scan", isScanning: true };
+      this.AlloyDbService.scanStart();
+    }
 
-    $rootScope.$on('menuSizeChange', (event, currentState) =>  {
+    $scope.scanCancel = () => {
+      this.$scope.scan_status = "cancelling scan";
+      this.AlloyDbService.scanCancel().then(result => {
+        this.$scope.scan_status = result.result;
+      });
+    }
+
+
+    $scope.addBackup = () => {
+      $('.file-upload-input').trigger('click')
+    }
+
+    $scope.backupFileAdded = (input) => {
+      if (input.files && input.files[0]) {
+        this.$rootScope.socket.emit('disconnect_db');
+        this.AlloyDbService.restore(input.files[0])
+      }
+    }
+
+    if (this.$rootScope.socket)
+      this.$rootScope.socket.emit('load_settings', 'alloydb_settings');
+
+    $rootScope.$on('menuSizeChange', (event, currentState) => {
 
     });
 
-    $rootScope.$on('windowResized', (event, data) =>  {
+    $rootScope.$on('windowResized', (event, data) => {
 
     });
 
 
     AppUtilities.hideLoader();
 
-    $rootScope.$watch('settings.alloydb ', (newVal, oldVal) =>  {
+    $rootScope.$watch('settings.alloydb ', (newVal, oldVal) => {
       $scope.previewConnectionString();
     });
 
     $rootScope.$on('loginStatusChange', function (event, data) {
       $scope.reload();
+    });
+
+    $scope.refreshIntereval = setInterval(() => {
+      this.AlloyDbService.scanStatus().then(result => {
+        this.$scope.scan_status = result.result;
+        this.AppUtilities.apply();
+      });
+    }, 2000);
+
+    $scope.$on('$destroy', () => {
+      clearInterval($scope.refreshIntereval);
     });
 
     $scope.reload();

@@ -9,6 +9,7 @@ const shell = require("shelljs");
 
 process.env.BASE_DIR = __dirname;
 process.env.DATA_DIR = path.join(process.env.BASE_DIR, "..", "data");
+process.env.BACKUP_DATA_DIR = path.join(process.env.DATA_DIR, "backup");
 process.env.LOGS_DIR = path.join(process.env.DATA_DIR, "logs");
 process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json")
 process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");

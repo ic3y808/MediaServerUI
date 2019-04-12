@@ -1,7 +1,8 @@
 ﻿"use strict";
 const fs = require("fs");
 const path = require("path");
-const shell = require("shelljs");
+
+const fileUpload = require("express-fileupload");
 
 const express = require("express");
 const config = require("../common/config");
@@ -14,6 +15,7 @@ const logger = require("../common/logger");
 var bodyParser = require("body-parser");
 var routes = require("./routes/index");
 var Watcher = require("./watcher");
+var Backup = require("./backup");
 var MediaScanner = require("./api/v1/mediaScanner");
 var LastFMScanner = require("./api/v1/lastfmScanner");
 var MusicBrainzScanner = require("./api/v1/musicbrainzScanner");
@@ -42,6 +44,7 @@ class App {
     this.musicbrainzScanner = new MusicBrainzScanner(this.db);
     this.watcher = new Watcher(this.db, this.mediaScanner);
     this.scheduler = new Scheduler();
+    this.backup = new Backup(this.db);
 
 
   }
@@ -69,10 +72,6 @@ class App {
             caption: "Rescan Libraries"
           },
           {
-            id: "item-2-id",
-            caption: "Quick Rescan Libraries"
-          },
-          {
             id: "cancel_scan",
             caption: "Cancel Scan"
           },
@@ -93,6 +92,10 @@ class App {
             caption: "Inc. Cleanup"
           },
           {
+            id: "doBackup",
+            caption: "Backup"
+          },
+          {
             id: "item-4-id-exit",
             caption: "Exit"
           }
@@ -102,12 +105,7 @@ class App {
       this.trayApp.item(id => {
         switch (id) {
           case "item-1-id": {
-            this.mediaScanner.startFullScan();
-            this.notify("Starting Scan", "The library rescan has been started");
-            break;
-          }
-          case "item-2-id": {
-            this.mediaScanner.startQuickScan();
+            this.mediaScanner.startScan();
             this.notify("Starting Scan", "The library rescan has been started");
             break;
           }
@@ -142,6 +140,14 @@ class App {
             );
             break;
           }
+          case "doBackup": {
+            this.backup.doBackup();
+            this.notify(
+              "Starting Backup",
+              "Alloy DB is being backed up"
+            );
+            break;
+          }
           case "item-4-id-exit": {
             if (this.trayApp) this.trayApp.exit();
             process.exit(0);
@@ -159,7 +165,9 @@ class App {
       this.app = express();
       this.app.use(express.json());
       this.app.use(express.urlencoded());
-
+      this.app.use(fileUpload({
+        limits: { fileSize: 1024 * 1024 * 1024 },
+      }));
       this.app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header(
@@ -186,6 +194,7 @@ class App {
         res.locals.musicbrainzScanner = this.musicbrainzScanner;
         res.locals.scheduler = this.scheduler;
         res.locals.watcher = this.watcher;
+        res.locals.backup = this.backup;
         next();
       });
 
@@ -241,6 +250,7 @@ class App {
         tempRoute.mediaScanner = this.mediaScanner;
         tempRoute.scheduler = this.scheduler;
         tempRoute.watcher = this.watcher;
+        tempRoute.backup = this.backup;
         return tempRoute;
       };
       // V1 API
@@ -311,7 +321,12 @@ class App {
 
       this.scheduler.createJob("Rescan Library", "0 0 * * 0", () => {
         logger.info("alloydb", "Doing full rescan");
-        this.mediaScanner.startFullScan();
+        this.mediaScanner.starScan();
+      });
+
+      this.scheduler.createJob("Do Backup", "0 0 * * 0", () => {
+        logger.info("alloydb", "Doing database backup");
+        this.backup.doBackup();
       });
 
       this.configTray();
