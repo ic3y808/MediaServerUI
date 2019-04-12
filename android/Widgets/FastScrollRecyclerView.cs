@@ -17,9 +17,9 @@ namespace Alloy.Widgets
 	[Register("alloy.widgets.FastScrollRecyclerView")]
 	public class FastScrollRecyclerView : RecyclerView, RecyclerView.IOnItemTouchListener
 	{
-		private FastScroller mScrollbar;
+		private readonly FastScroller mScrollbar;
 
-		private bool mFastScrollEnabled = true;
+		private bool mFastScrollEnabled;
 
 		/**
 		 * The current scroll state of the recycler view.  We use this in onUpdateScrollbar()
@@ -37,7 +37,7 @@ namespace Alloy.Widgets
 			public int rowHeight;
 		}
 
-		private ScrollPositionState mScrollPosState = new ScrollPositionState();
+		private readonly ScrollPositionState mScrollPosState = new ScrollPositionState();
 
 		private int mDownX;
 		private int mDownY;
@@ -73,7 +73,7 @@ namespace Alloy.Widgets
 			}
 
 			mScrollbar = new FastScroller(context, this, attrs);
-			
+
 			mScrollOffsets = new SparseIntArray();
 			mScrollOffsetInvalidator = new ScrollOffsetInvalidator(mScrollOffsets);
 		}
@@ -205,22 +205,25 @@ namespace Alloy.Widgets
 		protected void updateThumbPosition(ScrollPositionState scrollPosState, int rowCount)
 		{
 
-			int availableScrollHeight;
-			int availableScrollBarHeight;
-			int scrolledPastHeight;
-
-			if (GetAdapter() is IMeasurableAdapter)
+			int availableScrollHeight = 0;
+			int scrolledPastHeight = 0;
+			Adapter adapter = GetAdapter();
+			if (adapter != null)
 			{
-				availableScrollHeight = getAvailableScrollHeight(calculateAdapterHeight(), 0);
-				scrolledPastHeight = calculateScrollDistanceToPosition(scrollPosState.rowIndex);
-			}
-			else
-			{
-				availableScrollHeight = getAvailableScrollHeight(rowCount * scrollPosState.rowHeight, 0);
-				scrolledPastHeight = scrollPosState.rowIndex * scrollPosState.rowHeight;
+				if (adapter.GetType().IsSubclassOf(typeof(IMeasurableAdapter)))
+				{
+					availableScrollHeight = getAvailableScrollHeight(calculateAdapterHeight(), 0);
+					scrolledPastHeight = calculateScrollDistanceToPosition(scrollPosState.rowIndex);
+				}
+				else
+				{
+					availableScrollHeight = getAvailableScrollHeight(rowCount * scrollPosState.rowHeight, 0);
+					scrolledPastHeight = scrollPosState.rowIndex * scrollPosState.rowHeight;
+				}
 			}
 
-			availableScrollBarHeight = getAvailableScrollBarHeight();
+
+			int availableScrollBarHeight = getAvailableScrollBarHeight();
 
 			// Only show the scrollbar if there is height to be scrolled
 			if (availableScrollHeight <= 0)
@@ -271,32 +274,35 @@ namespace Alloy.Widgets
 
 			getCurScrollState(mScrollPosState);
 
-			float itemPos;
-			int availableScrollHeight;
+			float itemPos = 0;
+			int scrollPosition = 0;
+			int scrollOffset = 0;
 
-			int scrollPosition;
-			int scrollOffset;
-
-			if (GetAdapter() is IMeasurableAdapter)
+			Adapter adapter = GetAdapter();
+			if (adapter != null)
 			{
-				itemPos = findItemPosition(touchFraction);
-				availableScrollHeight = calculateAdapterHeight();
-				scrollPosition = (int)itemPos;
-				scrollOffset = calculateScrollDistanceToPosition(scrollPosition) - (int)(touchFraction * availableScrollHeight);
-			}
-			else
-			{
-				itemPos = findItemPosition(touchFraction);
-				availableScrollHeight = getAvailableScrollHeight(rowCount * mScrollPosState.rowHeight, 0);
+				int availableScrollHeight;
+				if (adapter.GetType().IsSubclassOf(typeof(IMeasurableAdapter)))
+				{
+					itemPos = findItemPosition(touchFraction);
+					availableScrollHeight = calculateAdapterHeight();
+					scrollPosition = (int)itemPos;
+					scrollOffset = calculateScrollDistanceToPosition(scrollPosition) - (int)(touchFraction * availableScrollHeight);
+				}
+				else
+				{
+					itemPos = findItemPosition(touchFraction);
+					availableScrollHeight = getAvailableScrollHeight(rowCount * mScrollPosState.rowHeight, 0);
 
-				//The exact position of our desired item
-				int exactItemPos = (int)(availableScrollHeight * touchFraction);
+					//The exact position of our desired item
+					int exactItemPos = (int)(availableScrollHeight * touchFraction);
 
-				//The offset used here is kind of hard to explain.
-				//If the position we wish to scroll to is, say, position 10.5, we scroll to position 10,
-				//and then offset by 0.5 * rowHeight. This is how we achieve smooth scrolling.
-				scrollPosition = spanCount * exactItemPos / mScrollPosState.rowHeight;
-				scrollOffset = -(exactItemPos % mScrollPosState.rowHeight);
+					//The offset used here is kind of hard to explain.
+					//If the position we wish to scroll to is, say, position 10.5, we scroll to position 10,
+					//and then offset by 0.5 * rowHeight. This is how we achieve smooth scrolling.
+					scrollPosition = spanCount * exactItemPos / mScrollPosState.rowHeight;
+					scrollOffset = -(exactItemPos % mScrollPosState.rowHeight);
+				}
 			}
 
 			LinearLayoutManager layoutManager = ((LinearLayoutManager)GetLayoutManager());
@@ -317,10 +323,9 @@ namespace Alloy.Widgets
 
 		private float findItemPosition(float touchFraction)
 		{
-
-			if (GetAdapter() is IMeasurableAdapter)
+			IMeasurableAdapter measurer = GetAdapter() as IMeasurableAdapter;
+			if (GetAdapter().GetType().IsSubclassOf(typeof(IMeasurableAdapter)))
 			{
-				IMeasurableAdapter measurer = (IMeasurableAdapter)GetAdapter();
 				int viewTop = (int)(touchFraction * calculateAdapterHeight());
 
 				for (int i = 0; i < GetAdapter().ItemCount; i++)
@@ -337,10 +342,8 @@ namespace Alloy.Widgets
 				//Log.w(TAG, "Failed to find a view at the provided scroll fraction (" + touchFraction + ")");
 				return touchFraction * GetAdapter().ItemCount;
 			}
-			else
-			{
-				return GetAdapter().ItemCount * touchFraction;
-			}
+
+			return GetAdapter().ItemCount * touchFraction;
 		}
 
 		/**
@@ -417,7 +420,7 @@ namespace Alloy.Widgets
 		 */
 		private int calculateScrollDistanceToPosition(int adapterIndex)
 		{
-			if (!(GetAdapter() is IMeasurableAdapter))
+			if (!(GetAdapter().GetType().IsSubclassOf(typeof(IMeasurableAdapter))))
 			{
 				throw new IllegalStateException("calculateScrollDistanceToPosition() should only be called where the RecyclerView.Adapter is an instance of MeasurableAdapter");
 			}
@@ -451,7 +454,7 @@ namespace Alloy.Widgets
 		 */
 		private int calculateAdapterHeight()
 		{
-			if (!(GetAdapter() is IMeasurableAdapter))
+			if (!(GetAdapter().GetType().IsSubclassOf(typeof(IMeasurableAdapter))))
 			{
 				throw new IllegalStateException("calculateAdapterHeight() should only be called where the RecyclerView.Adapter is an instance of MeasurableAdapter");
 			}

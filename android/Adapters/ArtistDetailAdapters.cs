@@ -14,18 +14,18 @@ using Android.Widget;
 
 namespace Alloy.Adapters
 {
-	public class ArtistDetailAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class ArtistDetailAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public Activity Activity;
-		public ArtistContainer Artist;
-		private BackgroundAudioServiceConnection serviceConnection;
+		private Context context;
+		private readonly Activity Activity;
+		private readonly ArtistContainer Artist;
+		private readonly BackgroundAudioServiceConnection ServiceConnection;
 
 		public ArtistDetailAdapter(Activity activity, ArtistContainer artist, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Artist = artist;
 			Activity = activity;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
@@ -34,99 +34,93 @@ namespace Alloy.Adapters
 			switch (position)
 			{
 				case 0:
-					ArtistInformationViewHolder artistInfoHolder = holder as ArtistInformationViewHolder;
-					
-					if (artistInfoHolder != null)
+					if (holder is ArtistInformationViewHolder artistInfoHolder)
 					{
 						artistInfoHolder.artist = Artist.Artist;
-						artistInfoHolder?.artistName?.SetText(Artist.Artist.Name, TextView.BufferType.Normal);
-						artistInfoHolder?.artistSize?.SetText(Artist.Size, TextView.BufferType.Normal);	
-						Artist.Artist.GetAlbumArt(artistInfoHolder?.artistImage);			
+						artistInfoHolder.artistName.SetText(Artist.Artist.Name, TextView.BufferType.Normal);
+						artistInfoHolder.artistSize.SetText(Artist.Size, TextView.BufferType.Normal);
+						Artist.Artist.GetAlbumArt(artistInfoHolder.artistImage);
 						artistInfoHolder.CheckStarred();
+					}
+					break;
+				case 1:
+					if (holder is ArtistMetricsViewHolder artistMetricsHolder)
+					{
+						artistMetricsHolder.trackCount.SetText(Artist.Tracks.Count.ToString(), TextView.BufferType.Normal);
+						artistMetricsHolder.playCount.SetText(Artist.TotalPlays.ToString(), TextView.BufferType.Normal);
 					}
 
 					break;
-				case 1:
-					ArtistMetricsViewHolder artistMetricsHolder = holder as ArtistMetricsViewHolder;
-					artistMetricsHolder?.trackCount?.SetText(Artist.Tracks.Count.ToString(), TextView.BufferType.Normal);
-					artistMetricsHolder?.playCount?.SetText(Artist.TotalPlays.ToString(), TextView.BufferType.Normal);
-					break;
 				case 2:
-					ArtistAlbumsViewHolder artistAlbumsHolder = holder as ArtistAlbumsViewHolder;
-					if (Artist.Albums.Count > 0)
+					if (holder is ArtistAlbumsViewHolder artistAlbumsHolder)
 					{
-						if (artistAlbumsHolder != null)
+						if (Artist.Albums.Count > 0)
 						{
 							artistAlbumsHolder.albumsListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailAlbumAdapter artistDetailAlbumsAdapter = new ArtistDetailAlbumAdapter(Artist.Albums, serviceConnection);
+							ArtistDetailAlbumAdapter artistDetailAlbumsAdapter = new ArtistDetailAlbumAdapter(Artist.Albums, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailAlbumsAdapter.NotifyDataSetChanged(); };
-							artistAlbumsHolder?.albumRecycleView?.SetAdapter(artistDetailAlbumsAdapter);
+							artistAlbumsHolder.albumRecycleView.SetAdapter(artistDetailAlbumsAdapter);
 							artistDetailAlbumsAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, artistDetailAlbumsAdapter);
 						}
 					}
 					break;
 				case 3:
-					ArtistEpsViewHolder artistEpsHolder = holder as ArtistEpsViewHolder;
-					if (Artist.EPs.Count > 0)
+					if (holder is ArtistEpsViewHolder artistEpsHolder)
 					{
-						if (artistEpsHolder != null)
+						if (Artist.EPs.Count > 0)
 						{
 							artistEpsHolder.epsListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailAlbumAdapter artistDetailEpsAdapter = new ArtistDetailAlbumAdapter(Artist.EPs, serviceConnection);
+							ArtistDetailAlbumAdapter artistDetailEpsAdapter = new ArtistDetailAlbumAdapter(Artist.EPs, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailEpsAdapter.NotifyDataSetChanged(); };
-							artistEpsHolder?.epsRecycleView?.SetAdapter(artistDetailEpsAdapter);
+							artistEpsHolder.epsRecycleView.SetAdapter(artistDetailEpsAdapter);
 							artistDetailEpsAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, artistDetailEpsAdapter);
 						}
 					}
 					break;
 				case 4:
-					ArtistSinglesViewHolder artistSinglesHolder = holder as ArtistSinglesViewHolder;
-					if (Artist.Singles.Count > 0)
+					if (holder is ArtistSinglesViewHolder artistSinglesHolder)
 					{
-						if (artistSinglesHolder != null)
+						if (Artist.Singles.Count > 0)
 						{
 							artistSinglesHolder.singlesListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailAlbumAdapter artistDetailSinglesAdapter = new ArtistDetailAlbumAdapter(Artist.Singles, serviceConnection);
+							ArtistDetailAlbumAdapter artistDetailSinglesAdapter = new ArtistDetailAlbumAdapter(Artist.Singles, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailSinglesAdapter.NotifyDataSetChanged(); };
-							artistSinglesHolder?.singlesRecycleView?.SetAdapter(artistDetailSinglesAdapter);
+							artistSinglesHolder.singlesRecycleView.SetAdapter(artistDetailSinglesAdapter);
 							artistDetailSinglesAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, artistDetailSinglesAdapter);
 						}
 					}
 					break;
 				case 5:
-					ArtistTopTracksViewHolder artistTopTracksHolder = holder as ArtistTopTracksViewHolder;
-					if (Artist.PopularTracks.Count > 0)
+					if (holder is ArtistTopTracksViewHolder artistTopTracksHolder)
 					{
-						if (artistTopTracksHolder != null)
+						if (Artist.PopularTracks.Count > 0)
 						{
 							artistTopTracksHolder.topTracksListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailTrackAdapter topAdapter = new ArtistDetailTrackAdapter(Artist.PopularTracks, serviceConnection);
+							ArtistDetailTrackAdapter topAdapter = new ArtistDetailTrackAdapter(Artist.PopularTracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { topAdapter.NotifyDataSetChanged(); };
-							artistTopTracksHolder?.topTrackRecycleView?.SetAdapter(topAdapter);
+							artistTopTracksHolder.topTrackRecycleView.SetAdapter(topAdapter);
 							topAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, topAdapter);
 						}
 					}
 					break;
 				case 6:
-					ArtistAllTracksViewHolder allTracksHolder = holder as ArtistAllTracksViewHolder;
-					if (Artist.Tracks.Count > 0)
+					if (holder is ArtistAllTracksViewHolder allTracksHolder)
 					{
-						if (allTracksHolder != null)
+						if (Artist.Tracks.Count > 0)
 						{
 							allTracksHolder.allTracksListContainer.Visibility = ViewStates.Visible;
-							ArtistDetailTrackAdapter allTracksAdapter = new ArtistDetailTrackAdapter(Artist.Tracks, serviceConnection);
+							ArtistDetailTrackAdapter allTracksAdapter = new ArtistDetailTrackAdapter(Artist.Tracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { allTracksAdapter.NotifyDataSetChanged(); };
-							allTracksHolder?.allTracksRecycleView?.SetAdapter(allTracksAdapter);
+							allTracksHolder.allTracksRecycleView.SetAdapter(allTracksAdapter);
 							allTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, allTracksAdapter);
 						}
 					}
 					break;
-			
 			}
 		}
 
@@ -204,7 +198,7 @@ namespace Alloy.Adapters
 				notStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
 			}
 
-			private void StarButtonClick(object sender, System.EventArgs e)
+			private void StarButtonClick(object sender, EventArgs e)
 			{
 				if (artist.Starred)
 				{
@@ -238,7 +232,7 @@ namespace Alloy.Adapters
 			{
 				trackCount = itemView.FindViewById<TextView>(Resource.Id.artist_track_count);
 				playCount = itemView.FindViewById<TextView>(Resource.Id.artist_play_count);
-				
+
 			}
 		}
 
@@ -314,8 +308,8 @@ namespace Alloy.Adapters
 			}
 		}
 	}
-	
-	public class ArtistDetailAlbumAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+
+	public class ArtistDetailAlbumAdapter : RecyclerView.Adapter
 	{
 		public Context context;
 		public List<Album> Albums;
@@ -365,11 +359,11 @@ namespace Alloy.Adapters
 				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				name = itemView.FindViewById<TextView>(Resource.Id.name);
 				this.serviceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Album = Album });
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Album = Album });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) =>
 				{
 					SetSelected();
-				};			
+				};
 			}
 
 			public void SetSelected()
@@ -404,7 +398,7 @@ namespace Alloy.Adapters
 		}
 	}
 
-	public class ArtistDetailTrackAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class ArtistDetailTrackAdapter : RecyclerView.Adapter
 	{
 		public Context context;
 		public MusicQueue Songs;
@@ -464,8 +458,8 @@ namespace Alloy.Adapters
 				title = itemView.FindViewById<TextView>(Resource.Id.title);
 				album = itemView.FindViewById<TextView>(Resource.Id.album);
 				this.serviceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
-				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(base.LayoutPosition); };
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
 			}
 
 			public void SetSelected(int position)

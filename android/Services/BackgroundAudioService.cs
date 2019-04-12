@@ -5,13 +5,10 @@ using Android.Content;
 using Android.Gms.Cast;
 using Android.Gms.Cast.Framework;
 using Android.Gms.Cast.Framework.Media;
-using Android.Gms.Common.Apis;
 using Android.Media;
 using Android.OS;
-using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Microsoft.AppCenter.Crashes;
-using Org.Json;
 using Alloy.Helpers;
 using Alloy.Interfaces;
 using Alloy.Models;
@@ -61,7 +58,7 @@ namespace Alloy.Services
 		public static string MEDIA_NAME = "Media playback";
 		public static string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
 		public static int NOTIFICATION_ID = 165164465;
-		private static bool loading;
+		private bool loading;
 
 		public Song CurrentSong
 		{
@@ -81,8 +78,8 @@ namespace Alloy.Services
 
 		public override IBinder OnBind(Intent intent)
 		{
-			this.Binder = new BackgroundAudioServiceBinder(this);
-			return this.Binder;
+			Binder = new BackgroundAudioServiceBinder(this);
+			return Binder;
 		}
 
 		public override void OnCreate()
@@ -111,11 +108,11 @@ namespace Alloy.Services
 
 		public void RequestAudioFocus()
 		{
-			var mPlaybackAttributes = new AudioAttributes.Builder()
+			AudioAttributes mPlaybackAttributes = new AudioAttributes.Builder()
 				.SetUsage(AudioUsageKind.Media)
 				.SetContentType(AudioContentType.Music)
 				.Build();
-			var mFocusRequest = new AudioFocusRequestClass.Builder(AudioFocus.Gain)
+			AudioFocusRequestClass mFocusRequest = new AudioFocusRequestClass.Builder(AudioFocus.Gain)
 				.SetAudioAttributes(mPlaybackAttributes)
 				.SetAcceptsDelayedFocusGain(true)
 				.SetOnAudioFocusChangeListener(this)
@@ -194,7 +191,7 @@ namespace Alloy.Services
 
 				notificationService.ShowNotification();
 				RequestAudioFocus();
-				PlaybackStatusChanged(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading});
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading});
 			}
 			catch (Exception e)
 			{
@@ -253,7 +250,7 @@ namespace Alloy.Services
 
 				if (MainQueue != null && MainQueue.Count > 0)
 				{
-					foreach (var item in MainQueue) { item.IsSelected = false; }
+					foreach (Song item in MainQueue) { item.IsSelected = false; }
 				}
 
 				MainQueue = queue;
@@ -268,11 +265,10 @@ namespace Alloy.Services
 					CurrentSong = MainQueue[index];
 
 				Utils.UnlockSsl(true);
-				JSONObject jsonObj = null;
 				if (Remote != null)
 				{
 					CurrentSong = MainQueue[index];
-					Adapters.Adapters.CurrentActivity.RunOnUiThread(new Action(async () =>
+					Adapters.Adapters.CurrentActivity.RunOnUiThread(() =>
 					{
 						Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
 						meta.PutString(MediaMetadata.MetadataKeyArtist, CurrentSong.Artist);
@@ -281,45 +277,45 @@ namespace Alloy.Services
 						meta.PutString(MediaMetadata.MetadataKeyTitle, CurrentSong.Title);
 						meta.PutString(MediaMetadata.MetadataKeyDisplayTitle, CurrentSong.Title);
 
-					//if (!string.IsNullOrEmpty(CurrentSong.Artwork)) meta.AddImage(new WebImage(Uri.Parse(CurrentSong.Artwork.Replace("large", "t500x500"))));
+						//if (!string.IsNullOrEmpty(CurrentSong.Artwork)) meta.AddImage(new WebImage(Uri.Parse(CurrentSong.Artwork.Replace("large", "t500x500"))));
 
-					//jsonObj = new JSONObject();
-					//jsonObj.Put("description", CurrentSong.Description);
-
-
-					var url = "";
+						//jsonObj = new JSONObject();
+						//jsonObj.Put("description", CurrentSong.Description);
 
 
-						var info = new Android.Gms.Cast.MediaInfo.Builder(url)
-						.SetCustomData(jsonObj)
-						.SetMetadata(meta)
-						.SetStreamDuration(CurrentSong.Duration)
-						.SetStreamType(Android.Gms.Cast.MediaInfo.StreamTypeBuffered)
-						.SetContentType("audio/mp3")
-						.Build();
+						//string url = "";
 
-						MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
-							.SetAutoplay(true)
-							.SetPreloadTime(20)
-							.Build();
-					//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
-					//{
-					//	MainQueue.ToRemoteMediaQueue();
-					//}
-					//else
-					//{
-					//	MainQueue.ToLocalMediaQueue();
-					//}
 
-					var result = await Remote.QueueLoad(MainQueue.MediaQueue, index, 0, jsonObj);
-					//Android.Gms.Common.Apis.IResult result = await Remote.LoadAsync(info, true, 0, jsonObj);
-					if (result.Status.IsSuccess)
-						{
-						//notificationService.ShowPlayingNotification();
-						//PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong });
-					}
+						//MediaInfo info = new MediaInfo.Builder(url)
+						//	//.SetCustomData(jsonObj)
+						//	.SetMetadata(meta)
+						//	.SetStreamDuration(CurrentSong.Duration)
+						//	.SetStreamType(MediaInfo.StreamTypeBuffered)
+						//	.SetContentType("audio/mp3")
+						//	.Build();
+
+						//MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
+						//	.SetAutoplay(true)
+						//	.SetPreloadTime(20)
+						//	.Build();
+						//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
+						//{
+						//	MainQueue.ToRemoteMediaQueue();
+						//}
+						//else
+						//{
+						//	MainQueue.ToLocalMediaQueue();
+						//}
+
+						//IResult result = await Remote.QueueLoad(MainQueue.MediaQueue, index, 0, jsonObj);
+						//Android.Gms.Common.Apis.IResult result = await Remote.LoadAsync(info, true, 0, jsonObj);
+						//if (result.Status.IsSuccess)
+						//{
+						//	//notificationService.ShowPlayingNotification();
+						//	//PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong });
+						//}
 						loading = false;
-					}));
+					});
 				}
 				else
 				{
@@ -337,25 +333,27 @@ namespace Alloy.Services
 			}
 		}
 
-		public class CastPlayResult : Java.Lang.Object, IResultCallback, RemoteMediaClient.IMediaChannelResult
-		{
-			private BackgroundAudioService service;
-			public CastPlayResult(BackgroundAudioService service)
-			{
-				this.service = service;
-			}
-			public void OnResult(Object result)
-			{
-				var res = result;
-				loading = false;
 
-				service.MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(service.CurrentSong));
-				service.MediaPlayer.Prepare();
-			}
+        //TODO unknown if still used, needs tested. 
+		//public class CastPlayResult : Java.Lang.Object, IResultCallback, RemoteMediaClient.IMediaChannelResult
+		//{
+		//	private BackgroundAudioService service;
+		//	public CastPlayResult(BackgroundAudioService service)
+		//	{
+		//		this.service = service;
+		//	}
+		//	public void OnResult(Object result)
+		//	{
+		//		var res = result;
+		//		loading = false;
 
-			public Statuses Status { get; }
-			public JSONObject CustomData { get; }
-		}
+		//		service.MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(service.CurrentSong));
+		//		service.MediaPlayer.Prepare();
+		//	}
+
+		//	public Statuses Status { get; }
+		//	public JSONObject CustomData { get; }
+		//}
 
 		public void PlayNextSong()
 		{
@@ -366,14 +364,14 @@ namespace Alloy.Services
 				{
 					if (CurrentSong == null || MainQueue.Count <= 0) return;
 					CurrentSong.IsSelected = false;
-					var index = MainQueue.IndexOf(CurrentSong);
+					int index = MainQueue.IndexOf(CurrentSong);
 					if (index >= MainQueue.Count)
 					{
 						MainQueue.GetMoreData();
 						index = MainQueue.IndexOf(CurrentSong);
 					}
 
-					var song = index + 1 >= MainQueue.Count ? MainQueue[0] : MainQueue[index + 1];
+					Song song = index + 1 >= MainQueue.Count ? MainQueue[0] : MainQueue[index + 1];
 					if (song != null) { Play(song); }
 				}
 			}
@@ -389,14 +387,14 @@ namespace Alloy.Services
 			try
 			{
 				if (CurrentSong == null || MainQueue.Count <= 0) return null;
-				var index = MainQueue.IndexOf(CurrentSong);
+				int index = MainQueue.IndexOf(CurrentSong);
 				if (index >= MainQueue.Count - 1)
 				{
 					MainQueue.GetMoreData();
 					index = MainQueue.IndexOf(CurrentSong);
 				}
 
-				var song = index + 1 >= MainQueue.Count - 1 ? MainQueue[0] : MainQueue[index + 1];
+				Song song = index + 1 >= MainQueue.Count - 1 ? MainQueue[0] : MainQueue[index + 1];
 				return song;
 			}
 			catch (Exception e)
@@ -417,8 +415,8 @@ namespace Alloy.Services
 				{
 					if (CurrentSong == null || MainQueue.Count <= 0) return;
 					CurrentSong.IsSelected = false;
-					var index = MainQueue.IndexOf(CurrentSong);
-					var song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
+					int index = MainQueue.IndexOf(CurrentSong);
+					Song song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
 
 					Play(song);
 				}
@@ -431,8 +429,8 @@ namespace Alloy.Services
 			try
 			{
 				if (CurrentSong == null || MainQueue.Count <= 0) return null;
-				var index = MainQueue.IndexOf(CurrentSong);
-				var song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
+				int index = MainQueue.IndexOf(CurrentSong);
+				Song song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
 				return song;
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -442,14 +440,14 @@ namespace Alloy.Services
 
 		public MediaPlayer MediaPlayer { get; set; }
 
-		private void MediaPlayer_Prepared(object sender, System.EventArgs e)
+		private void MediaPlayer_Prepared(object sender, EventArgs e)
 		{
 			try
 			{
 				Utils.UnlockSsl(true);
 				MediaPlayer.Start();
 				loading = false;
-				PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing});
 				notificationService.ShowNotification();
 				notificationService.UpdateMediaSessionMeta();
 				Utils.Run(() =>
@@ -469,7 +467,7 @@ namespace Alloy.Services
 			}
 		}
 
-		private void MediaPlayer_Completion(object sender, System.EventArgs e)
+		private void MediaPlayer_Completion(object sender, EventArgs e)
 		{
 			if (CurrentSong != null) CurrentSong.IsSelected = false;
 			PlayNextSong();
@@ -601,46 +599,6 @@ namespace Alloy.Services
 			{
 				serviceConnection?.Pause();
 			}
-
-			public override void OnFastForward()
-			{
-				base.OnFastForward();
-			}
-
-			public override void OnRewind()
-			{
-				base.OnRewind();
-			}
-
-			public override void OnSeekTo(long pos)
-			{
-				base.OnSeekTo(pos);
-			}
-
-			public override void OnSetRating(RatingCompat rating)
-			{
-				base.OnSetRating(rating);
-			}
-
-			public override void OnSetRating(RatingCompat rating, Bundle extras)
-			{
-				base.OnSetRating(rating, extras);
-			}
-
-			public override void OnSetRepeatMode(int repeatMode)
-			{
-				base.OnSetRepeatMode(repeatMode);
-			}
-
-			public override void OnSetShuffleMode(int shuffleMode)
-			{
-				base.OnSetShuffleMode(shuffleMode);
-			}
-
-			public override void OnSkipToQueueItem(long id)
-			{
-				base.OnSkipToQueueItem(id);
-			}
 		}
 
 		public void InitMediaSession()
@@ -654,7 +612,7 @@ namespace Alloy.Services
 				bundle.PutBoolean("exceptMusicController", true);
 
 				MediaSession.SetExtras(bundle);
-				mediaStateBuilder = new Android.Support.V4.Media.Session.PlaybackStateCompat.Builder();
+				mediaStateBuilder = new PlaybackStateCompat.Builder();
 				mediaStateBuilder.SetActions(
 					PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionFastForward | PlaybackStateCompat.ActionRewind |
 					PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious | PlaybackStateCompat.ActionStop | PlaybackStateCompat.ActionSetRating |
@@ -759,14 +717,14 @@ namespace Alloy.Services
 		{
 			if (MainQueue == null || Remote == null || Remote.CurrentItem == null) return;
 			CurrentQueueSong = Remote.CurrentItem;
-			foreach (var item in MainQueue)
+			foreach (Song item in MainQueue)
 			{
 				if (!CurrentQueueSong.ItemId.Equals(item.QueueItem().ItemId)) continue;
 				CurrentSong = item;
 				break;
 			}
 
-			PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None });
+			PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
 		}
 
 		public void OnSendingRemoteMediaRequest()
@@ -777,10 +735,10 @@ namespace Alloy.Services
 		{
 			if (Remote != null)
 			{
-				Adapters.Adapters.CurrentActivity.RunOnUiThread(new Action(() =>
+				Adapters.Adapters.CurrentActivity.RunOnUiThread(() =>
 				{
 					int status = Remote.PlayerState;
-					var idleReason = Remote.IdleReason;
+					int idleReason = Remote.IdleReason;
 
 					switch (status)
 					{
@@ -797,16 +755,14 @@ namespace Alloy.Services
 						case MediaStatus.PlayerStatePlaying:
 							playbackState = PlaybackStateCompat.StatePlaying;
 							currentIdleReason = MediaStatus.IdleReasonFinished;
-							PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None });
+							PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
 							break;
 						case MediaStatus.PlayerStatePaused:
 							playbackState = PlaybackStateCompat.StatePaused;
-							PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None });
-							break;
-						default: // case unknown
+							PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
 							break;
 					}
-				}));
+				});
 			}
 		}
 
