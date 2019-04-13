@@ -8,6 +8,7 @@ using Android.Support.V4.Media.Session;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Helpers;
 
+
 namespace Alloy.Services
 {
 	public class NotificationService
@@ -75,7 +76,7 @@ namespace Alloy.Services
 				.SetContentTitle(audioService.CurrentSong.Album)
 				.SetContentText(audioService.CurrentSong.Artist)
 				.SetSubText(audioService.CurrentSong.Title)
-				.SetLargeIcon(audioService.CurrentSong.Art);
+				.SetLargeIcon(audioService.CurrentSong.GetAlbumArt());
 		}
 
 
@@ -118,7 +119,7 @@ namespace Alloy.Services
 					.PutString(MediaMetadataCompat.MetadataKeyArtist, audioService.CurrentSong.Artist)
 					.PutString(MediaMetadataCompat.MetadataKeyAlbum, audioService.CurrentSong.Album)
 					.PutLong(MediaMetadataCompat.MetadataKeyDuration, audioService.CurrentSong.Duration)
-					.PutBitmap(MediaMetadataCompat.MetadataKeyArt, audioService.CurrentSong.Art)
+					.PutBitmap(MediaMetadataCompat.MetadataKeyArt, audioService.CurrentSong.GetAlbumArt())
 					.Build();
 
 				PlaybackStateCompat state = new PlaybackStateCompat.Builder()

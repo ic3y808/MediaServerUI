@@ -6,7 +6,6 @@
 		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:windowContentTransitions">true</item>
-		<item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 	</style>
@@ -19,7 +18,6 @@
 		<item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
 		<item name="android:actionBarTabTextStyle">@style/AppTheme.ActionBar.TabText</item>
 		<item name="android:actionMenuTextColor">@color/actionbar_foreground</item>
-		<item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
 		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
 	</style>
@@ -39,7 +37,6 @@
 		<item name="android:actionMenuTextColor">@color/actionbar_foreground</item>
 		<item name="android:colorControlNormal">@color/actionbar_foreground</item>
 		<item name="android:textColorPrimary">@color/actionbar_foreground</item>
-		<item name="mediaRouteTheme">@style/CustomMediaRouterTheme</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
 	</style>
 	
@@ -67,26 +64,6 @@
 		<item name="android:windowActionBar">false</item>
 		<item name="android:windowFullscreen">true</item>
 		<item name="android:windowContentOverlay">@null</item>
-	</style>
-
-	<!-- Cast style. -->
-	<style name="CustomMediaRouterTheme" parent="Theme.MediaRouter">
-		<item name="mediaRouteButtonStyle">@style/CustomMediaRouteButtonStyle</item>
-	</style>
-
-	<style name="CustomMediaRouteButtonStyle" parent="Widget.MediaRouter.Light.MediaRouteButton">
-		<item name="buttonTint">@color/notification_icon_bg_color</item>
-	</style>
-	
-	<style name="CustomCastIntroOverlay" parent="CastIntroOverlay">
-		<item name="castButtonTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Button</item>
-		<item name="castTitleTextAppearance">@style/TextAppearance.CustomCastIntroOverlay.Title</item>
-	</style>
-	<style name="TextAppearance.CustomCastIntroOverlay.Button" parent="android:style/TextAppearance">
-		<item name="android:textColor">#FFFFFF</item>
-	</style>
-	<style name="TextAppearance.CustomCastIntroOverlay.Title" parent="android:style/TextAppearance.Large">
-		<item name="android:textColor">#FFFFFF</item>
 	</style>
 
 	<!-- Menu style. -->

@@ -2,11 +2,11 @@
 using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Views;
-using Android.Widget;
 using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.App;

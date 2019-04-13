@@ -1,7 +1,5 @@
 ﻿using System;
 using Android.Content;
-using Android.Gms.Cast;
-using Android.Gms.Cast.Framework.Media;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media.Session;
@@ -103,23 +101,11 @@ namespace Alloy.Services
 			get => Binder.CurrentSong;
 			set => Binder.CurrentSong = value;
 		}
-
-		public MediaQueueItem CurrentQueueSong
-		{
-			get => Binder.CurrentQueueSong;
-			set => Binder.CurrentQueueSong = value;
-		}
-
+		
 		public IQueue MainQueue
 		{
 			get => Binder.MainQueue;
 			set => Binder.MainQueue = value;
-		}
-
-		public RemoteMediaClient Remote
-		{
-			get => Binder.Remote;
-			set => Binder.Remote = value;
 		}
 
 		public MediaSessionCompat MediaSession

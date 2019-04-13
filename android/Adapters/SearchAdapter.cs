@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿
+using Android.Content;
 using Android.Database;
 using Android.Views;
 using Android.Widget;

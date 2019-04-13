@@ -4,24 +4,16 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using System.Reflection;
 using Android.App;
 using Android.Content;
-using Android.Media;
 using Android.OS;
-using Android.Widget;
-using Alloy.Common;
 using Alloy.Helpers;
-using Alloy.Interfaces;
 using Alloy.Models;
-using Android.Graphics;
 using Android.Support.V7.Preferences;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Debug = System.Diagnostics.Debug;
 using Extensions = Alloy.Helpers.Extensions;
-using IQueue = Alloy.Interfaces.IQueue;
-using Path = System.IO.Path;
 using Stream = System.IO.Stream;
 
 

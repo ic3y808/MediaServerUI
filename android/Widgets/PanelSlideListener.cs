@@ -1,7 +1,6 @@
-﻿using Alloy.Widgets;
-using Android.Views;
+﻿using Android.Views;
 
-namespace SlideUpPanelLibrary
+namespace Alloy.Widgets
 {
 	public interface PanelSlideListener
 	{

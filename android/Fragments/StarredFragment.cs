@@ -5,6 +5,7 @@ using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Android.Support.V7.Widget;
 

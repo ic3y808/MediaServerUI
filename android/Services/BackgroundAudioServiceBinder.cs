@@ -1,6 +1,4 @@
 ﻿using System;
-using Android.Gms.Cast;
-using Android.Gms.Cast.Framework.Media;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media.Session;
@@ -77,22 +75,10 @@ namespace Alloy.Services
 			set => Service.CurrentSong = value;
 		}
 
-		public MediaQueueItem CurrentQueueSong
-		{
-			get => Service.CurrentQueueSong;
-			set => Service.CurrentQueueSong = value;
-		}
-
 		public IQueue MainQueue
 		{
 			get => Service.MainQueue;
 			set => Service.MainQueue = value;
-		}
-
-		public RemoteMediaClient Remote
-		{
-			get => Service.Remote;
-			set => Service.Remote = value;
 		}
 
 		public MediaSessionCompat MediaSession

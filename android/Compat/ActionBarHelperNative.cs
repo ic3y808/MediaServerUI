@@ -6,11 +6,10 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
-using Alloy.Compat;
 using ActionBar = Android.Support.V7.App.ActionBar;
 using Object = Java.Lang.Object;
 
-namespace Net.Simonvt.Menudrawer.Compat
+namespace Alloy.Compat
 {
 	public class ActionBarHelperNative
 	{
@@ -34,36 +33,34 @@ namespace Net.Simonvt.Menudrawer.Compat
 			{
 				try
 				{
-					Android.Support.V7.App.ActionBar actionBar = activity.SupportActionBar;
+					ActionBar actionBar = activity.SupportActionBar;
 					sii.setHomeAsUpIndicator(actionBar, drawable);
 					sii.setHomeActionContentDescription(actionBar, contentDescRes);
 				}
 				catch (Throwable t)
 				{
-					if (ActionBarHelper.DEBUG) Log.Error(TAG, "Couldn't set home-as-up indicator via JB-MR2 API", t);
+					Log.Error(TAG, "Couldn't set home-as-up indicator via JB-MR2 API", t);
 				}
 			}
 			else if (sii.upIndicatorView != null) { sii.upIndicatorView.SetImageDrawable(drawable); }
 			else
 			{
-				if (ActionBarHelper.DEBUG) Log.Error(TAG, "Couldn't set home-as-up indicator");
+				Log.Error(TAG, "Couldn't set home-as-up indicator");
 			}
 		}
 
 		public static void setActionBarDescription(Object info, AppCompatActivity activity, int contentDescRes)
 		{
 			SetIndicatorInfo sii = (SetIndicatorInfo)info;
-			if (sii.setHomeAsUpIndicator != null)
+			if (sii.setHomeAsUpIndicator == null) return;
+			try
 			{
-				try
-				{
-					ActionBar actionBar = activity.SupportActionBar;
-					sii.setHomeActionContentDescription.Invoke(actionBar, contentDescRes);
-				}
-				catch (Throwable t)
-				{
-					if (ActionBarHelper.DEBUG) Log.Error(TAG, "Couldn't set content description via JB-MR2 API", t);
-				}
+				ActionBar actionBar = activity.SupportActionBar;
+				sii.setHomeActionContentDescription.Invoke(actionBar, contentDescRes);
+			}
+			catch (Throwable t)
+			{
+				Log.Error(TAG, "Couldn't set content description via JB-MR2 API", t);
 			}
 		}
 
@@ -86,23 +83,23 @@ namespace Net.Simonvt.Menudrawer.Compat
 			if (actionBar != null) { actionBar.SetDisplayHomeAsUpEnabled(b); }
 		}
 
-		public class SetIndicatorInfo : Java.Lang.Object
+		public class SetIndicatorInfo : Object
 		{
 
 			public Action<ActionBar, Drawable> setHomeAsUpIndicator;
 			public Action<ActionBar, int> setHomeActionContentDescription;
 			public ImageView upIndicatorView;
-			
+
 			public SetIndicatorInfo(AppCompatActivity activity)
 			{
 				//try
 				//	{
-				setHomeAsUpIndicator = (ActionBar ab, Drawable d) => { ab?.SetHomeAsUpIndicator(d); };
-				setHomeActionContentDescription  = (ActionBar ab, int r) => { ab?.SetHomeActionContentDescription(r); };
+				setHomeAsUpIndicator = (ab, d) => { ab?.SetHomeAsUpIndicator(d); };
+				setHomeActionContentDescription = (ab, r) => { ab?.SetHomeActionContentDescription(r); };
 				//var actionbar = Class.FromType(typeof(Android.Support.V7.App.ActionBar)).GetConstructor().NewInstance();
 				//Expression a = activity.SupportActionBar.SetHomeAsUpIndicator(1);
 				//setHomeAsUpIndicator = (i) => activity.SupportActionBar.SetHomeAsUpIndicator(i);
-		
+
 
 				//setHomeAsUpIndicator = actionBar.GetDeclaredMethod("setHomeAsUpIndicator", Class.FromType(typeof(Integer)).Class);
 

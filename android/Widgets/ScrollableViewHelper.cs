@@ -7,7 +7,7 @@ using Android.Widget;
  * for ListView, ScrollView and RecyclerView, but the library users can override it to add support
  * for other views.
  */
-namespace SlideUpPanelLibrary
+namespace Alloy.Widgets
 {
 	/**
 	* Returns the current scroll position of the scrollable view. If this method returns zero or

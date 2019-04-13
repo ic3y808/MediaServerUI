@@ -1,34 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using Android.Gms.Cast;
-using Android.Graphics;
 using Android.OS;
 using Java.Interop;
 using Newtonsoft.Json;
-using Org.Json;
-using Alloy.Helpers;
-using Alloy.Providers;
 using Object = Java.Lang.Object;
 
 namespace Alloy.Models
 {
 	public class Song : Object, IParcelable
 	{
-		private string _id;
 		[JsonProperty("id")]
-		public string Id
-		{
-			get { return _id; }
-			set
-			{
-				_id = value;
-				//if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", _id }, { "width", "50" }, { "height", "50" } });
-			}
-		}
-
-		[JsonIgnore]
-		public Bitmap Art { get; set; }
+		public string Id { get; set; }
 		[JsonProperty("path")]
 		public string Path { get; set; }
 		[JsonProperty("title")]
@@ -81,110 +63,11 @@ namespace Alloy.Models
 		public string No { get; set; }
 		[JsonProperty("of")]
 		public string Of { get; set; }
-
-
-		
-
-		
-
-		public bool HasArt { get; set; }
 		public bool IsSelected { get; set; }
-
-
 
 		public override string ToString()
 		{
 			return $"Song: Title:{Title} Artist{Artist} Path {Path}";
-		}
-
-		public MediaQueueItem QueueItem()
-		{
-			JSONObject jsonObj = null;
-			Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyAlbumArtist, Artist);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyArtist, Artist);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyAlbumTitle, Album);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyTitle, Title);
-
-			jsonObj = new JSONObject();
-			//jsonObj.Put("description", Description);
-			return null;
-
-
-			//var info = new Android.Gms.Cast.MediaInfo.Builder(Url)
-			//	.SetContentType("audio/mp3")
-			//	.SetCustomData(jsonObj)
-			//	.SetMetadata(meta)
-			//	.SetStreamDuration(Duration)
-			//	.SetStreamType(Android.Gms.Cast.MediaInfo.StreamTypeBuffered)
-			//	//.SetTextTrackStyle(TextTrackStyle.FromSystemSettings(Application.Context))
-			//	.Build();
-
-			//MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
-			//	.SetAutoplay(true)
-			//	.SetPreloadTime(20)
-			//	.Build();
-			//return queueItem;
-		}
-
-		public MediaQueueItem LocalQueueItem()
-		{
-			JSONObject jsonObj = null;
-			Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyAlbumArtist, Artist);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyArtist, Artist);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyAlbumTitle, Album);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyTitle, Title);
-			//if (Artwork != null)
-			//	meta.AddImage(new WebImage(Uri.Parse(Artwork.Replace("large", "t500x500"))));
-
-			//jsonObj = new JSONObject();
-			//jsonObj.Put("description", Description);
-
-
-			string url = "http://" + WebHelpers.GetIPAddress(true) + ":8001";//+ LocalUrl;
-			MediaInfo info = new Android.Gms.Cast.MediaInfo.Builder(url)
-				.SetContentType("audio/mp3")
-				.SetCustomData(jsonObj)
-				.SetMetadata(meta)
-				.SetStreamDuration(Duration)
-				.SetStreamType(Android.Gms.Cast.MediaInfo.StreamTypeBuffered)
-				//.SetTextTrackStyle(TextTrackStyle.FromSystemSettings(Application.Context))
-				.Build();
-
-			MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
-				.SetAutoplay(true)
-				.SetPreloadTime(20)
-				.Build();
-			return queueItem;
-		}
-
-		public MediaQueueItem RemoteQueueItem()
-		{
-			JSONObject jsonObj = null;
-			Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyAlbumArtist, Artist);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyArtist, Artist);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyAlbumTitle, Album);
-			meta.PutString(Android.Gms.Cast.MediaMetadata.KeyTitle, Title);
-
-			//jsonObj = new JSONObject();
-			//jsonObj.Put("description", Description);
-
-			MediaInfo info = new Android.Gms.Cast.MediaInfo.Builder(MusicProvider.GetStreamUri(this).ToString())
-				.SetContentType(ContentType)
-				.SetCustomData(jsonObj)
-				.SetMetadata(meta)
-				.SetStreamDuration(Duration)
-				.SetStreamType(Android.Gms.Cast.MediaInfo.StreamTypeBuffered)
-				//.SetTextTrackStyle(TextTrackStyle.FromSystemSettings(Application.Context))
-				.Build();
-
-			MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
-				.SetAutoplay(true)
-				.SetPreloadTime(20)
-				.Build();
-			return queueItem;
 		}
 
 		[ExportField("CREATOR")] // Need a reference to Mono.Android.Export
@@ -222,7 +105,6 @@ namespace Alloy.Models
 			dest.WriteString(Suffix);
 			dest.WriteString(No);
 			dest.WriteString(Of);
-			dest.WriteString(HasArt.ToString());
 			dest.WriteString(IsSelected.ToString());
 
 		}
@@ -266,7 +148,6 @@ namespace Alloy.Models
 				Suffix = source.ReadString(),
 				No = source.ReadString(),
 				Of = source.ReadString(),
-				HasArt = bool.Parse(source.ReadString()),
 				IsSelected = bool.Parse(source.ReadString()),
 			};
 			return artist;

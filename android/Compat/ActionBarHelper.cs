@@ -3,108 +3,89 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Util;
 using Java.Lang;
-using Java.Lang.Reflect;
-using Net.Simonvt.Menudrawer.Compat;
 
 namespace Alloy.Compat
 {
 	public class ActionBarHelper
 	{
-		private static string TAG = "ActionBarHelper";
+		private const string TAG = "ActionBarHelper";
 
-		public static bool DEBUG = false;
+		public AppCompatActivity Activity { get; }
 
-		private AppCompatActivity mActivity;
+		public Object IndicatorInfo { get; }
 
-		private Object mIndicatorInfo;
-
-		private bool mUsesCompat;
+		public bool UsesCompat { get; }
 
 		public ActionBarHelper(AppCompatActivity activity)
 		{
-			mActivity = activity;
-
+			Activity = activity;
 			try
 			{
-
 				Class clazz = activity.Class;
-				Method m = clazz.GetMethod("getSupportActionBar");
-				mUsesCompat = true;
+				clazz.GetMethod("getSupportActionBar");
+				UsesCompat = true;
 			}
 			catch (NoSuchMethodException e)
 			{
-				if (DEBUG)
-				{
-					Log.Error(TAG,
-							"Activity " + activity.Class.SimpleName + " does not use a compatibility action bar",
-							e);
-				}
+				Log.Error(TAG, "Activity " + activity.Class.SimpleName + " does not use a compatibility action bar", e);
 			}
 
-			mIndicatorInfo = getIndicatorInfo();
+			IndicatorInfo = getIndicatorInfo();
 		}
 
 		private Object getIndicatorInfo()
 		{
-			if (mUsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
+			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				return ActionBarHelperCompat.getIndicatorInfo(mActivity);
-			}
-			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
-			{
-				return ActionBarHelperNative.getIndicatorInfo(mActivity);
+				return ActionBarHelperCompat.getIndicatorInfo(Activity);
 			}
 
-			return null;
+			return Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb ? ActionBarHelperNative.getIndicatorInfo(Activity) : null;
 		}
 
 		public void setActionBarUpIndicator(Drawable drawable, int contentDesc)
 		{
-			if (mUsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
+			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				ActionBarHelperCompat.setActionBarUpIndicator(mIndicatorInfo, mActivity, drawable, contentDesc);
+				ActionBarHelperCompat.setActionBarUpIndicator(IndicatorInfo, Activity, drawable, contentDesc);
 			}
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
 			{
-				ActionBarHelperNative.setActionBarUpIndicator(mIndicatorInfo, mActivity, drawable, contentDesc);
+				ActionBarHelperNative.setActionBarUpIndicator(IndicatorInfo, Activity, drawable, contentDesc);
 			}
 		}
 
 		public void setActionBarDescription(int contentDesc)
 		{
-			if (mUsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
+			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				ActionBarHelperCompat.setActionBarDescription(mIndicatorInfo, mActivity, contentDesc);
+				ActionBarHelperCompat.setActionBarDescription(IndicatorInfo, Activity, contentDesc);
 			}
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
 			{
-				ActionBarHelperNative.setActionBarDescription(mIndicatorInfo, mActivity, contentDesc);
+				ActionBarHelperNative.setActionBarDescription(IndicatorInfo, Activity, contentDesc);
 			}
 		}
 
 		public Drawable getThemeUpIndicator()
 		{
-			if (mUsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
+			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				return ActionBarHelperCompat.getThemeUpIndicator(mIndicatorInfo);
-			}
-			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
-			{
-				return ActionBarHelperNative.getThemeUpIndicator(mIndicatorInfo, mActivity);
+				return ActionBarHelperCompat.getThemeUpIndicator(IndicatorInfo);
 			}
 
-			return null;
+			return Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb ? ActionBarHelperNative.getThemeUpIndicator(IndicatorInfo, Activity) : null;
 		}
 
 		public void setDisplayShowHomeAsUpEnabled(bool enabled)
 		{
-			if (mUsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
+			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				ActionBarHelperCompat.setDisplayHomeAsUpEnabled(mIndicatorInfo, enabled);
+				ActionBarHelperCompat.setDisplayHomeAsUpEnabled(IndicatorInfo, enabled);
 			}
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
 			{
-				ActionBarHelperNative.setDisplayHomeAsUpEnabled(mActivity, enabled);
+				ActionBarHelperNative.setDisplayHomeAsUpEnabled(Activity, enabled);
 			}
 		}
 	}

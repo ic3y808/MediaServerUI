@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Android.Graphics;
-using Android.Media;
 using Android.OS;
 using Java.Interop;
-using Mono.Security.X509;
 using Newtonsoft.Json;
 using Object = Java.Lang.Object;
 
