@@ -13,11 +13,9 @@ using Alloy.Compat;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
-
 using Alloy.Services;
 using Android.Database;
 using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Provider;
 using Android.Views.InputMethods;
@@ -29,10 +27,10 @@ using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace Alloy.Fragments
 {
-	public abstract class FragmentBase : Fragment, Android.Hardware.ISensorEventListener, SwipeRefreshLayout.IOnRefreshListener
+	public abstract class FragmentBase : Fragment, ISensorEventListener, SwipeRefreshLayout.IOnRefreshListener
 	{
 		public BackgroundAudioServiceConnection ServiceConnection;
-		private Android.Support.V7.Widget.SearchView searchView;
+		private SearchView searchView;
 		public bool HasBack { get; set; }
 
 		public override void OnResume()
@@ -112,7 +110,7 @@ namespace Alloy.Fragments
 			SlideDrawable mSlideDrawable = new SlideDrawable(Application.Context.GetDrawable(Resource.Drawable.ic_drawer));
 			mSlideDrawable.setIsRtl(false);
 			ActionBarHelper mActionBarHelper = new ActionBarHelper((AppCompatActivity)Activity);
-			Drawable mThemeUpIndicator = mActionBarHelper.getThemeUpIndicator();
+		
 			if (HasBack)
 				mActionBarHelper.setDisplayShowHomeAsUpEnabled(true);
 			else
@@ -142,12 +140,12 @@ namespace Alloy.Fragments
 			}
 		}
 
-		private void MusicProvider_SearchStart(object sender, System.EventArgs e)
+		private void MusicProvider_SearchStart(object sender, EventArgs e)
 		{
 
 		}
 
-		public void getCursorFromList(List<Tuple<string, string, string, string, string>> items, ref MatrixCursor cursor)
+		public void getCursorFromList(List<Tuple<string, string, string, string, string>> items, MatrixCursor cursor)
 		{
 			foreach (Tuple<string, string, string, string, string> item in items)
 			{
@@ -198,7 +196,7 @@ namespace Alloy.Fragments
 			//	items.Add(new Tuple<string, string, string, string, string>( id++.ToString(), "track", e.Tracks[i].Title, null, JsonConvert.SerializeObject(e.Tracks[i])));
 			//}
 
-			getCursorFromList(items, ref matrix);
+			getCursorFromList(items, matrix);
 
 
 			//cursor.NewRow().Add()
@@ -263,24 +261,19 @@ namespace Alloy.Fragments
 			base.OnCreateOptionsMenu(menu, inflater);
 			inflater.Inflate(Resource.Menu.general_toolbar, menu);
 			IMenuItem search = menu.FindItem(Resource.Id.action_search);
-			searchView = (Android.Support.V7.Widget.SearchView)search.ActionView;
+			searchView = (SearchView)search.ActionView;
 			searchView.QueryTextChange += SearchView_QueryTextChange;
 			searchView.QueryTextSubmit += SearchView_QueryTextSubmit;
 
 	
 			searchView.SuggestionClick += SearchView_SuggestionClick;
-			searchView.SuggestionSelect += SearchView_SuggestionSelect;
 			//SearchManager searchManager = Context.GetSystemService(Context.SearchService).JavaCast<SearchManager>();
 			//searchView.SetSearchableInfo(searchManager.GetSearchableInfo(ComponentName()));
 
 		}
 
-		private void SearchView_SuggestionSelect(object sender, Android.Support.V7.Widget.SearchView.SuggestionSelectEventArgs e)
-		{
-			SearchView.SuggestionSelectEventArgs res = e;
-		}
-
-		private void SearchView_SuggestionClick(object sender, Android.Support.V7.Widget.SearchView.SuggestionClickEventArgs e)
+	
+		private void SearchView_SuggestionClick(object sender, SearchView.SuggestionClickEventArgs e)
 		{
 			ICursor item = searchView.SuggestionsAdapter.GetItem(e.Position).JavaCast<ICursor>();
 			string type = item.GetString(0);
@@ -325,12 +318,12 @@ namespace Alloy.Fragments
 			e.Handled = true;
 		}
 
-		private void SearchView_QueryTextSubmit(object sender, Android.Support.V7.Widget.SearchView.QueryTextSubmitEventArgs e)
+		private void SearchView_QueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
 		{
 			string q = e.Query;
 		}
 
-		private void SearchView_QueryTextChange(object sender, Android.Support.V7.Widget.SearchView.QueryTextChangeEventArgs e)
+		private void SearchView_QueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e)
 		{
 			if (string.IsNullOrEmpty(e.NewText)) return;
 			e.Handled = true;

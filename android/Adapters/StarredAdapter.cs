@@ -184,7 +184,6 @@ namespace Alloy.Adapters
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
 				StarredAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_albums_list);
 				StarredAlbumRecycleView.SetLayoutManager(layoutManager);
-				//RegisterForContextMenu(albumRecycleView);
 			}
 		}
 
@@ -507,5 +506,4 @@ namespace Alloy.Adapters
 			}
 		}
 	}
-
 }
