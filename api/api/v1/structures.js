@@ -1,8 +1,8 @@
-'use strict';
+"use strict";
 const fs = require("fs");
-const mime = require('mime-types');
-const ffmpeg = require('ffprobe-static');
-const execSync = require('child_process').execSync;
+const mime = require("mime-types");
+const ffmpeg = require("ffprobe-static");
+const execSync = require("child_process").execSync;
 
 /**
  * @typedef MediaPath
@@ -181,28 +181,28 @@ module.exports.Artist = class Artist {
  */
 module.exports.Song = class Song {
   constructor() {
-    this.id = '';
-    this.path = '';
-    this.title = '';
-    this.artist = '';
-    this.artist_id = '';
-    this.album = '';
-    this.album_id = '';
-    this.album_path = '';
-    this.genre = '';
-    this.cover_art = '';
-    this.starred = 'false';
-    this.rating = '';
-    this.bpm = '';
+    this.id = "";
+    this.path = "";
+    this.title = "";
+    this.artist = "";
+    this.artist_id = "";
+    this.album = "";
+    this.album_id = "";
+    this.album_path = "";
+    this.genre = "";
+    this.cover_art = "";
+    this.starred = "false";
+    this.rating = "";
+    this.bpm = "";
     this.year = 0;
     this.play_count = 0;
     this.size = 0;
-    this.content_type = '';
+    this.content_type = "";
     this.created = 0;
     this.last_modified = 0;
     this.duration = 0;
-    this.bitRate = '';
-    this.suffix = '';
+    this.bitRate = "";
+    this.suffix = "";
     this.no = 0;
     this.of = 0;
   }
@@ -214,10 +214,10 @@ module.exports.Song = class Song {
       this.size = stats.size;
       this.created = stats.ctime.getTime();
       this.last_modified = stats.mtime.getTime();
-      var params = ' -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  "' + this.path + '"';
+      var params = " -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  \"" + this.path + "\"";
       try {
         var duration_out = execSync(ffmpeg.path + params);
-        this.duration = parseInt(duration_out.toString());
+        this.duration = parseInt(duration_out.toString(), 10);
       } catch (ex) {
         duration_out = ex.stdout;
       }

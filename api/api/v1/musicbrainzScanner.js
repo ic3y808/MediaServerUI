@@ -14,8 +14,7 @@ var scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFile
 
 var urlBase = process.env.BRAINZ_API_URL;
 
-var q = new Queue(processQueue)
-q.on('drain', cleanup);
+
 
 function MusicbrainzScanner(database) {
   db = database;
@@ -241,5 +240,8 @@ MusicbrainzScanner.prototype.startScan = function startScan() {
 MusicbrainzScanner.prototype.getStatus = function getStatus() {
   return scanStatus;
 };
+
+var q = new Queue(processQueue)
+q.on('drain', cleanup);
 
 module.exports = MusicbrainzScanner;
