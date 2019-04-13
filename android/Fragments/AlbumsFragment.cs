@@ -16,7 +16,6 @@ namespace Alloy.Fragments
 	public class AlbumsFragment : FragmentBase
 	{
 		private View root_view;
-		private FastScrollRecyclerView albumsList;
 		private LinearLayoutManager mainLayoutManager;
 		private AlbumsAdapter adapter;
 		private SwipeRefreshLayout refreshLayout;
@@ -25,7 +24,7 @@ namespace Alloy.Fragments
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
 			root_view = inflater.Inflate(Resource.Layout.albums_layout, container, false);
-			albumsList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.albums_list);
+			FastScrollRecyclerView albumsList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.albums_list);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);

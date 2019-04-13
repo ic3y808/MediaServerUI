@@ -223,7 +223,7 @@ namespace Alloy.Adapters
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
 				RootLayout = itemView.FindViewById<LinearLayout>(Resource.Id.root_view);
-				RootLayout.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				RootLayout.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Songs = Songs });
 				Title = itemView.FindViewById<TextView>(Resource.Id.title);
 				Artist = itemView.FindViewById<TextView>(Resource.Id.artist);
 				TrackNo = itemView.FindViewById<TextView>(Resource.Id.trackno);

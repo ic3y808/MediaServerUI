@@ -22,17 +22,17 @@ namespace Alloy
 	{
 		private Handler h;
 		private Action startAction;
-		static public string PREFS_NAME = "PREFS_NAME";
-		static private string PREF_KEY_SHORTCUT_ADDED = "PREF_KEY_SHORTCUT_ADDED";
+		public const string PREFS_NAME = "PREFS_NAME";
+		public const string PREF_KEY_SHORTCUT_ADDED = "PREF_KEY_SHORTCUT_ADDED";
 
 		protected override void OnResume()
 		{
 			base.OnResume();
 			CheckPermissions();
 			//debug
-			//ResetShortcut();
-			//CheckShortcut();
-			//CheckDynamicShortcuts();
+			ResetShortcut();
+			CheckShortcut();
+			CheckDynamicShortcuts();
 
 			ShortcutHelper mHelper = new ShortcutHelper(this);
 
@@ -134,7 +134,7 @@ namespace Alloy
 				.SetIntent(i)
 				.Build();
 
-			shortcutManager?.UpdateShortcuts(new List<ShortcutInfo>() { dynamicShortcut, dynamicShortcut2 });
+			shortcutManager?.UpdateShortcuts(new List<ShortcutInfo> { dynamicShortcut, dynamicShortcut2 });
 
 
 		}

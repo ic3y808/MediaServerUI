@@ -239,7 +239,7 @@ namespace Alloy
 					fadeIn.Duration = 3000;
 
 					if (serviceConnection == null || !serviceConnection.IsConnected) return;
-					Bitmap newArt = song == null ? serviceConnection.CurrentSong.GetAlbumArt().Blur() : song.GetAlbumArt().Blur();
+					Bitmap newArt = song == null ? serviceConnection.CurrentSong.GetAlbumArt().Blur(25) : song.GetAlbumArt().Blur(25);
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{

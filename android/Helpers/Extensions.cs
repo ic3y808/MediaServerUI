@@ -88,7 +88,7 @@ namespace Alloy.Helpers
 			list[newIndex] = tmp;
 		}
 
-		public static Bitmap Blur(this Bitmap image, int radius = 25)
+		public static Bitmap Blur(this Bitmap image, int radius)
 		{
 			if (image == null) return null;
 			Bitmap inputBitmap = image.Copy(image.GetConfig(), true);
@@ -282,22 +282,12 @@ namespace Alloy.Helpers
 				foreach (KeyValuePair<string, string> item in this)
 				{
 					string key = item.Key;
-
-
 					string value = item.Value;
-
-
-					// If .NET 4.5 and above (Thanks @Paya)
 					key = WebUtility.UrlDecode(key);
-					// If .NET 4.0 use this instead.
-					// key = Uri.EscapeDataString(key);
-
-
 					if (stringBuilder.Length > 0)
 					{
 						stringBuilder.Append('&');
 					}
-
 					stringBuilder.Append((key != null) ? (key + "=") : string.Empty);
 					if (string.IsNullOrEmpty(value)) continue;
 					value = WebUtility.UrlEncode(value);

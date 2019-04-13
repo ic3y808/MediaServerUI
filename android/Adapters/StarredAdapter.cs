@@ -310,7 +310,7 @@ namespace Alloy.Adapters
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				Name = itemView.FindViewById<TextView>(Resource.Id.name);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Artist = Artist });
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Artist = Artist });
 			}
 
 			public class ViewHolderEvent
@@ -386,7 +386,7 @@ namespace Alloy.Adapters
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				Name = itemView.FindViewById<TextView>(Resource.Id.name);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Album = Album });
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Album = Album });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 			}
 
@@ -479,7 +479,7 @@ namespace Alloy.Adapters
 				Title = itemView.FindViewById<TextView>(Resource.Id.title);
 				Album = itemView.FindViewById<TextView>(Resource.Id.album);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Songs = Songs });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
 			}
 
@@ -487,7 +487,7 @@ namespace Alloy.Adapters
 			{
 				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
 
-				bool selected = Songs[position].IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
+				bool selected = Songs[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
 
 				if (selected)
 				{

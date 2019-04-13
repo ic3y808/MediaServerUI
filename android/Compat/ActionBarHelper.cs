@@ -37,7 +37,7 @@ namespace Alloy.Compat
 		{
 			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				return ActionBarHelperCompat.getIndicatorInfo(Activity);
+				return ActionBarHelperCompat.GetIndicatorInfo(Activity);
 			}
 
 			return Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb ? ActionBarHelperNative.getIndicatorInfo(Activity) : null;
@@ -47,7 +47,7 @@ namespace Alloy.Compat
 		{
 			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				ActionBarHelperCompat.setActionBarUpIndicator(IndicatorInfo, Activity, drawable, contentDesc);
+				ActionBarHelperCompat.SetActionBarUpIndicator(IndicatorInfo, Activity, drawable, contentDesc);
 			}
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
 			{
@@ -59,7 +59,7 @@ namespace Alloy.Compat
 		{
 			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				ActionBarHelperCompat.setActionBarDescription(IndicatorInfo, Activity, contentDesc);
+				ActionBarHelperCompat.SetActionBarDescription(IndicatorInfo, Activity, contentDesc);
 			}
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
 			{
@@ -71,7 +71,7 @@ namespace Alloy.Compat
 		{
 			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				return ActionBarHelperCompat.getThemeUpIndicator(IndicatorInfo);
+				return ActionBarHelperCompat.GetThemeUpIndicator(IndicatorInfo);
 			}
 
 			return Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb ? ActionBarHelperNative.getThemeUpIndicator(IndicatorInfo, Activity) : null;
@@ -81,7 +81,7 @@ namespace Alloy.Compat
 		{
 			if (UsesCompat && Build.VERSION.SdkInt < BuildVersionCodes.IceCreamSandwich)
 			{
-				ActionBarHelperCompat.setDisplayHomeAsUpEnabled(IndicatorInfo, enabled);
+				ActionBarHelperCompat.SetDisplayHomeAsUpEnabled(IndicatorInfo, enabled);
 			}
 			else if (Build.VERSION.SdkInt >= BuildVersionCodes.Honeycomb)
 			{
