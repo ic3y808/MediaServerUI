@@ -1,6 +1,6 @@
-var CronJob = require('cron').CronJob;
-var moment = require('moment');
-var logger = require('../common/logger')
+var CronJob = require("cron").CronJob;
+var moment = require("moment");
+var logger = require("../common/logger")
 function Scheduler() {
   this.jobs = [];
 }
@@ -19,7 +19,7 @@ Scheduler.prototype.getSchedule = function getSchedule() {
       var nextDate = job.nextDates().local().format("hh:mm:ss a MM/DD/YY");
       results.push({ name: job.name, running: job.running, source: job.cronTime.source, timezone: job.cronTime.zone, lastExecution: lastDate, nextExecution: nextDate })
     } catch (err) {
-      logger.error('alloyui', JSON.stringify(err));
+      logger.error("alloyui", JSON.stringify(err));
     }
   });
   return results;

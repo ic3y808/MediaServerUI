@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const shell = require("shelljs");
-const logger = require('../common/logger');
+const logger = require("../common/logger");
 
 class Backup {
   constructor(database) {

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,15 +15,15 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('Shares', {
+  return db.createTable("Shares", {
     columns:{
-      id: { type: 'string', unique: true },
-      url: { type: 'string', defaultValue: '' },
-      description: { type: 'string', defaultValue: '' },
-      created: { type: 'string', defaultValue: '' },
-      lastVisited: { type: 'string', defaultValue: '' },
-      expires: { type: 'string', defaultValue: '' },
-      visitCount: { type: 'int', defaultValue: 0 },
+      id: { type: "string", unique: true },
+      url: { type: "string", defaultValue: "" },
+      description: { type: "string", defaultValue: "" },
+      created: { type: "string", defaultValue: "" },
+      lastVisited: { type: "string", defaultValue: "" },
+      expires: { type: "string", defaultValue: "" },
+      visitCount: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true
   });

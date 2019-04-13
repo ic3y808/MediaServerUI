@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,10 +15,10 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('Settings', {
+  return db.createTable("Settings", {
     columns:{
-      settings_key: { type: 'string', unique: true },
-      settings_value: { type: 'string' }
+      settings_key: { type: "string", unique: true },
+      settings_value: { type: "string" }
     },
     ifNotExists: true
   });

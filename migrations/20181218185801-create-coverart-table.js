@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,10 +15,10 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('CoverArt', {
+  return db.createTable("CoverArt", {
     columns:{
-      id: { type: 'string', unique: true },
-      album: { type: 'string', defaultValue: '' }
+      id: { type: "string", unique: true },
+      album: { type: "string", defaultValue: "" }
     },
     ifNotExists: true
   });
