@@ -10,18 +10,6 @@ namespace Alloy.Adapters
 {
 	public class SearchAdapter : CursorAdapter
 	{
-		Context context;
-		ICursor cursor;
-		private Android.Support.V4.Widget.SimpleCursorAdapter.IViewBinder mViewBinder;
-
-		public SearchAdapter(Context context, ICursor c) : base(context, c, 0)
-		{
-			this.context = context;
-			this.cursor = c;
-		}
-
-	
-
 		public override void BindView(View v, Context context, ICursor cursor)
 		{
 			string configured = v.FindViewById<TextView>(Resource.Id.view_configured).Text;
@@ -54,17 +42,17 @@ namespace Alloy.Adapters
 						v.FindViewById<TextView>(Resource.Id.track_artist).Text = cursor.GetString(2);
 						break;
 				}
-
 				v.FindViewById<TextView>(Resource.Id.view_configured).Text = "configured";
 			}
-			
 		}
 
 		public override View NewView(Context context, ICursor cursor, ViewGroup parent)
 		{
 			return LayoutInflater.From(context).Inflate(Resource.Layout.search_row, parent, false);
 		}
-	}
 
-	
+		public SearchAdapter(Context context, ICursor c) : base(context, c)
+		{
+		}
+	}
 }

@@ -5,9 +5,9 @@ var _ = require("underscore");
 var express = require("express");
 var router = express.Router();
 var structures = require("./structures");
-const drivelist = require('drivelist');
-var utils = require('./utils');
-var logger = require('../../../common/logger');
+const drivelist = require("drivelist");
+var utils = require("./utils");
+var logger = require("../../../common/logger");
 
 /**
  * This function comment is parsed by doctrine
@@ -69,7 +69,7 @@ router.put("/mediapaths", function (req, res) {
  * @security ApiKeyAuth
  */
 router.delete("/mediapaths", function (req, res) {
-  var displayName = req.query.display_name ? req.query.display_name : '';
+  var displayName = req.query.display_name ? req.query.display_name : "";
   var path = req.query.path;
 
   try {
@@ -163,7 +163,7 @@ router.get("/file_list", function (req, res) {
 router.get("/file_parent", function (req, res) {
   var query = req.query.path || "";
   var newPath = path.dirname(query)
-  if (query === newPath) res.json({ path: '' });
+  if (query === newPath) res.json({ path: "" });
   else res.json({ path: newPath });
 });
 

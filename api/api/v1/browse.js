@@ -1,12 +1,12 @@
-'use strict';
-var express = require('express');
+"use strict";
+var express = require("express");
 var router = express.Router();
-var structures = require('./structures');
-var path = require('path');
-var utils = require('./utils');
-var logger = require('../../../common/logger');
-var _ = require('lodash');
-var moment = require('moment');
+var structures = require("./structures");
+var path = require("path");
+var utils = require("./utils");
+var logger = require("../../../common/logger");
+var _ = require("lodash");
+var moment = require("moment");
 
 /**
  * This function comment is parsed by doctrine
@@ -18,8 +18,8 @@ var moment = require('moment');
  * @returns {MusicFolder} 200 - Returns all configured top level music folders. Takes no extra parameters
  * @security ApiKeyAuth
  */
-router.get('/artists_index', function (req, res) {
-  var artists = res.locals.db.prepare('SELECT DISTINCT * FROM Artists ORDER BY name COLLATE NOCASE ASC').all();
+router.get("/artists_index", function (req, res) {
+  var artists = res.locals.db.prepare("SELECT DISTINCT * FROM Artists ORDER BY name COLLATE NOCASE ASC").all();
   var finalResult = utils.createIndex(artists);
   var result = {
     index: finalResult
@@ -39,7 +39,7 @@ router.get('/artists_index', function (req, res) {
  * @returns {Array.<Artist>} 200 - Returns an array of Artist objects
  * @security ApiKeyAuth
  */
-router.get('/artists', function (req, res) {
+router.get("/artists", function (req, res) {
   var limit = req.query.limit;
   var offset = req.query.offset;
   var result = { artists: [] }
@@ -48,13 +48,13 @@ router.get('/artists', function (req, res) {
 
 
   if (limit && !offset) {
-    result.artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC LIMIT ?').all(limit);
+    result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC LIMIT ?").all(limit);
     result.next_offset = limit;
   } else if (limit && offset) {
     result.next_offset = parseInt(offset) + parseInt(limit);
-    result.artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC LIMIT ? OFFSET ?').all(limit, offset);
+    result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC LIMIT ? OFFSET ?").all(limit, offset);
   } else {
-    result.artists = res.locals.db.prepare('SELECT * FROM Artists ORDER BY name ASC').all();
+    result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC").all();
     result.next_offset = 0;
   }
   
@@ -72,14 +72,14 @@ router.get('/artists', function (req, res) {
  * @returns {Artist} 200 - Returns an artist
  * @security ApiKeyAuth
  */
-router.get('/artist', function (req, res) {
+router.get("/artist", function (req, res) {
   var id = req.query.id;
-  var all_albums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(id);
+  var all_albums = res.locals.db.prepare("SELECT * FROM Albums WHERE artist_id=?").all(id);
   var result = {
-    artist: res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(id),
-    tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC').all(id),
-    popular_tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=? ORDER BY play_count DESC LIMIT 5').all(id),
-    links: res.locals.db.prepare('SELECT * FROM Links WHERE artist_id=?').all(id),
+    artist: res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(id),
+    tracks: res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC").all(id),
+    popular_tracks: res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=? ORDER BY play_count DESC LIMIT 5").all(id),
+    links: res.locals.db.prepare("SELECT * FROM Links WHERE artist_id=?").all(id),
     albums: [],
     EPs: [],
     singles: [],
@@ -87,7 +87,7 @@ router.get('/artist', function (req, res) {
   };
 
   all_albums.forEach(album => {
-    album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(album.id)
+    album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC").all(album.id)
     album.play_count = 0;
     album.tracks.forEach(track => {
       album.play_count += track.play_count;
@@ -106,8 +106,8 @@ router.get('/artist', function (req, res) {
     }
   });
 
-  //result.prev = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order - 1);
-  //result.next = res.locals.db.prepare('SELECT id, name FROM Artists WHERE sort_order=?').get(result.artist.sort_order + 1);
+  //result.prev = res.locals.db.prepare("SELECT id, name FROM Artists WHERE sort_order=?").get(result.artist.sort_order - 1);
+  //result.next = res.locals.db.prepare("SELECT id, name FROM Artists WHERE sort_order=?").get(result.artist.sort_order + 1);
 
   var totalSize = 0;
   result.tracks.forEach(track => {
@@ -132,7 +132,7 @@ router.get('/artist', function (req, res) {
  * @returns {Array.<Album>} 200 - Returns an array of albums.
  * @security ApiKeyAuth
  */
-router.get('/albums', function (req, res) {
+router.get("/albums", function (req, res) {
   var size = req.query.size;
   var offset = req.query.offset;
   var genre = req.query.genre;
@@ -141,9 +141,9 @@ router.get('/albums', function (req, res) {
     size = req.query.size;
   var result = {};
   if (genre) {
-    result.albums = res.locals.db.prepare('SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC').all(genre);
+    result.albums = res.locals.db.prepare("SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC").all(genre);
   } else {
-    result.albums = res.locals.db.prepare('SELECT * FROM Albums ORDER BY name ASC, artist ASC').all();
+    result.albums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY name ASC, artist ASC").all();
   }
   res.json(result)
 });
@@ -158,14 +158,14 @@ router.get('/albums', function (req, res) {
  * @returns {Album} 200 - Returns an album
  * @security ApiKeyAuth
  */
-router.get('/album', function (req, res) {
+router.get("/album", function (req, res) {
   var id = req.query.id;
   var result = {
-    album: res.locals.db.prepare('SELECT * FROM Albums WHERE id=?').get(id),
-    tracks: res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC').all(id),
+    album: res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id),
+    tracks: res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC").all(id),
   }
   if (result.album && result.album.artist_id) {
-    result.artist = res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(result.album.artist_id);
+    result.artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(result.album.artist_id);
   }
 
   var totalSize = 0;
@@ -186,9 +186,9 @@ router.get('/album', function (req, res) {
  * @returns {Array.<Genre>}  Returns an array of Genre objects
  * @security ApiKeyAuth
  */
-router.get('/genres', function (req, res) {
+router.get("/genres", function (req, res) {
   var result = {};
-  result.genres = res.locals.db.prepare('SELECT * FROM Genres ORDER BY artist_count DESC, album_count DESC, track_count DESC').all();
+  result.genres = res.locals.db.prepare("SELECT * FROM Genres ORDER BY artist_count DESC, album_count DESC, track_count DESC").all();
   res.json(result);
 });
 
@@ -202,11 +202,11 @@ router.get('/genres', function (req, res) {
  * @returns {Genre} 200 - Returns a genre
  * @security ApiKeyAuth
  */
-router.get('/genre', function (req, res) {
+router.get("/genre", function (req, res) {
   var id = req.query.id;
   var result = {};
-  result.genre = res.locals.db.prepare('SELECT * FROM Genres WHERE id=?').get(id)
-  result.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE genre_id=? ORDER BY artist ASC, album ASC, no ASC, of ASC').all(id)
+  result.genre = res.locals.db.prepare("SELECT * FROM Genres WHERE id=?").get(id)
+  result.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? ORDER BY artist ASC, album ASC, no ASC, of ASC").all(id)
   result.total_plays = 0;
   var totalSize = 0;
   result.tracks.forEach(track => {
@@ -228,17 +228,17 @@ router.get('/genre', function (req, res) {
  * @param {int} limit.query Max number of songs to return.
  * @security ApiKeyAuth
  */
-router.get('/charts', function (req, res) {
+router.get("/charts", function (req, res) {
   var limit = req.query.limit ? req.query.limit : 40;
   var result = {
     charts: {}
   };
 
-  var history = res.locals.db.prepare('SELECT * FROM History ORDER BY time ASC').all();
+  var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time ASC").all();
   var tags = [];
   history.forEach(item => {
     var plays = 0;
-    var t = res.locals.db.prepare('SELECT play_count FROM Tracks WHERE id=?').get(item.id);
+    var t = res.locals.db.prepare("SELECT play_count FROM Tracks WHERE id=?").get(item.id);
     if (t) plays = t.play_count;
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
@@ -256,7 +256,7 @@ router.get('/charts', function (req, res) {
       return 0;
     }
 
-    var tempTags = _.uniq(tag.tags.sort(compare), 'genre').slice(0, 10);
+    var tempTags = _.uniq(tag.tags.sort(compare), "genre").slice(0, 10);
     tag.tags = [];
     tempTags.forEach(newTag => {
       tag.tags.push(newTag.genre);
@@ -269,7 +269,7 @@ router.get('/charts', function (req, res) {
   result.charts.never_played_albums = [];
   allAlbums.forEach(album => {
     if (result.charts.never_played_albums.length >= limit) return;
-    var allTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+    var allTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     if (allTracks.length > 0) {
       var anyPlays = allTracks.every(obj => {
         obj.play_count === 0;
@@ -297,7 +297,7 @@ router.get('/charts', function (req, res) {
  * @returns {Object} 200 - Returns the newest additions to the library
  * @security ApiKeyAuth
  */
-router.get('/fresh', function (req, res) {
+router.get("/fresh", function (req, res) {
   var limit = req.query.limit === undefined ? 10 : req.query.limit;
   var result = {
     fresh: {
@@ -306,7 +306,7 @@ router.get('/fresh', function (req, res) {
       tracks: []
     }
   };
-  //var tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE CAST((last_modified/1000) AS LONG) >= strftime('%s', 'now', '-" + days_back + " day');").all()
+  //var tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE CAST((last_modified/1000) AS LONG) >= strftime("%s", "now", "-" + days_back + " day");").all()
   var albumIds = res.locals.db.prepare("SELECT DISTINCT album_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit)
   var artistsIds = res.locals.db.prepare("SELECT DISTINCT artist_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit)
   result.fresh.tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit * 4)
@@ -339,7 +339,7 @@ router.get('/fresh', function (req, res) {
  * @returns {Array.<Song>} 200 - Returns an array of random songs.
  * @security ApiKeyAuth
  */
-router.get('/random_songs', function (req, res) {
+router.get("/random_songs", function (req, res) {
 
   var fromYear = 0;
   var toYear = 999999;
@@ -355,9 +355,9 @@ router.get('/random_songs', function (req, res) {
     size = 100;
   var random = {};
   if (genre) {
-    random.random = res.locals.db.prepare('SELECT * FROM Tracks WHERE year >= ? AND year <= ? AND genre=? COLLATE NOCASE ORDER BY RANDOM() LIMIT ?').all(fromYear, toYear, genre, size);
+    random.random = res.locals.db.prepare("SELECT * FROM Tracks WHERE year >= ? AND year <= ? AND genre=? COLLATE NOCASE ORDER BY RANDOM() LIMIT ?").all(fromYear, toYear, genre, size);
   } else {
-    random.random = res.locals.db.prepare('SELECT * FROM Tracks WHERE year >= ? AND year <= ? ORDER BY RANDOM() LIMIT ?').all(fromYear, toYear, size);
+    random.random = res.locals.db.prepare("SELECT * FROM Tracks WHERE year >= ? AND year <= ? ORDER BY RANDOM() LIMIT ?").all(fromYear, toYear, size);
   }
   res.json(random)
 });
@@ -371,13 +371,13 @@ router.get('/random_songs', function (req, res) {
  * @returns {StarredMedia} 200 - Returns a collection of starred media.
  * @security ApiKeyAuth
  */
-router.get('/starred', function (req, res) {
-  var starredTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE starred=?').all('true')
-  var topTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE starred=? ORDER BY play_count DESC LIMIT 25').all('true')
-  var starredAlbums = res.locals.db.prepare('SELECT * FROM Albums WHERE starred=?').all('true');
+router.get("/starred", function (req, res) {
+  var starredTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE starred=?").all("true")
+  var topTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE starred=? ORDER BY play_count DESC LIMIT 25").all("true")
+  var starredAlbums = res.locals.db.prepare("SELECT * FROM Albums WHERE starred=?").all("true");
 
   starredAlbums.forEach(album => {
-    album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+    album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     album.play_count = 0;
     album.tracks.forEach(track => {
       album.play_count += track.play_count;
@@ -386,13 +386,13 @@ router.get('/starred', function (req, res) {
   });
   var topStarredAlbums = _.sortBy(starredAlbums, function (o) { return o.play_count; }).reverse();
 
-  var starredArtists = res.locals.db.prepare('SELECT * FROM Artists WHERE starred=? ORDER BY name ASC').all('true');
+  var starredArtists = res.locals.db.prepare("SELECT * FROM Artists WHERE starred=? ORDER BY name ASC").all("true");
   starredArtists.forEach(artist => {
-    starredArtists.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE artist_id=?').all(artist.id);
-    starredArtists.albums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=? ORDER BY name ASC').all(artist.id);
+    starredArtists.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
+    starredArtists.albums = res.locals.db.prepare("SELECT * FROM Albums WHERE artist_id=? ORDER BY name ASC").all(artist.id);
     artist.play_count = 0;
     starredArtists.albums.forEach(album => {
-      album.tracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+      album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
       album.play_count = 0;
       album.tracks.forEach(track => {
         album.play_count += track.play_count;
@@ -416,8 +416,8 @@ router.get('/starred', function (req, res) {
  * @returns {Object} 200 - Returns play and action history.
  * @security ApiKeyAuth
  */
-router.get('/history', function (req, res) {
-  var history = res.locals.db.prepare('SELECT * FROM History ORDER BY time DESC').all();
+router.get("/history", function (req, res) {
+  var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time DESC").all();
   res.json({ history: history });
 });
 
@@ -441,7 +441,7 @@ router.get('/history', function (req, res) {
  * @returns {Object} 200 - Returns play and action history.
  * @security ApiKeyAuth
  */
-router.put('/history', function (req, res) {
+router.put("/history", function (req, res) {
   try {
     var time = moment().unix();
     var d = {

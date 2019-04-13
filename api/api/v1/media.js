@@ -1,11 +1,11 @@
-'use strict';
-var express = require('express');
+"use strict";
+var express = require("express");
 var router = express.Router();
-var path = require('path')
-var fs = require('fs');
-const sharp = require('sharp');
-var structures = require('./structures');
-var logger = require('../../../common/logger');
+var path = require("path")
+var fs = require("fs");
+const sharp = require("sharp");
+var structures = require("./structures");
+var logger = require("../../../common/logger");
 
 /**
  * This function comment is parsed by doctrine
@@ -21,12 +21,12 @@ var logger = require('../../../common/logger');
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/stream', function (req, res) {
+router.get("/stream", function (req, res) {
   var id = req.query.id;
   var maxBitRate = req.query.maxBitRate;
   var format = req.query.format;
   var estimateContentLength = req.query.estimateContentLength;
-  var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(id);
+  var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(id);
   if (track) {
 
 
@@ -39,7 +39,7 @@ router.get('/stream', function (req, res) {
       fs.exists(track.path, (exists) => {
         if (exists) {
           const range = req.headers.range;
-          const parts = range.replace(/bytes=/, '').split('-');
+          const parts = range.replace(/bytes=/, "").split("-");
           const partialStart = parts[0];
           const partialEnd = parts[1];
 
@@ -52,22 +52,22 @@ router.get('/stream', function (req, res) {
           });
 
           res.writeHead(206, {
-            'Content-Range': 'bytes ' + start + '-' + end + '/' + total,
-            'Accept-Ranges': 'bytes',
-            'Content-Length': chunksize,
-            'Content-Type': track.content_type
+            "Content-Range": "bytes " + start + "-" + end + "/" + total,
+            "Accept-Ranges": "bytes",
+            "Content-Length": chunksize,
+            "Content-Type": track.content_type
           });
           rstream.pipe(res);
 
         } else {
-          res.send('Error - 404');
+          res.send("Error - 404");
           res.end();
         }
       });
     } else {
       res.writeHead(200, {
-        'Content-Length': total,
-        'Content-Type': track.content_type
+        "Content-Length": total,
+        "Content-Type": track.content_type
       });
       var rstream = fs.createReadStream(track.path);
       rstream.pipe(res);
@@ -86,13 +86,13 @@ router.get('/stream', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/download', function (req, res) {
+router.get("/download", function (req, res) {
   var id = req.query.id;
 
-  var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(id);
+  var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(id);
   if (track.length !== 0) {
-    res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(track.path));
-    res.setHeader('Content-Type', 'application/' + track.content_type)
+    res.setHeader("Content-disposition", "attachment; filename=" + path.basename(track.path));
+    res.setHeader("Content-Type", "application/" + track.content_type)
     var rstream = fs.createReadStream(track.path);
     rstream.pipe(res);
   }
@@ -112,13 +112,13 @@ router.get('/download', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/cover_art', function (req, res) {
+router.get("/cover_art", function (req, res) {
   var artist_id = req.query.artist_id;
   var track_id = req.query.track_id;
   var album_id = req.query.album_id;
   var width = req.query.width;
   var height = req.query.height;
-  var coverFile = '';
+  var coverFile = "";
 
   var shuffle = a => {
     for (var i = a.length - 1; i > 0; i--) {
@@ -129,20 +129,20 @@ router.get('/cover_art', function (req, res) {
   }
 
   if (artist_id) {
-    var artist = res.locals.db.prepare('SELECT * FROM Artists WHERE id=?').get(artist_id);
+    var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(artist_id);
     if (artist && artist.path) {
       //if (fs.existsSync(path.join(artist.path, process.env.LOGO_IMAGE))) {
       //  coverFile = path.join(artist.path, process.env.LOGO_IMAGE);
       //}
       if (!coverFile) {
-        var artistAlbums = res.locals.db.prepare('SELECT * FROM Albums WHERE artist_id=?').all(artist_id);
+        var artistAlbums = res.locals.db.prepare("SELECT * FROM Albums WHERE artist_id=?").all(artist_id);
         artistAlbums = shuffle(artistAlbums)
         artistAlbums.forEach(album => {
           if (!coverFile) {
             if (fs.existsSync(path.join(album.path, process.env.COVERART_IMAGE))) {
               coverFile = path.join(album.path, process.env.COVERART_IMAGE);
             } else {
-              var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album.id);
+              var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
               albumTracks = shuffle(albumTracks)
               albumTracks.forEach(albumTrack => {
                 if (!coverFile) {
@@ -157,13 +157,13 @@ router.get('/cover_art', function (req, res) {
       }
     }
   } else if (track_id) {
-    var track = res.locals.db.prepare('SELECT * FROM Tracks WHERE id=?').get(track_id);
+    var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(track_id);
     if (track) {
       if (fs.existsSync(path.join(process.env.COVER_ART_DIR, track.id + ".jpg"))) {
         coverFile = path.join(process.env.COVER_ART_DIR, track.id + ".jpg");
       }
       if (!coverFile) {
-        var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(track.album_id);
+        var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
         albumTracks = shuffle(albumTracks)
         albumTracks.forEach(albumTrack => {
           if (!coverFile) {
@@ -176,7 +176,7 @@ router.get('/cover_art', function (req, res) {
     }
 
   } else if (album_id) {
-    var albumTracks = res.locals.db.prepare('SELECT * FROM Tracks WHERE album_id=?').all(album_id);
+    var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
     albumTracks = shuffle(albumTracks)
     albumTracks.forEach(albumTrack => {
       if (!coverFile) {

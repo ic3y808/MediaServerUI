@@ -1,16 +1,16 @@
-'use strict';
-var express = require('express');
+"use strict";
+var express = require("express");
 var router = express.Router();
-var structures = require('./structures');
-var Lastfm = require('./simple-lastfm');
-var CryptoJS = require('crypto-js');
-var logger = require('../../../common/logger');
+var structures = require("./structures");
+var Lastfm = require("./simple-lastfm");
+var CryptoJS = require("crypto-js");
+var logger = require("../../../common/logger");
 
 var getLastFm = function (res, isPublic) {
   if (res.locals.lastfm) {
     return res.locals.lastfm;
   } else {
-    var lastfmSettings = res.locals.db.prepare('SELECT * from Settings WHERE settings_key=?').get('alloydb_settings');
+    var lastfmSettings = res.locals.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
     if (lastfmSettings && lastfmSettings.settings_value) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
@@ -20,7 +20,7 @@ var getLastFm = function (res, isPublic) {
             api_secret: process.env.LASTFM_API_SECRET,
             username: settings.alloydb_lastfm_username,
             password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
-            //authToken: 'xxx' // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
+            //authToken: "xxx" // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
           });
         } else {
           res.send(new structures.StatusResult("No username or password."));
@@ -56,12 +56,12 @@ var getLastfmSession = function (res, cb) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/track_info', function (req, res) {
+router.get("/track_info", function (req, res) {
   var id = req.query.id;
   if (!id) {
     res.send(new structures.StatusResult("ID is Required."));
   } else {
-    var track = res.locals.db.prepare('SELECT * from Tracks WHERE id=?').get(id);
+    var track = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id);
     if (track) {
       getLastfmSession(res, function (result) {
         if (result.success) {
@@ -93,7 +93,7 @@ router.get('/track_info', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/artist_info', function (req, res) {
+router.get("/artist_info", function (req, res) {
   var artist = req.query.artist;
   if (!artist) {
     res.send(new structures.StatusResult("Artist is Required."));
@@ -126,7 +126,7 @@ router.get('/artist_info', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/album_info', function (req, res) {
+router.get("/album_info", function (req, res) {
   var artist = req.query.artist;
   var album = req.query.album;
   if (!artist || !album) {
@@ -160,7 +160,7 @@ router.get('/album_info', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/genre_info', function (req, res) {
+router.get("/genre_info", function (req, res) {
   var genre = req.query.genre;
 
   if (!genre) {
@@ -193,12 +193,12 @@ router.get('/genre_info', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/love', function (req, res) {
+router.put("/love", function (req, res) {
   var id = req.query.id;
   if (!id) {
     res.send(new structures.StatusResult("ID is Required."));
   } else {
-    var track = res.locals.db.prepare('SELECT * from Tracks WHERE id=?').get(id);
+    var track = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id);
     if (track) {
       getLastfmSession(res, function (result) {
         if (result.success) {
@@ -231,12 +231,12 @@ router.put('/love', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.delete('/love', function (req, res) {
+router.delete("/love", function (req, res) {
   var id = req.query.id;
   if (!id) {
     res.send(new structures.StatusResult("ID is Required."));
   } else {
-    var track = res.locals.db.prepare('SELECT * from Tracks WHERE id=?').get(id);
+    var track = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id);
     if (track) {
       getLastfmSession(res, function (result) {
         if (result.success) {
@@ -271,7 +271,7 @@ router.delete('/love', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/scrobble', function (req, res) {
+router.put("/scrobble", function (req, res) {
   var id = req.query.id;
   var time = req.query.time;
   var submission = req.query.submission;
@@ -279,12 +279,12 @@ router.put('/scrobble', function (req, res) {
   if (!id) {
     res.send(new structures.StatusResult("ID is Required."));
   } else {
-    var track = res.locals.db.prepare('SELECT * from Tracks WHERE id=?').get(id);
+    var track = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id);
 
     if (track) {
       getLastfmSession(res, function (result) {
         if (result.success) {
-          if (submission === 'true') {
+          if (submission === "true") {
             getLastFm(res).scrobbleNowPlayingTrack({
               artist: track.artist,
               track: track.title,

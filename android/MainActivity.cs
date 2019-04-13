@@ -6,7 +6,6 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Support.Design.Widget;
 using Android.Support.V4.Media.Session;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
@@ -43,20 +42,17 @@ namespace Alloy
 		private DrawerLayout drawerLayout;
 		private CustomToggle drawerToggle;
 		private SlidingUpPanelLayout mainLayout;
-		private NavigationView navigationView;
 		private CurrentBackground currentBackground;
-		private ListView mainMenu;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
 		private TextView subtitleTextView;
 		private ImageView albumArtImageView;
 		private ImageButton playPauseImageButton;
-		private ImageButton nextImageButton;
 		private ImageButton starImageButton;
 		private Drawable starred, notStarred, play, pause;
-		
+
 		private MainPlaylistAdapter playlistAdapter;
-	
+
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -64,7 +60,7 @@ namespace Alloy
 			{
 				AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
 			}
-			
+
 			SetContentView(Resource.Layout.activity_main);
 
 			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
@@ -75,9 +71,9 @@ namespace Alloy
 			mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
 			mainLayout.setAnchorPoint(0.7f);
 			mainLayout.addPanelSlideListener(this);
-			
-			mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
-			
+
+			ListView mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
+
 			titleTextView = FindViewById<TextView>(Resource.Id.title);
 			titleTextView.Selected = true;
 
@@ -99,7 +95,7 @@ namespace Alloy
 				pause = GetDrawable(Resource.Drawable.pause);
 			}
 
-			nextImageButton = (ImageButton)FindViewById(Resource.Id.next_button);
+			ImageButton nextImageButton = (ImageButton)FindViewById(Resource.Id.next_button);
 			if (nextImageButton != null)
 			{
 				nextImageButton.Click += NextImageButton_Click;
@@ -126,39 +122,30 @@ namespace Alloy
 			items.Add(new Item(Resource.String.genres_fragment_id, Resource.String.genres_fragment_title, Resource.Drawable.genres));
 			items.Add(new Item(Resource.String.history_fragment_id, Resource.String.history_title, Resource.Drawable.history));
 
-		
+
 			mainMenuaAdapter = new MenuAdapter(this, items);
 			mainMenu.Adapter = mainMenuaAdapter;
 			mainMenu.SetSelection(1);
 			mainMenu.ItemClick += MainMenu_ItemClick;
-			navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
 
 			drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
 			drawerLayout.AddDrawerListener(drawerToggle);
 			currentBackground = CurrentBackground.None;
-			
+
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
 			//if (Intent != null)
 			//{
-				//var tab_name = Intent.GetStringExtra("tab_name");
-				//if (!string.IsNullOrEmpty(tab_name))
-				//	ChangeFragment(tab_name);
-				//else ChangeFragment(Resource.String.fresh_fragment_id, false);
+			//var tab_name = Intent.GetStringExtra("tab_name");
+			//if (!string.IsNullOrEmpty(tab_name))
+			//	ChangeFragment(tab_name);
+			//else ChangeFragment(Resource.String.fresh_fragment_id, false);
 			//}
 			//else
 			//{
-				ChangeFragment(Resource.String.fresh_fragment_id);
+			ChangeFragment(Resource.String.fresh_fragment_id);
 			//}
 		}
 
-		protected override void OnNewIntent(Intent intent)
-		{
-			string tab_name = intent.GetStringExtra("tab_name");
-
-			//ChangeFragment(tab_name);
-			base.OnNewIntent(intent);
-		}
-		
 		protected override void OnResume()
 		{
 			base.OnResume();
@@ -232,9 +219,10 @@ namespace Alloy
 		{
 			if (mainMenuaAdapter.GetItem(e.Position) is Item)
 			{
-				Item item = mainMenuaAdapter.GetItem(e.Position) as Item;
-				string itemText = item.TextView.Text;
-				ChangeFragment(item.Id);
+				if (mainMenuaAdapter.GetItem(e.Position) is Item item)
+				{
+					ChangeFragment(item.Id);
+				}
 			}
 
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
@@ -336,10 +324,10 @@ namespace Alloy
 
 					fadeIn.AnimationEnd += (o, e) =>
 					{
-						System.GC.Collect();
+						GC.Collect();
 					};
 
-					RunOnUiThread(new Action(() =>
+					RunOnUiThread(() =>
 					{
 						switch (currentBackground)
 						{
@@ -360,7 +348,7 @@ namespace Alloy
 								secondaryBackground.StartAnimation(fadeOut);
 								break;
 						}
-					}));
+					});
 				});
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
@@ -388,14 +376,14 @@ namespace Alloy
 			SetMainPlaylist();
 		}
 
-		private void AlbumArtImageView_Click(object sender, System.EventArgs e)
+		private void AlbumArtImageView_Click(object sender, EventArgs e)
 		{
 			Intent intent = new Intent(Application.Context, typeof(NowPlayingActivity));
 			intent.AddFlags(ActivityFlags.ClearTop);
 			StartActivity(intent);
 		}
-		
-		private void PlayPauseImageButton_Click(object sender, System.EventArgs e)
+
+		private void PlayPauseImageButton_Click(object sender, EventArgs e)
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
 			{
@@ -408,7 +396,7 @@ namespace Alloy
 			SetPlaying();
 		}
 
-		private void StarImageButton_Click(object sender, System.EventArgs e)
+		private void StarImageButton_Click(object sender, EventArgs e)
 		{
 			Utils.Run(() =>
 			{
@@ -427,7 +415,7 @@ namespace Alloy
 			if (serviceConnection != null && serviceConnection.IsConnected) { starImageButton?.SetImageDrawable(serviceConnection.CurrentSong.Starred ? starred : notStarred); }
 		}
 
-		private void NextImageButton_Click(object sender, System.EventArgs e)
+		private void NextImageButton_Click(object sender, EventArgs e)
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
 			{
@@ -502,7 +490,7 @@ namespace Alloy
 
 			SetPlaying();
 			CheckFavorite();
-			
+
 		}
 
 		public void SetMainPlaylist()

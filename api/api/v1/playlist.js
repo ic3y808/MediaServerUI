@@ -1,8 +1,8 @@
-'use strict';
-var express = require('express');
+"use strict";
+var express = require("express");
 var router = express.Router();
-var structures = require('./structures');
-var logger = require('../../../common/logger');
+var structures = require("./structures");
+var logger = require("../../../common/logger");
 
 /**
  * This function comment is parsed by doctrine
@@ -13,13 +13,13 @@ var logger = require('../../../common/logger');
  * @returns {Array.<Playlist>} 200 - Returns an array of playlists.
  * @security ApiKeyAuth
  */
-router.get('/playlists', function (req, res) {
+router.get("/playlists", function (req, res) {
   var result = {
-    playlists: res.locals.db.prepare('SELECT * from Playlists').all(),
+    playlists: res.locals.db.prepare("SELECT * from Playlists").all(),
   }
 
   result.playlists.forEach(playlist => {
-    playlist.tracks = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(playlist.id)
+    playlist.tracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(playlist.id)
   });
 
   res.json(result);
@@ -37,27 +37,27 @@ router.get('/playlists', function (req, res) {
  * @returns {Playlist} 200 - The newly created/updated playlist is returned
  * @security ApiKeyAuth
  */
-router.put('/playlists', function (req, res) {
+router.put("/playlists", function (req, res) {
   var id = req.query.id;
   var name = req.query.name;
   var songId = req.query.songId;
 
   if (id && songId) {
-    var existing = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=? AND song_id=?').all(id, songId);
+    var existing = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=? AND song_id=?").all(id, songId);
     if (existing.length === 0) {
-      res.locals.db.prepare('INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);').run(id, songId);
+      res.locals.db.prepare("INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);").run(id, songId);
     }
   } else if (!id && name && songId) {
-    var existinPlaylist = res.locals.db.prepare('SELECT * from Playlists').all();
+    var existinPlaylist = res.locals.db.prepare("SELECT * from Playlists").all();
     if (existinPlaylist.length === 0) {
-      var info = res.locals.db.prepare('INSERT INTO Playlists (`name`) VALUES (?);').run(name);
-      res.locals.db.prepare('INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);').run(info.lastInsertRowid, songId);
+      var info = res.locals.db.prepare("INSERT INTO Playlists (`name`) VALUES (?);").run(name);
+      res.locals.db.prepare("INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);").run(info.lastInsertRowid, songId);
     } else {
-      res.locals.db.prepare('INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);').run(existinPlaylist[0].id, songId);
+      res.locals.db.prepare("INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);").run(existinPlaylist[0].id, songId);
     }
   } else if (!id && name && !songId) {
 
-    res.locals.db.prepare('INSERT INTO Playlists (`name`) VALUES (?);').run(name);
+    res.locals.db.prepare("INSERT INTO Playlists (`name`) VALUES (?);").run(name);
 
   }
   res.send(new structures.StatusResult("Done"));
@@ -74,17 +74,17 @@ router.put('/playlists', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.delete('/playlists', function (req, res) {
+router.delete("/playlists", function (req, res) {
   var id = req.query.id;
-  var existinPlaylist = res.locals.db.prepare('SELECT * from Playlists WHERE id=?').all(id);
+  var existinPlaylist = res.locals.db.prepare("SELECT * from Playlists WHERE id=?").all(id);
   if (existinPlaylist.length !== 0) {
-    res.locals.db.prepare('DELETE FROM Playlists WHERE id=?').run(id);
+    res.locals.db.prepare("DELETE FROM Playlists WHERE id=?").run(id);
   }
-  var playlistTracks = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(id);
+  var playlistTracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
   playlistTracks.forEach(track => {
-    res.locals.db.prepare('DELETE FROM PlaylistTracks WHERE song_id=?').run(track.song_id);
+    res.locals.db.prepare("DELETE FROM PlaylistTracks WHERE song_id=?").run(track.song_id);
   });
-  res.send('Deleted');
+  res.send("Deleted");
 });
 
 
@@ -99,16 +99,16 @@ router.delete('/playlists', function (req, res) {
  * @returns {Playlist} 200 - Returns a playlist.
  * @security ApiKeyAuth
  */
-router.get('/', function (req, res) {
+router.get("/", function (req, res) {
   var id = req.query.id;
   if (id) {
     var result = {
-      playlist: res.locals.db.prepare('SELECT * from Playlists WHERE id=?').get(id)
+      playlist: res.locals.db.prepare("SELECT * from Playlists WHERE id=?").get(id)
     }
     result.playlist.tracks = [];
-    var trackIds = res.locals.db.prepare('SELECT * from PlaylistTracks WHERE id=?').all(id);
+    var trackIds = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
     trackIds.forEach(id => {
-      var t = res.locals.db.prepare('SELECT * from Tracks WHERE id=?').get(id.song_id);
+      var t = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id.song_id);
       if (t) result.playlist.tracks.push(t);
     })
     res.json(result);
