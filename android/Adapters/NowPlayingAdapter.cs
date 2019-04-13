@@ -5,6 +5,7 @@ using Android.Views;
 using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Android.App;
 using Android.Graphics;
@@ -15,11 +16,11 @@ namespace Alloy.Adapters
 	public class NowPlayingAdapter : RecyclerView.Adapter
 	{
 		public event EventHandler<NowPlayingViewHolder.NowPlayingViewHolderEvent> ItemClick;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public NowPlayingAdapter(BackgroundAudioServiceConnection service)
 		{
-			serviceConnection = service;
+			ServiceConnection = service;
 		}
 
 		public override long GetItemId(int position)
@@ -30,9 +31,9 @@ namespace Alloy.Adapters
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			NowPlayingViewHolder h = (NowPlayingViewHolder)holder;
-			h.Title.SetText(serviceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
-			h.Artist.SetText(serviceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
-			serviceConnection.MainQueue[position].GetAlbumArt(h.ImageView);
+			h.Title.SetText(ServiceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
+			h.Artist.SetText(ServiceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
+			ServiceConnection.MainQueue[position].GetAlbumArt(h.ImageView);
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { h.SetSelected(); };
 		}
 
@@ -48,8 +49,8 @@ namespace Alloy.Adapters
 		{
 			get
 			{
-				if (serviceConnection == null || serviceConnection?.MainQueue == null) return 0;
-				return serviceConnection.MainQueue.Count;
+				if (ServiceConnection == null || ServiceConnection?.MainQueue == null) return 0;
+				return ServiceConnection.MainQueue.Count;
 			}
 		}
 
@@ -74,12 +75,11 @@ namespace Alloy.Adapters
 				}
 				CardLayout = v.FindViewById<RelativeLayout>(Resource.Id.card_layout);
 				Artist = v.FindViewById<TextView>(Resource.Id.artist);
-				if (Artist != null) Artist.Selected = true;
+				if (Artist != null) { Artist.Selected = true; }
 				Title = v.FindViewById<TextView>(Resource.Id.title);
-				if (Title != null) Title.Selected = true;
+				if (Title != null) { Title.Selected = true; }
 
 				Duration = v.FindViewById<TextView>(Resource.Id.duration);
-
 				ImageView = v.FindViewById<ImageView>(Resource.Id.album_art);
 				starredButton = v.FindViewById<ImageView>(Resource.Id.star_button);
 				if (starredButton != null)
@@ -89,7 +89,6 @@ namespace Alloy.Adapters
 				}
 
 				v.Click += (sender, e) => listener(new NowPlayingViewHolderEvent() { Position = LayoutPosition, NowPlayingViewHolder = this });
-
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 				v.ClearAnimation();
 			}

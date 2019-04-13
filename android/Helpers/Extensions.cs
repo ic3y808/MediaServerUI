@@ -15,9 +15,8 @@ using Android.Widget;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Models;
 using Alloy.Providers;
-using Android.Views;
+
 using Bumptech.Glide;
-using Double = System.Double;
 using Exception = System.Exception;
 using Math = System.Math;
 using String = System.String;
@@ -28,11 +27,11 @@ namespace Alloy.Helpers
 {
 	public static class Extensions
 	{
-		private static bool hasUpdated = false;
+		private static bool hasUpdated;
 		private static DateTime lastUpdate;
-		private static float last_x = 0.0f;
-		private static float last_y = 0.0f;
-		private static float last_z = 0.0f;
+		private static float last_x;
+		private static float last_y;
+		private static float last_z;
 		private static SensorManager sensorManager;
 		private static ISensorEventListener currentListener;
 		const int ShakeDetectionTimeLapse = 250;
@@ -48,13 +47,11 @@ namespace Alloy.Helpers
 
 		public static int GetProgressPercentage(this int currentDuration, long totalDuration)
 		{
-			Double percentage = (double)0;
-
-			long currentSeconds = (int)(currentDuration / 1000);
+			long currentSeconds = currentDuration / 1000;
 			long totalSeconds = (int)(totalDuration / 1000);
 
 			// calculating percentage
-			percentage = (((double)currentSeconds) / totalSeconds) * 100;
+			double percentage = (((double)currentSeconds) / totalSeconds) * 100;
 
 			// return percentage
 			return (int)percentage;
@@ -62,11 +59,8 @@ namespace Alloy.Helpers
 
 		public static int ProgressToTimer(this int progress, int totalDuration)
 		{
-			int currentDuration = 0;
-			totalDuration = (int)(totalDuration / 1000);
-			currentDuration = (int)((((double)progress) / 100) * totalDuration);
-
-			// return current duration in milliseconds
+			totalDuration = totalDuration / 1000;
+			int currentDuration = (int)((double)progress / 100 * totalDuration);
 			return currentDuration * 1000;
 		}
 
@@ -75,7 +69,7 @@ namespace Alloy.Helpers
 			if ((oldIndex == newIndex) || (0 > oldIndex) || (oldIndex >= list.Count) || (0 > newIndex) ||
 				(newIndex >= list.Count)) return;
 
-			int i = 0;
+			int i;
 			T tmp = list[oldIndex];
 			if (oldIndex < newIndex)
 			{
@@ -94,26 +88,6 @@ namespace Alloy.Helpers
 			list[newIndex] = tmp;
 		}
 
-		//public static Bitmap Blur(this Bitmap image, int radius = 25, float scale = 0.1f)
-		//{
-		//	int width = (int)Math.Round(image.Width * scale);
-		//	int height = (int)Math.Round(image.Height * scale);
-		//	Bitmap input = image.Copy(image.GetConfig(), true);
-		//	Bitmap inputBitmap = Bitmap.CreateScaledBitmap(input, width, height, false);
-		//	Bitmap outputBitmap = Bitmap.CreateBitmap(inputBitmap);
-
-		//	RenderScript rs = RenderScript.Create(Application.Context);
-		//	ScriptIntrinsicBlur theIntrinsic = ScriptIntrinsicBlur.Create(rs, Element.U8_4(rs));
-		//	Allocation tmpIn = Allocation.CreateFromBitmap(rs, inputBitmap);
-		//	Allocation tmpOut = Allocation.CreateFromBitmap(rs, outputBitmap);
-		//	theIntrinsic.SetRadius(Math.Max(0, Math.Min(25, radius)));
-		//	theIntrinsic.SetInput(tmpIn);
-		//	theIntrinsic.ForEach(tmpOut);
-		//	tmpOut.CopyTo(outputBitmap);
-		//	inputBitmap.Recycle();
-		//	return outputBitmap;
-		//}
-
 		public static Bitmap Blur(this Bitmap image, int radius = 25)
 		{
 			if (image == null) return null;
@@ -125,7 +99,6 @@ namespace Alloy.Helpers
 			Allocation tmpIn = Allocation.CreateFromBitmap(rs, inputBitmap);
 			inputBitmap.Recycle();
 			inputBitmap.Dispose();
-			inputBitmap = null;
 			Allocation tmpOut = Allocation.CreateFromBitmap(rs, outputBitmap);
 			theIntrinsic.SetRadius(Math.Max(0, Math.Min(25, radius)));
 			theIntrinsic.SetInput(tmpIn);
@@ -133,7 +106,7 @@ namespace Alloy.Helpers
 			tmpOut.CopyTo(outputBitmap);
 			tmpIn.Dispose();
 			tmpOut.Dispose();
-			int x = (int)(image.Width / 2) - (int)(image.Width * 0.25f);
+			int x = image.Width / 2 - (int)(image.Width * 0.25f);
 
 
 			outputBitmap = Bitmap.CreateBitmap(outputBitmap, x, 0, (int)(image.Width * 0.25f), image.Height);
@@ -162,7 +135,7 @@ namespace Alloy.Helpers
 					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
 				}
 			}
-			if(imageBitmap == null) imageBitmap = GetDefaultAlbumArtEfficiently();
+			if (imageBitmap == null) imageBitmap = GetDefaultAlbumArtEfficiently();
 			ImageCache[url] = imageBitmap;
 			return imageBitmap;
 		}
@@ -171,20 +144,18 @@ namespace Alloy.Helpers
 		{
 			try
 			{
-				return GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } }));
+				return GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }));
 			}
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
 				return null;
 			}
-			return null;
-
 		}
 
 		public static void GetAlbumArt(this Song song, ImageView view)
 		{
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "track_id", song.Id } })).Into(view); }
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } })).Into(view); }
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
@@ -193,7 +164,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Artist artist, ImageView view)
 		{
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", artist.Id } })).Into(view); }
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } })).Into(view); }
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
@@ -202,7 +173,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Genre genre, ImageView view)
 		{
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "genre_id", genre.Id } })).Into(view); }
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } })).Into(view); }
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
@@ -211,7 +182,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Album album, ImageView view)
 		{
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "album_id", album.Id } })).Into(view); }
+			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } })).Into(view); }
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
@@ -231,7 +202,7 @@ namespace Alloy.Helpers
 				intent.PutExtras(args);
 			}
 
-			if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.O)
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
 			{
 				context.StartForegroundService(intent);
 			}
@@ -274,7 +245,7 @@ namespace Alloy.Helpers
 			public override string ToString()
 			{
 
-				if (this.Count == 0)
+				if (Count == 0)
 				{
 					return string.Empty;
 				}
@@ -301,16 +272,9 @@ namespace Alloy.Helpers
 					}
 
 					stringBuilder.Append((key != null) ? (key + "=") : string.Empty);
-
-					if ((value != null) && (value.Length > 0))
-					{
-
-						value = WebUtility.UrlEncode(value);
-
-
-						stringBuilder.Append(value);
-					}
-
+					if (string.IsNullOrEmpty(value)) continue;
+					value = WebUtility.UrlEncode(value);
+					stringBuilder.Append(value);
 				}
 
 				return stringBuilder.ToString();
@@ -524,8 +488,8 @@ namespace Alloy.Helpers
 			currentListener = listener;
 			if (sensorManager == null) sensorManager = activity.GetSystemService(Context.SensorService) as SensorManager;
 			if (sensorManager == null) return;
-			Sensor sensor = sensorManager.GetDefaultSensor(Android.Hardware.SensorType.Accelerometer);
-			sensorManager.RegisterListener(listener, sensor, Android.Hardware.SensorDelay.Game);
+			Sensor sensor = sensorManager.GetDefaultSensor(SensorType.Accelerometer);
+			sensorManager.RegisterListener(listener, sensor, SensorDelay.Game);
 		}
 
 		public static void StopShake()
@@ -538,13 +502,13 @@ namespace Alloy.Helpers
 
 		public static bool WasShaken(this SensorEvent e)
 		{
-			if (e.Sensor.Type == Android.Hardware.SensorType.Accelerometer)
+			if (e.Sensor.Type == SensorType.Accelerometer)
 			{
 				float x = e.Values[0];
 				float y = e.Values[1];
 				float z = e.Values[2];
 
-				DateTime curTime = System.DateTime.Now;
+				DateTime curTime = DateTime.Now;
 				if (hasUpdated == false)
 				{
 					hasUpdated = true;
@@ -580,7 +544,7 @@ namespace Alloy.Helpers
 			int color = newBitmap.GetPixel(0, 0);
 
 			newBitmap.Recycle();
-			return Android.Graphics.Color.Argb(255, Color.GetRedComponent(color), Color.GetGreenComponent(color), Color.GetBlueComponent(color));
+			return Color.Argb(255, Color.GetRedComponent(color), Color.GetGreenComponent(color), Color.GetBlueComponent(color));
 		}
 
 		public static float Square(float n)
@@ -649,7 +613,7 @@ namespace Alloy.Helpers
 			}
 		}
 
-	
+
 
 		public static void Toast(this string text)
 		{

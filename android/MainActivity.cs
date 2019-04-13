@@ -3,7 +3,6 @@ using System.Diagnostics;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Gms.Cast.Framework;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
@@ -23,14 +22,11 @@ using Alloy.Services;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
-using Spotlight;
 using Alloy.Adapters;
 using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Widgets;
-using SlideUpPanelLibrary;
 using Exception = System.Exception;
-using Object = Java.Lang.Object;
 
 namespace Alloy
 {
@@ -49,7 +45,6 @@ namespace Alloy
 		private SlidingUpPanelLayout mainLayout;
 		private NavigationView navigationView;
 		private CurrentBackground currentBackground;
-		private CastContentProvider castContentProvider;
 		private ListView mainMenu;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
@@ -141,9 +136,7 @@ namespace Alloy
 			drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
 			drawerLayout.AddDrawerListener(drawerToggle);
 			currentBackground = CurrentBackground.None;
-
-			castContentProvider = new CastContentProvider(this);
-
+			
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
 			//if (Intent != null)
 			//{
@@ -169,7 +162,6 @@ namespace Alloy
 		protected override void OnResume()
 		{
 			base.OnResume();
-			castContentProvider.OnResume();
 			View settingsFooter = FindViewById(Resource.Id.settings_footer);
 			settingsFooter.Click += SettingsFooter_Click;
 			BindService();
@@ -191,7 +183,6 @@ namespace Alloy
 				serviceConnection = null;
 			}
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			castContentProvider.OnStop();
 		}
 
 		public override void OnBackPressed()
@@ -309,7 +300,7 @@ namespace Alloy
 					Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
 					fadeIn.Duration = 3000;
 					if (serviceConnection?.CurrentSong == null) return;
-					Bitmap newArt = serviceConnection.CurrentSong.Art.Blur(25);
+					Bitmap newArt = serviceConnection.CurrentSong.GetAlbumArt().Blur();
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{
@@ -408,12 +399,7 @@ namespace Alloy
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
 			{
-				if (serviceConnection.Remote != null)
-				{
-					if (serviceConnection.Remote.IsPlaying) { serviceConnection.Pause(); }
-					else { serviceConnection.Play(); }
-				}
-				else if (serviceConnection.MediaPlayer != null)
+				if (serviceConnection.MediaPlayer != null)
 				{
 					if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.Pause(); }
 					else { serviceConnection.Play(); }
@@ -445,11 +431,7 @@ namespace Alloy
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
 			{
-				if (serviceConnection.Remote != null)
-				{
-					if (serviceConnection.Remote.IsPlaying) { serviceConnection.PlayNextSong(); }
-				}
-				else if (serviceConnection.MediaPlayer != null)
+				if (serviceConnection.MediaPlayer != null)
 				{
 					if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.PlayNextSong(); }
 				}
@@ -506,8 +488,7 @@ namespace Alloy
 		public void SetPlaying()
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.Remote != null) { playPauseImageButton?.SetImageDrawable(serviceConnection.Remote.IsPlaying ? pause : play); }
-			else if (serviceConnection.MediaPlayer != null) { playPauseImageButton?.SetImageDrawable(serviceConnection.MediaPlayer.IsPlaying ? pause : play); }
+			if (serviceConnection.MediaPlayer != null) { playPauseImageButton?.SetImageDrawable(serviceConnection.MediaPlayer.IsPlaying ? pause : play); }
 		}
 
 		public void SetMetaData()
@@ -538,14 +519,6 @@ namespace Alloy
 				Adapters.Adapters.SetAdapters(this, playlistAdapter);
 			}
 			playlistAdapter?.NotifyDataSetChanged();
-		}
-		
-		public void OnStatusUpdated()
-		{
-			if (serviceConnection.Remote?.IdleReason == Android.Gms.Cast.MediaStatus.IdleReasonFinished)
-			{
-				serviceConnection.PlayNextSong();
-			}
 		}
 	}
 }

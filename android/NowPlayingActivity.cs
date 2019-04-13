@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Timers;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Gms.Cast.Framework.Media;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
@@ -17,14 +15,13 @@ using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
-using Android.Gms.Cast;
-using Extensions = Alloy.Helpers.Extensions;
 
 namespace Alloy
 {
 	[Activity(Label = "Alloy", LaunchMode = LaunchMode.SingleTask)]
-	public class NowPlayingActivity : Activity, RemoteMediaClient.IProgressListener, RecyclerView.IOnChildAttachStateChangeListener
+	public class NowPlayingActivity : Activity,RecyclerView.IOnChildAttachStateChangeListener
 	{
 		private TextView artistTextView;
 		private readonly int backgroundContrast = 200;
@@ -170,7 +167,6 @@ namespace Alloy
 		{
 			if (serviceConnection != null && serviceConnection.IsConnected)
 			{
-				serviceConnection.Remote?.RemoveProgressListener(this);
 				UnbindService(serviceConnection);
 				serviceConnection = null;
 			}
@@ -189,16 +185,11 @@ namespace Alloy
 		{
 			if (!e) return;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			if (serviceConnection.Remote != null)
-			{
-				serviceConnection.Remote.AddProgressListener(this, 500);
-			}
-			else
-			{
+			
 				updateTimer = new Timer(500);
 				updateTimer.Elapsed += UpdateTimer_Elapsed;
 				updateTimer.Start();
-			}
+			
 
 			SetPlaying();
 			SetFavorite();
@@ -324,12 +315,12 @@ namespace Alloy
 				int index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
 				if (index >= 0) nowPlayingLayoutManager.ScrollToPosition(index);
 
-				foreach (MediaQueueItem item in serviceConnection.MainQueue.MediaQueue)
-				{
-					if (!serviceConnection.CurrentSong.QueueItem().ItemId.Equals(item.ItemId)) continue;
-					nowPlayingLayoutManager.ScrollToPosition(index);
-					break;
-				}
+				//foreach (MediaQueueItem item in serviceConnection.MainQueue.MediaQueue)
+				//{
+				//	if (!serviceConnection.CurrentSong.QueueItem().ItemId.Equals(item.ItemId)) continue;
+				//	nowPlayingLayoutManager.ScrollToPosition(index);
+				//	break;
+				//}
 
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
@@ -365,26 +356,25 @@ namespace Alloy
 			try
 			{
 				Drawable thumb = seekBar.Thumb;
-				Color color = Color.White;
-				Color contrasting = Color.Black;
-				Color textContrasting = Color.Black;
+				Color color;
+				Color contrasting;
 
 				if (song != null)
 				{
 					Bitmap art = song.GetAlbumArt();
-					color = Extensions.GetDominateColor(art);
+					color = art.GetDominateColor();
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 				else if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) { return; }
 				else
 				{
-					color = Extensions.GetDominateColor(serviceConnection.CurrentSong.Art);
+					color = serviceConnection.CurrentSong.GetAlbumArt().GetDominateColor();
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 
 				bool closer = Closer(contrasting.GetBrightness(), 1.0f);
 
-				textContrasting = closer ? Color.Black : Color.White;
+				Color textContrasting = closer ? Color.Black : Color.White;
 
 				seekBar.ProgressDrawable = new ColorDrawable(color);
 				thumb.SetColorFilter(textContrasting, PorterDuff.Mode.SrcAtop);
@@ -409,14 +399,7 @@ namespace Alloy
 				string title = "";
 				string artist = "";
 				string duration = "";
-				if (serviceConnection?.Remote != null)
-				{
-					//serviceConnection.Remote.MediaInfo.Metadata.
-					title = "";
-					artist = "";
-					duration = "00:00 / fix me";
-				}
-				else if (song != null)
+				if (song != null)
 				{
 					title = song.Title;
 					artist = song.Artist;
@@ -427,11 +410,7 @@ namespace Alloy
 				{
 					title = serviceConnection.CurrentSong.Title;
 					artist = serviceConnection.CurrentSong.Artist;
-					if (serviceConnection.Remote != null)
-					{
-						duration = serviceConnection.Remote.ApproximateStreamPosition.ToTime() + " / " + serviceConnection.Remote.StreamDuration.ToTime();
-					}
-					else if (serviceConnection.MediaPlayer != null)
+					if (serviceConnection.MediaPlayer != null)
 					{
 						duration = serviceConnection.MediaPlayer.CurrentPosition.ToTime() + " / " + serviceConnection.CurrentSong.Duration.ToTimeFromSeconds();
 					}
@@ -482,11 +461,7 @@ namespace Alloy
 		private void SeekBar_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
 		{
 			if (!e.FromUser || !serviceConnection.IsConnected) return;
-			if (serviceConnection.Remote != null)
-			{
-				serviceConnection.Remote.Seek(e.Progress.ProgressToTimer((int)serviceConnection.Remote.StreamDuration));
-			}
-			else if (serviceConnection.MediaPlayer != null)
+			if (serviceConnection.MediaPlayer != null)
 			{
 				int time = e.Progress.ProgressToTimer(serviceConnection.MediaPlayer.Duration);
 				serviceConnection.MediaPlayer.SeekTo(time);
@@ -497,14 +472,7 @@ namespace Alloy
 		public void SetPlaying()
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.Remote != null)
-			{
-				if (serviceConnection.Remote.IsPlaying)
-					playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
-				else
-					playPauseImageButton?.SetImageResource(Resource.Drawable.play);
-			}
-			else if (serviceConnection.MediaPlayer != null)
+			if (serviceConnection.MediaPlayer != null)
 			{
 				if (serviceConnection.MediaPlayer.IsPlaying)
 					playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
@@ -517,14 +485,7 @@ namespace Alloy
 		private void PlayPauseImageButton_Click(object sender, EventArgs e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.Remote != null)
-			{
-				if (serviceConnection.Remote.IsPlaying)
-					serviceConnection.Pause();
-				else
-					serviceConnection.Play();
-			}
-			else if (serviceConnection.MediaPlayer != null)
+			if (serviceConnection.MediaPlayer != null)
 			{
 
 				if (serviceConnection.MediaPlayer.IsPlaying)
@@ -542,12 +503,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.CurrentSong != null)
 				ScrollTo(serviceConnection.GetPreviousSong());
-			if (serviceConnection.Remote != null)
-			{
-				if (serviceConnection.Remote.IsPlaying)
-					serviceConnection.PlayPreviousSong();
-			}
-			else if (serviceConnection.MediaPlayer != null)
+			if (serviceConnection.MediaPlayer != null)
 			{
 				if (serviceConnection.MediaPlayer.IsPlaying)
 					Utils.Run(() => { serviceConnection.PlayPreviousSong(); });
@@ -559,12 +515,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.CurrentSong != null)
 				ScrollTo(serviceConnection.GetNextSong());
-			if (serviceConnection.Remote != null)
-			{
-				if (serviceConnection.Remote.IsPlaying)
-					serviceConnection.PlayNextSong();
-			}
-			else if (serviceConnection.MediaPlayer != null)
+			if (serviceConnection.MediaPlayer != null)
 			{
 				if (serviceConnection.MediaPlayer.IsPlaying)
 					Utils.Run(() => { serviceConnection.PlayNextSong(); });
@@ -576,20 +527,6 @@ namespace Alloy
 			starredButton.SetImageResource(Resource.Drawable.star_o);
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			if (serviceConnection.CurrentSong.Starred) starredButton.SetImageResource(Resource.Drawable.favorite);
-		}
-
-		public void OnProgressUpdated(long progressMs, long durationMs)
-		{
-			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.Remote != null)
-			{
-				int val = progressMs.GetProgressPercentage(durationMs);
-				RunOnUiThread(() =>
-				{
-					seekBar.Progress = (int)val;
-					UpdateInfo();
-				});
-			}
 		}
 
 		public void OnChildViewAttachedToWindow(View view)

@@ -6,6 +6,7 @@ using Android.Widget;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Android.OS;
 
 namespace Alloy.Adapters

@@ -2,9 +2,6 @@
 using Android.App;
 using Android.Bluetooth;
 using Android.Content;
-using Android.Gms.Cast;
-using Android.Gms.Cast.Framework;
-using Android.Gms.Cast.Framework.Media;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media.Session;
@@ -14,14 +11,12 @@ using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Recievers;
 using Alloy.Providers;
-using MediaMetadata = Android.Media.MediaMetadata;
-using Object = Java.Lang.Object;
 
 namespace Alloy.Services
 {
 	[Service]
 	[IntentFilter(new[] { ActionPlayNew, ActionPlayPause, ActionPrevious, ActionNext, ActionUpdateMetaData, ActionStarTrack, ActionExit })]
-	public class BackgroundAudioService : Service, AudioManager.IOnAudioFocusChangeListener, IMediaController, ICastStateListener, IAppVisibilityListener, ISessionManagerListener, RemoteMediaClient.IListener, RemoteMediaClient.IProgressListener
+	public class BackgroundAudioService : Service, AudioManager.IOnAudioFocusChangeListener, IMediaController
 	{
 		public const string ActionPlayNew = "com.xamarin.action.PLAY_NEW";
 		public const string ActionPlayPause = "com.xamarin.action.PLAY_PAUSE";
@@ -34,14 +29,12 @@ namespace Alloy.Services
 		public event EventHandler<StatusEventArg> PlaybackStatusChanged;
 
 		public IQueue MainQueue { get; set; }
-		public RemoteMediaClient Remote { get; set; }
 
 		private NoisyAudioReciever noisyReceiver;
 		private HeadsetPlugReceiver headsetPlugReceiver;
 		private BluetoothIntentReceiver bluetoothReceiver;
 		private MediaButtonReciever mediaButtonReciever;
 		public NotificationService notificationService;
-		private CastSession castSession;
 		public MediaSessionCompat MediaSession { get; set; }
 		private PlaybackStateCompat.Builder mediaStateBuilder;
 		private Song currentSong;
@@ -60,12 +53,8 @@ namespace Alloy.Services
 			{
 				currentSong = value;
 				currentSong.IsSelected = true;
-				if (Remote != null)
-					CurrentQueueSong = currentSong.QueueItem();
 			}
 		}
-
-		public MediaQueueItem CurrentQueueSong { get; set; }
 
 		public IBinder Binder { get; private set; }
 
@@ -85,7 +74,6 @@ namespace Alloy.Services
 			InitMediaButtonReceiver();
 			InitHeadsetPlugReceiver();
 			InitMediaSession();
-			InitCast();
 			Reset();
 		}
 
@@ -95,7 +83,6 @@ namespace Alloy.Services
 			if (mediaButtonReciever != null) UnregisterReceiver(mediaButtonReciever);
 			if (headsetPlugReceiver != null) UnregisterReceiver(headsetPlugReceiver);
 			if (noisyReceiver != null) UnregisterReceiver(noisyReceiver);
-			StopCast();
 			Services.NotificationService.CloseNotification();
 		}
 
@@ -160,20 +147,12 @@ namespace Alloy.Services
 		{
 			try
 			{
-				if (Remote != null)
-				{
-					Remote.Seek(pausedPosition);
-					Remote.Play();
-				}
-				else
-				{
-					MediaPlayer.Start();
-					MediaPlayer.SeekTo((int) pausedPosition);
-				}
+				MediaPlayer.Start();
+				MediaPlayer.SeekTo((int)pausedPosition);
 
 				notificationService.ShowNotification();
 				RequestAudioFocus();
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading});
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading });
 			}
 			catch (Exception e)
 			{
@@ -186,16 +165,10 @@ namespace Alloy.Services
 		{
 			try
 			{
-				if (Remote != null)
-				{
-					Remote.Pause();
-					pausedPosition = Remote.ApproximateStreamPosition;
-				}
-				else
-				{
-					MediaPlayer.Pause();
-					pausedPosition = MediaPlayer.CurrentPosition;
-				}
+
+				MediaPlayer.Pause();
+				pausedPosition = MediaPlayer.CurrentPosition;
+
 
 				notificationService.ShowNotification();
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
@@ -228,7 +201,7 @@ namespace Alloy.Services
 			loading = true;
 			try
 			{
-				if (Remote == null) Reset();
+				Reset();
 
 				if (MainQueue != null && MainQueue.Count > 0)
 				{
@@ -247,63 +220,10 @@ namespace Alloy.Services
 					CurrentSong = MainQueue[index];
 
 				Utils.UnlockSsl(true);
-				if (Remote != null)
-				{
-					CurrentSong = MainQueue[index];
-					Adapters.Adapters.CurrentActivity.RunOnUiThread(() =>
-					{
-						Android.Gms.Cast.MediaMetadata meta = new Android.Gms.Cast.MediaMetadata(Android.Gms.Cast.MediaMetadata.MediaTypeMusicTrack);
-						meta.PutString(MediaMetadata.MetadataKeyArtist, CurrentSong.Artist);
-						meta.PutString(MediaMetadata.MetadataKeyAlbumArtist, CurrentSong.Artist);
-						meta.PutString(MediaMetadata.MetadataKeyAlbum, CurrentSong.Album);
-						meta.PutString(MediaMetadata.MetadataKeyTitle, CurrentSong.Title);
-						meta.PutString(MediaMetadata.MetadataKeyDisplayTitle, CurrentSong.Title);
 
-						//if (!string.IsNullOrEmpty(CurrentSong.Artwork)) meta.AddImage(new WebImage(Uri.Parse(CurrentSong.Artwork.Replace("large", "t500x500"))));
+				MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(CurrentSong));
+				MediaPlayer.Prepare();
 
-						//jsonObj = new JSONObject();
-						//jsonObj.Put("description", CurrentSong.Description);
-
-
-						//string url = "";
-
-
-						//MediaInfo info = new MediaInfo.Builder(url)
-						//	//.SetCustomData(jsonObj)
-						//	.SetMetadata(meta)
-						//	.SetStreamDuration(CurrentSong.Duration)
-						//	.SetStreamType(MediaInfo.StreamTypeBuffered)
-						//	.SetContentType("audio/mp3")
-						//	.Build();
-
-						//MediaQueueItem queueItem = new MediaQueueItem.Builder(info)
-						//	.SetAutoplay(true)
-						//	.SetPreloadTime(20)
-						//	.Build();
-						//if (CurrentSong.IsSubsonicTrack || CurrentSong.IsSoundcloudTrack)
-						//{
-						//	MainQueue.ToRemoteMediaQueue();
-						//}
-						//else
-						//{
-						//	MainQueue.ToLocalMediaQueue();
-						//}
-
-						//IResult result = await Remote.QueueLoad(MainQueue.MediaQueue, index, 0, jsonObj);
-						//Android.Gms.Common.Apis.IResult result = await Remote.LoadAsync(info, true, 0, jsonObj);
-						//if (result.Status.IsSuccess)
-						//{
-						//	//notificationService.ShowPlayingNotification();
-						//	//PlaybackStatusChanged(this, new StatusEventArg() { CurrentSong = CurrentSong });
-						//}
-						loading = false;
-					});
-				}
-				else
-				{
-					MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(CurrentSong));
-					MediaPlayer.Prepare();
-				}
 
 				Utils.UnlockSsl(false);
 			}
@@ -315,47 +235,23 @@ namespace Alloy.Services
 			}
 		}
 
-
-        //TODO unknown if still used, needs tested. 
-		//public class CastPlayResult : Java.Lang.Object, IResultCallback, RemoteMediaClient.IMediaChannelResult
-		//{
-		//	private BackgroundAudioService service;
-		//	public CastPlayResult(BackgroundAudioService service)
-		//	{
-		//		this.service = service;
-		//	}
-		//	public void OnResult(Object result)
-		//	{
-		//		var res = result;
-		//		loading = false;
-
-		//		service.MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(service.CurrentSong));
-		//		service.MediaPlayer.Prepare();
-		//	}
-
-		//	public Statuses Status { get; }
-		//	public JSONObject CustomData { get; }
-		//}
-
 		public void PlayNextSong()
 		{
 			try
 			{
-				if (Remote != null) { Remote.QueueNext(null); }
-				else
-				{
-					if (CurrentSong == null || MainQueue.Count <= 0) return;
-					CurrentSong.IsSelected = false;
-					int index = MainQueue.IndexOf(CurrentSong);
-					if (index >= MainQueue.Count)
-					{
-						MainQueue.GetMoreData();
-						index = MainQueue.IndexOf(CurrentSong);
-					}
 
-					Song song = index + 1 >= MainQueue.Count ? MainQueue[0] : MainQueue[index + 1];
-					if (song != null) { Play(song); }
+				if (CurrentSong == null || MainQueue.Count <= 0) return;
+				CurrentSong.IsSelected = false;
+				int index = MainQueue.IndexOf(CurrentSong);
+				if (index >= MainQueue.Count)
+				{
+					MainQueue.GetMoreData();
+					index = MainQueue.IndexOf(CurrentSong);
 				}
+
+				Song song = index + 1 >= MainQueue.Count ? MainQueue[0] : MainQueue[index + 1];
+				if (song != null) { Play(song); }
+
 			}
 			catch (Exception e)
 			{
@@ -392,16 +288,14 @@ namespace Alloy.Services
 		{
 			try
 			{
-				if (Remote != null) { Remote.QueuePrev(null); }
-				else
-				{
-					if (CurrentSong == null || MainQueue.Count <= 0) return;
-					CurrentSong.IsSelected = false;
-					int index = MainQueue.IndexOf(CurrentSong);
-					Song song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
 
-					Play(song);
-				}
+				if (CurrentSong == null || MainQueue.Count <= 0) return;
+				CurrentSong.IsSelected = false;
+				int index = MainQueue.IndexOf(CurrentSong);
+				Song song = index - 1 < 0 ? MainQueue[MainQueue.Count - 1] : MainQueue[index - 1];
+
+				Play(song);
+
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
@@ -429,7 +323,7 @@ namespace Alloy.Services
 				Utils.UnlockSsl(true);
 				MediaPlayer.Start();
 				loading = false;
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing});
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
 				notificationService.ShowNotification();
 				notificationService.UpdateMediaSessionMeta();
 				Utils.Run(() =>
@@ -437,7 +331,7 @@ namespace Alloy.Services
 					MusicProvider.AddPlay(CurrentSong.Id);
 					MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
 				});
-				
+
 				Utils.UnlockSsl(false);
 
 			}
@@ -605,149 +499,6 @@ namespace Alloy.Services
 				MediaSession.Active = true;
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
-		}
-
-		public void InitCast()
-		{
-			CastContext.GetSharedInstance(this).AddCastStateListener(this);
-			CastContext.GetSharedInstance(this).AddAppVisibilityListener(this);
-			CastContext.GetSharedInstance(this).SessionManager.AddSessionManagerListener(this);
-		}
-
-		public void StopCast()
-		{
-			CastContext.GetSharedInstance(this).RemoveCastStateListener(this);
-			CastContext.GetSharedInstance(this).RemoveAppVisibilityListener(this);
-			CastContext.GetSharedInstance(this).SessionManager.RemoveSessionManagerListener(this);
-			Remote?.RemoveListener(this);
-		}
-
-		public void OnCastStateChanged(int newState)
-		{
-
-		}
-
-		public void OnAppEnteredBackground()
-		{
-		}
-
-		public void OnAppEnteredForeground()
-		{
-		}
-
-		public void OnSessionEnded(Object session, int error)
-		{
-			if (session == castSession)
-			{
-				Remote?.RemoveListener(this);
-				Remote = null;
-				castSession = null;
-			}
-		}
-
-		public void OnSessionEnding(Object session)
-		{
-		}
-
-		public void OnSessionResumeFailed(Object session, int error)
-		{
-		}
-
-		public void OnSessionResumed(Object session, bool wasSuspended)
-		{
-			castSession = (CastSession)session;
-			Remote = castSession?.RemoteMediaClient;
-			Remote?.AddListener(this);
-		}
-
-		public void OnSessionResuming(Object session, string sessionId)
-		{
-		}
-
-		public void OnSessionStartFailed(Object session, int error)
-		{
-		}
-
-		public void OnSessionStarted(Object session, string sessionId)
-		{
-			castSession = (CastSession)session;
-			Remote = castSession?.RemoteMediaClient;
-			Remote?.AddListener(this);
-		}
-
-		public void OnSessionStarting(Object session)
-		{
-		}
-
-		public void OnSessionSuspended(Object session, int reason)
-		{
-		}
-
-		public void OnAdBreakStatusUpdated()
-		{
-		}
-
-		public void OnMetadataUpdated()
-		{
-		}
-
-		public void OnPreloadStatusUpdated()
-		{
-		}
-
-		public void OnQueueStatusUpdated()
-		{
-			if (MainQueue == null || Remote == null || Remote.CurrentItem == null) return;
-			CurrentQueueSong = Remote.CurrentItem;
-			foreach (Song item in MainQueue)
-			{
-				if (!CurrentQueueSong.ItemId.Equals(item.QueueItem().ItemId)) continue;
-				CurrentSong = item;
-				break;
-			}
-
-			PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
-		}
-
-		public void OnSendingRemoteMediaRequest()
-		{
-		}
-
-		public void OnStatusUpdated()
-		{
-			if (Remote != null)
-			{
-				Adapters.Adapters.CurrentActivity.RunOnUiThread(() =>
-				{
-					int status = Remote.PlayerState;
-					int idleReason = Remote.IdleReason;
-
-					switch (status)
-					{
-						case MediaStatus.PlayerStateIdle:
-							if (idleReason == MediaStatus.IdleReasonFinished && currentIdleReason == MediaStatus.IdleReasonFinished)
-							{
-								//PlayNextSong();
-							}
-							break;
-						case MediaStatus.PlayerStateBuffering:
-							currentIdleReason = MediaStatus.IdleReasonFinished;
-							break;
-						case MediaStatus.PlayerStatePlaying:
-							currentIdleReason = MediaStatus.IdleReasonFinished;
-							PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
-							break;
-						case MediaStatus.PlayerStatePaused:
-							PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
-							break;
-					}
-				});
-			}
-		}
-
-		public void OnProgressUpdated(long progressMs, long durationMs)
-		{
-			System.Diagnostics.Debug.WriteLine("OnProgressUpdated " + progressMs + "  " + durationMs);
 		}
 	}
 }

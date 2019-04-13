@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Alloy.Providers;
 using Android.Graphics;
 using Android.OS;
 using Java.Interop;

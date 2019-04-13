@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Alloy.Adapters;
 using Android.App;
 using Android.Content;
-using Android.Gms.Cast.Framework;
 using Android.Hardware;
 using Android.Support.V4.View;
 using Android.Support.V4.Widget;
@@ -14,6 +13,7 @@ using Alloy.Compat;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Android.Database;
 using Android.Graphics;
@@ -22,9 +22,7 @@ using Android.OS;
 using Android.Provider;
 using Android.Views.InputMethods;
 using Bumptech.Glide;
-using Bumptech.Glide.Load.Engine;
 using Java.Interop;
-using SimpleCursorAdapter = Android.Support.V4.Widget.SimpleCursorAdapter;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Newtonsoft.Json;
 using SearchView = Android.Support.V7.Widget.SearchView;
@@ -34,7 +32,6 @@ namespace Alloy.Fragments
 	public abstract class FragmentBase : Fragment, Android.Hardware.ISensorEventListener, SwipeRefreshLayout.IOnRefreshListener
 	{
 		public BackgroundAudioServiceConnection ServiceConnection;
-		public static IMenuItem MediaRouteButton;
 		private Android.Support.V7.Widget.SearchView searchView;
 		public bool HasBack { get; set; }
 
@@ -265,7 +262,6 @@ namespace Alloy.Fragments
 
 			base.OnCreateOptionsMenu(menu, inflater);
 			inflater.Inflate(Resource.Menu.general_toolbar, menu);
-			MediaRouteButton = CastButtonFactory.SetUpMediaRouteButton(Application.Context, menu, Resource.Id.media_route_menu_item);
 			IMenuItem search = menu.FindItem(Resource.Id.action_search);
 			searchView = (Android.Support.V7.Widget.SearchView)search.ActionView;
 			searchView.QueryTextChange += SearchView_QueryTextChange;

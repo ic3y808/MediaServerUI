@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Linq;
-using Alloy.Helpers;
-using Alloy.Interfaces;
-using Android.App;
-using Android.Graphics;
 using Android.Views;
 using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.Support.V7.Widget;
-using Android.Util;
-using Android.Views.Animations;
 using Java.Util;
 using Object = Java.Lang.Object;
 

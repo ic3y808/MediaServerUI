@@ -1,8 +1,7 @@
 ﻿using System;
-using Alloy.Widgets;
 using Android.Views;
 
-namespace SlideUpPanelLibrary
+namespace Alloy.Widgets
 {
 	public class SimplePanelSlideListener : PanelSlideListener
 	{

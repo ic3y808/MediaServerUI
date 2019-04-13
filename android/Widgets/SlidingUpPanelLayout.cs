@@ -1,4 +1,5 @@
 ﻿using System;
+
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
@@ -11,7 +12,6 @@ using Android.Views;
 using Android.Views.Accessibility;
 using Android.Views.Animations;
 using Java.Lang;
-using SlideUpPanelLibrary;
 using Math = System.Math;
 using String = System.String;
 

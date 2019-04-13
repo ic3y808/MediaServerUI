@@ -1,4 +1,5 @@
-﻿using Android.OS;
+﻿
+using Android.OS;
 using Android.Preferences;
 
 namespace Alloy.Fragments

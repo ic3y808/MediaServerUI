@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Android.App;
-using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V7.Widget;
@@ -16,7 +16,6 @@ namespace Alloy.Adapters
 {
 	public class ArtistDetailAdapter : RecyclerView.Adapter
 	{
-		private Context context;
 		private readonly Activity Activity;
 		private readonly ArtistContainer Artist;
 		private readonly BackgroundAudioServiceConnection ServiceConnection;
@@ -56,10 +55,10 @@ namespace Alloy.Adapters
 					{
 						if (Artist.Albums.Count > 0)
 						{
-							artistAlbumsHolder.albumsListContainer.Visibility = ViewStates.Visible;
+							artistAlbumsHolder.AlbumsListContainer.Visibility = ViewStates.Visible;
 							ArtistDetailAlbumAdapter artistDetailAlbumsAdapter = new ArtistDetailAlbumAdapter(Artist.Albums, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailAlbumsAdapter.NotifyDataSetChanged(); };
-							artistAlbumsHolder.albumRecycleView.SetAdapter(artistDetailAlbumsAdapter);
+							artistAlbumsHolder.AlbumRecycleView.SetAdapter(artistDetailAlbumsAdapter);
 							artistDetailAlbumsAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, artistDetailAlbumsAdapter);
 						}
@@ -70,10 +69,10 @@ namespace Alloy.Adapters
 					{
 						if (Artist.EPs.Count > 0)
 						{
-							artistEpsHolder.epsListContainer.Visibility = ViewStates.Visible;
+							artistEpsHolder.EpsListContainer.Visibility = ViewStates.Visible;
 							ArtistDetailAlbumAdapter artistDetailEpsAdapter = new ArtistDetailAlbumAdapter(Artist.EPs, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailEpsAdapter.NotifyDataSetChanged(); };
-							artistEpsHolder.epsRecycleView.SetAdapter(artistDetailEpsAdapter);
+							artistEpsHolder.EpsRecycleView.SetAdapter(artistDetailEpsAdapter);
 							artistDetailEpsAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, artistDetailEpsAdapter);
 						}
@@ -84,10 +83,10 @@ namespace Alloy.Adapters
 					{
 						if (Artist.Singles.Count > 0)
 						{
-							artistSinglesHolder.singlesListContainer.Visibility = ViewStates.Visible;
+							artistSinglesHolder.SinglesListContainer.Visibility = ViewStates.Visible;
 							ArtistDetailAlbumAdapter artistDetailSinglesAdapter = new ArtistDetailAlbumAdapter(Artist.Singles, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { artistDetailSinglesAdapter.NotifyDataSetChanged(); };
-							artistSinglesHolder.singlesRecycleView.SetAdapter(artistDetailSinglesAdapter);
+							artistSinglesHolder.SinglesRecycleView.SetAdapter(artistDetailSinglesAdapter);
 							artistDetailSinglesAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, artistDetailSinglesAdapter);
 						}
@@ -98,10 +97,10 @@ namespace Alloy.Adapters
 					{
 						if (Artist.PopularTracks.Count > 0)
 						{
-							artistTopTracksHolder.topTracksListContainer.Visibility = ViewStates.Visible;
+							artistTopTracksHolder.TopTracksListContainer.Visibility = ViewStates.Visible;
 							ArtistDetailTrackAdapter topAdapter = new ArtistDetailTrackAdapter(Artist.PopularTracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { topAdapter.NotifyDataSetChanged(); };
-							artistTopTracksHolder.topTrackRecycleView.SetAdapter(topAdapter);
+							artistTopTracksHolder.TopTrackRecycleView.SetAdapter(topAdapter);
 							topAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, topAdapter);
 						}
@@ -112,10 +111,10 @@ namespace Alloy.Adapters
 					{
 						if (Artist.Tracks.Count > 0)
 						{
-							allTracksHolder.allTracksListContainer.Visibility = ViewStates.Visible;
+							allTracksHolder.AllTracksListContainer.Visibility = ViewStates.Visible;
 							ArtistDetailTrackAdapter allTracksAdapter = new ArtistDetailTrackAdapter(Artist.Tracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { allTracksAdapter.NotifyDataSetChanged(); };
-							allTracksHolder.allTracksRecycleView.SetAdapter(allTracksAdapter);
+							allTracksHolder.AllTracksRecycleView.SetAdapter(allTracksAdapter);
 							allTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, allTracksAdapter);
 						}
@@ -136,23 +135,22 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
 			switch (viewType)
 			{
 				case 0:
-					return new ArtistInformationViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_info, parent, false), OnPlayArtist);
+					return new ArtistInformationViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_info, parent, false), OnPlayArtist);
 				case 1:
-					return new ArtistMetricsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_metrics, parent, false));
+					return new ArtistMetricsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_metrics, parent, false));
 				case 2:
-					return new ArtistAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_albums, parent, false));
+					return new ArtistAlbumsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_albums, parent, false));
 				case 3:
-					return new ArtistEpsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_eps, parent, false));
+					return new ArtistEpsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_eps, parent, false));
 				case 4:
-					return new ArtistSinglesViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_singles, parent, false));
+					return new ArtistSinglesViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_singles, parent, false));
 				case 5:
-					return new ArtistTopTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_top, parent, false));
+					return new ArtistTopTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_top, parent, false));
 				case 6:
-					return new ArtistAllTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_artist_all, parent, false));
+					return new ArtistAllTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_artist_all, parent, false));
 
 			}
 			return null;
@@ -183,9 +181,9 @@ namespace Alloy.Adapters
 			public ImageView ArtistImage { get; set; }
 			public ImageView StarButton { get; set; }
 			private Drawable Starred { get; set; }
-			private Drawable NotStarred{ get; set; }
+			private Drawable NotStarred { get; set; }
 
-		public ArtistInformationViewHolder(View itemView, Action listener) : base(itemView)
+			public ArtistInformationViewHolder(View itemView, Action listener) : base(itemView)
 			{
 				ArtistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
 				ArtistSize = itemView.FindViewById<TextView>(Resource.Id.artist_size);
@@ -238,15 +236,15 @@ namespace Alloy.Adapters
 
 		public class ArtistAlbumsViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout albumsListContainer;
-			public RecyclerView albumRecycleView;
+			public LinearLayout AlbumsListContainer { get; set; }
+			public RecyclerView AlbumRecycleView { get; set; }
 			public ArtistAlbumsViewHolder(View itemView) : base(itemView)
 			{
-				albumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_albums_list_container);
-				albumsListContainer.Visibility = ViewStates.Gone;
+				AlbumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_albums_list_container);
+				AlbumsListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				albumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_albums_list);
-				albumRecycleView.SetLayoutManager(layoutManager);
+				AlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_albums_list);
+				AlbumRecycleView.SetLayoutManager(layoutManager);
 				//RegisterForContextMenu(albumRecycleView);
 
 			}
@@ -254,71 +252,70 @@ namespace Alloy.Adapters
 
 		public class ArtistEpsViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout epsListContainer;
-			public RecyclerView epsRecycleView;
+			public LinearLayout EpsListContainer { get; set; }
+			public RecyclerView EpsRecycleView { get; set; }
 			public ArtistEpsViewHolder(View itemView) : base(itemView)
 			{
-				epsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_eps_list_container);
-				epsListContainer.Visibility = ViewStates.Gone;
+				EpsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_eps_list_container);
+				EpsListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				epsRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_eps_list);
-				epsRecycleView.SetLayoutManager(layoutManager);
+				EpsRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_eps_list);
+				EpsRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 
 		public class ArtistSinglesViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout singlesListContainer;
-			public RecyclerView singlesRecycleView;
+			public LinearLayout SinglesListContainer { get; set; }
+			public RecyclerView SinglesRecycleView { get; set; }
 			public ArtistSinglesViewHolder(View itemView) : base(itemView)
 			{
-				singlesListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_singles_list_container);
-				singlesListContainer.Visibility = ViewStates.Gone;
+				SinglesListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_singles_list_container);
+				SinglesListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				singlesRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_singles_list);
-				singlesRecycleView.SetLayoutManager(layoutManager);
+				SinglesRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_singles_list);
+				SinglesRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 
 		public class ArtistTopTracksViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout topTracksListContainer;
-			public RecyclerView topTrackRecycleView;
+			public LinearLayout TopTracksListContainer { get; set; }
+			public RecyclerView TopTrackRecycleView { get; set; }
 			public ArtistTopTracksViewHolder(View itemView) : base(itemView)
 			{
-				topTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_top_tracks_list_container);
-				topTracksListContainer.Visibility = ViewStates.Gone;
+				TopTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_top_tracks_list_container);
+				TopTracksListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
-				topTrackRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_top_tracks_list);
-				topTrackRecycleView.SetLayoutManager(layoutManager);
+				TopTrackRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_top_tracks_list);
+				TopTrackRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 
 		public class ArtistAllTracksViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout allTracksListContainer;
-			public RecyclerView allTracksRecycleView;
+			public LinearLayout AllTracksListContainer { get; set; }
+			public RecyclerView AllTracksRecycleView { get; set; }
 			public ArtistAllTracksViewHolder(View itemView) : base(itemView)
 			{
-				allTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_all_tracks_list_container);
-				allTracksListContainer.Visibility = ViewStates.Gone;
+				AllTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.artist_all_tracks_list_container);
+				AllTracksListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
-				allTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_all_tracks_list);
-				allTracksRecycleView.SetLayoutManager(layoutManager);
+				AllTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_all_tracks_list);
+				AllTracksRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 	}
 
 	public class ArtistDetailAlbumAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public List<Album> Albums;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public List<Album> Albums { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
 		public ArtistDetailAlbumAdapter(List<Album> albums, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Albums = albums;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -332,9 +329,8 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_album_item, parent, false);
-			return new ViewHolder(view, OnClick, serviceConnection);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_album_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Albums.Count;
@@ -418,9 +414,9 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
-			Songs[position].GetAlbumArt(h.image);
-			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
-			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
+			Songs[position].GetAlbumArt(h.Image);
+			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
+			h.Album.SetText(Songs[position].Album, TextView.BufferType.Normal);
 			h.SetSelected(position);
 		}
 
@@ -441,21 +437,21 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout itemRoot;
-			public ImageView image;
-			public TextView title;
-			public TextView album;
-			public MusicQueue Songs;
-			public bool configured;
-			private BackgroundAudioServiceConnection serviceConnection;
+			public LinearLayout ItemRoot { get; set; }
+			public ImageView Image { get; set; }
+			public TextView Title { get; set; }
+			public TextView Album { get; set; }
+			public MusicQueue Songs { get; set; }
+			public bool Configured { get; set; }
+			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-				itemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
-				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
-				title = itemView.FindViewById<TextView>(Resource.Id.title);
-				album = itemView.FindViewById<TextView>(Resource.Id.album);
-				this.serviceConnection = serviceConnection;
+				ItemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
+				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
+				Title = itemView.FindViewById<TextView>(Resource.Id.title);
+				Album = itemView.FindViewById<TextView>(Resource.Id.album);
+				ServiceConnection = serviceConnection;
 				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
 			}
@@ -463,15 +459,15 @@ namespace Alloy.Adapters
 			public void SetSelected(int position)
 			{
 				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
-				bool selected = Songs[position].IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(Songs[position].Id);
+				bool selected = Songs[position].IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
 			}
 

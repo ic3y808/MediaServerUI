@@ -6,26 +6,27 @@ using Java.Lang;
 using Java.Util;
 using Alloy.Models;
 
+
 namespace Alloy.Adapters
 {
 	public class MenuAdapter : BaseAdapter
 	{
 
 
-		private Context mContext;
+		private readonly Context Context;
 
-		private ArrayList mItems;
+		private readonly ArrayList Items;
 
 
 		public MenuAdapter(Context context, ArrayList items)
 		{
-			mContext = context;
-			mItems = items;
+			Context = context;
+			Items = items;
 		}
 
 		public override Java.Lang.Object GetItem(int position)
 		{
-			return mItems.Get(position);
+			return Items.Get(position);
 		}
 
 		public override long GetItemId(int position)
@@ -58,32 +59,32 @@ namespace Alloy.Adapters
 			View v = convertView;
 			Object item = GetItem(position);
 
-			if (item is Category category)
+			switch (item)
 			{
-				if (v == null) { v = LayoutInflater.From(mContext).Inflate(Resource.Layout.menu_row_category, parent, false); }
+				case Category category:
+					if (v == null) { v = LayoutInflater.From(Context).Inflate(Resource.Layout.menu_row_category, parent, false); }
 
-				TextView header = v.FindViewById<TextView>(Resource.Id.category_header);
-				header.SetText(category.mTitle, TextView.BufferType.Normal);
-			}
-			if (item is Divider div)
-			{
-				if (v == null) { v = LayoutInflater.From(mContext).Inflate(Resource.Layout.menu_row_divider, parent, false); }
-			}
-			else if (item is Item i)
-			{
-				if (v == null) { v = LayoutInflater.From(mContext).Inflate(Resource.Layout.menu_row_item, parent, false); }
+					TextView header = v.FindViewById<TextView>(Resource.Id.category_header);
+					header.SetText(category.mTitle, TextView.BufferType.Normal);
+					break;
+				case Divider _:
+					if (v == null) { v = LayoutInflater.From(Context).Inflate(Resource.Layout.menu_row_divider, parent, false); }
 
-				TextView tv = (TextView)v;
-				tv.SetText(i.mTitle, TextView.BufferType.Normal);
-				if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1) { tv.SetCompoundDrawablesRelativeWithIntrinsicBounds(i.mIconRes, 0, 0, 0); }
-				else { tv.SetCompoundDrawablesWithIntrinsicBounds(i.mIconRes, 0, 0, 0); }
-				i.TextView = tv;
+					break;
+				case Item i:
+					if (v == null) { v = LayoutInflater.From(Context).Inflate(Resource.Layout.menu_row_item, parent, false); }
 
+					TextView tv = (TextView)v;
+					tv.SetText(i.mTitle, TextView.BufferType.Normal);
+					if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1) { tv.SetCompoundDrawablesRelativeWithIntrinsicBounds(i.mIconRes, 0, 0, 0); }
+					else { tv.SetCompoundDrawablesWithIntrinsicBounds(i.mIconRes, 0, 0, 0); }
+					i.TextView = tv;
+					break;
 			}
 
 			return v;
 		}
 
-		public override int Count => mItems.Size();
+		public override int Count => Items.Size();
 	}
 }

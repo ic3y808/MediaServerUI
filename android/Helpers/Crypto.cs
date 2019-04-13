@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+
 using Android.App;
 
 namespace Alloy.Helpers

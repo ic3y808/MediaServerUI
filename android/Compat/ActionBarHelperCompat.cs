@@ -6,9 +6,8 @@ using Android.Views;
 using Android.Widget;
 using Java.Lang;
 using Java.Lang.Reflect;
-using Alloy.Compat;
 
-namespace Net.Simonvt.Menudrawer.Compat
+namespace Alloy.Compat
 {
 	public class ActionBarHelperCompat
 	{
@@ -66,10 +65,7 @@ namespace Net.Simonvt.Menudrawer.Compat
 				}
 				catch (Throwable t)
 				{
-					if (ActionBarHelper.DEBUG)
-					{
-						Log.Error(TAG, "Unable to call setHomeAsUpEnabled", t);
-					}
+					Log.Error(TAG, "Unable to call setHomeAsUpEnabled", t);
 				}
 			}
 		}
@@ -98,10 +94,7 @@ namespace Net.Simonvt.Menudrawer.Compat
 					}
 					catch (Throwable t)
 					{
-						if (ActionBarHelper.DEBUG)
-						{
-							Log.Error(TAG, "ABS action bar not found", t);
-						}
+						Log.Error(TAG, "ABS action bar not found", t);
 					}
 
 					if (mUpIndicatorView == null)
@@ -117,17 +110,14 @@ namespace Net.Simonvt.Menudrawer.Compat
 					Class supportActivity = activity.Class;
 					Method getActionBar = supportActivity.GetMethod("getSupportActionBar");
 					getActionBar.Invoke(mActionBar);
-					
+
 					Class supportActionBar = mActionBar.Class;
 					mHomeAsUpEnabled = supportActionBar.GetMethod("setDisplayHomeAsUpEnabled", Boolean.Type);
 
 				}
 				catch (Throwable t)
 				{
-					if (ActionBarHelper.DEBUG)
-					{
-						Log.Error(TAG, "Unable to init SetIndicatorInfo for ABS", t);
-					}
+					Log.Error(TAG, "Unable to init SetIndicatorInfo for ABS", t);
 				}
 			}
 		}

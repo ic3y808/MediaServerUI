@@ -7,8 +7,6 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Views.Animations;
-using Android.Widget;
-using SlideUpPanelLibrary;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace Alloy.Models
