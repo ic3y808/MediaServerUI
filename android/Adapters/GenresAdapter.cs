@@ -41,7 +41,7 @@ namespace Alloy.Adapters
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.genre_row, parent, false);
-			GenreViewHolder holder = new GenreViewHolder(v, OnClick, true);
+			GenreViewHolder holder = new GenreViewHolder(v, OnClick);
 			return holder;
 		}
 
@@ -98,12 +98,12 @@ namespace Alloy.Adapters
 		{
 			private View view;
 			
-			public GenreViewHolder(View v, Action<GenreViewHolderEvent> listener, bool hasScroller) : base(v)
+			public GenreViewHolder(View v, Action<GenreViewHolderEvent> listener) : base(v)
 			{
 				view = v;
 				artist = v.FindViewById<TextView>(Resource.Id.genre);
 				if (artist != null) artist.Selected = true;
-				v.Click += (sender, e) => listener(new GenreViewHolderEvent() { Position = base.LayoutPosition, GenreViewHolder = this });
+				v.Click += (sender, e) => listener(new GenreViewHolderEvent { Position = base.LayoutPosition, GenreViewHolder = this });
 				v.ClearAnimation();
 			}
 

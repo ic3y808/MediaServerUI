@@ -1,6 +1,6 @@
-'use strict';
-var Lastfm = require('./simple-lastfm');
-var logger = require('../../../common/logger');
+"use strict";
+var Lastfm = require("./simple-lastfm");
+var logger = require("../../../common/logger");
 
 function LastFMScanner(db) {
   this.db = db;
@@ -18,7 +18,7 @@ LastFMScanner.prototype.getLastFm = function getLastFm() {
   if (this.lastfm !== null) {
     return this.lastfm;
   } else {
-    var lastfmSettings = this.db.prepare('SELECT * from Settings WHERE settings_key=?').get('alloydb_settings');
+    var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
     if (lastfmSettings && lastfmSettings.settings_value) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
@@ -48,28 +48,28 @@ LastFMScanner.prototype.writeQueue = function writeQueue(force) {
     var insertMany = this.db.transaction((tracks) => {
       for (var track of tracks) {
 
-        var sql = 'INSERT OR REPLACE INTO Tracks (';
+        var sql = "INSERT OR REPLACE INTO Tracks (";
 
         Object.keys(track).forEach(function (key, index) {
           if (index == Object.keys(track).length - 1)
             sql += key;
           else
-            sql += key + ', ';
+            sql += key + ", ";
         });
 
 
 
-        sql += ') VALUES (';
+        sql += ") VALUES (";
 
 
         Object.keys(track).forEach(function (key, index) {
           if (index == Object.keys(track).length - 1)
-            sql += '@' + key;
+            sql += "@" + key;
           else
-            sql += '@' + key + ', ';
+            sql += "@" + key + ", ";
         });
 
-        sql += ')';
+        sql += ")";
 
 
         try {
@@ -92,7 +92,7 @@ LastFMScanner.prototype.writeQueue = function writeQueue(force) {
 
       }
       this.currentQueue = [];
-      logger.info("alloydb", 'Writing Database');
+      logger.info("alloydb", "Writing Database");
     });
     insertMany(this.currentQueue);
   }
@@ -108,7 +108,7 @@ LastFMScanner.prototype.step = function step() {
     try {
       this.getLastfmSession(() => {
         this.getLastFm().getTrackInfo({
-          artist: track.artist === 'No Artist' ? track.base_path : track.artist,
+          artist: track.artist === "No Artist" ? track.base_path : track.artist,
           track: track.title,
           mbid: track.musicbrainz_artistid,
           callback: result => {
@@ -146,7 +146,7 @@ LastFMScanner.prototype.rescan = function rescan() {
   this.filteredFiles = [];
   this.currentQueue = [];
 
-  this.filteredFiles = this.db.prepare('SELECT * from Tracks WHERE last_fm_info IS NULL').all();
+  this.filteredFiles = this.db.prepare("SELECT * from Tracks WHERE last_fm_info IS NULL").all();
 
   this.totalFiles = this.filteredFiles.length;
 
@@ -167,7 +167,7 @@ LastFMScanner.prototype.startScan = function startScan() {
     return "Scan already in progress, use cancel_scan first";
   }
 
-  this.updateStatus('Starting Scan', true);
+  this.updateStatus("Starting Scan", true);
 
   new Promise((resolve, reject) => {
     this.rescan();
@@ -184,7 +184,7 @@ LastFMScanner.prototype.updateStatus = function updateStatus(status, isScanning)
 };
 
 LastFMScanner.prototype.resetStatus = function resetStatus() {
-  this.scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
+  this.scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
 };
 
 LastFMScanner.prototype.getStatus = function getStatus() {

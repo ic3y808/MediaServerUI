@@ -1,16 +1,16 @@
-'use strict';
+"use strict";
 
 const got = require("got");
 const path = require("path");
-const Queue = require('better-queue');
-const logger = require('../../../common/logger');
-const uuidv3 = require('uuid/v3');
-var moment = require('moment');
+const Queue = require("better-queue");
+const logger = require("../../../common/logger");
+const uuidv3 = require("uuid/v3");
+var moment = require("moment");
 
 var db = null;
 var totalFiles = 0;
 var filteredFiles = [];
-var scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
+var scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
 
 var urlBase = process.env.BRAINZ_API_URL;
 
@@ -24,28 +24,28 @@ function MusicbrainzScanner(database) {
 
 function writeDb(data, table) {
 
-  var sql = 'INSERT OR REPLACE INTO ' + table + ' (';
+  var sql = "INSERT OR REPLACE INTO " + table + " (";
 
   Object.keys(data).forEach(function (key, index) {
     if (index == Object.keys(data).length - 1)
       sql += key;
     else
-      sql += key + ', ';
+      sql += key + ", ";
   });
 
 
 
-  sql += ') VALUES (';
+  sql += ") VALUES (";
 
 
   Object.keys(data).forEach(function (key, index) {
     if (index == Object.keys(data).length - 1)
-      sql += '@' + key;
+      sql += "@" + key;
     else
-      sql += '@' + key + ', ';
+      sql += "@" + key + ", ";
   });
 
-  sql += ')';
+  sql += ")";
 
 
 
@@ -65,7 +65,7 @@ function writeDb(data, table) {
 function processAlbums(track, result) {
   if (result.Albums) {
     result.Albums.forEach(function (album) {
-      var existingAlbum = db.prepare('SELECT * FROM Albums WHERE foreign_id = ?').all(album.foreign_id);
+      var existingAlbum = db.prepare("SELECT * FROM Albums WHERE foreign_id = ?").all(album.foreign_id);
 
       if (existingAlbum.length === 0) {
         var dbAlbum = {
@@ -87,8 +87,8 @@ function processAlbums(track, result) {
 
         dbAlbum.path = path.dirname(path.dirname(track.path));
         dbAlbum.path = path.join(dbAlbum.path, album.Title + " " + year);
-        var tempAlbumId = 'album_' + uuidv3(dbAlbum.path, process.env.UUID_BASE).split('-')[0];
-        var stmt = db.prepare('SELECT * FROM Albums WHERE id = ?');
+        var tempAlbumId = "album_" + uuidv3(dbAlbum.path, process.env.UUID_BASE).split("-")[0];
+        var stmt = db.prepare("SELECT * FROM Albums WHERE id = ?");
         var existingAlbum = stmt.all(tempAlbumId);
         if (existingAlbum.length === 0) {
           dbAlbum.id = tempAlbumId;
@@ -110,7 +110,7 @@ function processAlbums(track, result) {
 function processLinks(result) {
   if (result.Links) {
     result.Links.forEach(function (link) {
-      var existingLink = db.prepare('SELECT * FROM Links WHERE type=? AND target=? AND artist_foreign_id=?').all(link.type, link.target, result.Id);
+      var existingLink = db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_foreign_id=?").all(link.type, link.target, result.Id);
       if (existingLink.length === 0) {
         link.artist_foreign_id = result.Id;
         writeDb(link, "Links")
@@ -171,21 +171,21 @@ function shouldCancel() {
 };
 
 function resetStatus() {
-  scanStatus = { status: '', isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
+  scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
 };
 
 
 function cleanup() {
 
   resetStatus();
-  updateStatus('Scan Complete', false);
+  updateStatus("Scan Complete", false);
 }
 
 
 function cancel() {
   if (isScanning()) {
     scanStatus.shouldCancel = true;
-    updateStatus('Starting cancel', false);
+    updateStatus("Starting cancel", false);
   }
   else {
     updateStatus("Cancelled scanning", false);
@@ -194,8 +194,8 @@ function cancel() {
 
 
 function scan() {
-  updateStatus('Starting musicbrainz rescan', true);
-  var allTracks = db.prepare('SELECT * FROM Tracks').all();
+  updateStatus("Starting musicbrainz rescan", true);
+  var allTracks = db.prepare("SELECT * FROM Tracks").all();
 
   filteredFiles = [];
 
@@ -203,33 +203,33 @@ function scan() {
     if (shouldCancel()) return;
     filteredFiles.push(track);
     q.push(track);
-    updateStatus('Queuing ' + filteredFiles.length, true);
+    updateStatus("Queuing " + filteredFiles.length, true);
   });
 
   totalFiles = filteredFiles.length;
-  updateStatus('Starting scan of ' + totalFiles, true);
+  updateStatus("Starting scan of " + totalFiles, true);
 }
 
 
 MusicbrainzScanner.prototype.cancelScan = function cancelScan() {
-  logger.info("alloydb", 'cancelScan');
+  logger.info("alloydb", "cancelScan");
   cancel();
 };
 
 MusicbrainzScanner.prototype.incrementalCleanup = function incrementalCleanup() {
   if (isScanning()) {
-    logger.debug("alloydb", 'scan in progress');
+    logger.debug("alloydb", "scan in progress");
   } else {
-    logger.info("alloydb", 'incrementalCleanup');
+    logger.info("alloydb", "incrementalCleanup");
 
   }
 };
 
 MusicbrainzScanner.prototype.startScan = function startScan() {
   if (isScanning()) {
-    logger.debug("alloydb", 'scan in progress');
+    logger.debug("alloydb", "scan in progress");
   } else {
-    logger.info("alloydb", 'startScan');
+    logger.info("alloydb", "startScan");
     resetStatus();
     scan();
   }
@@ -242,6 +242,6 @@ MusicbrainzScanner.prototype.getStatus = function getStatus() {
 };
 
 var q = new Queue(processQueue)
-q.on('drain', cleanup);
+q.on("drain", cleanup);
 
 module.exports = MusicbrainzScanner;

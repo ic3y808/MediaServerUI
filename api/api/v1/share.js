@@ -1,7 +1,7 @@
-'use strict';
-var express = require('express');
+"use strict";
+var express = require("express");
 var router = express.Router();
-var logger = require('../../../common/logger');
+var logger = require("../../../common/logger");
 
 /**
  * This function comment is parsed by doctrine
@@ -13,12 +13,12 @@ var logger = require('../../../common/logger');
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.get('/shares', function (req, res) {
+router.get("/shares", function (req, res) {
   var id = req.query.id;
   var albumId = req.query.albumId;
   var artistId = req.query.artistId;
 
-  res.send('respond with a resource');
+  res.send("respond with a resource");
 });
 
 /**
@@ -34,12 +34,12 @@ router.get('/shares', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put('/shares', function (req, res) {
+router.put("/shares", function (req, res) {
   var id = req.query.id;
   var description = req.query.description;
   var expires = req.query.expires;
 
-  res.send('respond with a resource');
+  res.send("respond with a resource");
 });
 
 /**
@@ -53,10 +53,10 @@ router.put('/shares', function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.delete('/shares', function (req, res) {
+router.delete("/shares", function (req, res) {
   var id = req.query.id;
 
-  res.send('respond with a resource');
+  res.send("respond with a resource");
 });
 
 module.exports = router;

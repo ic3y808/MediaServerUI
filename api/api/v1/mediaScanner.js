@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 const fs = require("fs");
-const path = require('path');
-const utils = require('./utils');
-const uuidv3 = require('uuid/v3');
-const parser = require('xml2json');
-const klawSync = require('klaw-sync');
-const structures = require('./structures');
-const mm = require('../../music-metadata');
-const MediaScannerBase = require('./MediaScannerBase');
-const logger = require('../../../common/logger');
+const path = require("path");
+const utils = require("./utils");
+const uuidv3 = require("uuid/v3");
+const parser = require("xml2json");
+const klawSync = require("klaw-sync");
+const structures = require("./structures");
+const mm = require("../../music-metadata");
+const MediaScannerBase = require("./MediaScannerBase");
+const logger = require("../../../common/logger");
 
 class MediaScanner extends MediaScannerBase {
 
@@ -19,12 +19,12 @@ class MediaScanner extends MediaScannerBase {
   startScan() {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
-      logger.debug("alloydb", 'scan in progress');
+      logger.debug("alloydb", "scan in progress");
     } else {
-      logger.debug("alloydb", 'start Full Scan');
+      logger.debug("alloydb", "start Full Scan");
       var collectedArtistFolders = this.collectArtists();
-      this.updateStatus('found mapped artists ' + collectedArtistFolders.mappedArtists.length, true);
-      this.updateStatus('found unmapped artists ' + collectedArtistFolders.unmappedArtists.length, true);
+      this.updateStatus("found mapped artists " + collectedArtistFolders.mappedArtists.length, true);
+      this.updateStatus("found unmapped artists " + collectedArtistFolders.unmappedArtists.length, true);
       this.scanArtists(collectedArtistFolders.mappedArtists);
     }
   }
@@ -32,7 +32,7 @@ class MediaScanner extends MediaScannerBase {
   checkDBLinks(artist) {
     if (artist && artist.Links) {
       artist.Links.forEach(link => {
-        var existingLink = this.db.prepare('SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?').all(link.type, link.target, artist.Id);
+        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.Id);
         if (existingLink.length === 0) {
           link.artist_id = artist.Id;
           this.writeDb(link, "Links")
@@ -42,7 +42,7 @@ class MediaScanner extends MediaScannerBase {
   }
 
   checkDBArtistExists(artist) {
-    var stmt = this.db.prepare('SELECT * FROM Artists WHERE id = ?');
+    var stmt = this.db.prepare("SELECT * FROM Artists WHERE id = ?");
     var existingArtist = stmt.all(artist.id);
     if (existingArtist.length === 0) {
       const artistTracks = klawSync(artist.path, { nodir: true });
@@ -79,16 +79,16 @@ class MediaScanner extends MediaScannerBase {
         if (albumInfo) {
           var mappedAlbum = {
             id: json.album.musicbrainzalbumid,
-            artist: utils.isStringValid(artist.name, ''),
+            artist: utils.isStringValid(artist.name, ""),
             artist_id: artist.id,
-            name: utils.isStringValid(albumInfo.Title, ''),
+            name: utils.isStringValid(albumInfo.Title, ""),
             path: dir.path,
             created: json.album.releasedate,
-            type: utils.isStringValid(albumInfo.Type, ''),
+            type: utils.isStringValid(albumInfo.Type, ""),
             rating: albumInfo.Rating.Count,
             track_count: validTracks.length
           };
-          var stmt = this.db.prepare('SELECT * FROM Albums WHERE id = ?');
+          var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
           var existingAlbum = stmt.all(mappedAlbum.id);
           if (existingAlbum.length === 0) {
             this.writeDb(mappedAlbum, "Albums")
@@ -109,7 +109,7 @@ class MediaScanner extends MediaScannerBase {
 
   checkDBGenreExist(track) {
     try {
-      var genre = track.genre.split('/');
+      var genre = track.genre.split("/");
 
       if (genre.length > 0) {
         track.genre = genre[0];
@@ -121,12 +121,12 @@ class MediaScanner extends MediaScannerBase {
         if (i < genre.length - 1) track.tags += "|";
       }
 
-      var tempGenreId = 'genre_' + uuidv3(track.genre, process.env.UUID_BASE).split('-')[0];
-      var stmt = this.db.prepare('SELECT * FROM Genres WHERE id = ? OR name = ?');
+      var tempGenreId = "genre_" + uuidv3(track.genre, process.env.UUID_BASE).split("-")[0];
+      var stmt = this.db.prepare("SELECT * FROM Genres WHERE id = ? OR name = ?");
       var existingGenre = stmt.all(tempGenreId, track.genre);
       if (existingGenre.length === 0) {
         track.genre_id = tempGenreId;
-        var stmt = this.db.prepare('INSERT INTO Genres (id, name) VALUES (?,?)');
+        var stmt = this.db.prepare("INSERT INTO Genres (id, name) VALUES (?,?)");
         var info = stmt.run(track.genre_id, track.genre);
       } else {
         track.genre_id = existingGenre[0].id;
@@ -144,7 +144,7 @@ class MediaScanner extends MediaScannerBase {
     track.album = utils.isStringValid(metadata.common.album, "No Album");
 
 
-    track.genre = utils.isStringValid((metadata.common.genre !== undefined && metadata.common.genre[0] !== undefined && metadata.common.genre[0] !== '') ? metadata.common.genre[0] : "No Genre");
+    track.genre = utils.isStringValid((metadata.common.genre !== undefined && metadata.common.genre[0] !== undefined && metadata.common.genre[0] !== "") ? metadata.common.genre[0] : "No Genre");
     this.checkDBGenreExist(track);
 
     track.bpm = utils.isStringValid(metadata.common.bpm, "");
@@ -158,14 +158,14 @@ class MediaScanner extends MediaScannerBase {
   checkAlbumArt(track, metadata) {
     if (metadata.common.picture) {
 
-      var coverId = 'cvr_' + track.album_id;
-      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + '.jpg');
+      var coverId = "cvr_" + track.album_id;
+      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
 
-      var stmt = this.db.prepare('SELECT * FROM CoverArt WHERE id = ?');
+      var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
       var existingCover = stmt.all(coverId);
 
       if (existingCover.length === 0) {
-        this.db.prepare('INSERT INTO CoverArt (id, album) VALUES (?, ?)').run(coverId, track.album);
+        this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
       }
 
       track.cover_art = coverId;
@@ -182,13 +182,13 @@ class MediaScanner extends MediaScannerBase {
   }
 
   collectArtists() {
-    var mediaPaths = this.db.prepare('SELECT * FROM MediaPaths').all();
+    var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
 
     if (mediaPaths.length === 0) {
-      this.updateStatus('No Media Path Defined ', false);
+      this.updateStatus("No Media Path Defined ", false);
       return;
     }
-    this.updateStatus('Collecting mapped and unmapped artist folders', true);
+    this.updateStatus("Collecting mapped and unmapped artist folders", true);
 
     var mappedArtistDirectories = [];
     var unmappedArtistDirectories = [];
@@ -223,7 +223,7 @@ class MediaScanner extends MediaScannerBase {
   scanArtist(artist) {
     return new Promise((resolve, reject) => {
       if (this.shouldCancel()) return;
-      this.updateStatus('Scanning artist ' + artist.path, true);
+      this.updateStatus("Scanning artist " + artist.path, true);
       if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) return;
       var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
       var json = JSON.parse(parser.toJson(data));
@@ -232,14 +232,14 @@ class MediaScanner extends MediaScannerBase {
       this.checkDBLinks(artistInfo);
       var mappedArtist = {
         id: json.artist.musicbrainzartistid,
-        name: utils.isStringValid(json.artist.title, ''),
-        sort_name: utils.isStringValid(artistInfo.SortName, ''),
-        biography: utils.isStringValid(json.artist.biography, ''),
-        status: utils.isStringValid(artistInfo.Status, ''),
+        name: utils.isStringValid(json.artist.title, ""),
+        sort_name: utils.isStringValid(artistInfo.SortName, ""),
+        biography: utils.isStringValid(json.artist.biography, ""),
+        status: utils.isStringValid(artistInfo.Status, ""),
         rating: artistInfo.Rating.Count,
-        type: utils.isStringValid(artistInfo.Type, ''),
-        disambiguation: utils.isStringValid(artistInfo.Disambiguation, ''),
-        overview: utils.isStringValid(artistInfo.Overview, '')
+        type: utils.isStringValid(artistInfo.Type, ""),
+        disambiguation: utils.isStringValid(artistInfo.Disambiguation, ""),
+        overview: utils.isStringValid(artistInfo.Overview, "")
       };
 
       Object.assign(artist, mappedArtist);
@@ -258,9 +258,9 @@ class MediaScanner extends MediaScannerBase {
                 allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
                   var processed_track = new structures.Song();
                   processed_track.path = track.path;
-                  processed_track.artist = utils.isStringValid(artist.name, '');
+                  processed_track.artist = utils.isStringValid(artist.name, "");
                   processed_track.artist_id = artist.id;
-                  processed_track.album = utils.isStringValid(album.name, '');
+                  processed_track.album = utils.isStringValid(album.name, "");
                   processed_track.album_path = album.path;
                   processed_track.getStats();
                   processed_track = this.checkExistingTrack(processed_track, metadata);
@@ -289,7 +289,7 @@ class MediaScanner extends MediaScannerBase {
 
                   this.writeDb(processed_track, "Tracks");
                   this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
-                  this.updateStatus('Scanning track ' + processed_track.path, true);
+                  this.updateStatus("Scanning track " + processed_track.path, true);
                 }));
               }
             } catch (err) {
@@ -303,7 +303,7 @@ class MediaScanner extends MediaScannerBase {
       });
 
       Promise.all(allMetaPromises).then(() => {
-        this.updateStatus('finished scanning albums from ' + artist.name, true);
+        this.updateStatus("finished scanning albums from " + artist.name, true);
         resolve();
       })
     });
@@ -320,14 +320,14 @@ class MediaScanner extends MediaScannerBase {
     } else {
       this.db.checkpoint();
       this.resetStatus();
-      this.updateStatus('Scan Complete', false);
+      this.updateStatus("Scan Complete", false);
     }
   }
 
   scanPath(dir) {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
-      logger.debug("alloydb", 'scan in progress');
+      logger.debug("alloydb", "scan in progress");
     } else {
       if (fs.existsSync(dir)) {
         if (fs.lstatSync(dir).isDirectory()) {
@@ -335,7 +335,7 @@ class MediaScanner extends MediaScannerBase {
             this.scanArtist({ path: dir }).then(() => {
               this.db.checkpoint();
               this.resetStatus();
-              this.updateStatus('Scan Complete', false);
+              this.updateStatus("Scan Complete", false);
             })
           }
         }
@@ -349,12 +349,12 @@ class MediaScanner extends MediaScannerBase {
 
         if (artistDirs.length > 0) {
           artistDirs.forEach(dir => {
-            if (dir !== undefined && dir !== null && typeof (dir) === 'string' && dir !== '') {
+            if (dir !== undefined && dir !== null && typeof (dir) === "string" && dir !== "") {
               if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
                 this.scanArtist({ path: dir }).then(() => {
                   this.db.checkpoint();
                   this.resetStatus();
-                  this.updateStatus('Scan Complete', false);
+                  this.updateStatus("Scan Complete", false);
                 })
               }
             }
@@ -363,7 +363,7 @@ class MediaScanner extends MediaScannerBase {
           this.scanArtist({ path: path.dirname(root) }).then(() => {
             this.db.checkpoint();
             this.resetStatus();
-            this.updateStatus('Scan Complete', false);
+            this.updateStatus("Scan Complete", false);
             this.cleanup();
           })
         }

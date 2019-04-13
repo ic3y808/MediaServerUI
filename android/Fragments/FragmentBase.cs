@@ -29,9 +29,9 @@ namespace Alloy.Fragments
 {
 	public abstract class FragmentBase : Fragment, ISensorEventListener, SwipeRefreshLayout.IOnRefreshListener
 	{
-		public BackgroundAudioServiceConnection ServiceConnection;
-		private SearchView searchView;
+		public virtual BackgroundAudioServiceConnection ServiceConnection { get; set; }
 		public bool HasBack { get; set; }
+		private SearchView searchView;
 
 		public override void OnResume()
 		{
@@ -70,14 +70,12 @@ namespace Alloy.Fragments
 		private void Removehanders()
 		{
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			MusicProvider.SearchStart -= MusicProvider_SearchStart;
 			MusicProvider.SearchResultsRecieved -= MusicProvider_SearchResultsRecieved;
 		}
 
 		private void AddHandlers()
 		{
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			MusicProvider.SearchStart += MusicProvider_SearchStart;
 			MusicProvider.SearchResultsRecieved += MusicProvider_SearchResultsRecieved;
 		}
 
@@ -138,11 +136,6 @@ namespace Alloy.Fragments
 			{
 				ServiceConnection_ServiceConnected(null, true);
 			}
-		}
-
-		private void MusicProvider_SearchStart(object sender, EventArgs e)
-		{
-
 		}
 
 		public void getCursorFromList(List<Tuple<string, string, string, string, string>> items, MatrixCursor cursor)
