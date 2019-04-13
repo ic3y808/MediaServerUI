@@ -101,8 +101,11 @@
 	<string name="fresh_never_played_albums_list_label">Never Played Albums</string>
 	<string name="fresh_never_played_tracks_list_label">Never Played Tracks</string>
 	<string name="fresh_top_played_tracks_list_label">Top Played Tracks</string>
-	
 
+	<string name="genre_details_metrics_plays_label">Plays</string>
+	<string name="genre_details_metrics_tracks_label">Tracks</string>
+	<string name="genre_details_info_play_button_text">Play Genre</string>
+	
 
 
 	<string name="nav_favorites">Favorites</string>

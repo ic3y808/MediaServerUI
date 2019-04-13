@@ -21,7 +21,7 @@ using Alloy.Services;
 namespace Alloy
 {
 	[Activity(Label = "Alloy", LaunchMode = LaunchMode.SingleTask)]
-	public class NowPlayingActivity : Activity,RecyclerView.IOnChildAttachStateChangeListener
+	public class NowPlayingActivity : Activity
 	{
 		private TextView artistTextView;
 		private readonly int backgroundContrast = 200;
@@ -54,9 +54,7 @@ namespace Alloy
 			nowPlayingList.FocusableInTouchMode = true;
 			nowPlayingList.ScrollChange += NowPlayingList_ScrollChange;
 
-			nowPlayingList.AddOnChildAttachStateChangeListener(this);
-
-			PageHelper helper = new PageHelper();
+			NowPlayingSnapHelper helper = new NowPlayingSnapHelper();
 			helper.AttachToRecyclerView(nowPlayingList);
 
 			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
@@ -526,25 +524,7 @@ namespace Alloy
 		{
 			starredButton.SetImageResource(Resource.Drawable.star_o);
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			if (serviceConnection.CurrentSong.Starred) starredButton.SetImageResource(Resource.Drawable.favorite);
-		}
-
-		public void OnChildViewAttachedToWindow(View view)
-		{
-			//VideoView video_view = view.FindViewById<VideoView>(Resource.Id.video_view);
-			//if (video_view != null)
-			//{
-			//	video_view.Start();
-			//}
-		}
-
-		public void OnChildViewDetachedFromWindow(View view)
-		{
-			//VideoView video_view = view.FindViewById<VideoView>(Resource.Id.video_view);
-			//if (video_view != null)
-			//{
-			//	video_view.Pause();
-			//}
+			if (serviceConnection.CurrentSong.Starred) starredButton.SetImageResource(Resource.Drawable.star_g);
 		}
 	}
 }

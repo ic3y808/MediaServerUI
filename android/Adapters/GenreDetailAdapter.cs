@@ -6,28 +6,68 @@ using Android.Widget;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
-
-using Android.OS;
+using Alloy.Services;
+using Android.Graphics.Drawables;
+using Android.Support.V7.Widget;
 
 namespace Alloy.Adapters
 {
-	class GenreDetailAdapter : BaseAdapter<Song>
+	class GenreDetailAdapter : RecyclerView.Adapter
 	{
-		private LayoutInflater layoutInflater;
-		public Genre Genre;
-		public MusicQueue GenreTracks;
-		public static event EventHandler GenreLoaded;
+		private readonly Activity Activity;
+		private readonly GenreContainer Genre;
+		private readonly BackgroundAudioServiceConnection ServiceConnection;
 
-		public GenreDetailAdapter(Genre genre)
+
+		public GenreDetailAdapter(Activity activity, GenreContainer genre, BackgroundAudioServiceConnection serviceConnection)
 		{
-			GenreTracks = new MusicQueue();
 			Genre = genre;
-			layoutInflater = LayoutInflater.From(Application.Context);
+			Activity = activity;
+			ServiceConnection = serviceConnection;
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
-		public void RefreshGenre()
+		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			GenreLoader artistLoader = (GenreLoader)new GenreLoader(this, Genre).Execute();
+			switch (position)
+			{
+				case 0:
+					if (holder is GenreInformationViewHolder genreInfoHolder)
+					{
+						genreInfoHolder.Genre = Genre.Genre;
+						genreInfoHolder.GenreName.SetText(Genre.Genre.Name, TextView.BufferType.Normal);
+						genreInfoHolder.GenreSize.SetText(Genre.Size, TextView.BufferType.Normal);
+						Genre.Genre.GetAlbumArt(genreInfoHolder.GenreImage);
+						genreInfoHolder.CheckStarred();
+					}
+					break;
+				case 1:
+					if (holder is GenreMetricsViewHolder genreMetricsHolder)
+					{
+						genreMetricsHolder.TrackCount.SetText(Genre.Tracks.Count.ToString(), TextView.BufferType.Normal);
+						genreMetricsHolder.PlayCount.SetText(Genre.TotalPlays.ToString(), TextView.BufferType.Normal);
+					}
+					break;
+				case 2:
+					if (holder is GenreTracksViewHolder genreTracksHolder)
+					{
+						if (Genre.Tracks.Count > 0)
+						{
+							genreTracksHolder.GenreTracksListContainer.Visibility = ViewStates.Visible;
+							GenreDetailTrackAdapter genreTracksAdapter = new GenreDetailTrackAdapter(Genre.Tracks, ServiceConnection);
+							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { genreTracksAdapter.NotifyDataSetChanged(); };
+							genreTracksHolder.GenreTracksRecycleView?.SetAdapter(genreTracksAdapter);
+							genreTracksAdapter.ItemClick += TrackClick;
+							Adapters.SetAdapters(Activity, genreTracksAdapter);
+						}
+					}
+					break;
+			}
+		}
+
+		public override int GetItemViewType(int position)
+		{
+			return position;
 		}
 
 		public override long GetItemId(int position)
@@ -35,59 +75,180 @@ namespace Alloy.Adapters
 			return position;
 		}
 
-		public override View GetView(int position, View convertView, ViewGroup parent)
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			if (GenreTracks == null || GenreTracks.Count == 0) return convertView;
-
-			if (convertView == null) // otherwise create a new one
+			switch (viewType)
 			{
-				convertView = layoutInflater.Inflate(Resource.Layout.general_list_row, null);
-			}
-			convertView.FindViewById<TextView>(Resource.Id.title).Text = GenreTracks[position].Title;
-			convertView.FindViewById<TextView>(Resource.Id.artist).Text = GenreTracks[position].Artist;
-			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = GenreTracks[position].Duration.ToTimeFromSeconds();
-			GenreTracks[position].GetAlbumArt(convertView.FindViewById<ImageView>(Resource.Id.album_art));
+				case 0:
+					return new GenreInformationViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.genre_detail_genre_info, parent, false));
+				case 1:
+					return new GenreMetricsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.genre_detail_genre_metrics, parent, false));
+				case 2:
+					return new GenreTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.genre_detail_genre_tracks, parent, false));
 
-			if (GenreTracks[position].IsSelected)
-			{
-				convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundResource(Resource.Color.menu_selection_color);
 			}
-			else convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundColor(Color.Transparent);
-
-			return convertView;
+			return null;
 		}
 
-		public override int Count => GenreTracks.Count;
-
-		public override Song this[int position] => GenreTracks[position];
-		public class GenreLoader : AsyncTask<object, Song, int>
+		public override int ItemCount
 		{
-			private GenreDetailAdapter adapter;
-			private Genre genre;
-			public GenreLoader(GenreDetailAdapter adapter, Genre genre)
+			get { return 3; }
+		}
+
+		public event EventHandler<GenreDetailTrackAdapter.ViewHolder.ViewHolderEvent> TrackClick;
+
+		public class GenreInformationViewHolder : RecyclerView.ViewHolder
+		{
+			public Genre Genre { get; set; }
+			public TextView GenreName { get; set; }
+			public TextView GenreSize { get; set; }
+			public Button GenrePlayButton { get; set; }
+			public ImageView GenreImage { get; set; }
+			public ImageView StarButton { get; set; }
+			private Drawable Starred { get; set; }
+			private Drawable NotStarred { get; set; }
+
+			public GenreInformationViewHolder(View itemView) : base(itemView)
 			{
-				this.adapter = adapter;
-				this.genre = genre;
+				GenreName = itemView.FindViewById<TextView>(Resource.Id.genre_name);
+				GenreSize = itemView.FindViewById<TextView>(Resource.Id.genre_size);
+				GenrePlayButton = itemView.FindViewById<Button>(Resource.Id.genre_play_button);
+				GenrePlayButton.Click += (sender, e) => ItemClick?.Invoke(null,null);
+				GenreImage = itemView.FindViewById<ImageView>(Resource.Id.genre_image);
+				StarButton = itemView.FindViewById<ImageView>(Resource.Id.genre_star_button);
+				StarButton.Click += StarButtonClick;
+				Starred = itemView.Context.GetDrawable(Resource.Drawable.star_g);
+				NotStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
 			}
 
-			protected override int RunInBackground(params object[] @params)
-			{
-				adapter.GenreTracks = MusicProvider.GetGenreTracks(genre);
+			public event EventHandler ItemClick;
 
-				return 0;
+			private void StarButtonClick(object sender, EventArgs e)
+			{
+				if (Genre.Starred)
+				{
+					MusicProvider.RemoveStar(Genre);
+				}
+				else
+				{
+					MusicProvider.AddStar(Genre);
+				}
+				CheckStarred();
 			}
 
-			protected override void OnProgressUpdate(params Song[] values)
+			public void CheckStarred()
 			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
-				base.OnProgressUpdate(values);
+				StarButton?.SetImageDrawable(Genre.Starred ? Starred : NotStarred);
+			}
+		}
+
+		public class GenreMetricsViewHolder : RecyclerView.ViewHolder
+		{
+			public TextView TrackCount { get; set; }
+			public TextView PlayCount { get; set; }
+
+			public GenreMetricsViewHolder(View itemView) : base(itemView)
+			{
+				TrackCount = itemView.FindViewById<TextView>(Resource.Id.genre_track_count);
+				PlayCount = itemView.FindViewById<TextView>(Resource.Id.genre_play_count);
+			}
+		}
+
+		public class GenreTracksViewHolder : RecyclerView.ViewHolder
+		{
+			public LinearLayout GenreTracksListContainer { get; set; }
+			public RecyclerView GenreTracksRecycleView { get; set; }
+			public GenreTracksViewHolder(View itemView) : base(itemView)
+			{
+				GenreTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.genre_tracks_list_container);
+				GenreTracksListContainer.Visibility = ViewStates.Gone;
+				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
+				GenreTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.genre_tracks_list);
+				GenreTracksRecycleView.SetLayoutManager(layoutManager);
+			}
+		}
+	}
+
+	public class GenreDetailTrackAdapter : RecyclerView.Adapter
+	{
+		public MusicQueue Songs { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; }
+
+		public GenreDetailTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
+		{
+			Songs = songs;
+			ServiceConnection = serviceConnection;
+			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, arg) => { NotifyDataSetChanged(); };
+		}
+
+		public override long GetItemId(int position)
+		{
+			return position;
+		}
+
+		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		{
+			ViewHolder h = (ViewHolder)holder;
+			h.Songs = Songs;
+			h.TrackNo.SetText(Songs[position].No, TextView.BufferType.Normal);
+			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
+			h.Artist.SetText(Songs[position].Artist, TextView.BufferType.Normal);
+			h.SetSelected(position);
+		}
+
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+		{
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.genre_detail_song_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
+		}
+
+		public override int ItemCount => Songs.Count;
+
+		void OnClick(ViewHolder.ViewHolderEvent e)
+		{
+			ItemClick?.Invoke(this, e);
+		}
+
+		public event EventHandler<ViewHolder.ViewHolderEvent> ItemClick;
+
+		public class ViewHolder : RecyclerView.ViewHolder
+		{
+			public LinearLayout RootLayout { get; set; }
+			public TextView Title { get; set; }
+			public TextView Artist { get; set; }
+			public TextView TrackNo { get; set; }
+			public MusicQueue Songs { get; set; }
+			public BackgroundAudioServiceConnection ServiceConnection { get; set; }
+
+			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
+			{
+				RootLayout = itemView.FindViewById<LinearLayout>(Resource.Id.root_view);
+				RootLayout.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				Title = itemView.FindViewById<TextView>(Resource.Id.title);
+				Artist = itemView.FindViewById<TextView>(Resource.Id.artist);
+				TrackNo = itemView.FindViewById<TextView>(Resource.Id.trackno);
+				ServiceConnection = serviceConnection;
 			}
 
-			protected override void OnPostExecute(int result)
+			public void SetSelected(int position)
 			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
-				GenreLoaded?.Invoke(null, null);
-				base.OnPostExecute(result);
+				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
+				bool selected = Songs[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
+
+				if (selected)
+				{
+					RootLayout.SetBackgroundResource(Resource.Color.menu_selection_color);
+				}
+				else
+				{
+					RootLayout.SetBackgroundColor(Color.Transparent);
+				}
+			}
+
+			public class ViewHolderEvent
+			{
+				public int Position { get; set; }
+				public MusicQueue Songs { get; set; }
 			}
 		}
 	}

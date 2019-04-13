@@ -3,7 +3,7 @@ using Android.Views;
 
 namespace Alloy.Helpers
 {
-	public class PageHelper : LinearSnapHelper
+	public class NowPlayingSnapHelper : LinearSnapHelper
 	{
 
 		public override int FindTargetSnapPosition(RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY)

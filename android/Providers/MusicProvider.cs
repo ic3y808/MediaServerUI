@@ -27,7 +27,7 @@ namespace Alloy.Providers
 		public static Starred Starred { get; set; }
 		public static Fresh Fresh { get; set; }
 		public static Charts Charts { get; set; }
-		
+
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler<string> ArtistsRefreshed;
 		public static event EventHandler AlbumsStartRefresh;
@@ -38,6 +38,8 @@ namespace Alloy.Providers
 		public static event EventHandler<ArtistContainer> ArtistRefreshed;
 		public static event EventHandler AlbumStartRefresh;
 		public static event EventHandler<AlbumContainer> AlbumRefreshed;
+		public static event EventHandler GenreStartRefresh;
+		public static event EventHandler<GenreContainer> GenreRefreshed;
 		public static event EventHandler StarredStartRefresh;
 		public static event EventHandler<Starred> StarredRefreshed;
 		public static event EventHandler FreshStartRefresh;
@@ -49,9 +51,9 @@ namespace Alloy.Providers
 
 		static MusicProvider()
 		{
-			Genres = new  List<Genre>();
-			Albums = new  List<Album>();
-			Artists = new  List<Artist>();
+			Genres = new List<Genre>();
+			Albums = new List<Album>();
+			Artists = new List<Artist>();
 		}
 		public static string GetHost()
 		{
@@ -297,6 +299,45 @@ namespace Alloy.Providers
 			}
 		}
 
+		public class GenreLoader : AsyncTask<object, Song, int>
+		{
+			private Genre genre;
+			private GenreContainer result;
+			public GenreLoader(Genre genre)
+			{
+				this.genre = genre;
+			}
+
+			protected override int RunInBackground(params object[] @params)
+			{
+
+				try
+				{
+					Utils.UnlockSsl(true);
+					string request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
+					result = JsonConvert.DeserializeObject<GenreContainer>(request);
+					Utils.UnlockSsl(false);
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
+
+				return 0;
+			}
+
+			protected override void OnProgressUpdate(params Song[] values)
+			{
+				Alloy.Adapters.Adapters.UpdateAdapters();
+				base.OnProgressUpdate(values);
+			}
+
+			protected override void OnPostExecute(int refreshResult)
+			{
+				base.OnPostExecute(refreshResult);
+				if (refreshResult != 0) return;
+				GenreRefreshed?.Invoke(null, result);
+				Alloy.Adapters.Adapters.UpdateAdapters();
+			}
+		}
+
 		public class GenresLoader : AsyncTask<object, Song, int>
 		{
 			protected override int RunInBackground(params object[] @params)
@@ -406,7 +447,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int refreshResult)
 			{
 				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) {return;}
+				if (refreshResult != 0) { return; }
 				isLoading = false;
 				FreshRefreshed?.Invoke(null, Fresh);
 				Alloy.Adapters.Adapters.UpdateAdapters();
@@ -465,13 +506,13 @@ namespace Alloy.Providers
 
 		public static void RefreshStarred()
 		{
-			StarredStartRefresh?.Invoke(null,null);
+			StarredStartRefresh?.Invoke(null, null);
 			new StarredLoader().Execute();
 		}
 
 		public static void RefreshFresh()
 		{
-			FreshStartRefresh?.Invoke(null,null);
+			FreshStartRefresh?.Invoke(null, null);
 			new FreshLoader().Execute();
 		}
 
@@ -495,30 +536,21 @@ namespace Alloy.Providers
 		{
 			ArtistStartRefresh?.Invoke(null, null);
 			Adapters.Adapters.Clear();
-			ArtistLoader a = (ArtistLoader)new ArtistLoader(artist).Execute();
+			new ArtistLoader(artist).Execute();
 		}
 
 		public static void GetAlbum(Album album)
 		{
 			AlbumStartRefresh?.Invoke(null, null);
 			Adapters.Adapters.Clear();
-			AlbumLoader a = (AlbumLoader)new AlbumLoader(album).Execute();
+			new AlbumLoader(album).Execute();
 		}
 
-		public static MusicQueue GetGenreTracks(Genre genre)
+		public static void GetGenre(Genre genre)
 		{
-			MusicQueue tracks = new MusicQueue();
-			try
-			{
-				Utils.UnlockSsl(true);
-				string request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
-				GenreContainer result = JsonConvert.DeserializeObject<GenreContainer>(request);
-				tracks.AddRange(result.Tracks);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
-
-			return tracks;
+			GenreStartRefresh?.Invoke(null, null);
+			Adapters.Adapters.Clear();
+			new GenreLoader(genre).Execute();
 		}
 
 		public static string GetStreamUri(Song song)

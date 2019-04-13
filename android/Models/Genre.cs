@@ -20,7 +20,13 @@ namespace Alloy.Models
 		public Genre Genre { get; set; }
 
 		[JsonProperty("tracks")]
-		public List<Song> Tracks { get; set; }
+		public MusicQueue Tracks { get; set; }
+
+		[JsonProperty("total_plays")]
+		public int TotalPlays { get; set; }
+
+		[JsonProperty("size")]
+		public string Size { get; set; }
 	}
 
 	public class Genre : Object, IParcelable
@@ -41,7 +47,6 @@ namespace Alloy.Models
 		public int ArtistCount { get; set; }
 		[JsonProperty("album_count"), JsonConverter(typeof(NullIntConverter))]
 		public int AlbumCount { get; set; }
-
 
 		public bool IsSelected { get; set; }
 		public bool IsLabel { get; set; }
