@@ -112,7 +112,6 @@
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
     <Compile Include="Models\BackgroundAudioStatus.cs" />
     <Compile Include="Models\Charts.cs" />
-    <Compile Include="Models\Divider.cs" />
     <Compile Include="Models\Category.cs" />
     <Compile Include="Models\CustomToggle.cs" />
     <Compile Include="Models\Fresh.cs" />

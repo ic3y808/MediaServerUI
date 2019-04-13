@@ -579,11 +579,6 @@ namespace Alloy.Widgets
 				invalidateAllScrollOffsets();
 			}
 
-			public override void OnItemRangeChanged(int positionStart, int itemCount, Java.Lang.Object payload)
-			{
-				invalidateAllScrollOffsets();
-			}
-
 			public override void OnItemRangeInserted(int positionStart, int itemCount)
 			{
 				invalidateAllScrollOffsets();

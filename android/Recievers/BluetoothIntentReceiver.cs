@@ -2,22 +2,25 @@
 using Android.Bluetooth;
 using Android.Content;
 using Alloy.Services;
+using Android.Util;
 
 namespace Alloy.Recievers
 {
 	[BroadcastReceiver(Enabled = true)]
-	[IntentFilter(new[] { Android.Bluetooth.BluetoothDevice.ActionAclConnected, Android.Bluetooth.BluetoothDevice.ActionAclDisconnectRequested, Android.Bluetooth.BluetoothDevice.ActionAclDisconnected })]
+	[IntentFilter(new[] { BluetoothDevice.ActionAclConnected, BluetoothDevice.ActionAclDisconnectRequested, BluetoothDevice.ActionAclDisconnected })]
 	public class BluetoothIntentReceiver : BroadcastReceiver
 	{
-		private BackgroundAudioService service;
-		public BluetoothIntentReceiver(BackgroundAudioService service)
-		{
-			this.service = service; 
-		}
+		public BackgroundAudioService ServiceProvider { get; set; }
+		private const string TAG = "BluetoothIntentReceiver";
 
 		public BluetoothIntentReceiver()
 		{
-			
+			//must provide default
+		}
+
+		public BluetoothIntentReceiver(BackgroundAudioService serviceProvider)
+		{
+			ServiceProvider = serviceProvider;
 		}
 
 		public override void OnReceive(Context context, Intent intent)
@@ -26,8 +29,7 @@ namespace Alloy.Recievers
 			BluetoothDevice device = intent.GetParcelableExtra(BluetoothDevice.ExtraDevice) as BluetoothDevice;
 			string action = intent.Action;
 			string name = device != null ? device.Name : "None";
-
-			//Log.Debug(TAG, String.format("Sink State: %d; Action: %s; Device: %s", state, action, name));
+			Log.Debug(TAG, $"Sink State: {state}; Action:{action}; Device: {name}");
 
 			bool actionConnected = false;
 			bool actionDisconnected = false;
@@ -35,16 +37,14 @@ namespace Alloy.Recievers
 			if (BluetoothDevice.ActionAclConnected.Equals(action))
 			{
 				actionConnected = true;
+				ServiceProvider.Play();
 			}
 			else if (BluetoothDevice.ActionAclDisconnected.Equals(action) || BluetoothDevice.ActionAclDisconnectRequested.Equals(action))
 			{
 				actionDisconnected = true;
+				ServiceProvider.Pause();
 			}
 			System.Diagnostics.Debug.WriteLine($"BluetoothDevice actionConnected {actionConnected} actionDisconnected {actionDisconnected}");
-			//bool connected = state == Android.Bluetooth.BluetoothA2dp.STATE_CONNECTED || actionConnected;
-			//bool disconnected = state == android.bluetooth.BluetoothA2dp.STATE_DISCONNECTED || actionDisconnected;
-
-			
 		}
 	}
 }

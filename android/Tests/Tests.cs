@@ -9,8 +9,8 @@ namespace Tests
 	[TestFixture(Platform.Android)]
 	public class Tests
 	{
-		IApp app;
-		Platform platform;
+		private IApp app;
+		private readonly Platform platform;
 		private AppRect windowRect;
 
 		public Tests(Platform platform)

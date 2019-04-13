@@ -15,23 +15,22 @@ namespace Alloy.Widgets
 {
 	public class CircleImageView : ImageView
 	{
-		private static  ScaleType SCALE_TYPE = ScaleType.CenterCrop;
+		private static readonly ScaleType SCALE_TYPE = ScaleType.CenterCrop;
 
-		private static  Bitmap.Config BITMAP_CONFIG = Bitmap.Config.Argb8888;
+		private static readonly Bitmap.Config BITMAP_CONFIG = Bitmap.Config.Argb8888;
 		private static  int COLORDRAWABLE_DIMENSION = 2;
 
 		private static  int DEFAULT_BORDER_WIDTH = 0;
-		private static  Color DEFAULT_BORDER_COLOR = Color.Black;
-		private static Color DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.Transparent;
-		private static  bool DEFAULT_BORDER_OVERLAY = false;
+		private static readonly Color DEFAULT_BORDER_COLOR = Color.Black;
+		private static readonly Color DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.Transparent;
 
-		private  RectF mDrawableRect = new RectF();
-		private  RectF mBorderRect = new RectF();
+		private readonly RectF mDrawableRect = new RectF();
+		private readonly RectF mBorderRect = new RectF();
 
-		private  Matrix mShaderMatrix = new Matrix();
-		private  Paint mBitmapPaint = new Paint();
-		private  Paint mBorderPaint = new Paint();
-		private  Paint mCircleBackgroundPaint = new Paint();
+		private readonly Matrix mShaderMatrix = new Matrix();
+		private readonly Paint mBitmapPaint = new Paint();
+		private readonly Paint mBorderPaint = new Paint();
+		private readonly Paint mCircleBackgroundPaint = new Paint();
 
 		private Color mBorderColor = DEFAULT_BORDER_COLOR;
 		private int mBorderWidth = DEFAULT_BORDER_WIDTH;
@@ -100,7 +99,7 @@ namespace Alloy.Widgets
 		{
 			if (scaleType != SCALE_TYPE)
 			{
-				throw new IllegalArgumentException(string.Format("ScaleType %s not supported.", scaleType));
+				throw new IllegalArgumentException($"ScaleType {scaleType} not supported.");
 			}
 		}
 
@@ -413,12 +412,12 @@ namespace Alloy.Widgets
 
 			if (mBitmapWidth * mDrawableRect.Height() > mDrawableRect.Width() * mBitmapHeight)
 			{
-				scale = mDrawableRect.Height() / (float)mBitmapHeight;
+				scale = mDrawableRect.Height() / mBitmapHeight;
 				dx = (mDrawableRect.Width() - mBitmapWidth * scale) * 0.5f;
 			}
 			else
 			{
-				scale = mDrawableRect.Width() / (float)mBitmapWidth;
+				scale = mDrawableRect.Width() / mBitmapWidth;
 				dy = (mDrawableRect.Height() - mBitmapHeight * scale) * 0.5f;
 			}
 
@@ -438,7 +437,7 @@ namespace Alloy.Widgets
 			public override void GetOutline(View view, Outline outline)
 			{
 				Rect bounds = new Rect();
-				this.owner.mBorderRect.RoundOut(bounds);
+				owner.mBorderRect.RoundOut(bounds);
 				outline.SetRoundRect(bounds, bounds.Width() / 2.0f);
 			}
 		}

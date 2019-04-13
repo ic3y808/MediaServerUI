@@ -340,7 +340,7 @@ namespace Alloy.Widgets
 		 * @param cb Callback to provide information and receive events
 		 * @return a new ViewDragHelper instance
 		 */
-		public static ViewDragHelper create(ViewGroup forParent, Callback cb)
+		public static ViewDragHelper Create(ViewGroup forParent, Callback cb)
 		{
 			return new ViewDragHelper(forParent.Context, forParent, null, cb);
 		}
@@ -353,7 +353,7 @@ namespace Alloy.Widgets
 		 * @param cb Callback to provide information and receive events
 		 * @return a new ViewDragHelper instance
 		 */
-		public static ViewDragHelper create(ViewGroup forParent, IInterpolator interpolator, Callback cb)
+		public static ViewDragHelper Create(ViewGroup forParent, IInterpolator interpolator, Callback cb)
 		{
 			return new ViewDragHelper(forParent.Context, forParent, interpolator, cb);
 		}
@@ -367,9 +367,9 @@ namespace Alloy.Widgets
      * @param cb Callback to provide information and receive events
      * @return a new ViewDragHelper instance
      */
-		public static ViewDragHelper create(ViewGroup forParent, float sensitivity, Callback cb)
+		public static ViewDragHelper Create(ViewGroup forParent, float sensitivity, Callback cb)
 		{
-			ViewDragHelper helper = create(forParent, cb);
+			ViewDragHelper helper = Create(forParent, cb);
 			helper.mTouchSlop = (int)(helper.mTouchSlop * (1 / sensitivity));
 			return helper;
 		}
@@ -384,9 +384,9 @@ namespace Alloy.Widgets
 		 * @param cb Callback to provide information and receive events
 		 * @return a new ViewDragHelper instance
 		 */
-		public static ViewDragHelper create(ViewGroup forParent, float sensitivity, IInterpolator interpolator, Callback cb)
+		public static ViewDragHelper Create(ViewGroup forParent, float sensitivity, IInterpolator interpolator, Callback cb)
 		{
-			ViewDragHelper helper = create(forParent, interpolator, cb);
+			ViewDragHelper helper = Create(forParent, interpolator, cb);
 			helper.mTouchSlop = (int)(helper.mTouchSlop * (1 / sensitivity));
 			return helper;
 		}
@@ -436,7 +436,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param minVel Minimum velocity to detect
 		 */
-		public void setMinVelocity(float minVel)
+		public void SetMinVelocity(float minVel)
 		{
 			mMinVelocity = minVel;
 		}
@@ -448,7 +448,7 @@ namespace Alloy.Widgets
 		 *
 		 * @return the minimum velocity that will be detected
 		 */
-		public float getMinVelocity()
+		public float GetMinVelocity()
 		{
 			return mMinVelocity;
 		}
@@ -458,7 +458,7 @@ namespace Alloy.Widgets
 		 * {@link #STATE_IDLE}, {@link #STATE_DRAGGING} or {@link #STATE_SETTLING}.
 		 * @return The current drag state
 		 */
-		public int getViewDragState()
+		public int GetViewDragState()
 		{
 			return mDragState;
 		}
@@ -475,7 +475,7 @@ namespace Alloy.Widgets
 		 * @see #EDGE_RIGHT
 		 * @see #EDGE_BOTTOM
 		 */
-		public void setEdgeTrackingEnabled(int edgeFlags)
+		public void SetEdgeTrackingEnabled(int edgeFlags)
 		{
 			mTrackingEdges = edgeFlags;
 		}
@@ -487,7 +487,7 @@ namespace Alloy.Widgets
 		 * @return The size of an edge in pixels
 		 * @see #setEdgeTrackingEnabled(int)
 		 */
-		public int getEdgeSize()
+		public int GetEdgeSize()
 		{
 			return mEdgeSize;
 		}
@@ -500,7 +500,7 @@ namespace Alloy.Widgets
 		 * @param childView Child view to capture
 		 * @param activePointerId ID of the pointer that is dragging the captured child view
 		 */
-		public void captureChildView(View childView, int activePointerId)
+		public void CaptureChildView(View childView, int activePointerId)
 		{
 			if (childView.Parent != mParentView)
 			{
@@ -517,7 +517,7 @@ namespace Alloy.Widgets
 		/**
 		 * @return The currently captured view, or null if no view has been captured.
 		 */
-		public View getCapturedView()
+		public View GetCapturedView()
 		{
 			return mCapturedView;
 		}
@@ -526,7 +526,7 @@ namespace Alloy.Widgets
 		 * @return The ID of the pointer currently dragging the captured view,
 		 *         or {@link #INVALID_POINTER}.
 		 */
-		public int getActivePointerId()
+		public int GetActivePointerId()
 		{
 			return mActivePointerId;
 		}
@@ -534,7 +534,7 @@ namespace Alloy.Widgets
 		/**
 		 * @return The minimum distance in pixels that the user must travel to initiate a drag
 		 */
-		public int getTouchSlop()
+		public int GetTouchSlop()
 		{
 			return mTouchSlop;
 		}
@@ -543,10 +543,10 @@ namespace Alloy.Widgets
 		 * The result of a call to this method is equivalent to
 		 * {@link #processTouchEvent(android.view.MotionEvent)} receiving an ACTION_CANCEL event.
 		 */
-		public void cancel()
+		public void Cancel()
 		{
 			mActivePointerId = INVALID_POINTER;
-			clearMotionHistory();
+			ClearMotionHistory();
 
 			if (mVelocityTracker != null)
 			{
@@ -559,9 +559,9 @@ namespace Alloy.Widgets
 		 * {@link #cancel()}, but also abort all motion in progress and snap to the end of any
 		 * animation.
 		 */
-		public void abort()
+		public void Abort()
 		{
-			cancel();
+			Cancel();
 			if (mDragState == STATE_SETTLING)
 			{
 				int oldX = mScroller.FinalX;
@@ -588,12 +588,12 @@ namespace Alloy.Widgets
 		 * @param Top  top position of child
 		 * @return true if animation should continue through {@link #continueSettling(bool)} calls
 		 */
-		public bool smoothSlideViewTo(View child, int Left, int Top)
+		public bool SmoothSlideViewTo(View child, int Left, int Top)
 		{
 			mCapturedView = child;
 			mActivePointerId = INVALID_POINTER;
 
-			return forceSettleCapturedViewAt(Left, Top, 0, 0);
+			return ForceSettleCapturedViewAt(Left, Top, 0, 0);
 		}
 
 		/**
@@ -607,7 +607,7 @@ namespace Alloy.Widgets
 		 * @param Top Settled top edge position for the captured view
 		 * @return true if animation should continue through {@link #continueSettling(bool)} calls
 		 */
-		public bool settleCapturedViewAt(int Left, int Top)
+		public bool SettleCapturedViewAt(int Left, int Top)
 		{
 			if (!mReleaseInProgress)
 			{
@@ -615,7 +615,7 @@ namespace Alloy.Widgets
 						"Callback#onViewReleased");
 			}
 
-			return forceSettleCapturedViewAt(Left, Top,
+			return ForceSettleCapturedViewAt(Left, Top,
 					(int)mVelocityTracker.GetXVelocity(mActivePointerId),
 					(int)mVelocityTracker.GetYVelocity(mActivePointerId));
 		}
@@ -629,7 +629,7 @@ namespace Alloy.Widgets
 		 * @param yvel Vertical velocity
 		 * @return true if animation should continue through {@link #continueSettling(bool)} calls
 		 */
-		private bool forceSettleCapturedViewAt(int Left, int Top, int xvel, int yvel)
+		private bool ForceSettleCapturedViewAt(int Left, int Top, int xvel, int yvel)
 		{
 			int startLeft = mCapturedView.Left;
 			int startTop = mCapturedView.Top;
@@ -644,17 +644,17 @@ namespace Alloy.Widgets
 				return false;
 			}
 
-			int duration = computeSettleDuration(mCapturedView, dx, dy, xvel, yvel);
+			int duration = ComputeSettleDuration(mCapturedView, dx, dy, xvel, yvel);
 			mScroller.StartScroll(startLeft, startTop, dx, dy, duration);
 
 			setDragState(STATE_SETTLING);
 			return true;
 		}
 
-		private int computeSettleDuration(View child, int dx, int dy, int xvel, int yvel)
+		private int ComputeSettleDuration(View child, int dx, int dy, int xvel, int yvel)
 		{
-			xvel = clampMag(xvel, (int)mMinVelocity, (int)mMaxVelocity);
-			yvel = clampMag(yvel, (int)mMinVelocity, (int)mMaxVelocity);
+			xvel = ClampMag(xvel, (int)mMinVelocity, (int)mMaxVelocity);
+			yvel = ClampMag(yvel, (int)mMinVelocity, (int)mMaxVelocity);
 			int absDx = Math.Abs(dx);
 			int absDy = Math.Abs(dy);
 			int absXVel = Math.Abs(xvel);
@@ -667,13 +667,13 @@ namespace Alloy.Widgets
 			float yweight = yvel != 0 ? (float)absYVel / addedVel :
 				   (float)absDy / addedDistance;
 
-			int xduration = computeAxisDuration(dx, xvel, mCallback.GetViewHorizontalDragRange(child));
-			int yduration = computeAxisDuration(dy, yvel, mCallback.GetViewVerticalDragRange(child));
+			int xduration = ComputeAxisDuration(dx, xvel, mCallback.GetViewHorizontalDragRange(child));
+			int yduration = ComputeAxisDuration(dy, yvel, mCallback.GetViewVerticalDragRange(child));
 
 			return (int)(xduration * xweight + yduration * yweight);
 		}
 
-		private int computeAxisDuration(int delta, int velocity, int motionRange)
+		private int ComputeAxisDuration(int delta, int velocity, int motionRange)
 		{
 			if (delta == 0)
 			{
@@ -684,7 +684,7 @@ namespace Alloy.Widgets
 			int halfWidth = width / 2;
 			float distanceRatio = Math.Min(1f, (float)Math.Abs(delta) / width);
 			float distance = halfWidth + halfWidth *
-				   distanceInfluenceForSnapDuration(distanceRatio);
+				   DistanceInfluenceForSnapDuration(distanceRatio);
 
 			int duration;
 			velocity = Math.Abs(velocity);
@@ -710,7 +710,7 @@ namespace Alloy.Widgets
 		 * @param absMax Absolute value of the maximum value to return
 		 * @return The clamped value with the same sign as <code>value</code>
 		 */
-		private int clampMag(int value, int absMin, int absMax)
+		private int ClampMag(int value, int absMin, int absMax)
 		{
 			int absValue = Math.Abs(value);
 			if (absValue < absMin) return 0;
@@ -728,7 +728,7 @@ namespace Alloy.Widgets
 		 * @param absMax Absolute value of the maximum value to return
 		 * @return The clamped value with the same sign as <code>value</code>
 		 */
-		private float clampMag(float value, float absMin, float absMax)
+		private float ClampMag(float value, float absMin, float absMax)
 		{
 			float absValue = Math.Abs(value);
 			if (absValue < absMin) return 0;
@@ -736,11 +736,12 @@ namespace Alloy.Widgets
 			return value;
 		}
 
-		private float distanceInfluenceForSnapDuration(float f)
+		private float DistanceInfluenceForSnapDuration(float f)
 		{
-			f -= 0.5f; // center the values about 0.
-			f *= 0.3f * (float)Math.Pi / 2.0f;
-			return (float)Math.Sin(f);
+			float a = f;
+			a -= 0.5f; // center the values about 0.
+			a *= 0.3f * (float)Math.Pi / 2.0f;
+			return (float)Math.Sin(a);
 		}
 
 		/**
@@ -753,7 +754,7 @@ namespace Alloy.Widgets
      * @param maxLeft Maximum X position for the view's left edge
      * @param maxTop Maximum Y position for the view's top edge
      */
-		public void flingCapturedView(int minLeft, int minTop, int maxLeft, int maxTop)
+		public void FlingCapturedView(int minLeft, int minTop, int maxLeft, int maxTop)
 		{
 			if (!mReleaseInProgress)
 			{
@@ -780,7 +781,7 @@ namespace Alloy.Widgets
 		 *                       invoked as part of layout or drawing.
 		 * @return true if settle is still in progress
 		 */
-		public bool continueSettling(bool deferCallbacks)
+		public bool ContinueSettling(bool deferCallbacks)
 		{
 			// Make sure, there is a captured view
 			if (mCapturedView == null)
@@ -847,7 +848,7 @@ namespace Alloy.Widgets
 		 * is the only time it is valid to call {@link #settleCapturedViewAt(int, int)}
 		 * or {@link #flingCapturedView(int, int, int, int)}.
 		 */
-		private void dispatchViewReleased(float xvel, float yvel)
+		private void DispatchViewReleased(float xvel, float yvel)
 		{
 			mReleaseInProgress = true;
 			mCallback.OnViewReleased(mCapturedView, xvel, yvel);
@@ -860,7 +861,7 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private void clearMotionHistory()
+		private void ClearMotionHistory()
 		{
 			if (mInitialMotionX == null)
 			{
@@ -876,7 +877,7 @@ namespace Alloy.Widgets
 			mPointersDown = 0;
 		}
 
-		private void clearMotionHistory(int pointerId)
+		private void ClearMotionHistory(int pointerId)
 		{
 			if (mInitialMotionX == null || mInitialMotionX.Length <= pointerId)
 			{
@@ -892,7 +893,7 @@ namespace Alloy.Widgets
 			mPointersDown &= ~(1 << pointerId);
 		}
 
-		private void ensureMotionHistorySizeForId(int pointerId)
+		private void EnsureMotionHistorySizeForId(int pointerId)
 		{
 			if (mInitialMotionX == null || mInitialMotionX.Length <= pointerId)
 			{
@@ -925,16 +926,16 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private void saveInitialMotion(float x, float y, int pointerId)
+		private void SaveInitialMotion(float x, float y, int pointerId)
 		{
-			ensureMotionHistorySizeForId(pointerId);
+			EnsureMotionHistorySizeForId(pointerId);
 			mInitialMotionX[pointerId] = mLastMotionX[pointerId] = x;
 			mInitialMotionY[pointerId] = mLastMotionY[pointerId] = y;
-			mInitialEdgesTouched[pointerId] = getEdgesTouched((int)x, (int)y);
+			mInitialEdgesTouched[pointerId] = GetEdgesTouched((int)x, (int)y);
 			mPointersDown |= 1 << pointerId;
 		}
 
-		private void saveLastMotion(MotionEvent ev)
+		private void SaveLastMotion(MotionEvent ev)
 		{
 			int pointerCount = ev.PointerCount;
 			for (int i = 0; i < pointerCount; i++)
@@ -965,7 +966,7 @@ namespace Alloy.Widgets
 		 * @param pointerId pointer ID to check; corresponds to IDs provided by MotionEvent
 		 * @return true if the pointer with the given ID is still down
 		 */
-		public bool isPointerDown(int pointerId)
+		public bool IsPointerDown(int pointerId)
 		{
 			return (mPointersDown & 1 << pointerId) != 0;
 		}
@@ -992,7 +993,7 @@ namespace Alloy.Widgets
 		 * @param pointerId Pointer to capture with
 		 * @return true if capture was successful
 		 */
-		bool tryCaptureViewForDrag(View toCapture, int pointerId)
+		bool TryCaptureViewForDrag(View toCapture, int pointerId)
 		{
 			if (toCapture == mCapturedView && mActivePointerId == pointerId)
 			{
@@ -1002,7 +1003,7 @@ namespace Alloy.Widgets
 			if (toCapture != null && mCallback.TryCaptureView(toCapture, pointerId))
 			{
 				mActivePointerId = pointerId;
-				captureChildView(toCapture, pointerId);
+				CaptureChildView(toCapture, pointerId);
 				return true;
 			}
 			return false;
@@ -1020,7 +1021,7 @@ namespace Alloy.Widgets
 		 * @param y Y coordinate of the active touch point
 		 * @return true if child views of v can be scrolled by delta of dx.
 		 */
-		protected bool canScroll(View v, bool checkV, int dx, int dy, int x, int y)
+		protected bool CanScroll(View v, bool checkV, int dx, int dy, int x, int y)
 		{
 			if (v is ViewGroup)
 			{
@@ -1036,7 +1037,7 @@ namespace Alloy.Widgets
 					View child = group.GetChildAt(i);
 					if (x + scrollX >= child.Left && x + scrollX < child.Right &&
 							y + scrollY >= child.Top && y + scrollY < child.Bottom &&
-							canScroll(child, true, dx, dy, x + scrollX - child.Left,
+							CanScroll(child, true, dx, dy, x + scrollX - child.Left,
 									y + scrollY - child.Top))
 					{
 						return true;
@@ -1054,7 +1055,7 @@ namespace Alloy.Widgets
 		 * @param ev MotionEvent provided to onInterceptTouchEvent
 		 * @return true if the parent view should return true from onInterceptTouchEvent
 		 */
-		public bool shouldInterceptTouchEvent(MotionEvent ev)
+		public bool ShouldInterceptTouchEvent(MotionEvent ev)
 		{
 			MotionEventActions action = ev.ActionMasked;
 			int actionIndex = ev.ActionIndex;
@@ -1063,7 +1064,7 @@ namespace Alloy.Widgets
 			{
 				// Reset things for a new event stream, just in case we didn't get
 				// the whole previous stream.
-				cancel();
+				Cancel();
 			}
 
 			if (mVelocityTracker == null)
@@ -1079,14 +1080,14 @@ namespace Alloy.Widgets
 						float x = ev.GetX();
 						float y = ev.GetY();
 						int pointerId = ev.GetPointerId(0);
-						saveInitialMotion(x, y, pointerId);
+						SaveInitialMotion(x, y, pointerId);
 
-						View toCapture = findTopChildUnder((int)x, (int)y);
+						View toCapture = FindTopChildUnder((int)x, (int)y);
 
 						// Catch a settling view if possible.
 						if (toCapture == mCapturedView && mDragState == STATE_SETTLING)
 						{
-							tryCaptureViewForDrag(toCapture, pointerId);
+							TryCaptureViewForDrag(toCapture, pointerId);
 						}
 
 						int edgesTouched = mInitialEdgesTouched[pointerId];
@@ -1103,7 +1104,7 @@ namespace Alloy.Widgets
 						float x = ev.GetX(actionIndex);
 						float y = ev.GetY(actionIndex);
 
-						saveInitialMotion(x, y, pointerId);
+						SaveInitialMotion(x, y, pointerId);
 
 						// A ViewDragHelper can only manipulate one view at a time.
 						if (mDragState == STATE_IDLE)
@@ -1117,10 +1118,10 @@ namespace Alloy.Widgets
 						else if (mDragState == STATE_SETTLING)
 						{
 							// Catch a settling view if possible.
-							View toCapture = findTopChildUnder((int)x, (int)y);
+							View toCapture = FindTopChildUnder((int)x, (int)y);
 							if (toCapture == mCapturedView)
 							{
-								tryCaptureViewForDrag(toCapture, pointerId);
+								TryCaptureViewForDrag(toCapture, pointerId);
 							}
 						}
 						break;
@@ -1142,35 +1143,35 @@ namespace Alloy.Widgets
 							float dx = x - mInitialMotionX[pointerId];
 							float dy = y - mInitialMotionY[pointerId];
 
-							reportNewEdgeDrags(dx, dy, pointerId);
+							ReportNewEdgeDrags(dx, dy, pointerId);
 							if (mDragState == STATE_DRAGGING)
 							{
 								// Callback might have started an edge drag
 								break;
 							}
 
-							View toCapture = findTopChildUnder((int)mInitialMotionX[pointerId], (int)mInitialMotionY[pointerId]);
-							if (toCapture != null && checkTouchSlop(toCapture, dx, dy) &&
-									tryCaptureViewForDrag(toCapture, pointerId))
+							View toCapture = FindTopChildUnder((int)mInitialMotionX[pointerId], (int)mInitialMotionY[pointerId]);
+							if (toCapture != null && CheckTouchSlop(toCapture, dx, dy) &&
+									TryCaptureViewForDrag(toCapture, pointerId))
 							{
 								break;
 							}
 						}
-						saveLastMotion(ev);
+						SaveLastMotion(ev);
 						break;
 					}
 
 				case MotionEventActions.PointerUp:
 					{
 						int pointerId = ev.GetPointerId(actionIndex);
-						clearMotionHistory(pointerId);
+						ClearMotionHistory(pointerId);
 						break;
 					}
 
 				case MotionEventActions.Up:
 				case MotionEventActions.Cancel:
 					{
-						cancel();
+						Cancel();
 						break;
 					}
 			}
@@ -1184,7 +1185,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param ev The touch event received by the parent view
 		 */
-		public void processTouchEvent(MotionEvent ev)
+		public void ProcessTouchEvent(MotionEvent ev)
 		{
 			MotionEventActions action = ev.ActionMasked;
 			int actionIndex = ev.ActionIndex;
@@ -1193,7 +1194,7 @@ namespace Alloy.Widgets
 			{
 				// Reset things for a new event stream, just in case we didn't get
 				// the whole previous stream.
-				cancel();
+				Cancel();
 			}
 
 			if (mVelocityTracker == null)
@@ -1209,14 +1210,14 @@ namespace Alloy.Widgets
 						float x = ev.GetX();
 						float y = ev.GetY();
 						int pointerId = ev.GetPointerId(0);
-						View toCapture = findTopChildUnder((int)x, (int)y);
+						View toCapture = FindTopChildUnder((int)x, (int)y);
 
-						saveInitialMotion(x, y, pointerId);
+						SaveInitialMotion(x, y, pointerId);
 
 						// Since the parent is already directly processing this touch event,
 						// there is no reason to delay for a slop before dragging.
 						// Start immediately if possible.
-						tryCaptureViewForDrag(toCapture, pointerId);
+						TryCaptureViewForDrag(toCapture, pointerId);
 
 						int edgesTouched = mInitialEdgesTouched[pointerId];
 						if ((edgesTouched & mTrackingEdges) != 0)
@@ -1232,15 +1233,15 @@ namespace Alloy.Widgets
 						float x = ev.GetX(actionIndex);
 						float y = ev.GetY(actionIndex);
 
-						saveInitialMotion(x, y, pointerId);
+						SaveInitialMotion(x, y, pointerId);
 
 						// A ViewDragHelper can only manipulate one view at a time.
 						if (mDragState == STATE_IDLE)
 						{
 							// If we're idle we can do anything! Treat it like a normal down event.
 
-							View toCapture = findTopChildUnder((int)x, (int)y);
-							tryCaptureViewForDrag(toCapture, pointerId);
+							View toCapture = FindTopChildUnder((int)x, (int)y);
+							TryCaptureViewForDrag(toCapture, pointerId);
 
 							int edgesTouched = mInitialEdgesTouched[pointerId];
 							if ((edgesTouched & mTrackingEdges) != 0)
@@ -1248,13 +1249,13 @@ namespace Alloy.Widgets
 								mCallback.OnEdgeTouched(edgesTouched & mTrackingEdges, pointerId);
 							}
 						}
-						else if (isCapturedViewUnder((int)x, (int)y))
+						else if (IsCapturedViewUnder((int)x, (int)y))
 						{
 							// We're still tracking a captured view. If the same view is under this
 							// point, we'll swap to controlling it with this pointer instead.
 							// (This will still work if we're "catching" a settling view.)
 
-							tryCaptureViewForDrag(mCapturedView, pointerId);
+							TryCaptureViewForDrag(mCapturedView, pointerId);
 						}
 						break;
 					}
@@ -1269,9 +1270,9 @@ namespace Alloy.Widgets
 							int idx = (int)(x - mLastMotionX[mActivePointerId]);
 							int idy = (int)(y - mLastMotionY[mActivePointerId]);
 
-							dragTo(mCapturedView.Left + idx, mCapturedView.Top + idy, idx, idy);
+							DragTo(mCapturedView.Left + idx, mCapturedView.Top + idy, idx, idy);
 
-							saveLastMotion(ev);
+							SaveLastMotion(ev);
 						}
 						else
 						{
@@ -1286,21 +1287,21 @@ namespace Alloy.Widgets
 								float dx = x - mInitialMotionX[pointerId];
 								float dy = y - mInitialMotionY[pointerId];
 
-								reportNewEdgeDrags(dx, dy, pointerId);
+								ReportNewEdgeDrags(dx, dy, pointerId);
 								if (mDragState == STATE_DRAGGING)
 								{
 									// Callback might have started an edge drag.
 									break;
 								}
 
-								View toCapture = findTopChildUnder((int)mInitialMotionX[pointerId], (int)mInitialMotionY[pointerId]);
-								if (checkTouchSlop(toCapture, dx, dy) &&
-										tryCaptureViewForDrag(toCapture, pointerId))
+								View toCapture = FindTopChildUnder((int)mInitialMotionX[pointerId], (int)mInitialMotionY[pointerId]);
+								if (CheckTouchSlop(toCapture, dx, dy) &&
+										TryCaptureViewForDrag(toCapture, pointerId))
 								{
 									break;
 								}
 							}
-							saveLastMotion(ev);
+							SaveLastMotion(ev);
 						}
 						break;
 					}
@@ -1324,8 +1325,8 @@ namespace Alloy.Widgets
 
 								float x = ev.GetX(i);
 								float y = ev.GetY(i);
-								if (findTopChildUnder((int)x, (int)y) == mCapturedView &&
-										tryCaptureViewForDrag(mCapturedView, id))
+								if (FindTopChildUnder((int)x, (int)y) == mCapturedView &&
+										TryCaptureViewForDrag(mCapturedView, id))
 								{
 									newActivePointer = mActivePointerId;
 									break;
@@ -1335,10 +1336,10 @@ namespace Alloy.Widgets
 							if (newActivePointer == INVALID_POINTER)
 							{
 								// We didn't find another pointer still touching the view, release it.
-								releaseViewForPointerUp();
+								ReleaseViewForPointerUp();
 							}
 						}
-						clearMotionHistory(pointerId);
+						ClearMotionHistory(pointerId);
 						break;
 					}
 
@@ -1346,9 +1347,9 @@ namespace Alloy.Widgets
 					{
 						if (mDragState == STATE_DRAGGING)
 						{
-							releaseViewForPointerUp();
+							ReleaseViewForPointerUp();
 						}
-						cancel();
+						Cancel();
 						break;
 					}
 
@@ -1356,30 +1357,30 @@ namespace Alloy.Widgets
 					{
 						if (mDragState == STATE_DRAGGING)
 						{
-							dispatchViewReleased(0, 0);
+							DispatchViewReleased(0, 0);
 						}
-						cancel();
+						Cancel();
 						break;
 					}
 			}
 		}
 
-		private void reportNewEdgeDrags(float dx, float dy, int pointerId)
+		private void ReportNewEdgeDrags(float dx, float dy, int pointerId)
 		{
 			int dragsStarted = 0;
-			if (checkNewEdgeDrag(dx, dy, pointerId, EDGE_LEFT))
+			if (CheckNewEdgeDrag(dx, dy, pointerId, EDGE_LEFT))
 			{
 				dragsStarted |= EDGE_LEFT;
 			}
-			if (checkNewEdgeDrag(dy, dx, pointerId, EDGE_TOP))
+			if (CheckNewEdgeDrag(dy, dx, pointerId, EDGE_TOP))
 			{
 				dragsStarted |= EDGE_TOP;
 			}
-			if (checkNewEdgeDrag(dx, dy, pointerId, EDGE_RIGHT))
+			if (CheckNewEdgeDrag(dx, dy, pointerId, EDGE_RIGHT))
 			{
 				dragsStarted |= EDGE_RIGHT;
 			}
-			if (checkNewEdgeDrag(dy, dx, pointerId, EDGE_BOTTOM))
+			if (CheckNewEdgeDrag(dy, dx, pointerId, EDGE_BOTTOM))
 			{
 				dragsStarted |= EDGE_BOTTOM;
 			}
@@ -1391,7 +1392,7 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private bool checkNewEdgeDrag(float delta, float odelta, int pointerId, int edge)
+		private bool CheckNewEdgeDrag(float delta, float odelta, int pointerId, int edge)
 		{
 			float absDelta = Math.Abs(delta);
 			float absODelta = Math.Abs(odelta);
@@ -1421,7 +1422,7 @@ namespace Alloy.Widgets
 		 * @param dy Motion since initial position along Y axis
 		 * @return true if the touch slop has been crossed
 		 */
-		private bool checkTouchSlop(View child, float dx, float dy)
+		private bool CheckTouchSlop(View child, float dx, float dy)
 		{
 			if (child == null)
 			{
@@ -1459,12 +1460,12 @@ namespace Alloy.Widgets
 		 *                   {@link #DIRECTION_VERTICAL}, {@link #DIRECTION_ALL}
 		 * @return true if the slop threshold has been crossed, false otherwise
 		 */
-		public bool checkTouchSlop(int directions)
+		public bool CheckTouchSlop(int directions)
 		{
 			int count = mInitialMotionX.Length;
 			for (int i = 0; i < count; i++)
 			{
-				if (checkTouchSlop(directions, i))
+				if (CheckTouchSlop(directions, i))
 				{
 					return true;
 				}
@@ -1487,9 +1488,9 @@ namespace Alloy.Widgets
 		 * @param pointerId ID of the pointer to slop check as specified by MotionEvent
 		 * @return true if the slop threshold has been crossed, false otherwise
 		 */
-		public bool checkTouchSlop(int directions, int pointerId)
+		public bool CheckTouchSlop(int directions, int pointerId)
 		{
-			if (!isPointerDown(pointerId))
+			if (!IsPointerDown(pointerId))
 			{
 				return false;
 			}
@@ -1524,12 +1525,12 @@ namespace Alloy.Widgets
 		 *              {@link #EDGE_ALL}
 		 * @return true if any of the edges specified were initially touched in the current gesture
 		 */
-		public bool isEdgeTouched(int edges)
+		public bool IsEdgeTouched(int edges)
 		{
 			int count = mInitialEdgesTouched.Length;
 			for (int i = 0; i < count; i++)
 			{
-				if (isEdgeTouched(edges, i))
+				if (IsEdgeTouched(edges, i))
 				{
 					return true;
 				}
@@ -1547,25 +1548,25 @@ namespace Alloy.Widgets
 		 *              {@link #EDGE_ALL}
 		 * @return true if any of the edges specified were initially touched in the current gesture
 		 */
-		public bool isEdgeTouched(int edges, int pointerId)
+		public bool IsEdgeTouched(int edges, int pointerId)
 		{
-			return isPointerDown(pointerId) && (mInitialEdgesTouched[pointerId] & edges) != 0;
+			return IsPointerDown(pointerId) && (mInitialEdgesTouched[pointerId] & edges) != 0;
 		}
 
-		public bool isDragging()
+		public bool IsDragging()
 		{
 			return mDragState == STATE_DRAGGING;
 		}
 
-		private void releaseViewForPointerUp()
+		private void ReleaseViewForPointerUp()
 		{
 			mVelocityTracker.ComputeCurrentVelocity(1000, mMaxVelocity);
-			float xvel = clampMag(mVelocityTracker.XVelocity, mMinVelocity, mMaxVelocity);
-			float yvel = clampMag(mVelocityTracker.YVelocity, mMinVelocity, mMaxVelocity);
-			dispatchViewReleased(xvel, yvel);
+			float xvel = ClampMag(mVelocityTracker.XVelocity, mMinVelocity, mMaxVelocity);
+			float yvel = ClampMag(mVelocityTracker.YVelocity, mMinVelocity, mMaxVelocity);
+			DispatchViewReleased(xvel, yvel);
 		}
 
-		private void dragTo(int left, int top, int dx, int dy)
+		private void DragTo(int left, int top, int dx, int dy)
 		{
 			int clampedX = left;
 			int clampedY = top;
@@ -1600,9 +1601,9 @@ namespace Alloy.Widgets
 		 * @param y Y position to test in the parent's coordinate system
 		 * @return true if the captured view is under the given point, false otherwise
 		 */
-		public bool isCapturedViewUnder(int x, int y)
+		public bool IsCapturedViewUnder(int x, int y)
 		{
-			return isViewUnder(mCapturedView, x, y);
+			return IsViewUnder(mCapturedView, x, y);
 		}
 
 		/**
@@ -1614,7 +1615,7 @@ namespace Alloy.Widgets
 		 * @param y Y position to test in the parent's coordinate system
 		 * @return true if the supplied view is under the given point, false otherwise
 		 */
-		public bool isViewUnder(View view, int x, int y)
+		public bool IsViewUnder(View view, int x, int y)
 		{
 			if (view == null)
 			{
@@ -1634,7 +1635,7 @@ namespace Alloy.Widgets
 		 * @param y Y position to test in the parent's coordinate system
 		 * @return The topmost child view under (x, y) or null if none found.
 		 */
-		public View findTopChildUnder(int x, int y)
+		public View FindTopChildUnder(int x, int y)
 		{
 			int childCount = mParentView.ChildCount;
 			for (int i = childCount - 1; i >= 0; i--)
@@ -1649,7 +1650,7 @@ namespace Alloy.Widgets
 			return null;
 		}
 
-		private int getEdgesTouched(int x, int y)
+		private int GetEdgesTouched(int x, int y)
 		{
 			int result = 0;
 
