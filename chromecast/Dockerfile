@@ -1,4 +1,4 @@
-FROM ic3y808/docker-lemp
+FROM ic3y808/docker-lemp:latest
 COPY index.html /usr/share/nginx/html/index.html
 COPY splash.png /usr/share/nginx/html/splash.png
 COPY logo.png /usr/share/nginx/html/logo.png

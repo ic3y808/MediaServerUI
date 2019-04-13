@@ -73,7 +73,7 @@ class MediaScannerBase {
       var albums = [];
       var artists = [];
       var tracks = this.db.prepare("SELECT * FROM Tracks WHERE genre_id=?").all(g.id);
-      tracks.forEach(track => {
+      tracks.forEach((track) => {
         artists.push(track.artist_id);
         albums.push(track.album_id);
       });
@@ -235,7 +235,7 @@ class MediaScannerBase {
           }
           return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
         })
-      } return this.parseFiles(audioFiles); 
+      } return this.parseFiles(audioFiles);
     } else return Promise.resolve();
   }
 

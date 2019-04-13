@@ -67,7 +67,7 @@ class SidenavController {
       });
 
     $(window).on('resize', () => {
-      const breakWidth = parseInt(styles.xxmed);
+      const breakWidth = parseInt(styles.xxmed, 10);
       if ($(window).width() < breakWidth && !this.$rootScope.isMenuCollapsed) {
         this.sidebarCollapse();
       } else if ($(window).width() > breakWidth && this.$rootScope.isMenuCollapsed) {
