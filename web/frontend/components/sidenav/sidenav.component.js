@@ -1,4 +1,4 @@
-import styles from './sidenav.scss';
+import styles from "./sidenav.scss";
 class SidenavController {
   constructor($scope, $rootScope, $element, Logger, MediaElement, MediaPlayer, AppUtilities, AlloyDbService, Backend) {
     "ngInject";
@@ -11,7 +11,7 @@ class SidenavController {
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
     this.Backend = Backend;
-    this.Logger.debug('sidenav-controller');
+    this.Logger.debug("sidenav-controller");
 
     $scope.getNowPlayingImage = () => {
       return this.MediaPlayer.selectedTrack();
@@ -19,9 +19,9 @@ class SidenavController {
 
     $scope.showCreatePlaylistModal = () => {
       var $this = $(this)
-        , $remote = $this.data('remote') || $this.attr('href')
-        , $modal = $('#addPlaylistModal')
-      $('#primary-content').append($modal);
+        , $remote = $this.data("remote") || $this.attr("href")
+        , $modal = $("#addPlaylistModal")
+      $("#primary-content").append($modal);
       $modal.modal();
     };
     $scope.createNewPlaylist = () => {
@@ -32,31 +32,31 @@ class SidenavController {
           console.log(result);
         });
       }
-      $('#addPlaylistModal').modal('hide')
+      $("#addPlaylistModal").modal("hide")
     };
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    $('#sidebarCollapse').on('click', () => {
-      $('#sidebar').toggleClass('active');
+    this.$element.addClass("vbox")
+    $("#sidebarCollapse").on("click", () => {
+      $("#sidebar").toggleClass("active");
     });
 
-    $('#body-row .collapse').collapse('hide');
+    $("#body-row .collapse").collapse("hide");
 
     // Collapse/Expand icon
-    $('#collapse-icon').addClass('fa-angle-double-left');
+    $("#collapse-icon").addClass("fa-angle-double-left");
 
     // Collapse click
-    $('[data-toggle=sidebar-colapse]').click(() => {
+    $("[data-toggle=sidebar-colapse]").click(() => {
       this.sidebarCollapse();
     });
 
-    $('.list-group li').click(function (e) {
+    $(".list-group li").click(function (e) {
       e.preventDefault();
       $that = $(this);
-      $that.parent().find('li').removeClass('active');
-      $that.addClass('active');
+      $that.parent().find("li").removeClass("active");
+      $that.addClass("active");
     });
 
     jQuery(".list-group").hover(() => {
@@ -66,7 +66,7 @@ class SidenavController {
         jQuery(this).removeClass("active");
       });
 
-    $(window).on('resize', () => {
+    $(window).on("resize", () => {
       const breakWidth = parseInt(styles.xxmed, 10);
       if ($(window).width() < breakWidth && !this.$rootScope.isMenuCollapsed) {
         this.sidebarCollapse();
@@ -83,28 +83,28 @@ class SidenavController {
 
   sidebarCollapse() {
     this.$rootScope.isMenuCollapsed = !this.$rootScope.isMenuCollapsed;
-    $('.menu-collapsed').toggleClass('d-none');
-    $('.sidebar-submenu').toggleClass('d-none');
-    $('.submenu-icon').toggleClass('d-none');
-    $('#list-tab').toggleClass('card-5');
-    $('.sidebar').toggleClass('sidebar-expanded sidebar-collapsed');
+    $(".menu-collapsed").toggleClass("d-none");
+    $(".sidebar-submenu").toggleClass("d-none");
+    $(".submenu-icon").toggleClass("d-none");
+    $("#list-tab").toggleClass("card-5");
+    $(".sidebar").toggleClass("sidebar-expanded sidebar-collapsed");
 
     // Treating d-flex/d-none on separators with title
-    var SeparatorTitle = $('.sidebar-separator-title');
-    if (SeparatorTitle.hasClass('d-flex')) {
-      SeparatorTitle.removeClass('d-flex');
+    var SeparatorTitle = $(".sidebar-separator-title");
+    if (SeparatorTitle.hasClass("d-flex")) {
+      SeparatorTitle.removeClass("d-flex");
     } else {
-      SeparatorTitle.addClass('d-flex');
+      SeparatorTitle.addClass("d-flex");
     }
 
     // Collapse/Expand icon
-    $('#collapse-icon').toggleClass('fa-angle-double-left fa-angle-double-right');
-    this.AppUtilities.broadcast('menuSizeChange');
+    $("#collapse-icon").toggleClass("fa-angle-double-left fa-angle-double-right");
+    this.AppUtilities.broadcast("menuSizeChange");
   }
 }
 
 export default {
   bindings: {},
   controller: SidenavController,
-  templateUrl: '/template/sidenav.jade'
+  templateUrl: "/template/sidenav.jade"
 };

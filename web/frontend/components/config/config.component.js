@@ -1,4 +1,4 @@
-import './config.scss';
+import "./config.scss";
 class ConfigController {
   constructor($scope, $rootScope, $compile, $routeParams, $location, $element, Logger, AppUtilities, Backend, MediaPlayer) {
     "ngInject";
@@ -12,17 +12,17 @@ class ConfigController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.Logger.debug('config-controller');
+    this.Logger.debug("config-controller");
     this.AppUtilities.showLoader();
 
 
 
     this.$scope.jumpTo = to => {
-      this.$location.path('/config/' + to);
+      this.$location.path("/config/" + to);
     };
 
     this.$scope.navigate = to => {
-      $('#config-content').append(this.$compile("<config" + to + "/>")(this.$scope));
+      $("#config-content").append(this.$compile("<config" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };
 
@@ -32,37 +32,37 @@ class ConfigController {
     };
 
     this.$rootScope.triggerConfigAlert = (message, type) =>  {
-      //$('.PageContentBody-contentBody').append('<div class="alert alert-' + type + ' config-alert notification" role="alert">' + message + '</div>');
+      //$(".PageContentBody-contentBody").append("<div class="alert alert-" + type + " config-alert notification" role="alert">" + message + "</div>");
       setTimeout(() => {
-        // $('.config-alert').hide(500);
-        $('#saveSettingsButton').popover('hide');
+        // $(".config-alert").hide(500);
+        $("#saveSettingsButton").popover("hide");
       }, 3000);
 
-      // $('#saveSettingsButton').popover('show');
+      // $("#saveSettingsButton").popover("show");
     };
 
 
-    var t = '<div class="popover" role="tooltip">' +
-      '<div class="arrow">' +
-      '</div>' +
-      '<h3 class="popover-header"></h3>' +
-      '<div class="popover-body"></div>' +
-      '</div>';
+    var t = "<div class=\"popover\" role=\"tooltip\">" +
+      "<div class=\"arrow\">" +
+      "</div>" +
+      "<h3 class=\"popover-header\"></h3>" +
+      "<div class=\"popover-body\"></div>" +
+      "</div>";
 
 
-    $('body').popover({
+    $("body").popover({
       html: true,
-      selector: '[rel=save-settings-popover]',
-      trigger: 'click',
+      selector: "[rel=save-settings-popover]",
+      trigger: "click",
       template: t,
       content: "Success!",
-      //container: '.PageContentBody-contentBody',
+      //container: ".PageContentBody-contentBody",
       placement: "bottom",
     })
-    //.on('shown.bs.popover', () =>  {
+    //.on("shown.bs.popover", () =>  {
     //  var $pop = $(this);
     //  setTimeout(() =>  {
-    //      $pop.popover('hide');
+    //      $pop.popover("hide");
     //  }, 2000);
     //});;
 
@@ -73,11 +73,11 @@ class ConfigController {
 
   $onInit() {
     if (this.$routeParams.id) {
-      this.Logger.debug('navigating to ' + this.$routeParams.id);
+      this.Logger.debug("navigating to " + this.$routeParams.id);
       this.$scope.navigate(this.$routeParams.id);
  
-      this.$element.addClass('vbox')
-      this.$element.addClass('scrollable')
+      this.$element.addClass("vbox")
+      this.$element.addClass("scrollable")
     };
   }
 }
@@ -85,5 +85,5 @@ class ConfigController {
 export default {
   bindings: {},
   controller: ConfigController,
-  templateUrl: '/template/config.jade'
+  templateUrl: "/template/config.jade"
 };

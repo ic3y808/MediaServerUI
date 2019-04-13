@@ -1,4 +1,4 @@
-import './playlist.scss';
+import "./playlist.scss";
 class PlaylistController {
   constructor($scope, $rootScope, $element, $routeParams, Logger, MediaElement, MediaPlayer, AppUtilities, AlloyDbService, Backend) {
     "ngInject";
@@ -12,7 +12,7 @@ class PlaylistController {
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
     this.Backend = Backend;
-    this.Logger.debug('playlist-controller');
+    this.Logger.debug("playlist-controller");
 
     $scope.refresh = () => {
 
@@ -46,13 +46,13 @@ class PlaylistController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: PlaylistController,
-  templateUrl: '/template/playlist.jade'
+  templateUrl: "/template/playlist.jade"
 };

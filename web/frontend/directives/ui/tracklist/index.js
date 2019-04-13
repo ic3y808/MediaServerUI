@@ -1,28 +1,28 @@
 export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      data: '=',
-      showstar: '@',
-      showtracknum: '@',
-      showartist: '@',
-      showalbum: '@',
-      showgenre: '@',
-      showplays: '@',
-      showduration: '@',
-      canaddplaylist: '@'
+      data: "=",
+      showstar: "@",
+      showtracknum: "@",
+      showartist: "@",
+      showalbum: "@",
+      showgenre: "@",
+      showplays: "@",
+      showduration: "@",
+      canaddplaylist: "@"
     },
-    templateUrl: '/template/tracklist.jade',
+    templateUrl: "/template/tracklist.jade",
 
     replace: true,
     link: function (scope, elm, attrs) {
-      scope.column = 'album';
+      scope.column = "album";
       scope.reverse = false;
 
       scope.addTrackToPlaylist = (track) => {
-        scope.$modal = $('#addTrackToPlaylistModal')
-        $('#primary-content').append(scope.$modal);
+        scope.$modal = $("#addTrackToPlaylistModal")
+        $("#primary-content").append(scope.$modal);
         scope.$modal.modal();
       };
 
@@ -32,7 +32,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
           pls.then(info => {
             if (info) {
               AlloyDbService.refreshPlaylists();
-              scope.$modal.modal('hide');
+              scope.$modal.modal("hide");
               AppUtilities.apply();
             }
           });
@@ -41,24 +41,24 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
 
       scope.trackTime = function (track) {
         if (scope.isPlaying && scope.currentTrack.id === track.id) {
-          return $rootScope.MediaPlayer.currentTime + ' / ' + $rootScope.formatTime(track.duration);
+          return $rootScope.MediaPlayer.currentTime + " / " + $rootScope.formatTime(track.duration);
         }
         return $rootScope.formatTime(track.duration);
       };
 
-      $rootScope.$on('trackChangedEvent', (event, data) => {
+      $rootScope.$on("trackChangedEvent", (event, data) => {
         scope.currentTrack = data;
         scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
         AppUtilities.apply();
       });
 
-      $rootScope.$on('playbackStatusChangedEvent', (event, data) => {
+      $rootScope.$on("playbackStatusChangedEvent", (event, data) => {
         scope.currentTrack = $rootScope.currentTrack;
         scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
         AppUtilities.apply();
       });
 
-      scope.$watch('data', function (newVal, oldVal) {
+      scope.$watch("data", function (newVal, oldVal) {
         AppUtilities.apply();
       });
 

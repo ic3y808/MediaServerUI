@@ -1,11 +1,11 @@
 export default function (MediaPlayer) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      direction: '@'
+      direction: "@"
     },
-    templateUrl: '/template/playingstatusbars.jade',
+    templateUrl: "/template/playingstatusbars.jade",
 
     replace: true,
     link: function ($scope, element, attrs) {

@@ -10,7 +10,7 @@ class ActivityGeneralController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
-    this.Logger.debug('general-activity-controller');
+    this.Logger.debug("general-activity-controller");
    
   }
 }
@@ -18,6 +18,6 @@ class ActivityGeneralController {
 export default {
   bindings: {},
   controller: ActivityGeneralController,
-  templateUrl: '/template/activityGeneral.jade',
+  templateUrl: "/template/activityGeneral.jade",
 
 };

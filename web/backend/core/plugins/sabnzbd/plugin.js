@@ -1,14 +1,14 @@
-const got = require('got');
-const log = require('../../../../../common/logger');
-const qs = require('querystring');
-const dateutil = require('dateutil');
+const got = require("got");
+const log = require("../../../../../common/logger");
+const qs = require("querystring");
+const dateutil = require("dateutil");
 
-// dateutil parser for ETA's
-dateutil._parsers['sabnzbd'] = {
+// dateutil parser for ETA"s
+dateutil._parsers["sabnzbd"] = {
   test: /^\s*[\d:]+\s+[a-zA-Z]{3}\s+\d+\s+[a-zA-Z]{3}\s*$/,
   parse: str => {
     let m = str.match(/^([\d:]+)\s+(.*)/);
-    let t = [m[2], (new Date()).getFullYear(), m[1]].join(' ');
+    let t = [m[2], (new Date()).getFullYear(), m[1]].join(" ");
     return dateutil.parse(t);
   }
 };
@@ -39,48 +39,48 @@ class Base {
     return this.status().then(response => response.entries);
   }
 
-  // Delete (an) item(s) (pass 'all' as single argument to remove everything)
+  // Delete (an) item(s) (pass "all" as single argument to remove everything)
   delete(...args) {
     return this.delegate.cmd(this.type, {
-      name: 'delete',
-      value: args.join(','),
+      name: "delete",
+      value: args.join(","),
     });
   };
 }
 
 class Queue extends Base {
   constructor(delegate) {
-    super(delegate, 'queue');
+    super(delegate, "queue");
   }
 
   // Add an NZB url to the queue.
   addurl(url, args) {
     let params = args || {};
     params.name = url;
-    return this.delegate.cmd('addurl', params);
+    return this.delegate.cmd("addurl", params);
   }
 
   // Pause entire queue (with no argument) or a
-  // single download (with a single 'id' argument)
+  // single download (with a single "id" argument)
   pause(id) {
     if (id === undefined) {
-      return this.delegate.cmd('pause');
+      return this.delegate.cmd("pause");
     } else {
-      return this.delegate.cmd('queue', {
-        name: 'pause',
+      return this.delegate.cmd("queue", {
+        name: "pause",
         value: id
       });
     }
   }
 
   // Resume entire queue (with no argument) or a
-  // single download (with a single 'id' argument)
+  // single download (with a single "id" argument)
   resume(id) {
     if (id === undefined) {
-      return this.delegate.cmd('resume');
+      return this.delegate.cmd("resume");
     } else {
-      return this.delegate.cmd('queue', {
-        name: 'resume',
+      return this.delegate.cmd("queue", {
+        name: "resume",
         value: id
       });
     }
@@ -94,7 +94,7 @@ class Queue extends Base {
     });
 
     // parse ETA
-    let eta = slot.eta == 'unknown' ? slot.eta : dateutil.parse(slot.eta);
+    let eta = slot.eta == "unknown" ? slot.eta : dateutil.parse(slot.eta);
 
     // parse age
     let age = slot.avg_age.replace(/^\s*(\d+).*/, (a, H) => Number(H) * 3600);
@@ -122,7 +122,7 @@ class Queue extends Base {
 
 class History extends Base {
   constructor(delegate) {
-    super(delegate, 'history');
+    super(delegate, "history");
   }
 
   // Normalize history slot
@@ -168,21 +168,21 @@ class SABnzbd {
     this.history = new History(this);
     if (url) {
       // Attach API endpoint to url.
-      if (!url.includes('/sabnzbd/api')) {
-        url = url.replace(/\/?$/, '/sabnzbd/api');
+      if (!url.includes("/sabnzbd/api")) {
+        url = url.replace(/\/?$/, "/sabnzbd/api");
       }
       this.url = url;
 
       // Check for valid endpoint.
-      //this.version().then(version => debug('SABnzbd version: ' + version));
+      //this.version().then(version => debug("SABnzbd version: " + version));
 
       // Check for valid API key.
       /*
-      this.cmd('get_config').then(response => {
+      this.cmd("get_config").then(response => {
         if (response.status === false) {
-          throw Error('Supplied API key was niet accepted by server');
+          throw Error("Supplied API key was niet accepted by server");
         }
-        debug('SABnzbd accepted supplied API key.');
+        debug("SABnzbd accepted supplied API key.");
       });
       */
     }
@@ -190,7 +190,7 @@ class SABnzbd {
 
   // Get server version.
   version() {
-    return this.cmd('version').then(r => r.version);
+    return this.cmd("version").then(r => r.version);
   }
 
   // Get both queue and history status, merged.
@@ -211,7 +211,7 @@ class SABnzbd {
     return this.status().then(r => r.entries);
   }
 
-  // Delete (an) item(s) from both queue and history (or pass 'all' as
+  // Delete (an) item(s) from both queue and history (or pass "all" as
   // single argument to remove everything)
   delete(...args) {
     return Promise.all([
@@ -227,18 +227,18 @@ class SABnzbd {
   // Perform command request.
   cmd(command, args) {
     // Build url for request.
-    let url = this.url + '?' + qs.stringify({
+    let url = this.url + "?" + qs.stringify({
       mode: command,
       apikey: this.apiKey,
-      output: 'json'
+      output: "json"
     });
 
     // Tack on any passed arguments
     if (args) {
-      url += '&' + qs.stringify(args);
+      url += "&" + qs.stringify(args);
     }
 
-    log.debug('Retrieving url `' + url + '`');
+    log.debug("Retrieving url `" + url + "`");
 
     // Perform request.
     return got(url, {

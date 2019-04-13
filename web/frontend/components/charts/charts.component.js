@@ -1,17 +1,17 @@
-import Highcharts from 'highcharts'
-import './charts.scss';
-var CLR_SCARLET = '#B90000';
-var CLR_TANGERINE = '#E63900';
-var CLR_FIRE = '#FF6600';
-var CLR_CARROT = '#FF9900';
-var CLR_SUNFLOWER = '#FFC900';
-var CLR_PISTACHIO = '#8FBF00';
-var CLR_FERN = '#009966';
-var CLR_TURQUOISE = '#00AFBF';
-var CLR_AZURE = '#0066FF';
-var CLR_INDIGO = '#3636D9';
-var CLR_VIOLET = '#9900FF';
-var CLR_MAGENTA = '#CC0099';
+import Highcharts from "highcharts"
+import "./charts.scss";
+var CLR_SCARLET = "#B90000";
+var CLR_TANGERINE = "#E63900";
+var CLR_FIRE = "#FF6600";
+var CLR_CARROT = "#FF9900";
+var CLR_SUNFLOWER = "#FFC900";
+var CLR_PISTACHIO = "#8FBF00";
+var CLR_FERN = "#009966";
+var CLR_TURQUOISE = "#00AFBF";
+var CLR_AZURE = "#0066FF";
+var CLR_INDIGO = "#3636D9";
+var CLR_VIOLET = "#9900FF";
+var CLR_MAGENTA = "#CC0099";
 
 // Shuffled for contrast
 var COLOURS = [
@@ -31,8 +31,8 @@ var COLOURS = [
 
 class Tooltip {
   start() {
-    this.$el = $('<div />')
-      .addClass('user-dashboard-tooltip')
+    this.$el = $("<div />")
+      .addClass("user-dashboard-tooltip")
       .appendTo(document.body);
     this.hide();
   };
@@ -49,8 +49,8 @@ class Tooltip {
 
   move(x, y) {
     this.$el.css({
-      'left': x + 10,
-      'top': y + 10
+      "left": x + 10,
+      "top": y + 10
     });
   };
 
@@ -113,16 +113,16 @@ class ChartsController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('charts-controller');
+    this.Logger.debug("charts-controller");
 
     this.$scope.refresh = () => {
       this.AlloyDbService.refreshCharts();
     };
-    this.$rootScope.$watch('charts', (o, n) => {
+    this.$rootScope.$watch("charts", (o, n) => {
       if (this.$rootScope.charts && this.$rootScope.charts.tags) {
         this.tooltip = new Tooltip();
         this.tooltip.start();
-        var $container = $('.js-tube-tags-target');
+        var $container = $(".js-tube-tags-target");
         this.chart = this.drawChart($container, this.$rootScope.charts.tags);
       }
     });
@@ -135,7 +135,7 @@ class ChartsController {
         enabled: true,
         dataLabels: {
           enabled: true,
-          verticalAlign: 'bottom',
+          verticalAlign: "bottom",
           y: -5,
           overflow: true,
           crop: false,
@@ -143,7 +143,7 @@ class ChartsController {
             var maxLength = this.labelMaxLength();
             var name = tag.name;
             if (name.length > maxLength) {
-              name = name.slice(0, maxLength - 1) + '…';
+              name = name.slice(0, maxLength - 1) + "…";
             }
             return name;
           }.bind(this)
@@ -156,9 +156,9 @@ class ChartsController {
   };
 
   formatSeries(entries) {
-    var uniqueTags = _.uniq(_.reject(_.flatten(entries, 'tags'), _.isEmpty));
+    var uniqueTags = _.uniq(_.reject(_.flatten(entries, "tags"), _.isEmpty));
 
-    // Create a series for each tag, with it's ranking for each entry as
+    // Create a series for each tag, with it"s ranking for each entry as
     // y and x respectively
 
     var series = uniqueTags.map(function (tag) {
@@ -247,7 +247,7 @@ class ChartsController {
         return;
       }
 
-      tag.zoneAxis = 'x';
+      tag.zoneAxis = "x";
 
       zones.push({
         opacity: 1,
@@ -273,7 +273,7 @@ class ChartsController {
 
   addColours(series) {
     series.forEach(function (tag) {
-      var characters = tag.name.split('');
+      var characters = tag.name.split("");
       var code = characters.reduce(function (sum, character) {
         return sum + character.charCodeAt(0);
       }, 0);
@@ -282,23 +282,23 @@ class ChartsController {
   };
 
   labelMaxLength() {
-    var breakpoint = 'lg';//mediaSize.getMediaSize();
-    if (breakpoint === 'xs') {
+    var breakpoint = "lg";//mediaSize.getMediaSize();
+    if (breakpoint === "xs") {
       return 12;
     }
-    if (breakpoint === 'lg') {
+    if (breakpoint === "lg") {
       return 11;
     }
     return 10;
   };
 
   applyZoneStyling(tag) {
-    // Manually apply opacity as highcharts doesn't support it
-    // unless we switch to 'styled mode'
+    // Manually apply opacity as highcharts doesn"t support it
+    // unless we switch to "styled mode"
     tag.zones.forEach(function (zoneSpec, i) {
-      if (zoneSpec.hasOwnProperty('opacity')) {
-        var el = tag['zone-graph-' + i].element;
-        el.setAttribute('opacity', zoneSpec.opacity);
+      if (zoneSpec.hasOwnProperty("opacity")) {
+        var el = tag["zone-graph-" + i].element;
+        el.setAttribute("opacity", zoneSpec.opacity);
       }
     });
   };
@@ -312,8 +312,8 @@ class ChartsController {
         tag.dataLabelsGroup.element
       ];
       return {
-        '$el': $(elements),
-        'point': tag.options
+        "$el": $(elements),
+        "point": tag.options
       };
     });
     this.tooltips = new PointTooltips(this.app, points, this.tooltip);
@@ -321,7 +321,7 @@ class ChartsController {
 
   shareDimensions() {
     var dimensions = parent.shareDimensions.call(this);
-    var width = this.$el.find('.user-dashboard-tube-tags-scroll').innerWidth();
+    var width = this.$el.find(".user-dashboard-tube-tags-scroll").innerWidth();
     width += 30; // Padding between the scrollable bit and the module container
     dimensions.width = Math.max(dimensions.width, width);
     dimensions.mediaWidth = Math.max(dimensions.mediaWidth, width);
@@ -334,14 +334,14 @@ class ChartsController {
     this.addMarkers(series);
     this.addColours(series);
 
-    var categories = _.pluck(entries, 'date');
+    var categories = _.pluck(entries, "date");
 
     var vPadding = 1 / 4;
 
     var chart = new Highcharts.Chart({
       chart: {
         renderTo: $container.get(0),
-        type: 'spline'
+        type: "spline"
       },
       title: false,
       legend: {
@@ -355,11 +355,11 @@ class ChartsController {
           allowPointSelect: true,
           marker: {
             enabled: true,
-            symbol: 'circle',
+            symbol: "circle",
             radius: 3
           },
           lineWidth: 3,
-          linecap: 'square',
+          linecap: "square",
           states: {
             hover: {
               enabled: false
@@ -381,7 +381,7 @@ class ChartsController {
         },
         labels: {
           formatter: function () {
-            return (this.value > 0 && Number.isInteger(this.value)) ? '<div class="user-dashboard-tube-tags-position" align="center" >' + (6 - this.value) + '</div>' : '';
+            return (this.value > 0 && Number.isInteger(this.value)) ? "<div class=\"user-dashboard-tube-tags-position\" align=\"center\" >" + (6 - this.value) + "</div>" : "";
           },
           useHTML: true
         },
@@ -389,8 +389,8 @@ class ChartsController {
       },
       xAxis: {
         categories: categories,
-        lineColor: 'transparent',
-        tickColor: 'transparent',
+        lineColor: "transparent",
+        tickColor: "transparent",
         min: 0,
         max: entries.length - 1
       },
@@ -402,8 +402,8 @@ class ChartsController {
   };
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
@@ -412,7 +412,7 @@ class ChartsController {
 export default {
   bindings: {},
   controller: ChartsController,
-  templateUrl: '/template/charts.jade'
+  templateUrl: "/template/charts.jade"
 }; 
 
 //

@@ -3,7 +3,7 @@ export default class Logger {
     "ngInject";
     this.$rootScope = $rootScope;
 
-    this.$rootScope.$watch('socket', function (oldVal, newVal) {
+    this.$rootScope.$watch("socket", function (oldVal, newVal) {
 
     });
   }
@@ -12,20 +12,20 @@ export default class Logger {
     if(data){
       console.log(data);
       if (this.$rootScope.socket) {
-        this.$rootScope.socket.emit('log', { message: data, method: type });
+        this.$rootScope.socket.emit("log", { message: data, method: type });
       }
     }
   }
 
   info(data) {
-    this.formMessage('info', data);
+    this.formMessage("info", data);
   }
 
   debug(data) {
-    this.formMessage('debug', data);
+    this.formMessage("debug", data);
   }
 
   error(data) {
-    this.formMessage('error', data);
+    this.formMessage("error", data);
   }
 }

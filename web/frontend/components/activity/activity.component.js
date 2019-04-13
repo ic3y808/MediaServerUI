@@ -10,30 +10,30 @@ class ActivityController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
-    this.Logger.debug('activity-controller');
+    this.Logger.debug("activity-controller");
 
     this.$scope.jumpTo = to => {
-      $location.path('/activity/' + to);
+      $location.path("/activity/" + to);
     };
 
     this.$scope.navigate = to => {
-      $('#activity-content').append(this.$compile("<activity" + to + "/>")(this.$scope));
+      $("#activity-content").append(this.$compile("<activity" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };
 
     this.$scope.configQueue = () =>  {
-      this.Logger.debug('activityQueue');
-      this.$scope.navigate('queue');
+      this.Logger.debug("activityQueue");
+      this.$scope.navigate("queue");
     };
 
     this.$scope.configHistory = () =>  {
-      this.Logger.debug('activityHistory');
-      this.$scope.navigate('history');
+      this.Logger.debug("activityHistory");
+      this.$scope.navigate("history");
     };
 
     this.$scope.configBlacklist = () => {
-      this.Logger.debug('activityBlacklist');
-      this.$scope.navigate('blacklist');
+      this.Logger.debug("activityBlacklist");
+      this.$scope.navigate("blacklist");
     };
 
     this.AppUtilities.apply();
@@ -43,7 +43,7 @@ class ActivityController {
 
   $onInit() {
     if (this.$routeParams.id) {
-      this.Logger.debug('navigating to ' + this.$routeParams.id);
+      this.Logger.debug("navigating to " + this.$routeParams.id);
       this.$scope.navigate(this.$routeParams.id);
     }
   }
@@ -52,5 +52,5 @@ class ActivityController {
 export default {
   bindings: {},
   controller: ActivityController,
-  templateUrl: '/template/activity.jade'
+  templateUrl: "/template/activity.jade"
 };

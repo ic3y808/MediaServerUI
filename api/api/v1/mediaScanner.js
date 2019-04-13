@@ -269,7 +269,7 @@ class MediaScanner extends MediaScannerBase {
                   album.releases.forEach(release => {
                     release.Tracks.forEach(albumTrack => {
                       if (!processed_track.id) {
-                        var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000);
+                        var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000, 10);
                         var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
                         var mediumCompare = processed_track.of == release.TrackCount;
 

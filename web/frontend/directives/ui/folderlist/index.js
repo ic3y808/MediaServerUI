@@ -1,11 +1,11 @@
 export default function ($rootScope, $location, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      currentpath: '='
+      currentpath: "="
     },
-    templateUrl: '/template/folderlist.jade',
+    templateUrl: "/template/folderlist.jade",
     replace: true,
     link: function (scope, elm, attrs) {
 
@@ -16,7 +16,7 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
           if (fileList) {
             fileList.then(function (result) {
 
-              if (scope.currentpath === null || scope.currentpath == undefined || scope.currentpath == '') {
+              if (scope.currentpath === null || scope.currentpath == undefined || scope.currentpath == "") {
 
                 scope.driveList = result;
                
@@ -28,7 +28,7 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
                 scope.driveList = null;
 
                 scope.folderlist = result;
-                scope.folderlist.unshift({ Name: '..', Path: '..' })
+                scope.folderlist.unshift({ Name: "..", Path: ".." })
                 AppUtilities.apply();
               }
 
@@ -38,13 +38,13 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
       }
 
       scope.navigateToPath = function (path) {
-        if (path === '..') {
+        if (path === "..") {
 
           var parent = AlloyDbService.getFileParent(scope.currentpath);
           if (parent) {
             parent.then(function (result) {
-              if (result.path === '') {
-                scope.currentpath = '';
+              if (result.path === "") {
+                scope.currentpath = "";
                 scope.folderlist = null;
               } else {
                 scope.currentpath = result.path;
@@ -63,13 +63,13 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
       };
 
 
-      scope.$watch('currentpath', function (event, data) {
+      scope.$watch("currentpath", function (event, data) {
         scope.driveList = null;
         scope.folderlist = null;
         reload();
       });
 
-      $rootScope.$on('loginStatusChange', function (event, data) {
+      $rootScope.$on("loginStatusChange", function (event, data) {
         reload();
       });
 

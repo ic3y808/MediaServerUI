@@ -1,5 +1,5 @@
-const got = require('got');
-var log = require('../../../../../common/logger');
+const got = require("got");
+var log = require("../../../../../common/logger");
 
 
 class Musicbrainz {
@@ -9,24 +9,24 @@ class Musicbrainz {
 
   // Get server version.
   version() {
-    return this.cmd('version').then(r => r.version);
+    return this.cmd("version").then(r => r.version);
   }
 
   // Perform command request.
   cmd(command, args) {
     // Build url for request.
-    let url = this.url + '?' + qs.stringify({
+    let url = this.url + "?" + qs.stringify({
       mode: command,
       apikey: this.apiKey,
-      output: 'json'
+      output: "json"
     });
 
     // Tack on any passed arguments
     if (args) {
-      url += '&' + qs.stringify(args);
+      url += "&" + qs.stringify(args);
     }
 
-    log.debug('alloyui', 'Retrieving url `' + url + '`');
+    log.debug("alloyui", "Retrieving url `" + url + "`");
 
     // Perform request.
     return got(url, {

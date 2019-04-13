@@ -1,4 +1,4 @@
-import './navbar.scss';
+import "./navbar.scss";
 class NavbarController {
   constructor($scope, $rootScope, $location, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService, $http) {
     "ngInject";
@@ -11,7 +11,7 @@ class NavbarController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('nav-controller');   
+    this.Logger.debug("nav-controller");   
   }
 
   $onInit() {
@@ -21,5 +21,5 @@ class NavbarController {
 export default {
   bindings: {},
   controller: NavbarController,
-  templateUrl: '/template/navbar.jade'
+  templateUrl: "/template/navbar.jade"
 };

@@ -1,4 +1,4 @@
-import './footer.scss';
+import "./footer.scss";
 class FooterController {
   constructor($scope, $rootScope, $location, $element, Logger, MediaElement, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
@@ -12,7 +12,7 @@ class FooterController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('footer-controller');
+    this.Logger.debug("footer-controller");
 
     $scope.playPause = () => {
       if (this.MediaPlayer) {
@@ -100,21 +100,21 @@ class FooterController {
     };
 
     $scope.shareTrack = () => {
-      this.Logger.debug('shareButton');
-      this.AlloyDbService.createShare(this.MediaPlayer.selectedTrack().id, 'Shared from Alloy').then(function (result) {
-        $('#shareButton').popover({
+      this.Logger.debug("shareButton");
+      this.AlloyDbService.createShare(this.MediaPlayer.selectedTrack().id, "Shared from Alloy").then(function (result) {
+        $("#shareButton").popover({
           animation: true,
-          content: 'Success! Url Copied to Clipboard.',
+          content: "Success! Url Copied to Clipboard.",
           delay: {
             "show": 0,
             "hide": 5000
           },
-          placement: 'top'
-        }).popover('show');
+          placement: "top"
+        }).popover("show");
         var url = result.url.toString();
         this.AppUtilities.copyTextToClipboard(url);
         setTimeout(() => {
-          $('#shareButton').popover('hide');
+          $("#shareButton").popover("hide");
         }, 5000);
       });
     };
@@ -123,7 +123,7 @@ class FooterController {
       if (this.MediaPlayer) {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
-          if (selected.starred === 'true') return "icon-star"
+          if (selected.starred === "true") return "icon-star"
         }
       }
       return "icon-star-o"
@@ -133,17 +133,17 @@ class FooterController {
       if (this.MediaPlayer) {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
-          this.Logger.info('Trying to star track: ' + selected.title);
-          if (selected.starred === 'true') {
+          this.Logger.info("Trying to star track: " + selected.title);
+          if (selected.starred === "true") {
             this.AlloyDbService.unstar({ id: selected.id }).then(result => {
-              this.Logger.info('UnStarred ' + selected.title + ' ' + JSON.stringify(result));
-              selected.starred = 'false'
+              this.Logger.info("UnStarred " + selected.title + " " + JSON.stringify(result));
+              selected.starred = "false"
               this.AppUtilities.apply();
             });
           } else {
             this.AlloyDbService.star({ id: selected.id }).then(result => {
-              this.Logger.info('Starred ' + selected.title + ' ' + JSON.stringify(result));
-              selected.starred = 'true'
+              this.Logger.info("Starred " + selected.title + " " + JSON.stringify(result));
+              selected.starred = "true"
               this.AppUtilities.apply();
             });
           }
@@ -161,11 +161,11 @@ class FooterController {
   }
 
   $onInit() {
-    this.Logger.debug('footer-init');
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.Logger.debug("footer-init");
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
 
-    $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+    $("#subProgress").attr("aria-valuenow", 0).css("width", "0%");
 
     function getMousePos(canvas, evt) {
       var rect = canvas.getBoundingClientRect();
@@ -178,8 +178,8 @@ class FooterController {
     //$("#clickProgress").mousemove(function (evt) {
     //  var c = document.getElementById("clickProgress");
     //  var ctx = c.getContext("2d");
-    //  var x = (evt.pageX - $('#clickProgress').offset().left) + $(window).scrollLeft();
-    //  var y = (evt.pageY - $('#clickProgress').offset().top) + $(window).scrollTop();
+    //  var x = (evt.pageX - $("#clickProgress").offset().left) + $(window).scrollLeft();
+    //  var y = (evt.pageY - $("#clickProgress").offset().top) + $(window).scrollTop();
     //  ctx.save();
     //  ctx.setTransform(1, 0, 0, 1, 0, 0);
     //  ctx.clearRect(0, 0, c.width, c.height);
@@ -213,11 +213,11 @@ class FooterController {
 
     $("#downloadButton").click(() => {
       var dlUrl = this.AlloyDbService.download(this.MediaPlayer.selectedTrack().id);
-      window.open(dlUrl, '_blank');
+      window.open(dlUrl, "_blank");
     });
 
     $("#nowPlayingImageHolder").click(() => {
-      this.$location.path('/playing');
+      this.$location.path("/playing");
     });
   }
 }
@@ -225,6 +225,6 @@ class FooterController {
 export default {
   bindings: {},
   controller: FooterController,
-  templateUrl: '/template/footer.jade',
-  selector: 'footer-mediaplayer'
+  templateUrl: "/template/footer.jade",
+  selector: "footer-mediaplayer"
 };

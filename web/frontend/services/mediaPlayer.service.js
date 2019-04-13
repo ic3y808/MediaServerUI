@@ -1,6 +1,6 @@
 import AppUtilities from "./appUtilities.service";
-import '../API/cast.framework';
-import '../API/cast.v1';
+import "../API/cast.framework";
+import "../API/cast.v1";
 var isCastAvailable = false;
 window.__onGCastApiAvailable = function (isAvailable) {
   isCastAvailable = isAvailable;
@@ -16,7 +16,7 @@ export default class MediaPlayer {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('init media player');
+    this.Logger.debug("init media player");
     this.activeSong = "";
     this.playing = false;
     this.paused = false;
@@ -33,37 +33,37 @@ export default class MediaPlayer {
     this.$rootScope.playArtist = this.playArtist;
 
 
-    this.MediaElement.addEventListener('play', () => {
+    this.MediaElement.addEventListener("play", () => {
       this.playing = true;
       this.paused = false;
       this.togglePlayPause();
-      this.AppUtilities.broadcast('playbackStatusChangedEvent');
+      this.AppUtilities.broadcast("playbackStatusChangedEvent");
       AppUtilities.apply();
     });
 
-    this.MediaElement.addEventListener('pause', () => {
+    this.MediaElement.addEventListener("pause", () => {
       this.playing = false;
       this.paused = true;
       this.togglePlayPause();
-      this.AppUtilities.broadcast('playbackStatusChangedEvent');
+      this.AppUtilities.broadcast("playbackStatusChangedEvent");
       AppUtilities.apply();
     });
 
-    this.MediaElement.addEventListener('ended', () => {
+    this.MediaElement.addEventListener("ended", () => {
       if ((this.selectedIndex + 1) === this.$rootScope.tracks.length) {
         this.playing = false;
         this.paused = false;
         this.selectedIndex = 0;
         this.togglePlayPause();
-        $('#media-player').src = this.selectedTrack();
+        $("#media-player").src = this.selectedTrack();
         this.currentProgressPercent = 0;
         this.currentTime = "";
         this.currentDuration = "";
-        $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+        $("#subProgress").attr("aria-valuenow", 0).css("width", "0%");
 
-        this.Logger.debug('Playlist ended');
-        this.AppUtilities.broadcast('playbackStatusChangedEvent');
-        this.AppUtilities.broadcast('playlistEndEvent');
+        this.Logger.debug("Playlist ended");
+        this.AppUtilities.broadcast("playbackStatusChangedEvent");
+        this.AppUtilities.broadcast("playlistEndEvent");
 
       } else {
         this.playing = true;
@@ -71,15 +71,15 @@ export default class MediaPlayer {
       }
     });
 
-    this.MediaElement.addEventListener('canplaythrough', () => {
+    this.MediaElement.addEventListener("canplaythrough", () => {
       this.currentTime = "0:00";
       this.currentDuration = this.AppUtilities.formatTime(MediaElement.duration)
       this.currentProgressPercent = 0;
-      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
+      $("#subProgress").attr("aria-valuenow", 0).css("width", "0%");
       this.togglePlayPause();
     });
 
-    this.MediaElement.addEventListener('timeupdate', () => {
+    this.MediaElement.addEventListener("timeupdate", () => {
       var duration = MediaElement.duration;
       if (!isFinite(duration))
         duration = this.selectedTrack().duration;
@@ -96,7 +96,7 @@ export default class MediaPlayer {
 
 
 
-        $('#subProgress').attr('aria-valuenow', loaded).css('width', loaded + "%");
+        $("#subProgress").attr("aria-valuenow", loaded).css("width", loaded + "%");
         this.currentProgressPercent = playPercent;
         this.currentTime = this.AppUtilities.formatTime(this.MediaElement.currentTime);
         this.currentDuration = this.AppUtilities.formatTime(duration);
@@ -112,7 +112,7 @@ export default class MediaPlayer {
   initializeCast() {
     if (isCastAvailable) {
       var options = {};
-      options.receiverApplicationId = 'DAB06F7C';
+      options.receiverApplicationId = "DAB06F7C";
       options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
       cast.framework.CastContext.getInstance().setOptions(options);
       this.remotePlayer = new cast.framework.RemotePlayer();
@@ -120,7 +120,7 @@ export default class MediaPlayer {
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
         () => {
-          this.Logger.debug('switchPlayer');
+          this.Logger.debug("switchPlayer");
           if (cast && cast.framework) {
             if (this.remotePlayerConnected()) {
 
@@ -235,11 +235,11 @@ export default class MediaPlayer {
       this.selectedIndex = 0;
       this.currentProgressPercent = 0;
       this.togglePlayPause();
-      $('#media-player').src = this.selectedTrack();
-      $('#subProgress').attr('aria-valuenow', 0).css('width', "0%");
-      $('#mainTimeDisplay').html("");
-      this.Logger.debug('Playlist ended');
-      this.AppUtilities.broadcast('playlistBeginEvent');
+      $("#media-player").src = this.selectedTrack();
+      $("#subProgress").attr("aria-valuenow", 0).css("width", "0%");
+      $("#mainTimeDisplay").html("");
+      this.Logger.debug("Playlist ended");
+      this.AppUtilities.broadcast("playlistBeginEvent");
       return true;
     }
     return false;
@@ -251,10 +251,10 @@ export default class MediaPlayer {
       this.selectedIndex = 0;
       this.currentProgressPercent = 0;
       this.togglePlayPause();
-      $('#media-player').src = this.selectedTrack();
-      $('#mainTimeDisplay').html("");
-      this.Logger.debug('Playlist ended');
-      this.AppUtilities.broadcast('playlistEndEvent');
+      $("#media-player").src = this.selectedTrack();
+      $("#mainTimeDisplay").html("");
+      this.Logger.debug("Playlist ended");
+      this.AppUtilities.broadcast("playlistEndEvent");
       return true;
     }
     return false;
@@ -264,13 +264,13 @@ export default class MediaPlayer {
 
     return new Promise((resolve, reject) => {
       if (!source) {
-        throw new Error('source required');
+        throw new Error("source required");
       }
       if (!source.artistId) {
-        throw new Error('no artist id');
+        throw new Error("no artist id");
       }
       //this.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
-      //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, 'audio/mp3' /*source.transcodedContentType*/);
+      //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, "audio/mp3" /*source.transcodedContentType*/);
       //  mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
       //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
       //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
@@ -287,7 +287,7 @@ export default class MediaPlayer {
       //  mediaInfo.metadata.songName = source.title;
       //  mediaInfo.metadata.title = source.title;
       //  mediaInfo.metadata.images = [{
-      //    'url': result.largeImageUrl.replace('300x300', '1280x400')
+      //    "url": result.largeImageUrl.replace("300x300", "1280x400")
       //  }];
       //  resolve(mediaInfo);
       //});
@@ -297,7 +297,7 @@ export default class MediaPlayer {
   togglePlayPause() {
     var playing = false;
     if (this.remotePlayerConnected()) {
-      playing = this.remotePlayer.playerState === 'PLAYING';
+      playing = this.remotePlayer.playerState === "PLAYING";
     } else {
       playing = this.playing;
     }
@@ -314,7 +314,7 @@ export default class MediaPlayer {
   toggleCurrentStatus() {
     var playing = false;
     if (this.remotePlayerConnected()) {
-      playing = this.remotePlayer.playerState === 'PLAYING';
+      playing = this.remotePlayer.playerState === "PLAYING";
     } else {
       playing = this.playing;
     }
@@ -327,25 +327,25 @@ export default class MediaPlayer {
 
   scrobble(instance, source) {
     instance.AlloyDbService.scrobble(source.id).then(scrobbleResult => {
-      if (scrobbleResult) instance.Logger.info('scrobble result: ' + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
+      if (scrobbleResult) instance.Logger.info("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
     });
     instance.AlloyDbService.scrobbleNowPlaying(source.id).then(scrobbleResult => {
-      if (scrobbleResult) instance.Logger.info('scrobbleNowPlaying result: ' + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
+      if (scrobbleResult) instance.Logger.info("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
     });
   }
 
   addPlay(instance, source) {
     instance.AlloyDbService.addPlay(source.id).then(result => {
       if (result) {
-        instance.Logger.info('addPlay resut: ' + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
+        instance.Logger.info("addPlay resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         source.play_count++;
-        instance.AppUtilities.broadcast('trackChangedEvent', source);
+        instance.AppUtilities.broadcast("trackChangedEvent", source);
         instance.AppUtilities.apply();
       }
     });
-    instance.AlloyDbService.addHistory({ type: 'track', action: 'played', id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id, genre: source.genre, genre_id: source.genre_id }).then(result => {
+    instance.AlloyDbService.addHistory({ type: "track", action: "played", id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id, genre: source.genre, genre_id: source.genre_id }).then(result => {
       if (result) {
-        instance.Logger.info('addHistory resut: ' + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
+        instance.Logger.info("addHistory resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         instance.AlloyDbService.refreshHistory();
       }
     });
@@ -354,8 +354,8 @@ export default class MediaPlayer {
   loadTrack(index) {
 
     this.selectedIndex = index;
-    this.Logger.debug('load track');
-    $('#mainTimeDisplay').html("Loading...");
+    this.Logger.debug("load track");
+    $("#mainTimeDisplay").html("Loading...");
 
     var source = this.selectedTrack();
     this.$rootScope.currentTrack = source;
@@ -394,10 +394,10 @@ export default class MediaPlayer {
             this.addPlay(this, source);
             this.Title.setTitle(source.artist + " " + source.title, source.artist + " " + source.title)
             this.togglePlayPause();
-            this.AppUtilities.broadcast('trackChangedEvent', source);
+            this.AppUtilities.broadcast("trackChangedEvent", source);
             this.AppUtilities.apply();
           }).catch(error => {
-            this.Logger.error('playing failed ' + error.name + " " + error.message);
+            this.Logger.error("playing failed " + error.name + " " + error.message);
             //this.next();
           });
         } else {
@@ -423,9 +423,9 @@ export default class MediaPlayer {
 
       if (playPromise !== undefined) {
         playPromise.then(_ => {
-          this.Logger.debug('success playing');
+          this.Logger.debug("success playing");
         }).catch(error => {
-          this.Logger.error('playing failed ' + error);
+          this.Logger.error("playing failed " + error);
         });
       }
     }
@@ -468,20 +468,20 @@ export default class MediaPlayer {
   }
 
   checkStarred(source) {
-    if (source.starred === 'true') {
-      $("#likeButtonIcon").removeClass('fa-star-o');
-      $("#likeButtonIcon").addClass('fa-star');
+    if (source.starred === "true") {
+      $("#likeButtonIcon").removeClass("fa-star-o");
+      $("#likeButtonIcon").addClass("fa-star");
     } else {
-      $("#likeButtonIcon").removeClass('fa-star');
-      $("#likeButtonIcon").addClass('fa-star-o');
+      $("#likeButtonIcon").removeClass("fa-star");
+      $("#likeButtonIcon").addClass("fa-star-o");
     }
   }
 
   checkArtistInfo(source) {
-    $('#artistInfo').html(source.artist);
-    $('#artistInfo').attr("href", source.artistUrl);
-    $('#trackTitle').html(source.title);
-    $('#trackTitle').attr("href", source.albumUrl);
+    $("#artistInfo").html(source.artist);
+    $("#artistInfo").attr("href", source.artistUrl);
+    $("#trackTitle").html(source.title);
+    $("#trackTitle").attr("href", source.albumUrl);
   }
 
   startProgressTimer() {
@@ -492,9 +492,9 @@ export default class MediaPlayer {
         var currentMediaDuration = this.remotePlayer.duration;
         var playPercent = 100 * (currentMediaTime / currentMediaDuration);
         if (!isNaN(playPercent)) {
-          $('#subProgress').attr('aria-valuenow', "100").css('width', "100%");
+          $("#subProgress").attr("aria-valuenow", "100").css("width", "100%");
           this.currentProgressPercent = playPercent;
-          $('#mainTimeDisplay').html(this.AppUtilities.formatTime(currentMediaTime) + " / " + this.AppUtilities.formatTime(currentMediaDuration));
+          $("#mainTimeDisplay").html(this.AppUtilities.formatTime(currentMediaTime) + " / " + this.AppUtilities.formatTime(currentMediaDuration));
         }
       }
     }, 250);
@@ -523,10 +523,10 @@ export default class MediaPlayer {
           this.isMuted = this.remotePlayer.isMuted;
           if (this.isMuted) {
             vol = 0;
-            $('#volumeSlider').val(vol);
+            $("#volumeSlider").val(vol);
           } else {
             vol = this.remotePlayer.volumeLevel;
-            $('#volumeSlider').val(vol * 100);
+            $("#volumeSlider").val(vol * 100);
           }
         }
       );
@@ -534,14 +534,14 @@ export default class MediaPlayer {
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED,
         () => {
-          $('#volumeSlider').val(this.remotePlayer.volumeLevel * 100);
+          $("#volumeSlider").val(this.remotePlayer.volumeLevel * 100);
         }
       );
 
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.MEDIA_INFO_CHANGED,
         () => {
-          this.Logger.debug('media info change');
+          this.Logger.debug("media info change");
           this.Logger.debug(this.remotePlayer.mediaInfo);
           if (this.remotePlayer && this.remotePlayer.mediaInfo && this.remotePlayer.mediaInfo.metadata) {
             var customData = this.remotePlayer.mediaInfo.metadata.customData;
@@ -560,7 +560,7 @@ export default class MediaPlayer {
       this.remotePlayerController.addEventListener(
         cast.framework.RemotePlayerEventType.PLAYER_STATE_CHANGED,
         () => {
-          this.Logger.debug('state change ');
+          this.Logger.debug("state change ");
           this.Logger.debug(this.remotePlayer.playerState);
 
           if (this.remotePlayer.playerState === null) {
@@ -568,19 +568,19 @@ export default class MediaPlayer {
               this.shouldSeek = true;
               this.prePlannedSeek = this.remotePlayer.savedPlayerState.currentTime;
               this.loadTrack(this.selectedIndex);
-              this.Logger.debug('saved state');
+              this.Logger.debug("saved state");
             } else {
               this.next();
             }
           }
-          if (this.remotePlayer.playerState === 'BUFFERING') {
-            $('#mainTimeDisplay').html("Buffering...");
+          if (this.remotePlayer.playerState === "BUFFERING") {
+            $("#mainTimeDisplay").html("Buffering...");
           }
-          if (this.remotePlayer.playerState === 'PLAYING' && this.shouldSeek) {
+          if (this.remotePlayer.playerState === "PLAYING" && this.shouldSeek) {
             this.shouldSeek = false;
             this.remotePlayer.currentTime = this.prePlannedSeek;
             this.remotePlayerController.seek();
-            this.AppUtilities.broadcast('trackChangedEvent', this.selectedTrack());
+            this.AppUtilities.broadcast("trackChangedEvent", this.selectedTrack());
           }
 
 
@@ -592,9 +592,9 @@ export default class MediaPlayer {
           }
           this.isMuted = this.remotePlayer.isMuted;
           if (this.isMuted) {
-            $('#volumeSlider').val(0);
+            $("#volumeSlider").val(0);
           } else {
-            $('#volumeSlider').val(this.remotePlayer.volumeLevel * 100);
+            $("#volumeSlider").val(this.remotePlayer.volumeLevel * 100);
           }
 
           this.togglePlayPause();
@@ -613,17 +613,17 @@ export default class MediaPlayer {
 
             //       
 
-            //        $('#artistInfo').html(source.artist);
-            //        $('#artistInfo').attr("href", source.artistUrl);
-            //        $('#trackInfo').html(source.title);
-            //        $('#trackInfo').attr("href", source.albumUrl);
+            //        $("#artistInfo").html(source.artist);
+            //        $("#artistInfo").attr("href", source.artistUrl);
+            //        $("#trackInfo").html(source.title);
+            //        $("#trackInfo").attr("href", source.albumUrl);
 
             //        if (source.starred) {
-            //            $("#likeButtonIcon").removeClass('star-o');
-            //            $("#likeButtonIcon").addClass('star');
+            //            $("#likeButtonIcon").removeClass("star-o");
+            //            $("#likeButtonIcon").addClass("star");
             //        } else {
-            //            $("#likeButtonIcon").removeClass('star');
-            //            $("#likeButtonIcon").addClass('star-o');
+            //            $("#likeButtonIcon").removeClass("star");
+            //            $("#likeButtonIcon").addClass("star-o");
             //        }
 
             //        this.togglePlayPause();
@@ -631,7 +631,7 @@ export default class MediaPlayer {
 
 
 
-            //        $('#nowPlayingImageHolder').attr('src', result.smallImageUrl);
+            //        $("#nowPlayingImageHolder").attr("src", result.smallImageUrl);
             //    }
             //});
           }
@@ -663,11 +663,11 @@ export default class MediaPlayer {
 
 
     if (selected && type && id) {
-      if (type === 'track') {
+      if (type === "track") {
         return id === selected.id;
-      } else if (type === 'artist') {
+      } else if (type === "artist") {
         return id === selected.artist_id;
-      } else if (type === 'album') {
+      } else if (type === "album") {
         return id === selected.album_id;
       }
     }

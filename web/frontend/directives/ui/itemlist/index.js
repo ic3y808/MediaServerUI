@@ -1,41 +1,41 @@
 export default function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      data: '=',
-      title: '@',
-      limit: '@',
-      type: '@',
-      refreshclick: '&',
-      viewmorelink: '@'
+      data: "=",
+      title: "@",
+      limit: "@",
+      type: "@",
+      refreshclick: "&",
+      viewmorelink: "@"
       
     },
-    templateUrl: 'template/itemlist.jade',
+    templateUrl: "template/itemlist.jade",
 
     replace: true,
     link: function (scope, elm, attrs) {
-      scope.itemLimit = parseInt(scope.limit);
+      scope.itemLimit = parseInt(scope.limit, 10);
 
       switch(scope.type){
-        case 'tracks': break;
-        case 'albums': break;
-        case 'artists': break;
+        case "tracks": break;
+        case "albums": break;
+        case "artists": break;
       }
 
-      $rootScope.$on('trackChangedEvent', (event, data) => {
+      $rootScope.$on("trackChangedEvent", (event, data) => {
         scope.currentTrack = data;
         scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
         AppUtilities.apply();
       });
 
-      $rootScope.$on('playbackStatusChangedEvent', (event, data) => {
+      $rootScope.$on("playbackStatusChangedEvent", (event, data) => {
         scope.currentTrack = $rootScope.currentTrack;
         scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
         AppUtilities.apply();
       });
 
-      scope.$watch('data', function (newVal, oldVal) {
+      scope.$watch("data", function (newVal, oldVal) {
         AppUtilities.apply();
       });
 

@@ -1,4 +1,4 @@
-import './podcasts.scss';
+import "./podcasts.scss";
 class PodcastsController {
   constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -9,7 +9,7 @@ class PodcastsController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.Logger.debug('podcasts-controller');
+    this.Logger.debug("podcasts-controller");
     AppUtilities.hideLoader();
   }
 }
@@ -17,5 +17,5 @@ class PodcastsController {
 export default {
   bindings: {},
   controller: PodcastsController,
-  templateUrl: '/template/podcasts.jade'
+  templateUrl: "/template/podcasts.jade"
 };

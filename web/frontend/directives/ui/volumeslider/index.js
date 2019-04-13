@@ -1,11 +1,11 @@
 export default function (MediaElement, MediaPlayer, AppUtilities) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      direction: '@'
+      direction: "@"
     },
-    templateUrl: '/template/volumeslider.jade',
+    templateUrl: "/template/volumeslider.jade",
 
     replace: true,
     link: function (scope, element, attrs) {

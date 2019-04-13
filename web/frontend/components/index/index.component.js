@@ -9,7 +9,7 @@ class IndexController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('index-controller');
+    this.Logger.debug("index-controller");
     this.AppUtilities.showLoader();
     $scope.artists = [];
 
@@ -29,12 +29,12 @@ class IndexController {
       }
     };
 
-    $rootScope.$on('loginStatusChange', (event, data) =>  {
-      this.Logger.debug('Index reload on loginsatuschange');
+    $rootScope.$on("loginStatusChange", (event, data) =>  {
+      this.Logger.debug("Index reload on loginsatuschange");
 
     });
 
-    $rootScope.$watch('music_index',  (newVal, oldVal) => {
+    $rootScope.$watch("music_index",  (newVal, oldVal) => {
       if ($rootScope.music_index) {
         this.AppUtilities.apply();
         this.AppUtilities.hideLoader();
@@ -46,5 +46,5 @@ class IndexController {
 export default {
   bindings: {},
   controller: IndexController,
-  templateUrl: '/template/index-view.jade'
+  templateUrl: "/template/index-view.jade"
 };

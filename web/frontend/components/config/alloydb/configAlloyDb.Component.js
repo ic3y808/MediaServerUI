@@ -9,21 +9,21 @@ class ConfigAlloyDbController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('config-alloydb-controller');
+    this.Logger.debug("config-alloydb-controller");
 
     $scope.settings = {};
-    $scope.currentpath = '';
-    $scope.display_name = '';
+    $scope.currentpath = "";
+    $scope.display_name = "";
     $scope.selectedBackup = {};
 
     $scope.generateConnectionString = () => {
-      var url = 'http://';
+      var url = "http://";
       if ($rootScope.settings.alloydb) {
         if ($rootScope.settings.alloydb.alloydb_use_ssl)
-          url = 'https://';
+          url = "https://";
         url += $rootScope.settings.alloydb.alloydb_host;
         if ($rootScope.settings.alloydb.alloydb_include_port_in_url)
-          url += ':' + $rootScope.settings.alloydb.alloydb_port;
+          url += ":" + $rootScope.settings.alloydb.alloydb_port;
       }
 
 
@@ -36,7 +36,7 @@ class ConfigAlloyDbController {
 
     $scope.testSettings = () => {
       if (this.$rootScope.socket)
-        this.$rootScope.socket.emit('test_alloydb_settings', $rootScope.settings.sabnzbd);
+        this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd);
     };
 
     $scope.startBackup = () => {
@@ -61,18 +61,18 @@ class ConfigAlloyDbController {
     }
 
     $scope.browsePaths = () => {
-      $scope.currentpath = '';
-      $scope.display_name = '';
+      $scope.currentpath = "";
+      $scope.display_name = "";
       AppUtilities.apply();
 
       var $this = $(this)
-        , $remote = $this.data('remote') || $this.attr('href')
-        , $modal = $('#addMediaPathModal')
-      $('#primary-content').append($modal);
+        , $remote = $this.data("remote") || $this.attr("href")
+        , $modal = $("#addMediaPathModal")
+      $("#primary-content").append($modal);
       $modal.modal();
       // $modal.load($remote);
 
-      // $('#addMediaPathModal').modal()
+      // $("#addMediaPathModal").modal()
     }
 
     $scope.addCurrentPath = () => {
@@ -83,7 +83,7 @@ class ConfigAlloyDbController {
           $scope.reload();
         });
       }
-      $('#addMediaPathModal').modal('hide')
+      $("#addMediaPathModal").modal("hide")
     }
 
     $scope.reload = () => {
@@ -113,35 +113,35 @@ class ConfigAlloyDbController {
 
 
     $scope.addBackup = () => {
-      $('.file-upload-input').trigger('click')
+      $(".file-upload-input").trigger("click")
     }
 
     $scope.backupFileAdded = (input) => {
       if (input.files && input.files[0]) {
-        this.$rootScope.socket.emit('disconnect_db');
+        this.$rootScope.socket.emit("disconnect_db");
         this.AlloyDbService.restore(input.files[0])
       }
     }
 
     if (this.$rootScope.socket)
-      this.$rootScope.socket.emit('load_settings', 'alloydb_settings');
+      this.$rootScope.socket.emit("load_settings", "alloydb_settings");
 
-    $rootScope.$on('menuSizeChange', (event, currentState) => {
+    $rootScope.$on("menuSizeChange", (event, currentState) => {
 
     });
 
-    $rootScope.$on('windowResized', (event, data) => {
+    $rootScope.$on("windowResized", (event, data) => {
 
     });
 
 
     AppUtilities.hideLoader();
 
-    $rootScope.$watch('settings.alloydb ', (newVal, oldVal) => {
+    $rootScope.$watch("settings.alloydb ", (newVal, oldVal) => {
       $scope.previewConnectionString();
     });
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
+    $rootScope.$on("loginStatusChange", function (event, data) {
       $scope.reload();
     });
 
@@ -152,7 +152,7 @@ class ConfigAlloyDbController {
       });
     }, 2000);
 
-    $scope.$on('$destroy', () => {
+    $scope.$on("$destroy", () => {
       clearInterval($scope.refreshIntereval);
     });
 
@@ -163,5 +163,5 @@ class ConfigAlloyDbController {
 export default {
   bindings: {},
   controller: ConfigAlloyDbController,
-  templateUrl: '/template/configAlloyDb.jade'
+  templateUrl: "/template/configAlloyDb.jade"
 };

@@ -51,7 +51,7 @@ router.get("/artists", function (req, res) {
     result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC LIMIT ?").all(limit);
     result.next_offset = limit;
   } else if (limit && offset) {
-    result.next_offset = parseInt(offset) + parseInt(limit);
+    result.next_offset = parseInt(offset, 10) + parseInt(limit, 10);
     result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC LIMIT ? OFFSET ?").all(limit, offset);
   } else {
     result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC").all();

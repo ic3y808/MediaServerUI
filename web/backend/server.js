@@ -19,16 +19,16 @@ var index = require("./routes/index");
 
 var timer = {};
 
-logger.info('alloyui', 'Starting up Alloy');
+logger.info("alloyui", "Starting up Alloy");
 
 var db = require("./core/database");
 db.init().then(function () {
-  logger.info('alloyui', 'DB Initialized');
+  logger.info("alloyui", "DB Initialized");
 
-  logger.info('alloyui', "Loading Plugins");
+  logger.info("alloyui", "Loading Plugins");
   var sabnzbd = require("./core/plugins/sabnzbd");
   var musicbrainz = require("./core/plugins/musicbrainz");
-  logger.info('alloyui', "Finished Loading Plugins");
+  logger.info("alloyui", "Finished Loading Plugins");
 
   const app = express();
   var server = require("http").Server(app);
@@ -124,7 +124,7 @@ db.init().then(function () {
     var err = new Error("Not Found");
     err.status = 404;
     err.url = req.path;
-    logger.error('alloyui', JSON.stringify(err));
+    logger.error("alloyui", JSON.stringify(err));
     next(err);
   });
 
@@ -133,7 +133,7 @@ db.init().then(function () {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
       err.url = req.path;
-      logger.error('alloyui', JSON.stringify(err));
+      logger.error("alloyui", JSON.stringify(err));
       res.render("error", {
         message: err.message,
         error: err
@@ -142,7 +142,7 @@ db.init().then(function () {
   } else {
     app.use(function (err, req, res, next) {
       res.status(err.status || 500);
-      logger.error('alloyui', JSON.stringify(err));
+      logger.error("alloyui", JSON.stringify(err));
       res.render("error", {
         message: err.message,
         error: {}
@@ -154,7 +154,7 @@ db.init().then(function () {
     db.socketConnect(socket);
     sabnzbd.socketConnect(socket);
     musicbrainz.socketConnect(socket);
-    logger.debug('alloyui', "Client connected");
+    logger.debug("alloyui", "Client connected");
     socket.on("log", function (data) {
       var obj = {};
       obj.level = data.method;
@@ -176,7 +176,7 @@ db.init().then(function () {
     var addr = server.address();
     var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     sabnzbd.login();
-    logger.info('alloyui', "Listening on " + bind);
+    logger.info("alloyui", "Listening on " + bind);
   });
 
   if (process.env.MODE === "dev") {

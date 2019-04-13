@@ -8,7 +8,7 @@ class HistoryController {
     this.Logger = Logger;
     this.AlloyDbService = AlloyDbService;
 
-    this.Logger.debug('history-controller');
+    this.Logger.debug("history-controller");
 
     $scope.refresh = function () {
       AlloyDbService.refreshHistory();
@@ -23,7 +23,7 @@ class HistoryController {
       this.MediaPlayer.loadTrack(index);
     };
 
-    $rootScope.$watch('history', function (newVal, oldVal) {
+    $rootScope.$watch("history", function (newVal, oldVal) {
       if ($rootScope.history) {
         AppUtilities.apply();
         AppUtilities.hideLoader();
@@ -32,13 +32,13 @@ class HistoryController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: HistoryController,
-  templateUrl: '/template/history.jade'
+  templateUrl: "/template/history.jade"
 };

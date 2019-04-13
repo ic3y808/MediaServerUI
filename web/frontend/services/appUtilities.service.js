@@ -1,5 +1,5 @@
-import CryptoJS from 'crypto-js';
-import moment from 'moment';
+import CryptoJS from "crypto-js";
+import moment from "moment";
 
 export default class AppUtilities {
   constructor($rootScope, $timeout, Logger) {
@@ -34,9 +34,9 @@ export default class AppUtilities {
   }
 
   getBackgroundStyle(imagepath) {
-    if (imagepath == undefined || imagepath == '' || imagepath == null) return '';
+    if (imagepath == undefined || imagepath == "" || imagepath == null) return "";
     return {
-      'background-image': 'url(' + imagepath + ')'
+      "background-image": "url(" + imagepath + ")"
     }
   }
 
@@ -60,14 +60,14 @@ export default class AppUtilities {
 
   setContentBackground(img) {
     if (img) {
-      var bgUrl = img.replace('300x300', Math.round($('.art-backdrop').width()) + 'x' + Math.round($('.art-backdrop').height()));
-      $('.art-backdrop').css('background-image', 'url(' + bgUrl + ')');
+      var bgUrl = img.replace("300x300", Math.round($(".art-backdrop").width()) + "x" + Math.round($(".art-backdrop").height()));
+      $(".art-backdrop").css("background-image", "url(" + bgUrl + ")");
       this.apply();
     }
   }
 
   resetContentBackground() {
-    $('.art-backdrop').css('background-image', 'url("")');
+    $(".art-backdrop").css("background-image", "url(\"\")");
   }
 
   updateGridRows(gridOptions) {
@@ -103,11 +103,11 @@ export default class AppUtilities {
     textArea.select();
 
     try {
-      var successful = document.execCommand('copy');
-      var msg = successful ? 'successful' : 'unsuccessful';
-      Logger.info('Fallback: Copying text command was ' + msg);
+      var successful = document.execCommand("copy");
+      var msg = successful ? "successful" : "unsuccessful";
+      Logger.info("Fallback: Copying text command was " + msg);
     } catch (err) {
-      Logger.error('Fallback: Oops, unable to copy' + JSON.stringify(err));
+      Logger.error("Fallback: Oops, unable to copy" + JSON.stringify(err));
     }
 
     document.body.removeChild(textArea);
@@ -121,7 +121,7 @@ export default class AppUtilities {
     navigator.clipboard.writeText(text).then(function () {
 
     }, function (err) {
-      console.error('Async: Could not copy text: ', err);
+      console.error("Async: Could not copy text: ", err);
     });
   }
 
