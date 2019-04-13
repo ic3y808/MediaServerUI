@@ -3,6 +3,7 @@ exclude_paths:
  - 'web/frontend/API/angular-auto-complete.js'
  - 'web/frontend/API/cast.framework.js'
  - 'web/frontend/API/cast.v1.js'
+ - '*.md'
  - '**/*.md'
  - 'api/music-metadata/**'
  - 'spec/**/*'

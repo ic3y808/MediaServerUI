@@ -19,7 +19,7 @@ namespace Alloy.Adapters
 		private Context context;
 		private readonly Activity Activity;
 		private readonly AlbumContainer Album;
-		private BackgroundAudioServiceConnection serviceConnection;
+		private readonly BackgroundAudioServiceConnection serviceConnection;
 
 		public AlbumDetailAdapter(Activity activity, AlbumContainer album, BackgroundAudioServiceConnection serviceConnection)
 		{
