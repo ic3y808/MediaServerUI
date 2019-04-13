@@ -13,7 +13,9 @@ using Alloy.Compat;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
+using Alloy.Widgets;
 using Android.Database;
 using Android.Graphics;
 using Android.OS;
@@ -172,56 +174,33 @@ namespace Alloy.Fragments
 
 			List<Tuple<string, string, string, string, string>> items = new List<Tuple<string, string, string, string, string>>();
 
+			//TODO fix search
+
 			items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "seperator", "Albums", null, null));
 			for (int i = 0; i < e.Artists.Count; i++)
 			{
 				items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "artist", e.Artists[i].Name, null, JsonConvert.SerializeObject(e.Artists[i])));
 			}
 
-			//for (int i = 0; i < e.Albums.Count; i++)
-			//{
-			//	items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "album", e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i])));
-			//}
+			for (int i = 0; i < e.Albums.Count; i++)
+			{
+				items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "album", e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i])));
+			}
 
-			//for (int i = 0; i < e.Genres.Count; i++)
-			//{
-			//	items.Add(new Tuple<string, string, string, string, string>( id++.ToString(), "genre", e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i])));
-			//}
+			for (int i = 0; i < e.Genres.Count; i++)
+			{
+				items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "genre", e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i])));
+			}
 
-			//for (int i = 0; i < e.Tracks.Count; i++)
-			//{
-			//	items.Add(new Tuple<string, string, string, string, string>( id++.ToString(), "track", e.Tracks[i].Title, null, JsonConvert.SerializeObject(e.Tracks[i])));
-			//}
+			for (int i = 0; i < e.Tracks.Count; i++)
+			{
+				items.Add(new Tuple<string, string, string, string, string>(id++.ToString(), "track", e.Tracks[i].Title, null, JsonConvert.SerializeObject(e.Tracks[i])));
+			}
 
 			getCursorFromList(items, matrix);
-
-
-			//cursor.NewRow().Add()
-
-			//cursor.AddRow(new Java.Lang.Object[] { "seperator", id++, "Albums", null, null });
-			//for (int i = 0; i < e.Albums.Count; i++)
-			//{
-			//	Java.Lang.Object[] tmp = { "album", id++, e.Albums[i].Name, null, JsonConvert.SerializeObject(e.Albums[i]) };
-			//	cursor.AddRow(tmp);
-			//}
-			//cursor.AddRow(new Java.Lang.Object[] { "seperator", id++, "Genres", null, null });
-			//for (int i = 0; i < e.Genres.Count; i++)
-			//{
-			//	Java.Lang.Object[] tmp = { "genre", id++, e.Genres[i].Name, null, JsonConvert.SerializeObject(e.Genres[i]) };
-			//	cursor.AddRow(tmp);
-			//}
-			//cursor.AddRow(new Java.Lang.Object[] { "seperator", id++, "Tracks", null, null });
-			//for (int i = 0; i < e.Tracks.Count; i++)
-			//{
-			//	Java.Lang.Object[] tmp = { "track", id++, e.Tracks[i].Title, e.Tracks[i].Duration, JsonConvert.SerializeObject(e.Tracks[i]) };
-			//	cursor.AddRow(tmp);
-			//}
+			
 			SearchAdapter suggestionAdapter = new SearchAdapter(Context, matrix);
-
 			searchView.SuggestionsAdapter = suggestionAdapter;
-			//searchView.SuggestionsAdapter.ChangeCursor(matrix);
-			//searchView.SuggestionsAdapter.SwapCursor(cursor);
-
 		}
 
 		public override bool OnOptionsItemSelected(IMenuItem item)

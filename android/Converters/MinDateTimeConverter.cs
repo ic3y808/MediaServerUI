@@ -2,16 +2,14 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace Alloy.Models
+namespace Alloy.Converters
 {
 	public class MinDateTimeConverter : DateTimeConverterBase
 	{
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
-			if (reader.Value == null)
-				return DateTime.MinValue;
-			DateTime result = DateTime.MinValue;
-			DateTime.TryParse(reader.Value.ToString(), out result);
+			if (reader.Value == null) { return DateTime.MinValue; }
+			DateTime.TryParse(reader.Value.ToString(), out DateTime result);
 			return result;
 		}
 
@@ -23,7 +21,6 @@ namespace Alloy.Models
 				writer.WriteNull();
 				return;
 			}
-
 			writer.WriteValue(value);
 		}
 	}

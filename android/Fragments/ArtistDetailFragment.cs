@@ -13,7 +13,6 @@ namespace Alloy.Fragments
 {
 	public class ArtistDetailFragment : FragmentBase
 	{
-		private View root_view;
 		private ArtistDetailAdapter artistDetailAdapter;
 		private RecyclerView artistContentView;
 		private SwipeRefreshLayout refreshLayout;
@@ -24,7 +23,7 @@ namespace Alloy.Fragments
 		{
 			MusicProvider.ArtistStartRefresh += MusicProvider_ArtistStartRefresh;
 			MusicProvider.ArtistRefreshed += MusicProvider_ArtistRefreshed;
-			root_view = inflater.Inflate(Resource.Layout.artist_detail_layout, container, false);
+			View root_view = inflater.Inflate(Resource.Layout.artist_detail_layout, container, false);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);

@@ -49,7 +49,7 @@ namespace Alloy.Recievers
 					{
 						MusicProvider.AddStar(service.CurrentSong);
 					}
-					service.notificationService.ShowNotification();
+					service.NotificationService1.ShowNotification();
 					break;
 				case BackgroundAudioService.ActionExit:
 					NotificationService.CloseNotification();

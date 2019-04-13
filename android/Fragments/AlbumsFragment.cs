@@ -5,6 +5,7 @@ using Android.Views;
 using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.App;
@@ -15,7 +16,6 @@ namespace Alloy.Fragments
 {
 	public class AlbumsFragment : FragmentBase
 	{
-		private View root_view;
 		private LinearLayoutManager mainLayoutManager;
 		private AlbumsAdapter adapter;
 		private SwipeRefreshLayout refreshLayout;
@@ -23,7 +23,7 @@ namespace Alloy.Fragments
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
-			root_view = inflater.Inflate(Resource.Layout.albums_layout, container, false);
+			View root_view = inflater.Inflate(Resource.Layout.albums_layout, container, false);
 			FastScrollRecyclerView albumsList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.albums_list);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);

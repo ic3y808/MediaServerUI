@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Android.Graphics;
 using Android.Views;
@@ -36,7 +37,7 @@ namespace Alloy.Adapters
 			AlbumViewHolder h = (AlbumViewHolder)holder;
 			if (position >= MusicProvider.Albums.Count) return;
 			h.Album = MusicProvider.Albums[position];
-			h.name.SetText(MusicProvider.Albums[position].Name, TextView.BufferType.Normal);
+			h.Name.SetText(MusicProvider.Albums[position].Name, TextView.BufferType.Normal);
 			h.SetSelected();
 		}
 
@@ -51,10 +52,7 @@ namespace Alloy.Adapters
 
 		void OnClick(AlbumViewHolder.AlbumViewHolderEvent e)
 		{
-			if (ItemClick != null)
-			{
-				ItemClick(this, e);
-			}
+			ItemClick?.Invoke(this, e);
 		}
 
 		public int GetPositionForSection(int sectionIndex)
@@ -82,13 +80,13 @@ namespace Alloy.Adapters
 			return sections.ToArray();
 		}
 
-		public string getSectionName(int position)
+		public string GetSectionName(int position)
 		{
 			try
 			{
 				string a = MusicProvider.Albums[position].Name;
 				string b = a.Substring(0, 1);
-				return b.Any(char.IsLower) ? b.ToUpper() : b;
+				return b.Any(char.IsLower) ? b.ToUpper(CultureInfo.InvariantCulture) : b;
 			}
 			catch
 			{
@@ -98,16 +96,16 @@ namespace Alloy.Adapters
 
 		public class AlbumViewHolder : RecyclerView.ViewHolder
 		{
-			public BackgroundAudioServiceConnection serviceConnection;
-			public RelativeLayout itemRoot;
-			public TextView name;
-			public Album Album;
+			public BackgroundAudioServiceConnection ServiceConnection { get; set; }
+			public RelativeLayout ItemRoot { get; set; }
+			public TextView Name { get; set; }
+			public Album Album { get; set; }
 
 			public AlbumViewHolder(View v, Action<AlbumViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(v)
 			{
-				itemRoot = v.FindViewById<RelativeLayout>(Resource.Id.item_root);
-				name = v.FindViewById<TextView>(Resource.Id.artist);
-				this.serviceConnection = serviceConnection;
+				ItemRoot = v.FindViewById<RelativeLayout>(Resource.Id.item_root);
+				Name = v.FindViewById<TextView>(Resource.Id.artist);
+				ServiceConnection = serviceConnection;
 				v.Click += (sender, e) => listener(new AlbumViewHolderEvent { Position = LayoutPosition, ViewHolder = this });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 			}
@@ -116,28 +114,26 @@ namespace Alloy.Adapters
 			{
 				if (Album == null) return;
 
-				bool selected = Album.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.AlbumId.Equals(Album.Id);
+				bool selected = Album.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.AlbumId.Equals(Album.Id);
 
 				if (Album.Tracks != null && Album.Tracks.Count != 0)
 				{
 					foreach (Song albumTrack in Album.Tracks)
 					{
-						if (albumTrack.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
+						if (albumTrack.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
 					}
 				}
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
 			}
-
-
-
+			
 			public class AlbumViewHolderEvent
 			{
 				public int Position { get; set; }

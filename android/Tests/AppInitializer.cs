@@ -9,7 +9,7 @@ using Xamarin.UITest.Configuration;
 
 namespace Tests
 {
-	public class AppInitializer
+	public static class AppInitializer
 	{
 		public static string PathToApk { get; set; }
 

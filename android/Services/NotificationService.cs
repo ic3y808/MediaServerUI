@@ -9,6 +9,7 @@ using Microsoft.AppCenter.Crashes;
 using Alloy.Helpers;
 
 
+
 namespace Alloy.Services
 {
 	public class NotificationService

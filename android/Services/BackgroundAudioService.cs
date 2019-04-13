@@ -29,17 +29,15 @@ namespace Alloy.Services
 		public event EventHandler<StatusEventArg> PlaybackStatusChanged;
 
 		public IQueue MainQueue { get; set; }
+		public NotificationService NotificationService1 { get; set; }
+		public MediaSessionCompat MediaSession { get; set; }
 
 		private NoisyAudioReciever noisyReceiver;
 		private HeadsetPlugReceiver headsetPlugReceiver;
-		private BluetoothIntentReceiver bluetoothReceiver;
 		private MediaButtonReciever mediaButtonReciever;
-		public NotificationService notificationService;
-		public MediaSessionCompat MediaSession { get; set; }
-		private PlaybackStateCompat.Builder mediaStateBuilder;
 		private Song currentSong;
 		private long pausedPosition;
-		public const string CHANNEL_ID = "media_playback_channel";
+		public const string CHANNEL_ID = "mediaStateBuilder";
 		public const string MEDIA_NAME = "Media playback";
 		public const string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
 		public const int NOTIFICATION_ID = 165164465;
@@ -67,7 +65,7 @@ namespace Alloy.Services
 		{
 			base.OnCreate();
 			MainQueue = null;
-			notificationService = new NotificationService(this);
+			NotificationService1 = new NotificationService(this);
 			InitMediaPlayer();
 			InitBluetoothReceiver();
 			InitMediaButtonReceiver();
@@ -149,7 +147,7 @@ namespace Alloy.Services
 				MediaPlayer.Start();
 				MediaPlayer.SeekTo((int)pausedPosition);
 
-				notificationService.ShowNotification();
+				NotificationService1.ShowNotification();
 				RequestAudioFocus();
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading });
 			}
@@ -169,7 +167,7 @@ namespace Alloy.Services
 				pausedPosition = MediaPlayer.CurrentPosition;
 
 
-				notificationService.ShowNotification();
+				NotificationService1.ShowNotification();
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -323,8 +321,8 @@ namespace Alloy.Services
 				MediaPlayer.Start();
 				loading = false;
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
-				notificationService.ShowNotification();
-				notificationService.UpdateMediaSessionMeta();
+				NotificationService1.ShowNotification();
+				NotificationService1.UpdateMediaSessionMeta();
 				Utils.Run(() =>
 				{
 					MusicProvider.AddPlay(CurrentSong.Id);
@@ -418,9 +416,8 @@ namespace Alloy.Services
 			try
 			{
 				IntentFilter filter = new IntentFilter(AudioManager.ActionAudioBecomingNoisy);
-				bluetoothReceiver = new BluetoothIntentReceiver(this);
-
-				RegisterReceiver(bluetoothReceiver, filter);
+				BluetoothIntentReceiver bluetoothIntentReceiver = new BluetoothIntentReceiver(this);
+				RegisterReceiver(bluetoothIntentReceiver, filter);
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
@@ -487,13 +484,15 @@ namespace Alloy.Services
 				bundle.PutBoolean("exceptMusicController", true);
 
 				MediaSession.SetExtras(bundle);
-				mediaStateBuilder = new PlaybackStateCompat.Builder();
-				mediaStateBuilder.SetActions(
-					PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionFastForward | PlaybackStateCompat.ActionRewind |
-					PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious | PlaybackStateCompat.ActionStop | PlaybackStateCompat.ActionSetRating |
-					PlaybackStateCompat.ActionSetRating | PlaybackStateCompat.ActionSetShuffleMode | PlaybackStateCompat.ActionSetRepeatMode
+				using (PlaybackStateCompat.Builder mediaStateBuilder = new PlaybackStateCompat.Builder()) {
+					mediaStateBuilder.SetActions(
+						PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionFastForward | PlaybackStateCompat.ActionRewind |
+						PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious | PlaybackStateCompat.ActionStop | PlaybackStateCompat.ActionSetRating |
+						PlaybackStateCompat.ActionSetRating | PlaybackStateCompat.ActionSetShuffleMode | PlaybackStateCompat.ActionSetRepeatMode
 					);
-				MediaSession.SetPlaybackState(mediaStateBuilder.Build());
+					MediaSession.SetPlaybackState(mediaStateBuilder.Build());
+				}
+
 				MediaSession.SetFlags(MediaSessionCompat.FlagHandlesMediaButtons);
 				MediaSession.Active = true;
 			}

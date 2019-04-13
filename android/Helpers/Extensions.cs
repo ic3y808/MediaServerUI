@@ -59,8 +59,8 @@ namespace Alloy.Helpers
 
 		public static int ProgressToTimer(this int progress, int totalDuration)
 		{
-			totalDuration = totalDuration / 1000;
-			int currentDuration = (int)((double)progress / 100 * totalDuration);
+			int td = totalDuration / 1000;
+			int currentDuration = (int)((double)progress / 100 * td);
 			return currentDuration * 1000;
 		}
 

@@ -4,7 +4,7 @@ using Java.Lang;
 
 namespace Alloy.Common
 {
-	public class PackageUtil
+	public static class PackageUtil
 	{
 		public static void SetPackageDoNotKill(Class clsComponent, Context context, bool enabled)
 		{

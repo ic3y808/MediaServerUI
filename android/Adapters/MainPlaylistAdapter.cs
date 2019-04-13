@@ -1,6 +1,5 @@
 ﻿using Alloy.Helpers;
 using Alloy.Models;
-
 using Alloy.Services;
 using Android.App;
 using Android.Graphics;
@@ -11,11 +10,11 @@ namespace Alloy.Adapters
 {
 	public class MainPlaylistAdapter : BaseAdapter<Song>
 	{
-		private BackgroundAudioServiceConnection serviceConnection;
+		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public MainPlaylistAdapter(BackgroundAudioServiceConnection serviceConnection)
 		{
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 		public override long GetItemId(int position)
@@ -25,19 +24,19 @@ namespace Alloy.Adapters
 
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{
-			if (serviceConnection == null || serviceConnection?.MainQueue.Count == 0) return convertView;
+			if (ServiceConnection == null || ServiceConnection?.MainQueue.Count == 0) return convertView;
 
-			if (convertView == null) // otherwise create a new one
+			if (convertView == null)
 			{
 				convertView = LayoutInflater.From(Application.Context).Inflate(Resource.Layout.general_list_row, null);
 			}
 
-			convertView.FindViewById<TextView>(Resource.Id.title).Text = serviceConnection.MainQueue[position].Title;
-			convertView.FindViewById<TextView>(Resource.Id.artist).Text = serviceConnection.MainQueue[position].Artist;
-			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = serviceConnection.MainQueue[position].Duration.ToTimeFromSeconds();
-			serviceConnection.MainQueue[position].GetAlbumArt(convertView.FindViewById<ImageView>(Resource.Id.album_art));
+			convertView.FindViewById<TextView>(Resource.Id.title).Text = ServiceConnection.MainQueue[position].Title;
+			convertView.FindViewById<TextView>(Resource.Id.artist).Text = ServiceConnection.MainQueue[position].Artist;
+			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = ServiceConnection.MainQueue[position].Duration.ToTimeFromSeconds();
+			ServiceConnection.MainQueue[position].GetAlbumArt(convertView.FindViewById<ImageView>(Resource.Id.album_art));
 
-			if (serviceConnection.MainQueue[position].IsSelected)
+			if (ServiceConnection.MainQueue[position].IsSelected)
 			{
 				convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundResource(Resource.Color.menu_selection_color);
 			}
@@ -49,11 +48,11 @@ namespace Alloy.Adapters
 		public override int Count {
 			get
 			{
-				if (serviceConnection == null || serviceConnection?.MainQueue == null) return 0;
-				return serviceConnection.MainQueue.Count;
+				if (ServiceConnection == null || ServiceConnection?.MainQueue == null) return 0;
+				return ServiceConnection.MainQueue.Count;
 			}
 		}
 
-		public override Song this[int position] => serviceConnection.MainQueue[position];
+		public override Song this[int position] => ServiceConnection.MainQueue[position];
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Android.Views;
 using Android.Widget;
@@ -33,7 +34,7 @@ namespace Alloy.Adapters
 			GenreViewHolder h = (GenreViewHolder)holder;
 			if (position >= MusicProvider.Genres.Count) return;
 			h.Genre = MusicProvider.Genres[position];
-			h.artist.SetText(MusicProvider.Genres[position].Name, TextView.BufferType.Normal);
+			h.Artist.SetText(MusicProvider.Genres[position].Name, TextView.BufferType.Normal);
 			if (ServiceConnection != null && ServiceConnection.IsConnected && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.GenreId.Equals(h.Genre.Id)) h.Genre.IsSelected = true;
 		}
 
@@ -77,13 +78,13 @@ namespace Alloy.Adapters
 			return sections.ToArray();
 		}
 
-		public string getSectionName(int position)
+		public string GetSectionName(int position)
 		{
 			try
 			{
 				string a = MusicProvider.Genres[position].Name;
 				string b = a.Substring(0, 1);
-				return b.Any(char.IsLower) ? b.ToUpper() : b;
+				return b.Any(char.IsLower) ? b.ToUpper(CultureInfo.InvariantCulture) : b;
 			}
 			catch
 			{
@@ -93,10 +94,14 @@ namespace Alloy.Adapters
 
 		public class GenreViewHolder : RecyclerView.ViewHolder
 		{
+			public TextView Artist { get; set; }
+			public EventHandler ClickHandler { get; set; }
+			public Genre Genre { get; set; }
+
 			public GenreViewHolder(View v, Action<GenreViewHolderEvent> listener) : base(v)
 			{
-				artist = v.FindViewById<TextView>(Resource.Id.genre);
-				if (artist != null) artist.Selected = true;
+				Artist = v.FindViewById<TextView>(Resource.Id.genre);
+				if (Artist != null) Artist.Selected = true;
 				v.Click += (sender, e) => listener(new GenreViewHolderEvent { Position = LayoutPosition, GenreViewHolder = this });
 				v.ClearAnimation();
 			}
@@ -106,10 +111,6 @@ namespace Alloy.Adapters
 				public int Position { get; set; }
 				public GenreViewHolder GenreViewHolder { get; set; }
 			}
-
-			public TextView artist;
-			public EventHandler ClickHandler;
-			public Genre Genre;
 		}
 	}
 }

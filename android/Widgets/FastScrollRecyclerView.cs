@@ -317,7 +317,7 @@ namespace Alloy.Widgets
 			int posInt = (int)((touchFraction == 1) ? itemPos - 1 : itemPos);
 
 			SectionedAdapter sectionedAdapter = (SectionedAdapter)GetAdapter();
-			return sectionedAdapter.getSectionName(posInt);
+			return sectionedAdapter.GetSectionName(posInt);
 		}
 
 
@@ -597,7 +597,7 @@ namespace Alloy.Widgets
 		public interface SectionedAdapter
 		{
 
-			string getSectionName(int position);
+			string GetSectionName(int position);
 		}
 
 		/**

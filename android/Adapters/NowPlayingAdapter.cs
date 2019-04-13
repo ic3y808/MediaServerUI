@@ -7,9 +7,7 @@ using Alloy.Models;
 using Alloy.Providers;
 
 using Alloy.Services;
-using Android.App;
 using Android.Graphics;
-using Android.Util;
 
 namespace Alloy.Adapters
 {
@@ -70,7 +68,7 @@ namespace Alloy.Adapters
 				if (hasScroller)
 				{
 					ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)CardView.LayoutParameters;
-					layoutParams.SetMargins(0, 0, DpToPx(5), 0);
+					layoutParams.SetMargins(0, 0, Utils.DpToPx(5), 0);
 					CardView.RequestLayout();
 				}
 				CardLayout = v.FindViewById<RelativeLayout>(Resource.Id.card_layout);
@@ -91,12 +89,6 @@ namespace Alloy.Adapters
 				v.Click += (sender, e) => listener(new NowPlayingViewHolderEvent { Position = LayoutPosition, NowPlayingViewHolder = this });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 				v.ClearAnimation();
-			}
-
-			public int DpToPx(int dp)
-			{
-				DisplayMetrics displayMetrics = Application.Context.Resources.DisplayMetrics;
-				return (int)Math.Round(a: dp * (displayMetrics.Xdpi / (double)DisplayMetricsDensity.Default));
 			}
 
 			public void ClearAnimation()
