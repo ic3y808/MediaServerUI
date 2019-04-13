@@ -42,23 +42,21 @@ namespace Alloy.Fragments
 
 		private void MusicProvider_ArtistRefreshed(object sender, ArtistContainer e)
 		{
-			if (e != null)
+			if (e == null) return;
+			artist = e;
+			if (artistDetailAdapter != null)
 			{
-				artist = e;
-				if (artistDetailAdapter != null)
-				{
-					artistDetailAdapter.TrackClick -= Track_ItemClick;
-					artistDetailAdapter.AlbumClick -= Album_ItemClick;
-					artistDetailAdapter.PlayArtist -= PlayArtist_Click;
-				}
-				artistDetailAdapter = new ArtistDetailAdapter(Activity, artist, ServiceConnection);
-				artistContentView.SetAdapter(artistDetailAdapter);
-				artistDetailAdapter.TrackClick += Track_ItemClick;
-				artistDetailAdapter.AlbumClick += Album_ItemClick;
-				artistDetailAdapter.PlayArtist += PlayArtist_Click;
-				Adapters.Adapters.SetAdapters(Activity, artistDetailAdapter);
-				refreshLayout.Refreshing = false;
+				artistDetailAdapter.TrackClick -= Track_ItemClick;
+				artistDetailAdapter.AlbumClick -= Album_ItemClick;
+				artistDetailAdapter.PlayArtist -= PlayArtist_Click;
 			}
+			artistDetailAdapter = new ArtistDetailAdapter(Activity, artist, ServiceConnection);
+			artistContentView.SetAdapter(artistDetailAdapter);
+			artistDetailAdapter.TrackClick += Track_ItemClick;
+			artistDetailAdapter.AlbumClick += Album_ItemClick;
+			artistDetailAdapter.PlayArtist += PlayArtist_Click;
+			Adapters.Adapters.SetAdapters(Activity, artistDetailAdapter);
+			refreshLayout.Refreshing = false;
 		}
 
 		private void PlayArtist_Click(object sender, ArtistContainer e)

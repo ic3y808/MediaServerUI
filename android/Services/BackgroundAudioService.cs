@@ -46,14 +46,7 @@ namespace Alloy.Services
 		private PlaybackStateCompat.Builder mediaStateBuilder;
 		private Song currentSong;
 		private long pausedPosition;
-#pragma warning disable 414
-		private bool playbackAuthorized;
-		private bool playbackDelayed;
-		private bool resumeOnFocusGain;
 		private int currentIdleReason;
-		private int playbackState;
-#pragma warning restore 414
-
 		public static string CHANNEL_ID = "media_playback_channel";
 		public static string MEDIA_NAME = "Media playback";
 		public static string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
@@ -122,15 +115,10 @@ namespace Alloy.Services
 			switch (res)
 			{
 				case AudioFocusRequest.Delayed:
-					playbackAuthorized = false;
-					playbackDelayed = true;
 					break;
 				case AudioFocusRequest.Failed:
-					playbackAuthorized = false;
 					break;
 				case AudioFocusRequest.Granted:
-					playbackDelayed = false;
-					playbackAuthorized = true;
 					break;
 			}
 		}
@@ -141,15 +129,11 @@ namespace Alloy.Services
 			{
 				case AudioFocus.Loss:
 					{
-						resumeOnFocusGain = false;
-						playbackDelayed = false;
 						if (MediaPlayer != null && MediaPlayer.IsPlaying) Pause();
 						break;
 					}
 				case AudioFocus.LossTransient:
 					{
-						resumeOnFocusGain = true;
-						playbackDelayed = false;
 						if (MediaPlayer != null && MediaPlayer.IsPlaying) Pause();
 
 						break;
@@ -161,8 +145,6 @@ namespace Alloy.Services
 					}
 				case AudioFocus.Gain:
 					{
-						resumeOnFocusGain = false;
-						playbackDelayed = false;
 						if (MediaPlayer != null && !MediaPlayer.IsPlaying)
 						{
 							Play();
@@ -749,16 +731,13 @@ namespace Alloy.Services
 							}
 							break;
 						case MediaStatus.PlayerStateBuffering:
-							playbackState = PlaybackStateCompat.StateBuffering;
 							currentIdleReason = MediaStatus.IdleReasonFinished;
 							break;
 						case MediaStatus.PlayerStatePlaying:
-							playbackState = PlaybackStateCompat.StatePlaying;
 							currentIdleReason = MediaStatus.IdleReasonFinished;
 							PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
 							break;
 						case MediaStatus.PlayerStatePaused:
-							playbackState = PlaybackStateCompat.StatePaused;
 							PlaybackStatusChanged?.Invoke(this, new StatusEventArg() {CurrentSong = CurrentSong, Status = BackgroundAudioStatus.None});
 							break;
 					}
