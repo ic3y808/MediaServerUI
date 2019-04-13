@@ -160,7 +160,7 @@ namespace Alloy
 
 		protected override void OnNewIntent(Intent intent)
 		{
-			var tab_name = intent.GetStringExtra("tab_name");
+			string tab_name = intent.GetStringExtra("tab_name");
 
 			//ChangeFragment(tab_name);
 			base.OnNewIntent(intent);
@@ -242,7 +242,7 @@ namespace Alloy
 			if (mainMenuaAdapter.GetItem(e.Position) is Item)
 			{
 				Item item = mainMenuaAdapter.GetItem(e.Position) as Item;
-				var itemText = item.TextView.Text;
+				string itemText = item.TextView.Text;
 				ChangeFragment(item.Id);
 			}
 
@@ -309,7 +309,7 @@ namespace Alloy
 					Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
 					fadeIn.Duration = 3000;
 					if (serviceConnection?.CurrentSong == null) return;
-					var newArt = serviceConnection.CurrentSong.Art.Blur(25);
+					Bitmap newArt = serviceConnection.CurrentSong.Art.Blur(25);
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{
@@ -321,7 +321,7 @@ namespace Alloy
 							case CurrentBackground.Primary:
 								if (primaryBackground.Background != null)
 								{
-									var a = primaryBackground.Background as BitmapDrawable;
+									BitmapDrawable a = primaryBackground.Background as BitmapDrawable;
 									a?.Bitmap?.Recycle();
 									a?.Bitmap?.Dispose();
 									primaryBackground.Background.Dispose();
@@ -332,7 +332,7 @@ namespace Alloy
 							case CurrentBackground.Secondary:
 								if (secondaryBackground.Background != null)
 								{
-									var a = secondaryBackground.Background as BitmapDrawable;
+									BitmapDrawable a = secondaryBackground.Background as BitmapDrawable;
 									a?.Bitmap?.Recycle();
 									a?.Bitmap?.Dispose();
 									secondaryBackground.Background.Dispose();
@@ -482,7 +482,7 @@ namespace Alloy
 		{
 			//activeMenuItem?.SetChecked(false);
 			//activeMenuItem = null;
-			var fragment = new SettingsFragment();
+			SettingsFragment fragment = new SettingsFragment();
 			FragmentManager.ChangeTo(fragment, true, "Settings");
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);

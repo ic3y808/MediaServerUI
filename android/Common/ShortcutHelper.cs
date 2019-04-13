@@ -76,18 +76,18 @@ namespace Alloy.Common
 			// Load mutable dynamic shortcuts and pinned shortcuts and put them into a single list
 			// removing duplicates.
 
-			var ret = new List<ShortcutInfo>();
-			var seenKeys = new HashSet<string>();
+			List<ShortcutInfo> ret = new List<ShortcutInfo>();
+			HashSet<string> seenKeys = new HashSet<string>();
 
 			// Check existing shortcuts shortcuts
-			foreach (var shortcut in mShortcutManager.DynamicShortcuts)
+			foreach (ShortcutInfo shortcut in mShortcutManager.DynamicShortcuts)
 				if (!shortcut.IsImmutable)
 				{
 					ret.Add(shortcut);
 					seenKeys.Add(shortcut.Id);
 				}
 
-			foreach (var shortcut in mShortcutManager.PinnedShortcuts)
+			foreach (ShortcutInfo shortcut in mShortcutManager.PinnedShortcuts)
 				if (!shortcut.IsImmutable && !seenKeys.Contains(shortcut.Id))
 				{
 					ret.Add(shortcut);
@@ -99,14 +99,14 @@ namespace Alloy.Common
 
 		public void refreshShortcuts(bool force)
 		{
-			var mTask = (ShortcutRefresher) new ShortcutRefresher(this).Execute(force);
+			new ShortcutRefresher(this).Execute(force);
 		}
 
 		private ShortcutInfo createShortcut(string id, string shortLabel, string longLabel, Type intentType)
 		{
-			var b = new ShortcutInfo.Builder(mContext, id);
+			ShortcutInfo.Builder b = new ShortcutInfo.Builder(mContext, id);
 
-			var open = new Intent(Application.Context, typeof(MainActivity));
+			Intent open = new Intent(Application.Context, typeof(MainActivity));
 			open.SetAction(Intent.ActionView);
 			open.AddFlags(ActivityFlags.SingleTop);
 			open.PutExtra("tab_name", shortLabel);
@@ -120,7 +120,7 @@ namespace Alloy.Common
 
 		private void setExtras(ShortcutInfo.Builder b, string name)
 		{
-			var extras = new PersistableBundle();
+			PersistableBundle extras = new PersistableBundle();
 			extras.PutString("tab_name", name);
 			extras.PutLong(EXTRA_LAST_REFRESH, JavaSystem.CurrentTimeMillis());
 			b.SetExtras(extras);
@@ -129,25 +129,25 @@ namespace Alloy.Common
 
 		public void AddShortcut(string id, string shortLabel, string longLabel, Type intentType)
 		{
-			var shortcut = createShortcut(id, shortLabel, longLabel, intentType);
-			var var = mShortcutManager.AddDynamicShortcuts(new List<ShortcutInfo> {shortcut});
+			ShortcutInfo shortcut = createShortcut(id, shortLabel, longLabel, intentType);
+			bool var = mShortcutManager.AddDynamicShortcuts(new List<ShortcutInfo> { shortcut });
 
 			callShortcutManager(var);
 		}
 
 		public void removeShortcut(ShortcutInfo shortcut)
 		{
-			mShortcutManager.RemoveDynamicShortcuts(new List<string> {shortcut.Id});
+			mShortcutManager.RemoveDynamicShortcuts(new List<string> { shortcut.Id });
 		}
 
 		public void disableShortcut(ShortcutInfo shortcut)
 		{
-			mShortcutManager.DisableShortcuts(new List<string> {shortcut.Id});
+			mShortcutManager.DisableShortcuts(new List<string> { shortcut.Id });
 		}
 
 		public void enableShortcut(ShortcutInfo shortcut)
 		{
-			mShortcutManager.EnableShortcuts(new List<string> {shortcut.Id});
+			mShortcutManager.EnableShortcuts(new List<string> { shortcut.Id });
 		}
 
 		/**
@@ -166,25 +166,25 @@ namespace Alloy.Common
 
 			protected override int RunInBackground(params object[] @params)
 			{
-				var force = bool.Parse(@params[0].ToString());
+				bool force = bool.Parse(@params[0].ToString());
 
-				var now = JavaSystem.CurrentTimeMillis();
-				var staleThreshold = force ? now : now - REFRESH_INTERVAL_MS;
+				long now = JavaSystem.CurrentTimeMillis();
+				long staleThreshold = force ? now : now - REFRESH_INTERVAL_MS;
 
 				// Check all existing dynamic and pinned shortcut, and if their last refresh
 				// time is older than a certain threshold, update them.
 
-				var updateList = new List<ShortcutInfo>();
+				List<ShortcutInfo> updateList = new List<ShortcutInfo>();
 
-				foreach (var shortcut in shortcutHelper.getShortcuts())
+				foreach (ShortcutInfo shortcut in shortcutHelper.getShortcuts())
 				{
 					if (shortcut.IsImmutable) continue;
 
-					var extras = shortcut.Extras;
+					PersistableBundle extras = shortcut.Extras;
 					if (extras != null && extras.GetLong(EXTRA_LAST_REFRESH) >= staleThreshold) continue;
 					Debug.WriteLine("Refreshing shortcut: " + shortcut.Id);
 
-					var b = new ShortcutInfo.Builder(shortcutHelper.mContext, shortcut.Id);
+					ShortcutInfo.Builder b = new ShortcutInfo.Builder(shortcutHelper.mContext, shortcut.Id);
 
 					shortcutHelper.setExtras(b, shortcut.ShortLabel);
 
@@ -194,7 +194,7 @@ namespace Alloy.Common
 				// Call update.
 				if (updateList.Count > 0)
 				{
-					var res = shortcutHelper.mShortcutManager.UpdateShortcuts(updateList);
+					bool res = shortcutHelper.mShortcutManager.UpdateShortcuts(updateList);
 					shortcutHelper.callShortcutManager(res);
 				}
 

@@ -11,6 +11,7 @@ using Android.Util;
 using Java.Lang;
 using Environment = Android.OS.Environment;
 using File = Java.IO.File;
+using LayoutDirection = Android.Views.LayoutDirection;
 using Uri = Android.Net.Uri;
 
 namespace Alloy.Helpers
@@ -37,7 +38,7 @@ namespace Alloy.Helpers
 		[TargetApi(Value = (int)BuildVersionCodes.JellyBeanMr1)]
 		public static bool isRtl(Resources res)
 		{
-			var dir = res.Configuration.LayoutDirection;
+			LayoutDirection dir = res.Configuration.LayoutDirection;
 			return (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1) && (dir == Android.Views.LayoutDirection.Rtl);
 		}
 
@@ -83,8 +84,8 @@ namespace Alloy.Helpers
 			XmlSerializer serializer = new XmlSerializer(typeof(T));
 			MemoryStream memoryStream = new MemoryStream(StringToUTF8ByteArray(xmlContent));
 			XmlTextWriter xmlTextWriter = new XmlTextWriter(memoryStream, Encoding.UTF8);
-			var st  = serializer.Deserialize(memoryStream);
-			var sst = (T) st;
+			object st  = serializer.Deserialize(memoryStream);
+			T sst = (T) st;
 
 			return sst;
 		}

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Java.Net;
 using Java.Util;
+using IList = System.Collections.IList;
 
 namespace Alloy.Helpers
 {
@@ -11,10 +12,10 @@ namespace Alloy.Helpers
 		{
 			try
 			{
-				var interfaces = Collections.List(NetworkInterface.NetworkInterfaces);
+				IList interfaces = Collections.List(NetworkInterface.NetworkInterfaces);
 				foreach (NetworkInterface intf in interfaces)
 				{
-					var addrs = Collections.List(intf.InetAddresses);
+					IList addrs = Collections.List(intf.InetAddresses);
 					foreach (InetAddress addr in addrs)
 					{
 						if (!addr.IsLoopbackAddress)

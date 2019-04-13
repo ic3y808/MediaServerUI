@@ -2,12 +2,10 @@
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Views.Animations;
-using Android.Widget;
 using Java.Lang;
 using Java.Util;
-using String = System.String;
 
-namespace SlideUpPanelLibrary
+namespace Alloy.Widgets
 {
 	/**
 	* ViewDragHelper is a utility class for writing custom ViewGroups. It offers a number
@@ -16,8 +14,6 @@ namespace SlideUpPanelLibrary
 	*/
 	class ViewDragHelper
 	{
-		private static String TAG = "ViewDragHelper";
-
 		/**
 		 * A null/invalid pointer ID.
 		 */
@@ -80,10 +76,10 @@ namespace SlideUpPanelLibrary
 		 */
 		public static int DIRECTION_ALL = DIRECTION_HORIZONTAL | DIRECTION_VERTICAL;
 
-		private static int EDGE_SIZE = 20; // dp
+		private static readonly int EDGE_SIZE = 20; // dp
 
-		private static int BASE_SETTLE_DURATION = 256; // ms
-		private static int MAX_SETTLE_DURATION = 600; // ms
+		private static readonly int BASE_SETTLE_DURATION = 256; // ms
+		private static readonly int MAX_SETTLE_DURATION = 600; // ms
 
 		// Current drag state; idle, dragging or settling
 		private int mDragState;
@@ -103,20 +99,20 @@ namespace SlideUpPanelLibrary
 		private int mPointersDown;
 
 		private VelocityTracker mVelocityTracker;
-		private float mMaxVelocity;
+		private readonly float mMaxVelocity;
 		private float mMinVelocity;
 
-		private int mEdgeSize;
+		private readonly int mEdgeSize;
 		private int mTrackingEdges;
 
-		private ScrollerCompat mScroller;
+		private readonly ScrollerCompat mScroller;
 
-		private Callback mCallback;
+		private readonly Callback mCallback;
 
 		private View mCapturedView;
 		private bool mReleaseInProgress;
 
-		private ViewGroup mParentView;
+		private readonly ViewGroup mParentView;
 
 		/**
 		 * A Callback is used as a communication channel with the ViewDragHelper back to the
@@ -310,7 +306,7 @@ namespace SlideUpPanelLibrary
 		/**
 		 * Interpolator defining the animation curve for mScroller
 		 */
-		class CustomInterpolator : Java.Lang.Object, Android.Views.Animations.IInterpolator
+		class CustomInterpolator : Object, IInterpolator
 		{
 			public float GetInterpolation(float t)
 			{
@@ -318,12 +314,12 @@ namespace SlideUpPanelLibrary
 				return t * t * t * t * t + 1.0f;
 			}
 		}
-		private CustomInterpolator sInterpolator = new CustomInterpolator();
+		private readonly CustomInterpolator sInterpolator = new CustomInterpolator();
 
 
-		public class CustomRunnable : Java.Lang.Object, IRunnable
+		public class CustomRunnable : Object, IRunnable
 		{
-			private ViewDragHelper owner;
+			private readonly ViewDragHelper owner;
 
 			public CustomRunnable(ViewDragHelper owner)
 			{
@@ -335,7 +331,7 @@ namespace SlideUpPanelLibrary
 			}
 		}
 
-		private CustomRunnable mSetIdleRunnable;
+		private readonly CustomRunnable mSetIdleRunnable;
 
 		/**
 		 * Factory method to create a new ViewDragHelper.

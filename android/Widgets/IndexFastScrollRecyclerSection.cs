@@ -279,7 +279,7 @@ namespace Alloy.Widgets
 					mRecyclerView.RemoveCallbacks(mLastFadeRunnable);
 				}
 			}
-			var mHandler = new Handler(new Action<Message>((msg) =>
+			Handler mHandler = new Handler(new Action<Message>((msg) =>
 			{
 				if (msg.What == WHAT_FADE_PREVIEW)
 				{

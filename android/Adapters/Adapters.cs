@@ -82,28 +82,28 @@ namespace Alloy.Adapters
 				if (RecyclerAdapters != null)
 				{
 					lock (RecyclerAdapters)
-						foreach (var adapter in RecyclerAdapters) { adapter.NotifyDataSetChanged(); }
+						foreach (RecyclerView.Adapter adapter in RecyclerAdapters) { adapter.NotifyDataSetChanged(); }
 				}
 
 				if (PlaylistAdapters != null)
 					lock (PlaylistAdapters)
-						foreach (var adapter in PlaylistAdapters) { adapter.NotifyDataSetChanged(); }
+						foreach (BaseAdapter<Song> adapter in PlaylistAdapters) { adapter.NotifyDataSetChanged(); }
 
 				if (ListAdapters != null)
 					lock (ListAdapters)
-						foreach (var adapter in ListAdapters) { adapter.NotifyDataSetChanged(); }
+						foreach (BaseAdapter<Song> adapter in ListAdapters) { adapter.NotifyDataSetChanged(); }
 
 				if (ArtistAdapters != null)
 					lock (ArtistAdapters)
-						foreach (var adapter in ArtistAdapters) { adapter.NotifyDataSetChanged(); }
+						foreach (BaseAdapter<Artist> adapter in ArtistAdapters) { adapter.NotifyDataSetChanged(); }
 
 				if (AlbumAdapters != null)
 					lock (AlbumAdapters)
-						foreach (var adapter in AlbumAdapters) { adapter.NotifyDataSetChanged(); }
+						foreach (BaseAdapter<Album> adapter in AlbumAdapters) { adapter.NotifyDataSetChanged(); }
 
 				if (GenreAdapters != null)
 					lock (GenreAdapters)
-						foreach (var adapter in GenreAdapters) { adapter.NotifyDataSetChanged(); }
+						foreach (BaseAdapter<Genre> adapter in GenreAdapters) { adapter.NotifyDataSetChanged(); }
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
