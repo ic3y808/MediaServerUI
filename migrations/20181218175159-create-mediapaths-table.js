@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,10 +15,10 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('MediaPaths', {
+  return db.createTable("MediaPaths", {
     columns: {
-      display_name: { type: 'string', primaryKey: true, unique: true },
-      path: { type: 'string' }
+      display_name: { type: "string", primaryKey: true, unique: true },
+      path: { type: "string" }
     },
     ifNotExists: true
   });

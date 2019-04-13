@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,19 +15,19 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('ScanEvents', {
+  return db.createTable("ScanEvents", {
     columns: {
-      event_type: { type: 'string', defaultValue: '' },
-      reason: { type: 'string', defaultValue: '' },
-      result: { type: 'string', defaultValue: '' },
-      time: { type: 'int' },
-      path: { type: 'string', defaultValue: '' },
-      title: { type: 'string', defaultValue: '' },
-      artist: { type: 'string', defaultValue: '' },
-      artist_id: { type: 'string', defaultValue: '' },
-      album: { type: 'string', defaultValue: '' },
-      album_id: { type: 'string', defaultValue: '' },
-      quality: { type: 'string', defaultValue: '' },
+      event_type: { type: "string", defaultValue: "" },
+      reason: { type: "string", defaultValue: "" },
+      result: { type: "string", defaultValue: "" },
+      time: { type: "int" },
+      path: { type: "string", defaultValue: "" },
+      title: { type: "string", defaultValue: "" },
+      artist: { type: "string", defaultValue: "" },
+      artist_id: { type: "string", defaultValue: "" },
+      album: { type: "string", defaultValue: "" },
+      album_id: { type: "string", defaultValue: "" },
+      quality: { type: "string", defaultValue: "" },
     },
     ifNotExists: true
   });

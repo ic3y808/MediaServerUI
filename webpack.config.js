@@ -1,7 +1,7 @@
-const path = require('path');
-const webpack = require('webpack');
-const dist = path.resolve(__dirname, 'dist');
-const nodePath = path.resolve(__dirname, 'node_modules');
+const path = require("path");
+const webpack = require("webpack");
+const dist = path.resolve(__dirname, "dist");
+const nodePath = path.resolve(__dirname, "node_modules");
 
 var config = require("./common/config");
 var logger = require("./common/logger");
@@ -11,46 +11,46 @@ profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
 
-if (process.env.MODE === 'dev') {
+if (process.env.MODE === "dev") {
   profile.entry = {
-    app: ['./web/frontend/app.js', 'webpack-hot-middleware/client']
+    app: ["./web/frontend/app.js", "webpack-hot-middleware/client"]
   };
-  profile.devtool = 'inline-source-map';
-  logger.info('webpack', 'packing dev mode source');
+  profile.devtool = "inline-source-map";
+  logger.info("webpack", "packing dev mode source");
 } else {
-  profile.devtool = 'cheap-module-source-map';
+  profile.devtool = "cheap-module-source-map";
   profile.entry = {
-    app: ['./web/frontend/app.js']
+    app: ["./web/frontend/app.js"]
   };
-  logger.info('webpack', 'packing release mode source');
+  logger.info("webpack", "packing release mode source");
 }
 
 // Required plugins 
 profile.plugins.push(new webpack.ProvidePlugin({
-  $: 'jquery',
-  jQuery: 'jquery',
-  'window.jQuery': 'jquery',
+  $: "jquery",
+  jQuery: "jquery",
+  "window.jQuery": "jquery",
   lodash: "lodash",
   _: "lodash",
-  Popper: ['popper.js', 'default'],
-  //Clipboard: 'clipboard.js',
-  //Alert: 'exports-loader?Alert!bootstrap/js/dist/alert',
-  //Button: 'exports-loader?Button!bootstrap/js/dist/button',
-  //Carousel: 'exports-loader?Carousel!bootstrap/js/dist/carousel',
-  //Collapse: 'exports-loader?Collapse!bootstrap/js/dist/collapse',
-  //Dropdown: 'exports-loader?Dropdown!bootstrap/js/dist/dropdown',
-  //Modal: 'exports-loader?Modal!bootstrap/js/dist/modal',
-  //Popover: 'exports-loader?Popover!bootstrap/js/dist/popover',
-  //Scrollspy: 'exports-loader?Scrollspy!bootstrap/js/dist/scrollspy',
-  //Tab: 'exports-loader?Tab!bootstrap/js/dist/tab',
+  Popper: ["popper.js", "default"],
+  //Clipboard: "clipboard.js",
+  //Alert: "exports-loader?Alert!bootstrap/js/dist/alert",
+  //Button: "exports-loader?Button!bootstrap/js/dist/button",
+  //Carousel: "exports-loader?Carousel!bootstrap/js/dist/carousel",
+  //Collapse: "exports-loader?Collapse!bootstrap/js/dist/collapse",
+  //Dropdown: "exports-loader?Dropdown!bootstrap/js/dist/dropdown",
+  //Modal: "exports-loader?Modal!bootstrap/js/dist/modal",
+  //Popover: "exports-loader?Popover!bootstrap/js/dist/popover",
+  //Scrollspy: "exports-loader?Scrollspy!bootstrap/js/dist/scrollspy",
+  //Tab: "exports-loader?Tab!bootstrap/js/dist/tab",
   //Tooltip: "exports-loader?Tooltip!bootstrap/js/dist/tooltip",
-  //Util: 'exports-loader?Util!bootstrap/js/dist/util'
+  //Util: "exports-loader?Util!bootstrap/js/dist/util"
 }));
 
 profile.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 
 profile.plugins.push(new webpack.DefinePlugin({
-  "DEV_MODE": process.env.MODE === 'dev',
+  "DEV_MODE": process.env.MODE === "dev",
   "SERVER_HOST": process.env.SERVER_HOST,
   "SERVER_PORT": process.env.PORT,
   "JADE_PORT": process.env.JADE_PORT
@@ -62,7 +62,7 @@ profile.plugins.push(new webpack.DefinePlugin({
 
 profile.module.rules.push({
   test: /\.(png|svg|jpg|gif)$/,
-  use: ['file-loader']
+  use: ["file-loader"]
 });
 
 profile.module.rules.push({
@@ -74,31 +74,31 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.(jpe?g|png|gif|svg)$/i,
   use: [
-    'file-loader?name=images/[name].[ext]',
-    'image-webpack-loader?bypassOnDebug'
+    "file-loader?name=images/[name].[ext]",
+    "image-webpack-loader?bypassOnDebug"
   ]
 });
 
 profile.module.rules.push({
   test: /\.css$/,
-  use: ['style-loader', 'css-loader']
+  use: ["style-loader", "css-loader"]
 });
 
 profile.module.rules.push({
   test: /\.(scss|sass)$/,
   use: [{
-    loader: 'style-loader'
+    loader: "style-loader"
   },
   {
-    loader: 'css-loader'
+    loader: "css-loader"
   },
   {
-    loader: 'postcss-loader',
+    loader: "postcss-loader",
     options: {
       plugins: function () { // post css plugins, can be exported to postcss.config.js
         return [
-          require('precss'),
-          require('autoprefixer')
+          require("precss"),
+          require("autoprefixer")
         ];
       }
     }
@@ -106,13 +106,13 @@ profile.module.rules.push({
   {
     loader: "sass-loader",
     options: {
-      includePaths: [path.join(nodePath, 'compass-mixins', 'lib')]
+      includePaths: [path.join(nodePath, "compass-mixins", "lib")]
     }
   },
   {
-    loader: 'sass-resources-loader',
+    loader: "sass-resources-loader",
     options: {
-      resources: ['./web/frontend/styles/_constants.scss', './web/frontend/styles/_material-colors.scss', './web/frontend/styles/_functions.scss', './web/frontend/styles/_variables.scss', './web/frontend/styles/_framework.scss']
+      resources: ["./web/frontend/styles/_constants.scss", "./web/frontend/styles/_material-colors.scss", "./web/frontend/styles/_functions.scss", "./web/frontend/styles/_variables.scss", "./web/frontend/styles/_framework.scss"]
     }
   }
   ]
@@ -121,10 +121,10 @@ profile.module.rules.push({
 profile.module.rules.push({
   test: /\.less$/,
   use: [
-    { loader: 'style-loader' },
-    { loader: 'css-loader' },
+    { loader: "style-loader" },
+    { loader: "css-loader" },
     {
-      loader: 'less-loader',
+      loader: "less-loader",
       options: {
         includePaths: [nodePath]
       }
@@ -135,8 +135,8 @@ profile.module.rules.push({
 
 // Output
 profile.output = {
-  filename: '[name].js',
-  chunkFilename: '[name]-[chunkhash].js',
+  filename: "[name].js",
+  chunkFilename: "[name]-[chunkhash].js",
   path: path.resolve(__dirname, dist)
 };
 
@@ -144,33 +144,33 @@ profile.output = {
 
 // Dev - Production specific
 
-if (process.env.MODE === 'dev') {
+if (process.env.MODE === "dev") {
 
-  if (process.env.USE_ANALYZER === 'true') {
-    const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+  if (process.env.USE_ANALYZER === "true") {
+    const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
     profile.plugins.push(new BundleAnalyzerPlugin());
   }
 
-  const LiveReloadPlugin = require('webpack-livereload-plugin');
+  const LiveReloadPlugin = require("webpack-livereload-plugin");
   profile.plugins.push(new LiveReloadPlugin({
     port: 1908
   }));
   profile.plugins.push(new webpack.HotModuleReplacementPlugin());
 
 } else {
-  const CleanWebpackPlugin = require('clean-webpack-plugin');
+  const CleanWebpackPlugin = require("clean-webpack-plugin");
   profile.plugins.push(new CleanWebpackPlugin([dist]));
 
   profile.module.rules.push({
     test: /\.js$/,
     use: [{
-      loader: 'strip-loader?strip[]=debug'
+      loader: "strip-loader?strip[]=debug"
     },
     {
-      loader: 'babel-loader',
+      loader: "babel-loader",
       options: {
         plugins: [
-          '@babel/plugin-transform-runtime',
+          "@babel/plugin-transform-runtime",
           [
             "@babel/plugin-proposal-decorators",
             {
@@ -185,7 +185,7 @@ if (process.env.MODE === 'dev') {
             "spec": true
           }]
         ],
-        presets: ['@babel/preset-env']
+        presets: ["@babel/preset-env"]
       }
     }
     ],
@@ -193,7 +193,7 @@ if (process.env.MODE === 'dev') {
   });
 
   profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: 'vendor',
+    name: "vendor",
     minChunks: ({
       resource
     }) => /node_modules/.test(resource),

@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,21 +15,21 @@ exports.setup = function(options, seedLink) {
 };
 
 exports.up = function(db) {
-  return db.createTable('Albums', {
+  return db.createTable("Albums", {
     columns:{
-      id: { type: 'string', defaultValue: '', unique: true },
-      name: { type: 'string', defaultValue: '' },
-      path: { type: 'string', defaultValue: '' },
-      created: {type: 'string', defaultValue: ''},
-      artist: { type: 'string', defaultValue: '' },
-      artist_id: { type: 'string', defaultValue: '' },
-      genre: { type: 'string', defaultValue: '' },
-      genre_id: { type: 'string', defaultValue: '' },
-      starred: { type: 'string', defaultValue: 'false' },
-      starred_date: { type: 'string', defaultValue: '' },
-      rating: { type: 'int', defaultValue: 0 },
-      type: { type: 'string', defaultValue: '' },
-      track_count: { type: 'int', defaultValue: 0 },
+      id: { type: "string", defaultValue: "", unique: true },
+      name: { type: "string", defaultValue: "" },
+      path: { type: "string", defaultValue: "" },
+      created: {type: "string", defaultValue: ""},
+      artist: { type: "string", defaultValue: "" },
+      artist_id: { type: "string", defaultValue: "" },
+      genre: { type: "string", defaultValue: "" },
+      genre_id: { type: "string", defaultValue: "" },
+      starred: { type: "string", defaultValue: "false" },
+      starred_date: { type: "string", defaultValue: "" },
+      rating: { type: "int", defaultValue: 0 },
+      type: { type: "string", defaultValue: "" },
+      track_count: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true
   });

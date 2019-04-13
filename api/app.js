@@ -27,14 +27,14 @@ var dbm = dbmigrate.getInstance(true);
 class App {
   constructor() {
     this.db = require("better-sqlite3")(process.env.DATABASE);
-    this.db.pragma('journal_mode = WAL');
-    process.on('exit', () => {
+    this.db.pragma("journal_mode = WAL");
+    process.on("exit", () => {
       this.db.close();
       if (this.trayApp) this.trayApp.exit();
     });
-    process.on('SIGHUP', () => process.exit(128 + 1));
-    process.on('SIGINT', () => process.exit(128 + 2));
-    process.on('SIGTERM', () => process.exit(128 + 15));
+    process.on("SIGHUP", () => process.exit(128 + 1));
+    process.on("SIGINT", () => process.exit(128 + 2));
+    process.on("SIGTERM", () => process.exit(128 + 15));
 
 
 
@@ -270,7 +270,7 @@ class App {
         var err = new Error("Not Found");
         err.status = 404;
         var error = req.path + " - " + err.status + " - " + err.message;
-        logger.error('alloyui', error);
+        logger.error("alloyui", error);
         next(err);
       });
 
@@ -282,7 +282,7 @@ class App {
         this.app.use((err, req, res, next) => {
           res.status(err.status || 500);
           var error = req.path + " - " + err.status + " - " + err.message;
-          logger.error('alloyui', error);
+          logger.error("alloyui", error);
         });
       }
 
@@ -291,7 +291,7 @@ class App {
       this.app.use((err, req, res, next) => {
         res.status(err.status || 500);
         var error = req.path + " - " + err.status + " - " + err.message;
-        logger.error('alloyui', error);
+        logger.error("alloyui", error);
       });
 
       this.app.set("port", process.env.API_PORT || 4000);

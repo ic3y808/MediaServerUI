@@ -1,7 +1,7 @@
-const _ = require('lodash');
-const fs = require('fs');
-const path = require('path');
-const watch = require('node-watch');
+const _ = require("lodash");
+const fs = require("fs");
+const path = require("path");
+const watch = require("node-watch");
 const logger = require("../common/logger");
 var watchers = [];
 var mediaScanner = {};
@@ -20,7 +20,7 @@ class Watcher {
   }
 
   processQueue() {
-    var queue = _.uniq(currentQueue, 'name');
+    var queue = _.uniq(currentQueue, "name");
     currentQueue = [];
     for (var i = queue.length - 1; i >= 0; --i) {
 
@@ -39,10 +39,10 @@ class Watcher {
       }
     });
 
-    var mediaPaths = this.db.prepare('SELECT * FROM MediaPaths').all();
+    var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
 
     if (mediaPaths.length === 0) {
-      logger.info('alloydb', 'No Media Path Defined ');
+      logger.info("alloydb", "No Media Path Defined ");
       return;
     }
     mediaPaths.forEach(mediaPath => {

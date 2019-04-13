@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var dbm;
 var type;
@@ -15,10 +15,10 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable('Playlists', {
+  return db.createTable("Playlists", {
     columns: {
-      id: { type: 'int', primaryKey: true, autoIncrement: true },
-      name: { type: 'string', defaultValue: '' },
+      id: { type: "int", primaryKey: true, autoIncrement: true },
+      name: { type: "string", defaultValue: "" },
     },
     ifNotExists: true
   });

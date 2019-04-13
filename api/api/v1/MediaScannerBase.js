@@ -69,7 +69,7 @@ class MediaScannerBase {
     logger.info("alloydb", "checking counts");
     this.updateStatus("checking counts", true);
     var genres = this.db.prepare("SELECT * FROM Genres").all();
-    genres.forEach(g => {
+    genres.forEach((g) => {
       var albums = [];
       var artists = [];
       var tracks = this.db.prepare("SELECT * FROM Tracks WHERE genre_id=?").all(g.id);
@@ -83,7 +83,7 @@ class MediaScannerBase {
     });
 
     var albums = this.db.prepare("SELECT * FROM Albums").all();
-    albums.forEach(a => {
+    albums.forEach((a) => {
       var tracks = this.db.prepare("SELECT id FROM Tracks WHERE album_id=?").all(a.id);
       this.db.prepare("UPDATE Albums SET track_count=? WHERE id=?").run(tracks.length, a.id);
     });
@@ -102,7 +102,7 @@ class MediaScannerBase {
     logger.info("alloydb", "checking empty artists");
     this.updateStatus("checking missing media", true);
     var allMedia = this.db.prepare("SELECT * FROM Artists").all();
-    allMedia.forEach(artist => {
+    allMedia.forEach((artist) => {
       var anyArtists = this.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
       if (anyArtists.length === 0) {
         this.db.prepare("DELETE FROM Artists WHERE id=?").run(artist.id);
@@ -115,7 +115,7 @@ class MediaScannerBase {
     logger.info("alloydb", "checking empty albums");
     this.updateStatus("checking missing albums", true);
     var allMedia = this.db.prepare("SELECT * FROM Albums").all();
-    allMedia.forEach(album => {
+    allMedia.forEach((album) => {
       var anyTracks = this.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
       if (anyTracks.length === 0) {
         this.db.prepare("DELETE FROM Albums WHERE id=?").run(album.id);
@@ -128,7 +128,7 @@ class MediaScannerBase {
     logger.info("alloydb", "checking empty genres");
     this.updateStatus("checking empty genres", true);
     var allMedia = this.db.prepare("SELECT * FROM Genres").all();
-    allMedia.forEach(genre => {
+    allMedia.forEach((genre) => {
       var anyGenres = this.db.prepare("SELECT * FROM Tracks WHERE genre_id=?").all(genre.id);
       if (anyGenres.length === 0) {
         this.db.prepare("DELETE FROM Genres WHERE id=?").run(genre.id);
@@ -141,7 +141,7 @@ class MediaScannerBase {
     logger.info("alloydb", "checking empty playlists");
     this.updateStatus("checking empty playlists", true);
     var allPlayslits = this.db.prepare("SELECT * FROM Playlists").all();
-    allPlayslits.forEach(playlist => {
+    allPlayslits.forEach((playlist) => {
       var anyTracks = this.db.prepare("SELECT * FROM PlaylistTracks WHERE id=?").all(playlist.id);
       if (anyTracks.length === 0) {
         this.db.prepare("DELETE FROM Playlists WHERE id=?").run(playlist.id);
@@ -158,7 +158,7 @@ class MediaScannerBase {
     }
 
     fs.readdir(process.env.COVER_ART_DIR, function (err, items) {
-      items.forEach(file => {
+      items.forEach((file) => {
         var anyArt = this.db.prepare("SELECT * FROM CoverArt WHERE id=?").all(file.replace(".jpg", ""));
         if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART_DIR, file));
       });
@@ -168,7 +168,7 @@ class MediaScannerBase {
   checkTracksExist() {
     logger.info("alloydb", "checking missing tracks");
     var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
-    allTracks.forEach(track => {
+    allTracks.forEach((track) => {
       if (!fs.existsSync(track.path)) {
         this.db.prepare("DELETE FROM Tracks WHERE id = ?").run(track.id);
         this.writeScanEvent("delete-track", track, "Deleted mapped track, file no longer exists", "success");
@@ -179,7 +179,7 @@ class MediaScannerBase {
   checkHistory() {
     logger.info("alloydb", "checking history");
     var allHistory = this.db.prepare("SELECT * FROM History").all();
-    allHistory.forEach(item => {
+    allHistory.forEach((item) => {
       var track = this.db.prepare("SELECT * FROM Tracks WHERE id=?").get(item.id);
       if (track) {
         try {
@@ -276,7 +276,7 @@ class MediaScannerBase {
   writeDb(data, table) {
     var sql = "INSERT OR REPLACE INTO " + table + " (";
     var values = {};
-    Object.keys(data).forEach(function (key, index) {
+    Object.keys(data).forEach((key, index) => {
       if (index == Object.keys(data).length - 1)
         sql += key;
       else
@@ -288,7 +288,7 @@ class MediaScannerBase {
     sql += ") VALUES (";
 
 
-    Object.keys(data).forEach(function (key, index) {
+    Object.keys(data).forEach((key, index) => {
       if (index == Object.keys(data).length - 1)
         sql += "@" + key;
       else
@@ -301,7 +301,7 @@ class MediaScannerBase {
       var insert = this.db.prepare(sql);
 
 
-      Object.keys(data).forEach(function (key, index) {
+      Object.keys(data).forEach((key, index) =>{
         var a = {};
         a[key] = data[key];
         Object.assign(values, a);
