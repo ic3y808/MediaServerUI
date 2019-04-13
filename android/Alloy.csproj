@@ -119,13 +119,13 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemClickEventArgs.cs" />
     <Compile Include="Models\Link.cs" />
-    <Compile Include="Models\MinDateTimeConverter.cs" />
+    <Compile Include="Converters\MinDateTimeConverter.cs" />
     <Compile Include="Models\MusicQueue.cs" />
-    <Compile Include="Models\NullIntConverter.cs" />
+    <Compile Include="Converters\NullIntConverter.cs" />
     <Compile Include="Models\SearchResult.cs" />
-    <Compile Include="Models\SlideDrawable.cs" />
+    <Compile Include="Widgets\SlideDrawable.cs" />
     <Compile Include="Models\Starred.cs" />
-    <Compile Include="Models\StringToBooleanConverter.cs" />
+    <Compile Include="Converters\StringToBooleanConverter.cs" />
     <Compile Include="Models\Tag.cs" />
     <Compile Include="Fragments\AlbumDetailFragment.cs" />
     <Compile Include="Fragments\ArtistDetailFragment.cs" />

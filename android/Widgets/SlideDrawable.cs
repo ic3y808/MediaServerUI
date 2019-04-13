@@ -4,18 +4,16 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Java.Lang;
 
-namespace Alloy.Models
+namespace Alloy.Widgets
 {
 	public class SlideDrawable : Drawable, Drawable.ICallback
 	{
-
-		private Drawable mWrapped;
+		private readonly Drawable mWrapped;
 		private float mOffset;
 
-		private Rect mTmpRect = new Rect();
+		private readonly Rect mTmpRect = new Rect();
 
 		private bool mIsRtl;
-		private ConfigChanges changingConfigurations;
 
 		public SlideDrawable(Drawable wrapped)
 		{
@@ -116,6 +114,7 @@ namespace Alloy.Models
 
 		public override ConstantState GetConstantState()
 		{
+			//do nothing
 			return base.GetConstantState();
 		}
 

@@ -5,6 +5,7 @@ using Android.Views;
 using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Android.App;
 using Android.Content;
@@ -263,8 +264,7 @@ namespace Alloy.Adapters
 
 	public class FreshArtistAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public List<Artist> Artists;
+		public List<Artist> Artists { get; set; }
 
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
@@ -286,8 +286,7 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.fresh_artist_item, parent, false);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_artist_item, parent, false);
 			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
@@ -344,7 +343,7 @@ namespace Alloy.Adapters
 
 	public class FreshAlbumAdapter : RecyclerView.Adapter
 	{
-		public List<Album> Albums;
+		public List<Album> Albums { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public FreshAlbumAdapter(List<Album> albums, BackgroundAudioServiceConnection serviceConnection)
@@ -428,7 +427,7 @@ namespace Alloy.Adapters
 
 	public class FreshTrackAdapter : RecyclerView.Adapter
 	{
-		public MusicQueue Songs;
+		public MusicQueue Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public FreshTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
@@ -511,7 +510,7 @@ namespace Alloy.Adapters
 
 	public class FreshHorizontalTrackAdapter : RecyclerView.Adapter
 	{
-		public MusicQueue Songs;
+		public MusicQueue Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public FreshHorizontalTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
@@ -541,6 +540,7 @@ namespace Alloy.Adapters
 		{
 			ItemClick?.Invoke(this, e);
 		}
+
 		public event EventHandler<TrackViewHolderEvent> ItemClick;
 
 		public class ViewHolder : RecyclerView.ViewHolder

@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using Android.Views;
 using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.Graphics;
@@ -71,22 +73,20 @@ namespace Alloy.Adapters
 			{
 				if (i >= MusicProvider.Artists.Count) return sections.ToArray();
 				string section = MusicProvider.Artists[i]?.Name?.Substring(0, 1).ToUpper();
-				if (!sections.Contains(section))
-				{
-					sections.Add(section);
-					sectionPositions.Add(i);
-				}
+				if (sections.Contains(section)) continue;
+				sections.Add(section);
+				sectionPositions.Add(i);
 			}
 			return sections.ToArray();
 		}
 
-		public string getSectionName(int position)
+		public string GetSectionName(int position)
 		{
 			try
 			{
 				string a = MusicProvider.Artists[position].Name;
 				string b = a.Substring(0, 1);
-				return b.Any(char.IsLower) ? b.ToUpper() : b;
+				return b.Any(char.IsLower) ? b.ToUpper(CultureInfo.InvariantCulture) : b;
 			}
 			catch
 			{
@@ -96,12 +96,12 @@ namespace Alloy.Adapters
 
 		public class ArtistViewHolder : RecyclerView.ViewHolder
 		{
-			public FrameLayout itemRoot;
+			public FrameLayout ItemRoot { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ArtistViewHolder(View v, Action<ArtistViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(v)
 			{
-				itemRoot = v.FindViewById<FrameLayout>(Resource.Id.item_root);
+				ItemRoot = v.FindViewById<FrameLayout>(Resource.Id.item_root);
 				ServiceConnection = serviceConnection;
 				ArtistName = v.FindViewById<TextView>(Resource.Id.artist);
 				if (ArtistName != null) ArtistName.Selected = true;
@@ -122,13 +122,12 @@ namespace Alloy.Adapters
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
-
 			}
 
 			public TextView ArtistName { get; set; }

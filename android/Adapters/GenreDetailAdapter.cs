@@ -6,6 +6,7 @@ using Android.Widget;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
+
 using Alloy.Services;
 using Android.Graphics.Drawables;
 using Android.Support.V7.Widget;

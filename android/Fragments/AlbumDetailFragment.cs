@@ -8,6 +8,7 @@ using Alloy.Providers;
 using Alloy.Services;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
+using Microsoft.AppCenter.Crashes;
 
 namespace Alloy.Fragments
 {
@@ -39,6 +40,7 @@ namespace Alloy.Fragments
 			}
 			catch (Exception e)
 			{
+				Crashes.TrackError(e);
 				try
 				{
 					Song bundle2 = (Song)Arguments.GetParcelable("track");
@@ -47,7 +49,7 @@ namespace Alloy.Fragments
 				}
 				catch (Exception e2)
 				{
-
+					Crashes.TrackError(e2);
 				}
 			}
 
@@ -95,7 +97,7 @@ namespace Alloy.Fragments
 			ServiceConnection?.Play(e.Position, e.Songs);
 		}
 
-		private void MusicProvider_AlbumStartRefresh(object sender, System.EventArgs e)
+		private void MusicProvider_AlbumStartRefresh(object sender, EventArgs e)
 		{
 			refreshLayout.Refreshing = true;
 		}
@@ -109,6 +111,7 @@ namespace Alloy.Fragments
 			}
 			catch (Exception e)
 			{
+				Crashes.TrackError(e);
 				try
 				{
 					Song bundle2 = (Song)Arguments.GetParcelable("track");
@@ -117,7 +120,7 @@ namespace Alloy.Fragments
 				}
 				catch (Exception e2)
 				{
-
+					Crashes.TrackError(e2);
 				}
 			}
 			MusicProvider.GetAlbum(bundle);

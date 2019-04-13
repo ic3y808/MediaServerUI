@@ -98,11 +98,6 @@ namespace Alloy.Fragments
 			FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
 		}
 		
-		private void PlayArtist_Click(object sender, ArtistContainer e)
-		{
-			ServiceConnection.Play(0, e.Tracks);
-		}
-
 		private void Album_ItemClick(object sender, StarredAlbumAdapter.ViewHolder.ViewHolderEvent e)
 		{
 			Bundle b = new Bundle();

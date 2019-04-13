@@ -24,6 +24,7 @@ using Microsoft.AppCenter.Crashes;
 using Alloy.Adapters;
 using Alloy.Interfaces;
 using Alloy.Models;
+
 using Alloy.Widgets;
 using Exception = System.Exception;
 

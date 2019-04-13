@@ -11,18 +11,16 @@ namespace Alloy.Fragments
 {
 	public class GenreDetailFragment : FragmentBase
 	{
-		private View root_view;
 		private GenreDetailAdapter genreDetailAdapter;
 		private RecyclerView genreContentView;
 		private SwipeRefreshLayout refreshLayout;
-
 		private GenreContainer genre;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			MusicProvider.GenreStartRefresh += MusicProvider_GenreStartRefresh;
 			MusicProvider.GenreRefreshed += MusicProvider_GenreRefreshed;
-			root_view = inflater.Inflate(Resource.Layout.genre_detail_layout, container, false);
+			View root_view = inflater.Inflate(Resource.Layout.genre_detail_layout, container, false);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);

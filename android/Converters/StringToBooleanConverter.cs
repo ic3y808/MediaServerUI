@@ -1,11 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Alloy.Models
+namespace Alloy.Converters
 {
 	public class StringToBooleanConverter : JsonConverter
 	{
-		public override bool CanWrite { get { return false; } }
+		public override bool CanWrite => false;
 
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
@@ -16,24 +16,12 @@ namespace Alloy.Models
 		{
 			object value = reader.Value;
 
-			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
-			{
-				return false;
-			}
-			if(string.Equals("true", value.ToString(), StringComparison.OrdinalIgnoreCase))
-			{
-				return true;
-			}
-			return false;
+			return !string.IsNullOrWhiteSpace(value?.ToString()) && string.Equals("true", value.ToString(), StringComparison.OrdinalIgnoreCase);
 		}
 
 		public override bool CanConvert(Type objectType)
 		{
-			if (objectType == typeof(String) || objectType == typeof(Boolean))
-			{
-				return true;
-			}
-			return false;
+			return objectType == typeof(string) || objectType == typeof(bool);
 		}
 	}
 }

@@ -1,11 +1,11 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace Alloy.Models
+namespace Alloy.Converters
 {
 	public class NullIntConverter : JsonConverter
 	{
-		public override bool CanWrite { get { return false; } }
+		public override bool CanWrite => false;
 
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
@@ -16,23 +16,18 @@ namespace Alloy.Models
 		{
 			object value = reader.Value;
 
-			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
+			if (string.IsNullOrWhiteSpace(value?.ToString()))
 			{
 				return 0;
 			}
 
-			int parsed = 0;
-			int.TryParse(value.ToString(), out parsed);
+			int.TryParse(value.ToString(), out int parsed);
 			return parsed;
 		}
 
 		public override bool CanConvert(Type objectType)
 		{
-			if (objectType == typeof(String) || objectType == typeof(int))
-			{
-				return true;
-			}
-			return false;
+			return objectType == typeof(string) || objectType == typeof(int);
 		}
 	}
 }
