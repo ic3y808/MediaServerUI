@@ -194,14 +194,13 @@ namespace Alloy.Helpers
 			return defaultBitmapArt ?? (defaultBitmapArt = BitmapFactory.DecodeResource(Application.Context.Resources, Resource.Drawable.wave));
 		}
 
-		public static void StartForegroundServiceComapt<T>(this Context context, Bundle args = null) where T : Service
+		public static void StartForegroundServiceComapt<T>(this Context context, Bundle args) where T : Service
 		{
 			Intent intent = new Intent(context, typeof(T));
 			if (args != null)
 			{
 				intent.PutExtras(args);
 			}
-
 			if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
 			{
 				context.StartForegroundService(intent);
@@ -212,18 +211,46 @@ namespace Alloy.Helpers
 			}
 		}
 
-		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment, bool stack = false, string name = "", Bundle bundle = null)
+		public static void StartForegroundServiceComapt<T>(this Context context) where T : Service
+		{
+			Intent intent = new Intent(context, typeof(T));
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+			{
+				context.StartForegroundService(intent);
+			}
+			else
+			{
+				context.StartService(intent);
+			}
+		}
+
+		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment)
+		{
+			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
+			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
+			fragmentTx.Commit();
+		}
+
+		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment, bool stack, string name)
 		{
 			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
 			if (stack)
 			{
 				fragmentTx.AddToBackStack(name);
 			}
-
-			if (bundle != null) { otherFragment.Arguments = bundle; }
-			//fragmentTx.SetCustomAnimations(Android.Resource.Animation.FadeIn, Android.Resource.Animation.FadeOut);
 			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
+			fragmentTx.Commit();
+		}
 
+		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment, bool stack, string name, Bundle bundle)
+		{
+			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
+			if (stack)
+			{
+				fragmentTx.AddToBackStack(name);
+			}
+			if (bundle != null) { otherFragment.Arguments = bundle; }
+			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
 			fragmentTx.Commit();
 		}
 

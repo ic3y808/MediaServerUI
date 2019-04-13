@@ -50,7 +50,7 @@ router.put("/mediapaths", function (req, res) {
     if (info.changes) {
       res.locals.watcher.configFileWatcher();
       res.json(new structures.StatusResult("success"));
-    } else res.json(new structures.StatusResult(info));
+    } else { res.json(new structures.StatusResult(info)); }
   } catch (err) {
     res.json(new structures.StatusResult(failed));
   }

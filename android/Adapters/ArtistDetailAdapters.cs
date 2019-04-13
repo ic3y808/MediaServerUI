@@ -209,16 +209,9 @@ namespace Alloy.Adapters
 				CheckStarred();
 			}
 
-			public void CheckStarred(Artist a = null)
+			public void CheckStarred()
 			{
-				if (a != null)
-				{
-					StarButton?.SetImageDrawable(a.Starred ? Starred : NotStarred);
-				}
-				else
-				{
-					StarButton?.SetImageDrawable(Artist.Starred ? Starred : NotStarred);
-				}
+				StarButton?.SetImageDrawable(Artist.Starred ? Starred : NotStarred);
 			}
 		}
 

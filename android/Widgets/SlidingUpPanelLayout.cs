@@ -1499,7 +1499,7 @@ namespace Alloy.Widgets
 			{
 				this.layout = layout;
 			}
-			public override void onViewDragStateChanged(int state)
+			public override void OnViewDragStateChanged(int state)
 			{
 				if (layout.mDragHelper != null && layout.mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE)
 				{
@@ -1528,18 +1528,18 @@ namespace Alloy.Widgets
 				}
 			}
 
-			public override void onViewPositionChanged(View changedView, int left, int top, int dx, int dy)
+			public override void OnViewPositionChanged(View changedView, int left, int top, int dx, int dy)
 			{
 				layout.onPanelDragged(top);
 				layout.Invalidate();
 			}
 
-			public override void onViewCaptured(View capturedChild, int activePointerId)
+			public override void OnViewCaptured(View capturedChild, int activePointerId)
 			{
 				layout.setAllChildrenVisible();
 			}
 
-			public override void onViewReleased(View releasedChild, float xvel, float yvel)
+			public override void OnViewReleased(View releasedChild, float xvel, float yvel)
 			{
 				int target = 0;
 
@@ -1589,17 +1589,17 @@ namespace Alloy.Widgets
 				layout.Invalidate();
 			}
 
-			public override int getViewVerticalDragRange(View child)
+			public override int GetViewVerticalDragRange(View child)
 			{
 				return layout.mSlideRange;
 			}
 
-			public override bool tryCaptureView(View child, int pointerId)
+			public override bool TryCaptureView(View child, int pointerId)
 			{
 				return !layout.mIsUnableToDrag && child == layout.mSlideableView;
 			}
 
-			public override int clampViewPositionVertical(View child, int top, int dy)
+			public override int ClampViewPositionVertical(View child, int top, int dy)
 			{
 				int collapsedTop = layout.computePanelTopPosition(0.0f);
 				int expandedTop = layout.computePanelTopPosition(1.0f);

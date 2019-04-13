@@ -1,4 +1,4 @@
-"use strict";
+  "use strict";
 var logger = require("../../../common/logger");
 
 var request = require("request"),
@@ -570,7 +570,7 @@ var Resource = function (mbid) {
 		var self = this;
 		this._lookup(this.id, linkedEntities, force, function (err, resource) {
 			if ( !err ) {
-				for (var i in self) {
+				for (i in self) {
 					self[i] = resource[i];
 				}
 			}
@@ -814,31 +814,34 @@ mb.lookup = function (resource, mbid, inc, force, callback) {
 				"headers" : {
 					"User-Agent": mb.userAgent()
 				}
-			}, (err, response, body) => {
+
+			}, function (err, response, body) {
 				if (err) { return callback(err, null); }
+
+				// If the service is busy, we"ll try again later
 				if (response.statusCode == 503) {
 					timers.setTimeout(lookup, 2000, callback);
-	
-				} else {
-          var parser = new xml2js.Parser();
+					return;
+				}
 
-          if (!err && response.statusCode == 200) {
-            parser.addListener("end", function(result) {
-              if (typeof callback == "function") { return callback(null, result); }
-            });
-            parser.parseString(body);
-  
-          } else {
-            parser.addListener("end", function(result) {
-              if (typeof callback == "function") {
-                var err = new Error(result.text);
-                err.statusCode = response.statusCode;
-                return callback(err, null);
-              }
-            });
-            parser.parseString(body);
-          }
-        }
+				var parser = new xml2js.Parser();
+
+				if (!err && response.statusCode == 200) {
+					parser.addListener("end", function(result) {
+						if (typeof callback == "function") { return callback(null, result); }
+					});
+					parser.parseString(body);
+
+				} else {
+					parser.addListener("end", function(result) {
+						if (typeof callback == "function") {
+							var err = new Error(result.text);
+							err.statusCode = response.statusCode;
+							return callback(err, null);
+						}
+					});
+					parser.parseString(body);
+				}
 			});
 
 		});
@@ -901,14 +904,14 @@ mb.search = function(resource, query, filter, force, callback){
 				if (err) { callback(err, null); return; }
 
 				// If the service is busy, we"ll try again later
-				if (response.statusCode === 503) {
+				if (response.statusCode == 503) {
 					timers.setTimeout(lookup, 2000, callback);
 					return;
 				}
 
 				var parser = new xml2js.Parser();
 
-				if (!err && response.statusCode === 200) {
+				if (!err && response.statusCode == 200) {
 					parser.addListener("end", function(result) {
 						if (typeof callback == "function") callback(false, result);
 					});

@@ -157,7 +157,7 @@ namespace Alloy.Widgets
 
 		void IOnItemTouchListener.OnRequestDisallowInterceptTouchEvent(bool disallowIntercept)
 		{
-
+			// not being used
 		}
 
 		/**

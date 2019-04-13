@@ -67,7 +67,7 @@ function processAlbums(track, result) {
     result.Albums.forEach(function (album) {
       var existingAlbum = db.prepare("SELECT * FROM Albums WHERE foreign_id = ?").all(album.foreign_id);
 
-      if (existingAlbum.length === 0) {
+      if (existingAlbum && existingAlbum.length === 0) {
         var dbAlbum = {
           foreign_id: album.ArtistId,
           rating: album.Rating.Count,
@@ -241,7 +241,7 @@ MusicbrainzScanner.prototype.getStatus = function getStatus() {
   return scanStatus;
 };
 
-var q = new Queue(processQueue)
+var q = new Queue(processQueue);
 q.on("drain", cleanup);
 
 module.exports = MusicbrainzScanner;

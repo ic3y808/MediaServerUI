@@ -131,19 +131,4 @@ namespace Alloy.Models
 			return new Object[size];
 		}
 	}
-
-	public class AlbumQueue : IQueue
-	{
-		public override void GetMoreData()
-		{
-
-		}
-
-		public override void Refresh()
-		{
-
-		}
-
-		public override string NextHref { get; set; }
-	}
 }

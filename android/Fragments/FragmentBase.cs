@@ -98,9 +98,14 @@ namespace Alloy.Fragments
 			Removehanders();
 		}
 
-		public void CreateToolbar(View root_view, int title, bool hasBack = false)
+		public void CreateToolbar(View root_view, int title, bool hasBack)
 		{
 			HasBack = hasBack;
+			CreateToolbar(root_view, title);			
+		}
+
+		public void CreateToolbar(View root_view, int title)
+		{
 			SetHasOptionsMenu(true);
 			((AppCompatActivity)Activity).SetSupportActionBar(root_view.FindViewById<Toolbar>(Resource.Id.main_toolbar));
 			((AppCompatActivity)Activity).SupportActionBar.SetHomeButtonEnabled(true);
@@ -108,7 +113,6 @@ namespace Alloy.Fragments
 			SlideDrawable mSlideDrawable = new SlideDrawable(Application.Context.GetDrawable(Resource.Drawable.ic_drawer));
 			mSlideDrawable.setIsRtl(false);
 			ActionBarHelper mActionBarHelper = new ActionBarHelper((AppCompatActivity)Activity);
-		
 			if (HasBack)
 				mActionBarHelper.setDisplayShowHomeAsUpEnabled(true);
 			else
