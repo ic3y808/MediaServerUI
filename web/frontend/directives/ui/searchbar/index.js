@@ -1,11 +1,11 @@
 export default function ($rootScope, $timeout, $location, Logger, MediaElement, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      direction: '@'
+      direction: "@"
     },
-    templateUrl: '/template/searchbar.jade',
+    templateUrl: "/template/searchbar.jade",
 
     replace: true,
     link: function ($scope, $element, attrs) {
@@ -18,7 +18,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
       });
 
-        $('#search-box')
+        $("#search-box")
         .mouseenter(function () {
           $(this).focus();
         })
@@ -27,30 +27,30 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
             document.activeElement.blur();
         });
 
-      var html = '';
-      html += '<div class="unselectable card-5" data-instance-id="{{ ctrl.instanceId }} ng-show="ctrl.containerVisible">';
-      html += ' <ul class="list-group">';
-      html += '   <li ng-repeat="item in ctrl.renderItems" class="list-group-item">';
-      html += '     <p>{{item.value.title}} - {{item.value.data.length}}</p>';
-      html += '     <ul class="list-group">';
-      html += '       <li ng-if="item.value.data.length" ng-repeat="renderItem in item.value.data" ng-click="ctrl.selectItem(renderItem, item.value, true)" class="list-group-item" ng-class="ctrl.getSelectedCssClass(renderItem)">';
-      html += '         <p class="search-list-item" ng-if="item.value.title==\'Artists\'">{{renderItem.name}}</p>';
-      html += '         <p class="search-list-item" ng-if="item.value.title==\'Songs\'">{{renderItem.title}} - {{renderItem.artist}}</p>';
-      html += '         <p class="search-list-item" ng-if="item.value.title==\'Albums\'">{{renderItem.name}} - {{renderItem.artist}}</p>';
-      html += '         <p class="search-list-item" ng-if="item.value.title==\'Genres\'">{{renderItem.name}}</p>';
-      html += '       </li>';
-      html += '     </ul>';
-      html += '   </li>';
-      html += ' </ul>';
-      html += '</div>';
+      var html = "";
+      html += "<div class=\"unselectable card-5\" data-instance-id=\"{{ ctrl.instanceId }} ng-show=\"ctrl.containerVisible\">";
+      html += " <ul class=\"list-group\">";
+      html += "   <li ng-repeat=\"item in ctrl.renderItems\" class=\"list-group-item\">";
+      html += "     <p>{{item.value.title}} - {{item.value.data.length}}</p>";
+      html += "     <ul class=\"list-group\">";
+      html += "       <li ng-if=\"item.value.data.length\" ng-repeat=\"renderItem in item.value.data\" ng-click=\"ctrl.selectItem(renderItem, item.value, true)\" class=\"list-group-item\" ng-class=\"ctrl.getSelectedCssClass(renderItem)\">";
+      html += "         <p class=\"search-list-item\" ng-if=\"item.value.title==\"Artists\"\">{{renderItem.name}}</p>";
+      html += "         <p class=\"search-list-item\" ng-if=\"item.value.title==\"Songs\"\">{{renderItem.title}} - {{renderItem.artist}}</p>";
+      html += "         <p class=\"search-list-item\" ng-if=\"item.value.title==\"Albums\"\">{{renderItem.name}} - {{renderItem.artist}}</p>";
+      html += "         <p class=\"search-list-item\" ng-if=\"item.value.title==\"Genres\"\">{{renderItem.name}}</p>";
+      html += "       </li>";
+      html += "     </ul>";
+      html += "   </li>";
+      html += " </ul>";
+      html += "</div>";
 
       var noMatch = "";
-      noMatch += '<li class="list-group-item"/>  ';
+      noMatch += "<li class=\"list-group-item\"/>  ";
 
       $scope.autoCompleteOptions = {
         minimumChars: 1,
         //pagingEnabled: true,
-        dropdownWidth: '500px',
+        dropdownWidth: "500px",
         containerCssClass: "autocomplete-container",
         //pageSize: 5,
         containerTemplate: html,
@@ -81,7 +81,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
           return AlloyDbService.search(searchText).then(result => {
             searchText = searchText.toUpperCase();
-            if (searchText === '') return [];
+            if (searchText === "") return [];
             var results = [
               {
                 title: "Artists",

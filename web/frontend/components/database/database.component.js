@@ -1,4 +1,4 @@
-import './database.scss';
+import "./database.scss";
 class DatabaseController {
   constructor($scope, $rootScope, $element, Logger) {
     "ngInject";
@@ -7,17 +7,17 @@ class DatabaseController {
     this.$element = $element;
     this.Logger = Logger;
 
-    this.Logger.debug('database-controller');
+    this.Logger.debug("database-controller");
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: DatabaseController,
-  templateUrl: '/template/database.jade'
+  templateUrl: "/template/database.jade"
 };

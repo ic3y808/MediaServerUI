@@ -1,4 +1,4 @@
-import './genre.scss';
+import "./genre.scss";
 class GenreController {
   constructor($scope, $rootScope, $routeParams, $element, Cache, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -13,12 +13,12 @@ class GenreController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('genre-controller');
+    this.Logger.debug("genre-controller");
     this.AppUtilities.showLoader();
     $scope.artist = {};
     $scope.albums = [];
     $scope.genre = { tracks: [] }
-    $scope.artistName = '';
+    $scope.artistName = "";
     $scope.all_expanded = false;
     $scope.albums_expanded = true;
     $scope.genre.tracks_expanded = false;
@@ -52,14 +52,14 @@ class GenreController {
     };
 
     $scope.toggleAlbums = () => {
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
+      if ($scope.albums_expanded) $("#albumListContainer").hide();
+      else $("#albumListContainer").show();
       $scope.albums_expanded = !$scope.albums_expanded;
     }
 
     $scope.toggleTracks = () => {
-      if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
+      if ($scope.genre.tracks_expanded) $("#trackListContainer").hide();
+      else $("#trackListContainer").show();
       $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
     }
 
@@ -67,29 +67,29 @@ class GenreController {
       $scope.genre.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
-      if ($scope.albums_expanded) $('#albumListContainer').hide();
-      else $('#albumListContainer').show();
+      if ($scope.albums_expanded) $("#albumListContainer").hide();
+      else $("#albumListContainer").show();
 
-      if ($scope.genre.tracks_expanded) $('#trackListContainer').hide();
-      else $('#trackListContainer').show();
+      if ($scope.genre.tracks_expanded) $("#trackListContainer").hide();
+      else $("#trackListContainer").show();
 
       $scope.all_expanded = !$scope.all_expanded;
     }
 
     $scope.refresh = () => {
-      this.Logger.debug('refresh genre');
+      this.Logger.debug("refresh genre");
       Cache.put($routeParams.id, null);
       $scope.getGenre();
     };
 
     $scope.shuffle = () => {
-      this.Logger.debug('shuffle play');
+      this.Logger.debug("shuffle play");
       $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
       MediaPlayer.loadTrack(0);
     };
 
-    $rootScope.$on('loginStatusChange', (event, data) => {
-      this.Logger.debug('Genre reload on loginsatuschange');
+    $rootScope.$on("loginStatusChange", (event, data) => {
+      this.Logger.debug("Genre reload on loginsatuschange");
       $scope.refresh();
     });
 
@@ -97,13 +97,13 @@ class GenreController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: GenreController,
-  templateUrl: '/template/genre.jade'
+  templateUrl: "/template/genre.jade"
 };

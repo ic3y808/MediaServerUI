@@ -32,11 +32,11 @@ class AlbumController {
     //        }
     //        if ($scope.album.artistInfo.image) {
     //          $scope.album.artistInfo.image.forEach(image => {
-    //            if (image['@'].size === 'large') {
-    //              $scope.artistImage = image['#'];
+    //            if (image["@"].size === "large") {
+    //              $scope.artistImage = image["#"];
     //            }
-    //            if (image['@'].size === 'extralarge') {
-    //              $scope.artistImage = image['#'];
+    //            if (image["@"].size === "extralarge") {
+    //              $scope.artistImage = image["#"];
     //            }
     //          });
     //        }
@@ -52,11 +52,11 @@ class AlbumController {
             $scope.album.albumInfo = info.albumInfo;
             if ($scope.albumInfo.image) {
               $scope.album.artistInfo.image.forEach(image => {
-                if (image['@'].size === 'large') {
-                  $scope.albumImage = image['#'];
+                if (image["@"].size === "large") {
+                  $scope.albumImage = image["#"];
                 }
-                if (image['@'].size === 'extralarge') {
-                  $scope.albumImage = image['#'];
+                if (image["@"].size === "extralarge") {
+                  $scope.albumImage = image["#"];
                 }
               });
             }
@@ -116,7 +116,7 @@ class AlbumController {
     };
 
     $scope.shuffle = () => {
-      this.Logger.debug('shuffle play album ' + $scope.info.album.name);
+      this.Logger.debug("shuffle play album " + $scope.info.album.name);
       this.$rootScope.tracks = $scope.info.tracks
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
     };
@@ -195,8 +195,8 @@ class AlbumController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 

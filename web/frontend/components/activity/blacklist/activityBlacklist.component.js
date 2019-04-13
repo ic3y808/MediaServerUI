@@ -9,7 +9,7 @@ class ActivityBlacklistController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
-    this.Logger.debug('activity-blacklist-controller');
+    this.Logger.debug("activity-blacklist-controller");
 
   }
 }
@@ -17,5 +17,5 @@ class ActivityBlacklistController {
 export default {
   bindings: {},
   controller: ActivityBlacklistController,
-  templateUrl: '/template/activityBlacklist.jade'
+  templateUrl: "/template/activityBlacklist.jade"
 };

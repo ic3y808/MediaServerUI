@@ -10,7 +10,7 @@ class ConfigGeneralController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     //this.sabnzbdService = sabnzbdService;
-    this.Logger.debug('general-config-controller');
+    this.Logger.debug("general-config-controller");
 
    
   }
@@ -19,6 +19,6 @@ class ConfigGeneralController {
 export default {
   bindings: {},
   controller: ConfigGeneralController,
-  templateUrl: '/template/configGeneral.jade',
+  templateUrl: "/template/configGeneral.jade",
 
 };

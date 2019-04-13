@@ -1,4 +1,4 @@
-import styles from './home.scss';
+import styles from "./home.scss";
 class HomeController {
   constructor($scope, $rootScope, $timeout, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -12,7 +12,7 @@ class HomeController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('home-controller');
+    this.Logger.debug("home-controller");
 
     $scope.refreshing = false;
     AppUtilities.showLoader();
@@ -49,13 +49,13 @@ class HomeController {
     };
   }
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: HomeController,
-  templateUrl: '/template/home.jade'
+  templateUrl: "/template/home.jade"
 };

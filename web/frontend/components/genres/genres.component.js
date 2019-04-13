@@ -1,4 +1,4 @@
-import './genres.scss';
+import "./genres.scss";
 class GenresController {
   constructor($scope, $rootScope, $location, $element, Logger, AppUtilities, AlloyDbService) {
     "ngInject";
@@ -9,14 +9,14 @@ class GenresController {
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('genres-controller');
+    this.Logger.debug("genres-controller");
     this.AppUtilities.showLoader();
     
     $scope.refresh = function () {
       AlloyDbService.refreshGenres();
     };
 
-    $rootScope.$watch('genres', function (newVal, oldVal) {
+    $rootScope.$watch("genres", function (newVal, oldVal) {
       if ($rootScope.genres) {
         AppUtilities.apply();
         AppUtilities.hideLoader();
@@ -25,13 +25,13 @@ class GenresController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: GenresController,
-  templateUrl: '/template/genres.jade'
+  templateUrl: "/template/genres.jade"
 };

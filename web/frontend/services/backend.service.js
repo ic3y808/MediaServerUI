@@ -1,5 +1,5 @@
-import io from 'socket.io-client';
-import CryptoJS from 'crypto-js';
+import io from "socket.io-client";
+import CryptoJS from "crypto-js";
 
 export default class Backend {
   constructor($rootScope, AppUtilities, AlloyDbService) {
@@ -7,13 +7,13 @@ export default class Backend {
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
-    $rootScope.socket = io('//' + document.location.hostname + ':' + document.location.port);
+    $rootScope.socket = io("//" + document.location.hostname + ":" + document.location.port);
 
-    $rootScope.socket.on('ping',  data => {
+    $rootScope.socket.on("ping",  data => {
       if (data)
         $rootScope.backend_ping = data;
     });
-    $rootScope.socket.on('sabnzbd_ping', data => {
+    $rootScope.socket.on("sabnzbd_ping", data => {
       if (data)
         $rootScope.sabnzbd_ping = data;
     });
@@ -26,15 +26,15 @@ export default class Backend {
       if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
         $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
       }
-      this.$rootScope.socket.emit('save_settings', { key: 'alloydb_settings', data: $rootScope.settings.alloydb });
+      this.$rootScope.socket.emit("save_settings", { key: "alloydb_settings", data: $rootScope.settings.alloydb });
 
       if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
         $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
       }
 
 
-      this.$rootScope.socket.emit('save_settings', { key: 'sabnzbd_settings', data: $rootScope.settings.sabnzbd });
-      $rootScope.triggerConfigAlert("Saved!", 'success');
+      this.$rootScope.socket.emit("save_settings", { key: "sabnzbd_settings", data: $rootScope.settings.sabnzbd });
+      $rootScope.triggerConfigAlert("Saved!", "success");
     }
 
     $rootScope.loadSettings = () =>  {
@@ -48,18 +48,18 @@ export default class Backend {
       }
     }
 
-    $rootScope.socket.on('settings_saved_event', settings => {
+    $rootScope.socket.on("settings_saved_event", settings => {
       setup();
     });
 
-    $rootScope.socket.on('settings_loaded_event', settings => {
+    $rootScope.socket.on("settings_loaded_event", settings => {
       if (settings) {
-        if (settings.key === 'sabnzbd_settings') {
+        if (settings.key === "sabnzbd_settings") {
           $rootScope.settings.sabnzbd = settings.data;
         }
 
 
-        if (settings.key === 'alloydb_settings') {
+        if (settings.key === "alloydb_settings") {
           $rootScope.settings.alloydb = settings.data;
           if(settings.data.alloydb_lastfm_password){
             $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
@@ -74,15 +74,15 @@ export default class Backend {
 
 
 
-    $rootScope.socket.on('sabnzbd_history_result', data => {
+    $rootScope.socket.on("sabnzbd_history_result", data => {
       if (data) {
-        this.AppUtilities.broadcast('sabnzbdHistoryResult', data);
+        this.AppUtilities.broadcast("sabnzbdHistoryResult", data);
       }
     });
 
-    $rootScope.socket.on('sabnzbd_queue_result', data => {
+    $rootScope.socket.on("sabnzbd_queue_result", data => {
       if (data) {
-        this.AppUtilities.broadcast('sabnzbdQueueResult', data);
+        this.AppUtilities.broadcast("sabnzbdQueueResult", data);
       }
     });
 

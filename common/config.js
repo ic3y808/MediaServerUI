@@ -1,10 +1,10 @@
 const fs = require("fs");
-const md5 = require('js-md5');
+const md5 = require("js-md5");
 const path = require("path");
 const shell = require("shelljs");
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////LIKELY DON'T EDIT THIS FILE//////////////////////////////////////////////////
+//////////////////////////////////////LIKELY DON"T EDIT THIS FILE//////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 process.env.BASE_DIR = __dirname;
@@ -19,13 +19,13 @@ process.env.TEST_DATABASE = path.join(process.env.DATA_DIR, "testdb.db");
 process.env.COVER_ART_DIR = path.join(process.env.DATA_DIR, "images");
 process.env.COVER_ART_NO_ART = path.join(process.env.BASE_DIR, "..", "common", "images", "no_art.jpg");
 
-process.env.UUID_BASE = '1b671a64-40d5-491e-99b0-da01ff1f3341';
-process.env.ARTIST_NFO = 'artist.nfo';
-process.env.ALBUM_NFO = 'album.nfo';
-process.env.FANART_IMAGE = 'fanart.jpg';
-process.env.COVERART_IMAGE = 'Cover.jpg';
-process.env.FOLDER_IMAGE = 'folder.jpg';
-process.env.LOGO_IMAGE = 'logo.png';
+process.env.UUID_BASE = "1b671a64-40d5-491e-99b0-da01ff1f3341";
+process.env.ARTIST_NFO = "artist.nfo";
+process.env.ALBUM_NFO = "album.nfo";
+process.env.FANART_IMAGE = "fanart.jpg";
+process.env.COVERART_IMAGE = "Cover.jpg";
+process.env.FOLDER_IMAGE = "folder.jpg";
+process.env.LOGO_IMAGE = "logo.png";
 
 
 var config = {
@@ -39,7 +39,7 @@ if (!fs.existsSync(process.env.DATA_DIR)) shell.mkdir("-p", process.env.DATA_DIR
 if (!fs.existsSync(process.env.LOGS_DIR)) shell.mkdir("-p", process.env.LOGS_DIR);
 if (!fs.existsSync(process.env.COVER_ART_DIR)) shell.mkdir("-p", process.env.COVER_ART_DIR);
 
-if (process.env.MODE === 'test') {
+if (process.env.MODE === "test") {
   process.env.DATABASE = path.join(process.env.DATA_DIR, "test_database.db");
   process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "test_database.db-wal");
   process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "test_database.db-shm");
@@ -53,7 +53,7 @@ if (process.env.MODE === 'test') {
 //if (fs.existsSync(process.env.DATABASE_SHM)) shell.rm(process.env.DATABASE_SHM);
 
 if (fs.existsSync(process.env.CONFIG_FILE)) {
-  config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, 'utf8'));
+  config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
 } else {
 
   config.api_key = md5(Math.random().toString());
@@ -62,7 +62,7 @@ if (fs.existsSync(process.env.CONFIG_FILE)) {
       console.log(err);
     }
     else {
-      console.log('updated!');
+      console.log("updated!");
     }
   });
 }

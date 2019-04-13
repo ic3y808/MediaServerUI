@@ -1,16 +1,16 @@
 export default function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      data: '=',
-      title: '@',
-      limit: '@',
-      type: '@',
-      refreshclick: '&',
-      viewmorelink: '@'
+      data: "=",
+      title: "@",
+      limit: "@",
+      type: "@",
+      refreshclick: "&",
+      viewmorelink: "@"
     },
-    templateUrl: '/template/itemtable.jade',
+    templateUrl: "/template/itemtable.jade",
     replace: true,
     link: function (scope, elm, attrs) {
     

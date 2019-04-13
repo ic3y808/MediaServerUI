@@ -1,10 +1,10 @@
 export default function ($rootScope, $location, $timeout, $window) {
   "ngInject";
   return {
-    restrict: 'AC',
-    template: '',
+    restrict: "AC",
+    template: "",
     scope: {
-      data: '='
+      data: "="
     },
     link: function (scope, element, attrs) {
       "ngInject";
@@ -22,7 +22,7 @@ export default function ($rootScope, $location, $timeout, $window) {
       });
 
 
-      $rootScope.$on('$routeChangeStart', function () {
+      $rootScope.$on("$routeChangeStart", function () {
         $rootScope.okSaveScroll = false;
       });
 

@@ -1,4 +1,4 @@
-import './playing.scss';
+import "./playing.scss";
 class PlayingController {
   constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -10,7 +10,7 @@ class PlayingController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('playing-controller');
+    this.Logger.debug("playing-controller");
 
     $scope.getSong = () => {
 
@@ -49,13 +49,13 @@ class PlayingController {
       } else this.AppUtilities.hideLoader();
     };
 
-    $rootScope.$on('trackChangedEvent', (event, data) => {
-      this.Logger.debug('Track Changed reloading now playing');
+    $rootScope.$on("trackChangedEvent", (event, data) => {
+      this.Logger.debug("Track Changed reloading now playing");
       $scope.getSong();
     });
 
-    $rootScope.$on('loginStatusChange', (event, data) => {
-      this.Logger.debug('login changed reloading now playing');
+    $rootScope.$on("loginStatusChange", (event, data) => {
+      this.Logger.debug("login changed reloading now playing");
       $scope.getSong();
     });
 
@@ -66,5 +66,5 @@ class PlayingController {
 export default {
   bindings: {},
   controller: PlayingController,
-  templateUrl: '/template/playing.jade'
+  templateUrl: "/template/playing.jade"
 };

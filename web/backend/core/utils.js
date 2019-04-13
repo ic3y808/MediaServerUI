@@ -21,11 +21,11 @@ module.exports.onError = function onError(error) {
 
   switch (error.code) {
     case "EACCES":
-      log.error('alloyui', "requires elevated privileges");
+      log.error("alloyui", "requires elevated privileges");
       process.exit(1);
       break;
     case "EADDRINUSE":
-      log.error('alloyui', module.exports.normalizePort(process.env.PORT || "3000") + " is already in use");
+      log.error("alloyui", module.exports.normalizePort(process.env.PORT || "3000") + " is already in use");
       process.exit(1);
       break;
     default:

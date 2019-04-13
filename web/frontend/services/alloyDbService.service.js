@@ -1,5 +1,5 @@
-import CryptoJS from 'crypto-js';
-import AlloyApi from '../API/alloy.db'
+import CryptoJS from "crypto-js";
+import AlloyApi from "../API/alloy.db"
 export default class AlloyDbService {
   constructor($rootScope, Logger, AppUtilities, $routeParams) {
     "ngInject";
@@ -14,13 +14,13 @@ export default class AlloyDbService {
   doLogin() {
     if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
       if (!this.isLoggedIn) {
-        this.Logger.info('logging into alloydb')
+        this.Logger.info("logging into alloydb")
 
         this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
 
         this.alloydb.ping().then(result => {
           if (result) {
-            if (result.status == 'success') {
+            if (result.status == "success") {
               this.isLoggedIn = true;
               this.isLoggingIn = false;
               this.preload();
@@ -28,11 +28,11 @@ export default class AlloyDbService {
               this.isLoggingIn = false;
               this.isLoggedIn = false;
             }
-            this.Logger.info('logging into alloydb is ' + JSON.stringify(result));
+            this.Logger.info("logging into alloydb is " + JSON.stringify(result));
           }
 
-          this.AppUtilities.broadcast('loginStatusChange', {
-            service: 'alloydb',
+          this.AppUtilities.broadcast("loginStatusChange", {
+            service: "alloydb",
             isLoggedIn: this.isLoggedIn
           });
         });

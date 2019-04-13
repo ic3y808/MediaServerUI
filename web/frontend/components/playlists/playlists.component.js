@@ -1,4 +1,4 @@
-import './playlists.scss';
+import "./playlists.scss";
 class PlaylistsController {
   constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend) {
     "ngInject";
@@ -9,7 +9,7 @@ class PlaylistsController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    this.Logger.debug('playlists-controller');
+    this.Logger.debug("playlists-controller");
     AppUtilities.hideLoader();
   }
 }
@@ -17,5 +17,5 @@ class PlaylistsController {
 export default {
   bindings: {},
   controller: PlaylistsController,
-  templateUrl: '/template/playlists.jade'
+  templateUrl: "/template/playlists.jade"
 };

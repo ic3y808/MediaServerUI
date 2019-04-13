@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 
 export default class SabnzbdService {
   constructor($rootScope, AppUtilities) {

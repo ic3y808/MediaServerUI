@@ -1,22 +1,22 @@
-import angular from 'angular';
+import angular from "angular";
 
-import TitleService from './title.service';
-import CacheService from './cache.service';
-import LoggerService from './logger.service';
-import AppUtilitiesService from './appUtilities.service';
-import BackendService from './backend.service';
-import AlloyDbService from './alloyDbService.service';
-import MediaElement from './mediaElement.service';
-import MediaPlayer from './mediaPlayer.service';
+import TitleService from "./title.service";
+import CacheService from "./cache.service";
+import LoggerService from "./logger.service";
+import AppUtilitiesService from "./appUtilities.service";
+import BackendService from "./backend.service";
+import AlloyDbService from "./alloyDbService.service";
+import MediaElement from "./mediaElement.service";
+import MediaPlayer from "./mediaPlayer.service";
 
 export default angular
-  .module('app.services', [])
-  .service('Cache', CacheService)
-  .service('Title', TitleService)
-  .service('Logger', LoggerService)
-  .service('AppUtilities', AppUtilitiesService)
-  .service('Backend', BackendService)
-  .service('AlloyDbService', AlloyDbService)
-  .service('MediaElement', MediaElement)
-  .service('MediaPlayer', MediaPlayer)
+  .module("app.services", [])
+  .service("Cache", CacheService)
+  .service("Title", TitleService)
+  .service("Logger", LoggerService)
+  .service("AppUtilities", AppUtilitiesService)
+  .service("Backend", BackendService)
+  .service("AlloyDbService", AlloyDbService)
+  .service("MediaElement", MediaElement)
+  .service("MediaPlayer", MediaPlayer)
 ;

@@ -1,11 +1,11 @@
 export default function (Backend, AppUtilities, AlloyDbService) {
   "ngInject";
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: {
-      data: '='
+      data: "="
     },
-    templateUrl: '/template/historylist.jade',
+    templateUrl: "/template/historylist.jade",
     replace: true,
     link: function (scope, elm, attrs) {
       

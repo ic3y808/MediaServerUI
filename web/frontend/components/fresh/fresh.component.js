@@ -37,11 +37,11 @@ class FreshController {
     $scope.checkIfNowPlaying = (type, id) => {
       var selected = this.MediaPlayer.selectedTrack();
       if (selected && type && id) {
-        if (type === 'track') {
+        if (type === "track") {
           return id === selected.id;
-        } else if (type === 'artist') {
+        } else if (type === "artist") {
           return id === selected.artist_id;
-        } else if (type === 'album') {
+        } else if (type === "album") {
           return id === selected.album_id;
         }
       }
@@ -148,7 +148,7 @@ class FreshController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
+    this.$element.addClass("vbox")
   };
 }
 

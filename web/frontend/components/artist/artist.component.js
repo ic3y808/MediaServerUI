@@ -1,5 +1,5 @@
-import './artist.scss';
-import Glide from '@glidejs/glide'
+import "./artist.scss";
+import Glide from "@glidejs/glide"
 
 
 class ArtistController {
@@ -16,9 +16,9 @@ class ArtistController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('artist-controller');
+    this.Logger.debug("artist-controller");
     this.AppUtilities.showLoader();
-    $scope.artistName = '';
+    $scope.artistName = "";
     $scope.artist = {};
     $scope.artist = {};
     $scope.albums = [];
@@ -26,7 +26,7 @@ class ArtistController {
     $scope.all_expanded = false;
     $scope.albums_expanded = true;
     $scope.tracks_expanded = false;
-    $('#trackListContainer').hide();
+    $("#trackListContainer").hide();
 
 
     
@@ -77,21 +77,21 @@ class ArtistController {
     };
 
     $scope.refresh = () => {
-      this.Logger.debug('refresh artist');
+      this.Logger.debug("refresh artist");
       Cache.put($routeParams.id, null);
       $scope.getArtist();
     };
 
     $scope.startRadio = () => {
       AlloyDbService.getSimilarSongs2($routeParams.id).then(similarSongs => {
-        this.Logger.debug('starting radio');
+        this.Logger.debug("starting radio");
         $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
       });
     };
 
     $scope.shuffle = () => {
-      this.Logger.debug('shuffle play artist ' + $scope.info.artist.name);
+      this.Logger.debug("shuffle play artist " + $scope.info.artist.name);
       this.$rootScope.tracks = $scope.info.tracks
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
     };
@@ -118,7 +118,7 @@ class ArtistController {
     };
 
     $scope.getLinkIcon = function (link) {
-      var base = 'icon-';
+      var base = "icon-";
       switch (link.type) {
         case "discogs": { return base + link.type; }
         case "wikipedia": { return base + link.type; }
@@ -139,21 +139,21 @@ class ArtistController {
     }
 
     $scope.starArtist = () => {
-      this.Logger.info('Trying to star artist: ' + $scope.info.artist.name);
-      if ($scope.info.artist.starred === 'true') {
+      this.Logger.info("Trying to star artist: " + $scope.info.artist.name);
+      if ($scope.info.artist.starred === "true") {
         this.AlloyDbService.unstar({
           artist: this.$routeParams.id
         }).then(result => {
-          this.Logger.info('UnStarred ' + $scope.info.artist.name + ' ' + JSON.stringify(result));
-          this.$scope.info.artist.starred = 'false'
+          this.Logger.info("UnStarred " + $scope.info.artist.name + " " + JSON.stringify(result));
+          this.$scope.info.artist.starred = "false"
           this.AppUtilities.apply();
         });
       } else {
         this.AlloyDbService.star({
           artist: this.$routeParams.id
         }).then(result => {
-          this.Logger.info('Starred ' + $scope.info.artist.name + ' ' + JSON.stringify(result));
-          this.$scope.info.artist.starred = 'true'
+          this.Logger.info("Starred " + $scope.info.artist.name + " " + JSON.stringify(result));
+          this.$scope.info.artist.starred = "true"
           this.AppUtilities.apply();
         });
       }
@@ -161,8 +161,8 @@ class ArtistController {
 
 
 
-    $rootScope.$on('loginStatusChange', (event, data) => {
-      this.Logger.debug('Artist reload on loginsatuschange');
+    $rootScope.$on("loginStatusChange", (event, data) => {
+      this.Logger.debug("Artist reload on loginsatuschange");
       $scope.getArtist();
     });
 
@@ -170,13 +170,13 @@ class ArtistController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: ArtistController,
-  templateUrl: '/template/artist.jade'
+  templateUrl: "/template/artist.jade"
 };

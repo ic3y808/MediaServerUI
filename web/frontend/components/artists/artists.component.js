@@ -1,4 +1,4 @@
-import './artists.scss';
+import "./artists.scss";
 class ArtistsController {
   constructor($scope, $rootScope, $timeout, $location, $anchorScroll, $element, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
@@ -12,7 +12,7 @@ class ArtistsController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('artists-controller');
+    this.Logger.debug("artists-controller");
     this.AppUtilities.showLoader();
 
     $scope.refresh = function () {
@@ -23,7 +23,7 @@ class ArtistsController {
 
     }
 
-    $rootScope.$watch('artists', function (newVal, oldVal) {
+    $rootScope.$watch("artists", function (newVal, oldVal) {
       if ($rootScope.artists) {
         AppUtilities.apply();
         AppUtilities.hideLoader();
@@ -34,13 +34,13 @@ class ArtistsController {
   }
 
   $onInit() {
-    this.$element.addClass('vbox')
-    this.$element.addClass('scrollable')
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
   };
 }
 
 export default {
   bindings: {},
   controller: ArtistsController,
-  templateUrl: '/template/artists.jade'
+  templateUrl: "/template/artists.jade"
 };
