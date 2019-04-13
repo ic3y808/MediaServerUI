@@ -108,7 +108,7 @@ namespace Alloy.Adapters
 				itemRoot = v.FindViewById<RelativeLayout>(Resource.Id.item_root);
 				name = v.FindViewById<TextView>(Resource.Id.artist);
 				this.serviceConnection = serviceConnection;
-				v.Click += (sender, e) => listener(new AlbumViewHolderEvent() { Position = LayoutPosition, ViewHolder = this });
+				v.Click += (sender, e) => listener(new AlbumViewHolderEvent { Position = LayoutPosition, ViewHolder = this });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 			}
 

@@ -88,7 +88,7 @@ namespace Alloy.Adapters
 					starredButton.Click += (sender, e) => { SetFavorite(); };
 				}
 
-				v.Click += (sender, e) => listener(new NowPlayingViewHolderEvent() { Position = LayoutPosition, NowPlayingViewHolder = this });
+				v.Click += (sender, e) => listener(new NowPlayingViewHolderEvent { Position = LayoutPosition, NowPlayingViewHolder = this });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 				v.ClearAnimation();
 			}

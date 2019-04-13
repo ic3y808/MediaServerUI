@@ -11,57 +11,50 @@ namespace Alloy.Compat
 {
 	public class ActionBarHelperCompat
 	{
+		private const string TAG = "ActionBarHelperCompat";
 
-		private static string TAG = "ActionBarHelperCompat";
-
-		private ActionBarHelperCompat()
-		{
-		}
-
-		public static void setActionBarUpIndicator(Object info, Activity activity, Drawable drawable, int contentDescRes)
+		public static void SetActionBarUpIndicator(Object info, Activity activity, Drawable drawable, int contentDescRes)
 		{
 			SetIndicatorInfo sii = (SetIndicatorInfo)info;
-			if (sii.mUpIndicatorView != null)
+			if (sii.UpIndicatorView == null) return;
+			sii.UpIndicatorView.SetImageDrawable(drawable);
+			string contentDescription = contentDescRes == 0 ? null : activity.GetString(contentDescRes);
+			sii.UpIndicatorView.ContentDescription = contentDescription;
+		}
+
+		public static void SetActionBarDescription(Object info, Activity activity, int contentDescRes)
+		{
+			SetIndicatorInfo sii = (SetIndicatorInfo)info;
+			if (sii.UpIndicatorView != null)
 			{
-				sii.mUpIndicatorView.SetImageDrawable(drawable);
 				string contentDescription = contentDescRes == 0 ? null : activity.GetString(contentDescRes);
-				sii.mUpIndicatorView.ContentDescription = contentDescription;
+				sii.UpIndicatorView.ContentDescription = contentDescription;
 			}
 		}
 
-		public static void setActionBarDescription(Object info, Activity activity, int contentDescRes)
+		public static Drawable GetThemeUpIndicator(Object info)
 		{
 			SetIndicatorInfo sii = (SetIndicatorInfo)info;
-			if (sii.mUpIndicatorView != null)
+			if (sii.UpIndicatorView != null)
 			{
-				string contentDescription = contentDescRes == 0 ? null : activity.GetString(contentDescRes);
-				sii.mUpIndicatorView.ContentDescription = contentDescription;
-			}
-		}
-
-		public static Drawable getThemeUpIndicator(Object info)
-		{
-			SetIndicatorInfo sii = (SetIndicatorInfo)info;
-			if (sii.mUpIndicatorView != null)
-			{
-				return sii.mUpIndicatorView.Drawable;
+				return sii.UpIndicatorView.Drawable;
 			}
 			return null;
 		}
 
-		public static Object getIndicatorInfo(AppCompatActivity activity)
+		public static Object GetIndicatorInfo(AppCompatActivity activity)
 		{
 			return new SetIndicatorInfo(activity);
 		}
 
-		public static void setDisplayHomeAsUpEnabled(Object info, bool enabled)
+		public static void SetDisplayHomeAsUpEnabled(Object info, bool enabled)
 		{
 			SetIndicatorInfo sii = (SetIndicatorInfo)info;
-			if (sii.mHomeAsUpEnabled != null)
+			if (sii.HomeAsUpEnabled != null)
 			{
 				try
 				{
-					sii.mHomeAsUpEnabled.Invoke(sii.mActionBar, enabled);
+					sii.HomeAsUpEnabled.Invoke(sii.ActionBar, enabled);
 				}
 				catch (Throwable t)
 				{
@@ -70,14 +63,14 @@ namespace Alloy.Compat
 			}
 		}
 
-		public class SetIndicatorInfo : Java.Lang.Object
+		public class SetIndicatorInfo : Object
 		{
 
-			public ImageView mUpIndicatorView;
-			public Object mActionBar;
-			public Method mHomeAsUpEnabled;
+			public ImageView UpIndicatorView { get; set; }
+			public Object ActionBar { get; set; }
+			public Method HomeAsUpEnabled { get; set; }
 
-			public SetIndicatorInfo(AppCompatActivity activity)
+			public SetIndicatorInfo(Activity activity)
 			{
 				try
 				{
@@ -90,29 +83,29 @@ namespace Alloy.Compat
 						View v = activity.FindViewById(homeId);
 						ViewGroup parent = (ViewGroup)v.Parent;
 						int upId = activity.Resources.GetIdentifier("abs__up", "id", appPackage);
-						mUpIndicatorView = (ImageView)parent.FindViewById(upId);
+						UpIndicatorView = (ImageView)parent.FindViewById(upId);
 					}
 					catch (Throwable t)
 					{
 						Log.Error(TAG, "ABS action bar not found", t);
 					}
 
-					if (mUpIndicatorView == null)
+					if (UpIndicatorView == null)
 					{
 						// Attempt to find AppCompat up indicator
 						int homeId = activity.Resources.GetIdentifier("home", "id", appPackage);
 						View v = activity.FindViewById(homeId);
 						ViewGroup parent = (ViewGroup)v.Parent;
 						int upId = activity.Resources.GetIdentifier("up", "id", appPackage);
-						mUpIndicatorView = (ImageView)parent.FindViewById(upId);
+						UpIndicatorView = (ImageView)parent.FindViewById(upId);
 					}
 
 					Class supportActivity = activity.Class;
 					Method getActionBar = supportActivity.GetMethod("getSupportActionBar");
-					getActionBar.Invoke(mActionBar);
+					getActionBar.Invoke(ActionBar);
 
-					Class supportActionBar = mActionBar.Class;
-					mHomeAsUpEnabled = supportActionBar.GetMethod("setDisplayHomeAsUpEnabled", Boolean.Type);
+					Class supportActionBar = ActionBar.Class;
+					HomeAsUpEnabled = supportActionBar.GetMethod("setDisplayHomeAsUpEnabled", Boolean.Type);
 
 				}
 				catch (Throwable t)

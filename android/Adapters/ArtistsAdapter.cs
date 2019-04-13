@@ -105,7 +105,7 @@ namespace Alloy.Adapters
 				ServiceConnection = serviceConnection;
 				ArtistName = v.FindViewById<TextView>(Resource.Id.artist);
 				if (ArtistName != null) ArtistName.Selected = true;
-				v.Click += (sender, e) => listener(new ArtistViewHolderEvent() { Position = LayoutPosition, CustomViewHolder = this });
+				v.Click += (sender, e) => listener(new ArtistViewHolderEvent { Position = LayoutPosition, CustomViewHolder = this });
 			}
 
 			public class ArtistViewHolderEvent

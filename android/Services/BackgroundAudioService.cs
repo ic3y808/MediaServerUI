@@ -151,7 +151,7 @@ namespace Alloy.Services
 
 				notificationService.ShowNotification();
 				RequestAudioFocus();
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading });
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Loading });
 			}
 			catch (Exception e)
 			{
@@ -170,7 +170,7 @@ namespace Alloy.Services
 
 
 				notificationService.ShowNotification();
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
@@ -322,7 +322,7 @@ namespace Alloy.Services
 				Utils.UnlockSsl(true);
 				MediaPlayer.Start();
 				loading = false;
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg() { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
 				notificationService.ShowNotification();
 				notificationService.UpdateMediaSessionMeta();
 				Utils.Run(() =>

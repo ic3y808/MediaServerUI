@@ -65,17 +65,8 @@ namespace Alloy.Models
 
 	public class Artist : Object, IParcelable
 	{
-		private string _id;
 		[JsonProperty("id")]
-		public string Id
-		{
-			get { return _id; }
-			set
-			{
-				_id = value;
-				//if (Art == null) Art = MusicProvider.GetAlbumArt(new Dictionary<string, object>() { { "artist_id", _id }, { "width", "50" }, { "height", "50" } });
-			}
-		}
+		public string Id { get; set; }
 		[JsonIgnore]
 		public Bitmap Art { get; set; }
 		[JsonProperty("name")]

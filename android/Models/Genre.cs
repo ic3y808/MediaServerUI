@@ -52,7 +52,7 @@ namespace Alloy.Models
 		public bool IsLabel { get; set; }
 		public bool IsDivider { get; set; }
 
-		[ExportField("CREATOR")] // Need a reference to Mono.Android.Export
+		[ExportField("CREATOR")]
 		public static GenreCreator InitializeCreator()
 		{
 			return new GenreCreator();

@@ -288,7 +288,7 @@ namespace Alloy
 					Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
 					fadeIn.Duration = 3000;
 					if (serviceConnection?.CurrentSong == null) return;
-					Bitmap newArt = serviceConnection.CurrentSong.GetAlbumArt().Blur();
+					Bitmap newArt = serviceConnection.CurrentSong.GetAlbumArt().Blur(25);
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{
@@ -320,11 +320,6 @@ namespace Alloy
 								currentBackground = CurrentBackground.Primary;
 								break;
 						}
-					};
-
-					fadeIn.AnimationEnd += (o, e) =>
-					{
-						GC.Collect();
 					};
 
 					RunOnUiThread(() =>

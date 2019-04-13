@@ -335,18 +335,16 @@ namespace Alloy.Fragments
 
 		private void ServiceConnection_ServiceConnected(object sender, bool e)
 		{
-			if (e)
-			{
-				AddHandlers();
-				ServiceConnected();
-				if (ServiceConnection.CurrentSong == null) return;
-				ScrollToNowPlaying();
-			}
+			if (!e) return;
+			AddHandlers();
+			ServiceConnected();
+			if (ServiceConnection.CurrentSong == null) return;
+			ScrollToNowPlaying();
 		}
 
 		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
 		{
-			
+			// not being used
 		}
 
 		public void OnSensorChanged(SensorEvent e)

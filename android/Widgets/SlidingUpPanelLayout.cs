@@ -1,5 +1,4 @@
 ﻿using System;
-
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
@@ -13,61 +12,58 @@ using Android.Views.Accessibility;
 using Android.Views.Animations;
 using Java.Lang;
 using Math = System.Math;
-using String = System.String;
 
 namespace Alloy.Widgets
 {
-	public class SlidingUpPanelLayout : ViewGroup
+	public sealed class SlidingUpPanelLayout : ViewGroup
 	{
-		private static String TAG = "SlidingUpPanelLayout";
+		private const string TAG = "SlidingUpPanelLayout";
 
 		/**
 		 * Default peeking out panel height
 		 */
-		private static int DEFAULT_PANEL_HEIGHT = 68; // dp;
+		private const int DEFAULT_PANEL_HEIGHT = 68; // dp;
 
 		/**
 		 * Default anchor point height
 		 */
-		private static float DEFAULT_ANCHOR_POINT = 1.0f; // In relative %
+		private const float DEFAULT_ANCHOR_POINT = 1.0f; // In relative %
 
 		/**
 		 * Default initial state for the component
 		 */
-		private static PanelState DEFAULT_SLIDE_STATE = PanelState.COLLAPSED;
+		private const PanelState DEFAULT_SLIDE_STATE = PanelState.COLLAPSED;
 
 		/**
 		 * Default height of the shadow above the peeking out panel
 		 */
-		private static int DEFAULT_SHADOW_HEIGHT = 4; // dp;
+		private const int DEFAULT_SHADOW_HEIGHT = 4; // dp;
 
 		/**
 		 * If no fade color is given by default it will fade to 80% gray.
 		 */
-		private static int DEFAULT_FADE_COLOR = Color.Argb(100, 0, 0, 0);
+		private static readonly int DEFAULT_FADE_COLOR = Color.Argb(100, 0, 0, 0);
 
 		/**
 		 * Default Minimum velocity that will be detected as a fling
 		 */
-		private static int DEFAULT_MIN_FLING_VELOCITY = 400; // dips per second
-															 /**
-															  * Default is set to false because that is how it was written
-															  */
-		private static bool DEFAULT_OVERLAY_FLAG = false;
+		private const int DEFAULT_MIN_FLING_VELOCITY = 400; // dips per second
+															/**
+															 * Default is set to false because that is how it was written
+															 */
+		private const bool DEFAULT_OVERLAY_FLAG = false;
 		/**
 		 * Default is set to true for clip panel for performance reasons
 		 */
-		private static bool DEFAULT_CLIP_PANEL_FLAG = true;
+		private const bool DEFAULT_CLIP_PANEL_FLAG = true;
 		/**
 		 * Default attributes for layout
 		 */
-		private static int[] DEFAULT_ATTRS = new int[]{
-			Android.Resource.Attribute.Gravity
-	};
+		private static readonly int[] DEFAULT_ATTRS = { Android.Resource.Attribute.Gravity };
 		/**
 		 * Tag for the sliding state stored inside the bundle
 		 */
-		public static String SLIDING_STATE = "sliding_state";
+		public static string SLIDING_STATE = "sliding_state";
 
 		/**
 		 * Minimum velocity that will be detected as a fling
@@ -203,12 +199,12 @@ namespace Alloy.Widgets
 		private float mPrevMotionY;
 		private float mInitialMotionX;
 		private float mInitialMotionY;
-		private bool mIsScrollableViewHandlingTouch = false;
+		private bool mIsScrollableViewHandlingTouch;
 
-		private JavaList<PanelSlideListener> mPanelSlideListeners = new JavaList<PanelSlideListener>();
+		private readonly JavaList<PanelSlideListener> mPanelSlideListeners = new JavaList<PanelSlideListener>();
 		private IOnClickListener mFadeOnClickListener;
 
-		private ViewDragHelper mDragHelper;
+		private readonly ViewDragHelper mDragHelper;
 
 		/**
 		 * Stores whether or not the pane was expanded the last time it was slideable.
@@ -405,15 +401,12 @@ namespace Alloy.Widgets
 				RequestLayout();
 			}
 
-			if (getPanelState() == PanelState.COLLAPSED)
-			{
-				smoothToBottom();
-				Invalidate();
-				return;
-			}
+			if (getPanelState() != PanelState.COLLAPSED) return;
+			smoothToBottom();
+			Invalidate();
 		}
 
-		protected void smoothToBottom()
+		private void smoothToBottom()
 		{
 			smoothSlideTo(0, 0);
 		}
@@ -701,17 +694,17 @@ namespace Alloy.Widgets
 			int left;
 			int right;
 			int top;
-			int Bottom;
+			int bottom;
 			if (mSlideableView != null && hasOpaqueBackground(mSlideableView))
 			{
 				left = mSlideableView.Left;
 				right = mSlideableView.Right;
 				top = mSlideableView.Top;
-				Bottom = mSlideableView.Bottom;
+				bottom = mSlideableView.Bottom;
 			}
 			else
 			{
-				left = right = top = Bottom = 0;
+				left = right = top = bottom = 0;
 			}
 			View child = GetChildAt(0);
 			int clampedChildLeft = Math.Max(leftBound, child.Left);
@@ -720,7 +713,7 @@ namespace Alloy.Widgets
 			int clampedChildBottom = Math.Min(bottomBound, child.Bottom);
 			ViewStates vis;
 			if (clampedChildLeft >= left && clampedChildTop >= top &&
-				clampedChildRight <= right && clampedChildBottom <= Bottom)
+				clampedChildRight <= right && clampedChildBottom <= bottom)
 			{
 				vis = ViewStates.Invisible;
 			}
@@ -1136,7 +1129,7 @@ namespace Alloy.Widgets
 				mDragHelper.processTouchEvent(e);
 				return true;
 			}
-			catch (Java.Lang.Exception ex)
+			catch (Java.Lang.Exception)
 			{
 				// Ignore the pointer out of range exception
 				return false;
@@ -1209,7 +1202,7 @@ namespace Alloy.Widgets
 				mDragHelper.abort();
 			}
 
-			if (state == null || state == PanelState.DRAGGING)
+			if (state == PanelState.DRAGGING)
 			{
 				throw new IllegalArgumentException("Panel state cannot be null or DRAGGING.");
 			}
@@ -1356,23 +1349,19 @@ namespace Alloy.Widgets
 		* @param slideOffset position to animate to
 		* @param velocity    initial velocity in case of fling, or 0.
 		*/
-		bool smoothSlideTo(float slideOffset, int velocity)
+		void smoothSlideTo(float slideOffset, int velocity)
 		{
 			if (!Enabled || mSlideableView == null)
 			{
 				// Nothing to do.
-				return false;
+				return;
 			}
 
 			int panelTop = computePanelTopPosition(slideOffset);
 
-			if (mDragHelper.smoothSlideViewTo(mSlideableView, mSlideableView.Left, panelTop))
-			{
-				setAllChildrenVisible();
-				ViewCompat.PostInvalidateOnAnimation(this);
-				return true;
-			}
-			return false;
+			if (!mDragHelper.smoothSlideViewTo(mSlideableView, mSlideableView.Left, panelTop)) return;
+			setAllChildrenVisible();
+			ViewCompat.PostInvalidateOnAnimation(this);
 		}
 
 		public override void ComputeScroll()
@@ -1394,60 +1383,23 @@ namespace Alloy.Widgets
 			base.Draw(canvas);
 
 			// draw the shadow
-			if (mShadowDrawable != null && mSlideableView != null)
+			if (mShadowDrawable == null || mSlideableView == null) return;
+			int right = mSlideableView.Right;
+			int top;
+			int bottom;
+			if (mIsSlidingUp)
 			{
-				int right = mSlideableView.Right;
-				int top;
-				int Bottom;
-				if (mIsSlidingUp)
-				{
-					top = mSlideableView.Top - mShadowHeight;
-					Bottom = mSlideableView.Top;
-				}
-				else
-				{
-					top = mSlideableView.Bottom;
-					Bottom = mSlideableView.Bottom + mShadowHeight;
-				}
-				int left = mSlideableView.Left;
-				mShadowDrawable.SetBounds(left, top, right, Bottom);
-				mShadowDrawable.Draw(canvas);
+				top = mSlideableView.Top - mShadowHeight;
+				bottom = mSlideableView.Top;
 			}
-		}
-
-		/**
-		 * Tests scrollability within child views of v given a delta of dx.
-		 *
-		 * @param v      View to test for horizontal scrollability
-		 * @param checkV Whether the view v passed should itself be checked for scrollability (true),
-		 *               or just its children (false).
-		 * @param dx     Delta scrolled in pixels
-		 * @param x      X coordinate of the active touch point
-		 * @param y      Y coordinate of the active touch point
-		 * @return true if child views of v can be scrolled by delta of dx.
-		 */
-		protected bool canScroll(View v, bool checkV, int dx, int x, int y)
-		{
-			if (v is ViewGroup)
+			else
 			{
-				ViewGroup group = (ViewGroup)v;
-				int scrollX = v.ScrollX;
-				int scrollY = v.ScrollY;
-				int count = group.ChildCount;
-				// Count backwards - let topmost views consume scroll distance first.
-				for (int i = count - 1; i >= 0; i--)
-				{
-					View child = group.GetChildAt(i);
-					if (x + scrollX >= child.Left && x + scrollX < child.Right &&
-						y + scrollY >= child.Top && y + scrollY < child.Bottom &&
-						canScroll(child, true, dx, x + scrollX - child.Left,
-							y + scrollY - child.Top))
-					{
-						return true;
-					}
-				}
+				top = mSlideableView.Bottom;
+				bottom = mSlideableView.Bottom + mShadowHeight;
 			}
-			return checkV && v.CanScrollHorizontally(-dx);
+			int left = mSlideableView.Left;
+			mShadowDrawable.SetBounds(left, top, right, bottom);
+			mShadowDrawable.Draw(canvas);
 		}
 
 		protected override bool CheckLayoutParams(ViewGroup.LayoutParams p)
@@ -1474,11 +1426,9 @@ namespace Alloy.Widgets
 
 		protected override void OnRestoreInstanceState(IParcelable state)
 		{
-			if (state is Bundle)
+			if (state is Bundle bundle)
 			{
-				Bundle bundle = (Bundle)state;
-				mSlideState = (PanelState)bundle.GetInt(SLIDING_STATE);
-				mSlideState = mSlideState == null ? DEFAULT_SLIDE_STATE : mSlideState;
+				mSlideState = (PanelState)bundle.GetInt(SLIDING_STATE, (int)DEFAULT_SLIDE_STATE);
 				state = (IParcelable)bundle.GetParcelable("superState");
 			}
 			base.OnRestoreInstanceState(state);
@@ -1541,7 +1491,7 @@ namespace Alloy.Widgets
 
 			public override void OnViewReleased(View releasedChild, float xvel, float yvel)
 			{
-				int target = 0;
+				int target;
 
 				// direction is always positive if we are sliding in the expanded direction
 				float direction = layout.mIsSlidingUp ? -yvel : yvel;
@@ -1620,7 +1570,7 @@ namespace Alloy.Widgets
 				Android.Resource.Attribute.LayoutWeight
 			};
 
-			public float weight = 0;
+			public float weight;
 			protected LayoutParams(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 			{
 			}

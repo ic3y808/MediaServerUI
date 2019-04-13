@@ -348,7 +348,7 @@ namespace Alloy.Adapters
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				Name = itemView.FindViewById<TextView>(Resource.Id.name);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Album = Album });
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Album = Album });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) =>
 				{
 					SetSelected();
@@ -445,7 +445,7 @@ namespace Alloy.Adapters
 				Title = itemView.FindViewById<TextView>(Resource.Id.title);
 				Album = itemView.FindViewById<TextView>(Resource.Id.album);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Songs = Songs });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
 			}
 
