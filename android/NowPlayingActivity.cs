@@ -371,7 +371,7 @@ namespace Alloy
 
 				if (song != null)
 				{
-					var art = song.GetAlbumArt();
+					Bitmap art = song.GetAlbumArt();
 					color = Extensions.GetDominateColor(art);
 					contrasting = color.Contrasting(backgroundContrast);
 				}

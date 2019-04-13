@@ -62,7 +62,7 @@ namespace Alloy.Adapters
 			{
 				if (v == null) { v = LayoutInflater.From(mContext).Inflate(Resource.Layout.menu_row_category, parent, false); }
 
-				var header = v.FindViewById<TextView>(Resource.Id.category_header);
+				TextView header = v.FindViewById<TextView>(Resource.Id.category_header);
 				header.SetText(category.mTitle, TextView.BufferType.Normal);
 			}
 			if (item is Divider div)

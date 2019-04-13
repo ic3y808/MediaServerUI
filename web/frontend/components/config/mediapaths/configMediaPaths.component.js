@@ -9,11 +9,11 @@ class ConfigMediaPathsController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('config-mediapaths-controller');
+    this.Logger.debug("config-mediapaths-controller");
 
     $scope.settings = {};
-    $scope.currentpath = '';
-    $scope.display_name = '';
+    $scope.currentpath = "";
+    $scope.display_name = "";
 
     $scope.reload = () =>  {
       if (AlloyDbService.isLoggedIn) {
@@ -38,10 +38,10 @@ class ConfigMediaPathsController {
     }
 
     $scope.browsePaths = () =>  {
-      $scope.currentpath = '';
-      $scope.display_name = '';
+      $scope.currentpath = "";
+      $scope.display_name = "";
       AppUtilities.apply();
-      $('#addMediaPathModal').modal()
+      $("#addMediaPathModal").modal()
     }
 
     $scope.addCurrentPath = () =>  {
@@ -52,10 +52,10 @@ class ConfigMediaPathsController {
           $scope.reload();
         });
       }
-      $('#addMediaPathModal').modal('hide')
+      $("#addMediaPathModal").modal("hide")
     }
 
-    $rootScope.$on('loginStatusChange', function (event, data) {
+    $rootScope.$on("loginStatusChange", function (event, data) {
       $scope.reload();
     });
 
@@ -66,5 +66,5 @@ class ConfigMediaPathsController {
 export default {
   bindings: {},
   controller: ConfigMediaPathsController,
-  templateUrl: '/template/configMediaPaths.jade'
+  templateUrl: "/template/configMediaPaths.jade"
 };

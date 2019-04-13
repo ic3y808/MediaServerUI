@@ -26,7 +26,7 @@ namespace Alloy.Adapters
 
 		public void RefreshGenre()
 		{
-			var artistLoader = (GenreLoader)new GenreLoader(this, Genre).Execute();
+			GenreLoader artistLoader = (GenreLoader)new GenreLoader(this, Genre).Execute();
 		}
 
 		public override long GetItemId(int position)

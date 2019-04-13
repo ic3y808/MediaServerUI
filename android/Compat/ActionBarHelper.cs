@@ -3,6 +3,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Util;
 using Java.Lang;
+using Java.Lang.Reflect;
 using Net.Simonvt.Menudrawer.Compat;
 
 namespace Alloy.Compat
@@ -27,7 +28,7 @@ namespace Alloy.Compat
 			{
 
 				Class clazz = activity.Class;
-				var m = clazz.GetMethod("getSupportActionBar");
+				Method m = clazz.GetMethod("getSupportActionBar");
 				mUsesCompat = true;
 			}
 			catch (NoSuchMethodException e)

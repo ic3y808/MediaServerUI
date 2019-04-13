@@ -57,7 +57,7 @@ namespace Alloy.Recievers
 					break;
 
 				case Intent.ActionMediaButton:
-					var keyEvent = (KeyEvent)intent.GetParcelableExtra(Intent.ExtraKeyEvent);
+					KeyEvent keyEvent = (KeyEvent)intent.GetParcelableExtra(Intent.ExtraKeyEvent);
 
 					switch (keyEvent.KeyCode)
 					{

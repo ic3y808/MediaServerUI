@@ -36,18 +36,18 @@ namespace Alloy.Adapters
 				case 0:
 					if (holder is ArtistInformationViewHolder artistInfoHolder)
 					{
-						artistInfoHolder.artist = Artist.Artist;
-						artistInfoHolder.artistName.SetText(Artist.Artist.Name, TextView.BufferType.Normal);
-						artistInfoHolder.artistSize.SetText(Artist.Size, TextView.BufferType.Normal);
-						Artist.Artist.GetAlbumArt(artistInfoHolder.artistImage);
+						artistInfoHolder.Artist = Artist.Artist;
+						artistInfoHolder.ArtistName.SetText(Artist.Artist.Name, TextView.BufferType.Normal);
+						artistInfoHolder.ArtistSize.SetText(Artist.Size, TextView.BufferType.Normal);
+						Artist.Artist.GetAlbumArt(artistInfoHolder.ArtistImage);
 						artistInfoHolder.CheckStarred();
 					}
 					break;
 				case 1:
 					if (holder is ArtistMetricsViewHolder artistMetricsHolder)
 					{
-						artistMetricsHolder.trackCount.SetText(Artist.Tracks.Count.ToString(), TextView.BufferType.Normal);
-						artistMetricsHolder.playCount.SetText(Artist.TotalPlays.ToString(), TextView.BufferType.Normal);
+						artistMetricsHolder.TrackCount.SetText(Artist.Tracks.Count.ToString(), TextView.BufferType.Normal);
+						artistMetricsHolder.PlayCount.SetText(Artist.TotalPlays.ToString(), TextView.BufferType.Normal);
 					}
 
 					break;
@@ -176,37 +176,37 @@ namespace Alloy.Adapters
 
 		public class ArtistInformationViewHolder : RecyclerView.ViewHolder
 		{
-			public Artist artist;
-			public TextView artistName;
-			public TextView artistSize;
-			public Button artistPlayButton;
-			public ImageView artistImage;
-			public ImageView starButton;
-			private Drawable starred, notStarred;
+			public Artist Artist { get; set; }
+			public TextView ArtistName { get; set; }
+			public TextView ArtistSize { get; set; }
+			public Button ArtistPlayButton { get; set; }
+			public ImageView ArtistImage { get; set; }
+			public ImageView StarButton { get; set; }
+			private Drawable Starred { get; set; }
+			private Drawable NotStarred{ get; set; }
 
-			public ArtistInformationViewHolder(View itemView, Action listener) : base(itemView)
+		public ArtistInformationViewHolder(View itemView, Action listener) : base(itemView)
 			{
-				artistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
-				artistSize = itemView.FindViewById<TextView>(Resource.Id.artist_size);
-				artistPlayButton = itemView.FindViewById<Button>(Resource.Id.artist_play_button);
-				artistPlayButton.Click += (sender, e) => listener();
-
-				artistImage = itemView.FindViewById<ImageView>(Resource.Id.artist_image);
-				starButton = itemView.FindViewById<ImageView>(Resource.Id.artist_favorite_button);
-				starButton.Click += StarButtonClick;
-				starred = itemView.Context.GetDrawable(Resource.Drawable.star_g);
-				notStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
+				ArtistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
+				ArtistSize = itemView.FindViewById<TextView>(Resource.Id.artist_size);
+				ArtistPlayButton = itemView.FindViewById<Button>(Resource.Id.artist_play_button);
+				ArtistPlayButton.Click += (sender, e) => listener();
+				ArtistImage = itemView.FindViewById<ImageView>(Resource.Id.artist_image);
+				StarButton = itemView.FindViewById<ImageView>(Resource.Id.artist_favorite_button);
+				StarButton.Click += StarButtonClick;
+				Starred = itemView.Context.GetDrawable(Resource.Drawable.star_g);
+				NotStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
 			}
 
 			private void StarButtonClick(object sender, EventArgs e)
 			{
-				if (artist.Starred)
+				if (Artist.Starred)
 				{
-					MusicProvider.RemoveStar(artist);
+					MusicProvider.RemoveStar(Artist);
 				}
 				else
 				{
-					MusicProvider.AddStar(artist);
+					MusicProvider.AddStar(Artist);
 				}
 				CheckStarred();
 			}
@@ -215,24 +215,24 @@ namespace Alloy.Adapters
 			{
 				if (a != null)
 				{
-					starButton?.SetImageDrawable(a.Starred ? starred : notStarred);
+					StarButton?.SetImageDrawable(a.Starred ? Starred : NotStarred);
 				}
 				else
 				{
-					starButton?.SetImageDrawable(artist.Starred ? starred : notStarred);
+					StarButton?.SetImageDrawable(Artist.Starred ? Starred : NotStarred);
 				}
 			}
 		}
 
 		public class ArtistMetricsViewHolder : RecyclerView.ViewHolder
 		{
-			public TextView trackCount;
-			public TextView playCount;
+			public TextView TrackCount { get; set; }
+			public TextView PlayCount { get; set; }
+
 			public ArtistMetricsViewHolder(View itemView) : base(itemView)
 			{
-				trackCount = itemView.FindViewById<TextView>(Resource.Id.artist_track_count);
-				playCount = itemView.FindViewById<TextView>(Resource.Id.artist_play_count);
-
+				TrackCount = itemView.FindViewById<TextView>(Resource.Id.artist_track_count);
+				PlayCount = itemView.FindViewById<TextView>(Resource.Id.artist_play_count);
 			}
 		}
 
@@ -325,8 +325,8 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Album = Albums[position];
-			Albums[position].GetAlbumArt(h.image);
-			h.name.SetText(Albums[position].Name, TextView.BufferType.Normal);
+			Albums[position].GetAlbumArt(h.Image);
+			h.Name.SetText(Albums[position].Name, TextView.BufferType.Normal);
 			h.SetSelected();
 		}
 
@@ -347,18 +347,18 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-			public RelativeLayout itemRoot;
-			public ImageView image;
-			public TextView name;
-			public Album Album;
-			private BackgroundAudioServiceConnection serviceConnection;
+			public RelativeLayout ItemRoot { get; set; }
+			public ImageView Image { get; set; }
+			public TextView Name { get; set; }
+			public Album Album { get; set; }
+			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-				itemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
-				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
-				name = itemView.FindViewById<TextView>(Resource.Id.name);
-				this.serviceConnection = serviceConnection;
+				ItemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
+				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
+				Name = itemView.FindViewById<TextView>(Resource.Id.name);
+				ServiceConnection = serviceConnection;
 				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Album = Album });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) =>
 				{
@@ -370,23 +370,23 @@ namespace Alloy.Adapters
 			{
 				if (Album == null) return;
 
-				bool selected = Album.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.AlbumId.Equals(Album.Id);
+				bool selected = Album.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.AlbumId.Equals(Album.Id);
 
 				if (Album.Tracks != null && Album.Tracks.Count != 0)
 				{
 					foreach (Song albumTrack in Album.Tracks)
 					{
-						if (albumTrack.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
+						if (albumTrack.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
 					}
 				}
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
 			}
 
@@ -400,14 +400,13 @@ namespace Alloy.Adapters
 
 	public class ArtistDetailTrackAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public MusicQueue Songs;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public MusicQueue Songs { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
 		public ArtistDetailTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override long GetItemId(int position)
@@ -427,9 +426,8 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
-			return new ViewHolder(view, OnClick, serviceConnection);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Songs.Count;

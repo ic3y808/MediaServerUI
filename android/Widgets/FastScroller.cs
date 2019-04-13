@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Animation;
+﻿using Android.Animation;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
@@ -14,42 +13,42 @@ using Math = System.Math;
 
 namespace Alloy.Widgets
 {
-	public class FastScroller : Java.Lang.Object
+	public class FastScroller : Object
 	{
-		private static int DEFAULT_AUTO_HIDE_DELAY = 1500;
+		private static readonly int DEFAULT_AUTO_HIDE_DELAY = 1500;
 
-		private FastScrollRecyclerView mRecyclerView;
-		private FastScrollPopup mPopup;
+		private readonly FastScrollRecyclerView mRecyclerView;
+		private readonly FastScrollPopup mPopup;
 
-		private int mThumbHeight;
-		private int mWidth;
+		private readonly int mThumbHeight;
+		private readonly int mWidth;
 
-		private Paint mThumb;
-		private Paint mTrack;
+		private readonly Paint mThumb;
+		private readonly Paint mTrack;
 
-		private Rect mTmpRect = new Rect();
-		private Rect mInvalidateRect = new Rect();
-		private Rect mInvalidateTmpRect = new Rect();
+		private readonly Rect mTmpRect = new Rect();
+		private readonly Rect mInvalidateRect = new Rect();
+		private readonly Rect mInvalidateTmpRect = new Rect();
 
 		// The inset is the buffer around which a point will still register as a click on the scrollbar
-		private int mTouchInset;
+		private readonly int mTouchInset;
 
 		// This is the offset from the top of the scrollbar when the user first starts touching.  To
 		// prevent jumping, this offset is applied as the user scrolls.
 		private int mTouchOffset;
 
-		private Point mThumbPosition = new Point(-1, -1);
-		private Point mOffset = new Point(0, 0);
+		private readonly Point mThumbPosition = new Point(-1, -1);
+		private readonly Point mOffset = new Point(0, 0);
 
 		private bool mIsDragging;
 
 		private Animator mAutoHideAnimator;
 		private bool mAnimatingShow;
-		private int mAutoHideDelay = DEFAULT_AUTO_HIDE_DELAY;
-		private bool mAutoHideEnabled = true;
-		private Runnable mHideRunnable;
+		private int mAutoHideDelay;
+		private bool mAutoHideEnabled;
+		private readonly Runnable mHideRunnable;
 
-		private Color mThumbActiveColor;
+		private readonly Color mThumbActiveColor;
 		private Color mThumbInactiveColor;
 		private bool mThumbInactiveState;
 
@@ -103,18 +102,18 @@ namespace Alloy.Widgets
 			}
 			finally { typedArray.Recycle(); }
 
-			mHideRunnable = new Runnable(new Action(() =>
+			mHideRunnable = new Runnable(() =>
 			{
 				if (!mIsDragging)
 				{
-					if (mAutoHideAnimator != null) { mAutoHideAnimator.Cancel(); }
+					mAutoHideAnimator?.Cancel();
 
 					mAutoHideAnimator = ObjectAnimator.OfInt(this, "offsetX", (Utils.isRtl(mRecyclerView.Resources) ? -1 : 1) * mWidth);
 					mAutoHideAnimator.SetInterpolator(new FastOutLinearInInterpolator());
 					mAutoHideAnimator.SetDuration(200);
 					mAutoHideAnimator.Start();
 				}
-			}));
+			});
 
 
 
@@ -126,8 +125,8 @@ namespace Alloy.Widgets
 
 		public class ScrollListener : RecyclerView.OnScrollListener
 		{
-			private FastScroller fastScroller;
-			private FastScrollRecyclerView mRecyclerView;
+			private readonly FastScroller fastScroller;
+			private readonly FastScrollRecyclerView mRecyclerView;
 
 			public ScrollListener(FastScroller fastScroller, FastScrollRecyclerView mRecyclerView)
 			{
@@ -169,7 +168,7 @@ namespace Alloy.Widgets
 		{
 			ViewConfiguration config = ViewConfiguration.Get(mRecyclerView.Context);
 
-			var action = ev.Action;
+			MotionEventActions action = ev.Action;
 			int y = (int)ev.GetY();
 			switch (action)
 			{
@@ -202,7 +201,7 @@ namespace Alloy.Widgets
 						// Update the fastscroller section name at this touch position
 						int top = 0;
 						int bottom = mRecyclerView.Height - mThumbHeight;
-						float boundedY = (float)Math.Max(top, Math.Min(bottom, y - mTouchOffset));
+						float boundedY = Math.Max(top, Math.Min(bottom, y - mTouchOffset));
 						string sectionName = mRecyclerView.scrollToPositionAtProgress((boundedY - top) / (bottom - top));
 						mPopup.setSectionName(sectionName);
 						mPopup.animateVisibility(!string.IsNullOrEmpty(sectionName));
@@ -297,7 +296,7 @@ namespace Alloy.Widgets
 
 		public class AnimatiorListener : AnimatorListenerAdapter
 		{
-			FastScroller fastScroller;
+			readonly FastScroller fastScroller;
 
 			public AnimatiorListener(FastScroller fastScroller)
 			{

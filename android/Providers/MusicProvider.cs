@@ -313,7 +313,7 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
-					var result = JsonConvert.DeserializeObject<GenreList>(request).Genres;
+					List<Genre> result = JsonConvert.DeserializeObject<GenreList>(request).Genres;
 					Genres = result.OrderBy(x => x.Name).ToList();
 					Utils.UnlockSsl(false);
 				}
@@ -456,37 +456,37 @@ namespace Alloy.Providers
 		public static void RefreshArtists()
 		{
 			ArtistsStartRefresh?.Invoke(null, null);
-			ArtistsLoader artists = (ArtistsLoader)new ArtistsLoader().Execute();
+			new ArtistsLoader().Execute();
 		}
 
 		public static void RefreshAlbums()
 		{
 			AlbumsStartRefresh?.Invoke(null, null);
-			AlbumsLoader albums = (AlbumsLoader)new AlbumsLoader().Execute();
+			new AlbumsLoader().Execute();
 		}
 
 		public static void RefreshGenres()
 		{
 			GenresStartRefresh?.Invoke(null, null);
-			GenresLoader genres = (GenresLoader)new GenresLoader().Execute();
+			new GenresLoader().Execute();
 		}
 
 		public static void RefreshStarred()
 		{
 			StarredStartRefresh?.Invoke(null,null);
-			StarredLoader starred = (StarredLoader)new StarredLoader().Execute();
+			new StarredLoader().Execute();
 		}
 
 		public static void RefreshFresh()
 		{
 			FreshStartRefresh?.Invoke(null,null);
-			FreshLoader fresh = (FreshLoader)new FreshLoader().Execute();
+			new FreshLoader().Execute();
 		}
 
 		public static void RefreshCharts()
 		{
 			ChartsStartRefresh?.Invoke(null, null);
-			ChartsLoader charts = (ChartsLoader)new ChartsLoader().Execute();
+			new ChartsLoader().Execute();
 		}
 
 		public static void FullRefresh()

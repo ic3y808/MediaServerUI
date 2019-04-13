@@ -142,8 +142,8 @@ namespace Alloy.Models
 			//jsonObj.Put("description", Description);
 
 
-			var url = "http://" + WebHelpers.GetIPAddress(true) + ":8001";//+ LocalUrl;
-			var info = new Android.Gms.Cast.MediaInfo.Builder(url)
+			string url = "http://" + WebHelpers.GetIPAddress(true) + ":8001";//+ LocalUrl;
+			MediaInfo info = new Android.Gms.Cast.MediaInfo.Builder(url)
 				.SetContentType("audio/mp3")
 				.SetCustomData(jsonObj)
 				.SetMetadata(meta)
@@ -171,7 +171,7 @@ namespace Alloy.Models
 			//jsonObj = new JSONObject();
 			//jsonObj.Put("description", Description);
 
-			var info = new Android.Gms.Cast.MediaInfo.Builder(MusicProvider.GetStreamUri(this).ToString())
+			MediaInfo info = new Android.Gms.Cast.MediaInfo.Builder(MusicProvider.GetStreamUri(this).ToString())
 				.SetContentType(ContentType)
 				.SetCustomData(jsonObj)
 				.SetMetadata(meta)

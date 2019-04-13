@@ -33,7 +33,7 @@ namespace Alloy
 		//CheckShortcut();
 			//CheckDynamicShortcuts();
 
-			var mHelper = new ShortcutHelper(this);
+			ShortcutHelper mHelper = new ShortcutHelper(this);
 
 			mHelper.maybeRestoreAllDynamicShortcuts();
 
@@ -65,10 +65,10 @@ namespace Alloy
 			};
 
 			object[] attributes = Assembly.GetCallingAssembly().GetCustomAttributes(typeof(UsesPermissionAttribute), false);
-			var permissions = (from UsesPermissionAttribute attribute in attributes select attribute.Name).ToArray();
+			string[] permissions = (from UsesPermissionAttribute attribute in attributes select attribute.Name).ToArray();
 
 			bool ask = false;
-			foreach (var permission in permissions)
+			foreach (string permission in permissions)
 			{
 				Permission result = ContextCompat.CheckSelfPermission(this, permission);
 				if (result == Permission.Granted) continue;
@@ -85,15 +85,15 @@ namespace Alloy
 
 		private void CheckShortcut()
 		{
-			var sharedPreferences = GetPreferences(FileCreationMode.Private);
+			ISharedPreferences sharedPreferences = GetPreferences(FileCreationMode.Private);
 			bool shortCutWasAlreadyAdded = sharedPreferences.GetBoolean(PREF_KEY_SHORTCUT_ADDED, false);
 			if (shortCutWasAlreadyAdded) return;
 
 			ShortcutManager shortcutManager = GetSystemService(Class.FromType(typeof(ShortcutManager))) as ShortcutManager;
 
-			var i = new Intent(Application.Context, typeof(MainActivity));
+			Intent i = new Intent(Application.Context, typeof(MainActivity));
 			i.SetAction(Intent.ActionView);
-			var reOpenApp = PendingIntent.GetActivity(Application.Context, 0, i, PendingIntentFlags.UpdateCurrent);
+			PendingIntent reOpenApp = PendingIntent.GetActivity(Application.Context, 0, i, PendingIntentFlags.UpdateCurrent);
 
 			ShortcutInfo pinShortcutInfo =
 				new ShortcutInfo.Builder(Application.Context, "alloyShortcut")
@@ -106,7 +106,7 @@ namespace Alloy
 
 			shortcutManager?.RequestPinShortcut(pinShortcutInfo, reOpenApp.IntentSender);
 
-			var editor = sharedPreferences.Edit();
+			ISharedPreferencesEditor editor = sharedPreferences.Edit();
 			editor.PutBoolean(PREF_KEY_SHORTCUT_ADDED, true);
 			editor.Commit();
 		}
@@ -114,7 +114,7 @@ namespace Alloy
 		private void CheckDynamicShortcuts()
 		{
 			ShortcutManager shortcutManager = GetSystemService(Class.FromType(typeof(ShortcutManager))) as ShortcutManager;
-			var i = new Intent(Application.Context, typeof(MainActivity));
+			Intent i = new Intent(Application.Context, typeof(MainActivity));
 			i.SetAction(Intent.ActionView);
 			
 			ShortcutInfo dynamicShortcut = new ShortcutInfo.Builder(Application.Context, "alloyShortcut1")
@@ -138,8 +138,8 @@ namespace Alloy
 
 		private void ResetShortcut()
 		{
-			var sharedPreferences = GetPreferences(FileCreationMode.Private);
-			var editor = sharedPreferences.Edit();
+			ISharedPreferences sharedPreferences = GetPreferences(FileCreationMode.Private);
+			ISharedPreferencesEditor editor = sharedPreferences.Edit();
 			editor.PutBoolean(PREF_KEY_SHORTCUT_ADDED, false);
 			editor.Commit();
 		}

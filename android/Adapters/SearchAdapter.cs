@@ -23,7 +23,7 @@ namespace Alloy.Adapters
 
 		public override void BindView(View v, Context context, ICursor cursor)
 		{
-			var configured = v.FindViewById<TextView>(Resource.Id.view_configured).Text;
+			string configured = v.FindViewById<TextView>(Resource.Id.view_configured).Text;
 
 			if (string.IsNullOrEmpty(configured))
 			{

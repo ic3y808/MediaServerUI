@@ -21,7 +21,7 @@ namespace Net.Simonvt.Menudrawer.Compat
 
 		public static void setActionBarUpIndicator(Object info, Activity activity, Drawable drawable, int contentDescRes)
 		{
-			var sii = (SetIndicatorInfo)info;
+			SetIndicatorInfo sii = (SetIndicatorInfo)info;
 			if (sii.mUpIndicatorView != null)
 			{
 				sii.mUpIndicatorView.SetImageDrawable(drawable);
@@ -115,7 +115,7 @@ namespace Net.Simonvt.Menudrawer.Compat
 					}
 
 					Class supportActivity = activity.Class;
-					var getActionBar = supportActivity.GetMethod("getSupportActionBar");
+					Method getActionBar = supportActivity.GetMethod("getSupportActionBar");
 					getActionBar.Invoke(mActionBar);
 					
 					Class supportActionBar = mActionBar.Class;

@@ -17,6 +17,7 @@ using Alloy.Providers;
 using Alloy.Services;
 using Android.Database;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Provider;
 using Android.Views.InputMethods;
@@ -26,6 +27,7 @@ using Java.Interop;
 using SimpleCursorAdapter = Android.Support.V4.Widget.SimpleCursorAdapter;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Newtonsoft.Json;
+using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace Alloy.Fragments
 {
@@ -110,10 +112,10 @@ namespace Alloy.Fragments
 			((AppCompatActivity)Activity).SetSupportActionBar(root_view.FindViewById<Toolbar>(Resource.Id.main_toolbar));
 			((AppCompatActivity)Activity).SupportActionBar.SetHomeButtonEnabled(true);
 			((AppCompatActivity)Activity).SupportActionBar.SetTitle(title);
-			var mSlideDrawable = new SlideDrawable(Application.Context.GetDrawable(Resource.Drawable.ic_drawer));
+			SlideDrawable mSlideDrawable = new SlideDrawable(Application.Context.GetDrawable(Resource.Drawable.ic_drawer));
 			mSlideDrawable.setIsRtl(false);
-			var mActionBarHelper = new ActionBarHelper((AppCompatActivity)Activity);
-			var mThemeUpIndicator = mActionBarHelper.getThemeUpIndicator();
+			ActionBarHelper mActionBarHelper = new ActionBarHelper((AppCompatActivity)Activity);
+			Drawable mThemeUpIndicator = mActionBarHelper.getThemeUpIndicator();
 			if (HasBack)
 				mActionBarHelper.setDisplayShowHomeAsUpEnabled(true);
 			else
@@ -150,7 +152,7 @@ namespace Alloy.Fragments
 
 		public void getCursorFromList(List<Tuple<string, string, string, string, string>> items, ref MatrixCursor cursor)
 		{
-			foreach (var item in items)
+			foreach (Tuple<string, string, string, string, string> item in items)
 			{
 				cursor.NewRow()
 
@@ -232,7 +234,7 @@ namespace Alloy.Fragments
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
-			var id = item.ItemId;
+			int id = item.ItemId;
 
 			switch (id)
 			{
@@ -279,7 +281,7 @@ namespace Alloy.Fragments
 
 		private void SearchView_SuggestionSelect(object sender, Android.Support.V7.Widget.SearchView.SuggestionSelectEventArgs e)
 		{
-			var res = e;
+			SearchView.SuggestionSelectEventArgs res = e;
 		}
 
 		private void SearchView_SuggestionClick(object sender, Android.Support.V7.Widget.SearchView.SuggestionClickEventArgs e)
@@ -329,7 +331,7 @@ namespace Alloy.Fragments
 
 		private void SearchView_QueryTextSubmit(object sender, Android.Support.V7.Widget.SearchView.QueryTextSubmitEventArgs e)
 		{
-			var q = e.Query;
+			string q = e.Query;
 		}
 
 		private void SearchView_QueryTextChange(object sender, Android.Support.V7.Widget.SearchView.QueryTextChangeEventArgs e)

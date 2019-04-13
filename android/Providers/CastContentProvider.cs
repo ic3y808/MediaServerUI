@@ -12,6 +12,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Java.IO;
 using Spotlight;
 using Object = Java.Lang.Object;
 
@@ -75,7 +76,7 @@ namespace Alloy.Providers
 				//overlay.show();
 				Utils.Run(() =>
 				{
-					var spotLight = new SpotlightView.Builder(activity)
+					SpotlightView spotLight = new SpotlightView.Builder(activity)
 						.IntroAnimationDuration(400)
 						.EnableRevealAnimation(true)
 						.PerformClick(true)
@@ -179,8 +180,8 @@ namespace Alloy.Providers
 
 		private void StartServer()
 		{
-			var pathFile = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryMusic);
-			var absolutePath = pathFile.AbsolutePath;
+			File pathFile = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryMusic);
+			string absolutePath = pathFile.AbsolutePath;
 
 			//if (castServer == null) castServer = new SimpleHTTPServer(absolutePath, 8001);
 		}

@@ -44,7 +44,7 @@ namespace Alloy.Adapters
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_row, parent, false);
-			var holder = new AlbumViewHolder(v, OnClick, serviceConnection);
+			AlbumViewHolder holder = new AlbumViewHolder(v, OnClick, serviceConnection);
 			return holder;
 		}
 
@@ -70,7 +70,7 @@ namespace Alloy.Adapters
 
 		public Object[] GetSections()
 		{
-			var sections = new ArrayList(26);
+			ArrayList sections = new ArrayList(26);
 			mSectionPositions = new ArrayList(26);
 			for (int i = 0, size = MusicProvider.Albums.Count; i < size; i++)
 			{
@@ -89,8 +89,8 @@ namespace Alloy.Adapters
 		{
 			try
 			{
-				var a = MusicProvider.Albums[position].Name;
-				var b = a.Substring(0, 1);
+				string a = MusicProvider.Albums[position].Name;
+				string b = a.Substring(0, 1);
 				return b.Any(char.IsLower) ? b.ToUpper() : b;
 			}
 			catch

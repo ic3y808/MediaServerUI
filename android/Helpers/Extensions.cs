@@ -75,7 +75,7 @@ namespace Alloy.Helpers
 			if ((oldIndex == newIndex) || (0 > oldIndex) || (oldIndex >= list.Count) || (0 > newIndex) ||
 				(newIndex >= list.Count)) return;
 
-			var i = 0;
+			int i = 0;
 			T tmp = list[oldIndex];
 			if (oldIndex < newIndex)
 			{
@@ -154,9 +154,9 @@ namespace Alloy.Helpers
 
 			Bitmap imageBitmap = null;
 
-			using (var webClient = new WebClient())
+			using (WebClient webClient = new WebClient())
 			{
-				var imageBytes = webClient.DownloadData(url);
+				byte[] imageBytes = webClient.DownloadData(url);
 				if (imageBytes != null && imageBytes.Length > 0)
 				{
 					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
@@ -225,7 +225,7 @@ namespace Alloy.Helpers
 
 		public static void StartForegroundServiceComapt<T>(this Context context, Bundle args = null) where T : Service
 		{
-			var intent = new Intent(context, typeof(T));
+			Intent intent = new Intent(context, typeof(T));
 			if (args != null)
 			{
 				intent.PutExtras(args);
@@ -281,7 +281,7 @@ namespace Alloy.Helpers
 
 				StringBuilder stringBuilder = new StringBuilder();
 
-				foreach (var item in this)
+				foreach (KeyValuePair<string, string> item in this)
 				{
 					string key = item.Key;
 
@@ -320,11 +320,11 @@ namespace Alloy.Helpers
 		public static Bitmap GetBitmap(this string url)
 		{
 			Bitmap imageBitmap = null;
-			using (var webClient = new WebClient())
+			using (WebClient webClient = new WebClient())
 			{
 				if (string.IsNullOrEmpty(url)) return null;
 				if (url.Contains("large")) url = url.Replace("large", "t500x500");
-				var imageBytes = webClient.DownloadData(url);
+				byte[] imageBytes = webClient.DownloadData(url);
 				if (imageBytes != null && imageBytes.Length > 0)
 				{
 					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
@@ -429,7 +429,7 @@ namespace Alloy.Helpers
 
 		public static string ToTimeFromSeconds(this int l)
 		{
-			var duration = TimeSpan.FromSeconds(l);
+			TimeSpan duration = TimeSpan.FromSeconds(l);
 			string duration_string;
 
 			if (duration.Hours > 0)
@@ -441,7 +441,7 @@ namespace Alloy.Helpers
 		}
 		public static string ToTime(this long l)
 		{
-			var duration = TimeSpan.FromMilliseconds(l);
+			TimeSpan duration = TimeSpan.FromMilliseconds(l);
 			string duration_string;
 
 			if (duration.Hours > 0)
@@ -460,7 +460,7 @@ namespace Alloy.Helpers
 		public static string ToTime(this int? l)
 		{
 			if (!l.HasValue) return "00:00";
-			var duration = TimeSpan.FromSeconds(l.Value);
+			TimeSpan duration = TimeSpan.FromSeconds(l.Value);
 			return ToTime((long)duration.TotalMilliseconds);
 		}
 
@@ -473,19 +473,19 @@ namespace Alloy.Helpers
 				if (url.Contains("large")) url = url.Replace("large", "t500x500");
 				const int bytesToRead = 100;
 
-				var request = WebRequest.Create(new Uri(url, UriKind.Absolute));
+				WebRequest request = WebRequest.Create(new Uri(url, UriKind.Absolute));
 				request.Timeout = -1;
-				var response = request.GetResponse();
-				var responseStream = response.GetResponseStream();
+				WebResponse response = request.GetResponse();
+				Stream responseStream = response.GetResponseStream();
 				if (responseStream != null)
 				{
 					MemoryStream memoryStream;
-					var bytebuffer = new byte[bytesToRead];
-					using (var reader = new BinaryReader(responseStream))
+					byte[] bytebuffer = new byte[bytesToRead];
+					using (BinaryReader reader = new BinaryReader(responseStream))
 					{
 						memoryStream = new MemoryStream();
 
-						var bytesRead = reader.Read(bytebuffer, 0, bytesToRead);
+						int bytesRead = reader.Read(bytebuffer, 0, bytesToRead);
 
 						while (bytesRead > 0)
 						{
@@ -524,7 +524,7 @@ namespace Alloy.Helpers
 			currentListener = listener;
 			if (sensorManager == null) sensorManager = activity.GetSystemService(Context.SensorService) as SensorManager;
 			if (sensorManager == null) return;
-			var sensor = sensorManager.GetDefaultSensor(Android.Hardware.SensorType.Accelerometer);
+			Sensor sensor = sensorManager.GetDefaultSensor(Android.Hardware.SensorType.Accelerometer);
 			sensorManager.RegisterListener(listener, sensor, Android.Hardware.SensorDelay.Game);
 		}
 

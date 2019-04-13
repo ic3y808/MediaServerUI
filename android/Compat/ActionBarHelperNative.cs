@@ -29,7 +29,7 @@ namespace Net.Simonvt.Menudrawer.Compat
 		public static void setActionBarUpIndicator(Object info, AppCompatActivity activity, Drawable drawable, int contentDescRes)
 		{
 
-			var sii = (SetIndicatorInfo)info;
+			SetIndicatorInfo sii = (SetIndicatorInfo)info;
 			if (sii.setHomeAsUpIndicator != null)
 			{
 				try

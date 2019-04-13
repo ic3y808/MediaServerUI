@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using Android.App;
 using Android.Content;
+using Android.OS.Storage;
 using Microsoft.AppCenter.Crashes;
+using Object = Java.Lang.Object;
 
 namespace Alloy.Helpers
 {
@@ -13,13 +15,13 @@ namespace Alloy.Helpers
 			List<string> list = null;
 			try
 			{
-				var storageManager = (Android.OS.Storage.StorageManager)Application.Context.GetSystemService(Context.StorageService);
+				StorageManager storageManager = (Android.OS.Storage.StorageManager)Application.Context.GetSystemService(Context.StorageService);
 
-				var volumeList = (Java.Lang.Object[])storageManager.Class.GetDeclaredMethod("getVolumeList").Invoke(storageManager);
+				Object[] volumeList = (Java.Lang.Object[])storageManager.Class.GetDeclaredMethod("getVolumeList").Invoke(storageManager);
 
 				list = new List<string>();
 
-				foreach (var storage in volumeList)
+				foreach (Object storage in volumeList)
 				{
 					Java.IO.File info = (Java.IO.File)storage.Class.GetDeclaredMethod("getPathFile").Invoke(storage);
 

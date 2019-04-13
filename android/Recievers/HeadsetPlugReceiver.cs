@@ -27,22 +27,22 @@ namespace Alloy.Recievers
 			PackageUtil.SetPackageDoNotKill(Class.FromType(typeof(HeadsetPlugReceiver)), context, false);
 		
 			//headset device
-			var hd = HeadsetDeviceManager.IsConnectedEvent(intent);
+			bool hd = HeadsetDeviceManager.IsConnectedEvent(intent);
 
 			//screen off
-			var isInteractive = UiUtils.IsInteractive(context);
+			bool isInteractive = UiUtils.IsInteractive(context);
 
 			// noisy audio
-			var noisyAudio = AudioManager.ActionAudioBecomingNoisy.Equals(intent.Action);
+			bool noisyAudio = AudioManager.ActionAudioBecomingNoisy.Equals(intent.Action);
 			
 			//lockscreen
-			var myKM = (KeyguardManager)context.GetSystemService(Context.KeyguardService);
-			var atLockscreen = myKM.InKeyguardRestrictedInputMode();
+			KeyguardManager myKM = (KeyguardManager)context.GetSystemService(Context.KeyguardService);
+			bool atLockscreen = myKM.InKeyguardRestrictedInputMode();
 
 			//media player
-			var hasPosition = service?.CurrentSong != null;
-			var p = service?.MediaPlayer?.IsPlaying;
-			var isPlaying = (p.HasValue && p.Value);
+			bool hasPosition = service?.CurrentSong != null;
+			bool? p = service?.MediaPlayer?.IsPlaying;
+			bool isPlaying = (p.HasValue && p.Value);
 
 			if (!hd && (!isInteractive || atLockscreen) && hasPosition && isPlaying)
 			{

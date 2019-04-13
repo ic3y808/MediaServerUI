@@ -12,7 +12,7 @@ namespace Alloy.Helpers
 
 		internal static string Encrypt(string textToEncrypt, string encryptionPassword)
 		{
-			var algorithm = GetAlgorithm(encryptionPassword);
+			RijndaelManaged algorithm = GetAlgorithm(encryptionPassword);
 
 			if (textToEncrypt == null || textToEncrypt == "") return "";
 
@@ -27,7 +27,7 @@ namespace Alloy.Helpers
 
 		internal static string Decrypt(string encryptedText, string encryptionPassword)
 		{
-			var algorithm = GetAlgorithm(encryptionPassword);
+			RijndaelManaged algorithm = GetAlgorithm(encryptionPassword);
 
 			//Anything to process?
 			if (encryptedText == null || encryptedText == "") return "";
@@ -54,10 +54,10 @@ namespace Alloy.Helpers
 		private static RijndaelManaged GetAlgorithm(string encryptionPassword)
 		{
 			// Create an encryption key from the encryptionPassword and salt.
-			var key = new Rfc2898DeriveBytes(encryptionPassword, salt);
+			Rfc2898DeriveBytes key = new Rfc2898DeriveBytes(encryptionPassword, salt);
 
 			// Declare that we are going to use the Rijndael algorithm with the key that we've just got.
-			var algorithm = new RijndaelManaged();
+			RijndaelManaged algorithm = new RijndaelManaged();
 			int bytesForKey = algorithm.KeySize / 8;
 			int bytesForIV = algorithm.BlockSize / 8;
 			algorithm.Key = key.GetBytes(bytesForKey);

@@ -25,7 +25,7 @@ namespace Alloy.Adapters
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			var h = (NowPlayingViewHolder)holder;
+			NowPlayingViewHolder h = (NowPlayingViewHolder)holder;
 			h.title.SetText(serviceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
 			h.artist.SetText(serviceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
 			serviceConnection.MainQueue[position].GetAlbumArt(h.imageView);
@@ -36,7 +36,7 @@ namespace Alloy.Adapters
 		{
 			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.now_playing_row, parent, false);
 			v.Clickable = true;
-			var holder = new NowPlayingViewHolder(v, OnClick, false);
+			NowPlayingViewHolder holder = new NowPlayingViewHolder(v, OnClick, false);
 			return holder;
 		}
 
