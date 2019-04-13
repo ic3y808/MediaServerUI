@@ -148,10 +148,10 @@ export default class AppUtilities {
   }
 
   msToTime(duration) {
-    var milliseconds = parseInt((duration % 1000) / 100),
-      seconds = parseInt((duration / 1000) % 60),
-      minutes = parseInt((duration / (1000 * 60)) % 60),
-      hours = parseInt((duration / (1000 * 60 * 60)) % 24);
+    var milliseconds = parseInt((duration % 1000) / 100, 10),
+      seconds = parseInt((duration / 1000) % 60, 10),
+      minutes = parseInt((duration / (1000 * 60)) % 60, 10),
+      hours = parseInt((duration / (1000 * 60 * 60)) % 24, 10);
 
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
