@@ -16,7 +16,7 @@ namespace Alloy.Adapters
 {
 	public class FreshAdapter : RecyclerView.Adapter
 	{
-		public Activity Activity;
+		public Activity Activity { get; set; }
 		private readonly BackgroundAudioServiceConnection ServiceConnection;
 
 		public FreshAdapter(Activity activity, BackgroundAudioServiceConnection serviceConnection)
@@ -209,7 +209,6 @@ namespace Alloy.Adapters
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
 				FreshNewAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.fresh_new_albums_list);
 				FreshNewAlbumRecycleView.SetLayoutManager(layoutManager);
-				//RegisterForContextMenu(albumRecycleView);
 			}
 		}
 
@@ -544,7 +543,7 @@ namespace Alloy.Adapters
 			public RelativeLayout ItemRoot { get; set; }
 			public ImageView Image { get; set; }
 			public TextView Name { get; set; }
-			public MusicQueue Songs;
+			public MusicQueue Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)

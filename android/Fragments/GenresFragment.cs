@@ -17,7 +17,6 @@ namespace Alloy.Fragments
 {
 	public class GenresFragment : FragmentBase
 	{
-		private View root_view;
 		private LinearLayoutManager mainLayoutManager;
 		private GenresAdapter adapter;
 		private SwipeRefreshLayout refreshLayout;
@@ -25,7 +24,7 @@ namespace Alloy.Fragments
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
-			root_view = inflater.Inflate(Resource.Layout.artists_layout, container, false);
+			View root_view = inflater.Inflate(Resource.Layout.artists_layout, container, false);
 			FastScrollRecyclerView genresList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.artists_list);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
