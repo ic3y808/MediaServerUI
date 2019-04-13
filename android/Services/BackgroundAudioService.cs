@@ -441,7 +441,7 @@ namespace Alloy.Services
 
 		public class MediaSessionListener : MediaSessionCompat.Callback
 		{
-			private BackgroundAudioService serviceConnection;
+			private readonly BackgroundAudioService serviceConnection;
 			public MediaSessionListener(BackgroundAudioService serviceConnection)
 			{
 				this.serviceConnection = serviceConnection;

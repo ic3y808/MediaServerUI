@@ -5,6 +5,7 @@ exclude_paths:
  - 'web/frontend/API/cast.v1.js'
  - 'api/api/v1/simple-lastfm.js'
  - 'api/api/v1/musicbrainz.js'
+ - 'android/Tests/**.*'
  - '*.md'
  - '**/*.md'
  - 'api/music-metadata/**'

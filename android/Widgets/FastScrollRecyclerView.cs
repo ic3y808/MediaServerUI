@@ -19,7 +19,7 @@ namespace Alloy.Widgets
 	public class FastScrollRecyclerView : RecyclerView, RecyclerView.IOnItemTouchListener
 	{
 		private readonly FastScroller mScrollbar;
-
+		private const string TAG = "FastScrollRecyclerView";
 		private bool mFastScrollEnabled;
 
 		/**
@@ -44,9 +44,9 @@ namespace Alloy.Widgets
 		private int mDownY;
 		private int mLastY;
 
-		private SparseIntArray mScrollOffsets;
+		private readonly SparseIntArray mScrollOffsets;
 
-		private ScrollOffsetInvalidator mScrollOffsetInvalidator;
+		private readonly ScrollOffsetInvalidator mScrollOffsetInvalidator;
 		private OnFastScrollStateChangeListener mStateChangeListener;
 
 		public FastScrollRecyclerView(Context context) : this(context, null)
@@ -340,7 +340,7 @@ namespace Alloy.Widgets
 				}
 
 				// Should never happen
-				//Log.w(TAG, "Failed to find a view at the provided scroll fraction (" + touchFraction + ")");
+				Log.Warn(TAG, "Failed to find a view at the provided scroll fraction (" + touchFraction + ")");
 				return touchFraction * GetAdapter().ItemCount;
 			}
 

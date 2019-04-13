@@ -1446,7 +1446,7 @@ namespace Alloy.Widgets
 
 		private class DragHelperCallback : ViewDragHelper.Callback
 		{
-			private SlidingUpPanelLayout layout;
+			private readonly SlidingUpPanelLayout layout;
 			public DragHelperCallback(SlidingUpPanelLayout layout)
 			{
 				this.layout = layout;
@@ -1458,12 +1458,12 @@ namespace Alloy.Widgets
 					layout.mSlideOffset = layout.computeSlideOffset(layout.mSlideableView.Top);
 					layout.applyParallaxForCurrentSlideOffset();
 
-					if (layout.mSlideOffset == 1)
+					if (Math.Abs(layout.mSlideOffset - 1) < 0.001)
 					{
 						layout.updateObscuredViewVisibility();
 						layout.setPanelStateInternal(PanelState.EXPANDED);
 					}
-					else if (layout.mSlideOffset == 0)
+					else if (Math.Abs(layout.mSlideOffset) < 0.001)
 					{
 						layout.setPanelStateInternal(PanelState.COLLAPSED);
 					}

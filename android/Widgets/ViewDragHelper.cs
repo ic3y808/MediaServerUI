@@ -310,7 +310,8 @@ namespace Alloy.Widgets
 		{
 			public float GetInterpolation(float t)
 			{
-				float newT = t -= 1.0f;
+				float newT = t;
+				newT -= 1.0f;
 				return newT * newT * newT * newT * newT + 1.0f;
 			}
 		}
@@ -611,13 +612,10 @@ namespace Alloy.Widgets
 		{
 			if (!mReleaseInProgress)
 			{
-				throw new IllegalStateException("Cannot settleCapturedViewAt outside of a call to " +
-						"Callback#onViewReleased");
+				throw new IllegalStateException("Cannot settleCapturedViewAt outside of a call to Callback#onViewReleased");
 			}
 
-			return ForceSettleCapturedViewAt(Left, Top,
-					(int)mVelocityTracker.GetXVelocity(mActivePointerId),
-					(int)mVelocityTracker.GetYVelocity(mActivePointerId));
+			return ForceSettleCapturedViewAt(Left, Top, (int)mVelocityTracker.GetXVelocity(mActivePointerId), (int)mVelocityTracker.GetYVelocity(mActivePointerId));
 		}
 
 		/**
@@ -639,13 +637,13 @@ namespace Alloy.Widgets
 			if (dx == 0 && dy == 0)
 			{
 				// Nothing to do. Send callbacks, be done.
-				mScroller.AbortAnimation();
+				mScroller?.AbortAnimation();
 				setDragState(STATE_IDLE);
 				return false;
 			}
 
 			int duration = ComputeSettleDuration(mCapturedView, dx, dy, xvel, yvel);
-			mScroller.StartScroll(startLeft, startTop, dx, dy, duration);
+			mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
 
 			setDragState(STATE_SETTLING);
 			return true;

@@ -40,9 +40,6 @@ namespace Alloy
 		private BackgroundAudioServiceConnection serviceConnection;
 		private ImageView primaryBackground;
 		private ImageView secondaryBackground;
-		private DrawerLayout drawerLayout;
-		private CustomToggle drawerToggle;
-		private SlidingUpPanelLayout mainLayout;
 		private CurrentBackground currentBackground;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
@@ -67,9 +64,9 @@ namespace Alloy
 			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
 			secondaryBackground = FindViewById<ImageView>(Resource.Id.secondary_background);
 
-			drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
+			DrawerLayout drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
 
-			mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
+			SlidingUpPanelLayout mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
 			mainLayout.setAnchorPoint(0.7f);
 			mainLayout.addPanelSlideListener(this);
 
@@ -128,22 +125,12 @@ namespace Alloy
 			mainMenu.SetSelection(1);
 			mainMenu.ItemClick += MainMenu_ItemClick;
 
-			drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
+			CustomToggle drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
 			drawerLayout.AddDrawerListener(drawerToggle);
 			currentBackground = CurrentBackground.None;
 
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
-			//if (Intent != null)
-			//{
-			//var tab_name = Intent.GetStringExtra("tab_name");
-			//if (!string.IsNullOrEmpty(tab_name))
-			//	ChangeFragment(tab_name);
-			//else ChangeFragment(Resource.String.fresh_fragment_id, false);
-			//}
-			//else
-			//{
 			ChangeFragment(Resource.String.fresh_fragment_id);
-			//}
 		}
 
 		protected override void OnResume()
@@ -198,21 +185,12 @@ namespace Alloy
 
 		public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
 		{
-
 			if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
 			{
 				return base.OnKeyDown(keyCode, e);
 			}
-			switch (keyCode)
-			{
-				case Keycode.MediaPlay:
-					//yourMediaController.dispatchMediaButtonEvent(event);
 
-					return true;
-
-
-			}
-			return base.OnKeyDown(keyCode, e);
+			return keyCode == Keycode.MediaPlay || base.OnKeyDown(keyCode, e);
 		}
 
 		private void MainMenu_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
@@ -423,6 +401,7 @@ namespace Alloy
 
 		private void FragmentManager_BackStackChanged(object sender, EventArgs e)
 		{
+			// TODO fix backstack and menu highlight
 			//activeMenuItem?.SetChecked(false);
 			if (FragmentManager.BackStackEntryCount == 0)
 			{

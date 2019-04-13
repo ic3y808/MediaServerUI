@@ -13,7 +13,6 @@ namespace Alloy.Fragments
 {
 	public class StarredFragment : FragmentBase
 	{
-		private View root_view;
 		private StarredAdapter starredAdapter;
 		private RecyclerView starredContentView;
 		private SwipeRefreshLayout refreshLayout;
@@ -22,7 +21,7 @@ namespace Alloy.Fragments
 		{
 			MusicProvider.StarredStartRefresh += MusicProvider_StarredStartRefresh;
 			MusicProvider.StarredRefreshed += MusicProvider_StarredRefreshed;
-			root_view = inflater.Inflate(Resource.Layout.starred_layout, container, false);
+			View root_view = inflater.Inflate(Resource.Layout.starred_layout, container, false);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);

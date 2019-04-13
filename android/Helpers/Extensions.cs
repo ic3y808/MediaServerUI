@@ -304,7 +304,6 @@ namespace Alloy.Helpers
 			using (WebClient webClient = new WebClient())
 			{
 				if (string.IsNullOrEmpty(url)) return null;
-				if (url.Contains("large")) url = url.Replace("large", "t500x500");
 				byte[] imageBytes = webClient.DownloadData(url);
 				if (imageBytes != null && imageBytes.Length > 0)
 				{

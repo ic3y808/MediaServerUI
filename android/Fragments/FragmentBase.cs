@@ -207,27 +207,19 @@ namespace Alloy.Fragments
 		{
 			int id = item.ItemId;
 
-			switch (id)
+			if (id != Android.Resource.Id.Home) return base.OnOptionsItemSelected(item);
+			if (HasBack)
 			{
-				case Android.Resource.Id.Home:
-					{
-						if (HasBack)
-						{
-							if (FragmentManager.BackStackEntryCount > 0)
-							{
-								Cleanup();
-								FragmentManager.PopBackStack();
-							}
-						}
-						else
-						{
-							DrawerLayout drawer = Activity.FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-							drawer.OpenDrawer(GravityCompat.Start);
-						}
-					}
-					break;
-
+				if (FragmentManager.BackStackEntryCount <= 0) return base.OnOptionsItemSelected(item);
+				Cleanup();
+				FragmentManager.PopBackStack();
 			}
+			else
+			{
+				DrawerLayout drawer = Activity.FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+				drawer.OpenDrawer(GravityCompat.Start);
+			}
+
 			return base.OnOptionsItemSelected(item);
 		}
 
@@ -239,13 +231,7 @@ namespace Alloy.Fragments
 			IMenuItem search = menu.FindItem(Resource.Id.action_search);
 			searchView = (SearchView)search.ActionView;
 			searchView.QueryTextChange += SearchView_QueryTextChange;
-			searchView.QueryTextSubmit += SearchView_QueryTextSubmit;
-
-	
 			searchView.SuggestionClick += SearchView_SuggestionClick;
-			//SearchManager searchManager = Context.GetSystemService(Context.SearchService).JavaCast<SearchManager>();
-			//searchView.SetSearchableInfo(searchManager.GetSearchableInfo(ComponentName()));
-
 		}
 
 	
@@ -292,11 +278,6 @@ namespace Alloy.Fragments
 				imm.HideSoftInputFromWindow(currentFocus.WindowToken, HideSoftInputFlags.None);
 			}
 			e.Handled = true;
-		}
-
-		private void SearchView_QueryTextSubmit(object sender, SearchView.QueryTextSubmitEventArgs e)
-		{
-			string q = e.Query;
 		}
 
 		private void SearchView_QueryTextChange(object sender, SearchView.QueryTextChangeEventArgs e)
