@@ -69,7 +69,7 @@ namespace Alloy.Fragments
 				if (albumDetailAdapter != null)
 				{
 					albumDetailAdapter.TrackClick -= Track_ItemClick;
-					albumDetailAdapter.PlayAlbum -= PlayAlbum_Click;
+					albumDetailAdapter.PlayAlbum -= AlbumDetailAdapter_PlayAlbum;
 
 				}
 				albumDetailAdapter = new AlbumDetailAdapter(Activity, album, ServiceConnection);
@@ -79,15 +79,15 @@ namespace Alloy.Fragments
 				};
 				albumContentView.SetAdapter(albumDetailAdapter);
 				albumDetailAdapter.TrackClick += Track_ItemClick;
-				albumDetailAdapter.PlayAlbum += PlayAlbum_Click;
+				albumDetailAdapter.PlayAlbum += AlbumDetailAdapter_PlayAlbum;
 				Adapters.Adapters.SetAdapters(Activity, albumDetailAdapter);
 				refreshLayout.Refreshing = false;
 			}
 		}
 
-		private void PlayAlbum_Click(object sender, AlbumContainer e)
+		private void AlbumDetailAdapter_PlayAlbum(object sender, EventArgs e)
 		{
-			ServiceConnection?.Play(0, e.Tracks);
+			ServiceConnection?.Play(0, album.Tracks);
 		}
 
 		private void Track_ItemClick(object sender, AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent e)

@@ -106,9 +106,7 @@
     <Compile Include="Compat\ActionBarHelper.cs" />
     <Compile Include="Compat\ActionBarHelperCompat.cs" />
     <Compile Include="Compat\ActionBarHelperNative.cs" />
-    <Compile Include="Helpers\Crypto.cs" />
     <Compile Include="Helpers\Utils.cs" />
-    <Compile Include="Helpers\WebHelpers.cs" />
     <Compile Include="Interfaces\IMenuListener.cs" />
     <Compile Include="Adapters\MenuAdapter.cs" />
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
@@ -136,15 +134,13 @@
     <Compile Include="Fragments\GenreDetailFragment.cs" />
     <Compile Include="Fragments\ArtistsFragment.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
-    <Compile Include="Helpers\PageHelper.cs" />
+    <Compile Include="Helpers\NowPlayingSnapHelper.cs" />
     <Compile Include="Interfaces\IQueue.cs" />
     <Compile Include="Interfaces\ViewBehavior.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\CurrentBackground.cs" />
     <Compile Include="NowPlayingActivity.cs" />
     <Compile Include="Helpers\Extensions.cs" />
-    <Compile Include="Helpers\SimpleItemTouchHelperCallback.cs" />
-    <Compile Include="Helpers\StorageHelpers.cs" />
     <Compile Include="Interfaces\ItemTouchHelperAdapter.cs" />
     <Compile Include="Interfaces\ItemTouchHelperViewHolder.cs" />
     <Compile Include="Interfaces\OnStartDragListener.cs" />
@@ -506,7 +502,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\genre_detail_layout.xml">
+    <AndroidResource Include="Resources\layout\genre_detail_layout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -923,6 +919,30 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\starred_album_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\genre_detail_genre_info.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\genre_detail_genre_metrics.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\genre_detail_song_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\genre_detail_genre_tracks.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>

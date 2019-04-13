@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Alloy.Interfaces;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
@@ -18,13 +17,12 @@ namespace Alloy.Adapters
 	public class AlbumsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
 	{
 		public event EventHandler<AlbumViewHolder.AlbumViewHolderEvent> ItemClick;
-		public OnStartDragListener DragStartListener;
-		public BackgroundAudioServiceConnection serviceConnection;
-		private ArrayList mSectionPositions;
+		public BackgroundAudioServiceConnection ServiceConnection { get; }
+		private ArrayList sectionPositions;
 
 		public AlbumsAdapter(BackgroundAudioServiceConnection connection)
 		{
-			serviceConnection = connection;
+			ServiceConnection = connection;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
@@ -45,7 +43,7 @@ namespace Alloy.Adapters
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_row, parent, false);
-			AlbumViewHolder holder = new AlbumViewHolder(v, OnClick, serviceConnection);
+			AlbumViewHolder holder = new AlbumViewHolder(v, OnClick, ServiceConnection);
 			return holder;
 		}
 
@@ -61,7 +59,7 @@ namespace Alloy.Adapters
 
 		public int GetPositionForSection(int sectionIndex)
 		{
-			return (int)mSectionPositions.Get(sectionIndex);
+			return (int)sectionPositions.Get(sectionIndex);
 		}
 
 		public int GetSectionForPosition(int position)
@@ -72,16 +70,14 @@ namespace Alloy.Adapters
 		public Object[] GetSections()
 		{
 			ArrayList sections = new ArrayList(26);
-			mSectionPositions = new ArrayList(26);
+			sectionPositions = new ArrayList(26);
 			for (int i = 0, size = MusicProvider.Albums.Count; i < size; i++)
 			{
 				if (i >= MusicProvider.Albums.Count) return sections.ToArray();
-				string section = MusicProvider.Albums[i]?.Name?.Substring(0, 1)?.ToUpper();
-				if (!sections.Contains(section))
-				{
-					sections.Add(section);
-					mSectionPositions.Add(i);
-				}
+				string section = MusicProvider.Albums[i]?.Name?.Substring(0, 1).ToUpper();
+				if (sections.Contains(section)) continue;
+				sections.Add(section);
+				sectionPositions.Add(i);
 			}
 			return sections.ToArray();
 		}
@@ -112,7 +108,7 @@ namespace Alloy.Adapters
 				itemRoot = v.FindViewById<RelativeLayout>(Resource.Id.item_root);
 				name = v.FindViewById<TextView>(Resource.Id.artist);
 				this.serviceConnection = serviceConnection;
-				v.Click += (sender, e) => listener(new AlbumViewHolderEvent() { Position = base.LayoutPosition, ViewHolder = this });
+				v.Click += (sender, e) => listener(new AlbumViewHolderEvent() { Position = LayoutPosition, ViewHolder = this });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 			}
 

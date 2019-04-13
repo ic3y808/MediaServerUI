@@ -15,12 +15,12 @@ namespace Alloy.Adapters
 {
 	public class ArtistsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
 	{
-		public BackgroundAudioServiceConnection serviceConnection;
-		private ArrayList mSectionPositions;
+		public BackgroundAudioServiceConnection ServiceConnection { get; }
+		private ArrayList sectionPositions;
 
 		public ArtistsAdapter(BackgroundAudioServiceConnection connection)
 		{
-			serviceConnection = connection;
+			ServiceConnection = connection;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { NotifyDataSetChanged(); };
 		}
 
@@ -34,14 +34,14 @@ namespace Alloy.Adapters
 			ArtistViewHolder h = (ArtistViewHolder)holder;
 			if (position >= MusicProvider.Artists.Count) return;
 			h.Artist = MusicProvider.Artists[position];
-			h.artist.SetText(MusicProvider.Artists[position].Name, TextView.BufferType.Normal);
+			h.ArtistName.SetText(MusicProvider.Artists[position].Name, TextView.BufferType.Normal);
 			h.SetSelected();
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_row, parent, false);
-			ArtistViewHolder holder = new ArtistViewHolder(v, OnClick, true);
+			ArtistViewHolder holder = new ArtistViewHolder(v, OnClick, ServiceConnection);
 			return holder;
 		}
 
@@ -55,7 +55,7 @@ namespace Alloy.Adapters
 
 		public int GetPositionForSection(int sectionIndex)
 		{
-			return (int)mSectionPositions.Get(sectionIndex);
+			return (int)sectionPositions.Get(sectionIndex);
 		}
 
 		public int GetSectionForPosition(int position)
@@ -66,15 +66,15 @@ namespace Alloy.Adapters
 		public Object[] GetSections()
 		{
 			ArrayList sections = new ArrayList(26);
-			mSectionPositions = new ArrayList(26);
+			sectionPositions = new ArrayList(26);
 			for (int i = 0, size = MusicProvider.Artists.Count; i < size; i++)
 			{
 				if (i >= MusicProvider.Artists.Count) return sections.ToArray();
-				string section = MusicProvider.Artists[i]?.Name?.Substring(0, 1)?.ToUpper();
+				string section = MusicProvider.Artists[i]?.Name?.Substring(0, 1).ToUpper();
 				if (!sections.Contains(section))
 				{
 					sections.Add(section);
-					mSectionPositions.Add(i);
+					sectionPositions.Add(i);
 				}
 			}
 			return sections.ToArray();
@@ -97,14 +97,15 @@ namespace Alloy.Adapters
 		public class ArtistViewHolder : RecyclerView.ViewHolder
 		{
 			public FrameLayout itemRoot;
-			private BackgroundAudioServiceConnection serviceConnection;
+			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-			public ArtistViewHolder(View v, Action<ArtistViewHolderEvent> listener, bool hasScroller) : base(v)
+			public ArtistViewHolder(View v, Action<ArtistViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(v)
 			{
 				itemRoot = v.FindViewById<FrameLayout>(Resource.Id.item_root);
-				artist = v.FindViewById<TextView>(Resource.Id.artist);
-				if (artist != null) artist.Selected = true;
-				v.Click += (sender, e) => listener(new ArtistViewHolderEvent() { Position = base.LayoutPosition, CustomViewHolder = this });
+				ServiceConnection = serviceConnection;
+				ArtistName = v.FindViewById<TextView>(Resource.Id.artist);
+				if (ArtistName != null) ArtistName.Selected = true;
+				v.Click += (sender, e) => listener(new ArtistViewHolderEvent() { Position = LayoutPosition, CustomViewHolder = this });
 			}
 
 			public class ArtistViewHolderEvent
@@ -117,7 +118,7 @@ namespace Alloy.Adapters
 			{
 				if (Artist == null) return;
 
-				bool selected = Artist.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.ArtistId.Equals(Artist.Id);
+				bool selected = Artist.IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.ArtistId.Equals(Artist.Id);
 
 				if (selected)
 				{
@@ -130,9 +131,9 @@ namespace Alloy.Adapters
 
 			}
 
-			public TextView artist;
-			public EventHandler ClickHandler;
-			public Artist Artist;
+			public TextView ArtistName { get; set; }
+			public EventHandler ClickHandler { get; set; }
+			public Artist Artist { get; set; }
 		}
 	}
 }

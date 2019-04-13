@@ -4,10 +4,8 @@ using Android.Views;
 using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
-
 using Alloy.Services;
 using Android.App;
-using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Support.V7.Widget;
@@ -16,16 +14,15 @@ namespace Alloy.Adapters
 {
 	public class AlbumDetailAdapter : RecyclerView.Adapter
 	{
-		private Context context;
-		private readonly Activity Activity;
-		private readonly AlbumContainer Album;
-		private readonly BackgroundAudioServiceConnection serviceConnection;
+		public Activity Activity { get; }
+		public AlbumContainer Album { get; }
+		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public AlbumDetailAdapter(Activity activity, AlbumContainer album, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Album = album;
 			Activity = activity;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -40,6 +37,7 @@ namespace Alloy.Adapters
 						albumInfoHolder.AlbumName.SetText(Album.Album.Name, TextView.BufferType.Normal);
 						albumInfoHolder.AlbumSize.SetText(Album.Size, TextView.BufferType.Normal);
 						albumInfoHolder.ArtistName.SetText(Album.Album.Artist, TextView.BufferType.Normal);
+						albumInfoHolder.ItemClick += PlayAlbum;
 						Album.Album.GetAlbumArt(albumInfoHolder.AlbumImage);
 						albumInfoHolder.CheckStarred();
 					}
@@ -57,7 +55,7 @@ namespace Alloy.Adapters
 						if (Album.Tracks.Count > 0)
 						{
 							albumTracksHolder.AllTracksListContainer.Visibility = ViewStates.Visible;
-							AlbumDetailTrackAdapter albumTracksAdapter = new AlbumDetailTrackAdapter(Album.Tracks, serviceConnection);
+							AlbumDetailTrackAdapter albumTracksAdapter = new AlbumDetailTrackAdapter(Album.Tracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumTracksAdapter.NotifyDataSetChanged(); };
 							albumTracksHolder.AllTracksRecycleView?.SetAdapter(albumTracksAdapter);
 							albumTracksAdapter.ItemClick += TrackClick;
@@ -81,15 +79,14 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
 			switch (viewType)
 			{
 				case 0:
-					return new AlbumInformationViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.album_detail_album_info, parent, false), OnPlayAlbum);
+					return new AlbumInformationViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_detail_album_info, parent, false));
 				case 1:
-					return new AlbumMetricsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.album_detail_album_metrics, parent, false));
+					return new AlbumMetricsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_detail_album_metrics, parent, false));
 				case 2:
-					return new AlbumTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.album_detail_album_tracks, parent, false));
+					return new AlbumTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_detail_album_tracks, parent, false));
 
 			}
 			return null;
@@ -101,12 +98,7 @@ namespace Alloy.Adapters
 		}
 
 		public event EventHandler<AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent> TrackClick;
-		public event EventHandler<AlbumContainer> PlayAlbum;
-
-		void OnPlayAlbum()
-		{
-			PlayAlbum?.Invoke(this, Album);
-		}
+		public event EventHandler PlayAlbum;
 
 		public class AlbumInformationViewHolder : RecyclerView.ViewHolder
 		{
@@ -120,14 +112,15 @@ namespace Alloy.Adapters
 			public ImageView StarButton { get; set; }
 			private Drawable Starred { get; }
 			private Drawable NotStarred { get; }
+			public event EventHandler ItemClick;
 
-			public AlbumInformationViewHolder(View itemView, Action listener) : base(itemView)
+			public AlbumInformationViewHolder(View itemView) : base(itemView)
 			{
 				AlbumName = itemView.FindViewById<TextView>(Resource.Id.album_name);
 				AlbumSize = itemView.FindViewById<TextView>(Resource.Id.album_size);
 				ArtistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
 				AlbumPlayButton = itemView.FindViewById<Button>(Resource.Id.album_play_button);
-				AlbumPlayButton.Click += (sender, e) => listener();
+				AlbumPlayButton.Click += (sender, e) => ItemClick?.Invoke(null, null);
 
 				AlbumImage = itemView.FindViewById<ImageView>(Resource.Id.album_image);
 				StarButton = itemView.FindViewById<ImageView>(Resource.Id.album_favorite_button);
