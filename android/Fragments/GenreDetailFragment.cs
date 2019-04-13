@@ -14,7 +14,6 @@ namespace Alloy.Fragments
 		private GenreDetailAdapter genreDetailAdapter;
 		private RecyclerView genreContentView;
 		private SwipeRefreshLayout refreshLayout;
-		private GenreContainer genre;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
@@ -40,12 +39,11 @@ namespace Alloy.Fragments
 		private void MusicProvider_GenreRefreshed(object sender, GenreContainer e)
 		{
 			if (e == null) { return; }
-			genre = e;
 			if (genreDetailAdapter != null)
 			{
 				genreDetailAdapter.TrackClick -= Track_ItemClick;
 			}
-			genreDetailAdapter = new GenreDetailAdapter(Activity, genre, ServiceConnection);
+			genreDetailAdapter = new GenreDetailAdapter(Activity, e, ServiceConnection);
 			genreContentView.SetAdapter(genreDetailAdapter);
 			genreDetailAdapter.TrackClick += Track_ItemClick;
 			Adapters.Adapters.SetAdapters(Activity, genreDetailAdapter);
