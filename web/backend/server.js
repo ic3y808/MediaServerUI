@@ -63,8 +63,8 @@ db.init().then(function () {
   function getDirectories(srcpath) {
     return fs
       .readdirSync(srcpath)
-      .map(file => path.join(srcpath, file))
-      .filter(path => fs.statSync(path).isDirectory());
+      .map((file) => path.join(srcpath, file))
+      .filter((path) => fs.statSync(path).isDirectory());
   }
   function getDirectoriesRecursive(srcpath) {
     return [

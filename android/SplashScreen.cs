@@ -31,7 +31,7 @@ namespace Alloy
 			CheckPermissions();
 			//debug
 			//ResetShortcut();
-		//CheckShortcut();
+			//CheckShortcut();
 			//CheckDynamicShortcuts();
 
 			ShortcutHelper mHelper = new ShortcutHelper(this);
@@ -44,8 +44,10 @@ namespace Alloy
 			mHelper.refreshShortcuts(true);
 		}
 
-		// Prevent the back button from canceling the startup process
-		public override void OnBackPressed() { }
+		public override void OnBackPressed()
+		{
+			// Prevent the back button from canceling the startup process
+		}
 
 		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
 		{

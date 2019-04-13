@@ -85,7 +85,7 @@ namespace Alloy.Adapters
 				if (starredButton != null)
 				{
 					starredButton.Clickable = true;
-					starredButton.Click += (sender, e) => { SetFavorite(true); };
+					starredButton.Click += (sender, e) => { SetFavorite(); };
 				}
 
 				v.Click += (sender, e) => listener(new NowPlayingViewHolderEvent() { Position = LayoutPosition, NowPlayingViewHolder = this });
@@ -120,7 +120,8 @@ namespace Alloy.Adapters
 				}
 			}
 
-			public void SetFavorite(bool update_db = false)
+
+			public void SetFavorite()
 			{
 				if (Song == null) return;
 				if (Song.Starred)

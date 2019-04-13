@@ -255,7 +255,7 @@ namespace Alloy
 
 			if (fragment != null)
 			{
-				FragmentManager.ChangeTo(fragment, backstack);
+				FragmentManager.ChangeTo(fragment, backstack, Application.Context.GetString(itemText));
 			}
 		}
 
@@ -460,17 +460,17 @@ namespace Alloy
 
 		public void OnActiveViewChanged(View v)
 		{
-
+			//TODO implement view change logic for OnActiveViewChanged
 		}
 
 		public void onPanelSlide(View panel, float slideOffset)
 		{
-
+			//TODO implement view change logic for onPanelSlide
 		}
 
 		public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState)
 		{
-
+			//TODO implement view change logic for onPanelStateChanged
 		}
 
 		public void SetPlaying()

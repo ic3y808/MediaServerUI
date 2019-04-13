@@ -121,7 +121,7 @@ namespace Alloy.Adapters
 			private Drawable Starred { get; }
 			private Drawable NotStarred { get; }
 
-		public AlbumInformationViewHolder(View itemView, Action listener) : base(itemView)
+			public AlbumInformationViewHolder(View itemView, Action listener) : base(itemView)
 			{
 				AlbumName = itemView.FindViewById<TextView>(Resource.Id.album_name);
 				AlbumSize = itemView.FindViewById<TextView>(Resource.Id.album_size);
@@ -149,16 +149,9 @@ namespace Alloy.Adapters
 				CheckStarred();
 			}
 
-			public void CheckStarred(Artist a = null)
+			public void CheckStarred()
 			{
-				if (a != null)
-				{
-					StarButton?.SetImageDrawable(a.Starred ? Starred : NotStarred);
-				}
-				else
-				{
-					StarButton?.SetImageDrawable(Album.Starred ? Starred : NotStarred);
-				}
+				StarButton?.SetImageDrawable(Album.Starred ? Starred : NotStarred);
 			}
 		}
 

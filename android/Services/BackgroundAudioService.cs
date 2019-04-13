@@ -39,11 +39,10 @@ namespace Alloy.Services
 		private PlaybackStateCompat.Builder mediaStateBuilder;
 		private Song currentSong;
 		private long pausedPosition;
-		private int currentIdleReason;
-		public static string CHANNEL_ID = "media_playback_channel";
-		public static string MEDIA_NAME = "Media playback";
-		public static string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
-		public static int NOTIFICATION_ID = 165164465;
+		public const string CHANNEL_ID = "media_playback_channel";
+		public const string MEDIA_NAME = "Media playback";
+		public const string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
+		public const int NOTIFICATION_ID = 165164465;
 		private bool loading;
 
 		public Song CurrentSong

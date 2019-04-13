@@ -2,15 +2,14 @@
 using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Views;
-using Android.Widget;
 using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Providers;
-
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.App;
 using Android.Support.V7.Widget;
+using Microsoft.AppCenter.Crashes;
 
 namespace Alloy.Fragments
 {
@@ -52,16 +51,19 @@ namespace Alloy.Fragments
 
 			return root_view;
 		}
+
 		public override void ScrollToNowPlaying()
 		{
-			//try
-			//{
-			//	int first = mainLayoutManager.FindFirstCompletelyVisibleItemPosition();
-			//	int last = mainLayoutManager.FindLastVisibleItemPosition();
-			//	if (MusicProvider.AllSongs.IndexOf(ServiceConnection.CurrentSong) < first || MusicProvider.AllSongs.IndexOf(ServiceConnection.CurrentSong) > last)
-			//		mainLayoutManager.ScrollToPosition(MusicProvider.AllSongs.IndexOf(ServiceConnection.CurrentSong));
-			//}
-			//catch (Exception ee) { Crashes.TrackError(ee); }
+			try
+			{
+				for (int i = 0; i < MusicProvider.Albums.Count; i++)
+				{
+					if (!MusicProvider.Albums[i].Id.Equals(ServiceConnection.CurrentSong.AlbumId)) continue;
+					mainLayoutManager.ScrollToPosition(i);
+					break;
+				}
+			}
+			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
@@ -92,21 +94,6 @@ namespace Alloy.Fragments
 		{
 			refreshLayout.Refreshing = false;
 			adapter?.NotifyDataSetChanged();
-		}
-
-		public override void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo)
-		{
-			base.ContextMenuCreated(menu, v, menuInfo);
-			if (v.Id == Resource.Id.albums_list)
-			{
-				MenuInflater inflater = Activity.MenuInflater;
-				inflater.Inflate(Resource.Menu.multi_context_menu, menu);
-			}
-		}
-
-		public override void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info)
-		{
-
 		}
 
 		private void OnItemClick(object sender, AlbumsAdapter.AlbumViewHolder.AlbumViewHolderEvent e)

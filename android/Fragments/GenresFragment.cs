@@ -11,6 +11,7 @@ using Alloy.Services;
 using Alloy.Widgets;
 using Android.App;
 using Android.Support.V7.Widget;
+using Microsoft.AppCenter.Crashes;
 
 namespace Alloy.Fragments
 {
@@ -55,6 +56,16 @@ namespace Alloy.Fragments
 
 		public override void ScrollToNowPlaying()
 		{
+			try
+			{
+				for (int i = 0; i < MusicProvider.Genres.Count; i++)
+				{
+					if (!MusicProvider.Genres[i].Id.Equals(ServiceConnection.CurrentSong.GenreId)) continue;
+					mainLayoutManager.ScrollToPosition(i);
+					break;
+				}
+			}
+			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
 		public override void PlaybackStatusChanged(StatusEventArg args)
