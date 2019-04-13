@@ -3,7 +3,7 @@ using Android.OS;
 
 namespace Alloy.Common
 {
-	public class UiUtils
+	public static class UiUtils
 	{
 		public static bool IsInteractive(Context context)
 		{

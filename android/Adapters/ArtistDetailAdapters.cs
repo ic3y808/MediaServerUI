@@ -156,11 +156,7 @@ namespace Alloy.Adapters
 			return null;
 		}
 
-		public override int ItemCount
-		{
-			get { return 7; }
-		}
-
+		public override int ItemCount => 7;
 
 
 		public event EventHandler<ArtistDetailAlbumAdapter.ViewHolder.ViewHolderEvent> AlbumClick;
@@ -238,8 +234,6 @@ namespace Alloy.Adapters
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
 				AlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.artist_albums_list);
 				AlbumRecycleView.SetLayoutManager(layoutManager);
-				//RegisterForContextMenu(albumRecycleView);
-
 			}
 		}
 

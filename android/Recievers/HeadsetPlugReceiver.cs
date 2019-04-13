@@ -54,17 +54,5 @@ namespace Alloy.Recievers
 			}
 			else if (noisyAudio && (!isInteractive || atLockscreen) && hasPosition && isPlaying) { service?.Pause(); }
 		}
-
-		private void startService(Context context, Intent intent)
-		{
-			//bool readyScreenOffMusic = SettingManager.getInstance().getBoolean("ready_screen_off_music", false);
-			//System.Diagnostics.Debug.WriteLine(" startService() - readyScreenOffMusic : " + readyScreenOffMusic);
-			//if (readyScreenOffMusic)
-			//{
-			//	Intent i = new Intent(context, typeof(ScreenOffMusic));
-			//	i.PutExtra("extra_bundle", intent);
-			//	context.StartService(i);
-			//}
-		}
 	}
 }

@@ -112,7 +112,7 @@ namespace Alloy.Providers
 			}
 		}
 
-		public static string ApiRequest(ApiRequestType rt, Dictionary<string, object> paramsDictionary, RequestType requestType, string jsonObject = "", object id2 = null)
+		public static string ApiRequest(ApiRequestType rt, Dictionary<string, object> paramsDictionary, RequestType requestType)
 		{
 			string json = "";
 			try
@@ -141,12 +141,6 @@ namespace Alloy.Providers
 
 				request.Method = requestType.ToString();
 				request.ContentType = "application/x-www-form-urlencoded";
-
-				if (requestType.ToString() == "PUT" && jsonObject != "")
-				{
-					using (StreamWriter streamWriter = new StreamWriter(request.GetRequestStream()))
-						streamWriter.Write(jsonObject);
-				}
 
 				HttpWebResponse response;
 				try { response = (HttpWebResponse)request.GetResponse(); }
@@ -182,7 +176,7 @@ namespace Alloy.Providers
 
 		public class AlbumLoader : AsyncTask<object, object, int>
 		{
-			private Album album;
+			private readonly Album album;
 			private AlbumContainer result;
 			public AlbumLoader(Album album)
 			{
@@ -237,7 +231,7 @@ namespace Alloy.Providers
 
 		public class ArtistLoader : AsyncTask<object, object, int>
 		{
-			private Artist artist;
+			private readonly Artist artist;
 			private ArtistContainer result;
 			public ArtistLoader(Artist artist)
 			{
@@ -298,7 +292,7 @@ namespace Alloy.Providers
 
 		public class GenreLoader : AsyncTask<object, Song, int>
 		{
-			private Genre genre;
+			private readonly Genre genre;
 			private GenreContainer result;
 			public GenreLoader(Genre genre)
 			{
@@ -394,15 +388,13 @@ namespace Alloy.Providers
 
 		public class StarredLoader : AsyncTask<object, object, int>
 		{
-			private StarredContainer result;
-
 			protected override int RunInBackground(params object[] @params)
 			{
 				try
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Starred, null, RequestType.GET);
-					result = JsonConvert.DeserializeObject<StarredContainer>(request);
+					StarredContainer result = JsonConvert.DeserializeObject<StarredContainer>(request);
 					Starred = result.Starred;
 					Utils.UnlockSsl(false);
 					return 0;
@@ -422,7 +414,6 @@ namespace Alloy.Providers
 
 		public class FreshLoader : AsyncTask<object, object, int>
 		{
-			private FreshContainer result;
 			private bool isLoading;
 			protected override int RunInBackground(params object[] @params)
 			{
@@ -431,7 +422,7 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Fresh, null, RequestType.GET);
-					result = JsonConvert.DeserializeObject<FreshContainer>(request);
+					FreshContainer result = JsonConvert.DeserializeObject<FreshContainer>(request);
 					result.Fresh.Tracks.Shuffle();
 					Fresh = result.Fresh;
 					Utils.UnlockSsl(false);

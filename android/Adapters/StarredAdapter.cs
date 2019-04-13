@@ -175,7 +175,7 @@ namespace Alloy.Adapters
 		{
 			public LinearLayout StarredAlbumsListContainer { get; set; }
 			public RecyclerView StarredAlbumRecycleView { get; set; }
-			public Album album;
+			public Album Album { get; set; }
 
 			public StarredAlbumsViewHolder(View itemView) : base(itemView)
 			{
@@ -191,7 +191,7 @@ namespace Alloy.Adapters
 		{
 			public LinearLayout StarredTopAlbumsListContainer { get; set; }
 			public RecyclerView StarredTopAlbumRecycleView { get; set; }
-			public Album album;
+			public Album Album { get; set; }
 
 			public StarredTopAlbumsViewHolder(View itemView) : base(itemView)
 			{
@@ -200,7 +200,6 @@ namespace Alloy.Adapters
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
 				StarredTopAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_albums_list);
 				StarredTopAlbumRecycleView.SetLayoutManager(layoutManager);
-				//RegisterForContextMenu(albumRecycleView);
 			}
 		}
 

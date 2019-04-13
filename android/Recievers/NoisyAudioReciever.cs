@@ -4,27 +4,25 @@ using Alloy.Services;
 
 namespace Alloy.Recievers
 {
-	//[BroadcastReceiver(Enabled = true)]
-	//[IntentFilter(new[] { Android.Content.Intent.ActionMediaButton, AudioManager.ActionAudioBecomingNoisy })]
 	public class NoisyAudioReciever : BroadcastReceiver
 	{
-		private BackgroundAudioService service;
+		private readonly BackgroundAudioService serviceConnection;
 		public NoisyAudioReciever(BackgroundAudioService service)
 		{
-			this.service = service; 
+			serviceConnection = service; 
 		}
 
 		public NoisyAudioReciever()
 		{
-			
+			// required
 		}
 
 		public override void OnReceive(Context context, Intent intent)
 		{
 			if (!AudioManager.ActionAudioBecomingNoisy.Equals(intent.Action)) return;
-			if (service != null && service.MediaPlayer != null && service.MediaPlayer.IsPlaying)
+			if (serviceConnection != null && serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying)
 			{
-				service.Pause();
+				serviceConnection.Pause();
 			}
 		}
 	}

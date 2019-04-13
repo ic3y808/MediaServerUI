@@ -25,7 +25,7 @@ namespace Alloy.Widgets
 		private bool mIsIndexing;
 		private readonly RecyclerView mRecyclerView;
 		private ISectionIndexer mIndexer;
-		private Object[] mSections;
+		private Java.Lang.Object[] mSections;
 		private RectF mIndexbarRect;
 
 		private int indexTextSize;

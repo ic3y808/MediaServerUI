@@ -30,18 +30,17 @@ namespace Alloy
 		{
 			base.OnResume();
 			CheckPermissions();
-			//debug
-			ResetShortcut();
-			CheckShortcut();
+			//ResetShortcut();
+			//CheckShortcut();
 			CheckDynamicShortcuts();
 
 			ShortcutHelper mHelper = new ShortcutHelper(this);
 
 			mHelper.maybeRestoreAllDynamicShortcuts();
-
-			mHelper.AddShortcut("AllMusic", "All Music", "All Music", typeof(FreshFragment));
-			mHelper.AddShortcut("Favorites", "Favorites", "Favorites", typeof(StarredFragment));
-			mHelper.AddShortcut("Artists", "Artists", "Artists", typeof(ArtistsFragment));
+			//TODO fix dynamic shortcuts
+			mHelper.AddShortcut("AllMusic", "All Music", "All Music");
+			mHelper.AddShortcut("Favorites", "Favorites", "Favorites");
+			mHelper.AddShortcut("Artists", "Artists", "Artists");
 			mHelper.refreshShortcuts(true);
 		}
 
