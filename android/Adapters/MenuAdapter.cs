@@ -1,4 +1,3 @@
-using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -11,20 +10,14 @@ namespace Alloy.Adapters
 {
 	public class MenuAdapter : BaseAdapter
 	{
-
-
-		private readonly Context Context;
-
 		private readonly ArrayList Items;
 
-
-		public MenuAdapter(Context context, ArrayList items)
+		public MenuAdapter(ArrayList items)
 		{
-			Context = context;
 			Items = items;
 		}
 
-		public override Java.Lang.Object GetItem(int position)
+		public override Object GetItem(int position)
 		{
 			return Items.Get(position);
 		}
@@ -37,12 +30,10 @@ namespace Alloy.Adapters
 		public override int GetItemViewType(int position)
 		{
 			if (GetItem(position) is Item) return 0;
-			if (GetItem(position) is Category) return 1;
-			return 0;
+			return GetItem(position) is Category ? 1 : 0;
 		}
 
 		public override int ViewTypeCount => 2;
-
 
 		public override bool IsEnabled(int position)
 		{
@@ -62,18 +53,12 @@ namespace Alloy.Adapters
 			switch (item)
 			{
 				case Category category:
-					if (v == null) { v = LayoutInflater.From(Context).Inflate(Resource.Layout.menu_row_category, parent, false); }
-
+					if (v == null) { v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.menu_row_category, parent, false); }
 					TextView header = v.FindViewById<TextView>(Resource.Id.category_header);
 					header.SetText(category.mTitle, TextView.BufferType.Normal);
 					break;
-				case Divider _:
-					if (v == null) { v = LayoutInflater.From(Context).Inflate(Resource.Layout.menu_row_divider, parent, false); }
-
-					break;
 				case Item i:
-					if (v == null) { v = LayoutInflater.From(Context).Inflate(Resource.Layout.menu_row_item, parent, false); }
-
+					if (v == null) { v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.menu_row_item, parent, false); }
 					TextView tv = (TextView)v;
 					tv.SetText(i.mTitle, TextView.BufferType.Normal);
 					if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1) { tv.SetCompoundDrawablesRelativeWithIntrinsicBounds(i.mIconRes, 0, 0, 0); }
@@ -81,10 +66,8 @@ namespace Alloy.Adapters
 					i.TextView = tv;
 					break;
 			}
-
 			return v;
 		}
-
 		public override int Count => Items.Size();
 	}
 }

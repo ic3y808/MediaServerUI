@@ -1,5 +1,4 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.Widget;
@@ -17,22 +16,19 @@ namespace Alloy.Widgets
 		private float mIndexbarWidth;
 		private float mIndexbarMarginWidth;
 		private float mIndexbarMarginHeight;
-		private float mPreviewPadding;
-		private float mDensity;
-		private float mScaledDensity;
+		private readonly float mPreviewPadding;
+		private readonly float mDensity;
+		private readonly float mScaledDensity;
 		private int mListViewWidth;
 		private int mListViewHeight;
 		private int mCurrentSection = -1;
 		private bool mIsIndexing;
-		private RecyclerView mRecyclerView;
+		private readonly RecyclerView mRecyclerView;
 		private ISectionIndexer mIndexer;
-		private Java.Lang.Object[] mSections;
+		private Object[] mSections;
 		private RectF mIndexbarRect;
 
 		private int indexTextSize;
-		private float indexbarWidth;
-		private float indexbarMarginWidth;
-		private float indexbarMarginHeight;
 		private int previewPadding;
 		private bool PreviewVisibility = true;
 		private int indexBarCornerRadius;
@@ -53,11 +49,10 @@ namespace Alloy.Widgets
 
 		public IndexFastScrollRecyclerSection(Context context, IndexFastScrollRecyclerView rv)
 		{
-
 			indexTextSize = rv.IndexTextSize;
-			indexbarWidth = rv.IndexbarWidth;
-			indexbarMarginWidth = rv.IndexbarMarginWidth;
-			indexbarMarginHeight = rv.IndexbarMarginHeight;
+			float indexbarWidth = rv.IndexbarWidth;
+			float indexbarMarginWidth = rv.IndexbarMarginWidth;
+			float indexbarMarginHeight = rv.IndexbarMarginHeight;
 			previewPadding = rv.PreviewPadding;
 			previewTextSize = rv.PreviewTextSize;
 			previewBackgroundColor = rv.PreviewBackgroudColor;
@@ -279,20 +274,20 @@ namespace Alloy.Widgets
 					mRecyclerView.RemoveCallbacks(mLastFadeRunnable);
 				}
 			}
-			var mHandler = new Handler(new Action<Message>((msg) =>
+			var mHandler = new Handler((msg) =>
 			{
 				if (msg.What == WHAT_FADE_PREVIEW)
 				{
 					mRecyclerView.Invalidate();
 				}
 
-				mLastFadeRunnable = new Runnable(new Action(() =>
+				mLastFadeRunnable = new Runnable(() =>
 				{
 					mRecyclerView.Invalidate();
-				}));
+				});
 
 				mRecyclerView.PostDelayed(mLastFadeRunnable, delay);
-			}));
+			});
 			mHandler.RemoveMessages(0);
 			mHandler.SendEmptyMessageAtTime(WHAT_FADE_PREVIEW, SystemClock.UptimeMillis() + delay);
 		}

@@ -1,4 +1,5 @@
 using System;
+using Android.App;
 using Android.Content.Res;
 using Android.Graphics.Drawables;
 using Android.Support.V7.App;
@@ -20,14 +21,10 @@ namespace Alloy.Compat
 		{
 		}
 
-		private static int[] THEME_ATTRS = new int[]
-		{
-			Android.Resource.Attribute.HomeAsUpIndicator
-		};
+		private static readonly int[] THEME_ATTRS = { Android.Resource.Attribute.HomeAsUpIndicator };
 
-		public static void setActionBarUpIndicator(Object info, AppCompatActivity activity, Drawable drawable, int contentDescRes)
+		public static void SetActionBarUpIndicator(Object info, AppCompatActivity activity, Drawable drawable, int contentDescRes)
 		{
-
 			SetIndicatorInfo sii = (SetIndicatorInfo)info;
 			if (sii.setHomeAsUpIndicator != null)
 			{
@@ -49,7 +46,7 @@ namespace Alloy.Compat
 			}
 		}
 
-		public static void setActionBarDescription(Object info, AppCompatActivity activity, int contentDescRes)
+		public static void SetActionBarDescription(Object info, AppCompatActivity activity, int contentDescRes)
 		{
 			SetIndicatorInfo sii = (SetIndicatorInfo)info;
 			if (sii.setHomeAsUpIndicator == null) return;
@@ -64,7 +61,7 @@ namespace Alloy.Compat
 			}
 		}
 
-		public static Drawable getThemeUpIndicator(Object info, AppCompatActivity activity)
+		public static Drawable GetThemeUpIndicator(Object info, AppCompatActivity activity)
 		{
 			TypedArray a = activity.ObtainStyledAttributes(THEME_ATTRS);
 			Drawable result = a.GetDrawable(0);
@@ -72,15 +69,15 @@ namespace Alloy.Compat
 			return result;
 		}
 
-		public static Object getIndicatorInfo(AppCompatActivity activity)
+		public static Object GetIndicatorInfo(AppCompatActivity activity)
 		{
 			return new SetIndicatorInfo(activity);
 		}
 
-		public static void setDisplayHomeAsUpEnabled(AppCompatActivity activity, bool b)
+		public static void SetDisplayHomeAsUpEnabled(AppCompatActivity activity, bool b)
 		{
 			ActionBar actionBar = activity.SupportActionBar;
-			if (actionBar != null) { actionBar.SetDisplayHomeAsUpEnabled(b); }
+			actionBar?.SetDisplayHomeAsUpEnabled(b);
 		}
 
 		public class SetIndicatorInfo : Object
@@ -90,35 +87,22 @@ namespace Alloy.Compat
 			public Action<ActionBar, int> setHomeActionContentDescription;
 			public ImageView upIndicatorView;
 
-			public SetIndicatorInfo(AppCompatActivity activity)
+			public SetIndicatorInfo(Activity activity)
 			{
-				//try
-				//	{
-				setHomeAsUpIndicator = (ab, d) => { ab?.SetHomeAsUpIndicator(d); };
-				setHomeActionContentDescription = (ab, r) => { ab?.SetHomeActionContentDescription(r); };
-				//var actionbar = Class.FromType(typeof(Android.Support.V7.App.ActionBar)).GetConstructor().NewInstance();
-				//Expression a = activity.SupportActionBar.SetHomeAsUpIndicator(1);
-				//setHomeAsUpIndicator = (i) => activity.SupportActionBar.SetHomeAsUpIndicator(i);
-
-
-				//setHomeAsUpIndicator = actionBar.GetDeclaredMethod("setHomeAsUpIndicator", Class.FromType(typeof(Integer)).Class);
-
-
-				//setHomeAsUpIndicator = Class.FromType(typeof(Android.Support.V7.App.ActionBar)).setHomeAsUpIndicator Class.FromType(typeof(Drawable)).Class);
-				//setHomeActionContentDescription = Class.FromType(typeof(Android.Support.V7.App.ActionBar)).Class.GetDeclaredMethod("setHomeActionContentDescription", Class.FromType(typeof(Integer)));
-
-				// If we got the method we won't need the stuff below.
-				//	return;
-				//}
-				//catch (Throwable t)
-				//{
-				//	// Oh well. We'll use the other mechanism below instead.
-				//}
+				try
+				{
+					setHomeAsUpIndicator = (ab, d) => { ab?.SetHomeAsUpIndicator(d); };
+					setHomeActionContentDescription = (ab, r) => { ab?.SetHomeActionContentDescription(r); };
+					return;
+				}
+				catch
+				{
+					// ignored
+				}
 
 				View home = activity.FindViewById(Android.Resource.Id.Home);
 				if (home == null)
 				{
-					// Action bar doesn't have a known configuration, an OEM messed with things.
 					return;
 				}
 
@@ -126,7 +110,6 @@ namespace Alloy.Compat
 				int childCount = parent.ChildCount;
 				if (childCount != 2)
 				{
-					// No idea which one will be the right one, an OEM messed with things.
 					return;
 				}
 
@@ -136,7 +119,6 @@ namespace Alloy.Compat
 
 				if (up is ImageView)
 				{
-					// Jackpot! (Probably...)
 					upIndicatorView = (ImageView)up;
 				}
 			}

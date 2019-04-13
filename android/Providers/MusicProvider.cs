@@ -4,18 +4,14 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
-using Android.App;
-using Android.Content;
 using Android.OS;
 using Alloy.Helpers;
 using Alloy.Models;
-using Android.Support.V7.Preferences;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Debug = System.Diagnostics.Debug;
 using Extensions = Alloy.Helpers.Extensions;
 using Stream = System.IO.Stream;
-
 
 namespace Alloy.Providers
 {
@@ -59,16 +55,17 @@ namespace Alloy.Providers
 		{
 			return "http://127.0.0.1:4000";
 
-			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			return sp.GetString("alloydbhost", "");
+			//TODO change loading from preferences
+			//ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			//return sp.GetString("alloydbhost", "");
 		}
 
 		public static string GetApiKey()
 		{
 			return "b1413ebe481e48880a466ffe8523060a";
-
-			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			return sp.GetString("alloydbapikey", "");
+			//TODO change loading from preferences
+			//ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			//return sp.GetString("alloydbapikey", "");
 		}
 
 		public static string ProcessApiRequest(ApiRequestType t)
@@ -211,7 +208,7 @@ namespace Alloy.Providers
 				base.OnPostExecute(refreshResult);
 				if (refreshResult != 0) return;
 				AlbumRefreshed?.Invoke(null, result);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
@@ -232,7 +229,7 @@ namespace Alloy.Providers
 
 			protected override void OnPostExecute(int result)
 			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 				AlbumsRefreshed?.Invoke(null, null);
 				base.OnPostExecute(result);
 			}
@@ -266,7 +263,7 @@ namespace Alloy.Providers
 				base.OnPostExecute(refreshResult);
 				if (refreshResult != 0) return;
 				ArtistRefreshed?.Invoke(null, result);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
@@ -293,7 +290,7 @@ namespace Alloy.Providers
 
 			protected override void OnPostExecute(int result)
 			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 				ArtistsRefreshed?.Invoke(null, null);
 				base.OnPostExecute(result);
 			}
@@ -325,7 +322,7 @@ namespace Alloy.Providers
 
 			protected override void OnProgressUpdate(params Song[] values)
 			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 				base.OnProgressUpdate(values);
 			}
 
@@ -334,7 +331,7 @@ namespace Alloy.Providers
 				base.OnPostExecute(refreshResult);
 				if (refreshResult != 0) return;
 				GenreRefreshed?.Invoke(null, result);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
@@ -356,7 +353,7 @@ namespace Alloy.Providers
 
 			protected override void OnPostExecute(int result)
 			{
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 				GenresRefreshed?.Invoke(null, null);
 				base.OnPostExecute(result);
 			}
@@ -364,7 +361,7 @@ namespace Alloy.Providers
 
 		public class SearchLoader : AsyncTask<object, Song, int>
 		{
-			private string query;
+			private readonly string query;
 			private SearchResult results;
 			public SearchLoader(string query)
 			{
@@ -390,7 +387,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				SearchResultsRecieved?.Invoke(null, results);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 				base.OnPostExecute(result);
 			}
 		}
@@ -419,7 +416,7 @@ namespace Alloy.Providers
 				base.OnPostExecute(refreshResult);
 				if (refreshResult != 0) return;
 				StarredRefreshed?.Invoke(null, Starred);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
@@ -450,21 +447,19 @@ namespace Alloy.Providers
 				if (refreshResult != 0) { return; }
 				isLoading = false;
 				FreshRefreshed?.Invoke(null, Fresh);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
 		public class ChartsLoader : AsyncTask<object, object, int>
 		{
-			private ChartsContainer result;
-
 			protected override int RunInBackground(params object[] @params)
 			{
 				try
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
-					result = JsonConvert.DeserializeObject<ChartsContainer>(request);
+					ChartsContainer result = JsonConvert.DeserializeObject<ChartsContainer>(request);
 					Charts = result.Charts;
 					Utils.UnlockSsl(false);
 					return 0;
@@ -482,7 +477,7 @@ namespace Alloy.Providers
 				base.OnPostExecute(refreshResult);
 				if (refreshResult != 0) return;
 				ChartsRefreshed?.Invoke(null, Charts);
-				Alloy.Adapters.Adapters.UpdateAdapters();
+				Adapters.Adapters.UpdateAdapters();
 			}
 		}
 
@@ -555,11 +550,10 @@ namespace Alloy.Providers
 
 		public static string GetStreamUri(Song song)
 		{
-			UriBuilder uriBuilder;
 			Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection();
 
 			parameters["api_key"] = GetApiKey();
-			uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.Stream));
+			UriBuilder uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.Stream));
 			parameters["id"] = song.Id;
 
 			uriBuilder.Query = parameters.ToString();
@@ -590,8 +584,7 @@ namespace Alloy.Providers
 			try
 			{
 				Utils.UnlockSsl(true);
-				string request = ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", id } }, RequestType.PUT);
-				object result = JsonConvert.DeserializeObject(request);
+				ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", id } }, RequestType.PUT);
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -602,8 +595,7 @@ namespace Alloy.Providers
 			try
 			{
 				Utils.UnlockSsl(true);
-				string request = ApiRequest(ApiRequestType.Star, @params, RequestType.PUT);
-				object result = JsonConvert.DeserializeObject(request);
+				ApiRequest(ApiRequestType.Star, @params, RequestType.PUT);
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -614,8 +606,7 @@ namespace Alloy.Providers
 			try
 			{
 				Utils.UnlockSsl(true);
-				string request = ApiRequest(ApiRequestType.UnStar, @params, RequestType.PUT);
-				object result = JsonConvert.DeserializeObject(request);
+				ApiRequest(ApiRequestType.UnStar, @params, RequestType.PUT);
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -682,7 +673,7 @@ namespace Alloy.Providers
 			try
 			{
 				Utils.UnlockSsl(true);
-				string request = ApiRequest(ApiRequestType.AddHistory, new Dictionary<string, object>
+				ApiRequest(ApiRequestType.AddHistory, new Dictionary<string, object>
 				{
 					{ "type", type },
 					{ "action", action },
@@ -695,7 +686,6 @@ namespace Alloy.Providers
 					{ "genre", genre },
 					{ "genre_id", genre_id },
 				}, RequestType.PUT);
-				object result = JsonConvert.DeserializeObject(request);
 				Utils.UnlockSsl(false);
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
@@ -705,7 +695,7 @@ namespace Alloy.Providers
 		{
 			SearchStart?.Invoke(null, null);
 			Adapters.Adapters.Clear();
-			SearchLoader a = (SearchLoader)new SearchLoader(query).Execute();
+			new SearchLoader(query).Execute();
 		}
 	}
 }

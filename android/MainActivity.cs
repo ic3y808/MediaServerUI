@@ -121,9 +121,8 @@ namespace Alloy
 			items.Add(new Item(Resource.String.albums_fragment_id, Resource.String.albums_fragment_title, Resource.Drawable.albums));
 			items.Add(new Item(Resource.String.genres_fragment_id, Resource.String.genres_fragment_title, Resource.Drawable.genres));
 			items.Add(new Item(Resource.String.history_fragment_id, Resource.String.history_title, Resource.Drawable.history));
-
-
-			mainMenuaAdapter = new MenuAdapter(this, items);
+			
+			mainMenuaAdapter = new MenuAdapter(items);
 			mainMenu.Adapter = mainMenuaAdapter;
 			mainMenu.SetSelection(1);
 			mainMenu.ItemClick += MainMenu_ItemClick;

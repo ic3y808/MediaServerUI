@@ -10,28 +10,27 @@ namespace Alloy.Widgets
 {
 	public class FastScrollPopup : Java.Lang.Object
 	{
-		private FastScrollRecyclerView mRecyclerView;
+		private readonly FastScrollRecyclerView mRecyclerView;
 
-		private Resources mRes;
+		private readonly Resources mRes;
 
 		private int mBackgroundSize;
 		private int mCornerRadius;
 
-		private Path mBackgroundPath = new Path();
-		private RectF mBackgroundRect = new RectF();
-		private Paint mBackgroundPaint;
+		private readonly Path mBackgroundPath = new Path();
+		private readonly RectF mBackgroundRect = new RectF();
+		private readonly Paint mBackgroundPaint;
 		private Color mBackgroundColor;
 
-		private Rect mInvalidateRect = new Rect();
-		private Rect mTmpRect = new Rect();
+		private readonly Rect mInvalidateRect = new Rect();
+		private readonly Rect mTmpRect = new Rect();
+		
+		private readonly Rect mBgBounds = new Rect();
 
-		// The absolute bounds of the fast scroller bg
-		private Rect mBgBounds = new Rect();
+		private string mSectionName;
 
-		private String mSectionName;
-
-		private Paint mTextPaint;
-		private Rect mTextBounds = new Rect();
+		private readonly Paint mTextPaint;
+		private readonly Rect mTextBounds = new Rect();
 
 		private float mAlpha = 1;
 

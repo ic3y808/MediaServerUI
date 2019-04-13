@@ -64,9 +64,7 @@ namespace Alloy.Services
 			builder
 			.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMediaNext, "Next", pIntentNext))
 			.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMenuCloseClearCancel, "Close", pIntentExit))
-			.SetDeleteIntent(pIntentExit);
-			if (audioService.CurrentSong == null) return;
-			
+			.SetDeleteIntent(pIntentExit);			
 		}
 
 		private void GenerateMetadata(ref NotificationCompat.Builder builder)

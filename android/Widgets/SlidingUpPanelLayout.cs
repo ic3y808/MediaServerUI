@@ -22,12 +22,12 @@ namespace Alloy.Widgets
 		/**
 		 * Default peeking out panel height
 		 */
-		private const int DEFAULT_PANEL_HEIGHT = 68; // dp;
+		private const int DEFAULT_PANEL_HEIGHT = 68;
 
 		/**
 		 * Default anchor point height
 		 */
-		private const float DEFAULT_ANCHOR_POINT = 1.0f; // In relative %
+		private const float DEFAULT_ANCHOR_POINT = 1.0f;
 
 		/**
 		 * Default initial state for the component
@@ -37,7 +37,7 @@ namespace Alloy.Widgets
 		/**
 		 * Default height of the shadow above the peeking out panel
 		 */
-		private const int DEFAULT_SHADOW_HEIGHT = 4; // dp;
+		private const int DEFAULT_SHADOW_HEIGHT = 4;
 
 		/**
 		 * If no fade color is given by default it will fade to 80% gray.
@@ -47,10 +47,8 @@ namespace Alloy.Widgets
 		/**
 		 * Default Minimum velocity that will be detected as a fling
 		 */
-		private const int DEFAULT_MIN_FLING_VELOCITY = 400; // dips per second
-															/**
-															 * Default is set to false because that is how it was written
-															 */
+		private const int DEFAULT_MIN_FLING_VELOCITY = 400;
+
 		private const bool DEFAULT_OVERLAY_FLAG = false;
 		/**
 		 * Default is set to true for clip panel for performance reasons
@@ -63,7 +61,7 @@ namespace Alloy.Widgets
 		/**
 		 * Tag for the sliding state stored inside the bundle
 		 */
-		public static string SLIDING_STATE = "sliding_state";
+		public const string SLIDING_STATE = "sliding_state";
 
 		/**
 		 * Minimum velocity that will be detected as a fling
@@ -83,12 +81,12 @@ namespace Alloy.Widgets
 		/**
 		 * The paint used to dim the main layout when sliding
 		 */
-		private Paint mCoveredFadePaint = new Paint();
+		private readonly Paint mCoveredFadePaint = new Paint();
 
 		/**
 		 * Drawable used to draw the shadow between panes.
 		 */
-		private Drawable mShadowDrawable;
+		private readonly Drawable mShadowDrawable;
 
 		/**
 		 * The size of the overhang in pixels.
@@ -136,7 +134,7 @@ namespace Alloy.Widgets
 		 * If provided, the panel will transfer the scroll from this view to itself when needed.
 		 */
 		private View mScrollableView;
-		private int mScrollableViewResId;
+		private readonly int mScrollableViewResId;
 		private ScrollableViewHelper mScrollableViewHelper = new ScrollableViewHelper();
 
 		/**
@@ -213,7 +211,7 @@ namespace Alloy.Widgets
 		 */
 		private bool mFirstLayout = true;
 
-		private Rect mTmpRect = new Rect();
+		private readonly Rect mTmpRect = new Rect();
 
 		public SlidingUpPanelLayout(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 		{
@@ -316,8 +314,8 @@ namespace Alloy.Widgets
 
 			SetWillNotDraw(false);
 
-			mDragHelper = ViewDragHelper.create(this, 0.5f, scrollerInterpolator, new DragHelperCallback(this));
-			mDragHelper.setMinVelocity(mMinFlingVelocity * density);
+			mDragHelper = ViewDragHelper.Create(this, 0.5f, scrollerInterpolator, new DragHelperCallback(this));
+			mDragHelper.SetMinVelocity(mMinFlingVelocity * density);
 
 			mIsTouchEnabled = true;
 		}
@@ -408,7 +406,7 @@ namespace Alloy.Widgets
 
 		private void smoothToBottom()
 		{
-			smoothSlideTo(0, 0);
+			smoothSlideTo(0);
 		}
 
 		/**
@@ -704,7 +702,10 @@ namespace Alloy.Widgets
 			}
 			else
 			{
-				left = right = top = bottom = 0;
+				left = 0;
+				right = 0;
+				top = 0;
+				bottom = 0;
 			}
 			View child = GetChildAt(0);
 			int clampedChildLeft = Math.Max(leftBound, child.Left);
@@ -745,7 +746,7 @@ namespace Alloy.Widgets
 			// If the scrollable view is handling touch, never intercept
 			if (mIsScrollableViewHandlingTouch || !isTouchEnabled())
 			{
-				mDragHelper.abort();
+				mDragHelper.Abort();
 				return false;
 			}
 
@@ -754,7 +755,7 @@ namespace Alloy.Widgets
 			float y = ev.GetY();
 			float adx = Math.Abs(x - mInitialMotionX);
 			float ady = Math.Abs(y - mInitialMotionY);
-			int dragSlop = mDragHelper.getTouchSlop();
+			int dragSlop = mDragHelper.GetTouchSlop();
 
 			switch (action)
 			{
@@ -765,7 +766,7 @@ namespace Alloy.Widgets
 						mInitialMotionY = y;
 						if (!isViewUnder(mDragView, (int)x, (int)y))
 						{
-							mDragHelper.cancel();
+							mDragHelper.Cancel();
 							mIsUnableToDrag = true;
 							return false;
 						}
@@ -777,7 +778,7 @@ namespace Alloy.Widgets
 					{
 						if (ady > dragSlop && adx > ady)
 						{
-							mDragHelper.cancel();
+							mDragHelper.Cancel();
 							mIsUnableToDrag = true;
 							return false;
 						}
@@ -789,9 +790,9 @@ namespace Alloy.Widgets
 					// If the dragView is still dragging when we get here, we need to call processTouchEvent
 					// so that the view is settled
 					// Added to make scrollable views work (tokudu)
-					if (mDragHelper.isDragging())
+					if (mDragHelper.IsDragging())
 					{
-						mDragHelper.processTouchEvent(ev);
+						mDragHelper.ProcessTouchEvent(ev);
 						return true;
 					}
 					// Check if this was a click on the faded part of the screen, and fire off the listener if there is one.
@@ -805,7 +806,7 @@ namespace Alloy.Widgets
 					}
 					break;
 			}
-			return mDragHelper.shouldInterceptTouchEvent(ev);
+			return mDragHelper.ShouldInterceptTouchEvent(ev);
 		}
 
 		protected override void OnLayout(bool changed, int l, int t, int r, int b)
@@ -883,7 +884,7 @@ namespace Alloy.Widgets
 
 			if (!Enabled || !isTouchEnabled() || (mIsUnableToDrag && action != MotionEventActions.Down))
 			{
-				mDragHelper.abort();
+				mDragHelper.Abort();
 				return base.DispatchTouchEvent(e);
 			}
 
@@ -959,9 +960,9 @@ namespace Alloy.Widgets
 					// Was the panel handling the touch previously?
 					// Then we need to rejigger things so that the
 					// child gets a proper down event.
-					if (!mIsScrollableViewHandlingTouch && mDragHelper.isDragging())
+					if (!mIsScrollableViewHandlingTouch && mDragHelper.IsDragging())
 					{
-						mDragHelper.cancel();
+						mDragHelper.Cancel();
 						e.Action = MotionEventActions.Down;
 					}
 
@@ -1086,9 +1087,9 @@ namespace Alloy.Widgets
 				else
 				{
 					// Modify the height based on the weight.
-					if (lp.Width > 0 && lp.weight < 1)
+					if (lp.Width > 0 && lp.Weight < 1)
 					{
-						height = (int)(height * lp.weight);
+						height = (int)(height * lp.Weight);
 					}
 					else if (lp.Height != ViewGroup.LayoutParams.MatchParent)
 					{
@@ -1126,7 +1127,7 @@ namespace Alloy.Widgets
 			}
 			try
 			{
-				mDragHelper.processTouchEvent(e);
+				mDragHelper.ProcessTouchEvent(e);
 				return true;
 			}
 			catch (Java.Lang.Exception)
@@ -1196,10 +1197,10 @@ namespace Alloy.Widgets
 		{
 
 			// Abort any running animation, to allow state change
-			if (mDragHelper.getViewDragState() == ViewDragHelper.STATE_SETTLING)
+			if (mDragHelper.GetViewDragState() == ViewDragHelper.STATE_SETTLING)
 			{
 				Log.Debug(TAG, "View is settling. Aborting animation.");
-				mDragHelper.abort();
+				mDragHelper.Abort();
 			}
 
 			if (state == PanelState.DRAGGING)
@@ -1225,17 +1226,17 @@ namespace Alloy.Widgets
 				switch (state)
 				{
 					case PanelState.ANCHORED:
-						smoothSlideTo(mAnchorPoint, 0);
+						smoothSlideTo(mAnchorPoint);
 						break;
 					case PanelState.COLLAPSED:
-						smoothSlideTo(0, 0);
+						smoothSlideTo(0);
 						break;
 					case PanelState.EXPANDED:
-						smoothSlideTo(1.0f, 0);
+						smoothSlideTo(1.0f);
 						break;
 					case PanelState.HIDDEN:
 						int newTop = computePanelTopPosition(0.0f) + (mIsSlidingUp ? +mPanelHeight : -mPanelHeight);
-						smoothSlideTo(computeSlideOffset(newTop), 0);
+						smoothSlideTo(computeSlideOffset(newTop));
 						break;
 				}
 			}
@@ -1349,7 +1350,7 @@ namespace Alloy.Widgets
 		* @param slideOffset position to animate to
 		* @param velocity    initial velocity in case of fling, or 0.
 		*/
-		void smoothSlideTo(float slideOffset, int velocity)
+		void smoothSlideTo(float slideOffset)
 		{
 			if (!Enabled || mSlideableView == null)
 			{
@@ -1359,18 +1360,18 @@ namespace Alloy.Widgets
 
 			int panelTop = computePanelTopPosition(slideOffset);
 
-			if (!mDragHelper.smoothSlideViewTo(mSlideableView, mSlideableView.Left, panelTop)) return;
+			if (!mDragHelper.SmoothSlideViewTo(mSlideableView, mSlideableView.Left, panelTop)) return;
 			setAllChildrenVisible();
 			ViewCompat.PostInvalidateOnAnimation(this);
 		}
 
 		public override void ComputeScroll()
 		{
-			if (mDragHelper != null && mDragHelper.continueSettling(true))
+			if (mDragHelper != null && mDragHelper.ContinueSettling(true))
 			{
 				if (!Enabled)
 				{
-					mDragHelper.abort();
+					mDragHelper.Abort();
 					return;
 				}
 
@@ -1451,7 +1452,7 @@ namespace Alloy.Widgets
 			}
 			public override void OnViewDragStateChanged(int state)
 			{
-				if (layout.mDragHelper != null && layout.mDragHelper.getViewDragState() == ViewDragHelper.STATE_IDLE)
+				if (layout.mDragHelper != null && layout.mDragHelper.GetViewDragState() == ViewDragHelper.STATE_IDLE)
 				{
 					layout.mSlideOffset = layout.computeSlideOffset(layout.mSlideableView.Top);
 					layout.applyParallaxForCurrentSlideOffset();
@@ -1534,7 +1535,7 @@ namespace Alloy.Widgets
 
 				if (layout.mDragHelper != null)
 				{
-					layout.mDragHelper.settleCapturedViewAt(releasedChild.Left, target);
+					layout.mDragHelper.SettleCapturedViewAt(releasedChild.Left, target);
 				}
 				layout.Invalidate();
 			}
@@ -1566,11 +1567,9 @@ namespace Alloy.Widgets
 
 		public new class LayoutParams : MarginLayoutParams
 		{
-			private static int[] ATTRS = new int[]{
-				Android.Resource.Attribute.LayoutWeight
-			};
+			private static readonly int[] ATTRS = { Android.Resource.Attribute.LayoutWeight };
 
-			public float weight;
+			public float Weight { get; set; }
 			protected LayoutParams(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 			{
 			}
@@ -1580,7 +1579,7 @@ namespace Alloy.Widgets
 				TypedArray ta = c.ObtainStyledAttributes(attrs, ATTRS);
 				if (ta != null)
 				{
-					weight = ta.GetFloat(0, 0);
+					Weight = ta.GetFloat(0, 0);
 					ta.Recycle();
 				}
 			}
@@ -1604,7 +1603,7 @@ namespace Alloy.Widgets
 
 			public LayoutParams(int width, int height, float weight) : base(width, height)
 			{
-				this.weight = weight;
+				Weight = weight;
 			}
 		}
 	}
