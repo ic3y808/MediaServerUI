@@ -12,7 +12,7 @@ namespace Alloy.Widgets
 	* of useful operations and state tracking for allowing a user to drag and reposition
 	* views within their parent ViewGroup.
 	*/
-	class ViewDragHelper
+	public class ViewDragHelper
 	{
 		/**
 		 * A null/invalid pointer ID.
@@ -310,8 +310,8 @@ namespace Alloy.Widgets
 		{
 			public float GetInterpolation(float t)
 			{
-				t -= 1.0f;
-				return t * t * t * t * t + 1.0f;
+				float newT = t -= 1.0f;
+				return newT * newT * newT * newT * newT + 1.0f;
 			}
 		}
 		private readonly CustomInterpolator sInterpolator = new CustomInterpolator();
@@ -653,22 +653,22 @@ namespace Alloy.Widgets
 
 		private int ComputeSettleDuration(View child, int dx, int dy, int xvel, int yvel)
 		{
-			xvel = ClampMag(xvel, (int)mMinVelocity, (int)mMaxVelocity);
-			yvel = ClampMag(yvel, (int)mMinVelocity, (int)mMaxVelocity);
+			int newXVel = ClampMag(xvel, (int)mMinVelocity, (int)mMaxVelocity);
+			int newYVel = ClampMag(yvel, (int)mMinVelocity, (int)mMaxVelocity);
 			int absDx = Math.Abs(dx);
 			int absDy = Math.Abs(dy);
-			int absXVel = Math.Abs(xvel);
-			int absYVel = Math.Abs(yvel);
+			int absXVel = Math.Abs(newXVel);
+			int absYVel = Math.Abs(newYVel);
 			int addedVel = absXVel + absYVel;
 			int addedDistance = absDx + absDy;
 
-			float xweight = xvel != 0 ? (float)absXVel / addedVel :
+			float xweight = newXVel != 0 ? (float)absXVel / addedVel :
 				   (float)absDx / addedDistance;
-			float yweight = yvel != 0 ? (float)absYVel / addedVel :
+			float yweight = newYVel != 0 ? (float)absYVel / addedVel :
 				   (float)absDy / addedDistance;
 
-			int xduration = ComputeAxisDuration(dx, xvel, mCallback.GetViewHorizontalDragRange(child));
-			int yduration = ComputeAxisDuration(dy, yvel, mCallback.GetViewVerticalDragRange(child));
+			int xduration = ComputeAxisDuration(dx, newXVel, mCallback.GetViewHorizontalDragRange(child));
+			int yduration = ComputeAxisDuration(dy, newYVel, mCallback.GetViewVerticalDragRange(child));
 
 			return (int)(xduration * xweight + yduration * yweight);
 		}
@@ -687,10 +687,10 @@ namespace Alloy.Widgets
 				   DistanceInfluenceForSnapDuration(distanceRatio);
 
 			int duration;
-			velocity = Math.Abs(velocity);
-			if (velocity > 0)
+			int newVelocity = Math.Abs(velocity);
+			if (newVelocity > 0)
 			{
-				duration = 4 * Math.Round(1000 * Math.Abs(distance / velocity));
+				duration = 4 * Math.Round(1000 * Math.Abs(distance / newVelocity));
 			}
 			else
 			{
@@ -797,9 +797,8 @@ namespace Alloy.Widgets
 				int dy = y - mCapturedView.Top;
 
 				if (!keepGoing && dy != 0)
-				{ //fix #525
-				  //Invalid drag state
-				  //mCapturedView.SetY(0);
+				{
+					//Invalid drag state
 					mCapturedView.Top = 0;
 					return true;
 				}
@@ -929,8 +928,10 @@ namespace Alloy.Widgets
 		private void SaveInitialMotion(float x, float y, int pointerId)
 		{
 			EnsureMotionHistorySizeForId(pointerId);
-			mInitialMotionX[pointerId] = mLastMotionX[pointerId] = x;
-			mInitialMotionY[pointerId] = mLastMotionY[pointerId] = y;
+			mLastMotionX[pointerId] = x;
+			mInitialMotionX[pointerId] = x;
+			mLastMotionY[pointerId] = y;
+			mInitialMotionY[pointerId] = y;
 			mInitialEdgesTouched[pointerId] = GetEdgesTouched((int)x, (int)y);
 			mPointersDown |= 1 << pointerId;
 		}

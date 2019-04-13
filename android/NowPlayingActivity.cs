@@ -230,7 +230,7 @@ namespace Alloy
 		{
 			try
 			{
-				Utils.Run(new Action(() =>
+				Utils.Run(() =>
 				{
 
 					Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
@@ -273,12 +273,7 @@ namespace Alloy
 						}
 					};
 
-					fadeIn.AnimationEnd += (o, e) =>
-					{
-						System.GC.Collect();
-					};
-
-					RunOnUiThread(new Action(() =>
+					RunOnUiThread(() =>
 					{
 						switch (currentBackground)
 						{
@@ -299,8 +294,8 @@ namespace Alloy
 								secondaryBackground.StartAnimation(fadeOut);
 								break;
 						}
-					}));
-				}));
+					});
+				});
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
@@ -313,12 +308,12 @@ namespace Alloy
 				int index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
 				if (index >= 0) nowPlayingLayoutManager.ScrollToPosition(index);
 
-				//foreach (MediaQueueItem item in serviceConnection.MainQueue.MediaQueue)
-				//{
-				//	if (!serviceConnection.CurrentSong.QueueItem().ItemId.Equals(item.ItemId)) continue;
-				//	nowPlayingLayoutManager.ScrollToPosition(index);
-				//	break;
-				//}
+				foreach (Song item in serviceConnection.MainQueue)
+				{
+					if (!serviceConnection.CurrentSong.Id.Equals(item.Id)) continue;
+					nowPlayingLayoutManager.ScrollToPosition(index);
+					break;
+				}
 
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
@@ -341,6 +336,7 @@ namespace Alloy
 
 		private void OnItemClick(object sender, NowPlayingAdapter.NowPlayingViewHolder.NowPlayingViewHolderEvent e)
 		{
+			//TODO do something when album art clicked
 		}
 
 		public bool Closer(float a, float b)
@@ -394,8 +390,8 @@ namespace Alloy
 		{
 			try
 			{
-				string title = "";
-				string artist = "";
+				string title;
+				string artist;
 				string duration = "";
 				if (song != null)
 				{

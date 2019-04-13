@@ -13,7 +13,7 @@ using Math = System.Math;
 
 namespace Alloy.Helpers
 {
-	public class Utils
+	public static class Utils
 	{
 		public static int toPixels(Resources res, float dp)
 		{

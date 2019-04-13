@@ -13,7 +13,6 @@ namespace Alloy.Fragments
 {
 	public class FreshFragment : FragmentBase
 	{
-		private FreshAdapter freshAdapter;
 		private RecyclerView freshContentView;
 		private SwipeRefreshLayout refreshLayout;
 
@@ -72,7 +71,7 @@ namespace Alloy.Fragments
 
 		public override void ServiceConnected()
 		{
-			freshAdapter = new FreshAdapter(Activity, ServiceConnection);
+			FreshAdapter freshAdapter = new FreshAdapter(Activity, ServiceConnection);
 			freshContentView.SetAdapter(freshAdapter);
 			freshAdapter.TrackClick += Track_ItemClick;
 			freshAdapter.AlbumClick += Album_ItemClick;
@@ -108,11 +107,6 @@ namespace Alloy.Fragments
 			Bundle b = new Bundle();
 			b.PutParcelable("artist", e.Artist);
 			FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
-		}
-
-		private void PlayArtist_Click(object sender, ArtistContainer e)
-		{
-			Utils.Run(() => ServiceConnection.Play(0, e.Tracks));
 		}
 
 		private void Album_ItemClick(object sender, FreshAlbumAdapter.ViewHolder.ViewHolderEvent e)

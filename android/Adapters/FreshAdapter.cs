@@ -16,14 +16,13 @@ namespace Alloy.Adapters
 {
 	public class FreshAdapter : RecyclerView.Adapter
 	{
-		public Context context;
 		public Activity Activity;
-		private BackgroundAudioServiceConnection serviceConnection;
+		private readonly BackgroundAudioServiceConnection ServiceConnection;
 
 		public FreshAdapter(Activity activity, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Activity = activity;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -37,7 +36,7 @@ namespace Alloy.Adapters
 						if (freshNewArtistsHolder != null)
 						{
 							freshNewArtistsHolder.FreshNewArtistsListContainer.Visibility = ViewStates.Visible;
-							FreshArtistAdapter freshNewArtistsAdapter = new FreshArtistAdapter(MusicProvider.Fresh.Artists, serviceConnection);
+							FreshArtistAdapter freshNewArtistsAdapter = new FreshArtistAdapter(MusicProvider.Fresh.Artists, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewArtistsAdapter.NotifyDataSetChanged(); };
 							freshNewArtistsHolder.FreshNewArtistsRecycleView?.SetAdapter(freshNewArtistsAdapter);
 							freshNewArtistsAdapter.ItemClick += ArtistClick;
@@ -52,7 +51,7 @@ namespace Alloy.Adapters
 						if (freshNewTracksHolder != null)
 						{
 							freshNewTracksHolder.FreshNewTracksListContainer.Visibility = ViewStates.Visible;
-							FreshTrackAdapter freshNewTracksAdapter = new FreshTrackAdapter(MusicProvider.Fresh.Tracks, serviceConnection);
+							FreshTrackAdapter freshNewTracksAdapter = new FreshTrackAdapter(MusicProvider.Fresh.Tracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewTracksAdapter.NotifyDataSetChanged(); };
 							freshNewTracksHolder.FreshNewTracksRecycleView?.SetAdapter(freshNewTracksAdapter);
 							freshNewTracksAdapter.ItemClick += TrackClick;
@@ -68,7 +67,7 @@ namespace Alloy.Adapters
 						{
 
 							freshNeverPlayedTracksViewHolder.FreshNeverPlayedTracksListContainer.Visibility = ViewStates.Visible;
-							FreshTrackAdapter freshNeverPlayedTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.NeverPlayed, serviceConnection);
+							FreshTrackAdapter freshNeverPlayedTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.NeverPlayed, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNeverPlayedTracksAdapter.NotifyDataSetChanged(); };
 							freshNeverPlayedTracksViewHolder.FreshNeverPlayedTracksRecycleView?.SetAdapter(freshNeverPlayedTracksAdapter);
 							freshNeverPlayedTracksAdapter.ItemClick += TrackClick;
@@ -77,7 +76,7 @@ namespace Alloy.Adapters
 					}
 					break;
 
-				
+
 				case 3:
 					FreshNewAlbumsViewHolder freshNewAlbumsViewHolder = holder as FreshNewAlbumsViewHolder;
 					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Albums != null && MusicProvider.Fresh.Albums.Count > 0)
@@ -85,7 +84,7 @@ namespace Alloy.Adapters
 						if (freshNewAlbumsViewHolder != null)
 						{
 							freshNewAlbumsViewHolder.FreshNewAlbumsListContainer.Visibility = ViewStates.Visible;
-							FreshAlbumAdapter freshNewArtistsAdapter = new FreshAlbumAdapter(MusicProvider.Fresh.Albums, serviceConnection);
+							FreshAlbumAdapter freshNewArtistsAdapter = new FreshAlbumAdapter(MusicProvider.Fresh.Albums, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewArtistsAdapter.NotifyDataSetChanged(); };
 							freshNewAlbumsViewHolder.FreshNewAlbumRecycleView?.SetAdapter(freshNewArtistsAdapter);
 							freshNewArtistsAdapter.ItemClick += AlbumClick;
@@ -101,7 +100,7 @@ namespace Alloy.Adapters
 						{
 
 							freshNeverPlayedAlbumsViewHolder.FresNeverPlayedAlbumsListContainer.Visibility = ViewStates.Visible;
-							FreshAlbumAdapter freshNeverPlayedAlbumsAdapter = new FreshAlbumAdapter(MusicProvider.Charts.NeverPlayedAlbums, serviceConnection);
+							FreshAlbumAdapter freshNeverPlayedAlbumsAdapter = new FreshAlbumAdapter(MusicProvider.Charts.NeverPlayedAlbums, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNeverPlayedAlbumsAdapter.NotifyDataSetChanged(); };
 							freshNeverPlayedAlbumsViewHolder.FreshNeverPlayedAlbumRecycleView?.SetAdapter(freshNeverPlayedAlbumsAdapter);
 							freshNeverPlayedAlbumsAdapter.ItemClick += AlbumClick;
@@ -109,7 +108,7 @@ namespace Alloy.Adapters
 						}
 					}
 					break;
-	
+
 				case 5:
 					FreshTopPlayedTracksViewHolder freshTopPlayedTracksViewHolder = holder as FreshTopPlayedTracksViewHolder;
 					if (MusicProvider.Charts != null && MusicProvider.Charts.TopTracks != null && MusicProvider.Charts.TopTracks.Count > 0)
@@ -118,7 +117,7 @@ namespace Alloy.Adapters
 						{
 
 							freshTopPlayedTracksViewHolder.FreshTopPlayedTracksListContainer.Visibility = ViewStates.Visible;
-							FreshTrackAdapter freshTopTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.TopTracks, serviceConnection);
+							FreshTrackAdapter freshTopTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.TopTracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshTopTracksAdapter.NotifyDataSetChanged(); };
 							freshTopPlayedTracksViewHolder.FreshTopPlayedTracksRecycleView?.SetAdapter(freshTopTracksAdapter);
 							freshTopTracksAdapter.ItemClick += TrackClick;
@@ -126,8 +125,6 @@ namespace Alloy.Adapters
 						}
 					}
 					break;
-
-
 			}
 		}
 
@@ -143,21 +140,20 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
 			switch (viewType)
 			{
 				case 0:
-					return new FreshNewArtistsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_new_artists, parent, false));
+					return new FreshNewArtistsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_new_artists, parent, false));
 				case 1:
-					return new FreshNewTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_new_tracks, parent, false));
+					return new FreshNewTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_new_tracks, parent, false));
 				case 2:
-					return new FreshNeverPlayedTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_never_played_tracks, parent, false));
+					return new FreshNeverPlayedTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_never_played_tracks, parent, false));
 				case 3:
-					return new FreshNewAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_new_albums, parent, false));
+					return new FreshNewAlbumsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_new_albums, parent, false));
 				case 4:
-					return new FreshNeverPlayedAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_never_played_albums, parent, false));
+					return new FreshNeverPlayedAlbumsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_never_played_albums, parent, false));
 				case 5:
-					return new FreshTopPlayedTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.fresh_top_played_tracks, parent, false));
+					return new FreshTopPlayedTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_top_played_tracks, parent, false));
 
 			}
 			return null;
@@ -273,7 +269,7 @@ namespace Alloy.Adapters
 			Artists = artists;
 			ServiceConnection = serviceConnection;
 		}
-		
+
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;

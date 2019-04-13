@@ -18,9 +18,7 @@ namespace Alloy.Widgets
 		private static readonly ScaleType SCALE_TYPE = ScaleType.CenterCrop;
 
 		private static readonly Bitmap.Config BITMAP_CONFIG = Bitmap.Config.Argb8888;
-		private static  int COLORDRAWABLE_DIMENSION = 2;
-
-		private static  int DEFAULT_BORDER_WIDTH = 0;
+		private static int COLORDRAWABLE_DIMENSION = 2;
 		private static readonly Color DEFAULT_BORDER_COLOR = Color.Black;
 		private static readonly Color DEFAULT_CIRCLE_BACKGROUND_COLOR = Color.Transparent;
 
@@ -33,7 +31,7 @@ namespace Alloy.Widgets
 		private readonly Paint mCircleBackgroundPaint = new Paint();
 
 		private Color mBorderColor = DEFAULT_BORDER_COLOR;
-		private int mBorderWidth = DEFAULT_BORDER_WIDTH;
+		private int mBorderWidth;
 		private Color mCircleBackgroundColor = DEFAULT_CIRCLE_BACKGROUND_COLOR;
 
 		private Bitmap mBitmap;
@@ -429,7 +427,7 @@ namespace Alloy.Widgets
 
 		private class CustomOutlineProvider : ViewOutlineProvider
 		{
-			private CircleImageView owner;
+			private readonly CircleImageView owner;
 			public CustomOutlineProvider(CircleImageView owner)
 			{
 				this.owner = owner;

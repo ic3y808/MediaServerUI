@@ -14,7 +14,8 @@ namespace Alloy.Models
 	public class CustomToggle : ActionBarDrawerToggle
 	{
 		public SlidingUpPanelLayout Layout { get; set; }
-		private float lastTranslate = 0.0f;
+		private float lastTranslate;
+
 		protected CustomToggle(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 		{
 		}

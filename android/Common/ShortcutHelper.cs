@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -9,7 +8,6 @@ using Android.OS;
 using Android.Widget;
 using Java.Lang;
 using Debug = System.Diagnostics.Debug;
-using Exception = Java.Lang.Exception;
 
 namespace Alloy.Common
 {
@@ -51,25 +49,6 @@ namespace Alloy.Common
 		}
 
 		/**
-		 * Use this when interacting with ShortcutManager to show consistent error messages.
-		 */
-		private void callShortcutManager(bool r)
-		{
-			try
-			{
-				//if (!r.getAsBoolean())
-				//{
-				//	showToast(mContext, "Call to ShortcutManager is rate-limited");
-				//}
-			}
-			catch (Exception e)
-			{
-				Debug.WriteLine("Caught Exception " + e);
-				showToast(mContext, "Error while calling ShortcutManager: " + e);
-			}
-		}
-
-		/**
 		 * Return all mutable shortcuts from this app self.
 		 */
 		public List<ShortcutInfo> getShortcuts()
@@ -103,7 +82,7 @@ namespace Alloy.Common
 			new ShortcutRefresher(this).Execute(force);
 		}
 
-		private ShortcutInfo createShortcut(string id, string shortLabel, string longLabel, Type intentType)
+		private ShortcutInfo CreateShortcut(string id, string shortLabel, string longLabel)
 		{
 			ShortcutInfo.Builder b = new ShortcutInfo.Builder(mContext, id);
 
@@ -128,12 +107,10 @@ namespace Alloy.Common
 		}
 
 
-		public void AddShortcut(string id, string shortLabel, string longLabel, Type intentType)
+		public void AddShortcut(string id, string shortLabel, string longLabel)
 		{
-			ShortcutInfo shortcut = createShortcut(id, shortLabel, longLabel, intentType);
-			bool var = mShortcutManager.AddDynamicShortcuts(new List<ShortcutInfo> { shortcut });
-
-			callShortcutManager(var);
+			ShortcutInfo shortcut = CreateShortcut(id, shortLabel, longLabel);
+			mShortcutManager.AddDynamicShortcuts(new List<ShortcutInfo> { shortcut });
 		}
 
 		public void removeShortcut(ShortcutInfo shortcut)
@@ -191,12 +168,10 @@ namespace Alloy.Common
 
 					updateList.Add(b.Build());
 				}
-
-				// Call update.
+				
 				if (updateList.Count > 0)
 				{
-					bool res = shortcutHelper.mShortcutManager.UpdateShortcuts(updateList);
-					shortcutHelper.callShortcutManager(res);
+					shortcutHelper.mShortcutManager.UpdateShortcuts(updateList);
 				}
 
 				return 0;

@@ -6,12 +6,12 @@ namespace Alloy.Models
 	{
 		public override void GetMoreData()
 		{
-
+			//TODO make better queue system
 		}
 
 		public override void Refresh()
 		{
-
+			// not used	
 		}
 
 		public override string NextHref { get; set; }
