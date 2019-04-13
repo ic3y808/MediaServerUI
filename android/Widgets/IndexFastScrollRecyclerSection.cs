@@ -54,22 +54,22 @@ namespace Alloy.Widgets
 		public IndexFastScrollRecyclerSection(Context context, IndexFastScrollRecyclerView rv)
 		{
 
-			indexTextSize = rv.mIndexTextSize;
-			indexbarWidth = rv.mIndexbarWidth;
-			indexbarMarginWidth = rv.mIndexbarMarginWidth;
-			indexbarMarginHeight = rv.mIndexbarMarginHeight;
-			previewPadding = rv.mPreviewPadding;
-			previewTextSize = rv.mPreviewTextSize;
-			previewBackgroundColor = rv.mPreviewBackgroudColor;
-			previewTextColor = rv.mPreviewTextColor;
-			previewBackgroudAlpha = convertTransparentValueToBackgroundAlpha(rv.mPreviewTransparentValue);
+			indexTextSize = rv.IndexTextSize;
+			indexbarWidth = rv.IndexbarWidth;
+			indexbarMarginWidth = rv.IndexbarMarginWidth;
+			indexbarMarginHeight = rv.IndexbarMarginHeight;
+			previewPadding = rv.PreviewPadding;
+			previewTextSize = rv.PreviewTextSize;
+			previewBackgroundColor = rv.PreviewBackgroudColor;
+			previewTextColor = rv.PreviewTextColor;
+			previewBackgroudAlpha = convertTransparentValueToBackgroundAlpha(rv.PreviewTransparentValue);
 
-			indexBarCornerRadius = rv.mIndexBarCornerRadius;
-			indexbarBackgroudColor = rv.mIndexbarBackgroudColor;
-			indexbarTextColor = rv.mIndexbarTextColor;
-			indexbarHighLateTextColor = rv.mIndexbarHighLateTextColor;
+			indexBarCornerRadius = rv.IndexBarCornerRadius;
+			indexbarBackgroudColor = rv.IndexbarBackgroudColor;
+			indexbarTextColor = rv.IndexbarTextColor;
+			indexbarHighLateTextColor = rv.IndexbarHighLateTextColor;
 
-			indexbarBackgroudAlpha = convertTransparentValueToBackgroundAlpha(rv.mIndexBarTransparentValue);
+			indexbarBackgroudAlpha = convertTransparentValueToBackgroundAlpha(rv.IndexBarTransparentValue);
 
 			mDensity = context.Resources.DisplayMetrics.Density;
 			mScaledDensity = context.Resources.DisplayMetrics.ScaledDensity;
@@ -279,7 +279,7 @@ namespace Alloy.Widgets
 					mRecyclerView.RemoveCallbacks(mLastFadeRunnable);
 				}
 			}
-			Handler mHandler = new Handler(new Action<Message>((msg) =>
+			var mHandler = new Handler(new Action<Message>((msg) =>
 			{
 				if (msg.What == WHAT_FADE_PREVIEW)
 				{

@@ -29,7 +29,7 @@ namespace Alloy
 		private TextView artistTextView;
 		private readonly int backgroundContrast = 200;
 		private TextView durationTextView;
-		private ImageView favoritesButton;
+		private ImageView starredButton;
 		private ImageButton nextImageButton;
 		private NowPlayingAdapter nowPlayingAdapter;
 		private LinearLayoutManager nowPlayingLayoutManager;
@@ -77,9 +77,9 @@ namespace Alloy
 			previousImageButton.Click += PreviousImageButton_Click;
 			previousImageButton.Enabled = true;
 
-			favoritesButton = (ImageView)FindViewById(Resource.Id.favorite_button);
-			favoritesButton.Click += StarButton_Click;
-			favoritesButton.Enabled = true;
+			starredButton = (ImageView)FindViewById(Resource.Id.star_button);
+			starredButton.Click += StarButton_Click;
+			starredButton.Enabled = true;
 
 			seekBar = (SeekBar)FindViewById(Resource.Id.seekBar);
 			seekBar.ProgressChanged += SeekBar_ProgressChanged;
@@ -350,7 +350,7 @@ namespace Alloy
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
-		private void OnItemClick(object sender, NowPlayingViewHolderEvent e)
+		private void OnItemClick(object sender, NowPlayingAdapter.NowPlayingViewHolder.NowPlayingViewHolderEvent e)
 		{
 		}
 
@@ -391,7 +391,7 @@ namespace Alloy
 				playPauseImageButton.SetColorFilter(color, PorterDuff.Mode.Multiply);
 				previousImageButton.SetColorFilter(color, PorterDuff.Mode.Multiply);
 				nextImageButton.SetColorFilter(color, PorterDuff.Mode.Multiply);
-				favoritesButton.SetColorFilter(color, PorterDuff.Mode.Multiply);
+				starredButton.SetColorFilter(color, PorterDuff.Mode.Multiply);
 				titleTextView.SetBackgroundColor(color);
 				titleTextView.SetTextColor(textContrasting);
 				artistTextView.SetBackgroundColor(color);
@@ -573,9 +573,9 @@ namespace Alloy
 
 		private void SetFavorite()
 		{
-			favoritesButton.SetImageResource(Resource.Drawable.star_o);
+			starredButton.SetImageResource(Resource.Drawable.star_o);
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			if (serviceConnection.CurrentSong.Starred) favoritesButton.SetImageResource(Resource.Drawable.favorite);
+			if (serviceConnection.CurrentSong.Starred) starredButton.SetImageResource(Resource.Drawable.favorite);
 		}
 
 		public void OnProgressUpdated(long progressMs, long durationMs)

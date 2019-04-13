@@ -13,16 +13,16 @@ using Android.Support.V7.Widget;
 
 namespace Alloy.Adapters
 {
-	public class StarredAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class StarredAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public Activity Activity;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public Context Context { get; set; }
+		public Activity Activity { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public StarredAdapter(Activity activity, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Activity = activity;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -35,10 +35,10 @@ namespace Alloy.Adapters
 					{
 						if (starredTopArtistsHolder != null)
 						{
-							starredTopArtistsHolder.starredTopArtistsListContainer.Visibility = ViewStates.Visible;
-							StarredArtistAdapter starredTopArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.TopArtists, serviceConnection);
+							starredTopArtistsHolder.StarredTopArtistsListContainer.Visibility = ViewStates.Visible;
+							StarredArtistAdapter starredTopArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.TopArtists, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopArtistsAdapter.NotifyDataSetChanged(); };
-							starredTopArtistsHolder?.starredTopArtistsRecycleView?.SetAdapter(starredTopArtistsAdapter);
+							starredTopArtistsHolder.StarredTopArtistsRecycleView?.SetAdapter(starredTopArtistsAdapter);
 							starredTopArtistsAdapter.ItemClick += ArtistClick;
 							Adapters.SetAdapters(Activity, starredTopArtistsAdapter);
 						}
@@ -51,10 +51,10 @@ namespace Alloy.Adapters
 					{
 						if (starredTopAlbumsHolder != null)
 						{
-							starredTopAlbumsHolder.starredTopAlbumsListContainer.Visibility = ViewStates.Visible;
-							StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.TopAlbums, serviceConnection);
+							starredTopAlbumsHolder.StarredTopAlbumsListContainer.Visibility = ViewStates.Visible;
+							StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.TopAlbums, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumsAdapter.NotifyDataSetChanged(); };
-							starredTopAlbumsHolder?.starredTopAlbumRecycleView?.SetAdapter(albumsAdapter);
+							starredTopAlbumsHolder.StarredTopAlbumRecycleView?.SetAdapter(albumsAdapter);
 							albumsAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, albumsAdapter);
 						}
@@ -67,10 +67,10 @@ namespace Alloy.Adapters
 						if (starredTopTracksHolder != null)
 						{
 
-							starredTopTracksHolder.starredTopTracksListContainer.Visibility = ViewStates.Visible;
-							StarredTrackAdapter starredTopTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.TopTracks, serviceConnection);
+							starredTopTracksHolder.StarredTopTracksListContainer.Visibility = ViewStates.Visible;
+							StarredTrackAdapter starredTopTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.TopTracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopTracksAdapter.NotifyDataSetChanged(); };
-							starredTopTracksHolder?.starredTopTracksRecycleView?.SetAdapter(starredTopTracksAdapter);
+							starredTopTracksHolder.StarredTopTracksRecycleView?.SetAdapter(starredTopTracksAdapter);
 							starredTopTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, starredTopTracksAdapter);
 						}
@@ -82,10 +82,10 @@ namespace Alloy.Adapters
 					{
 						if (starredArtistsHolder != null)
 						{
-							starredArtistsHolder.starredArtistsListContainer.Visibility = ViewStates.Visible;
-							StarredArtistAdapter starredArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.Artists, serviceConnection);
+							starredArtistsHolder.StarredArtistsListContainer.Visibility = ViewStates.Visible;
+							StarredArtistAdapter starredArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.Artists, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredArtistsAdapter.NotifyDataSetChanged(); };
-							starredArtistsHolder?.starredArtistsRecycleView?.SetAdapter(starredArtistsAdapter);
+							starredArtistsHolder.StarredArtistsRecycleView?.SetAdapter(starredArtistsAdapter);
 							starredArtistsAdapter.ItemClick += ArtistClick;
 							Adapters.SetAdapters(Activity, starredArtistsAdapter);
 						}
@@ -98,10 +98,10 @@ namespace Alloy.Adapters
 					{
 						if (starredAlbumsHolder != null)
 						{
-							starredAlbumsHolder.starredAlbumsListContainer.Visibility = ViewStates.Visible;
-							StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.Albums, serviceConnection);
+							starredAlbumsHolder.StarredAlbumsListContainer.Visibility = ViewStates.Visible;
+							StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.Albums, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumsAdapter.NotifyDataSetChanged(); };
-							starredAlbumsHolder?.starredAlbumRecycleView?.SetAdapter(albumsAdapter);
+							starredAlbumsHolder.StarredAlbumRecycleView?.SetAdapter(albumsAdapter);
 							albumsAdapter.ItemClick += AlbumClick;
 							Adapters.SetAdapters(Activity, albumsAdapter);
 						}
@@ -114,10 +114,10 @@ namespace Alloy.Adapters
 					{
 						if (starredTracksHolder != null)
 						{
-							starredTracksHolder.starredTracksListContainer.Visibility = ViewStates.Visible;
-							StarredTrackAdapter starredTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, serviceConnection);
+							starredTracksHolder.StarredTracksListContainer.Visibility = ViewStates.Visible;
+							StarredTrackAdapter starredTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, ServiceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTracksAdapter.NotifyDataSetChanged(); };
-							starredTracksHolder?.starredTracksRecycleView?.SetAdapter(starredTracksAdapter);
+							starredTracksHolder.StarredTracksRecycleView?.SetAdapter(starredTracksAdapter);
 							starredTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, starredTracksAdapter);
 						}
@@ -141,21 +141,21 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
+			Context = parent.Context;
 			switch (viewType)
 			{
 				case 0:
-					return new StarredTopArtistsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.starred_top_artists, parent, false));
+					return new StarredTopArtistsViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_top_artists, parent, false));
 				case 1:
-					return new StarredTopAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.starred_top_albums, parent, false));
+					return new StarredTopAlbumsViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_top_albums, parent, false));
 				case 2:
-					return new StarredTopTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.starred_top_tracks, parent, false));
+					return new StarredTopTracksViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_top_tracks, parent, false));
 				case 3:
-					return new StarredArtistsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.starred_artists, parent, false));
+					return new StarredArtistsViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_artists, parent, false));
 				case 4:
-					return new StarredAlbumsViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.starred_albums, parent, false));
+					return new StarredAlbumsViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_albums, parent, false));
 				case 5:
-					return new StarredTracksViewHolder(LayoutInflater.From(context).Inflate(Resource.Layout.starred_tracks, parent, false));
+					return new StarredTracksViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_tracks, parent, false));
 
 			}
 			return null;
@@ -168,133 +168,124 @@ namespace Alloy.Adapters
 
 		public event EventHandler<StarredTrackAdapter.ViewHolder.ViewHolderEvent> TrackClick;
 		public event EventHandler<StarredArtistAdapter.ViewHolder.ViewHolderEvent> ArtistClick;
-		public event EventHandler<ArtistContainer> PlayArtist;
-		public event EventHandler<AlbumContainer> PlayAlbum;
 		public event EventHandler<StarredAlbumAdapter.ViewHolder.ViewHolderEvent> AlbumClick;
-
-		void OnPlayAlbum()
-		{
-			//	PlayAlbum?.Invoke(this, Album);
-		}
 
 		public class StarredAlbumsViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout starredAlbumsListContainer;
-			public RecyclerView starredAlbumRecycleView;
+			public LinearLayout StarredAlbumsListContainer { get; set; }
+			public RecyclerView StarredAlbumRecycleView { get; set; }
 			public Album album;
 
 			public StarredAlbumsViewHolder(View itemView) : base(itemView)
 			{
-				starredAlbumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_albums_list_container);
-				starredAlbumsListContainer.Visibility = ViewStates.Gone;
+				StarredAlbumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_albums_list_container);
+				StarredAlbumsListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				starredAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_albums_list);
-				starredAlbumRecycleView.SetLayoutManager(layoutManager);
+				StarredAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_albums_list);
+				StarredAlbumRecycleView.SetLayoutManager(layoutManager);
 				//RegisterForContextMenu(albumRecycleView);
 			}
 		}
 
 		public class StarredTopAlbumsViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout starredTopAlbumsListContainer;
-			public RecyclerView starredTopAlbumRecycleView;
+			public LinearLayout StarredTopAlbumsListContainer { get; set; }
+			public RecyclerView StarredTopAlbumRecycleView { get; set; }
 			public Album album;
 
 			public StarredTopAlbumsViewHolder(View itemView) : base(itemView)
 			{
-				starredTopAlbumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_albums_list_container);
-				starredTopAlbumsListContainer.Visibility = ViewStates.Gone;
+				StarredTopAlbumsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_albums_list_container);
+				StarredTopAlbumsListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				starredTopAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_albums_list);
-				starredTopAlbumRecycleView.SetLayoutManager(layoutManager);
+				StarredTopAlbumRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_albums_list);
+				StarredTopAlbumRecycleView.SetLayoutManager(layoutManager);
 				//RegisterForContextMenu(albumRecycleView);
 			}
 		}
 
 		public class StarredTracksViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout starredTracksListContainer;
-			public RecyclerView starredTracksRecycleView;
+			public LinearLayout StarredTracksListContainer { get; set; }
+			public RecyclerView StarredTracksRecycleView { get; set; }
 			public StarredTracksViewHolder(View itemView) : base(itemView)
 			{
-				starredTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_tracks_list_container);
-				starredTracksListContainer.Visibility = ViewStates.Gone;
+				StarredTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_tracks_list_container);
+				StarredTracksListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
-				starredTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_tracks_list);
-				starredTracksRecycleView.SetLayoutManager(layoutManager);
+				StarredTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_tracks_list);
+				StarredTracksRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 
 		public class StarredTopTracksViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout starredTopTracksListContainer;
-			public RecyclerView starredTopTracksRecycleView;
+			public LinearLayout StarredTopTracksListContainer { get; set; }
+			public RecyclerView StarredTopTracksRecycleView { get; set; }
 			public StarredTopTracksViewHolder(View itemView) : base(itemView)
 			{
-				starredTopTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_tracks_list_container);
-				starredTopTracksListContainer.Visibility = ViewStates.Gone;
+				StarredTopTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_tracks_list_container);
+				StarredTopTracksListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
-				starredTopTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_tracks_list);
-				starredTopTracksRecycleView.SetLayoutManager(layoutManager);
+				StarredTopTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_tracks_list);
+				StarredTopTracksRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 
 		public class StarredArtistsViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout starredArtistsListContainer;
-			public RecyclerView starredArtistsRecycleView;
+			public LinearLayout StarredArtistsListContainer { get; set; }
+			public RecyclerView StarredArtistsRecycleView { get; set; }
 			public StarredArtistsViewHolder(View itemView) : base(itemView)
 			{
-				starredArtistsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_artists_list_container);
-				starredArtistsListContainer.Visibility = ViewStates.Gone;
+				StarredArtistsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_artists_list_container);
+				StarredArtistsListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				starredArtistsRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_artists_list);
-				starredArtistsRecycleView.SetLayoutManager(layoutManager);
+				StarredArtistsRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_artists_list);
+				StarredArtistsRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 
 		public class StarredTopArtistsViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout starredTopArtistsListContainer;
-			public RecyclerView starredTopArtistsRecycleView;
+			public LinearLayout StarredTopArtistsListContainer { get; set; }
+			public RecyclerView StarredTopArtistsRecycleView { get; set; }
 			public StarredTopArtistsViewHolder(View itemView) : base(itemView)
 			{
-				starredTopArtistsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_artists_list_container);
-				starredTopArtistsListContainer.Visibility = ViewStates.Gone;
+				StarredTopArtistsListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_artists_list_container);
+				StarredTopArtistsListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Horizontal, false);
-				starredTopArtistsRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_artists_list);
-				starredTopArtistsRecycleView.SetLayoutManager(layoutManager);
+				StarredTopArtistsRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.starred_top_artists_list);
+				StarredTopArtistsRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 	}
 
-	public class StarredArtistAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class StarredArtistAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public List<Artist> Artists;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public List<Artist> Artists { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public StarredArtistAdapter(List<Artist> artists, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Artists = artists;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Artist = Artists[position];
-			Artists[position].GetAlbumArt(h.image);
-			h.name.SetText(Artists[position].Name, TextView.BufferType.Normal);
+			Artists[position].GetAlbumArt(h.Image);
+			h.Name.SetText(Artists[position].Name, TextView.BufferType.Normal);
 			h.SetSelected();
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { h.SetSelected(); };
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.starred_artist_item, parent, false);
-			return new StarredArtistAdapter.ViewHolder(view, OnClick, serviceConnection);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_artist_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Artists.Count;
@@ -307,19 +298,19 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-			public RelativeLayout itemRoot;
-			public ImageView image;
-			public TextView name;
-			public Artist Artist;
-			private BackgroundAudioServiceConnection serviceConnection;
+			public RelativeLayout ItemRoot { get; set; }
+			public ImageView Image { get; set; }
+			public TextView Name { get; set; }
+			public Artist Artist { get; set; }
+			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-				itemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
-				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
-				name = itemView.FindViewById<TextView>(Resource.Id.name);
-				this.serviceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Artist = Artist });
+				ItemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
+				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
+				Name = itemView.FindViewById<TextView>(Resource.Id.name);
+				ServiceConnection = serviceConnection;
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Artist = Artist });
 			}
 
 			public class ViewHolderEvent
@@ -332,47 +323,45 @@ namespace Alloy.Adapters
 			{
 				if (Artist == null) return;
 
-				bool selected = Artist.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.ArtistId.Equals(Artist.Id);
+				bool selected = Artist.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.ArtistId.Equals(Artist.Id);
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
 
 			}
 		}
 	}
 
-	public class StarredAlbumAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class StarredAlbumAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public List<Album> Albums;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public List<Album> Albums { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
 		public StarredAlbumAdapter(List<Album> albums, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Albums = albums;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Album = Albums[position];
-			Albums[position].GetAlbumArt(h.image);
-			h.name.SetText(Albums[position].Name, TextView.BufferType.Normal);
+			Albums[position].GetAlbumArt(h.Image);
+			h.Name.SetText(Albums[position].Name, TextView.BufferType.Normal);
 			h.SetSelected();
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.starred_album_item, parent, false);
-			return new ViewHolder(view, OnClick, serviceConnection);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_album_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Albums.Count;
@@ -385,19 +374,19 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-			public RelativeLayout itemRoot;
-			public ImageView image;
-			public TextView name;
-			public Album Album;
-			private BackgroundAudioServiceConnection serviceConnection;
+			public RelativeLayout ItemRoot { get; set; }
+			public ImageView Image { get; set; }
+			public TextView Name { get; set; }
+			public Album Album { get; set; }
+			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-				itemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
-				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
-				name = itemView.FindViewById<TextView>(Resource.Id.name);
-				this.serviceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Album = Album });
+				ItemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
+				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
+				Name = itemView.FindViewById<TextView>(Resource.Id.name);
+				ServiceConnection = serviceConnection;
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Album = Album });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
 			}
 
@@ -411,38 +400,37 @@ namespace Alloy.Adapters
 			{
 				if (Album == null) return;
 
-				bool selected = Album.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.AlbumId.Equals(Album.Id);
+				bool selected = Album.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.AlbumId.Equals(Album.Id);
 
 				if (Album.Tracks != null && Album.Tracks.Count != 0)
 				{
 					foreach (Song albumTrack in Album.Tracks)
 					{
-						if (albumTrack.IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
+						if (albumTrack.IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(albumTrack.Id)) selected = true;
 					}
 				}
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
 			}
 		}
 	}
 
-	public class StarredTrackAdapter : Android.Support.V7.Widget.RecyclerView.Adapter
+	public class StarredTrackAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public MusicQueue Songs;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public MusicQueue Songs { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public StarredTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 		}
 
 		public override long GetItemId(int position)
@@ -454,17 +442,16 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
-			Songs[position].GetAlbumArt(h.image);
-			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
-			h.album.SetText(Songs[position].Album, TextView.BufferType.Normal);
+			Songs[position].GetAlbumArt(h.Image);
+			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
+			h.Album.SetText(Songs[position].Album, TextView.BufferType.Normal);
 			h.SetSelected(position);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
-			return new ViewHolder(view, OnClick, serviceConnection);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Songs.Count;
@@ -478,37 +465,37 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout itemRoot;
-			public ImageView image;
-			public TextView title;
-			public TextView album;
-			public MusicQueue Songs;
-			private BackgroundAudioServiceConnection serviceConnection;
+			public LinearLayout ItemRoot { get; set; }
+			public ImageView Image { get; set; }
+			public TextView Title { get; set; }
+			public TextView Album { get; set; }
+			public MusicQueue Songs { get; set; }
+			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-				itemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
-				image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
-				title = itemView.FindViewById<TextView>(Resource.Id.title);
-				album = itemView.FindViewById<TextView>(Resource.Id.album);
-				this.serviceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = base.LayoutPosition, Songs = Songs });
-				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(base.LayoutPosition); };
+				ItemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
+				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
+				Title = itemView.FindViewById<TextView>(Resource.Id.title);
+				Album = itemView.FindViewById<TextView>(Resource.Id.album);
+				ServiceConnection = serviceConnection;
+				itemView.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
 			}
 
 			public void SetSelected(int position)
 			{
 				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
 
-				bool selected = Songs[position].IsSelected || serviceConnection != null && serviceConnection.CurrentSong != null && serviceConnection.CurrentSong.Id.Equals(Songs[position].Id);
+				bool selected = Songs[position].IsSelected || ServiceConnection != null && ServiceConnection.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
 
 				if (selected)
 				{
-					itemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					itemRoot.SetBackgroundColor(Color.Transparent);
+					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
 			}
 

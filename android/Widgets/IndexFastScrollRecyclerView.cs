@@ -17,21 +17,20 @@ namespace Alloy.Widgets
 
 		private bool mEnabled = true;
 
-		public int mIndexTextSize = 12;
-		public float mIndexbarWidth = 20;
-		public float mIndexbarMarginWidth = 5;
-		public float mIndexbarMarginHeight = 5;
-		public int mPreviewPadding = 5;
-		public int mIndexBarCornerRadius = 5;
-		public float mIndexBarTransparentValue = (float)0.6;
-		public Color mIndexbarBackgroudColor = Color.Black;
-		public Color mIndexbarTextColor = Color.White;
-		public Color mIndexbarHighLateTextColor = Color.Black;
-
-		public int mPreviewTextSize = 50;
-		public Color mPreviewBackgroudColor = Color.Black;
-		public Color mPreviewTextColor = Color.White;
-		public float mPreviewTransparentValue = (float)0.4;
+		public int IndexTextSize { get; set; } = 12;
+		public float IndexbarWidth { get; set; } = 20;
+		public float IndexbarMarginWidth { get; set; } = 5;
+		public float IndexbarMarginHeight { get; set; } = 5;
+		public int PreviewPadding { get; set; } = 5;
+		public int IndexBarCornerRadius { get; set; } = 5;
+		public float IndexBarTransparentValue { get; set; } = (float)0.6;
+		public Color IndexbarBackgroudColor { get; set; } = Color.Black;
+		public Color IndexbarTextColor { get; set; } = Color.White;
+		public Color IndexbarHighLateTextColor { get; set; } = Color.Black;
+		public int PreviewTextSize { get; set; } = 50;
+		public Color PreviewBackgroudColor { get; set; } = Color.Black;
+		public Color PreviewTextColor { get; set; } = Color.White;
+		public float PreviewTransparentValue { get; set; } = (float)0.4;
 
 		protected IndexFastScrollRecyclerView(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
 		{
@@ -61,55 +60,55 @@ namespace Alloy.Widgets
 				{
 					try
 					{
-						mIndexTextSize = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_indexTextSize, mIndexTextSize);
-						mIndexbarWidth = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexbarWidth, mIndexbarWidth);
-						mIndexbarMarginWidth = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexbarMarginWidth, mIndexbarMarginWidth);
-						mIndexbarMarginHeight = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexbarMarginHeight, mIndexbarMarginHeight);
-						mPreviewPadding = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_previewPadding, mPreviewPadding);
-						mIndexBarCornerRadius = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_indexBarCornerRadius, mIndexBarCornerRadius);
-						mIndexBarTransparentValue = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTransparentValue, mIndexBarTransparentValue);
+						IndexTextSize = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_indexTextSize, IndexTextSize);
+						IndexbarWidth = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexbarWidth, IndexbarWidth);
+						IndexbarMarginWidth = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexbarMarginWidth, IndexbarMarginWidth);
+						IndexbarMarginHeight = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexbarMarginHeight, IndexbarMarginHeight);
+						PreviewPadding = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_previewPadding, PreviewPadding);
+						IndexBarCornerRadius = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_indexBarCornerRadius, IndexBarCornerRadius);
+						IndexBarTransparentValue = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTransparentValue, IndexBarTransparentValue);
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_indexBarColor))
 						{
-							mIndexbarBackgroudColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_indexBarColor));
+							IndexbarBackgroudColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_indexBarColor));
 						}
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTextColor))
 						{
-							mIndexbarTextColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTextColor));
+							IndexbarTextColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTextColor));
 						}
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_indexBarHighlightTextColor))
 						{
-							mIndexbarHighLateTextColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_indexBarHighlightTextColor));
+							IndexbarHighLateTextColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_indexBarHighlightTextColor));
 						}
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_indexBarColorRes))
 						{
-							mIndexbarBackgroudColor = typedArray.GetColor(Resource.Styleable.IndexFastScrollRecyclerView_indexBarColorRes, mIndexbarBackgroudColor);
+							IndexbarBackgroudColor = typedArray.GetColor(Resource.Styleable.IndexFastScrollRecyclerView_indexBarColorRes, IndexbarBackgroudColor);
 						}
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTextColorRes))
 						{
-							mIndexbarTextColor = typedArray.GetColor(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTextColorRes, mIndexbarTextColor);
+							IndexbarTextColor = typedArray.GetColor(Resource.Styleable.IndexFastScrollRecyclerView_indexBarTextColorRes, IndexbarTextColor);
 						}
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_indexBarHighlightTextColorRes))
 						{
-							mIndexbarHighLateTextColor = typedArray.GetColor(Resource.Styleable.IndexFastScrollRecyclerView_indexBarHighlightTextColor, mIndexbarHighLateTextColor);
+							IndexbarHighLateTextColor = typedArray.GetColor(Resource.Styleable.IndexFastScrollRecyclerView_indexBarHighlightTextColor, IndexbarHighLateTextColor);
 						}
 
-						mPreviewTextSize = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_previewTextSize, mPreviewTextSize);
-						mPreviewTransparentValue = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_previewTransparentValue, mPreviewTransparentValue);
+						PreviewTextSize = typedArray.GetInt(Resource.Styleable.IndexFastScrollRecyclerView_previewTextSize, PreviewTextSize);
+						PreviewTransparentValue = typedArray.GetFloat(Resource.Styleable.IndexFastScrollRecyclerView_previewTransparentValue, PreviewTransparentValue);
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_previewColor))
 						{
-							mPreviewBackgroudColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_previewColor));
+							PreviewBackgroudColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_previewColor));
 						}
 
 						if (typedArray.HasValue(Resource.Styleable.IndexFastScrollRecyclerView_previewTextColor))
 						{
-							mPreviewTextColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_previewTextColor));
+							PreviewTextColor = Color.ParseColor(typedArray.GetString(Resource.Styleable.IndexFastScrollRecyclerView_previewTextColor));
 						}
 
 					}

@@ -124,8 +124,6 @@
     <Compile Include="Models\Link.cs" />
     <Compile Include="Models\MinDateTimeConverter.cs" />
     <Compile Include="Models\MusicQueue.cs" />
-    <Compile Include="Models\NowPlayingViewHolder.cs" />
-    <Compile Include="Models\NowPlayingViewHolderEvent.cs" />
     <Compile Include="Models\NullIntConverter.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\SlideDrawable.cs" />

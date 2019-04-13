@@ -35,19 +35,19 @@ namespace Alloy.Adapters
 
 					if (holder is AlbumInformationViewHolder albumInfoHolder)
 					{
-						albumInfoHolder.album = Album.Album;
-						albumInfoHolder.albumName.SetText(Album.Album.Name, TextView.BufferType.Normal);
-						albumInfoHolder.albumSize.SetText(Album.Size, TextView.BufferType.Normal);
-						albumInfoHolder.artistName.SetText(Album.Album.Artist, TextView.BufferType.Normal);
-						Album.Album.GetAlbumArt(albumInfoHolder.albumImage);
+						albumInfoHolder.Album = Album.Album;
+						albumInfoHolder.AlbumName.SetText(Album.Album.Name, TextView.BufferType.Normal);
+						albumInfoHolder.AlbumSize.SetText(Album.Size, TextView.BufferType.Normal);
+						albumInfoHolder.ArtistName.SetText(Album.Album.Artist, TextView.BufferType.Normal);
+						Album.Album.GetAlbumArt(albumInfoHolder.AlbumImage);
 						albumInfoHolder.CheckStarred();
 					}
 					break;
 				case 1:
 					if (holder is AlbumMetricsViewHolder artistMetricsHolder)
 					{
-						artistMetricsHolder.trackCount.SetText(Album.Tracks.Count.ToString(), TextView.BufferType.Normal);
-						artistMetricsHolder.playCount.SetText(Album.TotalPlays.ToString(), TextView.BufferType.Normal);
+						artistMetricsHolder.TrackCount.SetText(Album.Tracks.Count.ToString(), TextView.BufferType.Normal);
+						artistMetricsHolder.PlayCount.SetText(Album.TotalPlays.ToString(), TextView.BufferType.Normal);
 					}
 					break;
 				case 2:
@@ -55,15 +55,17 @@ namespace Alloy.Adapters
 					{
 						if (Album.Tracks.Count > 0)
 						{
-							albumTracksHolder.allTracksListContainer.Visibility = ViewStates.Visible;
+							albumTracksHolder.AllTracksListContainer.Visibility = ViewStates.Visible;
 							AlbumDetailTrackAdapter albumTracksAdapter = new AlbumDetailTrackAdapter(Album.Tracks, serviceConnection);
 							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumTracksAdapter.NotifyDataSetChanged(); };
-							albumTracksHolder.allTracksRecycleView?.SetAdapter(albumTracksAdapter);
+							albumTracksHolder.AllTracksRecycleView?.SetAdapter(albumTracksAdapter);
 							albumTracksAdapter.ItemClick += TrackClick;
 							Adapters.SetAdapters(Activity, albumTracksAdapter);
 						}
 					}
 
+					break;
+				default:
 					break;
 			}
 		}
@@ -109,40 +111,41 @@ namespace Alloy.Adapters
 
 		public class AlbumInformationViewHolder : RecyclerView.ViewHolder
 		{
-			public Album album;
-			public TextView albumName;
-			public TextView albumArtist;
-			public TextView albumSize;
-			public TextView artistName;
-			public Button albumPlayButton;
-			public ImageView albumImage;
-			public ImageView starButton;
-			private Drawable starred, notStarred;
+			public Album Album { get; set; }
+			public TextView AlbumName { get; set; }
+			public TextView AlbumArtist { get; set; }
+			public TextView AlbumSize { get; set; }
+			public TextView ArtistName { get; set; }
+			public Button AlbumPlayButton { get; set; }
+			public ImageView AlbumImage { get; set; }
+			public ImageView StarButton { get; set; }
+			private Drawable Starred { get; }
+			private Drawable NotStarred { get; }
 
-			public AlbumInformationViewHolder(View itemView, Action listener) : base(itemView)
+		public AlbumInformationViewHolder(View itemView, Action listener) : base(itemView)
 			{
-				albumName = itemView.FindViewById<TextView>(Resource.Id.album_name);
-				albumSize = itemView.FindViewById<TextView>(Resource.Id.album_size);
-				artistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
-				albumPlayButton = itemView.FindViewById<Button>(Resource.Id.album_play_button);
-				albumPlayButton.Click += (sender, e) => listener();
+				AlbumName = itemView.FindViewById<TextView>(Resource.Id.album_name);
+				AlbumSize = itemView.FindViewById<TextView>(Resource.Id.album_size);
+				ArtistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
+				AlbumPlayButton = itemView.FindViewById<Button>(Resource.Id.album_play_button);
+				AlbumPlayButton.Click += (sender, e) => listener();
 
-				albumImage = itemView.FindViewById<ImageView>(Resource.Id.album_image);
-				starButton = itemView.FindViewById<ImageView>(Resource.Id.album_favorite_button);
-				starButton.Click += StarButtonClick;
-				starred = itemView.Context.GetDrawable(Resource.Drawable.star_g);
-				notStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
+				AlbumImage = itemView.FindViewById<ImageView>(Resource.Id.album_image);
+				StarButton = itemView.FindViewById<ImageView>(Resource.Id.album_favorite_button);
+				StarButton.Click += StarButtonClick;
+				Starred = itemView.Context.GetDrawable(Resource.Drawable.star_g);
+				NotStarred = itemView.Context.GetDrawable(Resource.Drawable.star_o);
 			}
 
 			private void StarButtonClick(object sender, EventArgs e)
 			{
-				if (album.Starred)
+				if (Album.Starred)
 				{
-					MusicProvider.RemoveStar(album);
+					MusicProvider.RemoveStar(Album);
 				}
 				else
 				{
-					MusicProvider.AddStar(album);
+					MusicProvider.AddStar(Album);
 				}
 				CheckStarred();
 			}
@@ -151,51 +154,50 @@ namespace Alloy.Adapters
 			{
 				if (a != null)
 				{
-					starButton?.SetImageDrawable(a.Starred ? starred : notStarred);
+					StarButton?.SetImageDrawable(a.Starred ? Starred : NotStarred);
 				}
 				else
 				{
-					starButton?.SetImageDrawable(album.Starred ? starred : notStarred);
+					StarButton?.SetImageDrawable(Album.Starred ? Starred : NotStarred);
 				}
 			}
 		}
 
 		public class AlbumMetricsViewHolder : RecyclerView.ViewHolder
 		{
-			public TextView trackCount;
-			public TextView playCount;
+			public TextView TrackCount { get; set; }
+			public TextView PlayCount { get; set; }
 			public AlbumMetricsViewHolder(View itemView) : base(itemView)
 			{
-				trackCount = itemView.FindViewById<TextView>(Resource.Id.album_track_count);
-				playCount = itemView.FindViewById<TextView>(Resource.Id.album_play_count);
+				TrackCount = itemView.FindViewById<TextView>(Resource.Id.album_track_count);
+				PlayCount = itemView.FindViewById<TextView>(Resource.Id.album_play_count);
 			}
 		}
 
 		public class AlbumTracksViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout allTracksListContainer;
-			public RecyclerView allTracksRecycleView;
+			public LinearLayout AllTracksListContainer { get; set; }
+			public RecyclerView AllTracksRecycleView { get; set; }
 			public AlbumTracksViewHolder(View itemView) : base(itemView)
 			{
-				allTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.album_tracks_list_container);
-				allTracksListContainer.Visibility = ViewStates.Gone;
+				AllTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.album_tracks_list_container);
+				AllTracksListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
-				allTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.album_tracks_list);
-				allTracksRecycleView.SetLayoutManager(layoutManager);
+				AllTracksRecycleView = itemView.FindViewById<RecyclerView>(Resource.Id.album_tracks_list);
+				AllTracksRecycleView.SetLayoutManager(layoutManager);
 			}
 		}
 	}
 
 	public class AlbumDetailTrackAdapter : RecyclerView.Adapter
 	{
-		public Context context;
-		public MusicQueue Songs;
-		private BackgroundAudioServiceConnection serviceConnection;
+		public MusicQueue Songs { get; set; }
+		private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 		public AlbumDetailTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
-			this.serviceConnection = serviceConnection;
+			ServiceConnection = serviceConnection;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, arg) => { NotifyDataSetChanged(); };
 		}
 
@@ -208,17 +210,16 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
-			h.trackNo.SetText(Songs[position].No, TextView.BufferType.Normal);
-			h.title.SetText(Songs[position].Title, TextView.BufferType.Normal);
-			h.artist.SetText(Songs[position].Artist, TextView.BufferType.Normal);
+			h.TrackNo.SetText(Songs[position].No, TextView.BufferType.Normal);
+			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
+			h.Artist.SetText(Songs[position].Artist, TextView.BufferType.Normal);
 			h.SetSelected(position);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			context = parent.Context;
-			View view = LayoutInflater.From(context).Inflate(Resource.Layout.album_detail_song_item, parent, false);
-			return new ViewHolder(view, OnClick, serviceConnection);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_detail_song_item, parent, false);
+			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Songs.Count;
@@ -232,20 +233,20 @@ namespace Alloy.Adapters
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
-			public LinearLayout rootLayout;
-			public TextView title;
-			public TextView artist;
-			public TextView trackNo;
-			public MusicQueue Songs;
-			public BackgroundAudioServiceConnection ServiceConnection;
+			public LinearLayout RootLayout { get; set; }
+			public TextView Title { get; set; }
+			public TextView Artist { get; set; }
+			public TextView TrackNo { get; set; }
+			public MusicQueue Songs { get; set; }
+			public BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-				rootLayout = itemView.FindViewById<LinearLayout>(Resource.Id.root_view);
-				rootLayout.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
-				title = itemView.FindViewById<TextView>(Resource.Id.title);
-				artist = itemView.FindViewById<TextView>(Resource.Id.artist);
-				trackNo = itemView.FindViewById<TextView>(Resource.Id.trackno);
+				RootLayout = itemView.FindViewById<LinearLayout>(Resource.Id.root_view);
+				RootLayout.Click += (sender, e) => listener(new ViewHolderEvent() { Position = LayoutPosition, Songs = Songs });
+				Title = itemView.FindViewById<TextView>(Resource.Id.title);
+				Artist = itemView.FindViewById<TextView>(Resource.Id.artist);
+				TrackNo = itemView.FindViewById<TextView>(Resource.Id.trackno);
 				ServiceConnection = serviceConnection;
 			}
 
@@ -256,11 +257,11 @@ namespace Alloy.Adapters
 
 				if (selected)
 				{
-					rootLayout.SetBackgroundResource(Resource.Color.menu_selection_color);
+					RootLayout.SetBackgroundResource(Resource.Color.menu_selection_color);
 				}
 				else
 				{
-					rootLayout.SetBackgroundColor(Color.Transparent);
+					RootLayout.SetBackgroundColor(Color.Transparent);
 				}
 			}
 
