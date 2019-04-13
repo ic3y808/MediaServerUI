@@ -14,12 +14,7 @@ namespace Alloy.Compat
 {
 	public class ActionBarHelperNative
 	{
-
 		private static string TAG = "ActionBarHelperNative";
-
-		private ActionBarHelperNative()
-		{
-		}
 
 		private static readonly int[] THEME_ATTRS = { Android.Resource.Attribute.HomeAsUpIndicator };
 

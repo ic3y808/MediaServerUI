@@ -16,8 +16,7 @@ namespace Alloy.Fragments
 		private ArtistDetailAdapter artistDetailAdapter;
 		private RecyclerView artistContentView;
 		private SwipeRefreshLayout refreshLayout;
-
-		private ArtistContainer artist;
+		
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
@@ -43,14 +42,13 @@ namespace Alloy.Fragments
 		private void MusicProvider_ArtistRefreshed(object sender, ArtistContainer e)
 		{
 			if (e == null) { return; }
-			artist = e;
 			if (artistDetailAdapter != null)
 			{
 				artistDetailAdapter.TrackClick -= Track_ItemClick;
 				artistDetailAdapter.AlbumClick -= Album_ItemClick;
 				artistDetailAdapter.PlayArtist -= PlayArtist_Click;
 			}
-			artistDetailAdapter = new ArtistDetailAdapter(Activity, artist, ServiceConnection);
+			artistDetailAdapter = new ArtistDetailAdapter(Activity, e, ServiceConnection);
 			artistContentView.SetAdapter(artistDetailAdapter);
 			artistDetailAdapter.TrackClick += Track_ItemClick;
 			artistDetailAdapter.AlbumClick += Album_ItemClick;
