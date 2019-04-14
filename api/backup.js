@@ -1,3 +1,4 @@
+"use strict";
 const fs = require("fs");
 const path = require("path");
 const shell = require("shelljs");
@@ -10,7 +11,11 @@ class Backup {
 
   doBackup() {
     logger.info("alloydb", "Starting backup");
+<<<<<<< HEAD
     if (!fs.existsSync(process.env.BACKUP_DATA_DIR)) { shell.mkdir("-p", process.env.BACKUP_DATA_DIR); }
+=======
+    if (!fs.existsSync(process.env.BACKUP_DATA_DIR)) {shell.mkdir("-p", process.env.BACKUP_DATA_DIR);}
+>>>>>>> master
 
     return this.db.backup(path.join(process.env.BACKUP_DATA_DIR, `backup-${Date.now()}.db`));
   }

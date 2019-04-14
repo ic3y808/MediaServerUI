@@ -1,5 +1,4 @@
 import io from "socket.io-client";
-import CryptoJS from "crypto-js";
 
 export default class Backend {
   constructor($rootScope, AppUtilities, AlloyDbService) {
@@ -69,7 +68,10 @@ export default class Backend {
       }
     });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     $rootScope.socket.on("sabnzbd_history_result", (data) => {
       if (data) {
         this.AppUtilities.broadcast("sabnzbdHistoryResult", data);
@@ -81,6 +83,5 @@ export default class Backend {
         this.AppUtilities.broadcast("sabnzbdQueueResult", data);
       }
     });
-
   }
 }

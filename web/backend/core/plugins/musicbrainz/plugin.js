@@ -5,7 +5,11 @@ var log = require("../../../../../common/logger");
 class Musicbrainz {
   // Get server version.
   version() {
+<<<<<<< HEAD
     return this.cmd("version").then((r) => r.version);
+=======
+    return this.cmd("version").then((r ) => r.version);
+>>>>>>> master
   }
 
   // Perform command request.

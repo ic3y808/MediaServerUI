@@ -4,6 +4,11 @@ const fileUpload = require("express-fileupload");
 const express = require("express");
 const config = require("../common/config");
 const logger = require("../common/logger");
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> master
 var bodyParser = require("body-parser");
 var routes = require("./routes/index");
 var Watcher = require("./watcher");
@@ -22,7 +27,11 @@ class App {
     this.db.pragma("journal_mode = WAL");
     process.on("exit", () => {
       this.db.close();
+<<<<<<< HEAD
       if (this.trayApp) { this.trayApp.exit(); }
+=======
+      if (this.trayApp) {this.trayApp.exit();}
+>>>>>>> master
     });
     process.on("SIGHUP", () => process.exit(128 + 1));
     process.on("SIGINT", () => process.exit(128 + 2));
@@ -45,7 +54,11 @@ class App {
 
   notify(title, message) {
     if (process.platform === "win32") {
+<<<<<<< HEAD
       if (this.trayApp) { this.trayApp.balloon(title, message); }
+=======
+      if (this.trayApp) {this.trayApp.balloon(title, message);}
+>>>>>>> master
     }
   }
 
@@ -138,7 +151,11 @@ class App {
             break;
           }
           case "item-4-id-exit": {
+<<<<<<< HEAD
             if (this.trayApp) { this.trayApp.exit(); }
+=======
+            if (this.trayApp) {this.trayApp.exit();}
+>>>>>>> master
             process.exit(0);
             break;
           }
@@ -155,7 +172,7 @@ class App {
       this.app.use(express.json());
       this.app.use(express.urlencoded());
       this.app.use(fileUpload({
-        limits: { fileSize: 1024 * 1024 * 1024 },
+        limits: { fileSize: 1024 * 1024 * 1024 }
       }));
       this.app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
@@ -200,7 +217,11 @@ class App {
       }
 
       this.app.use("/api/v1", (req, res, next) => {
+<<<<<<< HEAD
         if (req.query.api_key !== process.env.API_KEY) { return res.sendStatus(401); }
+=======
+        if (req.query.api_key !== process.env.API_KEY) {return res.sendStatus(401);}
+>>>>>>> master
         next();
       });
 
@@ -216,7 +237,8 @@ class App {
           host: "localhost:" + process.env.API_PORT,
           basePath: "/api/v1",
           produces: ["application/json"],
-          schemes: ["http", "https"],
+          schemes: ["http",
+"https"],
           securityDefinitions: {
             ApiKeyAuth: {
               type: "apiKey",
@@ -300,7 +322,7 @@ class App {
       this.scheduler.createJob("Scan LastFM", "0 0 * * 0", () => {
         logger.info("alloydb", "Doing LastFM Scan");
         this.notify("Database Scan", "Starting LastFM scan from scheduler");
-        //lastFMScanner.incrementalScan();
+        //lastFMScanner.incrementalCleanup();
       });
 
       this.scheduler.createJob("DB Checkpoint", "0 */6 * * *", () => {
@@ -323,7 +345,11 @@ class App {
 
       this.notify("AlloyDB Started", "AlloyDB is Listening on port " + this.server.address().port);
       logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.server.address().port);
+<<<<<<< HEAD
       if (cb) { cb(this.server); }
+=======
+      if (cb) {cb(this.server);}
+>>>>>>> master
     });
   }
 

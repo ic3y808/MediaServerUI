@@ -1,3 +1,5 @@
+"use strict";
+
 const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const logger = require("../../../common/logger");
 const mm = require("../../music-metadata");
@@ -6,6 +8,7 @@ const path = require("path");
 const mime = require("mime-types");
 const fs = require("fs");
 const _ = require("lodash");
+const del = require("del");
 
 class MediaScannerBase {
 
@@ -62,7 +65,11 @@ class MediaScannerBase {
 
     if (request.status === 200) {
       return JSON.parse(request.responseText);
+<<<<<<< HEAD
     } else { return null; }
+=======
+    } return null;
+>>>>>>> master
   }
 
   checkCounts() {
@@ -158,10 +165,19 @@ class MediaScannerBase {
     }
 
     fs.readdir(process.env.COVER_ART_DIR, (err, items) => {
+<<<<<<< HEAD
       items.forEach((file) => {
         var anyArt = this.db.prepare("SELECT * FROM CoverArt WHERE id=?").all(file.replace(".jpg", ""));
         if (anyArt.length === 0) { del.sync(path.join(process.env.COVER_ART_DIR, file)); }
       });
+=======
+      if (!err) {
+        items.forEach((file) => {
+          var anyArt = this.db.prepare("SELECT * FROM CoverArt WHERE id=?").all(file.replace(".jpg", ""));
+          if (anyArt.length === 0) { del.sync(path.join(process.env.COVER_ART_DIR, file)); }
+        });
+      }
+>>>>>>> master
     });
   }
 
@@ -182,8 +198,8 @@ class MediaScannerBase {
     allHistory.forEach((item) => {
       var track = this.db.prepare("SELECT * FROM Tracks WHERE id=?").get(item.id);
       if (track) {
+        var sql = "REPLACE INTO History (history_id, id, type, action, time, title, artist, artist_id, album, album_id, genre, genre_id) VALUES(@history_id, @id, @type, @action, @time, @title, @artist, @artist_id, @album, @album_id, @genre, @genre_id)  ";
         try {
-
           item.title = track.title;
           item.artist = track.artist;
           item.artist_id = track.artist_id;
@@ -191,15 +207,11 @@ class MediaScannerBase {
           item.album_id = track.album_id;
           item.genre = track.genre;
           item.genre_id = track.genre_id;
-
-
-          var sql = "REPLACE INTO History (history_id, id, type, action, time, title, artist, artist_id, album, album_id, genre, genre_id) VALUES(@history_id, @id, @type, @action, @time, @title, @artist, @artist_id, @album, @album_id, @genre, @genre_id)  ";
           var insert = this.db.prepare(sql);
           insert.run(item);
         } catch (err) {
           if (err) { logger.error("alloydb", JSON.stringify(err)); }
           logger.info("alloydb", sql);
-          logger.info("alloydb", values);
         }
       }
     });
@@ -235,7 +247,11 @@ class MediaScannerBase {
           return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
         });
       } return this.parseFiles(audioFiles);
+<<<<<<< HEAD
     } else { return Promise.resolve(); }
+=======
+    } return Promise.resolve();
+>>>>>>> master
   }
 
   createAlbumArt() {
@@ -294,7 +310,10 @@ class MediaScannerBase {
     try {
       var insert = this.db.prepare(sql);
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
       Object.keys(data).forEach((key, index) => {
         var a = {};
         a[key] = data[key];
@@ -313,8 +332,8 @@ class MediaScannerBase {
     try {
       var data = {
         event_type: type,
-        reason: reason,
-        result: result,
+        reason,
+        result,
         time: moment().unix(),
         path: obj.path,
         title: "",
@@ -322,7 +341,11 @@ class MediaScannerBase {
         artist_id: "",
         album: "",
         album_id: "",
+<<<<<<< HEAD
         quality: "",
+=======
+        quality: ""
+>>>>>>> master
       };
 
       if (data.path && !fs.lstatSync(data.path).isDirectory()) {
@@ -362,9 +385,8 @@ class MediaScannerBase {
       }
       this.writeDb(data, "ScanEvents");
     } catch (err) {
-
+      logger.info("alloydb", JSON.stringify(err));
     }
-
   }
 }
 

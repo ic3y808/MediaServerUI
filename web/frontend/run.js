@@ -64,9 +64,18 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $labelHolder = $label.text();
     $select = $item.parent().find("input");
     $checked = $select.is(":checked");
+<<<<<<< HEAD
     if ($select.is(":disabled")) { return; }
     if ($select.attr("type") === "radio" && $checked) { return; }
     if ($select.attr("type") === "radio") { $menu.find("li").removeClass("active"); }
+=======
+    if ($select.is(":disabled"))
+      {return;}
+    if ($select.attr("type") == "radio" && $checked)
+      {return;}
+    if ($select.attr("type") == "radio")
+      {$menu.find("li").removeClass("active");}
+>>>>>>> master
     $item.parent().removeClass("active");
     !$checked && $item.parent().addClass("active");
     $select.prop("checked", !$select.prop("checked"));
@@ -111,9 +120,15 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   });
   $(document).on("click", ".panel-toggle", function (e) {
     e && e.preventDefault();
+<<<<<<< HEAD
     var $target = {};
     var $this = $(e.target), $class = "collapse";
     if (!$this.is("a")) { $this = $this.closest("a"); }
+=======
+    var $this = $(e.target), $class = "collapse", $target;
+    if (!$this.is("a"))
+      {$this = $this.closest("a");}
+>>>>>>> master
     $target = $this.closest(".panel");
     $target.find(".panel-body").toggleClass($class);
     $this.toggleClass("active");
@@ -158,9 +173,23 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       }, 500);
     }
   });
+<<<<<<< HEAD
 
   setHeight();
 
+=======
+  var setHeight = function () {
+    $(".app-fluid #nav > *").css("min-height", $(window).height() - 60);
+    return true;
+  };
+  setHeight();
+  var fixVbox = function () {
+    $(".ie11 .vbox").each(function () {
+      $(this).height($(this).parent().height());
+    });
+    return true;
+  };
+>>>>>>> master
   fixVbox();
   $(document).on("click", "[data-ride=\"collapse\"] a", function (e) {
     var $this = $(e.target);
@@ -197,13 +226,23 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       selector = $this.attr("href");
       selector = selector && selector.replace(/.*(?=#[^\s]*$)/, "");
     }
+<<<<<<< HEAD
     if ($this.parent("li").hasClass("active")) { return; }
+=======
+    if ($this.parent("li").hasClass("active"))
+      {return;}
+>>>>>>> master
     var previous = $ul.find(".active:last a")[0];
     var e = $.Event("show.bs.tab", {
       relatedTarget: previous
     });
     $this.trigger(e);
+<<<<<<< HEAD
     if (e.isDefaultPrevented()) { return; }
+=======
+    if (e.isDefaultPrevented())
+      {return;}
+>>>>>>> master
     var $target = $(selector);
     this.activate($this.parent("li"), $ul);
     this.activate($target, $target.parent(), function () {
@@ -238,8 +277,15 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     return this.each(function () {
       var $this = $(this);
       var data = $this.data("bs.tab");
+<<<<<<< HEAD
       if (!data) { $this.data("bs.tab", (data = new Tab(this))); }
       if (typeof option === "string") { data[option](); }
+=======
+      if (!data)
+        {$this.data("bs.tab", (data = new Tab(this)));}
+      if (typeof option === "string")
+        {data[option]();}
+>>>>>>> master
     });
   };
   $.fn.tab.Constructor = Tab;
@@ -251,7 +297,11 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     e.preventDefault();
     $(this).tab("show");
   });
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> master
 
   function toggleFullScreen() {
     var doc = window.document;
@@ -276,8 +326,15 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   $timeout(function () {
     Logger.debug("loading settings");
+<<<<<<< HEAD
     if ($rootScope) { $rootScope.socket.emit("load_settings", "alloydb_settings"); }
     if ($rootScope) { $rootScope.socket.emit("load_settings", "sabnzbd_settings"); }
+=======
+    if ($rootScope)
+      {$rootScope.socket.emit("load_settings", "alloydb_settings");}
+    if ($rootScope)
+      {$rootScope.socket.emit("load_settings", "sabnzbd_settings");}
+>>>>>>> master
 
     setTimeout(() => {
       if (MediaPlayer.castStatus()) {

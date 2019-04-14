@@ -14,7 +14,11 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
     templateUrl: "template/thumblist.jade",
     replace: true,
     link: function (scope, elm, attrs) {
+<<<<<<< HEAD
       
+=======
+
+>>>>>>> master
       scope.navigateToAlbum = (id) => {
         $location.path("/album/" + id);
       };

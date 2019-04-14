@@ -65,12 +65,12 @@ class Queue extends Base {
   pause(id) {
     if (id === undefined) {
       return this.delegate.cmd("pause");
-    } else {
+    } 
       return this.delegate.cmd("queue", {
         name: "pause",
         value: id
       });
-    }
+    
   }
 
   // Resume entire queue (with no argument) or a
@@ -78,23 +78,30 @@ class Queue extends Base {
   resume(id) {
     if (id === undefined) {
       return this.delegate.cmd("resume");
-    } else {
+    } 
       return this.delegate.cmd("queue", {
         name: "resume",
         value: id
       });
-    }
+    
   }
 
   // Normalize queue slot
   normalize(slot) {
     // parse timeleft
+<<<<<<< HEAD
     const timeleft = slot.timeleft.replace(/^(\d+):(\d+):(\d+)/, (all, H, M, S) => {
       return (Number(H) * 3600) + (Number(M) * 60) + Number(S);
     });
 
     // parse ETA
     const eta = slot.eta === "unknown" ? slot.eta : dateutil.parse(slot.eta);
+=======
+    const timeleft = slot.timeleft.replace(/^(\d+):(\d+):(\d+)/, (all, H, M, S) => Number(H) * 3600 + Number(M) * 60 + Number(S));
+
+    // parse ETA
+    const eta = slot.eta == "unknown" ? slot.eta : dateutil.parse(slot.eta);
+>>>>>>> master
 
     // parse age
     const age = slot.avg_age.replace(/^\s*(\d+).*/, (a, H) => Number(H) * 3600);
@@ -217,11 +224,9 @@ class SABnzbd {
     return Promise.all([
       this.queue.delete(...args),
       this.history.delete(...args),
-    ]).then(([queueStatus, historyStatus]) => {
-      return {
+    ]).then(([queueStatus, historyStatus]) => ({
         status: queueStatus.status || historyStatus.status
-      };
-    });
+      }));
   }
 
   // Perform command request.

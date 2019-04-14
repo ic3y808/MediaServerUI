@@ -19,11 +19,19 @@ var Lastfm = function (options) {
   this.debug = options.debug || false;
 
   this.api_key = options.api_key;
+<<<<<<< HEAD
   if (options.api_secret !== undefined && options.api_secret !== "") { this.api_secret = options.api_secret; }
   if (options.username !== undefined && options.username !== "") { this.username = options.username; }
   if (options.password !== undefined && options.password !== "") { this.password = options.password; }
   if (options.session_key !== undefined && options.session_key !== "") { this.session_key = options.session_key; }
   if (options.authToken !== undefined && options.authToken !== "") { this.authToken = options.authToken; }
+=======
+  if (options.api_secret != undefined && options.api_secret != "") { this.api_secret = options.api_secret; }
+  if (options.username != undefined && options.username != "") { this.username = options.username; }
+  if (options.password != undefined && options.password != "") { this.password = options.password; }
+  if (options.session_key != undefined && options.session_key != "") { this.session_key = options.session_key; }
+  if (options.authToken != undefined && options.authToken != "") { this.authToken = options.authToken; }
+>>>>>>> master
 
   // Privileged method - available to public methods but not to the instance itself.
   self._getInfo = function (opt) {
@@ -37,12 +45,20 @@ var Lastfm = function (options) {
       } else {
         var method = "";
         var params = "";
+<<<<<<< HEAD
         if (opt.track !== undefined && opt.track !== "") {
+=======
+        if (opt.track != undefined && opt.track != "") {
+>>>>>>> master
           method = "track";
           params = "&track=" + encodeURIComponent(opt.track);
         } else if (opt.artist !== undefined && opt.artist !== "" && (opt.album === undefined || opt.album === "")) {
           method = "artist";
+<<<<<<< HEAD
         } else if (opt.album !== undefined && opt.album !== "" && opt.album !== undefined && opt.album !== "") {
+=======
+        } else if (opt.album !== undefined && opt.album !== "" && opt.album != undefined && opt.album != "") {
+>>>>>>> master
           method = "album";
           params = "&album=" + encodeURIComponent(opt.album);
         } else if (opt.genre !== undefined && opt.genre !== "") {
@@ -78,10 +94,17 @@ var Lastfm = function (options) {
 // Left for backwards compatibility
 Lastfm.prototype.init = function (options) {
   this.api_key = options.api_key;
+<<<<<<< HEAD
   if (options.api_secret !== undefined && options.api_secret !== "") { this.api_secret = options.api_secret; }
   if (options.username !== undefined && options.username !== "") { this.username = options.username; }
   if (options.password !== undefined && options.password !== "") { this.password = options.password; }
   if (options.session_key !== undefined && options.session_key !== "") { this.session_key = options.session_key; }
+=======
+  if (options.api_secret != undefined && options.api_secret != "") { this.api_secret = options.api_secret; }
+  if (options.username != undefined && options.username != "") { this.username = options.username; }
+  if (options.password != undefined && options.password != "") { this.password = options.password; }
+  if (options.session_key != undefined && options.session_key != "") { this.session_key = options.session_key; }
+>>>>>>> master
 };
 
 Lastfm.prototype.getSessionKey = function (callback) {
@@ -152,19 +175,31 @@ Lastfm.prototype.addTrackTags = function (opt) {
 Lastfm.prototype.doScrobble = function (options) {
   if (this.debug) { console.log("Starting scrobbleTrack: ", options); }
   options = options || {};
+<<<<<<< HEAD
   if ((this.api_secret === undefined || this.api_secret === "") && typeof options.callback === "function") {
+=======
+  if ((this.api_secret == undefined || this.api_secret == "") && typeof options.callback === "function") {
+>>>>>>> master
     options.callback({
       success: false,
       error: "API Secret not specified."
     });
   }
+<<<<<<< HEAD
   if ((this.username === undefined || this.username === "") && typeof options.callback === "function") {
+=======
+  if ((this.username == undefined || this.username == "") && typeof options.callback === "function") {
+>>>>>>> master
     options.callback({
       success: false,
       error: "Username not specified."
     });
   }
+<<<<<<< HEAD
   if (((this.password === undefined || this.password === "") && !this.authToken) && typeof options.callback === "function") {
+=======
+  if (((this.password == undefined || this.password == "") && !this.authToken) && typeof options.callback === "function") {
+>>>>>>> master
     options.callback({
       success: false,
       error: "Password not specified."
@@ -174,6 +209,10 @@ Lastfm.prototype.doScrobble = function (options) {
   options.timestamp = options.timestamp !== undefined ? Math.floor(options.timestamp) : Math.floor(now() / 1000);
 
   if (this.debug) { console.log("Using session key: " + this.session_key + "\n\n"); }
+<<<<<<< HEAD
+=======
+  var authToken = this.authToken ? this.authToken : md5(this.username + md5(this.password));
+>>>>>>> master
   var sig = "api_key" + this.api_key + "artist" + options.artist + "method" + options.method + "sk" + this.session_key + (options.tags !== null ? "tags" + options.tags : "") + "timestamp" + options.timestamp + "track" + options.track + this.api_secret;
   var api_sig = md5(sig);
 
@@ -205,10 +244,10 @@ Lastfm.prototype.doScrobble = function (options) {
 
   var post_req = http.request(post_options, function (res) {
     res.setEncoding("utf8");
-    res.on("data", function (chunk) {
+    res.on("data", (chunk) => {
       //			console.log("Response: " + chunk);
       var parser = new xml2js.Parser(xml2js.defaults["0.1"]);
-      parser.parseString(chunk, function (err, result) {
+      parser.parseString(chunk, (err, result) => {
         try {
           if (result["@"].status === "ok") {
             //						console.log("Track scrobbled (" + options.method + " )");
@@ -273,7 +312,11 @@ Lastfm.prototype.getTrackInfo = function (opt) {
 Lastfm.prototype.getArtistInfo = function (opt) {
   opt = opt || {};
   opt.track = "";
+<<<<<<< HEAD
   if (opt.artist === undefined ||( opt.artist === "" && typeof opt.callback === "function")) {
+=======
+  if (opt.artist == undefined || (opt.artist == "" && typeof opt.callback === "function")) {
+>>>>>>> master
     opt.callback({
       success: false,
       error: "Artist not specified."
@@ -304,7 +347,11 @@ Lastfm.prototype.getArtistInfo = function (opt) {
 Lastfm.prototype.getAlbumInfo = function (opt) {
   opt = opt || {};
   opt.track = "";
+<<<<<<< HEAD
   if ((opt.artist === undefined || opt.artist === "") && (opt.album === undefined || opt.album === "") && typeof opt.callback === "function") {
+=======
+  if ((opt.artist == undefined || opt.artist == "") && (opt.album == undefined || opt.album == "") && typeof opt.callback === "function") {
+>>>>>>> master
     opt.callback({
       success: false,
       error: "Need to specify Artist and Album."
@@ -335,7 +382,11 @@ Lastfm.prototype.getAlbumInfo = function (opt) {
 Lastfm.prototype.getGenreInfo = function (opt) {
   opt = opt || {};
 
+<<<<<<< HEAD
   if ((opt.genre === undefined || opt.genre === "") && typeof opt.callback === "function") {
+=======
+  if ((opt.genre == undefined || opt.genre == "") && typeof opt.callback === "function") {
+>>>>>>> master
     opt.callback({
       success: false,
       error: "Need to specify Genre."
@@ -371,15 +422,24 @@ Lastfm.prototype.getTags = function (opt) {
       this._isTheMethodCaller = false;
       //			console.log("result: ", result);
       if (typeof the_callback === "function") {
+<<<<<<< HEAD
         if (result["@"].status === "ok") {
           var tags = opt.track !== undefined && opt.track !== "" ? result.track.toptags.tag : result.artist.tags.tag;
+=======
+        if (result["@"].status == "ok") {
+          var tags = opt.track != undefined && opt.track != "" ? result.track.toptags.tag : result.artist.tags.tag;
+>>>>>>> master
           if (typeof tags === "object" && !tags.length) { tags = [tags]; }
           var args = {
             success: true,
             tags: tags || [],
             artist: opt.track !== undefined && opt.track !== "" ? result.track.artist.name : result.artist.name
           };
+<<<<<<< HEAD
           if (opt.track !== undefined && opt.track !== "") { args.track = result.track.name; }
+=======
+          if (opt.track != undefined && opt.track != "") { args.track = result.track.name; }
+>>>>>>> master
           the_callback(args);
         } else {
           the_callback({
@@ -400,14 +460,23 @@ Lastfm.prototype.getPlays = function (opt) {
     callback: function (result) {
       this._isTheMethodCaller = false;
       if (typeof the_callback === "function") {
+<<<<<<< HEAD
         if (result["@"].status === "ok") {
+=======
+        if (result["@"].status == "ok") {
+>>>>>>> master
           var ret = {
             success: true,
             plays: opt.track !== undefined && opt.track !== "" ? result.track.userplaycount : result.artist.stats.userplaycount,
             artist: opt.track !== undefined && opt.track !== "" ? result.track.artist.name : result.artist.name
           };
+<<<<<<< HEAD
           if (ret.plays === undefined) { ret.plays = 0; }
           if (opt.track !== undefined && opt.track !== "") { ret.track = result.track.name; }
+=======
+          if (ret.plays == undefined) { ret.plays = 0; }
+          if (opt.track != undefined && opt.track != "") { ret.track = result.track.name; }
+>>>>>>> master
           the_callback(ret);
         } else {
           the_callback({
@@ -546,4 +615,16 @@ Lastfm.prototype.doGet = function (opt) {
   });
 };
 
+<<<<<<< HEAD
+=======
+function now() {
+  return new Date().getTime();
+}
+
+function md5(string) {
+  return crypto.createHash("md5").update(string, "utf8")
+    .digest("hex");
+}
+
+>>>>>>> master
 module.exports = Lastfm;

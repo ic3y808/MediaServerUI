@@ -1,44 +1,41 @@
 (function (global, factory) {
   "ngInject";
-  'use strict';
 
-  if (typeof exports === 'object' && typeof module !== 'undefined') {
+  if (typeof exports === "object" && typeof module !== "undefined") {
     // commonJS
-    module.exports = factory(require('angular'));
+    module.exports = factory(require("angular"));
   }
-  else if (typeof define === 'function' && define.amd) {
+  else if (typeof define === "function" && define.amd) {
     // AMD
-    define(['module', 'angular'], function (module, angular) {
+    define(["module", "angular"], function (module, angular) {
       module.exports = factory(angular);
     });
   }
   else {
     factory(global.angular);
   }
-}
-
-(this, function (angular) {
+}(this, function (angular) {
   "ngInject";
   var helperService = new HelperService();
 
   angular
-    .module('autoCompleteModule', ['ngSanitize'])
-    .directive('autoComplete', autoCompleteDirective)
-    .directive('autoCompleteItem', autoCompleteItemDirective)
-    .directive('autoCompleteNoMatch', autoCompleteNoMatchDirective);
+    .module("autoCompleteModule", ["ngSanitize"])
+    .directive("autoComplete", autoCompleteDirective)
+    .directive("autoCompleteItem", autoCompleteItemDirective)
+    .directive("autoCompleteNoMatch", autoCompleteNoMatchDirective);
 
-  autoCompleteDirective.$inject = ['$q', '$compile', '$document', '$window', '$timeout'];
+  autoCompleteDirective.$inject = ["$q", "$compile", "$document", "$window", "$timeout"];
   function autoCompleteDirective($q, $compile, $document, $window, $timeout) {
 
     return {
-      restrict: 'A',
+      restrict: "A",
       scope: {},
       transclude: false,
-      controllerAs: 'ctrl',
+      controllerAs: "ctrl",
       bindToController: {
-        initialOptions: '&autoComplete'
+        initialOptions: "&autoComplete"
       },
-      require: ['autoComplete', 'ngModel'],
+      require: ["autoComplete", "ngModel"],
       link: postLinkFn,
       controller: MainCtrl
     };
@@ -77,12 +74,12 @@
           ctrl.options.dropdownParent.append(ctrl.container);
         }
         else {
-          $document.find('body').append(ctrl.container);
-          ctrl.container.addClass('auto-complete-absolute-container');
+          $document.find("body").append(ctrl.container);
+          ctrl.container.addClass("auto-complete-absolute-container");
         }
 
         // keep a reference to the <ul> element
-        ctrl.elementUL = angular.element(ctrl.container[0].querySelector('ul.auto-complete-results'));
+        ctrl.elementUL = angular.element(ctrl.container[0].querySelector("ul.auto-complete-results"));
       }
 
       function _getContainer() {
@@ -100,8 +97,8 @@
       function _getCustomContainer() {
         var container = ctrl.options.dropdownParent;
 
-        container.addClass('auto-complete-container unselectable');
-        container.attr('data-instance-id', ctrl.instanceId);
+        container.addClass("auto-complete-container unselectable");
+        container.attr("data-instance-id", ctrl.instanceId);
 
         var linkFn = $compile(_getDropdownListTemplate());
         var elementUL = linkFn(scope);
@@ -116,36 +113,36 @@
       }
 
       function _getContainerTemplate() {
-        var html = '';
-        html += '<div class="auto-complete-container unselectable"';
-        html += '     data-instance-id="{{ ctrl.instanceId }}"';
-        html += '     ng-show="ctrl.containerVisible">';
+        var html = "";
+        html += "<div class=\"auto-complete-container unselectable\"";
+        html += "     data-instance-id=\"{{ ctrl.instanceId }}\"";
+        html += "     ng-show=\"ctrl.containerVisible\">";
         html += _getDropdownListTemplate();
-        html += '</div>';
+        html += "</div>";
 
         return html;
       }
 
       function _getDropdownListTemplate() {
-        var html = '';
-        html += '     <ul class="auto-complete-results">';
-        html += '         <li ng-if="ctrl.renderItems.length"';
-        html += '             ng-repeat="renderItem in ctrl.renderItems track by renderItem.id"';
-        html += '             ng-click="ctrl.selectItem($index, true)"';
-        html += '             class="auto-complete-item" data-index="{{ $index }}"';
-        html += '             ng-class="ctrl.getSelectedCssClass($index)">';
-        html += '               <auto-complete-item index="$index"';
-        html += '                      item-template-link-fn="ctrl.itemTemplateLinkFn"';
-        html += '                      render-item="renderItem"';
-        html += '                      search-text="ctrl.searchText" />';
-        html += '         </li>';
-        html += '         <li ng-if="!ctrl.renderItems.length && ctrl.options.noMatchTemplateEnabled"';
-        html += '             class="auto-complete-item auto-complete-no-match">';
-        html += '               <auto-complete-no-match';
-        html += '                      template="ctrl.options.noMatchTemplate"';
-        html += '                      search-text="ctrl.searchText" />';
-        html += '         </li>';
-        html += '     </ul>';
+        var html = "";
+        html += "     <ul class=\"auto-complete-results\">";
+        html += "         <li ng-if=\"ctrl.renderItems.length\"";
+        html += "             ng-repeat=\"renderItem in ctrl.renderItems track by renderItem.id\"";
+        html += "             ng-click=\"ctrl.selectItem($index, true)\"";
+        html += "             class=\"auto-complete-item\" data-index=\"{{ $index }}\"";
+        html += "             ng-class=\"ctrl.getSelectedCssClass($index)\">";
+        html += "               <auto-complete-item index=\"$index\"";
+        html += "                      item-template-link-fn=\"ctrl.itemTemplateLinkFn\"";
+        html += "                      render-item=\"renderItem\"";
+        html += "                      search-text=\"ctrl.searchText\" />";
+        html += "         </li>";
+        html += "         <li ng-if=\"!ctrl.renderItems.length && ctrl.options.noMatchTemplateEnabled\"";
+        html += "             class=\"auto-complete-item auto-complete-no-match\">";
+        html += "               <auto-complete-no-match";
+        html += "                      template=\"ctrl.options.noMatchTemplate\"";
+        html += "                      search-text=\"ctrl.searchText\" />";
+        html += "         </li>";
+        html += "     </ul>";
 
         return html;
       }
@@ -175,7 +172,7 @@
           });
         });
 
-        ctrl.container.find('ul').on(DOM_EVENT.SCROLL, function () {
+        ctrl.container.find("ul").on(DOM_EVENT.SCROLL, function () {
           if (!ctrl.options.pagingEnabled) {
             return;
           }
@@ -207,7 +204,7 @@
           });
         });
 
-        // $window is a reference to the browser's window object
+        // $window is a reference to the browser"s window object
         angular.element($window).on(DOM_EVENT.RESIZE, function () {
           if (ctrl.options.hideDropdownOnWindowResize) {
             scope.$evalAsync(function () {
@@ -311,8 +308,8 @@
 
       function _tryQuery(searchText) {
         // query only if minimum number of chars are typed; else hide dropdown
-        if ((ctrl.options.minimumChars === 0)
-          || (searchText && searchText.trim().length !== 0 && searchText.length >= ctrl.options.minimumChars)) {
+        if ((ctrl.options.minimumChars === 0) ||
+          (searchText && searchText.trim().length !== 0 && searchText.length >= ctrl.options.minimumChars)) {
           _waitAndQuery(searchText);
           return;
         }
@@ -354,7 +351,7 @@
       }
 
       // cleanup on destroy
-      var destroyFn = scope.$on('$destroy', function () {
+      var destroyFn = scope.$on("$destroy", function () {
         if (ctrl.container) {
           ctrl.container.remove();
           ctrl.container = null;
@@ -365,7 +362,7 @@
     }
   }
 
-  MainCtrl.$inject = ['$q', '$window', '$document', '$timeout', '$templateRequest', '$compile', '$exceptionHandler'];
+  MainCtrl.$inject = ["$q", "$window", "$document", "$timeout", "$templateRequest", "$compile", "$exceptionHandler"];
   function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, $exceptionHandler) {
     var that = this;
     var originalSearchText = null;
@@ -416,7 +413,7 @@
     this.show = function () {
       // the show() method is called after the items are ready for display
       // the textbox position can change (ex: window resize) when it has focus
-      // so reposition the dropdown before it's shown
+      // so reposition the dropdown before it"s shown
       _positionDropdown();
 
       // callback
@@ -482,7 +479,7 @@
     };
 
     this.getSelectedCssClass = function (item) {
-      return (item === that.selectedItem) ? that.options.selectedCssClass : '';
+      return (item === that.selectedItem) ? that.options.selectedCssClass : "";
     };
 
     this.tryLoadNextPage = function () {
@@ -522,7 +519,7 @@
       return $q.when(that.options.data(params.searchText, params.paging),
         function successCallback(result) {
           // verify that the queryId did not change since the possibility exists that the
-          // search text changed before the 'data' promise was resolved. Say, due to a lag
+          // search text changed before the "data" promise was resolved. Say, due to a lag
           // in getting data from a remote web service.
           if (_didQueryIdChange(params)) {
             that.autoHide();
@@ -568,7 +565,7 @@
 
       that.selectItem(itemIndex);
 
-      var attrSelector = 'li[data-index="' + itemIndex + '"]';
+      var attrSelector = "li[data-index=\"" + itemIndex + "\"]";
 
       // use jquery.scrollTo plugin if available
       // http://flesler.blogspot.com/2007/10/jqueryscrollto.html
@@ -611,17 +608,17 @@
       }
 
       var dropdownWidth = null;
-      if (that.options.dropdownWidth && that.options.dropdownWidth !== 'auto') {
+      if (that.options.dropdownWidth && that.options.dropdownWidth !== "auto") {
         dropdownWidth = that.options.dropdownWidth;
       }
       else {
         // same as textbox width
-        dropdownWidth = that.target[0].getBoundingClientRect().width + 'px';
+        dropdownWidth = that.target[0].getBoundingClientRect().width + "px";
       }
-      that.container.css({ 'width': dropdownWidth });
+      that.container.css({ "width": dropdownWidth });
 
-      if (that.options.dropdownHeight && that.options.dropdownHeight !== 'auto') {
-        that.elementUL.css({ 'max-height': that.options.dropdownHeight });
+      if (that.options.dropdownHeight && that.options.dropdownHeight !== "auto") {
+        that.elementUL.css({ "max-height": that.options.dropdownHeight });
       }
 
       // use the .position() function from jquery.ui if available (requires both jquery and jquery-ui)
@@ -636,22 +633,22 @@
 
     function _positionUsingJQuery() {
       var defaultPosition = {
-        my: 'left top',
-        at: 'left bottom',
+        my: "left top",
+        at: "left bottom",
         of: that.target,
-        collision: 'none flip'
+        collision: "none flip"
       };
 
       var position = angular.extend({}, defaultPosition, that.options.positionUsing);
 
       // jquery.ui position() requires the container to be visible to calculate its position.
       if (!that.containerVisible) {
-        that.container.css({ 'visibility': 'hidden' });
+        that.container.css({ "visibility": "hidden" });
       }
       that.containerVisible = true; // used in the template to set ng-show.
       $timeout(function () {
         that.container.position(position);
-        that.container.css({ 'visibility': 'visible' });
+        that.container.css({ "visibility": "visible" });
       });
     }
 
@@ -663,8 +660,8 @@
       var scrollLeft = DOCUMENT.body.scrollLeft || DOCUMENT.documentElement.scrollLeft || $window.pageXOffset;
 
       that.container.css({
-        'left': rect.left + scrollLeft + 'px',
-        'top': rect.top + rect.height + scrollTop + 'px'
+        "left": rect.left + scrollLeft + "px",
+        "top": rect.top + rect.height + scrollTop + "px"
       });
 
       that.containerVisible = true;
@@ -674,15 +671,15 @@
     
 
       if(that.selectedItem.genre)
-        _setTargetValue(that.selectedItem.genre);
+        {_setTargetValue(that.selectedItem.genre);}
       if(that.selectedItem.album)
-        _setTargetValue(that.selectedItem.album);
+        {_setTargetValue(that.selectedItem.album);}
       if(that.selectedItem.artist)
-        _setTargetValue(that.selectedItem.artist);
+        {_setTargetValue(that.selectedItem.artist);}
       if(that.selectedItem.name)
-        _setTargetValue(that.selectedItem.name);
+        {_setTargetValue(that.selectedItem.name);}
       if(that.selectedItem.title)
-        _setTargetValue(that.selectedItem.title);
+        {_setTargetValue(that.selectedItem.title);}
     }
 
     function _setTargetValue(value) {
@@ -764,19 +761,19 @@
 
       var itemsToRender = _.map(dataItemsToRender, function (data, index) {
         // invoke render callback with the data as parameter
-        // this should return an object with a 'label' and 'value' property where
-        // 'label' is the template for display and 'value' is the text for the textbox
-        // If the object has an 'id' property, it will be used in the 'track by' clause of ng-repeat in the template
+        // this should return an object with a "label" and "value" property where
+        // "label" is the template for display and "value" is the text for the textbox
+        // If the object has an "id" property, it will be used in the "track by" clause of ng-repeat in the template
         var item = renderFn(data);
 
-        if (!item || !item.hasOwnProperty('label') || !item.hasOwnProperty('value')) {
+        if (!item || !item.hasOwnProperty("label") || !item.hasOwnProperty("value")) {
           return null;
         }
 
         // store the data on the renderItem and add to array
         item.data = data;
-        // unique 'id' for use in the 'track by' clause
-        item.id = item.hasOwnProperty('id') ? item.id : (item.value + item.label + index);
+        // unique "id" for use in the "track by" clause
+        item.id = item.hasOwnProperty("id") ? item.id : (item.value + item.label + index);
 
         return item;
       });
@@ -806,7 +803,7 @@
       }
 
       // itemTemplate or default
-      var template = that.options.itemTemplate || '<span ng-bind-html="entry.item"></span>';
+      var template = that.options.itemTemplate || "<span ng-bind-html=\"entry.item\"></span>";
       return $q.when(template);
     }
 
@@ -855,21 +852,21 @@
         positionDropdown: _positionDropdownIfVisible,
         hideDropdown: _hideDropdown
       };
-    })();
+    }());
   }
 
-  autoCompleteItemDirective.$inject = ['$compile', '$rootScope', '$sce', '$controller'];
+  autoCompleteItemDirective.$inject = ["$compile", "$rootScope", "$sce", "$controller"];
   function autoCompleteItemDirective($compile, $rootScope, $sce, $controller) {
     return {
-      restrict: 'E',
-      transclude: 'element',
+      restrict: "E",
+      transclude: "element",
       scope: {},
-      controllerAs: 'ctrl',
+      controllerAs: "ctrl",
       bindToController: {
-        index: '<',
-        renderItem: '<',
-        searchText: '<',
-        itemTemplateLinkFn: '<'
+        index: "<",
+        renderItem: "<",
+        searchText: "<",
+        itemTemplateLinkFn: "<"
       },
       controller: function () { },
       link: function (scope, element) {
@@ -879,16 +876,16 @@
         }
         else {
           // Needed to maintain backward compatibility since the parameter passed to $compile must be html.
-          // When 'item' is returned from the 'options.renderItem' callback the 'label' might contain
+          // When "item" is returned from the "options.renderItem" callback the "label" might contain
           // a trusted value [returned by a call to $sce.trustAsHtml(html)]. We can get the original
           // html that was provided to $sce.trustAsHtml using the valueOf() function.
-          // If 'label' is not a value that had been returned by $sce.trustAsHtml, it will be returned unchanged.
+          // If "label" is not a value that had been returned by $sce.trustAsHtml, it will be returned unchanged.
           var template = $sce.valueOf(scope.ctrl.renderItem.label);
           linkFn = $compile(template);
         }
 
         linkFn(createEntryScope(scope), function (clonedElement) {
-          // append to the directive element's parent (<li>) since this directive element is replaced (transclude is set to 'element').
+          // append to the directive element"s parent (<li>) since this directive element is replaced (transclude is set to "element").
           $(element[0].parentNode).append(clonedElement);
         });
       }
@@ -900,11 +897,11 @@
       // for now its an empty controller. Additional logic can be added to this controller if needed
       var entry = entryScope.entry = $controller(angular.noop);
 
-      var deregisterWatchesFn = _.map(['index', 'renderItem', 'searchText'], function (key) {
-        return directiveScope.$watch(('ctrl.' + key), function (newVal) {
+      var deregisterWatchesFn = _.map(["index", "renderItem", "searchText"], function (key) {
+        return directiveScope.$watch(("ctrl." + key), function (newVal) {
           switch (key) {
-            case 'renderItem':
-              // add 'item' property on entryScope for backward compatibility
+            case "renderItem":
+              // add "item" property on entryScope for backward compatibility
               entry.item = entryScope.item = newVal.data;
               break;
             default:
@@ -920,22 +917,22 @@
     }
   }
 
-  autoCompleteNoMatchDirective.$inject = ['$compile', '$rootScope', '$controller'];
+  autoCompleteNoMatchDirective.$inject = ["$compile", "$rootScope", "$controller"];
   function autoCompleteNoMatchDirective($compile, $rootScope, $controller) {
     return {
-      restrict: 'E',
-      transclude: 'element',
+      restrict: "E",
+      transclude: "element",
       scope: {},
-      controllerAs: 'ctrl',
+      controllerAs: "ctrl",
       bindToController: {
-        template: '<',
-        searchText: '<'
+        template: "<",
+        searchText: "<"
       },
       controller: function () { },
       link: function (scope, element) {
         var linkFn = $compile(scope.ctrl.template);
         linkFn(createEntryScope(scope), function (clonedElement) {
-          // append to the directive element's parent (<li>) since this directive element is replaced (transclude is set to 'element').
+          // append to the directive element"s parent (<li>) since this directive element is replaced (transclude is set to "element").
           $(element[0].parentNode).append(clonedElement);
         });
       }
@@ -947,7 +944,7 @@
       // for now its an empty controller. Additional logic can be added to this controller if needed
       var entry = entryScope.entry = $controller(angular.noop);
 
-      var deregisterFn = directiveScope.$watch('ctrl.searchText', function (newVal) {
+      var deregisterFn = directiveScope.$watch("ctrl.searchText", function (newVal) {
         entry.searchText = newVal;
       });
 
@@ -988,7 +985,7 @@
 
     this.deregisterOnDestroy = function (scope, deregisterWatchesFn) {
       // cleanup on destroy
-      var destroyFn = scope.$on('$destroy', function () {
+      var destroyFn = scope.$on("$destroy", function () {
         _.each(deregisterWatchesFn, function (deregisterFn) {
           deregisterFn();
         });
@@ -999,12 +996,12 @@
   }
 
   var DOM_EVENT = {
-    RESIZE: 'resize',
-    SCROLL: 'scroll',
-    CLICK: 'click',
-    KEYDOWN: 'keydown',
-    FOCUS: 'focus',
-    INPUT: 'input'
+    RESIZE: "resize",
+    SCROLL: "scroll",
+    CLICK: "click",
+    KEYDOWN: "keydown",
+    FOCUS: "focus",
+    INPUT: "input"
   };
 
   var KEYCODE = {
@@ -1031,7 +1028,7 @@
      * CSS class applied to the selected list element.
      * @default auto-complete-item-selected
      */
-    selectedCssClass: 'auto-complete-item-selected',
+    selectedCssClass: "auto-complete-item-selected",
     /**
      * Minimum number of characters required to display the dropdown.
      * @default 1
@@ -1049,14 +1046,14 @@
     activateOnFocus: false,
     /**
      * Width in "px" of the dropddown list. This can also be applied using CSS.
-     * @default 'auto'
+     * @default "auto"
      */
-    dropdownWidth: 'auto',
+    dropdownWidth: "auto",
     /**
      * Maximum height in "px" of the dropddown list. This can also be applied using CSS.
-     * @default 'auto'
+     * @default "auto"
      */
-    dropdownHeight: 'auto',
+    dropdownHeight: "auto",
     /**
      * a jQuery object to append the dropddown list.
      * @default null
@@ -1069,7 +1066,7 @@
      */
     selectedTextAttr: null,
     /**
-     * A template for the dropddown list item. For example "<p ng-bind-html='entry.item.name'></p>";
+     * A template for the dropddown list item. For example "<p ng-bind-html="entry.item.name"></p>";
      * Or using interpolation "<p>{{entry.item.lastName}}, {{entry.item.firstName}}></p>".
      * @default null
      */
@@ -1128,9 +1125,9 @@
     noMatchTemplateEnabled: true,
     /**
      * The template used to display the message when no items match the search text.
-     * @default "<span>No results match '{{entry.searchText}}'></span>"
+     * @default "<span>No results match "{{entry.searchText}}"></span>"
      */
-    noMatchTemplate: "<span>No results match '{{entry.searchText}}'</span>",
+    noMatchTemplate: "<span>No results match \"{{entry.searchText}}\"</span>",
     /**
      * Callback after the plugin is initialized and ready. The callback receives an object with the following methods:
      * @default angular.noop

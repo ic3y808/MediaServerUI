@@ -13,9 +13,7 @@ class SidenavController {
     this.Backend = Backend;
     this.Logger.debug("sidenav-controller");
 
-    $scope.getNowPlayingImage = () => {
-      return this.MediaPlayer.selectedTrack();
-    };
+    $scope.getNowPlayingImage = () => this.MediaPlayer.selectedTrack();
 
     $scope.showCreatePlaylistModal = () => {
       var $this = $(this)

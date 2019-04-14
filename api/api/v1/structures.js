@@ -38,9 +38,15 @@ module.exports.License = class License {
   }
 
   licenseType() {
+<<<<<<< HEAD
     if (this.license === "test")
       {return "Test License";}
     else {return "Unknown License";}
+=======
+    if (this.license == "test")
+      return "Test License";
+    return "Unknown License";
+>>>>>>> master
   }
 
 };

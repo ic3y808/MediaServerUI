@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+"use strict";
+>>>>>>> master
 const path = require("path");
 const winston = require("winston");
 var config = require("./config");
@@ -12,10 +16,10 @@ const logger = winston.createLogger({
       if (info.label) {
         var out = `${info.timestamp} [${info.label}][${info.level}]: ${info.message}`;
         return out;
-      } else {
-        var out = `${info.timestamp} [${info.level}]: ${info.message}`;
-        return out;
       }
+      var out2 = `${info.timestamp} [${info.level}]: ${info.message}`;
+      return out2;
+
     }),
   ),
   defaultMeta: { service: "user-service" },
@@ -31,7 +35,7 @@ const logger = winston.createLogger({
 });
 
 //
-// If we're not in production then log to the `console` with the format:
+// If we"re not in production then log to the `console` with the format:
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 // 
 if (process.env.MODE === "dev" || process.env.MODE === "test") {
@@ -56,37 +60,37 @@ if (process.env.MODE === "dev" || process.env.MODE === "test") {
 
 
 //const logger = winston.createLogger({
-//  level: 'info',
+//  level: "info",
 //  format: winston.format.json(),
 //  transports: [
 //    new winston.transports.File({
-//      filename: path.join(process.env.LOGS_DIR, 'error.log'),
-//      level: 'error'
+//      filename: path.join(process.env.LOGS_DIR, "error.log"),
+//      level: "error"
 //    }),
 //    new winston.transports.File({
-//      filename: path.join(process.env.LOGS_DIR, 'combined.log')
+//      filename: path.join(process.env.LOGS_DIR, "combined.log")
 //    })
 //  ]
 //});
 
 //
-// If we're not in production then log to the `console` with the format:
+// If we"re not in production then log to the `console` with the format:
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 // 
-//if (process.env.MODE === 'dev') {
+//if (process.env.MODE === "dev") {
 //  logger.add(new winston.transports.Console({
 //    format: combine(
-//      label({ label: 'right meow!' }),
+//      label({ label: "right meow!" }),
 //      timestamp(),
 //      prettyPrint()
 //    ),
 //   
-//    level: 'silly',
+//    level: "silly",
 //  }));
 //} else {
 //  logger.add(new winston.transports.Console({
 //    format: winston.format.simple(),
-//    level: 'info'
+//    level: "info"
 //  }));
 //}
 

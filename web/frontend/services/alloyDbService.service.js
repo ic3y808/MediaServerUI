@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 import CryptoJS from "crypto-js";
+=======
+>>>>>>> master
 import AlloyApi from "../API/alloy.db";
 export default class AlloyDbService {
   constructor($rootScope, Logger, AppUtilities, $routeParams) {
@@ -48,284 +51,566 @@ export default class AlloyDbService {
 
   ping() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.ping(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.ping();}
+    else {return false;}
+>>>>>>> master
   }
 
   getSchedulerStatus() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getSchedulerStatus(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getSchedulerStatus();}
+    else {return false;}
+>>>>>>> master
   }
 
   getLibraryInfo() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getLibraryInfo(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getLibraryInfo();}
+    else {return false;}
+>>>>>>> master
   }
 
   getFileList(path) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getFileList(path); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getFileList(path);}
+    else {return false;}
+>>>>>>> master
   }
 
   getFileParent(path) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getFileParent(path); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getFileParent(path);}
+    else {return false;}
+>>>>>>> master
   }
 
   getMediaPaths() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getMediaPaths(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getMediaPaths();}
+    else {return false;}
+>>>>>>> master
   }
 
   addMediaPath(mediaPath) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.addMediaPath(mediaPath); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.addMediaPath(mediaPath);}
+    else {return false;}
+>>>>>>> master
   }
 
   removeMediaPath(mediaPath) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.removeMediaPath(mediaPath); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.removeMediaPath(mediaPath);}
+    else {return false;}
+>>>>>>> master
   }
 
   getArtistsIndex() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getArtistsIndex(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getArtistsIndex();}
+    else {return false;}
+>>>>>>> master
   }
 
   getRandomSongs() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getRandomSongs(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getRandomSongs();}
+    else {return false;}
+>>>>>>> master
   }
 
   getFresh(limit) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getFresh(limit); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getFresh(limit);}
+    else {return false;}
+>>>>>>> master
   }
 
   getArtists() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getArtists(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getArtists();}
+    else {return false;}
+>>>>>>> master
   }
 
   getAlbums() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getAlbums(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getAlbums();}
+    else {return false;}
+>>>>>>> master
   }
 
   getAlbum(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getAlbum(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getAlbum(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   getGenre(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getGenre(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getGenre(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   getGenres() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getGenres(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getGenres();}
+    else {return false;}
+>>>>>>> master
   }
 
   getArtist(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getArtist(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getArtist(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   getArtistInfo(artist) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getArtistInfo(artist); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getArtistInfo(artist);}
+    else {return false;}
+>>>>>>> master
   }
 
   getAlbumInfo(artist, album) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getAlbumInfo(artist, album); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getAlbumInfo(artist, album);}
+    else {return false;}
+>>>>>>> master
   }
 
   getTrackInfo(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getTrackInfo(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getTrackInfo(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   getGenreInfo(genre) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getGenreInfo(genre); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getGenreInfo(genre);}
+    else {return false;}
+>>>>>>> master
   }
 
   getStarred() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getStarred(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getStarred();}
+    else {return false;}
+>>>>>>> master
   }
 
   getHistory() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getHistory(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getHistory();}
+    else {return false;}
+>>>>>>> master
   }
 
   scanStart() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.scanStart(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.scanStart();}
+    else {return false;}
+>>>>>>> master
   }
 
   scanStatus() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.scanStatus(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.scanStatus();}
+    else {return false;}
+>>>>>>> master
   }
 
   scanCancel() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.scanCancel(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.scanCancel();}
+    else {return false;}
+>>>>>>> master
   }
 
   backup() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.backup(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.backup();}
+    else {return false;}
+>>>>>>> master
   }
 
   restore(data) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.restore(data); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.restore(data);}
+    else {return false;}
+>>>>>>> master
   }
 
   getCharts() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getCharts(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getCharts();}
+    else {return false;}
+>>>>>>> master
   }
 
   search(query) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.search(query); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.search(query);}
+    else {return false;}
+>>>>>>> master
   }
 
   addPlay(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.addPlay(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.addPlay(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   addHistory(data) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.addHistory(data); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.addHistory(data);}
+    else {return false;}
+>>>>>>> master
   }
 
   getPlaylist(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getPlaylist(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getPlaylist(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   getPlaylists() {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getPlaylists(); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getPlaylists();}
+    else {return false;}
+>>>>>>> master
   }
 
   addPlaylist(data) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.addPlaylist(data); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.addPlaylist(data);}
+    else {return false;}
+>>>>>>> master
   }
 
   updatePlaylist(data) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.updatePlaylist(data); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.updatePlaylist(data);}
+    else {return false;}
+>>>>>>> master
   }
 
   removePlaylist(data) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.removePlaylist(data); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.removePlaylist(data);}
+    else {return false;}
+>>>>>>> master
   }
 
   love(params) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.love(params); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.love(params);}
+    else {return false;}
+>>>>>>> master
   }
 
   unlove(params) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.unlove(params); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.unlove(params);}
+    else {return false;}
+>>>>>>> master
   }
 
   star(params) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.star(params); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.star(params);}
+    else {return false;}
+>>>>>>> master
   }
 
   unstar(params) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.unstar(params); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.unstar(params);}
+    else {return false;}
+>>>>>>> master
   }
 
   setRating(params) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.setRating(params); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.setRating(params);}
+    else {return false;}
+>>>>>>> master
   }
 
   stream(id, quality) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.stream(id, quality); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.stream(id, quality);}
+    else {return false;}
+>>>>>>> master
   }
 
   download(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.download(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.download(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   getCoverArt(params) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.getCoverArt(params); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.getCoverArt(params);}
+    else {return false;}
+>>>>>>> master
   }
 
   scrobble(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.scrobble(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.scrobble(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   scrobbleNowPlaying(id) {
     this.doLogin();
+<<<<<<< HEAD
     if (this.isLoggedIn) { return this.alloydb.scrobbleNowPlaying(id); }
     else { return false; }
+=======
+    if (this.isLoggedIn)
+      {return this.alloydb.scrobbleNowPlaying(id);}
+    else {return false;}
+>>>>>>> master
   }
 
   loadArtists(data) {

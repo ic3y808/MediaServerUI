@@ -28,14 +28,17 @@ router.get("/stream", function (req, res) {
   var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(id);
   if (track) {
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     const stat = fs.statSync(track.path);
     const total = stat.size;
     if (req.headers.range) {
       fs.exists(track.path, (exists) => {
         if (exists) {
           const range = req.headers.range;
-          const parts = range.replace(/bytes=/, "").split("-");
+          const parts = range.replace(/bytes=/u, "").split("-");
           const partialStart = parts[0];
           const partialEnd = parts[1];
 
@@ -43,8 +46,8 @@ router.get("/stream", function (req, res) {
           const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
           const chunksize = (end - start) + 1;
           const rstream = fs.createReadStream(track.path, {
-            start: start,
-            end: end
+            start,
+            end
           });
 
           res.writeHead(206, {
@@ -159,9 +162,15 @@ router.get("/cover_art", function (req, res) {
         coverFile = path.join(process.env.COVER_ART_DIR, track.id + ".jpg");
       }
       if (!coverFile) {
+<<<<<<< HEAD
         var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
         albumTracks = shuffle(albumTracks);
         albumTracks.forEach((albumTrack) => {
+=======
+        var albumTracks1 = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
+        albumTracks1 = shuffle(albumTracks1);
+        albumTracks1.forEach((albumTrack) => {
+>>>>>>> master
           if (!coverFile) {
             if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
               coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
@@ -172,9 +181,15 @@ router.get("/cover_art", function (req, res) {
     }
 
   } else if (album_id) {
+<<<<<<< HEAD
     var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
     albumTracks = shuffle(albumTracks);
     albumTracks.forEach((albumTrack) => {
+=======
+    var albumTracks2 = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
+    albumTracks2 = shuffle(albumTracks2);
+    albumTracks2.forEach((albumTrack) => {
+>>>>>>> master
       if (!coverFile) {
         if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
           coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
@@ -189,7 +204,7 @@ router.get("/cover_art", function (req, res) {
     sharp(input)
       .rotate()
       .resize({
-        width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
+        width, height, fit: sharp.fit.cover, position: sharp.strategy.entropy
       })
       .toBuffer()
       .then((data) => {

@@ -121,7 +121,11 @@ export default class AlloyApi {
       this._xhrput(url).then((e) => {
         var res = e.target.response;
         resolve(res);
+<<<<<<< HEAD
       }, (fe) => {
+=======
+      }, (e) => {
+>>>>>>> master
         reject(e);
       });
     });
@@ -329,11 +333,26 @@ export default class AlloyApi {
   }
 
   stream(id, quality) {
+<<<<<<< HEAD
     return this._buildUrl("media/stream", { api_key: this._settings.alloydb_apikey, id, quality });
   }
 
   download(id, quality) {
     return this._buildUrl("media/download", { api_key: this._settings.alloydb_apikey, id });
+=======
+    return this._buildUrl("media/stream", {
+      api_key: this._settings.alloydb_apikey,
+      id,
+      quality
+    });
+  }
+
+  download(id, quality) {
+    return this._buildUrl("media/download", {
+      api_key: this._settings.alloydb_apikey,
+      id
+    });
+>>>>>>> master
   }
 
   getCoverArt(params) {
@@ -343,10 +362,24 @@ export default class AlloyApi {
   }
 
   scrobble(id) {
+<<<<<<< HEAD
     return this._put("lastfm/scrobble", { id, submission: "true" });
   }
 
   scrobbleNowPlaying(id) {
     return this._put("lastfm/scrobble", { id, submission: "false" });
+=======
+    return this._put("lastfm/scrobble", {
+      id,
+      submission: "true"
+    });
+  }
+
+  scrobbleNowPlaying(id) {
+    return this._put("lastfm/scrobble", {
+      id,
+      submission: "false"
+    });
+>>>>>>> master
   }
 }

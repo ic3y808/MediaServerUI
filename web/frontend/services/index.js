@@ -19,4 +19,4 @@ export default angular
   .service("AlloyDbService", AlloyDbService)
   .service("MediaElement", MediaElement)
   .service("MediaPlayer", MediaPlayer)
-;
+  ;

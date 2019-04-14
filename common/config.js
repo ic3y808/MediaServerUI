@@ -1,3 +1,4 @@
+"use strict";
 const fs = require("fs");
 const md5 = require("js-md5");
 const path = require("path");
@@ -35,17 +36,29 @@ var config = {
   brainz_api_url: ""
 };
 
+<<<<<<< HEAD
 if (!fs.existsSync(process.env.DATA_DIR)) { shell.mkdir("-p", process.env.DATA_DIR); }
 if (!fs.existsSync(process.env.LOGS_DIR)) { shell.mkdir("-p", process.env.LOGS_DIR); }
 if (!fs.existsSync(process.env.COVER_ART_DIR)) { shell.mkdir("-p", process.env.COVER_ART_DIR); }
+=======
+if (!fs.existsSync(process.env.DATA_DIR)) {shell.mkdir("-p", process.env.DATA_DIR);}
+if (!fs.existsSync(process.env.LOGS_DIR)) {shell.mkdir("-p", process.env.LOGS_DIR);}
+if (!fs.existsSync(process.env.COVER_ART_DIR)) {shell.mkdir("-p", process.env.COVER_ART_DIR);}
+>>>>>>> master
 
 if (process.env.MODE === "test") {
   process.env.DATABASE = path.join(process.env.DATA_DIR, "test_database.db");
   process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "test_database.db-wal");
   process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "test_database.db-shm");
+<<<<<<< HEAD
   if (fs.existsSync(process.env.DATABASE)) { shell.rm(process.env.DATABASE); }
   if (fs.existsSync(process.env.DATABASE_WAL)) { shell.rm(process.env.DATABASE_WAL); }
   if (fs.existsSync(process.env.DATABASE_SHM)) { shell.rm(process.env.DATABASE_SHM); }
+=======
+  if (fs.existsSync(process.env.DATABASE)) {shell.rm(process.env.DATABASE);}
+  if (fs.existsSync(process.env.DATABASE_WAL)) {shell.rm(process.env.DATABASE_WAL);}
+  if (fs.existsSync(process.env.DATABASE_SHM)) {shell.rm(process.env.DATABASE_SHM);}
+>>>>>>> master
 }
 /// remove db debug
 //if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);
