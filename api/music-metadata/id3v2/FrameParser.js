@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const initDebug = require("debug");
 const Token = require("token-types");

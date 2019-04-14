@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ID3v1Parser_1 = require("../id3v1/ID3v1Parser");
 class CommonTagMapper {

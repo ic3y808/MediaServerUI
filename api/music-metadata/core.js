@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const strtok3 = require("strtok3/lib/core");
 const ParserFactory_1 = require("./ParserFactory");

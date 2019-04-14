@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Util_1 = require("../common/Util");
 const Token = require("token-types");

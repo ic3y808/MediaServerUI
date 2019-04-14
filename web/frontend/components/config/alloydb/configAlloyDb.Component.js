@@ -20,10 +20,10 @@ class ConfigAlloyDbController {
       var url = "http://";
       if ($rootScope.settings.alloydb) {
         if ($rootScope.settings.alloydb.alloydb_use_ssl)
-          url = "https://";
+          {url = "https://";}
         url += $rootScope.settings.alloydb.alloydb_host;
         if ($rootScope.settings.alloydb.alloydb_include_port_in_url)
-          url += ":" + $rootScope.settings.alloydb.alloydb_port;
+          {url += ":" + $rootScope.settings.alloydb.alloydb_port;}
       }
 
 
@@ -36,29 +36,29 @@ class ConfigAlloyDbController {
 
     $scope.testSettings = () => {
       if (this.$rootScope.socket)
-        this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd);
+        {this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd);}
     };
 
     $scope.startBackup = () => {
       this.$scope.backup_results = "Starting Backup";
-      this.AlloyDbService.backup().then(result => {
+      this.AlloyDbService.backup().then((result) => {
         this.$scope.backup_results = result.result;
         this.AppUtilities.apply();
         setTimeout(() => {
           this.$scope.backup_results = null;
           this.AppUtilities.apply();
         }, 5000);
-      })
+      });
     };
 
-    $scope.removePath = mediaPath => {
+    $scope.removePath = (mediaPath) => {
       var removeMediaPath = AlloyDbService.removeMediaPath(mediaPath);
       if (removeMediaPath) {
         removeMediaPath.then(function (result) {
           $scope.reload();
         });
       }
-    }
+    };
 
     $scope.browsePaths = () => {
       $scope.currentpath = "";
@@ -67,64 +67,64 @@ class ConfigAlloyDbController {
 
       var $this = $(this)
         , $remote = $this.data("remote") || $this.attr("href")
-        , $modal = $("#addMediaPathModal")
+        , $modal = $("#addMediaPathModal");
       $("#primary-content").append($modal);
       $modal.modal();
       // $modal.load($remote);
 
       // $("#addMediaPathModal").modal()
-    }
+    };
 
     $scope.addCurrentPath = () => {
       var addMediaPath = AlloyDbService.addMediaPath({ display_name: $scope.display_name, path: $scope.currentpath });
       if (addMediaPath) {
-        addMediaPath.then(result => {
+        addMediaPath.then((result) => {
 
           $scope.reload();
         });
       }
-      $("#addMediaPathModal").modal("hide")
-    }
+      $("#addMediaPathModal").modal("hide");
+    };
 
     $scope.reload = () => {
       if (AlloyDbService.isLoggedIn) {
         var mediaPaths = AlloyDbService.getMediaPaths();
         if (mediaPaths) {
-          mediaPaths.then(paths => {
+          mediaPaths.then((paths) => {
             $scope.mediaPaths = paths;
             AppUtilities.apply();
             AppUtilities.hideLoader();
           });
         }
       }
-    }
+    };
 
     $scope.scanStart = () => {
       this.$scope.scan_status = { status: "starting scan", isScanning: true };
       this.AlloyDbService.scanStart();
-    }
+    };
 
     $scope.scanCancel = () => {
       this.$scope.scan_status = "cancelling scan";
-      this.AlloyDbService.scanCancel().then(result => {
+      this.AlloyDbService.scanCancel().then((result) => {
         this.$scope.scan_status = result.result;
       });
-    }
+    };
 
 
     $scope.addBackup = () => {
-      $(".file-upload-input").trigger("click")
-    }
+      $(".file-upload-input").trigger("click");
+    };
 
     $scope.backupFileAdded = (input) => {
       if (input.files && input.files[0]) {
         this.$rootScope.socket.emit("disconnect_db");
-        this.AlloyDbService.restore(input.files[0])
+        this.AlloyDbService.restore(input.files[0]);
       }
-    }
+    };
 
     if (this.$rootScope.socket)
-      this.$rootScope.socket.emit("load_settings", "alloydb_settings");
+      {this.$rootScope.socket.emit("load_settings", "alloydb_settings");}
 
     $rootScope.$on("menuSizeChange", (event, currentState) => {
 
@@ -146,7 +146,7 @@ class ConfigAlloyDbController {
     });
 
     $scope.refreshIntereval = setInterval(() => {
-      this.AlloyDbService.scanStatus().then(result => {
+      this.AlloyDbService.scanStatus().then((result) => {
         this.$scope.scan_status = result.result;
         this.AppUtilities.apply();
       });

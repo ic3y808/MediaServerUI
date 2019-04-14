@@ -19,41 +19,41 @@ class ConfigMediaPathsController {
       if (AlloyDbService.isLoggedIn) {
         var mediaPaths = AlloyDbService.getMediaPaths();
         if (mediaPaths) {
-          mediaPaths.then(paths => {
+          mediaPaths.then((paths) => {
             $scope.mediaPaths = paths;
             AppUtilities.apply();
             AppUtilities.hideLoader();
           });
         }
       }
-    }
+    };
 
-    $scope.removePath = mediaPath => {
+    $scope.removePath = (mediaPath) => {
       var removeMediaPath = AlloyDbService.removeMediaPath(mediaPath);
       if(removeMediaPath){
         removeMediaPath.then(function(result){
           $scope.reload();
         });
       }
-    }
+    };
 
     $scope.browsePaths = () =>  {
       $scope.currentpath = "";
       $scope.display_name = "";
       AppUtilities.apply();
-      $("#addMediaPathModal").modal()
-    }
+      $("#addMediaPathModal").modal();
+    };
 
     $scope.addCurrentPath = () =>  {
       var addMediaPath = AlloyDbService.addMediaPath({ display_name: $scope.display_name, path: $scope.currentpath });
       if(addMediaPath){
-        addMediaPath.then(result => {
+        addMediaPath.then((result) => {
 
           $scope.reload();
         });
       }
-      $("#addMediaPathModal").modal("hide")
-    }
+      $("#addMediaPathModal").modal("hide");
+    };
 
     $rootScope.$on("loginStatusChange", function (event, data) {
       $scope.reload();

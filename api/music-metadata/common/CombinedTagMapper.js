@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ID3v1TagMap_1 = require("../id3v1/ID3v1TagMap");
 const ID3v24TagMapper_1 = require("../id3v2/ID3v24TagMapper");

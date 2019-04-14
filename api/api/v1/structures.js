@@ -1,4 +1,3 @@
-"use strict";
 const fs = require("fs");
 const mime = require("mime-types");
 const ffmpeg = require("ffprobe-static");

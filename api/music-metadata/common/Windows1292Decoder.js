@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 /**
  * windows-1252 / iso_8859-1 decoder (ANSI)

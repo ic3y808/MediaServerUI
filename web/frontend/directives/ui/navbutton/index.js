@@ -19,8 +19,8 @@ export default function () {
     link: function (scope, elm, attrs) {
       scope.clickButton = function () {
         scope.buttonclick();
-      }
+      };
       scope.text = scope.buttontext;
     }
-  }
-};
+  };
+}

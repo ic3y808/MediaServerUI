@@ -13,7 +13,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
       $scope.selectedObject = null;
 
-      $element.bind("click", event => {
+      $element.bind("click", (event) => {
 
 
       });
@@ -24,7 +24,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
         })
         .mouseleave(function () {
           if ("activeElement" in document)
-            document.activeElement.blur();
+            {document.activeElement.blur();}
         });
 
       var html = "";
@@ -56,7 +56,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
         containerTemplate: html,
         //noMatchTemplate: noMatch,
         activateOnFocus: true,
-        itemSelected: e => {
+        itemSelected: (e) => {
           // selectedObject = e.item;
 
 
@@ -79,9 +79,9 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
         data: (searchText, pagingParams) => {
           $scope.loading = true;
 
-          return AlloyDbService.search(searchText).then(result => {
+          return AlloyDbService.search(searchText).then((result) => {
             searchText = searchText.toUpperCase();
-            if (searchText === "") return [];
+            if (searchText === "") {return [];}
             var results = [
               {
                 title: "Artists",
@@ -105,8 +105,8 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
             return results;
           });
         }
-      }
+      };
 
     }
-  }
-};
+  };
+}

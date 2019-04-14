@@ -23,7 +23,7 @@ class HomeController {
 
     $scope.random = () => {
       return 0.5 - Math.random();
-    }
+    };
 
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");
@@ -36,7 +36,7 @@ class HomeController {
 
     $scope.playAlbum = (album) => {
       this.Logger.debug("Play Album");
-      this.AlloyDbService.getAlbum(album.id).then(result => {
+      this.AlloyDbService.getAlbum(album.id).then((result) => {
         $rootScope.tracks = result.tracks;
         this.MediaPlayer.loadTrack(0);
       });
@@ -49,9 +49,9 @@ class HomeController {
     };
   }
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

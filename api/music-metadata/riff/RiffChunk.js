@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Token = require("token-types");
 const FourCC_1 = require("../common/FourCC");

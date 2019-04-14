@@ -21,7 +21,7 @@ class IndexController {
       $scope.artists = [];
       var getArtistsIndex = this.AlloyDbService.getArtistsIndex();
       if (getArtistsIndex) {
-        getArtistsIndex.then(result => {
+        getArtistsIndex.then((result) => {
           $scope.artists = result;
           this.AppUtilities.apply();
           this.AppUtilities.hideLoader();

@@ -1,4 +1,4 @@
-const SABnzbd = require("./plugin")
+const SABnzbd = require("./plugin");
 var log = require("../../../../../common/logger");
 var db = require("../../database");
 var sabnzbd = null;
@@ -18,15 +18,13 @@ module.exports.socketConnect = function (socket) {
     log.debug("alloyui", "test_sabnzbd_settings");
     if (settings.sabnzbd_host && settings.sabnzbd_apikey) {
       module.exports.login();
-      var url = "http://"
+      var url = "http://";
 
-      if (settings.sabnzbd_use_ssl)
-        url = "https://";
+      if (settings.sabnzbd_use_ssl) { url = "https://"; }
 
       url += settings.sabnzbd_host;
 
-      if (settings.sabnzbd_include_port_in_url)
-        url += ":" + settings.sabnzbd_port;
+      if (settings.sabnzbd_include_port_in_url) { url += ":" + settings.sabnzbd_port; }
 
       var test = new SABnzbd(url, settings.sabnzbd_apikey);
 
@@ -56,7 +54,7 @@ module.exports.socketConnect = function (socket) {
     if (sabnzbd) {
       sabnzbd.entries().then(function (entries) {
         var result = [];
-        entries.forEach(element => {
+        entries.forEach((element) => {
           if (element._history_slot) {
             result.push(element);
           }
@@ -67,14 +65,14 @@ module.exports.socketConnect = function (socket) {
       });
     }
   });
-  
+
   socket.on("get_sabnzbd_queue", function () {
     log.debug("alloyui", "get_sabnzbd_queue");
     module.exports.login();
     if (sabnzbd) {
       sabnzbd.entries().then(function (entries) {
         var result = [];
-        entries.forEach(element => {
+        entries.forEach((element) => {
           if (element._queue_slot) {
             result.push(element);
           }
@@ -114,15 +112,13 @@ module.exports.login = function () {
       } else {
         if (settings.data) {
           if (settings.data.sabnzbd_host && settings.data.sabnzbd_apikey) {
-            var url = "http://"
+            var url = "http://";
 
-            if (settings.data.sabnzbd_use_ssl)
-              url = "https://";
+            if (settings.data.sabnzbd_use_ssl) { url = "https://"; }
 
             url += settings.data.sabnzbd_host;
 
-            if (settings.data.sabnzbd_include_port_in_url)
-              url += ":" + settings.data.sabnzbd_port;
+            if (settings.data.sabnzbd_include_port_in_url) { url += ":" + settings.data.sabnzbd_port; }
 
             sabnzbd = new SABnzbd(url, settings.data.sabnzbd_apikey);
 

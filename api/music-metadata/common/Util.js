@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const assert = require("assert");
 const Windows1292Decoder_1 = require("./Windows1292Decoder");
