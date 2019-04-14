@@ -121,17 +121,12 @@ router.get("/artist_info", function (req, res) {
     res.send(new structures.StatusResult("Artist is Required."));
   } else {
 
-    getLastfmSession(res, (result) => {
+    getLastfmSession(res, function (result) {
       if (result.success) {
         getLastFm(res).getArtistInfo({
-<<<<<<< HEAD
-          artist, callback: (result2) => {
-            res.json(result2);
-=======
-          artist,
-          callback(result1) {
-            res.json(result1);
->>>>>>> master
+          artist: artist,
+          callback: function (result) {
+            res.json(result);
           }
         });
       } else {
