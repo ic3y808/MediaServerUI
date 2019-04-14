@@ -1427,9 +1427,12 @@ namespace Alloy.Widgets
 			if (state is Bundle bundle)
 			{
 				mSlideState = (PanelState)bundle.GetInt(SLIDING_STATE, (int)DEFAULT_SLIDE_STATE);
-				state = (IParcelable)bundle.GetParcelable("superState");
+				using (IParcelable newState = (IParcelable) bundle.GetParcelable("superState")) { base.OnRestoreInstanceState(newState); }
 			}
-			base.OnRestoreInstanceState(state);
+			else
+			{
+				base.OnRestoreInstanceState(state);
+			}
 		}
 
 		protected override IParcelable OnSaveInstanceState()

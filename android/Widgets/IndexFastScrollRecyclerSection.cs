@@ -29,7 +29,6 @@ namespace Alloy.Widgets
 		private RectF mIndexbarRect;
 
 		private int indexTextSize;
-		private int previewPadding;
 		private bool PreviewVisibility = true;
 		private int indexBarCornerRadius;
 		private Typeface typeface;
@@ -53,7 +52,6 @@ namespace Alloy.Widgets
 			float indexbarWidth = rv.IndexbarWidth;
 			float indexbarMarginWidth = rv.IndexbarMarginWidth;
 			float indexbarMarginHeight = rv.IndexbarMarginHeight;
-			previewPadding = rv.PreviewPadding;
 			previewTextSize = rv.PreviewTextSize;
 			previewBackgroundColor = rv.PreviewBackgroudColor;
 			previewTextColor = rv.PreviewTextColor;
@@ -74,7 +72,7 @@ namespace Alloy.Widgets
 			mIndexbarWidth = indexbarWidth * mDensity;
 			mIndexbarMarginWidth = indexbarMarginWidth * mDensity;
 			mIndexbarMarginHeight = indexbarMarginHeight * mDensity;
-			mPreviewPadding = previewPadding * mDensity;
+			mPreviewPadding = rv.PreviewPadding * mDensity;
 		}
 
 		public void draw(Canvas canvas)
@@ -315,11 +313,6 @@ namespace Alloy.Widgets
 		public void SetIndexbarMarginHeight(float value)
 		{
 			mIndexbarMarginHeight = value;
-		}
-
-		public void SetPreviewPadding(int value)
-		{
-			previewPadding = value;
 		}
 
 		public void SetIndexBarCornerRadius(int value)

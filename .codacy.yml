@@ -3,7 +3,6 @@ exclude_paths:
  - 'web/frontend/API/angular-auto-complete.js'
  - 'web/frontend/API/cast.framework.js'
  - 'web/frontend/API/cast.v1.js'
- - 'api/api/v1/simple-lastfm.js'
  - 'api/api/v1/musicbrainz.js'
  - 'android/Tests/**.*'
  - '*.md'

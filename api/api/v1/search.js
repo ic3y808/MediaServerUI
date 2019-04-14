@@ -31,14 +31,14 @@ router.get("/", function (req, res) {
   var offset = 0;
   var newerThan = 0;
 
-  if (req.query.artist) artist = req.query.artist;
-  if (req.query.album) album = req.query.album;
-  if (req.query.title) title = req.query.title;
-  if (req.query.genre) genre = req.query.genre;
-  if (req.query.any) any = req.query.any;
-  if (req.query.count) count = req.query.count;
-  if (req.query.offset) offset = req.query.offset;
-  if (req.query.newerThan) newerThan = req.query.newerThan;
+  if (req.query.artist) { artist = req.query.artist; }
+  if (req.query.album) { album = req.query.album; }
+  if (req.query.title) { title = req.query.title; }
+  if (req.query.genre) { genre = req.query.genre; }
+  if (req.query.any) { any = req.query.any; }
+  if (req.query.count) { count = req.query.count; }
+  if (req.query.offset) { offset = req.query.offset; }
+  if (req.query.newerThan) { newerThan = req.query.newerThan; }
 
   if (any) {
     var result = { artists: [], albums: [], tracks: [], genres: [] };
@@ -55,8 +55,7 @@ router.get("/", function (req, res) {
     res.json(res.locals.db.prepare("SELECT * FROM Tracks WHERE instr(title, ?) > 0 AND year >= ? LIMIT ? OFFSET ?").all(title, newerThan, count, offset));
   } else if (genre) {
     res.json(res.locals.db.prepare("SELECT * FROM Tracks WHERE instr(genre, ?) > 0 AND year >= ? LIMIT ? OFFSET ?").all(genre, newerThan, count, offset));
-  } else
-    res.send(new structures.StatusResult("Error no search term provided"));
+  } else { res.send(new structures.StatusResult("Error no search term provided")); }
 });
 
 

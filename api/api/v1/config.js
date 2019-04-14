@@ -80,8 +80,8 @@ router.delete("/mediapaths", function (req, res) {
     if (info.changes) {
       res.locals.watcher.configFileWatcher();
       res.json(new structures.StatusResult("success"));
-    } else res.json(new structures.StatusResult("nochange"));
-  } catch {
+    } else { res.json(new structures.StatusResult("nochange")); }
+  } catch (err) {
     res.json(new structures.StatusResult("Failed"));
   }
 });
@@ -106,7 +106,7 @@ router.get("/file_list", function (req, res) {
         if (error) {
           res.json(new structures.StatusResult(error));
         } else {
-          drives.forEach(drive => {
+          drives.forEach((drive) => {
             drive.path = drive.mountpoints[0].path;
             drive.size = utils.toHumanReadable(drive.size);
           });
@@ -134,7 +134,7 @@ router.get("/file_list", function (req, res) {
               });
             }
           } catch (e) {
-            if (e) logger.error("alloydb", JSON.stringify(e));
+            if (e) { logger.error("alloydb", JSON.stringify(e)); }
           }
         });
         data = _.sortBy(data, function (f) {
@@ -144,7 +144,7 @@ router.get("/file_list", function (req, res) {
       });
     }
   } catch (e) {
-    if (e) logger.error("alloydb", JSON.stringify(e));
+    if (e) { logger.error("alloydb", JSON.stringify(e)); }
     res.json(new structures.StatusResult(JSON.stringify(e)));
   }
 });
@@ -162,9 +162,9 @@ router.get("/file_list", function (req, res) {
  */
 router.get("/file_parent", function (req, res) {
   var query = req.query.path || "";
-  var newPath = path.dirname(query)
-  if (query === newPath) res.json({ path: "" });
-  else res.json({ path: newPath });
+  var newPath = path.dirname(query);
+  if (query === newPath) { res.json({ path: "" }); }
+  else { res.json({ path: newPath }); }
 });
 
 module.exports = router;
