@@ -1,5 +1,5 @@
 import "./artist.scss";
-import Glide from "@glidejs/glide"
+import Glide from "@glidejs/glide";
 
 
 class ArtistController {
@@ -28,7 +28,6 @@ class ArtistController {
     $scope.tracks_expanded = false;
     $("#trackListContainer").hide();
 
-
     
     $scope.getArtist = () => {
       var cache = Cache.get($routeParams.id);
@@ -40,26 +39,26 @@ class ArtistController {
       } else {
         var artist = this.AlloyDbService.getArtist($routeParams.id);
         if (artist) {
-          artist.then(info => {
+          artist.then((info) => {
 
             $scope.info = info;
             var coverArt = this.AlloyDbService.getCoverArt({
               artist_id: $routeParams.id
             });
 
-            $scope.info.albums.forEach(album => {
+            $scope.info.albums.forEach((album) => {
               album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
             });
 
-            $scope.info.singles.forEach(single => {
+            $scope.info.singles.forEach((single) => {
               single.image = this.AlloyDbService.getCoverArt({ album_id: single.id });
             });
 
-            $scope.info.EPs.forEach(ep => {
+            $scope.info.EPs.forEach((ep) => {
               ep.image = this.AlloyDbService.getCoverArt({ album_id: ep.id });
             });
 
-            $scope.info.popular_tracks.forEach(track => {
+            $scope.info.popular_tracks.forEach((track) => {
               track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
             });
 
@@ -83,7 +82,7 @@ class ArtistController {
     };
 
     $scope.startRadio = () => {
-      AlloyDbService.getSimilarSongs2($routeParams.id).then(similarSongs => {
+      AlloyDbService.getSimilarSongs2($routeParams.id).then((similarSongs) => {
         this.Logger.debug("starting radio");
         $rootScope.tracks = similarSongs.song;
         MediaPlayer.loadTrack(0);
@@ -92,7 +91,7 @@ class ArtistController {
 
     $scope.shuffle = () => {
       this.Logger.debug("shuffle play artist " + $scope.info.artist.name);
-      this.$rootScope.tracks = $scope.info.tracks
+      this.$rootScope.tracks = $scope.info.tracks;
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
     };
 
@@ -134,31 +133,30 @@ class ArtistController {
 
         case "soundcloud": { return base + link.type; }
         case "bandcamp": { return base + link.type; }
-        default: { return base + "external-link" }
+        default: { return base + "external-link"; }
       }
-    }
+    };
 
     $scope.starArtist = () => {
       this.Logger.info("Trying to star artist: " + $scope.info.artist.name);
       if ($scope.info.artist.starred === "true") {
         this.AlloyDbService.unstar({
           artist: this.$routeParams.id
-        }).then(result => {
+        }).then((result) => {
           this.Logger.info("UnStarred " + $scope.info.artist.name + " " + JSON.stringify(result));
-          this.$scope.info.artist.starred = "false"
+          this.$scope.info.artist.starred = "false";
           this.AppUtilities.apply();
         });
       } else {
         this.AlloyDbService.star({
           artist: this.$routeParams.id
-        }).then(result => {
+        }).then((result) => {
           this.Logger.info("Starred " + $scope.info.artist.name + " " + JSON.stringify(result));
-          this.$scope.info.artist.starred = "true"
+          this.$scope.info.artist.starred = "true";
           this.AppUtilities.apply();
         });
       }
     };
-
 
 
     $rootScope.$on("loginStatusChange", (event, data) => {
@@ -170,9 +168,9 @@ class ArtistController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

@@ -37,7 +37,7 @@ export default function (AlloyDbService, Logger) {
 
         var fill = function (i) {
           for (var x = 1; x <= i; x++) {
-            $(".star" + x).addClass("star-rating-selected")
+            $(".star" + x).addClass("star-rating-selected");
           }
         };
 
@@ -54,14 +54,13 @@ export default function (AlloyDbService, Logger) {
         };
 
         var updateRating = function (i) {
-          if ($scope.rating === i)
-          $scope.rating = 0
-        else
-          $scope.rating = i;
+          if ($scope.rating === i) { $scope.rating = 0; }
+          else { $scope.rating = i; }
           setSelection($scope.rating);
+
           var params = {
             rating: $scope.rating
-          }
+          };
 
           if ($scope.album) {
             params.album_id = $scope.album.id;
@@ -80,7 +79,7 @@ export default function (AlloyDbService, Logger) {
           }
           var rating = AlloyDbService.setRating(params);
           if (rating) {
-            rating.then(result => {
+            rating.then((result) => {
               Logger.info(JSON.stringify(result));
             });
           }
@@ -113,5 +112,5 @@ export default function (AlloyDbService, Logger) {
         });
       }
     ]
-  }
+  };
 }

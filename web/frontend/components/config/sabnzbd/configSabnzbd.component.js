@@ -16,9 +16,8 @@ class ConfigSabnzbdController {
 
     $scope.testSettings = () => {
       if(this.$rootScope.socket)
-       this.$rootScope.socket.emit("test_sabnzbd_settings", $rootScope.settings.sabnzbd);
+       {this.$rootScope.socket.emit("test_sabnzbd_settings", $rootScope.settings.sabnzbd);}
     };
-
 
 
     var t = "<div class=\"popover\" role=\"tooltip\">" +
@@ -29,8 +28,7 @@ class ConfigSabnzbdController {
       "</div>";
 
 
-
-    $rootScope.socket.on("test_sabnzbd_connection_result", data => {
+    $rootScope.socket.on("test_sabnzbd_connection_result", (data) => {
       if (data) {
         this.Logger.debug("sabnzbd connection result");
         this.Logger.debug(data);
@@ -59,12 +57,12 @@ class ConfigSabnzbdController {
       var url = "http://";
       if ($rootScope.settings.sabnzbd) {
         if ($rootScope.settings.sabnzbd.sabnzbd_use_ssl)
-          url = "https://";
+          {url = "https://";}
         url += $rootScope.settings.sabnzbd.sabnzbd_host;
         if ($rootScope.settings.sabnzbd.sabnzbd_include_port_in_url)
-          url += ":" + $rootScope.settings.sabnzbd.sabnzbd_port;
+          {url += ":" + $rootScope.settings.sabnzbd.sabnzbd_port;}
         if ($rootScope.settings.sabnzbd.sabnzbd_url_base)
-          url += "/" + $rootScope.settings.sabnzbd.sabnzbd_url_base;
+          {url += "/" + $rootScope.settings.sabnzbd.sabnzbd_url_base;}
         url += "/api";
       }
       return url;

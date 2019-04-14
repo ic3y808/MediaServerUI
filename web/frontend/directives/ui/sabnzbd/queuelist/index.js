@@ -22,4 +22,4 @@ export default function(Backend, AppUtilities, AlloyDbService) {
       };
     }
   };
-};
+}

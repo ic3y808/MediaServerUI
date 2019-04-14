@@ -13,31 +13,29 @@ class SidenavController {
     this.Backend = Backend;
     this.Logger.debug("sidenav-controller");
 
-    $scope.getNowPlayingImage = () => {
-      return this.MediaPlayer.selectedTrack();
-    };
+    $scope.getNowPlayingImage = () => this.MediaPlayer.selectedTrack();
 
     $scope.showCreatePlaylistModal = () => {
       var $this = $(this)
         , $remote = $this.data("remote") || $this.attr("href")
-        , $modal = $("#addPlaylistModal")
+        , $modal = $("#addPlaylistModal");
       $("#primary-content").append($modal);
       $modal.modal();
     };
     $scope.createNewPlaylist = () => {
       var newPlaylist = this.AlloyDbService.addPlaylist({ name: $scope.newPlaylistName });
       if (newPlaylist) {
-        newPlaylist.then(result => {
+        newPlaylist.then((result) => {
           this.AlloyDbService.refreshPlaylists();
           console.log(result);
         });
       }
-      $("#addPlaylistModal").modal("hide")
+      $("#addPlaylistModal").modal("hide");
     };
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
+    this.$element.addClass("vbox");
     $("#sidebarCollapse").on("click", () => {
       $("#sidebar").toggleClass("active");
     });

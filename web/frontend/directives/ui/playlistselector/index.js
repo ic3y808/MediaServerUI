@@ -15,5 +15,5 @@ export default function () {
     link: function (scope, elm, attrs) {
   
     }
-  }
-};
+  };
+}

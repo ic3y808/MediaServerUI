@@ -10,5 +10,5 @@ export default function (Backend, AppUtilities, AlloyDbService) {
     link: function (scope, elm, attrs) {
       
     }
-  }
-};
+  };
+}

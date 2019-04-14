@@ -23,9 +23,9 @@ module.exports.loadSettings = function (key, callback) {
       var settings = JSON.parse(settingsResult.settings_value);
       if (settings) {
         callback({ key: key, data: settings });
-      } else callback(null);
-    } else callback(null);
-  } catch { callback(null); }
+      } callback(null);
+    } callback(null);
+  } catch (err) { callback(null); }
 };
 
 module.exports.saveSettings = function (key, value, callback) {

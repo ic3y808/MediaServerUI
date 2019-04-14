@@ -13,7 +13,7 @@ class DatabaseController {
   $onInit() {
     this.$element.addClass("vbox")
     this.$element.addClass("scrollable")
-  };
+  }
 }
 
 export default {

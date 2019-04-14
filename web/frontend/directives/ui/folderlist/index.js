@@ -19,7 +19,6 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
               if (scope.currentpath === null || scope.currentpath == undefined || scope.currentpath == "") {
 
                 scope.driveList = result;
-               
 
 
                 AppUtilities.apply();
@@ -28,14 +27,14 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
                 scope.driveList = null;
 
                 scope.folderlist = result;
-                scope.folderlist.unshift({ Name: "..", Path: ".." })
+                scope.folderlist.unshift({ Name: "..", Path: ".." });
                 AppUtilities.apply();
               }
 
             });
           }
         }
-      }
+      };
 
       scope.navigateToPath = function (path) {
         if (path === "..") {
@@ -51,7 +50,7 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
               }
 
               reload();
-            })
+            });
 
           }
         } else {
@@ -76,7 +75,6 @@ export default function ($rootScope, $location, Backend, AppUtilities, MediaPlay
       reload();
 
 
-
     }
-  }
-};
+  };
+}

@@ -34,10 +34,10 @@ export default class AppUtilities {
   }
 
   getBackgroundStyle(imagepath) {
-    if (imagepath == undefined || imagepath == "" || imagepath == null) return "";
+    if (imagepath == undefined || imagepath == "" || imagepath === null) {return "";}
     return {
       "background-image": "url(" + imagepath + ")"
-    }
+    };
   }
 
   shuffle(a) {
@@ -132,7 +132,7 @@ export default class AppUtilities {
       " " +
       ["B", "kB", "MB", "GB", "TB"][i]
     );
-  };
+  }
 
   formatTime(seconds) {
     var minutes = Math.floor(seconds / 60);
@@ -167,12 +167,12 @@ export default class AppUtilities {
         args = arguments;
       var later = function () {
         timeout = null;
-        if (!immediate) func.apply(context, args);
+        if (!immediate) {func.apply(context, args);}
       };
       var callNow = immediate && !timeout;
       clearTimeout(timeout);
       timeout = setTimeout(later, wait);
-      if (callNow) func.apply(context, args);
+      if (callNow) {func.apply(context, args);}
     };
   }
 
@@ -181,7 +181,7 @@ export default class AppUtilities {
       len = arr.length,
       taken = new Array(len);
     if (n > len)
-      throw new RangeError("getRandom: more elements taken than available");
+      {throw new RangeError("getRandom: more elements taken than available");}
     while (n--) {
       var x = Math.floor(Math.random() * len);
       result[n] = arr[x in taken ? taken[x] : x];

@@ -1,5 +1,7 @@
-import Highcharts from "highcharts"
+import Highcharts from "highcharts";
 import "./charts.scss";
+import _ from "lodash";
+
 var CLR_SCARLET = "#B90000";
 var CLR_TANGERINE = "#E63900";
 var CLR_FIRE = "#FF6600";
@@ -35,28 +37,28 @@ class Tooltip {
       .addClass("user-dashboard-tooltip")
       .appendTo(document.body);
     this.hide();
-  };
+  }
 
   stop() {
     this.$el.remove();
-  };
+  }
 
   show(x, y, text) {
     this.$el.text(text);
     this.move(x, y);
     this.$el.show();
-  };
+  }
 
   move(x, y) {
     this.$el.css({
       "left": x + 10,
       "top": y + 10
     });
-  };
+  }
 
   hide() {
     this.$el.hide();
-  };
+  }
 }
 
 class PointTooltips {
@@ -65,16 +67,16 @@ class PointTooltips {
     this.tooltip = tooltip;
     this.points = points;
     this.start();
-  };
+  }
 
   start() {
     this.points.forEach(this.bindTooltipToPoint.bind(this));
     this.points.forEach(this.addLink.bind(this));
-  };
+  }
 
   stop() {
     this.points.forEach(this.unbindTooltip.bind(this));
-  };
+  }
 
   bindTooltipToPoint(point) {
     point.$el.mouseover(function (evt) {
@@ -88,17 +90,17 @@ class PointTooltips {
     point.$el.mouseout(function () {
       this.tooltip.hide();
     }.bind(this));
-  };
+  }
 
   addLink(point) {
     if (point.point.link) {
       svgUtils.addLink(point.$el, point.point.link);
     }
-  };
+  }
 
   unbindTooltip(point) {
     point.$el.off();
-  };
+  }
 }
 
 class ChartsController {
@@ -153,7 +155,7 @@ class ChartsController {
         }
       });
     }.bind(this));
-  };
+  }
 
   formatSeries(entries) {
     var uniqueTags = _.uniq(_.reject(_.flatten(entries, "tags"), _.isEmpty));
@@ -228,7 +230,7 @@ class ChartsController {
 
     series.forEach(function (tag) {
 
-      var zones = tag.data.map(function (point, index) {
+      var zones = tag.data.map((point, index) => {
         var nextPoint = index < tag.data.length - 1 && tag.data[index + 1];
 
         if (nextPoint && nextPoint.nodata !== point.nodata) {
@@ -238,13 +240,14 @@ class ChartsController {
             opacity: boundryPoint !== point ? 0.3 : 1
           };
         }
+        return {};
       });
 
       zones = _.flatten(zones);
       zones = _.reject(zones, _.isUndefined);
 
       if (!zones.length) {
-        return;
+        return {};
       }
 
       tag.zoneAxis = "x";
@@ -269,7 +272,7 @@ class ChartsController {
     });
 
     return series;
-  };
+  }
 
   addColours(series) {
     series.forEach(function (tag) {
@@ -279,7 +282,7 @@ class ChartsController {
       }, 0);
       tag.color = COLOURS[code % COLOURS.length];
     });
-  };
+  }
 
   labelMaxLength() {
     var breakpoint = "lg";//mediaSize.getMediaSize();
@@ -290,7 +293,7 @@ class ChartsController {
       return 11;
     }
     return 10;
-  };
+  }
 
   applyZoneStyling(tag) {
     // Manually apply opacity as highcharts doesn"t support it
@@ -301,7 +304,7 @@ class ChartsController {
         el.setAttribute("opacity", zoneSpec.opacity);
       }
     });
-  };
+  }
 
   addTooltips(series) {
     var points = series.map(function (tag) {
@@ -317,7 +320,7 @@ class ChartsController {
       };
     });
     this.tooltips = new PointTooltips(this.app, points, this.tooltip);
-  };
+  }
 
   shareDimensions() {
     var dimensions = parent.shareDimensions.call(this);
@@ -326,7 +329,7 @@ class ChartsController {
     dimensions.width = Math.max(dimensions.width, width);
     dimensions.mediaWidth = Math.max(dimensions.mediaWidth, width);
     return dimensions;
-  };
+  }
 
   drawChart($container, entries) {
 
@@ -396,15 +399,15 @@ class ChartsController {
       },
       series: series
     });
- 
+
     chart.series.forEach(this.applyZoneStyling.bind(this));
     this.addTooltips(chart.series);
-  };
+  }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 
@@ -413,6 +416,6 @@ export default {
   bindings: {},
   controller: ChartsController,
   templateUrl: "/template/charts.jade"
-}; 
+};
 
 //

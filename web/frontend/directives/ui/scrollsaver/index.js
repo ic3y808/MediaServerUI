@@ -29,13 +29,13 @@ export default function ($rootScope, $location, $timeout, $window) {
 
       $rootScope.scrollClear = function (path) {
         $rootScope.scrollPos[path] = 0;
-      }
+      };
 
-      element.bind("DOMMouseScroll mousewheel onmousewheel", event => {
+      element.bind("DOMMouseScroll mousewheel onmousewheel", (event) => {
         if ($rootScope.okSaveScroll) {
           $rootScope.scrollPos[$location.path()] = $(".scrollsaver").scrollTop();
         }
       });
     }
-  }
-};
+  };
+}
