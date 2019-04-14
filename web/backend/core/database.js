@@ -1,4 +1,4 @@
-﻿var log = require("../../../common/logger");
+var log = require("../../../common/logger");
 var path = require("path");
 const db = require("better-sqlite3")(path.join(process.env.DATA_DIR, "database.db"));
 db.pragma("journal_mode = WAL");
