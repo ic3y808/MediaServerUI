@@ -38,7 +38,11 @@ module.exports.isStringValid = function isStringValid(str, defaultStr) {
     return str[0];
   } else if (Object.prototype.toString.call(str) === "[object Object]") {
     if (str.toString() === "[object Object]") { return defaultStr; }
+<<<<<<< HEAD
     else { return str.toString(); }
+=======
+    return str.toString();
+>>>>>>> master
   }
   return str;
 };
@@ -54,7 +58,11 @@ module.exports.testForLetter = function (character) {
     //Variable declarations can"t start with digits or operators
     //If no error is thrown check for dollar or underscore. Those are the only nonletter characters that are allowed as identifiers
     eval("let " + character + ";");
+<<<<<<< HEAD
     var regExSpecial = /[^\$_]/;
+=======
+    const regExSpecial = /[^\$_]/;
+>>>>>>> master
     return regExSpecial.test(character);
   } catch (error) {
     return false;
@@ -75,10 +83,19 @@ module.exports.createIndex = function createIndex(items) {
   });
   var finalResult = [];
   for (var key in result) {
+<<<<<<< HEAD
     finalResult.push({
       name: key,
       value: result[key]
     });
+=======
+    if (result.hasOwnProperty.call(foo, key)) {
+      finalResult.push({
+        name: key,
+        value: result[key]
+      });
+    }
+>>>>>>> master
   }
   return finalResult;
 };
@@ -87,16 +104,26 @@ module.exports.writeDb = function (data, table) {
   var sql = "INSERT OR REPLACE INTO " + table + " (";
   var values = {};
   Object.keys(data).forEach(function (key, index) {
+<<<<<<< HEAD
     if (index === Object.keys(data).length - 1) { sql += key; }
     else { sql += key + ", "; }
   });
 
 
+=======
+    if (index == Object.keys(data).length - 1) { sql += key; }
+    else { sql += key + ", "; }
+  });
+
+>>>>>>> master
   sql += ") VALUES (";
 
-
   Object.keys(data).forEach(function (key, index) {
+<<<<<<< HEAD
     if (index === Object.keys(data).length - 1) { sql += "@" + key; }
+=======
+    if (index == Object.keys(data).length - 1) { sql += "@" + key; }
+>>>>>>> master
     else { sql += "@" + key + ", "; }
   });
 
@@ -104,7 +131,6 @@ module.exports.writeDb = function (data, table) {
 
   try {
     var insert = this.db.prepare(sql);
-
 
     Object.keys(data).forEach(function (key, index) {
       var a = {};

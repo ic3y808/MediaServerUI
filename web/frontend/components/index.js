@@ -68,4 +68,8 @@ export default angular
   .component("activityblacklist", ActivityBlacklistComponent)
   .component("starred", StarredComponent)
   .component("status", StatusComponent)
+<<<<<<< HEAD
   ;
+=======
+;
+>>>>>>> master

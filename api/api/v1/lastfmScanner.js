@@ -16,6 +16,7 @@ LastFMScanner.prototype.lastfm = {};
 LastFMScanner.prototype.getLastFm = function getLastFm() {
   if (this.lastfm !== null) {
     return this.lastfm;
+<<<<<<< HEAD
   } else {
     var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
     if (lastfmSettings && lastfmSettings.settings_value) {
@@ -35,8 +36,31 @@ LastFMScanner.prototype.getLastFm = function getLastFm() {
     } else {
       logger.error("alloydb", "Could not load lastfm settings.");
       updateStatus("Could not load lastfm settings.", false);
-    }
+=======
   }
+  var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+  if (lastfmSettings && lastfmSettings.settings_value) {
+    var settings = JSON.parse(lastfmSettings.settings_value);
+    if (settings) {
+      this.lastfm = new Lastfm({
+        api_key: process.env.LASTFM_API_KEY,
+        api_secret: process.env.LASTFM_API_SECRET,
+        username: settings.alloydb_lastfm_username,
+        password: settings.alloydb_lastfm_password
+      });
+      return this.lastfm;
+>>>>>>> master
+    }
+    logger.error("alloydb", "Could not parse settings.");
+    this.updateStatus("Could not parse settings.", false);
+  } else {
+    logger.error("alloydb", "Could not load lastfm settings.");
+    this.updateStatus("Could not load lastfm settings.", false);
+  }
+<<<<<<< HEAD
+=======
+  return null;
+>>>>>>> master
 };
 
 LastFMScanner.prototype.getLastfmSession = function getLastfmSession(cb) {
@@ -50,12 +74,19 @@ LastFMScanner.prototype.writeQueue = function writeQueue(force) {
 
         var sql = "INSERT OR REPLACE INTO Tracks (";
 
+<<<<<<< HEAD
         Object.keys(track).forEach(function (key, index) {
+=======
+        Object.keys(track).forEach((key, index) => {
+>>>>>>> master
           if (index === Object.keys(track).length - 1) { sql += key; }
           else { sql += key + ", "; }
         });
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
         sql += ") VALUES (";
 
 
@@ -151,7 +182,7 @@ LastFMScanner.prototype.rescan = function rescan() {
     }
   }
   else {
-    for (var i = 0; i < this.maxFilesProcessing; i++) {
+    for (var ii = 0; ii < this.maxFilesProcessing; ii++) {
       this.step();
     }
   }

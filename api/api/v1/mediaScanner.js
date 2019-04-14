@@ -10,6 +10,10 @@ const MediaScannerBase = require("./MediaScannerBase");
 const logger = require("../../../common/logger");
 
 class MediaScanner extends MediaScannerBase {
+<<<<<<< HEAD
+=======
+
+>>>>>>> master
   startScan() {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
@@ -95,7 +99,6 @@ class MediaScanner extends MediaScannerBase {
           });
           mappedAlbums.push(mappedAlbum);
         }
-
       }
     });
     return mappedAlbums;
@@ -116,8 +119,7 @@ class MediaScanner extends MediaScannerBase {
       }
 
       var tempGenreId = "genre_" + uuidv3(track.genre, process.env.UUID_BASE).split("-")[0];
-      var stmt = this.db.prepare("SELECT * FROM Genres WHERE id = ? OR name = ?");
-      var existingGenre = stmt.all(tempGenreId, track.genre);
+      var existingGenre = this.db.prepare("SELECT * FROM Genres WHERE id = ? OR name = ?").all(tempGenreId, track.genre);
       if (existingGenre.length === 0) {
         track.genre_id = tempGenreId;
         var stmt = this.db.prepare("INSERT INTO Genres (id, name) VALUES (?,?)");
@@ -165,11 +167,14 @@ class MediaScanner extends MediaScannerBase {
       track.cover_art = coverId;
 
       if (!fs.existsSync(coverFile)) {
-        fs.writeFile(coverFile, metadata.common.picture[0].data, function (err) {
-          if (err) {
-            logger.error("alloydb", JSON.stringify(err));
-          }
-        });
+        var data = metadata.common.picture[0].data;
+        if (data) {
+          fs.writeFile(coverFile, data, function (err) {
+            if (err) {
+              logger.error("alloydb", JSON.stringify(err));
+            }
+          });
+        }
       }
     }
     return track;
@@ -208,12 +213,21 @@ class MediaScanner extends MediaScannerBase {
           });
         }
       });
+<<<<<<< HEAD
     });
 
     return {
       mappedArtists: mappedArtistDirectories,
       unmappedArtists: unmappedArtistDirectories
     };
+=======
+
+      return {
+        mappedArtists: mappedArtistDirectories,
+        unmappedArtists: unmappedArtistDirectories
+      };
+    });
+>>>>>>> master
   }
 
   scanArtist(artist) {
@@ -273,10 +287,8 @@ class MediaScanner extends MediaScannerBase {
                           processed_track.id = albumTrack.RecordingId;
                           processed_track.title = albumTrack.TrackName;
                         }
-                      } else {
-                        if (processed_track.id === albumTrack.RecordingId) {
-                          processed_track.title = albumTrack.TrackName;
-                        }
+                      } else if (processed_track.id === albumTrack.RecordingId) {
+                        processed_track.title = albumTrack.TrackName;
                       }
                     });
                   });
@@ -324,6 +336,7 @@ class MediaScanner extends MediaScannerBase {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
       logger.debug("alloydb", "scan in progress");
+<<<<<<< HEAD
     } else {
       if (fs.existsSync(dir)) {
         if (fs.lstatSync(dir).isDirectory()) {
@@ -370,8 +383,45 @@ class MediaScanner extends MediaScannerBase {
             this.resetStatus();
             this.updateStatus("Scan Complete", false);
             this.cleanup();
+=======
+    } else if (fs.existsSync(dir)) {
+      if (fs.lstatSync(dir).isDirectory()) {
+        if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
+          this.scanArtist({ path: dir }).then(() => {
+            this.db.checkpoint();
+            this.resetStatus();
+            this.updateStatus("Scan Complete", false);
+>>>>>>> master
           });
         }
+      }
+    } else {
+      var root = path.dirname(dir);
+
+      const artistDirs = klawSync(root, {
+        nofile: true,
+        depthLimit: 0
+      });
+
+      if (artistDirs.length > 0) {
+        artistDirs.forEach((artistDir) => {
+          if (artistDir !== undefined && artistDir !== null && typeof (artistDir) === "string" && artistDir !== "") {
+            if (fs.existsSync(path.join(artistDir, process.env.ARTIST_NFO))) {
+              this.scanArtist({ path: artistDir }).then(() => {
+                this.db.checkpoint();
+                this.resetStatus();
+                this.updateStatus("Scan Complete", false);
+              });
+            }
+          }
+        });
+      } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
+        this.scanArtist({ path: path.dirname(root) }).then(() => {
+          this.db.checkpoint();
+          this.resetStatus();
+          this.updateStatus("Scan Complete", false);
+          this.cleanup();
+        });
       }
     }
   }

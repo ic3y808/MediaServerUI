@@ -11,8 +11,13 @@ class DatabaseController {
   }
 
   $onInit() {
+<<<<<<< HEAD
     this.$element.addClass("vbox");
     this.$element.addClass("scrollable");
+=======
+    this.$element.addClass("vbox")
+    this.$element.addClass("scrollable")
+>>>>>>> master
   }
 }
 

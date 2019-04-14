@@ -26,9 +26,13 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
+<<<<<<< HEAD
     $scope.getCoverArt = (id) => {
       return this.AlloyDbService.getCoverArt(id);
     };
+=======
+    $scope.getCoverArt = (id) => this.AlloyDbService.getCoverArt(id);
+>>>>>>> master
 
     $scope.findNowPlaying = (fid) => {
       $rootScope.fresh_albums.forEach((album) => { });
@@ -75,9 +79,7 @@ class FreshController {
       this.AlloyDbService.refreshCharts();
     };
 
-    $scope.isPlaying = () => {
-      return this.MediaPlayer.playing && !this.MediaPlayer.paused;
-    };
+    $scope.isPlaying = () => this.MediaPlayer.playing && !this.MediaPlayer.paused;
 
     $scope.startRadio = () => {
       var track = this.MediaPlayer.selectedTrack();

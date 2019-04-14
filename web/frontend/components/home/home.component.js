@@ -21,9 +21,13 @@ class HomeController {
       AlloyDbService.refreshCharts();
     };
 
+<<<<<<< HEAD
     $scope.random = () => {
       return 0.5 - Math.random();
     };
+=======
+    $scope.random = () => 0.5 - Math.random();
+>>>>>>> master
 
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");

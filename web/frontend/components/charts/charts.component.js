@@ -1,5 +1,7 @@
 import Highcharts from "highcharts";
 import "./charts.scss";
+import _ from "lodash";
+
 var CLR_SCARLET = "#B90000";
 var CLR_TANGERINE = "#E63900";
 var CLR_FIRE = "#FF6600";
@@ -238,13 +240,14 @@ class ChartsController {
             opacity: boundryPoint !== point ? 0.3 : 1
           };
         }
+        return {};
       });
 
       zones = _.flatten(zones);
       zones = _.reject(zones, _.isUndefined);
 
       if (!zones.length) {
-        return;
+        return {};
       }
 
       tag.zoneAxis = "x";
@@ -396,7 +399,7 @@ class ChartsController {
       },
       series: series
     });
- 
+
     chart.series.forEach(this.applyZoneStyling.bind(this));
     this.addTooltips(chart.series);
   }
@@ -413,6 +416,6 @@ export default {
   bindings: {},
   controller: ChartsController,
   templateUrl: "/template/charts.jade"
-}; 
+};
 
 //

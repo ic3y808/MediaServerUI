@@ -1,3 +1,4 @@
+"use strict";
 var CronJob = require("cron").CronJob;
 var moment = require("moment");
 var logger = require("../common/logger");

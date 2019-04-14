@@ -15,9 +15,13 @@ class AlbumController {
     this.AppUtilities.showLoader();
 
 
+<<<<<<< HEAD
     $scope.getCoverArt = (id) => {
       return this.AlloyDbService.getCoverArt(id);
     };
+=======
+    $scope.getCoverArt = (id) => this.AlloyDbService.getCoverArt(id);
+>>>>>>> master
 
     //$scope.getArtistInfo = data => {
     //  if (data) {

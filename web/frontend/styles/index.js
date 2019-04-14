@@ -9,4 +9,11 @@ import "./fonts.scss";
 import "./fonts/alloyicons.css";
 //import "./mixins.scss";
 import "./debug.scss";
+<<<<<<< HEAD
 import "./ui/starratinglabel.scss";
+=======
+
+import "./ui/starratinglabel.scss";
+
+
+>>>>>>> master

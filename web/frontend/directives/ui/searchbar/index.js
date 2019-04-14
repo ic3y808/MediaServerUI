@@ -8,7 +8,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
     templateUrl: "/template/searchbar.jade",
 
     replace: true,
-    link: function ($scope, $element, attrs) {
+    link: ($scope, $element, attrs) => {
       "ngInject";
 
       $scope.selectedObject = null;
@@ -18,7 +18,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaElement, 
 
       });
 
-        $("#search-box")
+      $("#search-box")
         .mouseenter(function () {
           $(this).focus();
         })

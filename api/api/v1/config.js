@@ -40,18 +40,16 @@ router.get("/mediapaths", function (req, res) {
  */
 router.put("/mediapaths", function (req, res) {
   var displayName = req.query.display_name;
-  var path = req.query.path;
+  var mPath = req.query.path;
   try {
-    const stmt = res.locals.db.prepare(
-      "INSERT INTO MediaPaths (display_name, path) VALUES (?, ?) ON CONFLICT(display_name) DO UPDATE SET path=?"
-    );
-    const info = stmt.run(displayName, path, path);
+    const stmt = res.locals.db.prepare("INSERT INTO MediaPaths (display_name, path) VALUES (?, ?) ON CONFLICT(display_name) DO UPDATE SET path=?");
+    const info = stmt.run(displayName, mPath, mPath);
     if (info.changes) {
       res.locals.watcher.configFileWatcher();
       res.json(new structures.StatusResult("success"));
     } else { res.json(new structures.StatusResult(info)); }
   } catch (err) {
-    res.json(new structures.StatusResult(failed));
+    res.json(new structures.StatusResult("failed"));
   }
 });
 
@@ -69,13 +67,11 @@ router.put("/mediapaths", function (req, res) {
  */
 router.delete("/mediapaths", function (req, res) {
   var displayName = req.query.display_name ? req.query.display_name : "";
-  var path = req.query.path;
+  var mPath = req.query.path;
 
   try {
-    const stmt = res.locals.db.prepare(
-      "DELETE FROM MediaPaths WHERE display_name=? AND path=?"
-    );
-    const info = stmt.run(displayName, path);
+    const stmt = res.locals.db.prepare("DELETE FROM MediaPaths WHERE display_name=? AND path=?");
+    const info = stmt.run(displayName, mPath);
     if (info.changes) {
       res.locals.watcher.configFileWatcher();
       res.json(new structures.StatusResult("success"));
@@ -122,9 +118,7 @@ router.get("/file_list", function (req, res) {
         var data = [];
         files.forEach(function (file) {
           try {
-            var isDirectory = fs
-              .statSync(path.join(currentDir, file))
-              .isDirectory();
+            var isDirectory = fs.statSync(path.join(currentDir, file)).isDirectory();
             if (isDirectory) {
               data.push({
                 Name: file,

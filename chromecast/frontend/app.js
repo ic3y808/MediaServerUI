@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+"use strict";
+>>>>>>> master
 import "./style.scss";
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
@@ -7,17 +11,17 @@ var h = $(window).height();
 
 var url = "https://source.unsplash.com/random/" + w + "x" + h;
 
-$("#player").css("--splash-image", "url('" + url + "')");
-$("#player").css("background-image", "url('" + url + "')");
-$("#player").css("--slideshow-image-1", "url('" + url + "')");
-$("#player").css("--slideshow-image-2", "url('" + url + "')");
-$("#player").css("--slideshow-image-3", "url('" + url + "')");
-$("#player").css("--slideshow-image-4", "url('" + url + "')");
-$("#player").css("--slideshow-image-5", "url('" + url + "')");
-$("#player").css("--slideshow-image-6", "url('" + url + "')");
-$("#player").css("--slideshow-image-7", "url('" + url + "')");
-$("#player").css("--slideshow-image-8", "url('" + url + "')");
-$("#player").css("--slideshow-image-9", "url('" + url + "')");
+$("#player").css("--splash-image", "url(\"" + url + "\")");
+$("#player").css("background-image", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-1", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-2", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-3", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-4", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-5", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-6", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-7", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-8", "url(\"" + url + "\")");
+$("#player").css("--slideshow-image-9", "url(\"" + url + "\")");
 
 const playerData = {};
 //const playerDataBinder = new cast.framework.ui.PlayerDataBinder(playerData);
@@ -47,10 +51,17 @@ const playerData = {};
 //    });
 
 // listen to all Core Events
+<<<<<<< HEAD
 playerManager.addEventListener(cast.framework.events.category.CORE,
   (event) => {
 
   });
+=======
+//playerManager.addEventListener(cast.framework.events.category.CORE,
+//  event => {
+//
+//  });
+>>>>>>> master
 
 const playbackConfig = new cast.framework.PlaybackConfig();
 
@@ -65,5 +76,12 @@ options.statusText = "Unity"; //Development only
 
 context.start({
   playbackConfig: playbackConfig,
+<<<<<<< HEAD
   supportedCommands: cast.framework.messages.Command.ALL_BASIC_MEDIA | cast.framework.messages.Command.QUEUE_PREV | cast.framework.messages.Command.QUEUE_NEXT, options: options
+=======
+  supportedCommands: cast.framework.messages.Command.ALL_BASIC_MEDIA |
+    cast.framework.messages.Command.QUEUE_PREV |
+    cast.framework.messages.Command.QUEUE_NEXT,
+  options: options
+>>>>>>> master
 });
