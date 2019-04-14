@@ -9,9 +9,6 @@ const config = require("../common/config");
 const logger = require("../common/logger");
 
 
-
-
-
 var bodyParser = require("body-parser");
 var routes = require("./routes/index");
 var Watcher = require("./watcher");
@@ -30,13 +27,11 @@ class App {
     this.db.pragma("journal_mode = WAL");
     process.on("exit", () => {
       this.db.close();
-      if (this.trayApp) this.trayApp.exit();
+      if (this.trayApp) {this.trayApp.exit();}
     });
     process.on("SIGHUP", () => process.exit(128 + 1));
     process.on("SIGINT", () => process.exit(128 + 2));
     process.on("SIGTERM", () => process.exit(128 + 15));
-
-
 
 
     this.mediaScanner = new MediaScanner(this.db);
@@ -56,7 +51,7 @@ class App {
   notify(title, message) {
     if (process.platform === "win32") {
       if (this.trayApp)
-        this.trayApp.balloon(title, message);
+        {this.trayApp.balloon(title, message);}
     }
   }
 
@@ -102,7 +97,7 @@ class App {
         ]
       });
 
-      this.trayApp.item(id => {
+      this.trayApp.item((id) => {
         switch (id) {
           case "item-1-id": {
             this.mediaScanner.startScan();
@@ -149,7 +144,7 @@ class App {
             break;
           }
           case "item-4-id-exit": {
-            if (this.trayApp) this.trayApp.exit();
+            if (this.trayApp) {this.trayApp.exit();}
             process.exit(0);
             break;
           }
@@ -211,7 +206,7 @@ class App {
       }
 
       this.app.use("/api/v1", (req, res, next) => {
-        if (req.query.api_key !== process.env.API_KEY) return res.sendStatus(401);
+        if (req.query.api_key !== process.env.API_KEY) {return res.sendStatus(401);}
         next();
       });
 
@@ -244,7 +239,7 @@ class App {
 
       this.app.use("/", routes);
 
-      var setupRoute = route => {
+      var setupRoute = (route) => {
         var tempRoute = require(route);
         tempRoute.db = this.db;
         tempRoute.mediaScanner = this.mediaScanner;
@@ -321,7 +316,7 @@ class App {
 
       this.scheduler.createJob("Rescan Library", "0 0 * * 0", () => {
         logger.info("alloydb", "Doing full rescan");
-        this.mediaScanner.starScan();
+        this.mediaScanner.startScan();
       });
 
       this.scheduler.createJob("Do Backup", "0 0 * * 0", () => {
@@ -334,7 +329,7 @@ class App {
 
       this.notify("AlloyDB Started", "AlloyDB is Listening on port " + this.server.address().port);
       logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.server.address().port);
-      if (cb) cb(this.server);
+      if (cb) {cb(this.server);}
     });
   }
 
@@ -345,23 +340,5 @@ class App {
 }
 
 module.exports = App;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
