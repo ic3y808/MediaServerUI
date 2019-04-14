@@ -1,9 +1,11 @@
 ﻿using System;
+using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -55,7 +57,7 @@ namespace Alloy.Widgets
 
 		public CircleImageView(Context context) : this(context, null)
 		{
-			
+
 		}
 
 		public CircleImageView(Context context, IAttributeSet attrs) : this(context, attrs, 0)
@@ -68,10 +70,10 @@ namespace Alloy.Widgets
 
 		public CircleImageView(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
 		{
-			init();
+			Init();
 		}
 
-		private void init()
+		private void Init()
 		{
 			base.SetScaleType(SCALE_TYPE);
 			mReady = true;
@@ -83,7 +85,7 @@ namespace Alloy.Widgets
 
 			if (mSetupPending)
 			{
-				setup();
+				Setup();
 				mSetupPending = false;
 			}
 		}
@@ -117,35 +119,35 @@ namespace Alloy.Widgets
 			}
 
 			mColorFilter = cf;
-			applyColorFilter();
+			ApplyColorFilter();
 			Invalidate();
 		}
 
 		public override void SetImageBitmap(Bitmap bm)
 		{
 			base.SetImageBitmap(bm);
-			initializeBitmap();
+			InitializeBitmap();
 		}
 
 		public override void SetImageDrawable(Drawable drawable)
 		{
 			base.SetImageDrawable(drawable);
-			initializeBitmap();
+			InitializeBitmap();
 		}
 
 		public override void SetImageResource(int resId)
 		{
 			base.SetImageResource(resId);
-			initializeBitmap();
+			InitializeBitmap();
 		}
 
 		public override void SetImageURI(Uri uri)
 		{
 			base.SetImageURI(uri);
-			initializeBitmap();
+			InitializeBitmap();
 		}
 
-		public override ColorFilter ColorFilter =>   mColorFilter;
+		public override ColorFilter ColorFilter => mColorFilter;
 		protected override void OnDraw(Canvas canvas)
 		{
 			if (mDisableCircularTransformation)
@@ -173,7 +175,7 @@ namespace Alloy.Widgets
 		protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
 		{
 			base.OnSizeChanged(w, h, oldw, oldh);
-			setup();
+			Setup();
 		}
 
 		public override bool OnTouchEvent(MotionEvent e)
@@ -189,13 +191,13 @@ namespace Alloy.Widgets
 		public override void SetPadding(int left, int top, int right, int bottom)
 		{
 			base.SetPadding(left, top, right, bottom);
-			setup();
+			Setup();
 		}
 
 		public override void SetPaddingRelative(int start, int top, int end, int bottom)
 		{
 			base.SetPaddingRelative(start, top, end, bottom);
-			setup();
+			Setup();
 		}
 
 		public int getBorderColor()
@@ -215,12 +217,12 @@ namespace Alloy.Widgets
 			Invalidate();
 		}
 
-		public int getCircleBackgroundColor()
+		public int GetCircleBackgroundColor()
 		{
 			return mCircleBackgroundColor;
 		}
 
-		public void setCircleBackgroundColor(Color circleBackgroundColor)
+		public void SetCircleBackgroundColor(Color circleBackgroundColor)
 		{
 			if (circleBackgroundColor == mCircleBackgroundColor)
 			{
@@ -232,17 +234,17 @@ namespace Alloy.Widgets
 			Invalidate();
 		}
 
-		public void setCircleBackgroundColorResource(Color circleBackgroundRes)
+		public void SetCircleBackgroundColorResource(int circleBackgroundRes)
 		{
-			setCircleBackgroundColor(Context.Resources.GetColor(circleBackgroundRes));
+			SetCircleBackgroundColor(new Color(ContextCompat.GetColor(Application.Context, circleBackgroundRes)));
 		}
 
-		public int getBorderWidth()
+		public int GetBorderWidth()
 		{
 			return mBorderWidth;
 		}
 
-		public void setBorderWidth(int borderWidth)
+		public void SetBorderWidth(int borderWidth)
 		{
 			if (borderWidth == mBorderWidth)
 			{
@@ -250,15 +252,15 @@ namespace Alloy.Widgets
 			}
 
 			mBorderWidth = borderWidth;
-			setup();
+			Setup();
 		}
 
-		public bool isBorderOverlay()
+		public bool IsBorderOverlay()
 		{
 			return mBorderOverlay;
 		}
 
-		public void setBorderOverlay(bool borderOverlay)
+		public void SetBorderOverlay(bool borderOverlay)
 		{
 			if (borderOverlay == mBorderOverlay)
 			{
@@ -266,15 +268,15 @@ namespace Alloy.Widgets
 			}
 
 			mBorderOverlay = borderOverlay;
-			setup();
+			Setup();
 		}
 
-		public bool isDisableCircularTransformation()
+		public bool IsDisableCircularTransformation()
 		{
 			return mDisableCircularTransformation;
 		}
 
-		public void setDisableCircularTransformation(bool disableCircularTransformation)
+		public void SetDisableCircularTransformation(bool disableCircularTransformation)
 		{
 			if (mDisableCircularTransformation == disableCircularTransformation)
 			{
@@ -282,34 +284,22 @@ namespace Alloy.Widgets
 			}
 
 			mDisableCircularTransformation = disableCircularTransformation;
-			initializeBitmap();
+			InitializeBitmap();
 		}
 
-		private void applyColorFilter()
+		private void ApplyColorFilter()
 		{
 			mBitmapPaint.SetColorFilter(mColorFilter);
 		}
 
-		private Bitmap getBitmapFromDrawable(Drawable drawable)
+		private Bitmap GetBitmapFromDrawable(Drawable drawable)
 		{
-			if (drawable == null)
-			{
-				return null;
-			}
-
-			if (drawable is BitmapDrawable) {
-				return ((BitmapDrawable)drawable).Bitmap;
-			}
+			if (drawable == null) return null;
+			if (drawable is BitmapDrawable) { return ((BitmapDrawable)drawable).Bitmap; }
 
 			try
 			{
-				Bitmap bitmap;
-
-				if (drawable is ColorDrawable) {
-					bitmap = Bitmap.CreateBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG);
-				} else {
-					bitmap = Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, BITMAP_CONFIG);
-				}
+				Bitmap bitmap = drawable is ColorDrawable ? Bitmap.CreateBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG) : Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, BITMAP_CONFIG);
 
 				Canvas canvas = new Canvas(bitmap);
 				drawable.SetBounds(0, 0, canvas.Width, canvas.Height);
@@ -323,20 +313,13 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private void initializeBitmap()
+		private void InitializeBitmap()
 		{
-			if (mDisableCircularTransformation)
-			{
-				mBitmap = null;
-			}
-			else
-			{
-				mBitmap = getBitmapFromDrawable(Drawable);
-			}
-			setup();
+			mBitmap = mDisableCircularTransformation ? null : GetBitmapFromDrawable(Drawable);
+			Setup();
 		}
 
-		private void setup()
+		private void Setup()
 		{
 			if (!mReady)
 			{
@@ -372,7 +355,7 @@ namespace Alloy.Widgets
 			mBitmapHeight = mBitmap.Height;
 			mBitmapWidth = mBitmap.Width;
 
-			mBorderRect.Set(calculateBounds());
+			mBorderRect.Set(CalculateBounds());
 			mBorderRadius = Math.Min((mBorderRect.Height() - mBorderWidth) / 2.0f, (mBorderRect.Width() - mBorderWidth) / 2.0f);
 
 			mDrawableRect.Set(mBorderRect);
@@ -382,12 +365,12 @@ namespace Alloy.Widgets
 			}
 			mDrawableRadius = Math.Min(mDrawableRect.Height() / 2.0f, mDrawableRect.Width() / 2.0f);
 
-			applyColorFilter();
-			updateShaderMatrix();
+			ApplyColorFilter();
+			UpdateShaderMatrix();
 			Invalidate();
 		}
 
-		private RectF calculateBounds()
+		private RectF CalculateBounds()
 		{
 			int availableWidth = Width - PaddingLeft - PaddingRight;
 			int availableHeight = Height - PaddingTop - PaddingBottom;
@@ -400,7 +383,7 @@ namespace Alloy.Widgets
 			return new RectF(left, top, left + sideLength, top + sideLength);
 		}
 
-		private void updateShaderMatrix()
+		private void UpdateShaderMatrix()
 		{
 			float scale;
 			float dx = 0;
@@ -440,5 +423,5 @@ namespace Alloy.Widgets
 			}
 		}
 
-}
+	}
 }

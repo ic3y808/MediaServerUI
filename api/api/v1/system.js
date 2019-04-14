@@ -83,7 +83,7 @@ router.get("/scan_start", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/scan_status", function (req, res) {
-  var status = new structures.StatusResult(res.locals.mediaScanner.getStatus())
+  var status = new structures.StatusResult(res.locals.mediaScanner.getStatus());
   res.send(status);
 });
 
@@ -99,7 +99,7 @@ router.get("/scan_status", function (req, res) {
  */
 router.get("/scan_cancel", function (req, res) {
   res.locals.notify("Cancelled Scan", "Requested scan to be cancelled");
-  var status = new structures.StatusResult(res.locals.mediaScanner.cancelScan())
+  var status = new structures.StatusResult(res.locals.mediaScanner.cancelScan());
   res.send(status);
 });
 
@@ -114,7 +114,7 @@ router.get("/scan_cancel", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/stats", function (req, res) {
-  var libraryStats = new structures.LibraryStats()
+  var libraryStats = new structures.LibraryStats();
 
   var tracks = res.locals.db.prepare("SELECT * FROM Tracks").all();
   libraryStats.track_count = tracks.length;
@@ -129,7 +129,7 @@ router.get("/stats", function (req, res) {
   libraryStats.genre_count = genres.length;
 
   var stmt = res.locals.db.prepare("SELECT SUM(size) FROM Tracks");
-  stmt.columns().map(column => column.name);
+  stmt.columns().map((column) => column.name);
   for (var row of stmt.iterate()) {
     libraryStats.memory_used = row["SUM(size)"];
   }
@@ -182,14 +182,16 @@ router.post("/do_restore", function (req, res) {
   logger.info("alloydb", "Restore requested");
   res.locals.db.close();
   var dbPath = process.env.DATABASE;
+  var dbWalPath = process.env.DATABASE_WAL;
+  var dbShmPath = process.env.DATABASE_SHM;
   var sampleFile = req.files.data;
   var restoreFile = path.join(process.env.BACKUP_DATA_DIR, sampleFile.name);
   sampleFile.mv(restoreFile, function (err) {
     if (err) { return res.status(500).send(err); }
 
     if (fs.existsSync(dbPath)) { fs.renameSync(dbPath, dbPath + ".old"); }
-    if (fs.existsSync(process.env.DATABASE_WAL)) { fs.renameSync(process.env.DATABASE_WAL, process.env.DATABASE_WAL + ".old"); }
-    if (fs.existsSync(process.env.DATABASE_SHM)) { fs.renameSync(process.env.DATABASE_SHM, process.env.DATABASE_SHM + ".old"); }
+    if (fs.existsSync(dbWalPath)) { fs.renameSync(dbWalPath, dbWalPath + ".old"); }
+    if (fs.existsSync(dbShmPath)) { fs.renameSync(dbShmPath, dbShmPath + ".old"); }
 
     fs.renameSync(restoreFile, dbPath);
 

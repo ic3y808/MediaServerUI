@@ -27,7 +27,7 @@ class App {
     this.db.pragma("journal_mode = WAL");
     process.on("exit", () => {
       this.db.close();
-      if (this.trayApp) {this.trayApp.exit();}
+      if (this.trayApp) { this.trayApp.exit(); }
     });
     process.on("SIGHUP", () => process.exit(128 + 1));
     process.on("SIGINT", () => process.exit(128 + 2));
@@ -50,8 +50,7 @@ class App {
 
   notify(title, message) {
     if (process.platform === "win32") {
-      if (this.trayApp)
-        {this.trayApp.balloon(title, message);}
+      if (this.trayApp) { this.trayApp.balloon(title, message); }
     }
   }
 
@@ -144,7 +143,7 @@ class App {
             break;
           }
           case "item-4-id-exit": {
-            if (this.trayApp) {this.trayApp.exit();}
+            if (this.trayApp) { this.trayApp.exit(); }
             process.exit(0);
             break;
           }
@@ -200,13 +199,13 @@ class App {
       this.app.use(bodyParser.json());
       this.app.use(bodyParser.urlencoded({ extended: false }));
       this.app.use(express.static(path.join(__dirname, "public")));
-
-      if (!fs.existsSync(process.env.COVER_ART_DIR)) {
-        fs.mkdirSync(process.env.COVER_ART_DIR);
+      var coverDir = process.env.COVER_ART_DIR;
+      if (!fs.existsSync(coverDir)) {
+        fs.mkdirSync(coverDir);
       }
 
       this.app.use("/api/v1", (req, res, next) => {
-        if (req.query.api_key !== process.env.API_KEY) {return res.sendStatus(401);}
+        if (req.query.api_key !== process.env.API_KEY) { return res.sendStatus(401); }
         next();
       });
 
@@ -329,12 +328,12 @@ class App {
 
       this.notify("AlloyDB Started", "AlloyDB is Listening on port " + this.server.address().port);
       logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.server.address().port);
-      if (cb) {cb(this.server);}
+      if (cb) { cb(this.server); }
     });
   }
 
   stopServer() {
-   // if (this.server) this.server.close();
+    // if (this.server) this.server.close();
     process.exit(0);
   }
 }
