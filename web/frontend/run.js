@@ -61,12 +61,9 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $labelHolder = $label.text();
     $select = $item.parent().find("input");
     $checked = $select.is(":checked");
-    if ($select.is(":disabled"))
-      return;
-    if ($select.attr("type") == "radio" && $checked)
-      return;
-    if ($select.attr("type") == "radio")
-      $menu.find("li").removeClass("active");
+    if ($select.is(":disabled")) { return; }
+    if ($select.attr("type") === "radio" && $checked) { return; }
+    if ($select.attr("type") === "radio") { $menu.find("li").removeClass("active"); }
     $item.parent().removeClass("active");
     !$checked && $item.parent().addClass("active");
     $select.prop("checked", !$select.prop("checked"));
@@ -82,7 +79,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     } else {
       $label.html($label.data("placeholder"));
     }
-  }
+  };
   $(document).on("click.dropdown-menu", ".dropdown-select > li > a", $.fn.dropdown.Constructor.prototype.change);
   $("[data-toggle=tooltip]").tooltip();
   $(document).on("click", "[data-toggle^=\"class\"]", function (e) {
@@ -104,15 +101,14 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
           it.className = $.trim(cn);
         });
       }
-      ($targets[index] != "#") && $($targets[index]).toggleClass($classes[index]) || $this.toggleClass($classes[index]);
+      ($targets[index] !== "#") && ($($targets[index]).toggleClass($classes[index]) || $this.toggleClass($classes[index]));
     });
     $this.toggleClass("active");
   });
   $(document).on("click", ".panel-toggle", function (e) {
     e && e.preventDefault();
     var $this = $(e.target), $class = "collapse", $target;
-    if (!$this.is("a"))
-      $this = $this.closest("a");
+    if (!$this.is("a")) { $this = $this.closest("a"); }
     $target = $this.closest(".panel");
     $target.find(".panel-body").toggleClass($class);
     $this.toggleClass("active");
@@ -125,7 +121,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   });
   var $window = $(window);
   var mobile = function (option) {
-    if (option == "reset") {
+    if (option === "reset") {
       //$("[data-toggle^="shift"]").shift("reset");
       return true;
     }
@@ -148,14 +144,14 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   var setHeight = function () {
     $(".app-fluid #nav > *").css("min-height", $(window).height() - 60);
     return true;
-  }
+  };
   setHeight();
   var fixVbox = function () {
     $(".ie11 .vbox").each(function () {
       $(this).height($(this).parent().height());
     });
     return true;
-  }
+  };
   fixVbox();
   $(document).on("click", "[data-ride=\"collapse\"] a", function (e) {
     var $this = $(e.target), $active;
@@ -178,82 +174,75 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     }, 300);
   });
   $(document).on("click.bs.dropdown.data-api", ".dropdown .on, .dropup .on, .open .on", function (e) {
-    e.stopPropagation()
+    e.stopPropagation();
   });
 
   var Tab = function (element) {
-    this.element = $(element)
-  }
+    this.element = $(element);
+  };
   Tab.prototype.show = function () {
-    var $this = this.element
-    var $ul = $this.closest("ul:not(.dropdown-menu)")
-    var selector = $this.data("target")
+    var $this = this.element;
+    var $ul = $this.closest("ul:not(.dropdown-menu)");
+    var selector = $this.data("target");
     if (!selector) {
-      selector = $this.attr("href")
-      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, "")
+      selector = $this.attr("href");
+      selector = selector && selector.replace(/.*(?=#[^\s]*$)/, "");
     }
-    if ($this.parent("li").hasClass("active"))
-      return
-    var previous = $ul.find(".active:last a")[0]
+    if ($this.parent("li").hasClass("active")) { return; }
+    var previous = $ul.find(".active:last a")[0];
     var e = $.Event("show.bs.tab", {
       relatedTarget: previous
-    })
-    $this.trigger(e)
-    if (e.isDefaultPrevented())
-      return
-    var $target = $(selector)
-    this.activate($this.parent("li"), $ul)
+    });
+    $this.trigger(e);
+    if (e.isDefaultPrevented()) { return; }
+    var $target = $(selector);
+    this.activate($this.parent("li"), $ul);
     this.activate($target, $target.parent(), function () {
       $this.trigger({
         type: "shown.bs.tab",
         relatedTarget: previous
-      })
-    })
-  }
+      });
+    });
+  };
   Tab.prototype.activate = function (element, container, callback) {
-    var $active = container.find("> .active")
-    var transition = callback && $.support.transition && $active.hasClass("fade")
+    var $active = container.find("> .active");
+    var transition = callback && $.support.transition && $active.hasClass("fade");
     function next() {
-      $active.removeClass("active").find("> .dropdown-menu > .active").removeClass("active")
-      element.addClass("active")
+      $active.removeClass("active").find("> .dropdown-menu > .active").removeClass("active");
+      element.addClass("active");
       if (transition) {
-        element[0].offsetWidth
-        element.addClass("in")
+        element[0].offsetWidth;
+        element.addClass("in");
       } else {
-        element.removeClass("fade")
+        element.removeClass("fade");
       }
       if (element.parent(".dropdown-menu")) {
-        element.closest("li.dropdown").addClass("active")
+        element.closest("li.dropdown").addClass("active");
       }
-      callback && callback()
+      callback && callback();
     }
-    transition ? $active.one($.support.transition.end, next).emulateTransitionEnd(150) : next()
-    $active.removeClass("in")
-  }
-  var old = $.fn.tab
+    transition ? $active.one($.support.transition.end, next).emulateTransitionEnd(150) : next();
+    $active.removeClass("in");
+  };
+  var old = $.fn.tab;
   $.fn.tab = function (option) {
     return this.each(function () {
-      var $this = $(this)
-      var data = $this.data("bs.tab")
-      if (!data)
-        $this.data("bs.tab", (data = new Tab(this)))
-      if (typeof option == "string")
-        data[option]()
-    })
-  }
-  $.fn.tab.Constructor = Tab
+      var $this = $(this);
+      var data = $this.data("bs.tab");
+      if (!data) { $this.data("bs.tab", (data = new Tab(this))); }
+      if (typeof option === "string") { data[option](); }
+    });
+  };
+  $.fn.tab.Constructor = Tab;
   $.fn.tab.noConflict = function () {
-    $.fn.tab = old
-    return this
-  }
+    $.fn.tab = old;
+    return this;
+  };
   $(document).on("click.bs.tab.data-api", "[data-toggle=\"tab\"], [data-toggle=\"pill\"]", function (e) {
-    e.preventDefault()
-    $(this).tab("show")
-  })
+    e.preventDefault();
+    $(this).tab("show");
+  });
 
- 
- 
- 
 
   function toggleFullScreen() {
     var doc = window.document;
@@ -278,10 +267,8 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   $timeout(function () {
     Logger.debug("loading settings");
-    if ($rootScope)
-      $rootScope.socket.emit("load_settings", "alloydb_settings");
-    if ($rootScope)
-      $rootScope.socket.emit("load_settings", "sabnzbd_settings");
+    if ($rootScope) { $rootScope.socket.emit("load_settings", "alloydb_settings"); }
+    if ($rootScope) { $rootScope.socket.emit("load_settings", "sabnzbd_settings"); }
 
     setTimeout(() => {
       if (MediaPlayer.castStatus()) {

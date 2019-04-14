@@ -8,8 +8,4 @@ export default class SabnzbdService {
     this.isLoggingIn = true;
     this.isLoggedIn = false;
   }
-
-
-
-  
 }
