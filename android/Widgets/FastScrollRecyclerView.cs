@@ -140,7 +140,8 @@ namespace Alloy.Widgets
 				case MotionEventActions.Down:
 					// Keep track of the down positions
 					mDownX = x;
-					mDownY = mLastY = y;
+					mLastY = y;
+					mDownY = y;
 					mScrollbar.handleTouchEvent(ev, mDownX, mDownY, mLastY, mStateChangeListener);
 					break;
 				case MotionEventActions.Move:
@@ -314,7 +315,7 @@ namespace Alloy.Widgets
 				return "";
 			}
 
-			int posInt = (int)((touchFraction == 1) ? itemPos - 1 : itemPos);
+			int posInt = (int)((Math.Abs(touchFraction - 1) < 0.001) ? itemPos - 1 : itemPos);
 
 			SectionedAdapter sectionedAdapter = (SectionedAdapter)GetAdapter();
 			return sectionedAdapter.GetSectionName(posInt);
@@ -557,7 +558,7 @@ namespace Alloy.Widgets
 
 		private class ScrollOffsetInvalidator : AdapterDataObserver
 		{
-			private SparseIntArray mScrollOffsets;
+			private readonly SparseIntArray mScrollOffsets;
 
 			public ScrollOffsetInvalidator(SparseIntArray mScrollOffsets)
 			{

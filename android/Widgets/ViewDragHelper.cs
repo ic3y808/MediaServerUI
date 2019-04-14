@@ -338,6 +338,11 @@ namespace Alloy.Widgets
 
 		private readonly CustomRunnable mSetIdleRunnable;
 
+		public ViewDragHelper()
+		{
+			// not used
+		}
+
 		/**
 		 * Factory method to create a new ViewDragHelper.
 		 *
