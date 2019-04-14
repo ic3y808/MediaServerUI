@@ -1,4 +1,4 @@
-import CryptoJS from 'crypto-js';
+import CryptoJS from "crypto-js";
 class ConfigSchedulerController {
   constructor($scope, $rootScope, Logger, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -8,17 +8,16 @@ class ConfigSchedulerController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug('scheduler-controller');
+    this.Logger.debug("scheduler-controller");
 
     $scope.settings = {};
-
 
 
     $scope.ping = () => {
       var ping = this.AlloyDbService.getSchedulerStatus();
       if (ping) {
-        ping.then(data => {
-          this.Logger.debug('getSchedulerStatus');
+        ping.then((data) => {
+          this.Logger.debug("getSchedulerStatus");
           this.$scope.schedulerStatus = data;
           this.AppUtilities.apply();
         });
@@ -26,16 +25,16 @@ class ConfigSchedulerController {
     };
 
 
-    $rootScope.$on('menuSizeChange', (event, currentState) => {
+    $rootScope.$on("menuSizeChange", (event, currentState) => {
 
     });
 
-    $rootScope.$on('windowResized', (event, data) => {
+    $rootScope.$on("windowResized", (event, data) => {
 
     });
 
 
-    $rootScope.$on('loginStatusChange', (event, data) => {
+    $rootScope.$on("loginStatusChange", (event, data) => {
       $scope.ping();
     });
 
@@ -48,7 +47,7 @@ class ConfigSchedulerController {
     }, 1000);
 
 
-    $scope.$on('$destroy', () => {
+    $scope.$on("$destroy", () => {
       clearInterval($scope.refreshIntereval);
       clearInterval($scope.uiRefreshIntereval);
     });
@@ -60,6 +59,6 @@ class ConfigSchedulerController {
 export default {
   bindings: {},
   controller: ConfigSchedulerController,
-  templateUrl: '/template/configScheduler.jade'
+  templateUrl: "/template/configScheduler.jade"
 
 };

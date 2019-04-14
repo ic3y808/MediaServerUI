@@ -9,15 +9,15 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       type: "@",
       refreshclick: "&",
       viewmorelink: "@"
-      
+
     },
     templateUrl: "template/itemlist.jade",
 
     replace: true,
-    link: function (scope, elm, attrs) {
+    link: (scope, elm, attrs) => {
       scope.itemLimit = parseInt(scope.limit, 10);
 
-      switch(scope.type){
+      switch (scope.type) {
         case "tracks": break;
         case "albums": break;
         case "artists": break;
@@ -42,5 +42,5 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       scope.currentTrack = $rootScope.currentTrack;
       scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
     }
-  }
-};
+  };
+}

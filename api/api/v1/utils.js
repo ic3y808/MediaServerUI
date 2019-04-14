@@ -64,7 +64,7 @@ module.exports.testForLetter = function (character) {
   }
 }
 
-module.exports.createIndex = function compare(items) {
+module.exports.createIndex = function createIndex(items) {
  var result = {};
   items.forEach(function (item) {
     var indexName = item.name.slice(0, 1).toUpperCase();
@@ -78,10 +78,10 @@ module.exports.createIndex = function compare(items) {
   });
   var finalResult = [];
   for (var key in result) {
-    finalResult.push({
-      name: key,
-      value: result[key]
-    })
+      finalResult.push({
+        name: key,
+        value: result[key]
+      });
   }
   return finalResult;
 };

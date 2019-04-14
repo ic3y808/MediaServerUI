@@ -13,21 +13,20 @@ class ActivityHistoryController {
     this.AppUtilities.showLoader();
 
     this.$scope.history = [];
-   
-    $scope.$on("$destroy", () =>  {
+
+    $scope.$on("$destroy", () => {
       clearInterval($scope.refreshIntereval);
     });
 
-    $rootScope.$on("sabnzbdHistoryResult", function (event, data) {
+    $rootScope.$on("sabnzbdHistoryResult", (event, data) => {
       this.Logger.debug("sabnzbd history result");
       $scope.history = JSON.parse(data);
       this.AppUtilities.apply();
       this.AppUtilities.hideLoader();
     });
 
-    $scope.refreshIntereval = setInterval(() =>  {
-      if(this.$rootScope.socket)
-       this.$rootScope.socket.emit("get_sabnzbd_history");
+    $scope.refreshIntereval = setInterval(() => {
+      if (this.$rootScope.socket) { this.$rootScope.socket.emit("get_sabnzbd_history"); }
     }, 10000);
   }
 }
