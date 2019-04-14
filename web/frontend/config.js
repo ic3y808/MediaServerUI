@@ -5,7 +5,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   var buildRoute = (route, element) => {
     $routeProvider.when(route, {
       template: element,
-    })
+    });
   };
 
   buildRoute("/", "<home/>");
@@ -35,7 +35,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
 
   $routeProvider.otherwise({
     templateUrl: "/template/fourofour.jade",
-  })
+  });
 
   $locationProvider.html5Mode({
     enabled: true,
