@@ -1,121 +1,121 @@
 
-var exec = require('child_process').exec;
-var ArgumentParser = require('argparse').ArgumentParser;
-var path = require('path');
-var npm = require('npm');
+var exec = require("child_process").exec;
+var ArgumentParser = require("argparse").ArgumentParser;
+var path = require("path");
+var npm = require("npm");
 
 
 function load() {
   return new Promise((resolve, reject) => {
     npm.load(path.join(__dirname, "package.json"), function (er) {
-      if (er) reject(er);
-      else resolve();
+      if (er) { reject(er); }
+      else { resolve(); }
     });
   });
-};
+}
 
 function launchBrowser() {
   setTimeout(() => {
-    require('opn')('http://localhost:' + process.env.PORT);
+    require("opn")("http://localhost:" + process.env.PORT);
   }, 5000);
 }
 
 function processFonts() {
   return new Promise((resolve, reject) => {
-    var icfPath = path.join(__dirname, 'node_modules', 'icon-font-generator', 'bin', 'icon-font-generator');
-    var iconsSrcPath = path.join(__dirname, 'common', 'icons', '*.svg');
-    var iconsDstPath = path.join(__dirname, 'web', 'frontend', 'styles', 'fonts');
+    var icfPath = path.join(__dirname, "node_modules", "icon-font-generator", "bin", "icon-font-generator");
+    var iconsSrcPath = path.join(__dirname, "common", "icons", "*.svg");
+    var iconsDstPath = path.join(__dirname, "web", "frontend", "styles", "fonts");
     exec("node " + icfPath + " " + iconsSrcPath + " -n alloyicons --normalize --html false -j false -o " + iconsDstPath, function callback(error, stdout, stderr) {
-      if (error) reject(error);
+      if (error) { reject(error); }
       if (stdout) {
         console.log(stdout);
         resolve();
       }
-      if (stderr) reject(error);
+      if (stderr) { reject(error); }
     });
   });
-};
+}
 
 function buildApp() {
-  npm.commands.run(['build'], (err, data) => {
-    if (err) console.log(err);
+  npm.commands.run(["build"], (err, data) => {
+    if (err) { console.log(err); }
     console.log(data);
   });
 }
 
 function runFullApp() {
-  npm.commands.run(['prod'], (err, data) => {
-    if (err) console.log(err);
+  npm.commands.run(["prod"], (err, data) => {
+    if (err) { console.log(err); }
     console.log(data);
   });
   launchBrowser();
 }
 
 function runUiOnly() {
-  npm.commands.run(['prod_ui_only'], (err, data) => {
-    if (err) console.log(err);
+  npm.commands.run(["prod_ui_only"], (err, data) => {
+    if (err) { console.log(err); }
     console.log(data);
   });
   launchBrowser();
 }
 
 var parser = new ArgumentParser({
-  version: '0.0.1',
+  version: "0.0.1",
   addHelp: true,
-  description: 'Alloy setup.js helper'
+  description: "Alloy setup.js helper"
 });
 
 parser.addArgument(
-  ['-u', '--ui'],
+  ["-u", "--ui"],
   {
-    action: 'storeTrue',
-    help: 'runs the full UI frontend application for connecting to a remote database'
+    action: "storeTrue",
+    help: "runs the full UI frontend application for connecting to a remote database"
   }
 );
 parser.addArgument(
-  ['-r', '--run'],
+  ["-r", "--run"],
   {
-    action: 'storeTrue',
-    help: 'runs the full UI frontend application and database server'
+    action: "storeTrue",
+    help: "runs the full UI frontend application and database server"
   }
 );
 parser.addArgument(
-  ['-f', '--fonts'],
+  ["-f", "--fonts"],
   {
-    action: 'storeTrue',
-    help: 'rebuilds just the fonts'
+    action: "storeTrue",
+    help: "rebuilds just the fonts"
   }
 );
 parser.addArgument(
-  ['-b', '--build'],
+  ["-b", "--build"],
   {
-    action: 'storeTrue',
-    help: 'builds the resources'
+    action: "storeTrue",
+    help: "builds the resources"
   }
 );
 parser.addArgument(
-  ['-i', '--install'],
+  ["-i", "--install"],
   {
-    action: 'storeTrue',
-    help: 'includes build, installs and builds'
+    action: "storeTrue",
+    help: "includes build, installs and builds"
   }
 );
 parser.addArgument(
-  ['-p', '--port'],
+  ["-p", "--port"],
   {
     defaultValue: 3000,
-    type: 'int',
-    action: 'store',
-    help: 'Port used for the UI server backend'
+    type: "int",
+    action: "store",
+    help: "Port used for the UI server backend"
   }
 );
 parser.addArgument(
-  ['-a', '--api-port'],
+  ["-a", "--api-port"],
   {
     defaultValue: 4000,
-    type: 'int',
-    action: 'store',
-    help: 'Port used for the AlloyDB backend database'
+    type: "int",
+    action: "store",
+    help: "Port used for the AlloyDB backend database"
   }
 );
 
@@ -143,7 +143,7 @@ load().then(() => {
   else if (args.install === true) {
     npm.commands.prune([], function (er, data) {
       npm.commands.install([], function (er, data) {
-        if (er) console.log(er);
+        if (er) { console.log(er); }
         processFonts().then(() => {
           buildApp();
         });

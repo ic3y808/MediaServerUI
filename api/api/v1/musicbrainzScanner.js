@@ -15,38 +15,30 @@ var scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFile
 var urlBase = process.env.BRAINZ_API_URL;
 
 
-
 function MusicbrainzScanner(database) {
   db = database;
   this.filteredFiles = [];
-  resetStatus();
-};
+}
 
 function writeDb(data, table) {
 
   var sql = "INSERT OR REPLACE INTO " + table + " (";
 
   Object.keys(data).forEach(function (key, index) {
-    if (index == Object.keys(data).length - 1)
-      sql += key;
-    else
-      sql += key + ", ";
+    if (index === Object.keys(data).length - 1) { sql += key; }
+    else { sql += key + ", "; }
   });
-
 
 
   sql += ") VALUES (";
 
 
   Object.keys(data).forEach(function (key, index) {
-    if (index == Object.keys(data).length - 1)
-      sql += "@" + key;
-    else
-      sql += "@" + key + ", ";
+    if (index === Object.keys(data).length - 1) { sql += "@" + key; }
+    else { sql += "@" + key + ", "; }
   });
 
   sql += ")";
-
 
 
   var insert = db.prepare(sql);
@@ -59,7 +51,7 @@ function writeDb(data, table) {
   });
 
   insert.run(t);
-};
+}
 
 
 function processAlbums(track, result) {
@@ -81,9 +73,9 @@ function processAlbums(track, result) {
           artist_id: track.artist_id,
           genre: "No Genre",
           genre_id: ""
-        }
-        var year = moment(album.ReleaseDate).format("YYYY")
-        if (year) year = "(" + year + ")";
+        };
+        var year = moment(album.ReleaseDate).format("YYYY");
+        if (year) { year = "(" + year + ")"; }
 
         dbAlbum.path = path.dirname(path.dirname(track.path));
         dbAlbum.path = path.join(dbAlbum.path, album.Title + " " + year);
@@ -96,16 +88,14 @@ function processAlbums(track, result) {
           dbAlbum.id = existingAlbum[0].id;
         }
 
-        writeDb(dbAlbum, "Albums")
+        writeDb(dbAlbum, "Albums");
 
       }
     });
   }
 
 
-
-
-};
+}
 
 function processLinks(result) {
   if (result.Links) {
@@ -113,16 +103,38 @@ function processLinks(result) {
       var existingLink = db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_foreign_id=?").all(link.type, link.target, result.Id);
       if (existingLink.length === 0) {
         link.artist_foreign_id = result.Id;
-        writeDb(link, "Links")
+        writeDb(link, "Links");
       }
     });
   }
 }
 
+function updateStatus(status, isScanning) {
+  scanStatus.status = status;
+  scanStatus.isScanning = isScanning;
+  scanStatus.totalFiles = totalFiles;
+  scanStatus.currentlyScanned = totalFiles - filteredFiles.length;
+}
+
+function isScanning() {
+  return scanStatus.isScanning;
+}
+
+function shouldCancel() {
+  if (scanStatus.shouldCancel) {
+    updateStatus("Scanning Cacelled", false);
+    return true;
+  }
+  return false;
+}
+
+function resetStatus() {
+  scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
+}
 
 
 function processQueue(input, cb) {
-  if (shouldCancel()) return;
+  if (shouldCancel()) { return; }
   var track = input;
 
   try {
@@ -148,31 +160,7 @@ function processQueue(input, cb) {
     cb(null, track);
   }
 
-};
-
-
-function updateStatus(status, isScanning) {
-  scanStatus.status = status;
-  scanStatus.isScanning = isScanning;
-  scanStatus.totalFiles = totalFiles;
-  scanStatus.currentlyScanned = totalFiles - filteredFiles.length;
-};
-
-function isScanning() {
-  return scanStatus.isScanning;
-};
-
-function shouldCancel() {
-  if (scanStatus.shouldCancel) {
-    updateStatus("Scanning Cacelled", false);
-    return true;
-  }
-  return false;
-};
-
-function resetStatus() {
-  scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
-};
+}
 
 
 function cleanup() {
@@ -180,6 +168,10 @@ function cleanup() {
   resetStatus();
   updateStatus("Scan Complete", false);
 }
+
+
+var q = new Queue(processQueue);
+q.on("drain", cleanup);
 
 
 function cancel() {
@@ -190,7 +182,7 @@ function cancel() {
   else {
     updateStatus("Cancelled scanning", false);
   }
-};
+}
 
 
 function scan() {
@@ -199,8 +191,8 @@ function scan() {
 
   filteredFiles = [];
 
-  allTracks.forEach(track => {
-    if (shouldCancel()) return;
+  allTracks.forEach((track) => {
+    if (shouldCancel()) { return; }
     filteredFiles.push(track);
     q.push(track);
     updateStatus("Queuing " + filteredFiles.length, true);
@@ -236,12 +228,8 @@ MusicbrainzScanner.prototype.startScan = function startScan() {
 };
 
 
-
 MusicbrainzScanner.prototype.getStatus = function getStatus() {
   return scanStatus;
 };
-
-var q = new Queue(processQueue);
-q.on("drain", cleanup);
 
 module.exports = MusicbrainzScanner;

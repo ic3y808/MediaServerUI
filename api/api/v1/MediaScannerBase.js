@@ -20,7 +20,7 @@ class MediaScannerBase {
       return true;
     }
     return false;
-  };
+  }
 
   cancelScan() {
     if (this.isScanning()) {
@@ -31,7 +31,7 @@ class MediaScannerBase {
       this.updateStatus("Cancelled scanning", false);
       logger.info("alloydb", "Cancelled scanning");
     }
-  };
+  }
 
   resetStatus() {
     this.scanStatus = {
@@ -39,13 +39,13 @@ class MediaScannerBase {
       isScanning: false,
       shouldCancel: false
     };
-  };
+  }
 
   updateStatus(status, isScanning) {
     this.scanStatus.status = status;
     this.scanStatus.isScanning = isScanning;
     logger.info("alloydb", JSON.stringify(this.scanStatus));
-  };
+  }
 
   getStatus() {
     return this.scanStatus;
@@ -53,7 +53,7 @@ class MediaScannerBase {
 
   isScanning() {
     return this.scanStatus.isScanning;
-  };
+  }
 
   downloadPage(url) {
     var request = new XMLHttpRequest();
@@ -62,7 +62,7 @@ class MediaScannerBase {
 
     if (request.status === 200) {
       return JSON.parse(request.responseText);
-    } else return null;
+    } else { return null; }
   }
 
   checkCounts() {
@@ -87,7 +87,7 @@ class MediaScannerBase {
       var tracks = this.db.prepare("SELECT id FROM Tracks WHERE album_id=?").all(a.id);
       this.db.prepare("UPDATE Albums SET track_count=? WHERE id=?").run(tracks.length, a.id);
     });
-  };
+  }
 
   checkSortOrder() {
     logger.info("alloydb", "checking table sort orders");
@@ -96,7 +96,7 @@ class MediaScannerBase {
     for (var i = 0; i < allArtists.length; ++i) {
       this.db.prepare("UPDATE Artists SET sort_order=? WHERE id=?").run(i, allArtists[i].id);
     }
-  };
+  }
 
   checkEmptyArtists() {
     logger.info("alloydb", "checking empty artists");
@@ -109,7 +109,7 @@ class MediaScannerBase {
         this.writeScanEvent("delete-artist", artist, "Deleted mapped artist because it was empty", "success");
       }
     });
-  };
+  }
 
   checkEmptyAlbums() {
     logger.info("alloydb", "checking empty albums");
@@ -122,7 +122,7 @@ class MediaScannerBase {
         this.writeScanEvent("delete-album", album, "Deleted mapped album because it was empty", "success");
       }
     });
-  };
+  }
 
   checkEmptyGenres() {
     logger.info("alloydb", "checking empty genres");
@@ -135,7 +135,7 @@ class MediaScannerBase {
         this.writeScanEvent("delete-genre", genre, "Deleted mapped genre because it was empty", "success");
       }
     });
-  };
+  }
 
   checkEmptyPlaylists() {
     logger.info("alloydb", "checking empty playlists");
@@ -148,7 +148,7 @@ class MediaScannerBase {
         this.writeScanEvent("delete-playlist", playlist, "Deleted playlist because it was empty", "success");
       }
     });
-  };
+  }
 
   checkExtraAlbumArt() {
     logger.info("alloydb", "checking extra art");
@@ -157,10 +157,10 @@ class MediaScannerBase {
       fs.mkdirSync(process.env.COVER_ART_DIR);
     }
 
-    fs.readdir(process.env.COVER_ART_DIR, function (err, items) {
+    fs.readdir(process.env.COVER_ART_DIR, (err, items) => {
       items.forEach((file) => {
         var anyArt = this.db.prepare("SELECT * FROM CoverArt WHERE id=?").all(file.replace(".jpg", ""));
-        if (anyArt.length === 0) del.sync(path.join(process.env.COVER_ART_DIR, file));
+        if (anyArt.length === 0) { del.sync(path.join(process.env.COVER_ART_DIR, file)); }
       });
     });
   }
@@ -197,14 +197,13 @@ class MediaScannerBase {
           var insert = this.db.prepare(sql);
           insert.run(item);
         } catch (err) {
-          if (err) logger.error("alloydb", JSON.stringify(err));
+          if (err) { logger.error("alloydb", JSON.stringify(err)); }
           logger.info("alloydb", sql);
           logger.info("alloydb", values);
         }
       }
     });
   }
-
 
 
   parseFiles(audioFiles) {
@@ -218,14 +217,14 @@ class MediaScannerBase {
       var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
       var existingCover = stmt.all(coverId);
       if (!fs.existsSync(coverFile)) {
-        return mm.parseFile(track.path).then(metadata => {
+        return mm.parseFile(track.path).then((metadata) => {
           if (existingCover.length === 0) {
             this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
           }
 
           if (metadata.common.picture) {
 
-            fs.writeFile(coverFile, metadata.common.picture[0].data, err => {
+            fs.writeFile(coverFile, metadata.common.picture[0].data, (err) => {
               if (err) {
                 logger.error("alloydb", JSON.stringify(err));
               }
@@ -234,9 +233,9 @@ class MediaScannerBase {
 
           }
           return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
-        })
+        });
       } return this.parseFiles(audioFiles);
-    } else return Promise.resolve();
+    } else { return Promise.resolve(); }
   }
 
   createAlbumArt() {
@@ -277,22 +276,17 @@ class MediaScannerBase {
     var sql = "INSERT OR REPLACE INTO " + table + " (";
     var values = {};
     Object.keys(data).forEach((key, index) => {
-      if (index == Object.keys(data).length - 1)
-        sql += key;
-      else
-        sql += key + ", ";
+      if (index === Object.keys(data).length - 1) { sql += key; }
+      else { sql += key + ", "; }
     });
-
 
 
     sql += ") VALUES (";
 
 
     Object.keys(data).forEach((key, index) => {
-      if (index == Object.keys(data).length - 1)
-        sql += "@" + key;
-      else
-        sql += "@" + key + ", ";
+      if (index === Object.keys(data).length - 1) { sql += "@" + key; }
+      else { sql += "@" + key + ", "; }
     });
 
     sql += ")";
@@ -301,7 +295,7 @@ class MediaScannerBase {
       var insert = this.db.prepare(sql);
 
 
-      Object.keys(data).forEach((key, index) =>{
+      Object.keys(data).forEach((key, index) => {
         var a = {};
         a[key] = data[key];
         Object.assign(values, a);
@@ -309,11 +303,11 @@ class MediaScannerBase {
 
       insert.run(values);
     } catch (err) {
-      if (err) logger.error("alloydb", JSON.stringify(err));
+      if (err) { logger.error("alloydb", JSON.stringify(err)); }
       logger.info("alloydb", sql);
       logger.info("alloydb", values);
     }
-  };
+  }
 
   writeScanEvent(type, obj, reason, result) {
     try {
@@ -329,7 +323,7 @@ class MediaScannerBase {
         album: "",
         album_id: "",
         quality: "",
-      }
+      };
 
       if (data.path && !fs.lstatSync(data.path).isDirectory()) {
         data.quality = mime.lookup(data.path);

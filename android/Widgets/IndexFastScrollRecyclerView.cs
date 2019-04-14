@@ -191,11 +191,6 @@ namespace Alloy.Widgets
 			mScroller.SetIndexbarMarginHeight(value);
 		}
 
-		public void SetPreviewPadding(int value)
-		{
-			mScroller.SetPreviewPadding(value);
-		}
-
 		public void SetIndexBarCornerRadius(int value)
 		{
 			mScroller.SetIndexBarCornerRadius(value);

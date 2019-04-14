@@ -16,10 +16,10 @@ var logger = require("../../../common/logger");
 router.get("/playlists", function (req, res) {
   var result = {
     playlists: res.locals.db.prepare("SELECT * from Playlists").all(),
-  }
+  };
 
-  result.playlists.forEach(playlist => {
-    playlist.tracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(playlist.id)
+  result.playlists.forEach((playlist) => {
+    playlist.tracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(playlist.id);
   });
 
   res.json(result);
@@ -81,12 +81,11 @@ router.delete("/playlists", function (req, res) {
     res.locals.db.prepare("DELETE FROM Playlists WHERE id=?").run(id);
   }
   var playlistTracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
-  playlistTracks.forEach(track => {
+  playlistTracks.forEach((track) => {
     res.locals.db.prepare("DELETE FROM PlaylistTracks WHERE song_id=?").run(track.song_id);
   });
   res.send("Deleted");
 });
-
 
 
 /**
@@ -104,13 +103,13 @@ router.get("/", function (req, res) {
   if (id) {
     var result = {
       playlist: res.locals.db.prepare("SELECT * from Playlists WHERE id=?").get(id)
-    }
+    };
     result.playlist.tracks = [];
     var trackIds = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
-    trackIds.forEach(id => {
+    trackIds.forEach((id) => {
       var t = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id.song_id);
-      if (t) result.playlist.tracks.push(t);
-    })
+      if (t) { result.playlist.tracks.push(t); }
+    });
     res.json(result);
   } else {
     res.send(new structures.StatusResult("An ID Is required"));
