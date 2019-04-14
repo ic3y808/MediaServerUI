@@ -54,27 +54,6 @@ export default function (AlloyDbService, Logger) {
           }
         });
 
-<<<<<<< HEAD
-=======
-        var fill = function (i) {
-          for (var x = 1; x <= i; x++) {
-            $(".star" + x).addClass("star-rating-selected");
-          }
-        };
-
-        var unfill = function () {
-          for (var x = 1; x <= 5; x++) {
-            $(".star" + x).removeClass("star-rating-selected");
-          }
-          fill($scope.rating);
-        };
-
-        var setSelection = function (i) {
-          unfill();
-          fill($scope.rating);
-        };
-
->>>>>>> master
         var updateRating = function (i) {
           if ($scope.rating === i) { $scope.rating = 0; }
           else { $scope.rating = i; }

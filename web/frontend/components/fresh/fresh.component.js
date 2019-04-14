@@ -26,13 +26,9 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
-<<<<<<< HEAD
     $scope.getCoverArt = (id) => {
       return this.AlloyDbService.getCoverArt(id);
     };
-=======
-    $scope.getCoverArt = (id) => this.AlloyDbService.getCoverArt(id);
->>>>>>> master
 
     $scope.findNowPlaying = (fid) => {
       $rootScope.fresh_albums.forEach((album) => { });

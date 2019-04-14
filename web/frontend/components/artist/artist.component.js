@@ -28,11 +28,6 @@ class ArtistController {
     $scope.tracks_expanded = false;
     $("#trackListContainer").hide();
 
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> master
     $scope.getArtist = () => {
       var cache = Cache.get($routeParams.id);
 

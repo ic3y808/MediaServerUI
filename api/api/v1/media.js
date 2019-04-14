@@ -28,10 +28,6 @@ router.get("/stream", function (req, res) {
   var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(id);
   if (track) {
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     const stat = fs.statSync(track.path);
     const total = stat.size;
     if (req.headers.range) {
@@ -162,15 +158,9 @@ router.get("/cover_art", function (req, res) {
         coverFile = path.join(process.env.COVER_ART_DIR, track.id + ".jpg");
       }
       if (!coverFile) {
-<<<<<<< HEAD
         var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
         albumTracks = shuffle(albumTracks);
         albumTracks.forEach((albumTrack) => {
-=======
-        var albumTracks1 = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
-        albumTracks1 = shuffle(albumTracks1);
-        albumTracks1.forEach((albumTrack) => {
->>>>>>> master
           if (!coverFile) {
             if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
               coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
@@ -181,15 +171,9 @@ router.get("/cover_art", function (req, res) {
     }
 
   } else if (album_id) {
-<<<<<<< HEAD
     var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
     albumTracks = shuffle(albumTracks);
     albumTracks.forEach((albumTrack) => {
-=======
-    var albumTracks2 = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
-    albumTracks2 = shuffle(albumTracks2);
-    albumTracks2.forEach((albumTrack) => {
->>>>>>> master
       if (!coverFile) {
         if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
           coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");

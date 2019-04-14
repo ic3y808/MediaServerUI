@@ -107,11 +107,7 @@ router.get("/", function (req, res) {
     var trackIds = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
     trackIds.forEach((id) => {
       var t = res.locals.db.prepare("SELECT * from Tracks WHERE id=?").get(id.song_id);
-<<<<<<< HEAD
       if (t) { result.playlist.tracks.push(t); }
-=======
-      if (t) {result.playlist.tracks.push(t);}
->>>>>>> master
     });
     res.json(result);
   } else {

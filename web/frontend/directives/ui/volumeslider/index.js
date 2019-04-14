@@ -12,11 +12,7 @@ export default function (MediaElement, MediaPlayer, AppUtilities) {
 
       scope.getVolume = () => {
         var vol = MediaPlayer.checkVolume();
-<<<<<<< HEAD
         return { "width": (vol * 100) + "%" };
-=======
-        return { "width": vol * 100 + "%" };
->>>>>>> master
       };
 
       scope.updateVolume = (val) => {
@@ -52,13 +48,8 @@ export default function (MediaElement, MediaPlayer, AppUtilities) {
         }
         var vol = MediaPlayer.checkVolume();
         vol = vol + value;
-<<<<<<< HEAD
         if (vol < 0) { vol = 0; }
         if (vol > 1) { vol = 1; }
-=======
-        if (vol < 0) {vol = 0;}
-        if (vol > 1) {vol = 1;}
->>>>>>> master
         scope.updateVolume(vol);
 
         // for IE
