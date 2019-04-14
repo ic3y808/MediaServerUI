@@ -31,11 +31,11 @@ namespace Alloy.Widgets
 		public class ScrollPositionState
 		{
 			// The index of the first visible row
-			public int rowIndex;
+			public int RowIndex { get; set; }
 			// The offset of the first visible row
-			public int rowTopOffset;
+			public int RowTopOffset { get; set; }
 			// The height of a given row (they are currently all the same height)
-			public int rowHeight;
+			public int RowHeight { get; set; }
 		}
 
 		private readonly ScrollPositionState mScrollPosState = new ScrollPositionState();
@@ -214,12 +214,12 @@ namespace Alloy.Widgets
 				if (adapter.GetType().IsSubclassOf(typeof(IMeasurableAdapter)))
 				{
 					availableScrollHeight = getAvailableScrollHeight(calculateAdapterHeight(), 0);
-					scrolledPastHeight = calculateScrollDistanceToPosition(scrollPosState.rowIndex);
+					scrolledPastHeight = calculateScrollDistanceToPosition(scrollPosState.RowIndex);
 				}
 				else
 				{
-					availableScrollHeight = getAvailableScrollHeight(rowCount * scrollPosState.rowHeight, 0);
-					scrolledPastHeight = scrollPosState.rowIndex * scrollPosState.rowHeight;
+					availableScrollHeight = getAvailableScrollHeight(rowCount * scrollPosState.RowHeight, 0);
+					scrolledPastHeight = scrollPosState.RowIndex * scrollPosState.RowHeight;
 				}
 			}
 
@@ -236,7 +236,7 @@ namespace Alloy.Widgets
 			// Calculate the current scroll position, the scrollY of the recycler view accounts for the
 			// view padding, while the scrollBarY is drawn right up to the background padding (ignoring
 			// padding)
-			int scrollY = PaddingTop + scrolledPastHeight - scrollPosState.rowTopOffset;
+			int scrollY = PaddingTop + scrolledPastHeight - scrollPosState.RowTopOffset;
 			int scrollBarY = (int)(((float)scrollY / availableScrollHeight) * availableScrollBarHeight);
 
 			// Calculate the position and size of the scroll bar
@@ -293,7 +293,7 @@ namespace Alloy.Widgets
 				else
 				{
 					itemPos = findItemPosition(touchFraction);
-					availableScrollHeight = getAvailableScrollHeight(rowCount * mScrollPosState.rowHeight, 0);
+					availableScrollHeight = getAvailableScrollHeight(rowCount * mScrollPosState.RowHeight, 0);
 
 					//The exact position of our desired item
 					int exactItemPos = (int)(availableScrollHeight * touchFraction);
@@ -301,8 +301,8 @@ namespace Alloy.Widgets
 					//The offset used here is kind of hard to explain.
 					//If the position we wish to scroll to is, say, position 10.5, we scroll to position 10,
 					//and then offset by 0.5 * rowHeight. This is how we achieve smooth scrolling.
-					scrollPosition = spanCount * exactItemPos / mScrollPosState.rowHeight;
-					scrollOffset = -(exactItemPos % mScrollPosState.rowHeight);
+					scrollPosition = spanCount * exactItemPos / mScrollPosState.RowHeight;
+					scrollOffset = -(exactItemPos % mScrollPosState.RowHeight);
 				}
 			}
 
@@ -373,7 +373,7 @@ namespace Alloy.Widgets
 
 			// Skip early if, there no child laid out in the container.
 			getCurScrollState(mScrollPosState);
-			if (mScrollPosState.rowIndex < 0)
+			if (mScrollPosState.RowIndex < 0)
 			{
 				mScrollbar.setThumbPosition(-1, -1);
 				return;
@@ -387,9 +387,9 @@ namespace Alloy.Widgets
 		 */
 		private void getCurScrollState(ScrollPositionState stateOut)
 		{
-			stateOut.rowIndex = -1;
-			stateOut.rowTopOffset = -1;
-			stateOut.rowHeight = -1;
+			stateOut.RowIndex = -1;
+			stateOut.RowTopOffset = -1;
+			stateOut.RowHeight = -1;
 
 			int itemCount = GetAdapter().ItemCount;
 
@@ -401,13 +401,13 @@ namespace Alloy.Widgets
 
 			View child = GetChildAt(0);
 
-			stateOut.rowIndex = GetChildAdapterPosition(child);
+			stateOut.RowIndex = GetChildAdapterPosition(child);
 			if (GetLayoutManager() is GridLayoutManager)
 			{
-				stateOut.rowIndex = stateOut.rowIndex / ((GridLayoutManager)GetLayoutManager()).SpanCount;
+				stateOut.RowIndex = stateOut.RowIndex / ((GridLayoutManager)GetLayoutManager()).SpanCount;
 			}
-			stateOut.rowTopOffset = GetLayoutManager().GetDecoratedTop(child);
-			stateOut.rowHeight = child.Height + GetLayoutManager().GetTopDecorationHeight(child)
+			stateOut.RowTopOffset = GetLayoutManager().GetDecoratedTop(child);
+			stateOut.RowHeight = child.Height + GetLayoutManager().GetTopDecorationHeight(child)
 					+ GetLayoutManager().GetBottomDecorationHeight(child);
 		}
 

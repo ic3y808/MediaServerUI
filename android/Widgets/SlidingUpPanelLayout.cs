@@ -75,11 +75,6 @@ namespace Alloy.Widgets
 		private int mCoveredFadeColor = DEFAULT_FADE_COLOR;
 
 		/**
-		 * Default parallax length of the main view
-		 */
-		private static int DEFAULT_PARALLAX_OFFSET = 0;
-
-		/**
 		 * The paint used to dim the main layout when sliding
 		 */
 		private readonly Paint mCoveredFadePaint = new Paint();
@@ -294,7 +289,8 @@ namespace Alloy.Widgets
 			}
 			if (mParallaxOffset == -1)
 			{
-				mParallaxOffset = (int)(DEFAULT_PARALLAX_OFFSET * density);
+				//TODO change parallax 0 value
+				mParallaxOffset = (int)(0 * density);
 			}
 			// If the shadow height is zero, don't show the shadow
 			if (mShadowHeight > 0)

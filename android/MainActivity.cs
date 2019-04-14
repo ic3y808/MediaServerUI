@@ -144,7 +144,6 @@ namespace Alloy
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
-			//DatabaseProvider.StopDatabase();
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 		}
 
