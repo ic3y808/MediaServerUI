@@ -24,13 +24,9 @@ class GenreController {
     $scope.genre.tracks_expanded = false;
     $scope.genre = this.$routeParams.id;
 
-<<<<<<< HEAD
     $scope.getCoverArt = (id) => {
       return this.AlloyDbService.getCoverArt(id);
     };
-=======
-    $scope.getCoverArt = (id) => this.AlloyDbService.getCoverArt(id);
->>>>>>> master
 
     $scope.getGenre = () => {
       var cache = Cache.get($routeParams.id);

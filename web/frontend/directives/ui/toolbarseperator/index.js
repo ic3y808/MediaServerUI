@@ -7,8 +7,4 @@ export default function () {
     template: "<div class=\"PageToolbarSeparator-separator\"></div>",
     replace: true
   };
-<<<<<<< HEAD
 }
-=======
-};
->>>>>>> master

@@ -34,19 +34,11 @@ class FooterController {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
           if (this.MediaPlayer.remotePlayerConnected()) {
-<<<<<<< HEAD
             if (!this.MediaPlayer.remotePlayer.isPaused) { return "icon-play"; }
             else { return "icon-pause"; }
           } else {
             if (this.MediaPlayer.playing) { return "icon-pause"; }
             else { return "icon-play"; }
-=======
-            if (!this.MediaPlayer.remotePlayer.isPaused) {return "icon-play";}
-            else {return "icon-pause";}
-          } else {
-            if (this.MediaPlayer.playing) {return "icon-pause";}
-            else {return "icon-play";}
->>>>>>> master
           }
         }
       }
@@ -131,11 +123,7 @@ class FooterController {
       if (this.MediaPlayer) {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
-<<<<<<< HEAD
           if (selected.starred === "true") { return "icon-star"; }
-=======
-          if (selected.starred === "true") {return "icon-star"};
->>>>>>> master
         }
       }
       return "icon-star-o";

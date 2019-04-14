@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-"use strict";
->>>>>>> master
 const path = require("path");
 const winston = require("winston");
 var config = require("./config");

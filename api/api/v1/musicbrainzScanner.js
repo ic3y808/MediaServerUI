@@ -16,10 +16,6 @@ var urlBase = process.env.BRAINZ_API_URL;
 function MusicbrainzScanner(database) {
   db = database;
   this.filteredFiles = [];
-<<<<<<< HEAD
-=======
-  resetStatus();
->>>>>>> master
 }
 
 function writeDb(data, table) {
@@ -77,11 +73,7 @@ function processAlbums(track, result) {
           genre_id: ""
         };
         var year = moment(album.ReleaseDate).format("YYYY");
-<<<<<<< HEAD
         if (year) { year = "(" + year + ")"; }
-=======
-        if (year) {year = "(" + year + ")";}
->>>>>>> master
 
         dbAlbum.path = path.dirname(path.dirname(track.path));
         dbAlbum.path = path.join(dbAlbum.path, album.Title + " " + year);
@@ -139,11 +131,7 @@ function resetStatus() {
 }
 
 function processQueue(input, cb) {
-<<<<<<< HEAD
   if (shouldCancel()) { return; }
-=======
-  if (shouldCancel()) {return;}
->>>>>>> master
   var track = input;
 
   try {
@@ -170,33 +158,6 @@ function processQueue(input, cb) {
   }
 
 }
-<<<<<<< HEAD
-=======
-
-
-function updateStatus(status, isScanning) {
-  scanStatus.status = status;
-  scanStatus.isScanning = isScanning;
-  scanStatus.totalFiles = totalFiles;
-  scanStatus.currentlyScanned = totalFiles - filteredFiles.length;
-}
-
-function isScanning() {
-  return scanStatus.isScanning;
-}
-
-function shouldCancel() {
-  if (scanStatus.shouldCancel) {
-    updateStatus("Scanning Cacelled", false);
-    return true;
-  }
-  return false;
-}
-
-function resetStatus() {
-  scanStatus = { status: "", isScanning: false, shouldCancel: false, totalFiles: 0, currentlyScanned: 0 };
-}
->>>>>>> master
 
 
 function cleanup() {
@@ -228,11 +189,7 @@ function scan() {
   filteredFiles = [];
 
   allTracks.forEach((track) => {
-<<<<<<< HEAD
     if (shouldCancel()) { return; }
-=======
-    if (shouldCancel()) {return;}
->>>>>>> master
     filteredFiles.push(track);
     q.push(track);
     updateStatus("Queuing " + filteredFiles.length, true);

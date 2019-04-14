@@ -68,10 +68,6 @@ export default class Backend {
       }
     });
 
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     $rootScope.socket.on("sabnzbd_history_result", (data) => {
       if (data) {
         this.AppUtilities.broadcast("sabnzbdHistoryResult", data);

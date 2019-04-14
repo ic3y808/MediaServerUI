@@ -5,65 +5,43 @@ var Lastfm = require("./simple-lastfm");
 var CryptoJS = require("crypto-js");
 var logger = require("../../../common/logger");
 
-var getLastFm = (res, isPublic) => {
+var getLastFm = function (res, isPublic) {
   if (res.locals.lastfm) {
     return res.locals.lastfm;
-<<<<<<< HEAD
   } else {
     var lastfmSettings = res.locals.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
     if (lastfmSettings && lastfmSettings.settings_value) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
         if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
-          res.locals.lastfm = new Lastfm({
+           res.locals.lastfm = new Lastfm({
             api_key: process.env.LASTFM_API_KEY,
             api_secret: process.env.LASTFM_API_SECRET,
             username: settings.alloydb_lastfm_username,
             password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
-            //authToken: "xxx" // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
+            //authToken: 'xxx' // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
           });
-          return res.locals.lastfm;
+          return res.locals.lastfm ;
         } else {
           res.send(new structures.StatusResult("No username or password."));
         }
+
       } else {
         res.send(new structures.StatusResult("Could not parse settings."));
-=======
-  }
-  var lastfmSettings = res.locals.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
-  if (lastfmSettings && lastfmSettings.settings_value) {
-    var settings = JSON.parse(lastfmSettings.settings_value);
-    if (settings) {
-      if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
-        res.locals.lastfm = new Lastfm({
-          api_key: process.env.LASTFM_API_KEY,
-          api_secret: process.env.LASTFM_API_SECRET,
-          username: settings.alloydb_lastfm_username,
-          password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
-          //authToken: "xxx" // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
-        });
-        return res.locals.lastfm;
->>>>>>> master
       }
-      res.send(new structures.StatusResult("No username or password."));
     } else {
-      res.send(new structures.StatusResult("Could not parse settings."));
+      res.send(new structures.StatusResult("Could not load lastfm settings."));
     }
-  } else {
-    res.send(new structures.StatusResult("Could not load lastfm settings."));
   }
-<<<<<<< HEAD
 
-=======
-  return null;
->>>>>>> master
 };
 
 var getLastfmSession = function (res, cb) {
   var lsfm = getLastFm(res);
-  if (lsfm) { lsfm.getSessionKey(cb); }
+  if (lsfm)
+    {lsfm.getSessionKey(cb);}
   else {
-    cb({ result: { failure: "failed" } });
+    cb({result:{failure:"failed"}});
   }
 };
 
@@ -90,8 +68,8 @@ router.get("/track_info", function (req, res) {
           getLastFm(res).getTrackInfo({
             artist: track.artist,
             track: track.title,
-            callback: (result1) => {
-              res.send(result1);
+            callback: function (result) {
+              res.send(result);
             }
           });
         } else {
@@ -158,15 +136,10 @@ router.get("/album_info", function (req, res) {
     getLastfmSession(res, function (result) {
       if (result.success) {
         getLastFm(res).getAlbumInfo({
-          artist,
-          album,
-<<<<<<< HEAD
+          artist: artist,
+          album: album,
           callback: function (result) {
             res.json(result);
-=======
-          callback(result1) {
-            res.json(result1);
->>>>>>> master
           }
         });
       } else {
@@ -197,14 +170,9 @@ router.get("/genre_info", function (req, res) {
     getLastfmSession(res, function (result) {
       if (result.success) {
         getLastFm(res).getGenreInfo({
-          genre,
-<<<<<<< HEAD
+          genre: genre,
           callback: function (result) {
             res.send(result);
-=======
-          callback(result1) {
-            res.send(result1);
->>>>>>> master
           }
         });
       } else {
@@ -237,8 +205,8 @@ router.put("/love", function (req, res) {
           getLastFm(res).loveTrack({
             artist: track.artist,
             track: track.title,
-            callback(result1) {
-              res.send(new structures.StatusResult(result1));
+            callback: function (result) {
+              res.send(new structures.StatusResult(result));
             }
           });
 
@@ -275,8 +243,8 @@ router.delete("/love", function (req, res) {
           getLastFm(res).unloveTrack({
             artist: track.artist,
             track: track.title,
-            callback(result1) {
-              res.send(new structures.StatusResult(result1));
+            callback: function (result) {
+              res.send(new structures.StatusResult(result));
             }
           });
 
@@ -320,16 +288,16 @@ router.put("/scrobble", function (req, res) {
             getLastFm(res).scrobbleNowPlayingTrack({
               artist: track.artist,
               track: track.title,
-              callback(result1) {
-                res.send(new structures.StatusResult(result1));
+              callback: function (result) {
+                res.send(new structures.StatusResult(result));
               }
             });
           } else {
             getLastFm(res).scrobbleTrack({
               artist: track.artist,
               track: track.title,
-              callback(result1) {
-                res.send(new structures.StatusResult(result1));
+              callback: function (result) {
+                res.send(new structures.StatusResult(result));
               }
             });
           }

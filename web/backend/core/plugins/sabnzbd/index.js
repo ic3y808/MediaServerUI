@@ -20,13 +20,6 @@ module.exports.socketConnect = function (socket) {
       module.exports.login();
       var url = "http://";
 
-<<<<<<< HEAD
-      if (settings.sabnzbd_use_ssl) { url = "https://"; }
-
-      url += settings.sabnzbd_host;
-
-      if (settings.sabnzbd_include_port_in_url) { url += ":" + settings.sabnzbd_port; }
-=======
       if (settings.sabnzbd_use_ssl)
         {url = "https://";}
 
@@ -34,7 +27,6 @@ module.exports.socketConnect = function (socket) {
 
       if (settings.sabnzbd_include_port_in_url)
         {url += ":" + settings.sabnzbd_port;}
->>>>>>> master
 
       var test = new SABnzbd(url, settings.sabnzbd_apikey);
 
@@ -75,7 +67,7 @@ module.exports.socketConnect = function (socket) {
       });
     }
   });
-
+  
   socket.on("get_sabnzbd_queue", function () {
     log.debug("alloyui", "get_sabnzbd_queue");
     module.exports.login();
@@ -124,13 +116,6 @@ module.exports.login = function () {
           if (settings.data.sabnzbd_host && settings.data.sabnzbd_apikey) {
             var url = "http://";
 
-<<<<<<< HEAD
-            if (settings.data.sabnzbd_use_ssl) { url = "https://"; }
-
-            url += settings.data.sabnzbd_host;
-
-            if (settings.data.sabnzbd_include_port_in_url) { url += ":" + settings.data.sabnzbd_port; }
-=======
             if (settings.data.sabnzbd_use_ssl)
               {url = "https://";}
 
@@ -138,7 +123,6 @@ module.exports.login = function () {
 
             if (settings.data.sabnzbd_include_port_in_url)
               {url += ":" + settings.data.sabnzbd_port;}
->>>>>>> master
 
             sabnzbd = new SABnzbd(url, settings.data.sabnzbd_apikey);
 
@@ -160,6 +144,6 @@ module.exports.login = function () {
 
 // sabnzbd = new SABnzbd(settings.sabnzbd_host, settings.sabnzbd_api_key);
 // var version = sabnzbd.version();
-//log.debug("version version: " + version);
+//log.debug('version version: ' + version);
 
 log.info("alloyui", "sabnzbd plugin loaded");

@@ -1,16 +1,3 @@
-<<<<<<< HEAD
-=======
-"use strict";
-
-var dbm;
-var type;
-var seed;
-var config = require("../common/config");
-/**
-  * We receive the dbmigrate dependency from dbmigrate initially.
-  * This enables us to not have to rely on NODE_PATH.
-  */
->>>>>>> master
 exports.setup = function (options, seedLink) {
  
 };
