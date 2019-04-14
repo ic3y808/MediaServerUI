@@ -1,9 +1,13 @@
-﻿using Android.Content;
+﻿using System;
+using Android.Content;
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Views.Animations;
 using Java.Lang;
 using Java.Util;
+using Exception = Java.Lang.Exception;
+using Math = Java.Lang.Math;
+using Object = Java.Lang.Object;
 
 namespace Alloy.Widgets
 {
@@ -643,7 +647,15 @@ namespace Alloy.Widgets
 			}
 
 			int duration = ComputeSettleDuration(mCapturedView, dx, dy, xvel, yvel);
-			mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
+
+			try
+			{
+				mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
+			}
+			catch (Exception e)
+			{
+				// do nothing
+			}
 
 			setDragState(STATE_SETTLING);
 			return true;
