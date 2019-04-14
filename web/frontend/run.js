@@ -128,6 +128,12 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     // $("[data-toggle^="shift"]").shift("init");
     return true;
   };
+  var fixVbox = function () {
+    $(".ie11 .vbox").each(function () {
+      $(this).height($(this).parent().height());
+    });
+    return true;
+  };
   $window.width() < 768 && mobile();
   var $resize, $width = $window.width();
   $window.resize(function () {
@@ -146,12 +152,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     return true;
   };
   setHeight();
-  var fixVbox = function () {
-    $(".ie11 .vbox").each(function () {
-      $(this).height($(this).parent().height());
-    });
-    return true;
-  };
+  
   fixVbox();
   $(document).on("click", "[data-ride=\"collapse\"] a", function (e) {
     var $this = $(e.target), $active;
