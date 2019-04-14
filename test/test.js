@@ -6,8 +6,8 @@ var should = chai.should();
 //// requiring dependencies
 var request = require("request");
 //
-describe("api tests", () => {
-  timeout(0);
+describe("api tests", function () {
+  this.timeout(0);
   // describe setup
   var env = global.setupEnv(before, after);
 
@@ -17,6 +17,7 @@ describe("api tests", () => {
       {ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));}
     return ret.join("&");
   }
+
   function generateUrl(path, params) {
     var result = "http://localhost:" + env.server.address().port + "/api/v1/" + path + "?api_key=" + process.env.API_KEY;
     if (params) {
@@ -110,6 +111,7 @@ describe("api tests", () => {
         });
       });
     });
+    
     describe("artist", () => {
       it("should return an artist", function (done) {
         request(generateUrl("browse/artist", { id: "12345" }), (error, response, body) => {
@@ -174,6 +176,7 @@ describe("api tests", () => {
         });
       });
     });
+    
     describe("charts", () => {
       it("should return the charts", function (done) {
         request(generateUrl("browse/charts"), (error, response, body) => {
@@ -328,7 +331,4 @@ describe("api tests", () => {
       });
     });
   });
-
-
 });
-
