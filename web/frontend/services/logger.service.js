@@ -9,7 +9,7 @@ export default class Logger {
   }
 
   formMessage(type, data) {
-    if(data){
+    if (data) {
       console.log(data);
       if (this.$rootScope.socket) {
         this.$rootScope.socket.emit("log", { message: data, method: type });

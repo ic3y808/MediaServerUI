@@ -17,31 +17,31 @@ LastFMScanner.prototype.lastfm = {};
 LastFMScanner.prototype.getLastFm = function getLastFm() {
   if (this.lastfm !== null) {
     return this.lastfm;
-  } else {
-    var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
-    if (lastfmSettings && lastfmSettings.settings_value) {
-      var settings = JSON.parse(lastfmSettings.settings_value);
-      if (settings) {
-        return this.lastfm = new Lastfm({
-          api_key: process.env.LASTFM_API_KEY,
-          api_secret: process.env.LASTFM_API_SECRET,
-          username: settings.alloydb_lastfm_username,
-          password: settings.alloydb_lastfm_password
-        });
-      } else {
-        logger.error("alloydb", "Could not parse settings.");
-        updateStatus("Could not parse settings.", false);
-      }
-    } else {
-      logger.error("alloydb", "Could not load lastfm settings.");
-      updateStatus("Could not load lastfm settings.", false);
-    }
   }
-}
+  var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+  if (lastfmSettings && lastfmSettings.settings_value) {
+    var settings = JSON.parse(lastfmSettings.settings_value);
+    if (settings) {
+      this.lastfm = new Lastfm({
+        api_key: process.env.LASTFM_API_KEY,
+        api_secret: process.env.LASTFM_API_SECRET,
+        username: settings.alloydb_lastfm_username,
+        password: settings.alloydb_lastfm_password
+      });
+      return this.lastfm;
+    }
+    logger.error("alloydb", "Could not parse settings.");
+    this.updateStatus("Could not parse settings.", false);
+  } else {
+    logger.error("alloydb", "Could not load lastfm settings.");
+    this.updateStatus("Could not load lastfm settings.", false);
+  }
+  return null;
+};
 
 LastFMScanner.prototype.getLastfmSession = function getLastfmSession(cb) {
   this.getLastFm().getSessionKey(cb);
-}
+};
 
 LastFMScanner.prototype.writeQueue = function writeQueue(force) {
   if (this.currentQueue.length >= this.queueProcessSize || (force === true && this.currentQueue.length > 0)) {
@@ -50,23 +50,17 @@ LastFMScanner.prototype.writeQueue = function writeQueue(force) {
 
         var sql = "INSERT OR REPLACE INTO Tracks (";
 
-        Object.keys(track).forEach(function (key, index) {
-          if (index == Object.keys(track).length - 1)
-            sql += key;
-          else
-            sql += key + ", ";
+        Object.keys(track).forEach((key, index) => {
+          if (index === Object.keys(track).length - 1) { sql += key; }
+          else { sql += key + ", "; }
         });
-
-
 
         sql += ") VALUES (";
 
 
         Object.keys(track).forEach(function (key, index) {
-          if (index == Object.keys(track).length - 1)
-            sql += "@" + key;
-          else
-            sql += "@" + key + ", ";
+          if (index === Object.keys(track).length - 1) { sql += "@" + key; }
+          else { sql += "@" + key + ", "; }
         });
 
         sql += ")";
@@ -111,16 +105,16 @@ LastFMScanner.prototype.step = function step() {
           artist: track.artist === "No Artist" ? track.base_path : track.artist,
           track: track.title,
           mbid: track.musicbrainz_artistid,
-          callback: result => {
+          callback: (result) => {
             track.last_fm_info = JSON.stringify(result.trackInfo);
             this.currentQueue.push(track);
 
             if (this.scanStatus.currentlyScanned === this.totalFiles) {
               this.writeQueue(true);
               this.updateStatus("Scanning Complete", false);
-              setTimeout(function () {
+              setTimeout(() => {
                 this.resetStatus();
-              }, 5000)
+              }, 5000);
             }
             else {
               this.writeQueue(false);
@@ -156,11 +150,11 @@ LastFMScanner.prototype.rescan = function rescan() {
     }
   }
   else {
-    for (var i = 0; i < this.maxFilesProcessing; i++) {
+    for (var ii = 0; ii < this.maxFilesProcessing; ii++) {
       this.step();
     }
   }
-}
+};
 
 LastFMScanner.prototype.startScan = function startScan() {
   if (this.scanStatus && this.scanStatus.isScanning) {
@@ -199,7 +193,7 @@ LastFMScanner.prototype.cancelScan = function cancelScan() {
   return "Started cancel process";
 };
 
-LastFMScanner.prototype.incrementalScan = function incrementalCleanup() {
+LastFMScanner.prototype.incrementalCleanup = function incrementalCleanup() {
   this.rescan();
 };
 

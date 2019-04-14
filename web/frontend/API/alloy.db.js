@@ -2,13 +2,11 @@ export default class AlloyApi {
   constructor(obj) {
     if (typeof obj !== "object") {
       throw new Error("Input must be an object & contain url & apikey");
-      return;
     }
     if (obj.hasOwnProperty("alloydb_host") && obj.hasOwnProperty("alloydb_port") && obj.hasOwnProperty("alloydb_apikey")) {
 
     } else {
       throw new TypeError("Input must be an object & contain url and apikey fields");
-      return;
     }
 
     this._settings = obj;
@@ -31,14 +29,11 @@ export default class AlloyApi {
       options = "";
     }
 
-    if (this._settings.alloydb_use_ssl)
-      this._url = "https://";
-    else
-      this._url = "http://";
+    if (this._settings.alloydb_use_ssl) { this._url = "https://"; }
+    else { this._url = "http://"; }
 
     this._url += this._settings.alloydb_host;
-    if (this._settings.alloydb_include_port_in_url)
-      this._url += ":" + this._settings.alloydb_port;
+    if (this._settings.alloydb_include_port_in_url) { this._url += ":" + this._settings.alloydb_port; }
     return this._url + "/api/v1/" + method + "?" + this._toQueryString(this.params) + options;
 
   }
@@ -108,10 +103,10 @@ export default class AlloyApi {
     }, options);
     return new Promise((resolve, reject) => {
       var url = this._buildUrl(method, opt);
-      this._xhr(url).then(e => {
+      this._xhr(url).then((e) => {
         var res = e.target.response;
         resolve(res);
-      }, e => {
+      }, (e) => {
         reject(e);
       });
     });
@@ -124,10 +119,10 @@ export default class AlloyApi {
     }, options);
     return new Promise((resolve, reject) => {
       var url = this._buildUrl(method, opt);
-      this._xhrput(url).then(e => {
+      this._xhrput(url).then((e) => {
         var res = e.target.response;
         resolve(res);
-      }, fe => {
+      }, (e) => {
         reject(e);
       });
     });
@@ -140,10 +135,10 @@ export default class AlloyApi {
     }, options);
     return new Promise((resolve, reject) => {
       var url = this._buildUrl(method, opt);
-        this._xhrpost(url, data).then(e => {
+      this._xhrpost(url, data).then((e) => {
         var res = e.target.response;
         resolve(res);
-      }, fe => {
+      }, (fe) => {
         reject(fe);
       });
     });
@@ -157,10 +152,10 @@ export default class AlloyApi {
     }, options);
     return new Promise((resolve, reject) => {
       var url = this._buildUrl(method, opt);
-      this._xhrdel(url).then(e => {
+      this._xhrdel(url).then((e) => {
         var res = e.target.response;
         resolve(res);
-      }, e => {
+      }, (e) => {
         reject(e);
       });
     });
@@ -233,9 +228,7 @@ export default class AlloyApi {
   }
 
   getAlbum(id) {
-    return this._get("browse/album", {
-      id: id
-    });
+    return this._get("browse/album", { id });
   }
 
   getGenre(id) {
@@ -310,9 +303,7 @@ export default class AlloyApi {
   }
 
   addPlay(id) {
-    return this._put("annotation/add_play", {
-      id: id
-    });
+    return this._put("annotation/add_play", { id });
   }
 
   addHistory(data) {
@@ -320,7 +311,7 @@ export default class AlloyApi {
   }
 
   getPlaylist(id) {
-    return this._get("playlist", { id: id });
+    return this._get("playlist", { id });
   }
 
   getPlaylists() {
@@ -362,34 +353,34 @@ export default class AlloyApi {
   stream(id, quality) {
     return this._buildUrl("media/stream", {
       api_key: this._settings.alloydb_apikey,
-      id: id,
-      quality: quality
-    })
+      id,
+      quality
+    });
   }
 
   download(id, quality) {
     return this._buildUrl("media/download", {
       api_key: this._settings.alloydb_apikey,
-      id: id
-    })
+      id
+    });
   }
 
   getCoverArt(params) {
     Object.assign(params, { api_key: this._settings.alloydb_apikey });
-    return this._buildUrl("media/cover_art", params)
+    return this._buildUrl("media/cover_art", params);
 
   }
 
   scrobble(id) {
     return this._put("lastfm/scrobble", {
-      id: id,
+      id,
       submission: "true"
     });
   }
 
   scrobbleNowPlaying(id) {
     return this._put("lastfm/scrobble", {
-      id: id,
+      id,
       submission: "false"
     });
   }

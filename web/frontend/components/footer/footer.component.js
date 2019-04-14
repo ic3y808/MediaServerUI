@@ -19,11 +19,11 @@ class FooterController {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
           if (this.MediaPlayer.remotePlayerConnected()) {
-            if (!this.MediaPlayer.remotePlayer.isPaused) this.MediaPlayer.pause();
-            else this.MediaPlayer.play();
+            if (!this.MediaPlayer.remotePlayer.isPaused) { this.MediaPlayer.pause(); }
+            else { this.MediaPlayer.play(); }
           } else {
-            if (this.MediaPlayer.playing) this.MediaPlayer.pause();
-            else this.MediaPlayer.play();
+            if (this.MediaPlayer.playing) { this.MediaPlayer.pause(); }
+            else { this.MediaPlayer.play(); }
           }
         }
       }
@@ -34,11 +34,11 @@ class FooterController {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
           if (this.MediaPlayer.remotePlayerConnected()) {
-            if (!this.MediaPlayer.remotePlayer.isPaused) return "icon-play";
-            else return "icon-pause";
+            if (!this.MediaPlayer.remotePlayer.isPaused) {return "icon-play";}
+            else {return "icon-pause";}
           } else {
-            if (this.MediaPlayer.playing) return "icon-pause";
-            else return "icon-play";
+            if (this.MediaPlayer.playing) {return "icon-pause";}
+            else {return "icon-play";}
           }
         }
       }
@@ -123,11 +123,11 @@ class FooterController {
       if (this.MediaPlayer) {
         var selected = this.MediaPlayer.selectedTrack();
         if (selected) {
-          if (selected.starred === "true") return "icon-star"
+          if (selected.starred === "true") {return "icon-star"};
         }
       }
-      return "icon-star-o"
-    }
+      return "icon-star-o";
+    };
 
     $scope.starTrack = () => {
       if (this.MediaPlayer) {
@@ -135,21 +135,21 @@ class FooterController {
         if (selected) {
           this.Logger.info("Trying to star track: " + selected.title);
           if (selected.starred === "true") {
-            this.AlloyDbService.unstar({ id: selected.id }).then(result => {
+            this.AlloyDbService.unstar({ id: selected.id }).then((result) => {
               this.Logger.info("UnStarred " + selected.title + " " + JSON.stringify(result));
-              selected.starred = "false"
+              selected.starred = "false";
               this.AppUtilities.apply();
             });
           } else {
-            this.AlloyDbService.star({ id: selected.id }).then(result => {
+            this.AlloyDbService.star({ id: selected.id }).then((result) => {
               this.Logger.info("Starred " + selected.title + " " + JSON.stringify(result));
-              selected.starred = "true"
+              selected.starred = "true";
               this.AppUtilities.apply();
             });
           }
         }
       }
-    }
+    };
 
     $rootScope.$watch("MediaPlayer", (o, n) => {
       if ($rootScope.MediaPlayer) {
@@ -162,8 +162,8 @@ class FooterController {
 
   $onInit() {
     this.Logger.debug("footer-init");
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
 
     $("#subProgress").attr("aria-valuenow", 0).css("width", "0%");
 
@@ -190,7 +190,7 @@ class FooterController {
     //  ctx.stroke();
     //});
 
-    $("#clickProgress").click(e => {
+    $("#clickProgress").click((e) => {
       var seekto = NaN;
 
       if (this.MediaPlayer.remotePlayerConnected()) {
@@ -202,8 +202,7 @@ class FooterController {
         }
       } else {
         var duration = this.MediaElement.duration;
-        if (!isFinite(duration))
-          duration = this.MediaPlayer.selectedTrack().duration;
+        if (!isFinite(duration)) { duration = this.MediaPlayer.selectedTrack().duration; }
         seekto = duration * ((e.offsetX / $("#clickProgress").width()));
         if (!isNaN(seekto)) {
           this.MediaElement.currentTime = seekto;

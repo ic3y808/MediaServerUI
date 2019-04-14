@@ -26,8 +26,7 @@ class ActivityQueueController {
     });
 
     $scope.refreshIntereval = setInterval(() => {
-      if (this.$rootScope.socket)
-        this.$rootScope.socket.emit("get_sabnzbd_queue");
+      if (this.$rootScope.socket) { this.$rootScope.socket.emit("get_sabnzbd_queue"); }
     }, 1000);
 
 

@@ -97,13 +97,13 @@ namespace Alloy.Adapters
 		public class AlbumViewHolder : RecyclerView.ViewHolder
 		{
 			public BackgroundAudioServiceConnection ServiceConnection { get; set; }
-			public RelativeLayout ItemRoot { get; set; }
+			public FrameLayout ItemRoot { get; set; }
 			public TextView Name { get; set; }
 			public Album Album { get; set; }
 
 			public AlbumViewHolder(View v, Action<AlbumViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(v)
 			{
-				ItemRoot = v.FindViewById<RelativeLayout>(Resource.Id.item_root);
+				ItemRoot = v.FindViewById<FrameLayout>(Resource.Id.item_root);
 				Name = v.FindViewById<TextView>(Resource.Id.artist);
 				ServiceConnection = serviceConnection;
 				v.Click += (sender, e) => listener(new AlbumViewHolderEvent { Position = LayoutPosition, ViewHolder = this });

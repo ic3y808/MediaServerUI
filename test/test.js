@@ -13,8 +13,7 @@ describe("api tests", function () {
 
   function getParmas(data) {
     const ret = [];
-    for (let d in data)
-      ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));
+    for (var d in data) { ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d])); }
     return ret.join("&");
   }
   function generateUrl(path, params) {
@@ -40,7 +39,7 @@ describe("api tests", function () {
           done();
         });
       });
-    })
+    });
     // tests
     describe("scheduler", () => {
       it("should return an array", function (done) {
@@ -50,7 +49,7 @@ describe("api tests", function () {
           assert.typeOf(body, "string");
           var result = JSON.parse(body);
           assert.typeOf(result, "array");
-          result.length.should.not.equal(0)
+          result.length.should.not.equal(0);
           done();
         });
       });
@@ -65,7 +64,7 @@ describe("api tests", function () {
           var result = JSON.parse(body);
           assert.typeOf(result, "object");
           assert.typeOf(result.license, "string");
-          result.license.should.equal("test")
+          result.license.should.equal("test");
           done();
         });
       });

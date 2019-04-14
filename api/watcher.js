@@ -1,3 +1,4 @@
+"use strict";
 const _ = require("lodash");
 const fs = require("fs");
 const path = require("path");
@@ -16,7 +17,7 @@ class Watcher {
   startQueue(event) {
     clearTimeout(this.timeout);
     currentQueue.push(event);
-    this.timeout = setTimeout(this.processQueue, 5000)
+    this.timeout = setTimeout(this.processQueue, 5000);
   }
 
   processQueue() {
@@ -24,7 +25,7 @@ class Watcher {
     currentQueue = [];
     for (var i = queue.length - 1; i >= 0; --i) {
 
-      mediaScanner.scanPath(queue[i].path)
+      mediaScanner.scanPath(queue[i].path);
 
       queue.splice(i, 1);
     }
@@ -33,7 +34,7 @@ class Watcher {
   }
 
   configFileWatcher() {
-    watchers.forEach(watcher => {
+    watchers.forEach((watcher) => {
       if (!watcher.isClosed()) {
         watcher.close();
       }
@@ -45,19 +46,19 @@ class Watcher {
       logger.info("alloydb", "No Media Path Defined ");
       return;
     }
-    mediaPaths.forEach(mediaPath => {
+    mediaPaths.forEach((mediaPath) => {
       if (mediaPath.path && fs.existsSync(mediaPath.path)) {
         watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
           if (fs.existsSync(name)) {
             if (fs.lstatSync(name).isDirectory())
-              this.startQueue({ evt: evt, name: name, path: name });
+              {this.startQueue({ evt: evt, name: name, path: name });}
             else
-              this.startQueue({ evt: evt, name: path.dirname(name), path: name });
+              {this.startQueue({ evt: evt, name: path.dirname(name), path: name });}
           }
         }));
       }
     });
-  };
+  }
 }
 
 module.exports = Watcher;

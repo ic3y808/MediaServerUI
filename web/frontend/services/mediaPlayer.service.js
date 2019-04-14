@@ -73,7 +73,7 @@ export default class MediaPlayer {
 
     this.MediaElement.addEventListener("canplaythrough", () => {
       this.currentTime = "0:00";
-      this.currentDuration = this.AppUtilities.formatTime(MediaElement.duration)
+      this.currentDuration = this.AppUtilities.formatTime(MediaElement.duration);
       this.currentProgressPercent = 0;
       $("#subProgress").attr("aria-valuenow", 0).css("width", "0%");
       this.togglePlayPause();
@@ -82,7 +82,7 @@ export default class MediaPlayer {
     this.MediaElement.addEventListener("timeupdate", () => {
       var duration = MediaElement.duration;
       if (!isFinite(duration))
-        duration = this.selectedTrack().duration;
+        {duration = this.selectedTrack().duration;}
 
       var playPercent = 100 * (MediaElement.currentTime / duration);
       if (!isNaN(playPercent)) {
@@ -93,7 +93,6 @@ export default class MediaPlayer {
         if (buffered.length) {
           loaded = 100 * buffered.end(0) / duration;
         }
-
 
 
         $("#subProgress").attr("aria-valuenow", loaded).css("width", loaded + "%");
@@ -142,7 +141,6 @@ export default class MediaPlayer {
   }
 
 
-
   trackCount() {
     return this.$rootScope.tracks.length;
   }
@@ -159,7 +157,7 @@ export default class MediaPlayer {
     if (this.selectedIndex + 1 < this.$rootScope.tracks.length) {
       return this.$rootScope.tracks[this.selectedIndex + 1];
     } else {
-      return null
+      return null;
     }
   }
 
@@ -167,7 +165,7 @@ export default class MediaPlayer {
     if (this.selectedIndex - 1 > 0) {
       return this.$rootScope.tracks[this.selectedIndex - 1];
     } else {
-      return null
+      return null;
     }
   }
 
@@ -178,19 +176,19 @@ export default class MediaPlayer {
       return track.id === song.id;
     });
     this.loadTrack(index);
-  };
+  }
 
   playAlbum(album) {
     this.Logger.debug("Play Album");
     this.$rootScope.tracks = album.tracks;
     this.loadTrack(0);
-  };
+  }
 
   playArtist(artist) {
     this.Logger.debug("Play Album");
     this.$rootScope.tracks = this.AppUtilities.shuffle(artist.tracks);
     this.loadTrack(0);
-  };
+  }
 
   upcomingTracks(count) {
     var tracks = [];
@@ -214,7 +212,7 @@ export default class MediaPlayer {
   }
 
   remotePlayerConnected() {
-    if (!this.remotePlayer) return false;
+    if (!this.remotePlayer) {return false;}
     return this.remotePlayer.isConnected;
   }
 
@@ -326,16 +324,16 @@ export default class MediaPlayer {
   }
 
   scrobble(instance, source) {
-    instance.AlloyDbService.scrobble(source.id).then(scrobbleResult => {
-      if (scrobbleResult) instance.Logger.info("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
+    instance.AlloyDbService.scrobble(source.id).then((scrobbleResult) => {
+      if (scrobbleResult) { instance.Logger.info("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
     });
-    instance.AlloyDbService.scrobbleNowPlaying(source.id).then(scrobbleResult => {
-      if (scrobbleResult) instance.Logger.info("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);
+    instance.AlloyDbService.scrobbleNowPlaying(source.id).then((scrobbleResult) => {
+      if (scrobbleResult) { instance.Logger.info("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
     });
   }
 
   addPlay(instance, source) {
-    instance.AlloyDbService.addPlay(source.id).then(result => {
+    instance.AlloyDbService.addPlay(source.id).then((result) => {
       if (result) {
         instance.Logger.info("addPlay resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         source.play_count++;
@@ -343,7 +341,7 @@ export default class MediaPlayer {
         instance.AppUtilities.apply();
       }
     });
-    instance.AlloyDbService.addHistory({ type: "track", action: "played", id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id, genre: source.genre, genre_id: source.genre_id }).then(result => {
+    instance.AlloyDbService.addHistory({ type: "track", action: "played", id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id, genre: source.genre, genre_id: source.genre_id }).then((result) => {
       if (result) {
         instance.Logger.info("addHistory resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         instance.AlloyDbService.refreshHistory();
@@ -371,7 +369,7 @@ export default class MediaPlayer {
 
       if (this.remotePlayerConnected()) {
         this.setupRemotePlayer();
-        this.generateRemoteMetadata(source).then(mediaInfo => {
+        this.generateRemoteMetadata(source).then((mediaInfo) => {
           var request = new chrome.cast.media.LoadRequest(mediaInfo);
           cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
           this.scrobble(t, source);
@@ -389,14 +387,14 @@ export default class MediaPlayer {
         var playPromise = this.MediaElement.play();
 
         if (playPromise !== undefined) {
-          playPromise.then(_ => {
+          playPromise.then((_) => {
             this.scrobble(this, source);
             this.addPlay(this, source);
-            this.Title.setTitle(source.artist + " " + source.title, source.artist + " " + source.title)
+            this.Title.setTitle(source.artist + " " + source.title, source.artist + " " + source.title);
             this.togglePlayPause();
             this.AppUtilities.broadcast("trackChangedEvent", source);
             this.AppUtilities.apply();
-          }).catch(error => {
+          }).catch((error) => {
             this.Logger.error("playing failed " + error.name + " " + error.message);
             //this.next();
           });
@@ -422,9 +420,9 @@ export default class MediaPlayer {
       var playPromise = this.MediaElement.play();
 
       if (playPromise !== undefined) {
-        playPromise.then(_ => {
+        playPromise.then((_) => {
           this.Logger.debug("success playing");
-        }).catch(error => {
+        }).catch((error) => {
           this.Logger.error("playing failed " + error);
         });
       }
@@ -446,14 +444,14 @@ export default class MediaPlayer {
   }
 
   previous() {
-    if (!this.repeatEnabled) this.selectedIndex--;
+    if (!this.repeatEnabled) {this.selectedIndex--;}
     if (!this.checkPlaylistBeginning(this.selectedIndex)) {
       this.loadTrack(this.selectedIndex);
     }
   }
 
   next() {
-    if (!this.repeatEnabled) this.selectedIndex++;
+    if (!this.repeatEnabled) {this.selectedIndex++;}
     if (!this.checkPlaylistEnding(this.selectedIndex)) {
       this.loadTrack(this.selectedIndex);
     }
@@ -629,8 +627,6 @@ export default class MediaPlayer {
             //        this.togglePlayPause();
 
 
-
-
             //        $("#nowPlayingImageHolder").attr("src", result.smallImageUrl);
             //    }
             //});
@@ -676,5 +672,5 @@ export default class MediaPlayer {
 
   isPlaying() {
     return this.playing && !this.paused;
-  };
+  }
 }

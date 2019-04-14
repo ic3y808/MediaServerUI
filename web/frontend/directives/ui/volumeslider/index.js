@@ -13,7 +13,7 @@ export default function (MediaElement, MediaPlayer, AppUtilities) {
       scope.getVolume = () => {
         var vol = MediaPlayer.checkVolume();
         return { "width": vol * 100 + "%" };
-      }
+      };
 
       scope.updateVolume = (val) => {
         MediaPlayer.currentVolume = val;
@@ -24,17 +24,17 @@ export default function (MediaElement, MediaPlayer, AppUtilities) {
           MediaElement.volume = val;
         }
         AppUtilities.apply();
-      }
+      };
 
-      element.bind("click", event => {
+      element.bind("click", (event) => {
         var $bar = element[0],
           offset = $bar.getBoundingClientRect(),
           x = event.pageX - offset.left,
-          w = $bar.clientWidth
+          w = $bar.clientWidth;
         scope.updateVolume(x / w);
       });
 
-      element.bind("DOMMouseScroll mousewheel onmousewheel", event => {
+      element.bind("DOMMouseScroll mousewheel onmousewheel", (event) => {
 
         // cross-browser wheel delta
         var event = window.event || event; // old IE support
@@ -48,8 +48,8 @@ export default function (MediaElement, MediaPlayer, AppUtilities) {
         }
         var vol = MediaPlayer.checkVolume();
         vol = vol + value;
-        if (vol < 0) vol = 0;
-        if (vol > 1) vol = 1;
+        if (vol < 0) {vol = 0;}
+        if (vol > 1) {vol = 1;}
         scope.updateVolume(vol);
 
         // for IE
@@ -60,5 +60,5 @@ export default function (MediaElement, MediaPlayer, AppUtilities) {
         }
       });
     }
-  }
-};
+  };
+}

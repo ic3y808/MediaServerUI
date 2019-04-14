@@ -1,13 +1,15 @@
 "use strict";
+
 var express = require("express");
 var router = express.Router();
 var structures = require("./structures");
 var moment = require("moment");
+
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/star
- * @produces application/json 
- * @consumes application/json 
+ * @produces application/json
+ * @consumes application/json
  * @group annotate - Annotation API
  * @param {string} id.query The ID of the file (song) or folder (album/artist) to star. Multiple parameters allowed.
  * @param {string} album.query The ID of an album to star. Multiple parameters allowed.
@@ -17,7 +19,7 @@ var moment = require("moment");
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put("/star", function (req, res) {
+router.put("/star", (req, res) => {
   var id = req.query.id;
   var album = req.query.album;
   var artist = req.query.artist;
@@ -45,8 +47,8 @@ router.put("/star", function (req, res) {
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/unstar
- * @produces application/json 
- * @consumes application/json 
+ * @produces application/json
+ * @consumes application/json
  * @group annotate - Annotation API
  * @param {string} id.query The ID of the file (song) or folder (album/artist) to star. Multiple parameters allowed.
  * @param {string} album.query The ID of an album to star. Multiple parameters allowed.
@@ -56,7 +58,7 @@ router.put("/star", function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put("/unstar", function (req, res) {
+router.put("/unstar", (req, res) => {
   var id = req.query.id;
   var album = req.query.album;
   var artist = req.query.artist;
@@ -83,8 +85,8 @@ router.put("/unstar", function (req, res) {
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/set_rating
- * @produces application/json 
- * @consumes application/json 
+ * @produces application/json
+ * @consumes application/json
  * @group annotate - Annotation API
  * @param {string} artist_id.query A string which uniquely identifies the file (artist) to rate.
  * @param {string} track_id.query A string which uniquely identifies the file (song) to rate.
@@ -94,7 +96,7 @@ router.put("/unstar", function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put("/set_rating", function (req, res) {
+router.put("/set_rating", (req, res) => {
   var artist_id = req.query.artist_id;
   var track_id = req.query.track_id;
   var album_id = req.query.album_id;
@@ -123,15 +125,15 @@ router.put("/set_rating", function (req, res) {
 /**
  * This function comment is parsed by doctrine
  * @route PUT /annotation/add_play
- * @produces application/json 
- * @consumes application/json 
+ * @produces application/json
+ * @consumes application/json
  * @group annotate - Annotation API
  * @param {string} id.query.required A string which uniquely identifies the file (song) or folder (album/artist) to rate.
  * @returns {StatusResult} 200 - Returns the status of star operation.
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
-router.put("/add_play", function (req, res) {
+router.put("/add_play", (req, res) => {
   var id = req.query.id;
   if (id) {
     res.locals.db.prepare("UPDATE Tracks SET play_count = play_count + 1 WHERE id=?").run(id);

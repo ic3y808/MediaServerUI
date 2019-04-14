@@ -26,12 +26,10 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
-    $scope.getCoverArt = id => {
-      return this.AlloyDbService.getCoverArt(id);
-    };
+    $scope.getCoverArt = (id) => this.AlloyDbService.getCoverArt(id);
 
-    $scope.findNowPlaying = fid => {
-      $rootScope.fresh_albums.forEach(album => { });
+    $scope.findNowPlaying = (fid) => {
+      $rootScope.fresh_albums.forEach((album) => { });
     };
 
     $scope.checkIfNowPlaying = (type, id) => {
@@ -46,7 +44,7 @@ class FreshController {
         }
       }
       return false;
-    }
+    };
 
 
     $scope.playTrack = (song, playlist) => {
@@ -75,9 +73,7 @@ class FreshController {
       this.AlloyDbService.refreshCharts();
     };
 
-    $scope.isPlaying = () => {
-      return this.MediaPlayer.playing && !this.MediaPlayer.paused;
-    };
+    $scope.isPlaying = () => this.MediaPlayer.playing && !this.MediaPlayer.paused;
 
     $scope.startRadio = () => {
       var track = this.MediaPlayer.selectedTrack();
@@ -85,7 +81,7 @@ class FreshController {
         track = $scope.tracks[0];
       }
 
-      AlloyDbService.getSimilarSongs2(track.artistId).then(similarSongs => {
+      AlloyDbService.getSimilarSongs2(track.artistId).then((similarSongs) => {
         this.Logger.debug("starting radio");
         if (similarSongs && similarSongs.song) {
           $rootScope.tracks = similarSongs.song;
@@ -108,14 +104,14 @@ class FreshController {
         $scope.fresh_albums = $rootScope.fresh_albums.slice(0, 12);
 
         var albumTracks = [];
-        $scope.fresh_albums.forEach(album => {
-          album.tracks.forEach(track => {
+        $scope.fresh_albums.forEach((album) => {
+          album.tracks.forEach((track) => {
             track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
             albumTracks.push(track);
           });
         });
         $scope.quick_picks = AppUtilities.getRandom(albumTracks, 10);
-        $scope.quick_picks.forEach(track => {
+        $scope.quick_picks.forEach((track) => {
           track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
         });
         this.AppUtilities.apply();
@@ -148,8 +144,8 @@ class FreshController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-  };
+    this.$element.addClass("vbox");
+  }
 }
 
 export default {

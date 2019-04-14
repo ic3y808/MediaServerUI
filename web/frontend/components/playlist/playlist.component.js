@@ -19,7 +19,7 @@ class PlaylistController {
       
         var playlist = this.AlloyDbService.getPlaylist($routeParams.id);
         if (playlist) {
-          playlist.then(info => {
+          playlist.then((info) => {
             if (info) {
               $scope.info = info.playlist;
               
@@ -46,9 +46,9 @@ class PlaylistController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

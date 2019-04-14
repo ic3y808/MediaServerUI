@@ -3,13 +3,9 @@ var log = require("../../../../../common/logger");
 
 
 class Musicbrainz {
-  constructor() {
-
-  }
-
   // Get server version.
   version() {
-    return this.cmd("version").then(r => r.version);
+    return this.cmd("version").then((r ) => r.version);
   }
 
   // Perform command request.
@@ -31,7 +27,7 @@ class Musicbrainz {
     // Perform request.
     return got(url, {
       json: true
-    }).then(res => res.body);
+    }).then((res) => res.body);
   }
 
 }

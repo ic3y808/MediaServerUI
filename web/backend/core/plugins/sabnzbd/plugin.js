@@ -6,9 +6,9 @@ const dateutil = require("dateutil");
 // dateutil parser for ETA"s
 dateutil._parsers["sabnzbd"] = {
   test: /^\s*[\d:]+\s+[a-zA-Z]{3}\s+\d+\s+[a-zA-Z]{3}\s*$/,
-  parse: str => {
-    let m = str.match(/^([\d:]+)\s+(.*)/);
-    let t = [m[2], (new Date()).getFullYear(), m[1]].join(" ");
+  parse: (str) => {
+    const m = str.match(/^([\d:]+)\s+(.*)/);
+    const t = [m[2], (new Date()).getFullYear(), m[1]].join(" ");
     return dateutil.parse(t);
   }
 };
@@ -22,13 +22,13 @@ class Base {
   status(limit) {
     return this.delegate.cmd(this.type, {
       limit: limit || 10e6
-    }).then(response => {
+    }).then((response) => {
       response = response[this.type] || {
         slots: []
-      }
+      };
 
       // normalize slots
-      response.entries = response.slots.map(slot => this.normalize(slot));
+      response.entries = response.slots.map((slot) => this.normalize(slot));
 
       // done
       return response;
@@ -36,7 +36,7 @@ class Base {
   }
 
   entries() {
-    return this.status().then(response => response.entries);
+    return this.status().then((response) => response.entries);
   }
 
   // Delete (an) item(s) (pass "all" as single argument to remove everything)
@@ -45,7 +45,7 @@ class Base {
       name: "delete",
       value: args.join(","),
     });
-  };
+  }
 }
 
 class Queue extends Base {
@@ -55,7 +55,7 @@ class Queue extends Base {
 
   // Add an NZB url to the queue.
   addurl(url, args) {
-    let params = args || {};
+    const params = args || {};
     params.name = url;
     return this.delegate.cmd("addurl", params);
   }
@@ -65,12 +65,12 @@ class Queue extends Base {
   pause(id) {
     if (id === undefined) {
       return this.delegate.cmd("pause");
-    } else {
+    } 
       return this.delegate.cmd("queue", {
         name: "pause",
         value: id
       });
-    }
+    
   }
 
   // Resume entire queue (with no argument) or a
@@ -78,26 +78,24 @@ class Queue extends Base {
   resume(id) {
     if (id === undefined) {
       return this.delegate.cmd("resume");
-    } else {
+    } 
       return this.delegate.cmd("queue", {
         name: "resume",
         value: id
       });
-    }
+    
   }
 
   // Normalize queue slot
   normalize(slot) {
     // parse timeleft
-    let timeleft = slot.timeleft.replace(/^(\d+):(\d+):(\d+)/, (all, H, M, S) => {
-      return Number(H) * 3600 + Number(M) * 60 + Number(S);
-    });
+    const timeleft = slot.timeleft.replace(/^(\d+):(\d+):(\d+)/, (all, H, M, S) => Number(H) * 3600 + Number(M) * 60 + Number(S));
 
     // parse ETA
-    let eta = slot.eta == "unknown" ? slot.eta : dateutil.parse(slot.eta);
+    const eta = slot.eta == "unknown" ? slot.eta : dateutil.parse(slot.eta);
 
     // parse age
-    let age = slot.avg_age.replace(/^\s*(\d+).*/, (a, H) => Number(H) * 3600);
+    const age = slot.avg_age.replace(/^\s*(\d+).*/, (a, H) => Number(H) * 3600);
 
     // return a normalized object
     return {
@@ -190,7 +188,7 @@ class SABnzbd {
 
   // Get server version.
   version() {
-    return this.cmd("version").then(r => r.version);
+    return this.cmd("version").then((r) => r.version);
   }
 
   // Get both queue and history status, merged.
@@ -208,7 +206,7 @@ class SABnzbd {
 
   // Get both queue and history entries.
   entries() {
-    return this.status().then(r => r.entries);
+    return this.status().then((r) => r.entries);
   }
 
   // Delete (an) item(s) from both queue and history (or pass "all" as
@@ -217,11 +215,9 @@ class SABnzbd {
     return Promise.all([
       this.queue.delete(...args),
       this.history.delete(...args),
-    ]).then(([queueStatus, historyStatus]) => {
-      return {
+    ]).then(([queueStatus, historyStatus]) => ({
         status: queueStatus.status || historyStatus.status
-      };
-    });
+      }));
   }
 
   // Perform command request.
@@ -243,7 +239,7 @@ class SABnzbd {
     // Perform request.
     return got(url, {
       json: true
-    }).then(res => res.body);
+    }).then((res) => res.body);
   }
 
 }

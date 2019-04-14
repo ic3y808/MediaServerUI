@@ -1,7 +1,7 @@
 "use strict";
 var express = require("express");
 var router = express.Router();
-var path = require("path")
+var path = require("path");
 var fs = require("fs");
 const sharp = require("sharp");
 var structures = require("./structures");
@@ -29,17 +29,13 @@ router.get("/stream", function (req, res) {
   var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(id);
   if (track) {
 
-
-
-
-
     const stat = fs.statSync(track.path);
     const total = stat.size;
     if (req.headers.range) {
       fs.exists(track.path, (exists) => {
         if (exists) {
           const range = req.headers.range;
-          const parts = range.replace(/bytes=/, "").split("-");
+          const parts = range.replace(/bytes=/u, "").split("-");
           const partialStart = parts[0];
           const partialEnd = parts[1];
 
@@ -47,8 +43,8 @@ router.get("/stream", function (req, res) {
           const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
           const chunksize = (end - start) + 1;
           const rstream = fs.createReadStream(track.path, {
-            start: start,
-            end: end
+            start,
+            end
           });
 
           res.writeHead(206, {
@@ -92,7 +88,7 @@ router.get("/download", function (req, res) {
   var track = res.locals.db.prepare("SELECT * FROM Tracks WHERE id=?").get(id);
   if (track.length !== 0) {
     res.setHeader("Content-disposition", "attachment; filename=" + path.basename(track.path));
-    res.setHeader("Content-Type", "application/" + track.content_type)
+    res.setHeader("Content-Type", "application/" + track.content_type);
     var rstream = fs.createReadStream(track.path);
     rstream.pipe(res);
   }
@@ -120,13 +116,13 @@ router.get("/cover_art", function (req, res) {
   var height = req.query.height;
   var coverFile = "";
 
-  var shuffle = a => {
+  var shuffle = (a) => {
     for (var i = a.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [a[i], a[j]] = [a[j], a[i]];
     }
     return a;
-  }
+  };
 
   if (artist_id) {
     var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(artist_id);
@@ -136,15 +132,15 @@ router.get("/cover_art", function (req, res) {
       //}
       if (!coverFile) {
         var artistAlbums = res.locals.db.prepare("SELECT * FROM Albums WHERE artist_id=?").all(artist_id);
-        artistAlbums = shuffle(artistAlbums)
-        artistAlbums.forEach(album => {
+        artistAlbums = shuffle(artistAlbums);
+        artistAlbums.forEach((album) => {
           if (!coverFile) {
             if (fs.existsSync(path.join(album.path, process.env.COVERART_IMAGE))) {
               coverFile = path.join(album.path, process.env.COVERART_IMAGE);
             } else {
               var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
-              albumTracks = shuffle(albumTracks)
-              albumTracks.forEach(albumTrack => {
+              albumTracks = shuffle(albumTracks);
+              albumTracks.forEach((albumTrack) => {
                 if (!coverFile) {
                   if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
                     coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
@@ -163,9 +159,9 @@ router.get("/cover_art", function (req, res) {
         coverFile = path.join(process.env.COVER_ART_DIR, track.id + ".jpg");
       }
       if (!coverFile) {
-        var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
-        albumTracks = shuffle(albumTracks)
-        albumTracks.forEach(albumTrack => {
+        var albumTracks1 = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
+        albumTracks1 = shuffle(albumTracks1);
+        albumTracks1.forEach((albumTrack) => {
           if (!coverFile) {
             if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
               coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
@@ -176,9 +172,9 @@ router.get("/cover_art", function (req, res) {
     }
 
   } else if (album_id) {
-    var albumTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
-    albumTracks = shuffle(albumTracks)
-    albumTracks.forEach(albumTrack => {
+    var albumTracks2 = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album_id);
+    albumTracks2 = shuffle(albumTracks2);
+    albumTracks2.forEach((albumTrack) => {
       if (!coverFile) {
         if (fs.existsSync(path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg"))) {
           coverFile = path.join(process.env.COVER_ART_DIR, albumTrack.cover_art + ".jpg");
@@ -188,18 +184,18 @@ router.get("/cover_art", function (req, res) {
   }
 
   var input = process.env.COVER_ART_NO_ART;
-  if (coverFile) input = coverFile;
+  if (coverFile) { input = coverFile; }
   if (width && height) {
     sharp(input)
       .rotate()
       .resize({
-        width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
+        width, height, fit: sharp.fit.cover, position: sharp.strategy.entropy
       })
       .toBuffer()
-      .then(data => {
-        res.end(data)
+      .then((data) => {
+        res.end(data);
       })
-      .catch(err => { res.send(err); });
+      .catch((err) => { res.send(err); });
   } else {
     res.sendFile(input);
   }

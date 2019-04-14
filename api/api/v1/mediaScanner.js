@@ -12,10 +12,6 @@ const logger = require("../../../common/logger");
 
 class MediaScanner extends MediaScannerBase {
 
-  constructor(database) {
-    super(database);
-  }
-
   startScan() {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
@@ -31,11 +27,11 @@ class MediaScanner extends MediaScannerBase {
 
   checkDBLinks(artist) {
     if (artist && artist.Links) {
-      artist.Links.forEach(link => {
+      artist.Links.forEach((link) => {
         var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.Id);
         if (existingLink.length === 0) {
           link.artist_id = artist.Id;
-          this.writeDb(link, "Links")
+          this.writeDb(link, "Links");
         }
       });
     }
@@ -47,7 +43,7 @@ class MediaScanner extends MediaScannerBase {
     if (existingArtist.length === 0) {
       const artistTracks = klawSync(artist.path, { nodir: true });
       var validTracks = [];
-      artistTracks.forEach(track => {
+      artistTracks.forEach((track) => {
         if (utils.isFileValid(track.path)) {
           validTracks.push(track);
         }
@@ -57,20 +53,20 @@ class MediaScanner extends MediaScannerBase {
       this.writeScanEvent("insert-artist", artist, "Inserted mapped artist", "success");
       this.updateStatus("Inserted mapped artist " + artist.name, true);
     }
-  };
+  }
 
   checkDBAlbumsExist(artist) {
     const albumDirs = klawSync(artist.path, {
       nofile: true
     });
     var mappedAlbums = [];
-    albumDirs.forEach(dir => {
+    albumDirs.forEach((dir) => {
       if (fs.existsSync(path.join(dir.path, process.env.ALBUM_NFO))) {
         var json = JSON.parse(parser.toJson(fs.readFileSync(path.join(dir.path, process.env.ALBUM_NFO))));
         var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.3/album/" + json.album.musicbrainzalbumid;
         const albumTracks = klawSync(dir.path, { nodir: true });
         var validTracks = [];
-        albumTracks.forEach(track => {
+        albumTracks.forEach((track) => {
           if (utils.isFileValid(track.path)) {
             validTracks.push(track);
           }
@@ -91,17 +87,16 @@ class MediaScanner extends MediaScannerBase {
           var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
           var existingAlbum = stmt.all(mappedAlbum.id);
           if (existingAlbum.length === 0) {
-            this.writeDb(mappedAlbum, "Albums")
+            this.writeDb(mappedAlbum, "Albums");
             this.writeScanEvent("insert-album", mappedAlbum, "Inserted mapped album", "success");
             this.updateStatus("Inserted mapped album " + mappedAlbum.name, true);
           }
           mappedAlbum.releases = [];
-          albumInfo.Releases.forEach(release => {
+          albumInfo.Releases.forEach((release) => {
             mappedAlbum.releases.push(release);
-          })
+          });
           mappedAlbums.push(mappedAlbum);
         }
-
       }
     });
     return mappedAlbums;
@@ -117,13 +112,12 @@ class MediaScanner extends MediaScannerBase {
       track.tags = "";
 
       for (var i = 1; i < genre.length; i++) {
-        track.tags += genre[i]
-        if (i < genre.length - 1) track.tags += "|";
+        track.tags += genre[i];
+        if (i < genre.length - 1) { track.tags += "|"; }
       }
 
       var tempGenreId = "genre_" + uuidv3(track.genre, process.env.UUID_BASE).split("-")[0];
-      var stmt = this.db.prepare("SELECT * FROM Genres WHERE id = ? OR name = ?");
-      var existingGenre = stmt.all(tempGenreId, track.genre);
+      var existingGenre = this.db.prepare("SELECT * FROM Genres WHERE id = ? OR name = ?").all(tempGenreId, track.genre);
       if (existingGenre.length === 0) {
         track.genre_id = tempGenreId;
         var stmt = this.db.prepare("INSERT INTO Genres (id, name) VALUES (?,?)");
@@ -135,7 +129,7 @@ class MediaScanner extends MediaScannerBase {
       logger.error("alloydb", JSON.stringify(err));
     }
     return track;
-  };
+  }
 
   checkExistingTrack(track, metadata) {
     track.id = utils.isStringValid(metadata.common.musicbrainz_recordingid, "");
@@ -149,7 +143,7 @@ class MediaScanner extends MediaScannerBase {
 
     track.bpm = utils.isStringValid(metadata.common.bpm, "");
     track.year = metadata.common.year;
-    track.suffix = utils.isStringValid(metadata.common.suffix, "");;
+    track.suffix = utils.isStringValid(metadata.common.suffix, "");
     track.no = metadata.common.track.no;
     track.of = metadata.common.track.of;
     return track;
@@ -171,11 +165,14 @@ class MediaScanner extends MediaScannerBase {
       track.cover_art = coverId;
 
       if (!fs.existsSync(coverFile)) {
-        fs.writeFile(coverFile, metadata.common.picture[0].data, function (err) {
-          if (err) {
-            logger.error("alloydb", JSON.stringify(err));
-          }
-        });
+        var data = metadata.common.picture[0].data;
+        if (data) {
+          fs.writeFile(coverFile, data, function (err) {
+            if (err) {
+              logger.error("alloydb", JSON.stringify(err));
+            }
+          });
+        }
       }
     }
     return track;
@@ -193,15 +190,17 @@ class MediaScanner extends MediaScannerBase {
     var mappedArtistDirectories = [];
     var unmappedArtistDirectories = [];
 
-    mediaPaths.forEach(mediaPath => {
-      if (this.shouldCancel()) return {
-        mappedArtists: mappedArtistDirectories,
-        unmappedArtists: unmappedArtistDirectories
-      };
+    mediaPaths.forEach((mediaPath) => {
+      if (this.shouldCancel()) {
+        return {
+          mappedArtists: mappedArtistDirectories,
+          unmappedArtists: unmappedArtistDirectories
+        };
+      }
 
       const artistDirs = klawSync(mediaPath.path, { nofile: true, depthLimit: 0 });
 
-      artistDirs.forEach(dir => {
+      artistDirs.forEach((dir) => {
         if (fs.existsSync(path.join(dir.path, process.env.ARTIST_NFO))) {
           mappedArtistDirectories.push({
             path: dir.path
@@ -212,19 +211,19 @@ class MediaScanner extends MediaScannerBase {
           });
         }
       });
-    });
-    return {
-      mappedArtists: mappedArtistDirectories,
-      unmappedArtists: unmappedArtistDirectories
-    };
 
+      return {
+        mappedArtists: mappedArtistDirectories,
+        unmappedArtists: unmappedArtistDirectories
+      };
+    });
   }
 
   scanArtist(artist) {
     return new Promise((resolve, reject) => {
-      if (this.shouldCancel()) return;
+      if (this.shouldCancel()) { return; }
       this.updateStatus("Scanning artist " + artist.path, true);
-      if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) return;
+      if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) { return; }
       var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
       var json = JSON.parse(parser.toJson(data));
       var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.3/artist/" + json.artist.musicbrainzartistid;
@@ -246,16 +245,16 @@ class MediaScanner extends MediaScannerBase {
       this.checkDBArtistExists(artist);
       var albums = this.checkDBAlbumsExist(artist);
       var allMetaPromises = [];
-      albums.forEach(album => {
+      albums.forEach((album) => {
 
         if (fs.existsSync(album.path)) {
           const albumTracks = klawSync(album.path, { nodir: true });
 
 
-          albumTracks.forEach(track => {
+          albumTracks.forEach((track) => {
             try {
               if (utils.isFileValid(track.path)) {
-                allMetaPromises.push(mm.parseFile(track.path).then(metadata => {
+                allMetaPromises.push(mm.parseFile(track.path).then((metadata) => {
                   var processed_track = new structures.Song();
                   processed_track.path = track.path;
                   processed_track.artist = utils.isStringValid(artist.name, "");
@@ -266,21 +265,19 @@ class MediaScanner extends MediaScannerBase {
                   processed_track = this.checkExistingTrack(processed_track, metadata);
                   processed_track.album_id = album.id;
 
-                  album.releases.forEach(release => {
-                    release.Tracks.forEach(albumTrack => {
+                  album.releases.forEach((release) => {
+                    release.Tracks.forEach((albumTrack) => {
                       if (!processed_track.id) {
-                        var msCompare = processed_track.duration == parseInt(albumTrack.DurationMs / 1000, 10);
-                        var tracknumCompare = processed_track.no == albumTrack.TrackPosition;
-                        var mediumCompare = processed_track.of == release.TrackCount;
+                        var msCompare = processed_track.duration === parseInt(albumTrack.DurationMs / 1000, 10);
+                        var tracknumCompare = processed_track.no === albumTrack.TrackPosition;
+                        var mediumCompare = processed_track.of === release.TrackCount;
 
                         if (msCompare && tracknumCompare && mediumCompare) {
                           processed_track.id = albumTrack.RecordingId;
                           processed_track.title = albumTrack.TrackName;
                         }
-                      } else {
-                        if (processed_track.id === albumTrack.RecordingId) {
-                          processed_track.title = albumTrack.TrackName;
-                        }
+                      } else if (processed_track.id === albumTrack.RecordingId) {
+                        processed_track.title = albumTrack.TrackName;
                       }
                     });
                   });
@@ -305,7 +302,7 @@ class MediaScanner extends MediaScannerBase {
       Promise.all(allMetaPromises).then(() => {
         this.updateStatus("finished scanning albums from " + artist.name, true);
         resolve();
-      })
+      });
     });
   }
 
@@ -315,7 +312,7 @@ class MediaScanner extends MediaScannerBase {
     if (artist && !this.shouldCancel()) {
       this.scanArtist(artist).then(() => {
         this.scanArtists(artists);
-      })
+      });
 
     } else {
       this.db.checkpoint();
@@ -328,45 +325,43 @@ class MediaScanner extends MediaScannerBase {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
       logger.debug("alloydb", "scan in progress");
-    } else {
-      if (fs.existsSync(dir)) {
-        if (fs.lstatSync(dir).isDirectory()) {
-          if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-            this.scanArtist({ path: dir }).then(() => {
-              this.db.checkpoint();
-              this.resetStatus();
-              this.updateStatus("Scan Complete", false);
-            })
-          }
-        }
-      } else {
-        var root = path.dirname(dir)
-
-        const artistDirs = klawSync(root, {
-          nofile: true,
-          depthLimit: 0
-        });
-
-        if (artistDirs.length > 0) {
-          artistDirs.forEach(dir => {
-            if (dir !== undefined && dir !== null && typeof (dir) === "string" && dir !== "") {
-              if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-                this.scanArtist({ path: dir }).then(() => {
-                  this.db.checkpoint();
-                  this.resetStatus();
-                  this.updateStatus("Scan Complete", false);
-                })
-              }
-            }
-          });
-        } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
-          this.scanArtist({ path: path.dirname(root) }).then(() => {
+    } else if (fs.existsSync(dir)) {
+      if (fs.lstatSync(dir).isDirectory()) {
+        if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
+          this.scanArtist({ path: dir }).then(() => {
             this.db.checkpoint();
             this.resetStatus();
             this.updateStatus("Scan Complete", false);
-            this.cleanup();
-          })
+          });
         }
+      }
+    } else {
+      var root = path.dirname(dir);
+
+      const artistDirs = klawSync(root, {
+        nofile: true,
+        depthLimit: 0
+      });
+
+      if (artistDirs.length > 0) {
+        artistDirs.forEach((artistDir) => {
+          if (artistDir !== undefined && artistDir !== null && typeof (artistDir) === "string" && artistDir !== "") {
+            if (fs.existsSync(path.join(artistDir, process.env.ARTIST_NFO))) {
+              this.scanArtist({ path: artistDir }).then(() => {
+                this.db.checkpoint();
+                this.resetStatus();
+                this.updateStatus("Scan Complete", false);
+              });
+            }
+          }
+        });
+      } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
+        this.scanArtist({ path: path.dirname(root) }).then(() => {
+          this.db.checkpoint();
+          this.resetStatus();
+          this.updateStatus("Scan Complete", false);
+          this.cleanup();
+        });
       }
     }
   }

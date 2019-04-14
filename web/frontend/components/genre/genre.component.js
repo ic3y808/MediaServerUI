@@ -17,16 +17,14 @@ class GenreController {
     this.AppUtilities.showLoader();
     $scope.artist = {};
     $scope.albums = [];
-    $scope.genre = { tracks: [] }
+    $scope.genre = { tracks: [] };
     $scope.artistName = "";
     $scope.all_expanded = false;
     $scope.albums_expanded = true;
     $scope.genre.tracks_expanded = false;
     $scope.genre = this.$routeParams.id;
 
-    $scope.getCoverArt = id => {
-      return this.AlloyDbService.getCoverArt(id);
-    }
+    $scope.getCoverArt = (id) => this.AlloyDbService.getCoverArt(id);
 
     $scope.getGenre = () => {
       var cache = Cache.get($routeParams.id);
@@ -37,7 +35,7 @@ class GenreController {
         this.AppUtilities.hideLoader();
       } else {
         if (AlloyDbService.isLoggedIn) {
-          this.AlloyDbService.getGenre(this.$routeParams.id).then(result => {
+          this.AlloyDbService.getGenre(this.$routeParams.id).then((result) => {
             $scope.info = result;
 
             var randomTrack = $scope.info.tracks[Math.floor(Math.random() * $scope.info.tracks.length)];
@@ -52,29 +50,29 @@ class GenreController {
     };
 
     $scope.toggleAlbums = () => {
-      if ($scope.albums_expanded) $("#albumListContainer").hide();
-      else $("#albumListContainer").show();
+      if ($scope.albums_expanded) {$("#albumListContainer").hide();}
+      else {$("#albumListContainer").show();}
       $scope.albums_expanded = !$scope.albums_expanded;
-    }
+    };
 
     $scope.toggleTracks = () => {
-      if ($scope.genre.tracks_expanded) $("#trackListContainer").hide();
-      else $("#trackListContainer").show();
+      if ($scope.genre.tracks_expanded) {$("#trackListContainer").hide();}
+      else {$("#trackListContainer").show();}
       $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
-    }
+    };
 
     $scope.toggleAll = () => {
       $scope.genre.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
-      if ($scope.albums_expanded) $("#albumListContainer").hide();
-      else $("#albumListContainer").show();
+      if ($scope.albums_expanded) {$("#albumListContainer").hide();}
+      else {$("#albumListContainer").show();}
 
-      if ($scope.genre.tracks_expanded) $("#trackListContainer").hide();
-      else $("#trackListContainer").show();
+      if ($scope.genre.tracks_expanded) {$("#trackListContainer").hide();}
+      else {$("#trackListContainer").show();}
 
       $scope.all_expanded = !$scope.all_expanded;
-    }
+    };
 
     $scope.refresh = () => {
       this.Logger.debug("refresh genre");
@@ -97,9 +95,9 @@ class GenreController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

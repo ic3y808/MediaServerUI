@@ -55,8 +55,7 @@ router.get("/", function (req, res) {
     res.json(res.locals.db.prepare("SELECT * FROM Tracks WHERE instr(title, ?) > 0 AND year >= ? LIMIT ? OFFSET ?").all(title, newerThan, count, offset));
   } else if (genre) {
     res.json(res.locals.db.prepare("SELECT * FROM Tracks WHERE instr(genre, ?) > 0 AND year >= ? LIMIT ? OFFSET ?").all(genre, newerThan, count, offset));
-  } else
-    res.send(new structures.StatusResult("Error no search term provided"));
+  } else { res.send(new structures.StatusResult("Error no search term provided")); }
 });
 
 

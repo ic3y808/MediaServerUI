@@ -12,11 +12,11 @@ class ActivityController {
     this.MediaPlayer = MediaPlayer;
     this.Logger.debug("activity-controller");
 
-    this.$scope.jumpTo = to => {
+    this.$scope.jumpTo = (to) => {
       $location.path("/activity/" + to);
     };
 
-    this.$scope.navigate = to => {
+    this.$scope.navigate = (to) => {
       $("#activity-content").append(this.$compile("<activity" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };

@@ -15,7 +15,7 @@ module.exports.MediaPath = class MediaPath {
     this.path = path;
     this.displayName = displayName;
   }
-}
+};
 
 /**
  * @typedef Ping
@@ -26,7 +26,7 @@ module.exports.Ping = class Ping {
   constructor(status) {
     this.status = status;
   }
-}
+};
 
 /**
  * @typedef License
@@ -41,10 +41,10 @@ module.exports.License = class License {
   licenseType() {
     if (this.license == "test")
       return "Test License";
-    else return "Unknown License";
+    return "Unknown License";
   }
 
-}
+};
 
 /**
  * @typedef MusicFolder
@@ -57,7 +57,7 @@ module.exports.MusicFolder = class MusicFolder {
     this.id = id;
     this.name = name;
   }
-}
+};
 
 /**
  * @typedef StatusResult
@@ -68,7 +68,7 @@ module.exports.StatusResult = class StatusResult {
   constructor(result) {
     this.result = result;
   }
-}
+};
 
 /**
  * @typedef Directory 
@@ -92,7 +92,7 @@ module.exports.Directory = class Directory {
     this.title = title;
     this.coverArt = coverArt;
   }
-}
+};
 
 /**
  * @typedef Genre 
@@ -108,7 +108,7 @@ module.exports.Genre = class Genre {
     this.albumCount = albumCount;
     this.name = name;
   }
-}
+};
 
 /**
  * @typedef Album 
@@ -132,7 +132,7 @@ module.exports.Album = class Album {
     this.duration = duration;
     this.created = created;
   }
-}
+};
 
 /**
  * @typedef Artist 
@@ -150,7 +150,7 @@ module.exports.Artist = class Artist {
     this.albumCount = albumCount;
     this.songCount = songCount;
   }
-}
+};
 
 /**
  * @typedef Song 
@@ -243,7 +243,7 @@ module.exports.Playlist = class Playlist {
     this.duration = duration;
     this.coverArt = coverArt;
   }
-}
+};
 
 
 /**
@@ -256,7 +256,7 @@ module.exports.SimilarArtist = class SimilarArtist {
     this.id = id;
     this.name = name;
   }
-}
+};
 
 
 /**
@@ -279,7 +279,7 @@ module.exports.ArtistInfo = class ArtistInfo {
     this.largeImageUrl = largeImageUrl;
     this.similarArtists = similarArtists;
   }
-}
+};
 
 /**
  * @typedef StarredMedia 
@@ -293,7 +293,7 @@ module.exports.StarredMedia = class StarredMedia {
     this.albums = albums;
     this.songs = songs;
   }
-}
+};
 
 /**
  * @typedef SearchResults 
@@ -307,7 +307,7 @@ module.exports.SearchResults = class SearchResults {
     this.albums = albums;
     this.songs = songs;
   }
-}
+};
 
 /**
  * @typedef Share 
@@ -329,7 +329,7 @@ module.exports.Share = class Share {
     this.expires = expires;
     this.visitCount = visitCount;
   }
-}
+};
 
 /**
  * @typedef LibraryStats 
@@ -348,4 +348,4 @@ module.exports.LibraryStats = class LibraryStats {
     this.album_count = 0;
     this.memory_used = 0;
   }
-}
+};

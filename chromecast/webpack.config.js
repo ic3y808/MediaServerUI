@@ -1,3 +1,4 @@
+"use strict";
 const path = require("path");
 const webpack = require("webpack");
 const dist = path.resolve(__dirname, "dist");

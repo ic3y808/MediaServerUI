@@ -6,44 +6,41 @@ var Lastfm = require("./simple-lastfm");
 var CryptoJS = require("crypto-js");
 var logger = require("../../../common/logger");
 
-var getLastFm = function (res, isPublic) {
+var getLastFm = (res, isPublic) => {
   if (res.locals.lastfm) {
     return res.locals.lastfm;
-  } else {
-    var lastfmSettings = res.locals.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
-    if (lastfmSettings && lastfmSettings.settings_value) {
-      var settings = JSON.parse(lastfmSettings.settings_value);
-      if (settings) {
-        if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
-          return res.locals.lastfm = new Lastfm({
-            api_key: process.env.LASTFM_API_KEY,
-            api_secret: process.env.LASTFM_API_SECRET,
-            username: settings.alloydb_lastfm_username,
-            password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
-            //authToken: "xxx" // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
-          });
-        } else {
-          res.send(new structures.StatusResult("No username or password."));
-        }
-
-      } else {
-        res.send(new structures.StatusResult("Could not parse settings."));
-      }
-    } else {
-      res.send(new structures.StatusResult("Could not load lastfm settings."));
-    }
   }
-
-}
+  var lastfmSettings = res.locals.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+  if (lastfmSettings && lastfmSettings.settings_value) {
+    var settings = JSON.parse(lastfmSettings.settings_value);
+    if (settings) {
+      if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
+        res.locals.lastfm = new Lastfm({
+          api_key: process.env.LASTFM_API_KEY,
+          api_secret: process.env.LASTFM_API_SECRET,
+          username: settings.alloydb_lastfm_username,
+          password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
+          //authToken: "xxx" // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
+        });
+        return res.locals.lastfm;
+      }
+      res.send(new structures.StatusResult("No username or password."));
+    } else {
+      res.send(new structures.StatusResult("Could not parse settings."));
+    }
+  } else {
+    res.send(new structures.StatusResult("Could not load lastfm settings."));
+  }
+  return null;
+};
 
 var getLastfmSession = function (res, cb) {
   var lsfm = getLastFm(res);
-  if (lsfm)
-    lsfm.getSessionKey(cb);
+  if (lsfm) { lsfm.getSessionKey(cb); }
   else {
-    cb({result:{failure:"failed"}});
+    cb({ result: { failure: "failed" } });
   }
-}
+};
 
 /**
  * This function comment is parsed by doctrine
@@ -68,8 +65,8 @@ router.get("/track_info", function (req, res) {
           getLastFm(res).getTrackInfo({
             artist: track.artist,
             track: track.title,
-            callback: function (result) {
-              res.send(result);
+            callback: (result1) => {
+              res.send(result1);
             }
           });
         } else {
@@ -102,9 +99,9 @@ router.get("/artist_info", function (req, res) {
     getLastfmSession(res, function (result) {
       if (result.success) {
         getLastFm(res).getArtistInfo({
-          artist: artist,
-          callback: function (result) {
-            res.json(result);
+          artist,
+          callback(result1) {
+            res.json(result1);
           }
         });
       } else {
@@ -136,10 +133,10 @@ router.get("/album_info", function (req, res) {
     getLastfmSession(res, function (result) {
       if (result.success) {
         getLastFm(res).getAlbumInfo({
-          artist: artist,
-          album: album,
-          callback: function (result) {
-            res.json(result);
+          artist,
+          album,
+          callback(result1) {
+            res.json(result1);
           }
         });
       } else {
@@ -170,9 +167,9 @@ router.get("/genre_info", function (req, res) {
     getLastfmSession(res, function (result) {
       if (result.success) {
         getLastFm(res).getGenreInfo({
-          genre: genre,
-          callback: function (result) {
-            res.send(result);
+          genre,
+          callback(result1) {
+            res.send(result1);
           }
         });
       } else {
@@ -205,8 +202,8 @@ router.put("/love", function (req, res) {
           getLastFm(res).loveTrack({
             artist: track.artist,
             track: track.title,
-            callback: function (result) {
-              res.send(new structures.StatusResult(result));
+            callback(result1) {
+              res.send(new structures.StatusResult(result1));
             }
           });
 
@@ -243,8 +240,8 @@ router.delete("/love", function (req, res) {
           getLastFm(res).unloveTrack({
             artist: track.artist,
             track: track.title,
-            callback: function (result) {
-              res.send(new structures.StatusResult(result));
+            callback(result1) {
+              res.send(new structures.StatusResult(result1));
             }
           });
 
@@ -288,16 +285,16 @@ router.put("/scrobble", function (req, res) {
             getLastFm(res).scrobbleNowPlayingTrack({
               artist: track.artist,
               track: track.title,
-              callback: function (result) {
-                res.send(new structures.StatusResult(result));
+              callback(result1) {
+                res.send(new structures.StatusResult(result1));
               }
             });
           } else {
             getLastFm(res).scrobbleTrack({
               artist: track.artist,
               track: track.title,
-              callback: function (result) {
-                res.send(new structures.StatusResult(result));
+              callback(result1) {
+                res.send(new structures.StatusResult(result1));
               }
             });
           }
