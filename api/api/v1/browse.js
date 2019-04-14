@@ -56,7 +56,7 @@ router.get("/artists", function (req, res) {
     result.artists = res.locals.db.prepare("SELECT * FROM Artists ORDER BY name ASC").all();
     result.next_offset = 0;
   }
-  
+
 
   res.json(result);
 });
@@ -136,8 +136,7 @@ router.get("/albums", function (req, res) {
   var offset = req.query.offset;
   var genre = req.query.genre;
   var size = 1000;
-  if (req.query.size)
-    {size = req.query.size;}
+  if (req.query.size) { size = req.query.size; }
   var result = {};
   if (genre) {
     result.albums = res.locals.db.prepare("SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC").all(genre);
@@ -238,20 +237,17 @@ router.get("/charts", function (req, res) {
   history.forEach((item) => {
     var plays = 0;
     var t = res.locals.db.prepare("SELECT play_count FROM Tracks WHERE id=?").get(item.id);
-    if (t) {plays = t.play_count;}
+    if (t) { plays = t.play_count; }
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
-    if (existing)
-      {existing.tags.push({ genre: item.genre, play_count: plays });}
-    else {tags.push({ date: dateString, tags: [{ genre: item.genre, play_count: plays }] });}
+    if (existing) { existing.tags.push({ genre: item.genre, play_count: plays }); }
+    else { tags.push({ date: dateString, tags: [{ genre: item.genre, play_count: plays }] }); }
   });
 
   tags.forEach((tag) => {
     function compare(a, b) {
-      if (a.play_count > b.play_count)
-        {return -1;}
-      if (a.play_count < b.play_count)
-        {return 1;}
+      if (a.play_count > b.play_count) { return -1; }
+      if (a.play_count < b.play_count) { return 1; }
       return 0;
     }
 
@@ -267,10 +263,12 @@ router.get("/charts", function (req, res) {
   var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
   result.charts.never_played_albums = [];
   allAlbums.forEach((album) => {
-    if (result.charts.never_played_albums.length >= limit) {return;}
+    if (result.charts.never_played_albums.length >= limit) { return; }
     var allTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     if (allTracks.length > 0) {
-      var anyPlays = allTracks.every((obj) => obj.play_count === 0);
+      var anyPlays = allTracks.every((obj) => {
+        return obj.play_count !== 0;
+      });
       if (anyPlays === false) {
         album.tracks = allTracks;
         result.charts.never_played_albums.push(album);
@@ -344,12 +342,9 @@ router.get("/random_songs", function (req, res) {
   var size = req.query.size;
   var musicFolderId = req.query.musicFolderId;
 
-  if (req.query.fromYear)
-    {fromYear = req.query.fromYear;}
-  if (req.query.toYear)
-    {toYear = req.query.toYear;}
-  if (!size)
-    {size = 100;}
+  if (req.query.fromYear) { fromYear = req.query.fromYear; }
+  if (req.query.toYear) { toYear = req.query.toYear; }
+  if (!size) { size = 100; }
   var random = {};
   if (genre) {
     random.random = res.locals.db.prepare("SELECT * FROM Tracks WHERE year >= ? AND year <= ? AND genre=? COLLATE NOCASE ORDER BY RANDOM() LIMIT ?").all(fromYear, toYear, genre, size);

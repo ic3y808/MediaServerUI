@@ -238,7 +238,6 @@ class ChartsController {
             opacity: boundryPoint !== point ? 0.3 : 1
           };
         }
-        return null;
       });
 
       zones = _.flatten(zones);

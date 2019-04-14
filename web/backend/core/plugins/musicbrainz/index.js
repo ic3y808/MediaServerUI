@@ -1,12 +1,14 @@
-import Musicbrainz from "./plugin";
-import { debug, info } from "../../../../../common/logger";
-import db from "../../database";
+const Musicbrainz = require("./plugin")
+var log = require("../../../../../common/logger");
+var db = require("../../database");
 var brainz = null;
 var timer = {};
-export const io = {};
+module.exports.io = {};
 
-export function socketConnect (socket) {
-  debug("alloyui", "musicbrainz plugin socketConnect");
-}
+module.exports.socketConnect = function (socket) {
+  log.debug("alloyui", "musicbrainz plugin socketConnect");
 
-info("alloyui", "musicbrainz plugin loaded");
+
+};
+
+log.info("alloyui", "musicbrainz plugin loaded");

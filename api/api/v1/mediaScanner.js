@@ -334,6 +334,15 @@ class MediaScanner extends MediaScannerBase {
               this.updateStatus("Scan Complete", false);
             });
           }
+        } else {
+          var parentDir = path.dirname(dir);
+          if (fs.existsSync(path.join(parentDir, process.env.ARTIST_NFO))) {
+            this.scanArtist({ path: dir }).then(() => {
+              this.db.checkpoint();
+              this.resetStatus();
+              this.updateStatus("Scan Complete", false);
+            });
+          }
         }
       } else {
         var root = path.dirname(dir);
