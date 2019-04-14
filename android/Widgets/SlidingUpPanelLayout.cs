@@ -1297,7 +1297,7 @@ namespace Alloy.Widgets
 		protected override bool DrawChild(Canvas canvas, View child, long drawingTime)
 		{
 			bool result;
-			int save = canvas.Save(SaveFlags.All);
+			int save = canvas.Save();
 
 			if (mSlideableView != null && mSlideableView != child)
 			{ // if main view
