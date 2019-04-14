@@ -1,5 +1,3 @@
-"use strict";
-
 const got = require("got");
 const path = require("path");
 const Queue = require("better-queue");

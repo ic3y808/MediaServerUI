@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const _debug = require("debug");
 const GenericTagTypes_1 = require("./GenericTagTypes");

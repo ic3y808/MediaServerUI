@@ -15,5 +15,5 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
     link: function (scope, elm, attrs) {
     
     }
-  }
-};
+  };
+}

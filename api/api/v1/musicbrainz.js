@@ -1,4 +1,3 @@
-"use strict";
 var logger = require("../../../common/logger");
 
 var request = require("request"),

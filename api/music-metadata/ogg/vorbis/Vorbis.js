@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Token = require("token-types");
 const ID3v2_1 = require("../../id3v2/ID3v2");

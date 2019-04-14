@@ -1,4 +1,3 @@
-"use strict";
 var Lastfm = require("./simple-lastfm");
 var logger = require("../../../common/logger");
 

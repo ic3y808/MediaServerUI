@@ -17,7 +17,7 @@ class StatusController {
     $scope.ping = () => {
       var ping = this.AlloyDbService.ping();
       if (ping) {
-        ping.then( data => {
+        ping.then( (data) => {
           $scope.alloydb = data;
           this.AppUtilities.apply();
         });
@@ -27,7 +27,7 @@ class StatusController {
     $scope.getLibraryInfo = () => {
       var libraryInfo = this.AlloyDbService.getLibraryInfo();
       if (libraryInfo) {
-        libraryInfo.then(info => {
+        libraryInfo.then((info) => {
           $scope.libraryInfo = info;
           this.AppUtilities.apply();
         });
@@ -37,7 +37,7 @@ class StatusController {
     $scope.getMediaPaths = () => {
       var mediaPaths = this.AlloyDbService.getMediaPaths();
       if (mediaPaths) {
-        mediaPaths.then(paths => {
+        mediaPaths.then((paths) => {
           $scope.mediaPaths = paths;
           this.AppUtilities.apply();
         });
@@ -47,7 +47,7 @@ class StatusController {
     $scope.scanFullStart = () => {
       var scanner = this.AlloyDbService.scanFullStart();
       if (scanner) {
-        scanner.then(result => {
+        scanner.then((result) => {
           this.Logger.debug("scanFullStart");
           $scope.scanStatus = result;
           this.AppUtilities.apply();
@@ -61,7 +61,7 @@ class StatusController {
     $scope.scanQuickStart = () => {
       var scanner = this.AlloyDbService.scanQuickStart();
       if (scanner) {
-        scanner.then(result =>{
+        scanner.then((result) => {
           this.Logger.debug("scanQuickStart");
           $scope.scanStatus = result;
           this.AppUtilities.apply();
@@ -75,7 +75,7 @@ class StatusController {
     $scope.getScanStatus = () => {
       var scanner = this.AlloyDbService.scanStatus();
       if (scanner) {
-        scanner.then(result => {
+        scanner.then((result) => {
           $scope.scanStatus = result;
           this.AppUtilities.apply();
           if (!$scope.rescanInterval) {
@@ -91,7 +91,7 @@ class StatusController {
     $scope.scanCancel = () => {
       var scanner = this.AlloyDbService.scanCancel();
       if (scanner) {
-        scanner.then(result => {
+        scanner.then((result) => {
           this.Logger.debug("cancelScan");
           $scope.scanStatus = result;
           this.AppUtilities.apply();
@@ -132,9 +132,9 @@ class StatusController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

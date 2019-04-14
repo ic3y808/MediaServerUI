@@ -16,12 +16,11 @@ class ConfigController {
     this.AppUtilities.showLoader();
 
 
-
-    this.$scope.jumpTo = to => {
+    this.$scope.jumpTo = (to) => {
       this.$location.path("/config/" + to);
     };
 
-    this.$scope.navigate = to => {
+    this.$scope.navigate = (to) => {
       $("#config-content").append(this.$compile("<config" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };
@@ -58,7 +57,7 @@ class ConfigController {
       content: "Success!",
       //container: ".PageContentBody-contentBody",
       placement: "bottom",
-    })
+    });
     //.on("shown.bs.popover", () =>  {
     //  var $pop = $(this);
     //  setTimeout(() =>  {
@@ -76,9 +75,9 @@ class ConfigController {
       this.Logger.debug("navigating to " + this.$routeParams.id);
       this.$scope.navigate(this.$routeParams.id);
  
-      this.$element.addClass("vbox")
-      this.$element.addClass("scrollable")
-    };
+      this.$element.addClass("vbox");
+      this.$element.addClass("scrollable");
+    }
   }
 }
 

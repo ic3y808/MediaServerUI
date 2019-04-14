@@ -1,4 +1,3 @@
-"use strict";
 var path = require("path");
 var logger = require("../../../common/logger");
 var supportedExtensions = [".mp3", ".wav", ".flac", ".ogg", ".aiff", ".aac"];

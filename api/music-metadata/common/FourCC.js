@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Util_1 = require("./Util");
 const validFourCC = /^[\w-©][\w-\x000-3]/;

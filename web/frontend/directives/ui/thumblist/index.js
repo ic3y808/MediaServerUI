@@ -15,12 +15,12 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
     replace: true,
     link: function (scope, elm, attrs) {
       
-      scope.navigateToAlbum = id =>{
+      scope.navigateToAlbum = (id) => {
         $location.path("/album/" + id);
       };
-      scope.navigateToArtist = id =>{
+      scope.navigateToArtist = (id) => {
         $location.path("/artist/" + id);
       };
     }
-  }
-};
+  };
+}

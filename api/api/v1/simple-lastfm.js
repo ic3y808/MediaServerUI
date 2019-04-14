@@ -1,4 +1,3 @@
-"use strict";
 var http = require("http");
 var crypto = require("crypto");
 var xml2js = require("xml2js");

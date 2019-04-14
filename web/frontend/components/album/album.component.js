@@ -15,7 +15,7 @@ class AlbumController {
     this.AppUtilities.showLoader();
 
 
-    $scope.getCoverArt = id => {
+    $scope.getCoverArt = (id) => {
       return this.AlloyDbService.getCoverArt(id);
     };
 
@@ -45,13 +45,13 @@ class AlbumController {
     //  }
     //};
 
-    $scope.getAlbumInfo = data => {
+    $scope.getAlbumInfo = (data) => {
       if (data) {
-        data.forEach(info => {
+        data.forEach((info) => {
           if (info.albumInfo) {
             $scope.album.albumInfo = info.albumInfo;
             if ($scope.albumInfo.image) {
-              $scope.album.artistInfo.image.forEach(image => {
+              $scope.album.artistInfo.image.forEach((image) => {
                 if (image["@"].size === "large") {
                   $scope.albumImage = image["#"];
                 }
@@ -70,7 +70,7 @@ class AlbumController {
 
       var alb = AlloyDbService.getAlbum($routeParams.id);
       if (alb) {
-        alb.then(info => {
+        alb.then((info) => {
           if (info) {
             $scope.info = info;
 
@@ -105,7 +105,7 @@ class AlbumController {
 
     };
 
-    $scope.goToArtist = id => {
+    $scope.goToArtist = (id) => {
       window.location.href = "/artist/" + id;
     };
 
@@ -117,7 +117,7 @@ class AlbumController {
 
     $scope.shuffle = () => {
       this.Logger.debug("shuffle play album " + $scope.info.album.name);
-      this.$rootScope.tracks = $scope.info.tracks
+      this.$rootScope.tracks = $scope.info.tracks;
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
     };
 
@@ -126,7 +126,7 @@ class AlbumController {
       this.AlloyDbService.createShare(
         $scope.album.id,
         "Shared from Alloy"
-      ).then(result => {
+      ).then((result) => {
         $("#shareAlbumButton")
           .popover({
             animation: true,
@@ -151,7 +151,7 @@ class AlbumController {
       if ($scope.album.starred === "true") {
         this.AlloyDbService.unstar({
           album: this.$scope.album.id
-        }).then(result => {
+        }).then((result) => {
           this.Logger.info("UnStarred");
           this.Logger.info(result);
           this.$scope.album.starred = "false";
@@ -160,7 +160,7 @@ class AlbumController {
       } else {
         this.AlloyDbService.star({
           album: this.$scope.album.id
-        }).then(result => {
+        }).then((result) => {
           this.Logger.info("starred");
           this.Logger.info(result);
           this.$scope.album.starred = "true";
@@ -185,7 +185,6 @@ class AlbumController {
     };
 
 
-
     $rootScope.$on("loginStatusChange", (event, data) => {
       this.Logger.debug("Album reload on loginsatuschange");
       $scope.refresh();
@@ -195,9 +194,9 @@ class AlbumController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

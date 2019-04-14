@@ -18,7 +18,7 @@ export default function ($window) {
           if ($scope.data) {
             $scope.init();
           }
-        })
+        });
 
         $scope.init = function () {
           $scope.isOpen = false;
@@ -29,8 +29,8 @@ export default function ($window) {
             "<div class=\"popover-body\"></div>" +
             "</div>";
           $scope.content = [];
-          $scope.data.forEach(tag => {
-            $scope.content.push("<div class=\"Details-Label Label-label Label-default Label-large\" ng-click=\"linkClick(\"" + tag.target + "\")">" + tag.type + \"</div>")
+          $scope.data.forEach((tag) => {
+            $scope.content.push("<div class=\"Details-Label Label-label Label-default Label-large\" ng-click=\"linkClick(\"" + tag.target + "\")">" + tag.type + \"</div>");
           });
           $element.popover({
             template: $scope.template,
@@ -51,9 +51,9 @@ export default function ($window) {
 
           $element.on("click", function (e) {
             if ($scope.isOpen === true)
-              $scope.closePopup();
+              {$scope.closePopup();}
             else
-              $scope.showLinks();
+              {$scope.showLinks();}
           });
         };
 
@@ -64,13 +64,13 @@ export default function ($window) {
 
         $scope.closePopup = function () {
           $scope.isOpen = false;
-          $element.popover("hide")
+          $element.popover("hide");
         };
 
         $scope.linkClick = function (link) {
           $window.open(link.replace("\"", ""), "_blank");
-        }
+        };
       }
     ]
-  }
+  };
 }

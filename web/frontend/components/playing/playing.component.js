@@ -18,7 +18,7 @@ class PlayingController {
       console.log($scope.info);
       if ($scope.info) {
 
-        var coverArt = this.AlloyDbService.getCoverArt({track_id: $scope.info.id });
+        var coverArt = this.AlloyDbService.getCoverArt({ track_id: $scope.info.id });
         if (coverArt) {
           $scope.info.image = coverArt;
           this.AppUtilities.apply();
@@ -46,7 +46,7 @@ class PlayingController {
         //    nextPromise.then(function (info) { });
         //  }
         //}
-      } else this.AppUtilities.hideLoader();
+      } else { this.AppUtilities.hideLoader(); }
     };
 
     $rootScope.$on("trackChangedEvent", (event, data) => {

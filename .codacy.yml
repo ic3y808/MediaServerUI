@@ -4,6 +4,7 @@ exclude_paths:
  - 'web/frontend/API/cast.framework.js'
  - 'web/frontend/API/cast.v1.js'
  - 'api/api/v1/musicbrainz.js'
+ - 'common/export_assets_to_android_ios.jsx'
  - 'android/Tests/**.*'
  - '*.md'
  - '**/*.md'

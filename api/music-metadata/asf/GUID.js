@@ -1,4 +1,3 @@
-"use strict";
 // Implementation of the Advanced Systems Format (ASF)
 Object.defineProperty(exports, "__esModule", { value: true });
 /**

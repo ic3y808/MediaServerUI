@@ -22,8 +22,8 @@ export default function () {
             "<div class=\"popover-body\"></div>" +
             "</div>";
           var content = [];
-          scope.data.forEach(tag => {
-            content.push("<div class=\"Details-Label Label-label Label-default Label-large\">" + tag.name + "</div>")
+          scope.data.forEach((tag) => {
+            content.push("<div class=\"Details-Label Label-label Label-default Label-large\">" + tag.name + "</div>");
           });
 
 
@@ -39,5 +39,5 @@ export default function () {
         }
       });
     }
-  }
-};
+  };
+}
