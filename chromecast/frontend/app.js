@@ -1,11 +1,11 @@
-import './style.scss';
+import "./style.scss";
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
 
-var w = $( window ).width();
-var h = $( window ).height(); 
+var w = $(window).width();
+var h = $(window).height();
 
-var url = 'https://source.unsplash.com/random/' + w + 'x' + h;
+var url = "https://source.unsplash.com/random/" + w + "x" + h;
 
 $("#player").css("--splash-image", "url('" + url + "')");
 $("#player").css("background-image", "url('" + url + "')");
@@ -48,9 +48,9 @@ const playerData = {};
 
 // listen to all Core Events
 playerManager.addEventListener(cast.framework.events.category.CORE,
-	event => {
+  (event) => {
 
-	});
+  });
 
 const playbackConfig = new cast.framework.PlaybackConfig();
 
@@ -65,8 +65,5 @@ options.statusText = "Unity"; //Development only
 
 context.start({
   playbackConfig: playbackConfig,
-  supportedCommands: cast.framework.messages.Command.ALL_BASIC_MEDIA |
-					 cast.framework.messages.Command.QUEUE_PREV |
-					 cast.framework.messages.Command.QUEUE_NEXT,
-  options: options
+  supportedCommands: cast.framework.messages.Command.ALL_BASIC_MEDIA | cast.framework.messages.Command.QUEUE_PREV | cast.framework.messages.Command.QUEUE_NEXT, options: options
 });

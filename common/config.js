@@ -11,7 +11,7 @@ process.env.BASE_DIR = __dirname;
 process.env.DATA_DIR = path.join(process.env.BASE_DIR, "..", "data");
 process.env.BACKUP_DATA_DIR = path.join(process.env.DATA_DIR, "backup");
 process.env.LOGS_DIR = path.join(process.env.DATA_DIR, "logs");
-process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json")
+process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json");
 process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
 process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "database.db-wal");
 process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "database.db-shm");
@@ -35,17 +35,17 @@ var config = {
   brainz_api_url: ""
 };
 
-if (!fs.existsSync(process.env.DATA_DIR)) shell.mkdir("-p", process.env.DATA_DIR);
-if (!fs.existsSync(process.env.LOGS_DIR)) shell.mkdir("-p", process.env.LOGS_DIR);
-if (!fs.existsSync(process.env.COVER_ART_DIR)) shell.mkdir("-p", process.env.COVER_ART_DIR);
+if (!fs.existsSync(process.env.DATA_DIR)) { shell.mkdir("-p", process.env.DATA_DIR); }
+if (!fs.existsSync(process.env.LOGS_DIR)) { shell.mkdir("-p", process.env.LOGS_DIR); }
+if (!fs.existsSync(process.env.COVER_ART_DIR)) { shell.mkdir("-p", process.env.COVER_ART_DIR); }
 
 if (process.env.MODE === "test") {
   process.env.DATABASE = path.join(process.env.DATA_DIR, "test_database.db");
   process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "test_database.db-wal");
   process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "test_database.db-shm");
-  if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);
-  if (fs.existsSync(process.env.DATABASE_WAL)) shell.rm(process.env.DATABASE_WAL);
-  if (fs.existsSync(process.env.DATABASE_SHM)) shell.rm(process.env.DATABASE_SHM);
+  if (fs.existsSync(process.env.DATABASE)) { shell.rm(process.env.DATABASE); }
+  if (fs.existsSync(process.env.DATABASE_WAL)) { shell.rm(process.env.DATABASE_WAL); }
+  if (fs.existsSync(process.env.DATABASE_SHM)) { shell.rm(process.env.DATABASE_SHM); }
 }
 /// remove db debug
 //if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);
