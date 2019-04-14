@@ -1,4 +1,4 @@
-const Musicbrainz = require("./plugin")
+const Musicbrainz = require("./plugin");
 var log = require("../../../../../common/logger");
 var db = require("../../database");
 var brainz = null;

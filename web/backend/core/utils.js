@@ -12,7 +12,7 @@ module.exports.normalizePort = function normalizePort(val) {
   }
 
   return false;
-}
+};
 
 module.exports.onError = function onError(error) {
   if (error.syscall !== "listen") {
@@ -31,4 +31,4 @@ module.exports.onError = function onError(error) {
     default:
       throw error;
   }
-}
+};
