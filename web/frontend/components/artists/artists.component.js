@@ -17,11 +17,11 @@ class ArtistsController {
 
     $scope.refresh = function () {
       AlloyDbService.refreshArtists();
-    }
+    };
 
     $scope.jumpBarClick = function () {
 
-    }
+    };
 
     $rootScope.$watch("artists", function (newVal, oldVal) {
       if ($rootScope.artists) {
@@ -34,9 +34,9 @@ class ArtistsController {
   }
 
   $onInit() {
-    this.$element.addClass("vbox")
-    this.$element.addClass("scrollable")
-  };
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
+  }
 }
 
 export default {

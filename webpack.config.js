@@ -57,7 +57,6 @@ profile.plugins.push(new webpack.DefinePlugin({
 }));
 
 
-
 // Rules and loaders
 
 profile.module.rules.push({
@@ -95,7 +94,7 @@ profile.module.rules.push({
   {
     loader: "postcss-loader",
     options: {
-      plugins: function () { // post css plugins, can be exported to postcss.config.js
+      plugins: () => {
         return [
           require("precss"),
           require("autoprefixer")
@@ -139,7 +138,6 @@ profile.output = {
   chunkFilename: "[name]-[chunkhash].js",
   path: path.resolve(__dirname, dist)
 };
-
 
 
 // Dev - Production specific
