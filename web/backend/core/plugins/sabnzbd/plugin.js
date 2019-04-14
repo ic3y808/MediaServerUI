@@ -90,7 +90,7 @@ class Queue extends Base {
   normalize(slot) {
     // parse timeleft
     const timeleft = slot.timeleft.replace(/^(\d+):(\d+):(\d+)/, (all, H, M, S) => {
-      return Number(H) * 3600 + Number(M) * 60 + Number(S);
+      return (Number(H) * 3600) + (Number(M) * 60) + Number(S);
     });
 
     // parse ETA

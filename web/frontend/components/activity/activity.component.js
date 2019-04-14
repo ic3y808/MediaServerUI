@@ -12,21 +12,21 @@ class ActivityController {
     this.MediaPlayer = MediaPlayer;
     this.Logger.debug("activity-controller");
 
-    this.$scope.jumpTo = to => {
+    this.$scope.jumpTo = (to) => {
       $location.path("/activity/" + to);
     };
 
-    this.$scope.navigate = to => {
+    this.$scope.navigate = (to) => {
       $("#activity-content").append(this.$compile("<activity" + to + "/>")(this.$scope));
       this.AppUtilities.apply();
     };
 
-    this.$scope.configQueue = () =>  {
+    this.$scope.configQueue = () => {
       this.Logger.debug("activityQueue");
       this.$scope.navigate("queue");
     };
 
-    this.$scope.configHistory = () =>  {
+    this.$scope.configHistory = () => {
       this.Logger.debug("activityHistory");
       this.$scope.navigate("history");
     };

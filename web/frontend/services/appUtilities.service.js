@@ -177,13 +177,14 @@ export default class AppUtilities {
   }
 
   getRandom(arr, n) {
-    var result = new Array(n),
+    var index = n;
+    var result = new Array(index),
       len = arr.length,
       taken = new Array(len);
-    if (n > len) { throw new RangeError("getRandom: more elements taken than available"); }
-    while (n--) {
+    if (index > len) { throw new RangeError("getRandom: more elements taken than available"); }
+    while (index--) {
       var x = Math.floor(Math.random() * len);
-      result[n] = arr[x in taken ? taken[x] : x];
+      result[index] = arr[x in taken ? taken[x] : x];
       taken[x] = --len in taken ? taken[len] : len;
     }
     return result;
