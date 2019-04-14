@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-"use strict";
-
->>>>>>> master
 var express = require("express");
 var router = express.Router();
 var structures = require("./structures");
