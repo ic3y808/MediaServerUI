@@ -449,8 +449,6 @@ namespace Alloy.Helpers
 			try
 			{
 				if (string.IsNullOrEmpty(url)) { return null; }
-
-				if (url.Contains("large")) url = url.Replace("large", "t500x500");
 				const int bytesToRead = 100;
 
 				WebRequest request = WebRequest.Create(new Uri(url, UriKind.Absolute));

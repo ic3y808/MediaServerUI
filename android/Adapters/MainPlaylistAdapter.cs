@@ -25,24 +25,20 @@ namespace Alloy.Adapters
 		public override View GetView(int position, View convertView, ViewGroup parent)
 		{
 			if (ServiceConnection == null || ServiceConnection?.MainQueue.Count == 0) return convertView;
+			View v = convertView ?? LayoutInflater.From(Application.Context).Inflate(Resource.Layout.general_list_row, null);
 
-			if (convertView == null)
-			{
-				convertView = LayoutInflater.From(Application.Context).Inflate(Resource.Layout.general_list_row, null);
-			}
-
-			convertView.FindViewById<TextView>(Resource.Id.title).Text = ServiceConnection.MainQueue[position].Title;
-			convertView.FindViewById<TextView>(Resource.Id.artist).Text = ServiceConnection.MainQueue[position].Artist;
-			convertView.FindViewById<TextView>(Resource.Id.right_side_count).Text = ServiceConnection.MainQueue[position].Duration.ToTimeFromSeconds();
-			ServiceConnection.MainQueue[position].GetAlbumArt(convertView.FindViewById<ImageView>(Resource.Id.album_art));
+			v.FindViewById<TextView>(Resource.Id.title).Text = ServiceConnection.MainQueue[position].Title;
+			v.FindViewById<TextView>(Resource.Id.artist).Text = ServiceConnection.MainQueue[position].Artist;
+			v.FindViewById<TextView>(Resource.Id.right_side_count).Text = ServiceConnection.MainQueue[position].Duration.ToTimeFromSeconds();
+			ServiceConnection.MainQueue[position].GetAlbumArt(v.FindViewById<ImageView>(Resource.Id.album_art));
 
 			if (ServiceConnection.MainQueue[position].IsSelected)
 			{
-				convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundResource(Resource.Color.menu_selection_color);
+				v.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundResource(Resource.Color.menu_selection_color);
 			}
-			else convertView.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundColor(Color.Transparent);
+			else v.FindViewById<RelativeLayout>(Resource.Id.main_layout).SetBackgroundColor(Color.Transparent);
 
-			return convertView;
+			return v;
 		}
 
 		public override int Count {
