@@ -12,10 +12,10 @@ global.setupEnv = function setupEnv(before, after) {
   before(function (next) {
     app.create().then(() => {
       env.app = app.app;
-      app.startServer(server => {
+      app.startServer((server) => {
         env.server = server;
         next();
-      })
+      });
     });
 
   });
@@ -23,9 +23,9 @@ global.setupEnv = function setupEnv(before, after) {
   // teardown
   after(function () {
     setTimeout(() => {
-      if (app) app.stopServer();
+      if (app) { app.stopServer(); }
     }, 1000);
   });
 
   return env;
-}
+};

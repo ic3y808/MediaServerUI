@@ -54,7 +54,10 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   });
   $.fn.dropdown.Constructor.prototype.change = function (e) {
     e.preventDefault();
-    var $item = $(e.target), $select, $checked = false, $menu, $label;
+    var $select = {};
+    var $menu = {};
+    var $label = {};
+    var $item = $(e.target), $checked = false;
     !$item.is("a") && ($item = $item.closest("a"));
     $menu = $item.closest(".dropdown-menu");
     $label = $menu.parent().find(".dropdown-label");
@@ -84,7 +87,8 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $("[data-toggle=tooltip]").tooltip();
   $(document).on("click", "[data-toggle^=\"class\"]", function (e) {
     e && e.preventDefault();
-    var $this = $(e.target), $class, $target, $tmp, $classes, $targets;
+    var $class = {}, $target = {}, $tmp = {}, $classes = {}, $targets = {};
+    var $this = $(e.target);
     !$this.data("toggle") && ($this = $this.closest("[data-toggle^=\"class\"]"));
     $class = $this.data()["toggle"];
     $target = $this.data("target") || $this.attr("href");
@@ -107,7 +111,8 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   });
   $(document).on("click", ".panel-toggle", function (e) {
     e && e.preventDefault();
-    var $this = $(e.target), $class = "collapse", $target;
+    var $target = {};
+    var $this = $(e.target), $class = "collapse";
     if (!$this.is("a")) { $this = $this.closest("a"); }
     $target = $this.closest(".panel");
     $target.find(".panel-body").toggleClass($class);
@@ -134,8 +139,14 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     });
     return true;
   };
+  var setHeight = function () {
+    $(".app-fluid #nav > *").css("min-height", $(window).height() - 60);
+    return true;
+  };
+
   $window.width() < 768 && mobile();
-  var $resize, $width = $window.width();
+
+  var $resize = {}, $width = $window.width();
   $window.resize(function () {
     if ($width !== $window.width()) {
       clearTimeout($resize);
@@ -147,16 +158,13 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       }, 500);
     }
   });
-  var setHeight = function () {
-    $(".app-fluid #nav > *").css("min-height", $(window).height() - 60);
-    return true;
-  };
+
   setHeight();
-  
+
   fixVbox();
   $(document).on("click", "[data-ride=\"collapse\"] a", function (e) {
-    var $this = $(e.target), $active;
-
+    var $this = $(e.target);
+    var $active = {};
     $this.is("a") || ($this = $this.closest("a"));
     $active = $this.parent().siblings(".active");
     $active && $active.toggleClass("active").find("> ul:visible").slideUp(200);

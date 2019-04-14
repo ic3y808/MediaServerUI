@@ -1,13 +1,9 @@
-﻿const fs = require("fs");
+const fs = require("fs");
 const path = require("path");
-
 const fileUpload = require("express-fileupload");
-
 const express = require("express");
 const config = require("../common/config");
 const logger = require("../common/logger");
-
-
 var bodyParser = require("body-parser");
 var routes = require("./routes/index");
 var Watcher = require("./watcher");
