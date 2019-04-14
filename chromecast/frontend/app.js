@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-"use strict";
->>>>>>> master
 import "./style.scss";
 const context = cast.framework.CastReceiverContext.getInstance();
 const playerManager = context.getPlayerManager();
@@ -51,17 +47,10 @@ const playerData = {};
 //    });
 
 // listen to all Core Events
-<<<<<<< HEAD
 playerManager.addEventListener(cast.framework.events.category.CORE,
   (event) => {
 
   });
-=======
-//playerManager.addEventListener(cast.framework.events.category.CORE,
-//  event => {
-//
-//  });
->>>>>>> master
 
 const playbackConfig = new cast.framework.PlaybackConfig();
 
@@ -76,12 +65,5 @@ options.statusText = "Unity"; //Development only
 
 context.start({
   playbackConfig: playbackConfig,
-<<<<<<< HEAD
   supportedCommands: cast.framework.messages.Command.ALL_BASIC_MEDIA | cast.framework.messages.Command.QUEUE_PREV | cast.framework.messages.Command.QUEUE_NEXT, options: options
-=======
-  supportedCommands: cast.framework.messages.Command.ALL_BASIC_MEDIA |
-    cast.framework.messages.Command.QUEUE_PREV |
-    cast.framework.messages.Command.QUEUE_NEXT,
-  options: options
->>>>>>> master
 });

@@ -13,12 +13,8 @@ describe("api tests", () => {
 
   function getParmas(data) {
     const ret = [];
-<<<<<<< HEAD
     for (const d in data)
       {ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d]));}
-=======
-    for (var d in data) { ret.push(encodeURIComponent(d) + "=" + encodeURIComponent(data[d])); }
->>>>>>> master
     return ret.join("&");
   }
   function generateUrl(path, params) {

@@ -133,12 +133,8 @@ router.get("/artist", function (req, res) {
 router.get("/albums", function (req, res) {
   var offset = req.query.offset;
   var genre = req.query.genre;
-<<<<<<< HEAD
   var size = 1000;
   if (req.query.size) { size = req.query.size; }
-=======
-
->>>>>>> master
   var result = {};
   if (genre) {
     result.albums = res.locals.db.prepare("SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC").all(genre);
@@ -162,11 +158,7 @@ router.get("/album", function (req, res) {
   var id = req.query.id;
   var result = {
     album: res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id),
-<<<<<<< HEAD
     tracks: res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC").all(id),
-=======
-    tracks: res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC").all(id)
->>>>>>> master
   };
   if (result.album && result.album.artist_id) {
     result.artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(result.album.artist_id);
@@ -242,45 +234,18 @@ router.get("/charts", function (req, res) {
   var tags = [];
   history.forEach((item) => {
     var plays = 0;
-<<<<<<< HEAD
     var t = res.locals.db.prepare("SELECT play_count FROM Tracks WHERE id=?").get(item.id);
     if (t) { plays = t.play_count; }
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
     if (existing) { existing.tags.push({ genre: item.genre, play_count: plays }); }
     else { tags.push({ date: dateString, tags: [{ genre: item.genre, play_count: plays }] }); }
-=======
-    var tracks = res.locals.db.prepare("SELECT play_count FROM Tracks WHERE id=?").get(item.id);
-    if (tracks) {
-      plays = tracks.play_count;
-    }
-    var dateString = moment.unix(item.time).format("MM/DD/YYYY");
-    var existing = _.find(tags, { date: dateString });
-    if (existing) {
-      existing.tags.push({
-        genre: item.genre,
-        play_count: plays
-      });
-    } else {
-      tags.push({
-        date: dateString,
-        tags: [{
-          genre: item.genre,
-          play_count: plays
-        }]
-      });
-    }
->>>>>>> master
   });
 
   tags.forEach((tag) => {
     function compare(a, b) {
       if (a.play_count > b.play_count) { return -1; }
       if (a.play_count < b.play_count) { return 1; }
-<<<<<<< HEAD
-=======
-
->>>>>>> master
       return 0;
     }
 
@@ -296,21 +261,12 @@ router.get("/charts", function (req, res) {
   var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
   result.charts.never_played_albums = [];
   allAlbums.forEach((album) => {
-<<<<<<< HEAD
     if (result.charts.never_played_albums.length >= limit) { return; }
     var allTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     if (allTracks.length > 0) {
       var anyPlays = allTracks.every((obj) => {
         return obj.play_count !== 0;
       });
-=======
-    if (result.charts.never_played_albums.length >= limit) {
-      return;
-    }
-    var allTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
-    if (allTracks.length > 0) {
-      var anyPlays = allTracks.every((obj) => obj.play_count === 0);
->>>>>>> master
       if (anyPlays === false) {
         album.tracks = allTracks;
         result.charts.never_played_albums.push(album);
@@ -384,21 +340,9 @@ router.get("/random_songs", function (req, res) {
   var size = req.query.size;
   var musicFolderId = req.query.musicFolderId;
 
-<<<<<<< HEAD
   if (req.query.fromYear) { fromYear = req.query.fromYear; }
   if (req.query.toYear) { toYear = req.query.toYear; }
   if (!size) { size = 100; }
-=======
-  if (req.query.fromYear) {
-    fromYear = req.query.fromYear;
-  }
-  if (req.query.toYear) {
-    toYear = req.query.toYear;
-  }
-  if (!size) {
-    size = 100;
-  }
->>>>>>> master
   var random = {};
   if (genre) {
     random.random = res.locals.db.prepare("SELECT * FROM Tracks WHERE year >= ? AND year <= ? AND genre=? COLLATE NOCASE ORDER BY RANDOM() LIMIT ?").all(fromYear, toYear, genre, size);

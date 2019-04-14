@@ -23,11 +23,7 @@ global.setupEnv = function setupEnv(before, after) {
   // teardown
   after(function () {
     setTimeout(() => {
-<<<<<<< HEAD
       if (app) { app.stopServer(); }
-=======
-      if (app) {app.stopServer();}
->>>>>>> master
     }, 1000);
   });
 

@@ -10,10 +10,6 @@ const MediaScannerBase = require("./MediaScannerBase");
 const logger = require("../../../common/logger");
 
 class MediaScanner extends MediaScannerBase {
-<<<<<<< HEAD
-=======
-
->>>>>>> master
   startScan() {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
@@ -213,21 +209,12 @@ class MediaScanner extends MediaScannerBase {
           });
         }
       });
-<<<<<<< HEAD
     });
 
     return {
       mappedArtists: mappedArtistDirectories,
       unmappedArtists: unmappedArtistDirectories
     };
-=======
-
-      return {
-        mappedArtists: mappedArtistDirectories,
-        unmappedArtists: unmappedArtistDirectories
-      };
-    });
->>>>>>> master
   }
 
   scanArtist(artist) {
@@ -336,54 +323,6 @@ class MediaScanner extends MediaScannerBase {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
       logger.debug("alloydb", "scan in progress");
-<<<<<<< HEAD
-    } else {
-      if (fs.existsSync(dir)) {
-        if (fs.lstatSync(dir).isDirectory()) {
-          if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-            this.scanArtist({ path: dir }).then(() => {
-              this.db.checkpoint();
-              this.resetStatus();
-              this.updateStatus("Scan Complete", false);
-            });
-          }
-        } else {
-          var parentDir = path.dirname(dir);
-          if (fs.existsSync(path.join(parentDir, process.env.ARTIST_NFO))) {
-            this.scanArtist({ path: dir }).then(() => {
-              this.db.checkpoint();
-              this.resetStatus();
-              this.updateStatus("Scan Complete", false);
-            });
-          }
-        }
-      } else {
-        var root = path.dirname(dir);
-
-        const artistDirs = klawSync(root, {
-          nofile: true,
-          depthLimit: 0
-        });
-
-        if (artistDirs.length > 0) {
-          artistDirs.forEach((dir) => {
-            if (dir !== undefined && dir !== null && typeof (dir) === "string" && dir !== "") {
-              if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-                this.scanArtist({ path: dir }).then(() => {
-                  this.db.checkpoint();
-                  this.resetStatus();
-                  this.updateStatus("Scan Complete", false);
-                });
-              }
-            }
-          });
-        } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
-          this.scanArtist({ path: path.dirname(root) }).then(() => {
-            this.db.checkpoint();
-            this.resetStatus();
-            this.updateStatus("Scan Complete", false);
-            this.cleanup();
-=======
     } else if (fs.existsSync(dir)) {
       if (fs.lstatSync(dir).isDirectory()) {
         if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
@@ -391,7 +330,6 @@ class MediaScanner extends MediaScannerBase {
             this.db.checkpoint();
             this.resetStatus();
             this.updateStatus("Scan Complete", false);
->>>>>>> master
           });
         }
       }
