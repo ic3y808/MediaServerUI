@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Android.OS;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;

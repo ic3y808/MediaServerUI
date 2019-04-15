@@ -15,7 +15,7 @@ using Object = Java.Lang.Object;
 
 namespace Alloy.Adapters
 {
-	public class AlbumsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
+	public class AlbumsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.ISectionedAdapter
 	{
 		public event EventHandler<AlbumViewHolder.AlbumViewHolderEvent> ItemClick;
 		public BackgroundAudioServiceConnection ServiceConnection { get; }

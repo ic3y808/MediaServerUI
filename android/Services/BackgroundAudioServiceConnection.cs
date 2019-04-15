@@ -33,7 +33,7 @@ namespace Alloy.Services
 
 		private static void Binder_PlaybackStatusChanged(object sender, StatusEventArg e)
 		{
-			PlaybackStatusChanged?.Invoke(sender, e);
+			PlaybackStatusChanged?.Invoke(null, e);
 		}
 
 		public void OnServiceConnected(ComponentName name, IBinder service)
@@ -65,7 +65,7 @@ namespace Alloy.Services
 			Binder?.Service.Play(song);
 		}
 
-		public void Play(int index, IQueue queue)
+		public void Play(int index, Queue queue)
 		{
 			Binder?.Service.Play(index, queue);
 		}
@@ -102,7 +102,7 @@ namespace Alloy.Services
 			set => Binder.CurrentSong = value;
 		}
 		
-		public IQueue MainQueue
+		public Queue MainQueue
 		{
 			get => Binder.MainQueue;
 			set => Binder.MainQueue = value;

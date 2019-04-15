@@ -31,99 +31,84 @@ namespace Alloy.Adapters
 			{
 				case 0:
 					FreshNewArtistsViewHolder freshNewArtistsHolder = holder as FreshNewArtistsViewHolder;
-					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Artists != null && MusicProvider.Fresh.Artists.Count > 0)
+					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Artists != null && MusicProvider.Fresh.Artists.Count > 0 && freshNewArtistsHolder != null)
 					{
-						if (freshNewArtistsHolder != null)
-						{
-							freshNewArtistsHolder.FreshNewArtistsListContainer.Visibility = ViewStates.Visible;
-							FreshArtistAdapter freshNewArtistsAdapter = new FreshArtistAdapter(MusicProvider.Fresh.Artists, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewArtistsAdapter.NotifyDataSetChanged(); };
-							freshNewArtistsHolder.FreshNewArtistsRecycleView?.SetAdapter(freshNewArtistsAdapter);
-							freshNewArtistsAdapter.ItemClick += ArtistClick;
-							Adapters.SetAdapters(Activity, freshNewArtistsAdapter);
-						}
+						freshNewArtistsHolder.FreshNewArtistsListContainer.Visibility = ViewStates.Visible;
+						FreshArtistAdapter freshNewArtistsAdapter = new FreshArtistAdapter(MusicProvider.Fresh.Artists, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewArtistsAdapter.NotifyDataSetChanged(); };
+						freshNewArtistsHolder.FreshNewArtistsRecycleView?.SetAdapter(freshNewArtistsAdapter);
+						freshNewArtistsAdapter.ItemClick += ArtistClick;
+						Adapters.SetAdapters(Activity, freshNewArtistsAdapter);
 					}
+
 					break;
 				case 1:
 					FreshNewTracksViewHolder freshNewTracksHolder = holder as FreshNewTracksViewHolder;
-					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Tracks != null && MusicProvider.Fresh.Tracks.Count > 0)
+					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Tracks != null && MusicProvider.Fresh.Tracks.Count > 0 && freshNewTracksHolder != null)
 					{
-						if (freshNewTracksHolder != null)
-						{
-							freshNewTracksHolder.FreshNewTracksListContainer.Visibility = ViewStates.Visible;
-							FreshTrackAdapter freshNewTracksAdapter = new FreshTrackAdapter(MusicProvider.Fresh.Tracks, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewTracksAdapter.NotifyDataSetChanged(); };
-							freshNewTracksHolder.FreshNewTracksRecycleView?.SetAdapter(freshNewTracksAdapter);
-							freshNewTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, freshNewTracksAdapter);
-						}
+						freshNewTracksHolder.FreshNewTracksListContainer.Visibility = ViewStates.Visible;
+						FreshTrackAdapter freshNewTracksAdapter = new FreshTrackAdapter(MusicProvider.Fresh.Tracks, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewTracksAdapter.NotifyDataSetChanged(); };
+						freshNewTracksHolder.FreshNewTracksRecycleView?.SetAdapter(freshNewTracksAdapter);
+						freshNewTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, freshNewTracksAdapter);
 					}
+
 					break;
 				case 2:
 					FreshNeverPlayedTracksViewHolder freshNeverPlayedTracksViewHolder = holder as FreshNeverPlayedTracksViewHolder;
-					if (MusicProvider.Charts != null && MusicProvider.Charts.NeverPlayed != null && MusicProvider.Charts.NeverPlayed.Count > 0)
+					if (MusicProvider.Charts != null && MusicProvider.Charts.NeverPlayed != null && MusicProvider.Charts.NeverPlayed.Count > 0 && freshNeverPlayedTracksViewHolder != null)
 					{
-						if (freshNeverPlayedTracksViewHolder != null)
-						{
-
-							freshNeverPlayedTracksViewHolder.FreshNeverPlayedTracksListContainer.Visibility = ViewStates.Visible;
-							FreshTrackAdapter freshNeverPlayedTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.NeverPlayed, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNeverPlayedTracksAdapter.NotifyDataSetChanged(); };
-							freshNeverPlayedTracksViewHolder.FreshNeverPlayedTracksRecycleView?.SetAdapter(freshNeverPlayedTracksAdapter);
-							freshNeverPlayedTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, freshNeverPlayedTracksAdapter);
-						}
+						freshNeverPlayedTracksViewHolder.FreshNeverPlayedTracksListContainer.Visibility = ViewStates.Visible;
+						FreshTrackAdapter freshNeverPlayedTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.NeverPlayed, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNeverPlayedTracksAdapter.NotifyDataSetChanged(); };
+						freshNeverPlayedTracksViewHolder.FreshNeverPlayedTracksRecycleView?.SetAdapter(freshNeverPlayedTracksAdapter);
+						freshNeverPlayedTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, freshNeverPlayedTracksAdapter);
 					}
+
 					break;
 
 
 				case 3:
 					FreshNewAlbumsViewHolder freshNewAlbumsViewHolder = holder as FreshNewAlbumsViewHolder;
-					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Albums != null && MusicProvider.Fresh.Albums.Count > 0)
+					if (MusicProvider.Fresh != null && MusicProvider.Fresh.Albums != null && MusicProvider.Fresh.Albums.Count > 0 && freshNewAlbumsViewHolder != null)
 					{
-						if (freshNewAlbumsViewHolder != null)
-						{
-							freshNewAlbumsViewHolder.FreshNewAlbumsListContainer.Visibility = ViewStates.Visible;
-							FreshAlbumAdapter freshNewArtistsAdapter = new FreshAlbumAdapter(MusicProvider.Fresh.Albums, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewArtistsAdapter.NotifyDataSetChanged(); };
-							freshNewAlbumsViewHolder.FreshNewAlbumRecycleView?.SetAdapter(freshNewArtistsAdapter);
-							freshNewArtistsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, freshNewArtistsAdapter);
-						}
+						freshNewAlbumsViewHolder.FreshNewAlbumsListContainer.Visibility = ViewStates.Visible;
+						FreshAlbumAdapter freshNewArtistsAdapter = new FreshAlbumAdapter(MusicProvider.Fresh.Albums, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNewArtistsAdapter.NotifyDataSetChanged(); };
+						freshNewAlbumsViewHolder.FreshNewAlbumRecycleView?.SetAdapter(freshNewArtistsAdapter);
+						freshNewArtistsAdapter.ItemClick += AlbumClick;
+						Adapters.SetAdapters(Activity, freshNewArtistsAdapter);
 					}
+
 					break;
 				case 4:
 					FreshNeverPlayedAlbumsViewHolder freshNeverPlayedAlbumsViewHolder = holder as FreshNeverPlayedAlbumsViewHolder;
-					if (MusicProvider.Charts != null && MusicProvider.Charts.NeverPlayedAlbums != null && MusicProvider.Charts.NeverPlayedAlbums.Count > 0)
+					if (MusicProvider.Charts != null && MusicProvider.Charts.NeverPlayedAlbums != null && MusicProvider.Charts.NeverPlayedAlbums.Count > 0 && freshNeverPlayedAlbumsViewHolder != null)
 					{
-						if (freshNeverPlayedAlbumsViewHolder != null)
-						{
-
-							freshNeverPlayedAlbumsViewHolder.FresNeverPlayedAlbumsListContainer.Visibility = ViewStates.Visible;
-							FreshAlbumAdapter freshNeverPlayedAlbumsAdapter = new FreshAlbumAdapter(MusicProvider.Charts.NeverPlayedAlbums, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNeverPlayedAlbumsAdapter.NotifyDataSetChanged(); };
-							freshNeverPlayedAlbumsViewHolder.FreshNeverPlayedAlbumRecycleView?.SetAdapter(freshNeverPlayedAlbumsAdapter);
-							freshNeverPlayedAlbumsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, freshNeverPlayedAlbumsAdapter);
-						}
+						freshNeverPlayedAlbumsViewHolder.FresNeverPlayedAlbumsListContainer.Visibility = ViewStates.Visible;
+						FreshAlbumAdapter freshNeverPlayedAlbumsAdapter = new FreshAlbumAdapter(MusicProvider.Charts.NeverPlayedAlbums, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshNeverPlayedAlbumsAdapter.NotifyDataSetChanged(); };
+						freshNeverPlayedAlbumsViewHolder.FreshNeverPlayedAlbumRecycleView?.SetAdapter(freshNeverPlayedAlbumsAdapter);
+						freshNeverPlayedAlbumsAdapter.ItemClick += AlbumClick;
+						Adapters.SetAdapters(Activity, freshNeverPlayedAlbumsAdapter);
 					}
+
 					break;
 
 				case 5:
 					FreshTopPlayedTracksViewHolder freshTopPlayedTracksViewHolder = holder as FreshTopPlayedTracksViewHolder;
-					if (MusicProvider.Charts != null && MusicProvider.Charts.TopTracks != null && MusicProvider.Charts.TopTracks.Count > 0)
+					if (MusicProvider.Charts != null && MusicProvider.Charts.TopTracks != null && MusicProvider.Charts.TopTracks.Count > 0 && freshTopPlayedTracksViewHolder != null)
 					{
-						if (freshTopPlayedTracksViewHolder != null)
-						{
-
-							freshTopPlayedTracksViewHolder.FreshTopPlayedTracksListContainer.Visibility = ViewStates.Visible;
-							FreshTrackAdapter freshTopTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.TopTracks, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshTopTracksAdapter.NotifyDataSetChanged(); };
-							freshTopPlayedTracksViewHolder.FreshTopPlayedTracksRecycleView?.SetAdapter(freshTopTracksAdapter);
-							freshTopTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, freshTopTracksAdapter);
-						}
+						freshTopPlayedTracksViewHolder.FreshTopPlayedTracksListContainer.Visibility = ViewStates.Visible;
+						FreshTrackAdapter freshTopTracksAdapter = new FreshTrackAdapter(MusicProvider.Charts.TopTracks, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { freshTopTracksAdapter.NotifyDataSetChanged(); };
+						freshTopPlayedTracksViewHolder.FreshTopPlayedTracksRecycleView?.SetAdapter(freshTopTracksAdapter);
+						freshTopTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, freshTopTracksAdapter);
 					}
+
 					break;
 			}
 		}

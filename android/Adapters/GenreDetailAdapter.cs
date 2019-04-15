@@ -50,18 +50,16 @@ namespace Alloy.Adapters
 					}
 					break;
 				case 2:
-					if (holder is GenreTracksViewHolder genreTracksHolder)
+					if (holder is GenreTracksViewHolder genreTracksHolder && Genre.Tracks.Count > 0)
 					{
-						if (Genre.Tracks.Count > 0)
-						{
-							genreTracksHolder.GenreTracksListContainer.Visibility = ViewStates.Visible;
-							GenreDetailTrackAdapter genreTracksAdapter = new GenreDetailTrackAdapter(Genre.Tracks, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { genreTracksAdapter.NotifyDataSetChanged(); };
-							genreTracksHolder.GenreTracksRecycleView?.SetAdapter(genreTracksAdapter);
-							genreTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, genreTracksAdapter);
-						}
+						genreTracksHolder.GenreTracksListContainer.Visibility = ViewStates.Visible;
+						GenreDetailTrackAdapter genreTracksAdapter = new GenreDetailTrackAdapter(Genre.Tracks, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { genreTracksAdapter.NotifyDataSetChanged(); };
+						genreTracksHolder.GenreTracksRecycleView?.SetAdapter(genreTracksAdapter);
+						genreTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, genreTracksAdapter);
 					}
+
 					break;
 			}
 		}
@@ -114,7 +112,7 @@ namespace Alloy.Adapters
 				GenreName = itemView.FindViewById<TextView>(Resource.Id.genre_name);
 				GenreSize = itemView.FindViewById<TextView>(Resource.Id.genre_size);
 				GenrePlayButton = itemView.FindViewById<Button>(Resource.Id.genre_play_button);
-				GenrePlayButton.Click += (sender, e) => ItemClick?.Invoke(null,null);
+				GenrePlayButton.Click += (sender, e) => ItemClick?.Invoke(this,EventArgs.Empty);
 				GenreImage = itemView.FindViewById<ImageView>(Resource.Id.genre_image);
 				StarButton = itemView.FindViewById<ImageView>(Resource.Id.genre_star_button);
 				StarButton.Click += StarButtonClick;

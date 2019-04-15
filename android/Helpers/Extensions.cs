@@ -523,7 +523,7 @@ namespace Alloy.Helpers
 				float z = e.Values[2];
 
 				DateTime curTime = DateTime.Now;
-				if (hasUpdated == false)
+				if (!hasUpdated)
 				{
 					hasUpdated = true;
 					lastUpdate = curTime;
@@ -533,19 +533,17 @@ namespace Alloy.Helpers
 				}
 				else
 				{
-					if ((curTime - lastUpdate).TotalMilliseconds > ShakeDetectionTimeLapse)
-					{
-						float diffTime = (float)(curTime - lastUpdate).TotalMilliseconds;
-						lastUpdate = curTime;
-						float total = x + y + z - last_x - last_y - last_z;
-						float speed = Math.Abs(total) / diffTime * 10000;
+					if ((curTime - lastUpdate).TotalMilliseconds < ShakeDetectionTimeLapse) return false;
+					float diffTime = (float)(curTime - lastUpdate).TotalMilliseconds;
+					lastUpdate = curTime;
+					float total = x + y + z - last_x - last_y - last_z;
+					float speed = Math.Abs(total) / diffTime * 10000;
 
-						if (speed > ShakeThreshold) { return true; }
+					if (speed > ShakeThreshold) { return true; }
 
-						last_x = x;
-						last_y = y;
-						last_z = z;
-					}
+					last_x = x;
+					last_y = y;
+					last_z = z;
 				}
 			}
 

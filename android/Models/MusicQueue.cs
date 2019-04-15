@@ -2,7 +2,7 @@
 
 namespace Alloy.Models
 {
-	public class MusicQueue : IQueue
+	public class MusicQueue : Queue
 	{
 		public override void GetMoreData()
 		{

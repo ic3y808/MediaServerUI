@@ -67,8 +67,8 @@ namespace Alloy
 			DrawerLayout drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
 
 			SlidingUpPanelLayout mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
-			mainLayout.setAnchorPoint(0.7f);
-			mainLayout.addPanelSlideListener(this);
+			mainLayout.SetAnchorPoint(0.7f);
+			mainLayout.AddPanelSlideListener(this);
 
 			ListView mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
 
@@ -194,13 +194,7 @@ namespace Alloy
 
 		private void MainMenu_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
 		{
-			if (mainMenuaAdapter.GetItem(e.Position) is Item)
-			{
-				if (mainMenuaAdapter.GetItem(e.Position) is Item item)
-				{
-					ChangeFragment(item.Id);
-				}
-			}
+			if (mainMenuaAdapter.GetItem(e.Position) is Item && mainMenuaAdapter.GetItem(e.Position) is Item item) ChangeFragment(item.Id);
 
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
@@ -304,7 +298,7 @@ namespace Alloy
 						switch (currentBackground)
 						{
 							case CurrentBackground.None:
-
+							case CurrentBackground.Secondary:
 								primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
 								primaryBackground.StartAnimation(fadeIn);
 								secondaryBackground.StartAnimation(fadeOut);
@@ -314,11 +308,7 @@ namespace Alloy
 								primaryBackground.StartAnimation(fadeOut);
 								secondaryBackground.StartAnimation(fadeIn);
 								break;
-							case CurrentBackground.Secondary:
-								primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
-								primaryBackground.StartAnimation(fadeIn);
-								secondaryBackground.StartAnimation(fadeOut);
-								break;
+						
 						}
 					});
 				});
@@ -357,14 +347,10 @@ namespace Alloy
 
 		private void PlayPauseImageButton_Click(object sender, EventArgs e)
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected)
-			{
-				if (serviceConnection.MediaPlayer != null)
-				{
-					if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.Pause(); }
-					else { serviceConnection.Play(); }
-				}
-			}
+			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.MediaPlayer != null)
+				if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.Pause(); }
+				else { serviceConnection.Play(); }
+
 			SetPlaying();
 		}
 
@@ -389,26 +375,20 @@ namespace Alloy
 
 		private void NextImageButton_Click(object sender, EventArgs e)
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected)
-			{
-				if (serviceConnection.MediaPlayer != null)
-				{
-					if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.PlayNextSong(); }
-				}
-			}
+			if (serviceConnection != null && serviceConnection.IsConnected && (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying)) serviceConnection.PlayNextSong();
 		}
 
 		private void FragmentManager_BackStackChanged(object sender, EventArgs e)
 		{
 			// TODO fix backstack and menu highlight
 			//activeMenuItem?.SetChecked(false);
-			if (FragmentManager.BackStackEntryCount == 0)
-			{
+			//if (FragmentManager.BackStackEntryCount == 0)
+			//{
 				//activeMenuItem = navigationView.Menu.GetItem(0);
 				//activeMenuItem?.SetChecked(true);
-			}
-			else
-			{
+			//}
+			//else
+			//{
 				//var name = FragmentManager.GetBackStackEntryAt(FragmentManager.BackStackEntryCount - 1).Name;
 				//for (var i = 0; i < navigationView.Menu.Size(); i++)
 				//{
@@ -418,7 +398,7 @@ namespace Alloy
 				//	activeMenuItem?.SetChecked(true);
 				//	break;
 				//}
-			}
+			//}
 		}
 
 		private void SettingsFooter_Click(object sender, EventArgs e)

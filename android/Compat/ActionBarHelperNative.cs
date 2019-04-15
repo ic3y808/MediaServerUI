@@ -112,9 +112,10 @@ namespace Alloy.Compat
 				View second = parent.GetChildAt(1);
 				View up = first.Id == Android.Resource.Id.Home ? second : first;
 
-				if (up is ImageView)
+				ImageView view = (ImageView) up;
+				if (view != null)
 				{
-					UpIndicatorView = (ImageView)up;
+					UpIndicatorView = view;
 				}
 			}
 		}

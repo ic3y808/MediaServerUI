@@ -38,7 +38,7 @@ namespace Alloy.Services
 			Service?.Play(song);
 		}
 
-		public void Play(int index, IQueue queue)
+		public void Play(int index, Queue queue)
 		{
 			Service?.Play(index, queue);
 		}
@@ -75,7 +75,7 @@ namespace Alloy.Services
 			set => Service.CurrentSong = value;
 		}
 
-		public IQueue MainQueue
+		public Queue MainQueue
 		{
 			get => Service.MainQueue;
 			set => Service.MainQueue = value;

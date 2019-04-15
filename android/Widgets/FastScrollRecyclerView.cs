@@ -187,14 +187,12 @@ namespace Alloy.Widgets
 		}
 
 
-		public override void Draw(Canvas c)
+		public override void Draw(Canvas canvas)
 		{
-			base.Draw(c);
-			if (mFastScrollEnabled)
-			{
-				onUpdateScrollbar();
-				mScrollbar.draw(c);
-			}
+			base.Draw(canvas);
+			if (!mFastScrollEnabled) return;
+			onUpdateScrollbar();
+			mScrollbar.draw(canvas);
 		}
 
 		/**
@@ -265,7 +263,8 @@ namespace Alloy.Widgets
 			}
 			int spanCount = 1;
 			int rowCount = itemCount;
-			if (GetLayoutManager() is GridLayoutManager)
+			LayoutManager manager = GetLayoutManager();
+			if (manager is GridLayoutManager)
 			{
 				spanCount = ((GridLayoutManager)GetLayoutManager()).SpanCount;
 				rowCount = (int)Math.Ceiling((double)rowCount / spanCount);
@@ -310,14 +309,14 @@ namespace Alloy.Widgets
 			LinearLayoutManager layoutManager = ((LinearLayoutManager)GetLayoutManager());
 			layoutManager.ScrollToPositionWithOffset(scrollPosition, scrollOffset);
 
-			if (!(GetAdapter() is SectionedAdapter))
+			if (!(GetAdapter() is ISectionedAdapter))
 			{
 				return "";
 			}
 
 			int posInt = (int)((Math.Abs(touchFraction - 1) < 0.001) ? itemPos - 1 : itemPos);
 
-			SectionedAdapter sectionedAdapter = (SectionedAdapter)GetAdapter();
+			ISectionedAdapter sectionedAdapter = (ISectionedAdapter)GetAdapter();
 			return sectionedAdapter.GetSectionName(posInt);
 		}
 
@@ -360,7 +359,8 @@ namespace Alloy.Widgets
 			}
 
 			int rowCount = GetAdapter().ItemCount;
-			if (GetLayoutManager() is GridLayoutManager)
+			LayoutManager manager = GetLayoutManager();
+			if (manager is GridLayoutManager)
 			{
 				int spanCount = ((GridLayoutManager)GetLayoutManager()).SpanCount;
 				rowCount = (int)Math.Ceiling((double)rowCount / spanCount);
@@ -403,7 +403,8 @@ namespace Alloy.Widgets
 			View child = GetChildAt(0);
 
 			stateOut.RowIndex = GetChildAdapterPosition(child);
-			if (GetLayoutManager() is GridLayoutManager)
+			LayoutManager manager = GetLayoutManager();
+			if (manager is GridLayoutManager)
 			{
 				stateOut.RowIndex = stateOut.RowIndex / ((GridLayoutManager)GetLayoutManager()).SpanCount;
 			}
@@ -595,7 +596,7 @@ namespace Alloy.Widgets
 			}
 		}
 
-		public interface SectionedAdapter
+		public interface ISectionedAdapter
 		{
 
 			string GetSectionName(int position);
