@@ -28,7 +28,7 @@ namespace Alloy.Services
 
 		public event EventHandler<StatusEventArg> PlaybackStatusChanged;
 
-		public IQueue MainQueue { get; set; }
+		public Queue MainQueue { get; set; }
 		public NotificationService NotificationService1 { get; set; }
 		public MediaSessionCompat MediaSession { get; set; }
 
@@ -192,7 +192,7 @@ namespace Alloy.Services
 			}
 		}
 
-		public void Play(int index, IQueue queue)
+		public void Play(int index, Queue queue)
 		{
 			if (loading) return;
 			loading = true;

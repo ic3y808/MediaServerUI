@@ -93,9 +93,9 @@ namespace Alloy.Widgets
 					if (PreviewVisibility && mCurrentSection >= 0 && mSections[mCurrentSection].ToString() != "")
 					{
 						Paint previewPaint = new Paint();
-						previewPaint.Color			= previewBackgroundColor;
-						previewPaint.Alpha			= previewBackgroudAlpha;
-						previewPaint.AntiAlias		= true;
+						previewPaint.Color = previewBackgroundColor;
+						previewPaint.Alpha = previewBackgroudAlpha;
+						previewPaint.AntiAlias = true;
 						previewPaint.SetShadowLayer(3, 0, 0, Color.Argb(64, 0, 0, 0));
 
 						Paint previewTextPaint = new Paint();
@@ -209,10 +209,10 @@ namespace Alloy.Widgets
 			{
 				int position = mIndexer.GetPositionForSection(mCurrentSection);
 				RecyclerView.LayoutManager layoutManager = mRecyclerView.GetLayoutManager();
-				if (layoutManager is LinearLayoutManager) {
-					((LinearLayoutManager)layoutManager).ScrollToPositionWithOffset(position, 0);
-				} else {
-					layoutManager.ScrollToPosition(position);
+				if (layoutManager != null)
+				{
+					if (layoutManager is LinearLayoutManager manager) { manager.ScrollToPositionWithOffset(position, 0); }
+					else { layoutManager.ScrollToPosition(position); }
 				}
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
@@ -230,9 +230,11 @@ namespace Alloy.Widgets
 
 		public void SetAdapter(RecyclerView.Adapter adapter)
 		{
-			if (adapter is ISectionIndexer) {
+			ISectionIndexer indexer = (ISectionIndexer) adapter;
+			if (indexer != null)
+			{
 				adapter.RegisterAdapterDataObserver(this);
-				mIndexer = (ISectionIndexer)adapter;
+				mIndexer = indexer;
 				mSections = mIndexer.GetSections();
 			}
 		}
@@ -265,13 +267,7 @@ namespace Alloy.Widgets
 
 		private void fade(long delay)
 		{
-			if (mRecyclerView != null)
-			{
-				if (mLastFadeRunnable != null)
-				{
-					mRecyclerView.RemoveCallbacks(mLastFadeRunnable);
-				}
-			}
+			if (mRecyclerView != null && mLastFadeRunnable != null) mRecyclerView.RemoveCallbacks(mLastFadeRunnable);
 			var mHandler = new Handler((msg) =>
 			{
 				if (msg.What == WHAT_FADE_PREVIEW)

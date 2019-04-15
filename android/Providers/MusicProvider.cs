@@ -25,11 +25,11 @@ namespace Alloy.Providers
 		public static Charts Charts { get; set; }
 
 		public static event EventHandler ArtistsStartRefresh;
-		public static event EventHandler<string> ArtistsRefreshed;
+		public static event EventHandler ArtistsRefreshed;
 		public static event EventHandler AlbumsStartRefresh;
-		public static event EventHandler<string> AlbumsRefreshed;
+		public static event EventHandler AlbumsRefreshed;
 		public static event EventHandler GenresStartRefresh;
-		public static event EventHandler<string> GenresRefreshed;
+		public static event EventHandler GenresRefreshed;
 		public static event EventHandler ArtistStartRefresh;
 		public static event EventHandler<ArtistContainer> ArtistRefreshed;
 		public static event EventHandler AlbumStartRefresh;
@@ -153,9 +153,7 @@ namespace Alloy.Providers
 				Stream stream = response.GetResponseStream();
 				try
 				{
-					if (response.Headers["Content-Encoding"] != null && (response.Headers["Content-Encoding"].Equals("gzip") || response.Headers["Content-Encoding"].Equals("deflate")))
-						if (stream != null)
-							stream = new GZipStream(stream, CompressionMode.Decompress);
+					if (response.Headers["Content-Encoding"] != null && (response.Headers["Content-Encoding"].Equals("gzip") || response.Headers["Content-Encoding"].Equals("deflate")) && stream != null) stream = new GZipStream(stream, CompressionMode.Decompress);
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
 
@@ -167,8 +165,6 @@ namespace Alloy.Providers
 					try { json = reader.ReadToEnd(); }
 					catch (Exception e) { Crashes.TrackError(e); }
 				}
-
-				stream.Dispose();
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 			return json;
@@ -177,7 +173,7 @@ namespace Alloy.Providers
 		public class AlbumLoader : AsyncTask<object, object, int>
 		{
 			private readonly Album album;
-			private AlbumContainer result;
+			private AlbumContainer albumResult;
 			public AlbumLoader(Album album)
 			{
 				this.album = album;
@@ -189,7 +185,7 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
-					result = JsonConvert.DeserializeObject<AlbumContainer>(request);
+					albumResult = JsonConvert.DeserializeObject<AlbumContainer>(request);
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -197,11 +193,11 @@ namespace Alloy.Providers
 				return 1;
 			}
 
-			protected override void OnPostExecute(int refreshResult)
+			protected override void OnPostExecute(int result)
 			{
-				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) return;
-				AlbumRefreshed?.Invoke(null, result);
+				base.OnPostExecute(result);
+				if (result != 0) return;
+				AlbumRefreshed?.Invoke(null, albumResult);
 				Adapters.Adapters.UpdateAdapters();
 			}
 		}
@@ -224,7 +220,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				Adapters.Adapters.UpdateAdapters();
-				AlbumsRefreshed?.Invoke(null, null);
+				AlbumsRefreshed?.Invoke(null, EventArgs.Empty);
 				base.OnPostExecute(result);
 			}
 		}
@@ -232,7 +228,7 @@ namespace Alloy.Providers
 		public class ArtistLoader : AsyncTask<object, object, int>
 		{
 			private readonly Artist artist;
-			private ArtistContainer result;
+			private ArtistContainer artistResult;
 			public ArtistLoader(Artist artist)
 			{
 				this.artist = artist;
@@ -244,7 +240,7 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
-					result = JsonConvert.DeserializeObject<ArtistContainer>(request);
+					artistResult = JsonConvert.DeserializeObject<ArtistContainer>(request);
 					Utils.UnlockSsl(false);
 					return 0;
 				}
@@ -252,11 +248,11 @@ namespace Alloy.Providers
 				return 1;
 			}
 
-			protected override void OnPostExecute(int refreshResult)
+			protected override void OnPostExecute(int result)
 			{
-				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) return;
-				ArtistRefreshed?.Invoke(null, result);
+				base.OnPostExecute(result);
+				if (result != 0) return;
+				ArtistRefreshed?.Invoke(null, artistResult);
 				Adapters.Adapters.UpdateAdapters();
 			}
 		}
@@ -285,7 +281,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				Adapters.Adapters.UpdateAdapters();
-				ArtistsRefreshed?.Invoke(null, null);
+				ArtistsRefreshed?.Invoke(null, EventArgs.Empty);
 				base.OnPostExecute(result);
 			}
 		}
@@ -293,7 +289,7 @@ namespace Alloy.Providers
 		public class GenreLoader : AsyncTask<object, Song, int>
 		{
 			private readonly Genre genre;
-			private GenreContainer result;
+			private GenreContainer genreResult;
 			public GenreLoader(Genre genre)
 			{
 				this.genre = genre;
@@ -306,7 +302,7 @@ namespace Alloy.Providers
 				{
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
-					result = JsonConvert.DeserializeObject<GenreContainer>(request);
+					genreResult = JsonConvert.DeserializeObject<GenreContainer>(request);
 					Utils.UnlockSsl(false);
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -320,11 +316,11 @@ namespace Alloy.Providers
 				base.OnProgressUpdate(values);
 			}
 
-			protected override void OnPostExecute(int refreshResult)
+			protected override void OnPostExecute(int result)
 			{
-				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) return;
-				GenreRefreshed?.Invoke(null, result);
+				base.OnPostExecute(result);
+				if (result != 0) return;
+				GenreRefreshed?.Invoke(null, genreResult);
 				Adapters.Adapters.UpdateAdapters();
 			}
 		}
@@ -348,7 +344,7 @@ namespace Alloy.Providers
 			protected override void OnPostExecute(int result)
 			{
 				Adapters.Adapters.UpdateAdapters();
-				GenresRefreshed?.Invoke(null, null);
+				GenresRefreshed?.Invoke(null, EventArgs.Empty);
 				base.OnPostExecute(result);
 			}
 		}
@@ -403,10 +399,10 @@ namespace Alloy.Providers
 				return 1;
 			}
 
-			protected override void OnPostExecute(int refreshResult)
+			protected override void OnPostExecute(int result)
 			{
-				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) return;
+				base.OnPostExecute(result);
+				if (result != 0) return;
 				StarredRefreshed?.Invoke(null, Starred);
 				Adapters.Adapters.UpdateAdapters();
 			}
@@ -414,10 +410,8 @@ namespace Alloy.Providers
 
 		public class FreshLoader : AsyncTask<object, object, int>
 		{
-			private bool isLoading;
 			protected override int RunInBackground(params object[] @params)
 			{
-				if (isLoading) return 1;
 				try
 				{
 					Utils.UnlockSsl(true);
@@ -432,11 +426,10 @@ namespace Alloy.Providers
 				return 1;
 			}
 
-			protected override void OnPostExecute(int refreshResult)
+			protected override void OnPostExecute(int result)
 			{
-				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) { return; }
-				isLoading = false;
+				base.OnPostExecute(result);
+				if (result != 0) { return; }
 				FreshRefreshed?.Invoke(null, Fresh);
 				Adapters.Adapters.UpdateAdapters();
 			}
@@ -463,10 +456,10 @@ namespace Alloy.Providers
 				return 1;
 			}
 
-			protected override void OnPostExecute(int refreshResult)
+			protected override void OnPostExecute(int result)
 			{
-				base.OnPostExecute(refreshResult);
-				if (refreshResult != 0) return;
+				base.OnPostExecute(result);
+				if (result != 0) return;
 				ChartsRefreshed?.Invoke(null, Charts);
 				Adapters.Adapters.UpdateAdapters();
 			}
@@ -474,37 +467,37 @@ namespace Alloy.Providers
 
 		public static void RefreshArtists()
 		{
-			ArtistsStartRefresh?.Invoke(null, null);
+			ArtistsStartRefresh?.Invoke(null, EventArgs.Empty);
 			new ArtistsLoader().Execute();
 		}
 
 		public static void RefreshAlbums()
 		{
-			AlbumsStartRefresh?.Invoke(null, null);
+			AlbumsStartRefresh?.Invoke(null, EventArgs.Empty);
 			new AlbumsLoader().Execute();
 		}
 
 		public static void RefreshGenres()
 		{
-			GenresStartRefresh?.Invoke(null, null);
+			GenresStartRefresh?.Invoke(null, EventArgs.Empty);
 			new GenresLoader().Execute();
 		}
 
 		public static void RefreshStarred()
 		{
-			StarredStartRefresh?.Invoke(null, null);
+			StarredStartRefresh?.Invoke(null, EventArgs.Empty);
 			new StarredLoader().Execute();
 		}
 
 		public static void RefreshFresh()
 		{
-			FreshStartRefresh?.Invoke(null, null);
+			FreshStartRefresh?.Invoke(null, EventArgs.Empty);
 			new FreshLoader().Execute();
 		}
 
 		public static void RefreshCharts()
 		{
-			ChartsStartRefresh?.Invoke(null, null);
+			ChartsStartRefresh?.Invoke(null, EventArgs.Empty);
 			new ChartsLoader().Execute();
 		}
 
@@ -520,21 +513,21 @@ namespace Alloy.Providers
 
 		public static void GetArtist(Artist artist)
 		{
-			ArtistStartRefresh?.Invoke(null, null);
+			ArtistStartRefresh?.Invoke(null, EventArgs.Empty);
 			Adapters.Adapters.Clear();
 			new ArtistLoader(artist).Execute();
 		}
 
 		public static void GetAlbum(Album album)
 		{
-			AlbumStartRefresh?.Invoke(null, null);
+			AlbumStartRefresh?.Invoke(null, EventArgs.Empty);
 			Adapters.Adapters.Clear();
 			new AlbumLoader(album).Execute();
 		}
 
 		public static void GetGenre(Genre genre)
 		{
-			GenreStartRefresh?.Invoke(null, null);
+			GenreStartRefresh?.Invoke(null, EventArgs.Empty);
 			Adapters.Adapters.Clear();
 			new GenreLoader(genre).Execute();
 		}
@@ -684,7 +677,7 @@ namespace Alloy.Providers
 
 		public static void Search(string query)
 		{
-			SearchStart?.Invoke(null, null);
+			SearchStart?.Invoke(null, EventArgs.Empty);
 			Adapters.Adapters.Clear();
 			new SearchLoader(query).Execute();
 		}

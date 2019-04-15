@@ -51,17 +51,14 @@ namespace Alloy.Adapters
 					}
 					break;
 				case 2:
-					if (holder is AlbumTracksViewHolder albumTracksHolder)
+					if (holder is AlbumTracksViewHolder albumTracksHolder && Album.Tracks.Count > 0)
 					{
-						if (Album.Tracks.Count > 0)
-						{
-							albumTracksHolder.AllTracksListContainer.Visibility = ViewStates.Visible;
-							AlbumDetailTrackAdapter albumTracksAdapter = new AlbumDetailTrackAdapter(Album.Tracks, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumTracksAdapter.NotifyDataSetChanged(); };
-							albumTracksHolder.AllTracksRecycleView?.SetAdapter(albumTracksAdapter);
-							albumTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, albumTracksAdapter);
-						}
+						albumTracksHolder.AllTracksListContainer.Visibility = ViewStates.Visible;
+						AlbumDetailTrackAdapter albumTracksAdapter = new AlbumDetailTrackAdapter(Album.Tracks, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumTracksAdapter.NotifyDataSetChanged(); };
+						albumTracksHolder.AllTracksRecycleView?.SetAdapter(albumTracksAdapter);
+						albumTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, albumTracksAdapter);
 					}
 
 					break;
@@ -121,7 +118,7 @@ namespace Alloy.Adapters
 				AlbumSize = itemView.FindViewById<TextView>(Resource.Id.album_size);
 				ArtistName = itemView.FindViewById<TextView>(Resource.Id.artist_name);
 				AlbumPlayButton = itemView.FindViewById<Button>(Resource.Id.album_play_button);
-				AlbumPlayButton.Click += (sender, e) => ItemClick?.Invoke(null, null);
+				AlbumPlayButton.Click += (sender, e) => ItemClick?.Invoke(this, EventArgs.Empty);
 
 				AlbumImage = itemView.FindViewById<ImageView>(Resource.Id.album_image);
 				StarButton = itemView.FindViewById<ImageView>(Resource.Id.album_favorite_button);

@@ -11,9 +11,9 @@ namespace Alloy.Adapters
 {
 	public class SearchAdapter : CursorAdapter
 	{
-		public override void BindView(View v, Context context, ICursor cursor)
+		public override void BindView(View view, Context context, ICursor cursor)
 		{
-			string configured = v.FindViewById<TextView>(Resource.Id.view_configured).Text;
+			string configured = view.FindViewById<TextView>(Resource.Id.view_configured).Text;
 
 			if (string.IsNullOrEmpty(configured))
 			{
@@ -22,28 +22,28 @@ namespace Alloy.Adapters
 				switch (type)
 				{
 					case "seperator":
-						v.FindViewById<LinearLayout>(Resource.Id.seperator).Visibility = ViewStates.Visible;
-						v.FindViewById<TextView>(Resource.Id.seperator_title).Text = cursor.GetString(2);
+						view.FindViewById<LinearLayout>(Resource.Id.seperator).Visibility = ViewStates.Visible;
+						view.FindViewById<TextView>(Resource.Id.seperator_title).Text = cursor.GetString(2);
 						break;
 					case "artist":
-						v.FindViewById<LinearLayout>(Resource.Id.artist_result_layout).Visibility = ViewStates.Visible;
-						v.FindViewById<TextView>(Resource.Id.artist_name).Text = cursor.GetString(2);
+						view.FindViewById<LinearLayout>(Resource.Id.artist_result_layout).Visibility = ViewStates.Visible;
+						view.FindViewById<TextView>(Resource.Id.artist_name).Text = cursor.GetString(2);
 						break;
 					case "album":
-						v.FindViewById<LinearLayout>(Resource.Id.album_result_layout).Visibility = ViewStates.Visible;
-						v.FindViewById<TextView>(Resource.Id.album_name).Text = cursor.GetString(2);
+						view.FindViewById<LinearLayout>(Resource.Id.album_result_layout).Visibility = ViewStates.Visible;
+						view.FindViewById<TextView>(Resource.Id.album_name).Text = cursor.GetString(2);
 						break;
 					case "genre":
-						v.FindViewById<LinearLayout>(Resource.Id.genre_result_layout).Visibility = ViewStates.Visible;
-						v.FindViewById<TextView>(Resource.Id.genre_name).Text = cursor.GetString(2);
+						view.FindViewById<LinearLayout>(Resource.Id.genre_result_layout).Visibility = ViewStates.Visible;
+						view.FindViewById<TextView>(Resource.Id.genre_name).Text = cursor.GetString(2);
 						break;
 					case "track":
-						v.FindViewById<LinearLayout>(Resource.Id.track_result_layout).Visibility = ViewStates.Visible;
-						v.FindViewById<TextView>(Resource.Id.title).Text = cursor.GetString(2);
-						v.FindViewById<TextView>(Resource.Id.track_artist).Text = cursor.GetString(2);
+						view.FindViewById<LinearLayout>(Resource.Id.track_result_layout).Visibility = ViewStates.Visible;
+						view.FindViewById<TextView>(Resource.Id.title).Text = cursor.GetString(2);
+						view.FindViewById<TextView>(Resource.Id.track_artist).Text = cursor.GetString(2);
 						break;
 				}
-				v.FindViewById<TextView>(Resource.Id.view_configured).Text = "configured";
+				view.FindViewById<TextView>(Resource.Id.view_configured).Text = "configured";
 			}
 		}
 

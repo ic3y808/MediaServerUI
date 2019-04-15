@@ -161,8 +161,8 @@ namespace Alloy.Widgets
 				mBackgroundPaint.Alpha = (int)(Color.GetAlphaComponent(mBackgroundColor) * mAlpha);
 				mTextPaint.Alpha = (int)(mAlpha * 255);
 				canvas.DrawPath(mBackgroundPath, mBackgroundPaint);
-				canvas.DrawText(mSectionName, (mBgBounds.Width() - mTextBounds.Width()) / 2,
-						mBgBounds.Height() - (mBgBounds.Height() - mTextBounds.Height()) / 2,
+				canvas.DrawText(mSectionName, (mBgBounds.Width() - (float)mTextBounds.Width()) / 2,
+						mBgBounds.Height() - (mBgBounds.Height() - (float)mTextBounds.Height()) / 2,
 						mTextPaint);
 				canvas.RestoreToCount(restoreCount);
 			}

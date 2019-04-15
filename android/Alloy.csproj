@@ -53,6 +53,7 @@
     </JavaMaximumHeapSize>
     <AndroidEnableMultiDex>true</AndroidEnableMultiDex>
     <AndroidCreatePackagePerAbi>false</AndroidCreatePackagePerAbi>
+    <NoWarn>NU1608,S1135,S125</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>True</DebugSymbols>
@@ -110,6 +111,7 @@
     <Compile Include="Interfaces\IMenuListener.cs" />
     <Compile Include="Adapters\MenuAdapter.cs" />
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
+    <Compile Include="Interfaces\Queue.cs" />
     <Compile Include="Models\BackgroundAudioStatus.cs" />
     <Compile Include="Models\Charts.cs" />
     <Compile Include="Models\Category.cs" />
@@ -134,7 +136,6 @@
     <Compile Include="Fragments\ArtistsFragment.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
     <Compile Include="Helpers\NowPlayingSnapHelper.cs" />
-    <Compile Include="Interfaces\IQueue.cs" />
     <Compile Include="Interfaces\ViewBehavior.cs" />
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\CurrentBackground.cs" />

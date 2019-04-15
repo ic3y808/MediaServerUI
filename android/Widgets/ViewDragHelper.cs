@@ -1,14 +1,10 @@
-﻿using System;
-using Android.Content;
+﻿using Android.Content;
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Views.Animations;
 using Java.Lang;
 using Java.Util;
-using Exception = Java.Lang.Exception;
-using Math = Java.Lang.Math;
-using Object = Java.Lang.Object;
-
+#pragma warning disable 618
 namespace Alloy.Widgets
 {
 	/**
@@ -312,9 +308,9 @@ namespace Alloy.Widgets
 		 */
 		class CustomInterpolator : Object, IInterpolator
 		{
-			public float GetInterpolation(float t)
+			public float GetInterpolation(float input)
 			{
-				float newT = t;
+				float newT = input;
 				newT -= 1.0f;
 				return newT * newT * newT * newT * newT + 1.0f;
 			}
@@ -337,11 +333,6 @@ namespace Alloy.Widgets
 		}
 
 		private readonly CustomRunnable mSetIdleRunnable;
-
-		public ViewDragHelper()
-		{
-			// not used
-		}
 
 		/**
 		 * Factory method to create a new ViewDragHelper.
@@ -652,15 +643,7 @@ namespace Alloy.Widgets
 			}
 
 			int duration = ComputeSettleDuration(mCapturedView, dx, dy, xvel, yvel);
-
-			try
-			{
-				mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
-			}
-			catch (Exception e)
-			{
-				// do nothing
-			}
+			mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
 
 			setDragState(STATE_SETTLING);
 			return true;
@@ -805,7 +788,9 @@ namespace Alloy.Widgets
 			}
 			if (mDragState == STATE_SETTLING)
 			{
+
 				bool keepGoing = mScroller.ComputeScrollOffset();
+
 				int x = mScroller.CurrX;
 				int y = mScroller.CurrY;
 				int dx = x - mCapturedView.Left;
@@ -1039,18 +1024,18 @@ namespace Alloy.Widgets
 		 */
 		protected bool CanScroll(View v, bool checkV, int dx, int dy, int x, int y)
 		{
-			if (v is ViewGroup)
+			ViewGroup @group = (ViewGroup) v;
+			if (@group != null)
 			{
-				ViewGroup group = (ViewGroup)v;
-				int scrollX = v.ScrollX;
-				int scrollY = v.ScrollY;
-				int count = group.ChildCount;
+				int scrollX = @group.ScrollX;
+				int scrollY = @group.ScrollY;
+				int count = @group.ChildCount;
 				// Count backwards - let topmost views consume scroll distance first.
 				for (int i = count - 1; i >= 0; i--)
 				{
 					// TODO: Add versioned support here for transformed views.
 					// This will not work for transformed views in Honeycomb+
-					View child = group.GetChildAt(i);
+					View child = @group.GetChildAt(i);
 					if (x + scrollX >= child.Left && x + scrollX < child.Right &&
 							y + scrollY >= child.Top && y + scrollY < child.Bottom &&
 							CanScroll(child, true, dx, dy, x + scrollX - child.Left,
@@ -1059,9 +1044,9 @@ namespace Alloy.Widgets
 						return true;
 					}
 				}
+				return checkV && (v.CanScrollHorizontally(-dx) || v.CanScrollVertically(-dy));
 			}
-
-			return checkV && (v.CanScrollHorizontally(-dx) || v.CanScrollVertically(-dy));
+			return false;
 		}
 
 		/**
@@ -1679,3 +1664,4 @@ namespace Alloy.Widgets
 		}
 	}
 }
+#pragma warning restore 618

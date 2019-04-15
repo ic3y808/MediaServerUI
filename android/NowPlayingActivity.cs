@@ -255,7 +255,10 @@ namespace Alloy
 									a?.Bitmap?.Recycle();
 									a?.Bitmap?.Dispose();
 									primaryBackground?.Background?.Dispose();
-									primaryBackground.Background = null;
+									if (primaryBackground != null)
+									{
+										primaryBackground.Background = null;
+									}
 								}
 								currentBackground = CurrentBackground.Secondary;
 								break;
@@ -266,7 +269,10 @@ namespace Alloy
 									a?.Bitmap?.Recycle();
 									a?.Bitmap?.Dispose();
 									secondaryBackground?.Background?.Dispose();
-									secondaryBackground.Background = null;
+									if (secondaryBackground != null)
+									{
+										secondaryBackground.Background = null;
+									}
 								}
 								currentBackground = CurrentBackground.Primary;
 								break;
@@ -278,7 +284,7 @@ namespace Alloy
 						switch (currentBackground)
 						{
 							case CurrentBackground.None:
-
+							case CurrentBackground.Secondary:
 								primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
 								primaryBackground.StartAnimation(fadeIn);
 								secondaryBackground.StartAnimation(fadeOut);
@@ -287,11 +293,6 @@ namespace Alloy
 								secondaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
 								primaryBackground.StartAnimation(fadeOut);
 								secondaryBackground.StartAnimation(fadeIn);
-								break;
-							case CurrentBackground.Secondary:
-								primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
-								primaryBackground.StartAnimation(fadeIn);
-								secondaryBackground.StartAnimation(fadeOut);
 								break;
 						}
 					});
@@ -497,11 +498,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.CurrentSong != null)
 				ScrollTo(serviceConnection.GetPreviousSong());
-			if (serviceConnection.MediaPlayer != null)
-			{
-				if (serviceConnection.MediaPlayer.IsPlaying)
-					Utils.Run(() => { serviceConnection.PlayPreviousSong(); });
-			}
+			if (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying) Utils.Run(() => { serviceConnection.PlayPreviousSong(); });
 		}
 
 		private void NextImageButton_Click(object sender, EventArgs e)
@@ -509,11 +506,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.CurrentSong != null)
 				ScrollTo(serviceConnection.GetNextSong());
-			if (serviceConnection.MediaPlayer != null)
-			{
-				if (serviceConnection.MediaPlayer.IsPlaying)
-					Utils.Run(() => { serviceConnection.PlayNextSong(); });
-			}
+			if (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying) Utils.Run(() => { serviceConnection.PlayNextSong(); });
 		}
 
 		private void SetFavorite()

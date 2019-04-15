@@ -32,97 +32,84 @@ namespace Alloy.Adapters
 			{
 				case 0:
 					StarredTopArtistsViewHolder starredTopArtistsHolder = holder as StarredTopArtistsViewHolder;
-					if (MusicProvider.Starred != null && MusicProvider.Starred.TopArtists != null && MusicProvider.Starred.TopArtists.Count > 0)
+					if (MusicProvider.Starred != null && MusicProvider.Starred.TopArtists != null && MusicProvider.Starred.TopArtists.Count > 0 && starredTopArtistsHolder != null)
 					{
-						if (starredTopArtistsHolder != null)
-						{
-							starredTopArtistsHolder.StarredTopArtistsListContainer.Visibility = ViewStates.Visible;
-							StarredArtistAdapter starredTopArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.TopArtists, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopArtistsAdapter.NotifyDataSetChanged(); };
-							starredTopArtistsHolder.StarredTopArtistsRecycleView?.SetAdapter(starredTopArtistsAdapter);
-							starredTopArtistsAdapter.ItemClick += ArtistClick;
-							Adapters.SetAdapters(Activity, starredTopArtistsAdapter);
-						}
+						starredTopArtistsHolder.StarredTopArtistsListContainer.Visibility = ViewStates.Visible;
+						StarredArtistAdapter starredTopArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.TopArtists, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopArtistsAdapter.NotifyDataSetChanged(); };
+						starredTopArtistsHolder.StarredTopArtistsRecycleView?.SetAdapter(starredTopArtistsAdapter);
+						starredTopArtistsAdapter.ItemClick += ArtistClick;
+						Adapters.SetAdapters(Activity, starredTopArtistsAdapter);
 					}
+
 					break;
 				case 1:
 					StarredTopAlbumsViewHolder starredTopAlbumsHolder = holder as StarredTopAlbumsViewHolder;
 
-					if (MusicProvider.Starred != null && MusicProvider.Starred.Albums != null && MusicProvider.Starred.TopAlbums.Count > 0)
+					if (MusicProvider.Starred != null && MusicProvider.Starred.Albums != null && MusicProvider.Starred.TopAlbums.Count > 0 && starredTopAlbumsHolder != null)
 					{
-						if (starredTopAlbumsHolder != null)
-						{
-							starredTopAlbumsHolder.StarredTopAlbumsListContainer.Visibility = ViewStates.Visible;
-							StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.TopAlbums, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumsAdapter.NotifyDataSetChanged(); };
-							starredTopAlbumsHolder.StarredTopAlbumRecycleView?.SetAdapter(albumsAdapter);
-							albumsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, albumsAdapter);
-						}
+						starredTopAlbumsHolder.StarredTopAlbumsListContainer.Visibility = ViewStates.Visible;
+						StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.TopAlbums, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumsAdapter.NotifyDataSetChanged(); };
+						starredTopAlbumsHolder.StarredTopAlbumRecycleView?.SetAdapter(albumsAdapter);
+						albumsAdapter.ItemClick += AlbumClick;
+						Adapters.SetAdapters(Activity, albumsAdapter);
 					}
+
 					break;
 				case 2:
 					StarredTopTracksViewHolder starredTopTracksHolder = holder as StarredTopTracksViewHolder;
-					if (MusicProvider.Starred != null && MusicProvider.Starred.TopTracks != null && MusicProvider.Starred.TopTracks.Count > 0)
+					if (MusicProvider.Starred != null && MusicProvider.Starred.TopTracks != null && MusicProvider.Starred.TopTracks.Count > 0 && starredTopTracksHolder != null)
 					{
-						if (starredTopTracksHolder != null)
-						{
-
-							starredTopTracksHolder.StarredTopTracksListContainer.Visibility = ViewStates.Visible;
-							StarredTrackAdapter starredTopTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.TopTracks, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopTracksAdapter.NotifyDataSetChanged(); };
-							starredTopTracksHolder.StarredTopTracksRecycleView?.SetAdapter(starredTopTracksAdapter);
-							starredTopTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, starredTopTracksAdapter);
-						}
+						starredTopTracksHolder.StarredTopTracksListContainer.Visibility = ViewStates.Visible;
+						StarredTrackAdapter starredTopTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.TopTracks, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopTracksAdapter.NotifyDataSetChanged(); };
+						starredTopTracksHolder.StarredTopTracksRecycleView?.SetAdapter(starredTopTracksAdapter);
+						starredTopTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, starredTopTracksAdapter);
 					}
+
 					break;
 				case 3:
 					StarredArtistsViewHolder starredArtistsHolder = holder as StarredArtistsViewHolder;
-					if (MusicProvider.Starred != null && MusicProvider.Starred.Artists != null && MusicProvider.Starred.Artists.Count > 0)
+					if (MusicProvider.Starred != null && MusicProvider.Starred.Artists != null && MusicProvider.Starred.Artists.Count > 0 && starredArtistsHolder != null)
 					{
-						if (starredArtistsHolder != null)
-						{
-							starredArtistsHolder.StarredArtistsListContainer.Visibility = ViewStates.Visible;
-							StarredArtistAdapter starredArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.Artists, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredArtistsAdapter.NotifyDataSetChanged(); };
-							starredArtistsHolder.StarredArtistsRecycleView?.SetAdapter(starredArtistsAdapter);
-							starredArtistsAdapter.ItemClick += ArtistClick;
-							Adapters.SetAdapters(Activity, starredArtistsAdapter);
-						}
+						starredArtistsHolder.StarredArtistsListContainer.Visibility = ViewStates.Visible;
+						StarredArtistAdapter starredArtistsAdapter = new StarredArtistAdapter(MusicProvider.Starred.Artists, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredArtistsAdapter.NotifyDataSetChanged(); };
+						starredArtistsHolder.StarredArtistsRecycleView?.SetAdapter(starredArtistsAdapter);
+						starredArtistsAdapter.ItemClick += ArtistClick;
+						Adapters.SetAdapters(Activity, starredArtistsAdapter);
 					}
+
 					break;
 				case 4:
 					StarredAlbumsViewHolder starredAlbumsHolder = holder as StarredAlbumsViewHolder;
 
-					if (MusicProvider.Starred != null && MusicProvider.Starred.Albums != null && MusicProvider.Starred.Albums.Count > 0)
+					if (MusicProvider.Starred != null && MusicProvider.Starred.Albums != null && MusicProvider.Starred.Albums.Count > 0 && starredAlbumsHolder != null)
 					{
-						if (starredAlbumsHolder != null)
-						{
-							starredAlbumsHolder.StarredAlbumsListContainer.Visibility = ViewStates.Visible;
-							StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.Albums, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumsAdapter.NotifyDataSetChanged(); };
-							starredAlbumsHolder.StarredAlbumRecycleView?.SetAdapter(albumsAdapter);
-							albumsAdapter.ItemClick += AlbumClick;
-							Adapters.SetAdapters(Activity, albumsAdapter);
-						}
+						starredAlbumsHolder.StarredAlbumsListContainer.Visibility = ViewStates.Visible;
+						StarredAlbumAdapter albumsAdapter = new StarredAlbumAdapter(MusicProvider.Starred.Albums, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { albumsAdapter.NotifyDataSetChanged(); };
+						starredAlbumsHolder.StarredAlbumRecycleView?.SetAdapter(albumsAdapter);
+						albumsAdapter.ItemClick += AlbumClick;
+						Adapters.SetAdapters(Activity, albumsAdapter);
 					}
+
 					break;
 
 				case 5:
 					StarredTracksViewHolder starredTracksHolder = holder as StarredTracksViewHolder;
-					if (MusicProvider.Starred != null && MusicProvider.Starred.Tracks != null && MusicProvider.Starred.Tracks.Count > 0)
+					if (MusicProvider.Starred != null && MusicProvider.Starred.Tracks != null && MusicProvider.Starred.Tracks.Count > 0 && starredTracksHolder != null)
 					{
-						if (starredTracksHolder != null)
-						{
-							starredTracksHolder.StarredTracksListContainer.Visibility = ViewStates.Visible;
-							StarredTrackAdapter starredTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, ServiceConnection);
-							BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTracksAdapter.NotifyDataSetChanged(); };
-							starredTracksHolder.StarredTracksRecycleView?.SetAdapter(starredTracksAdapter);
-							starredTracksAdapter.ItemClick += TrackClick;
-							Adapters.SetAdapters(Activity, starredTracksAdapter);
-						}
+						starredTracksHolder.StarredTracksListContainer.Visibility = ViewStates.Visible;
+						StarredTrackAdapter starredTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, ServiceConnection);
+						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTracksAdapter.NotifyDataSetChanged(); };
+						starredTracksHolder.StarredTracksRecycleView?.SetAdapter(starredTracksAdapter);
+						starredTracksAdapter.ItemClick += TrackClick;
+						Adapters.SetAdapters(Activity, starredTracksAdapter);
 					}
+
 					break;
 
 

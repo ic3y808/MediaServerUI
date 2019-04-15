@@ -93,7 +93,7 @@ namespace Alloy.Fragments
 			refreshLayout.Refreshing = true;
 		}
 
-		private void MusicProvider_ArtistsRefreshed(object sender, string e)
+		private void MusicProvider_ArtistsRefreshed(object sender, EventArgs e)
 		{
 			refreshLayout.Refreshing = false;
 			adapter?.NotifyDataSetChanged();

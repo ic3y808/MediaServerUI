@@ -153,22 +153,22 @@ namespace Alloy.Widgets
 
 
 
-		public override bool OnTouchEvent(MotionEvent ev)
+		public override bool OnTouchEvent(MotionEvent e)
 		{
 			if (mEnabled)
 			{
 				// Intercept ListView's touch event
-				if (mScroller != null && mScroller.onTouchEvent(ev))
+				if (mScroller != null && mScroller.onTouchEvent(e))
 					return true;
 
 				if (mGestureDetector == null)
 				{
 					mGestureDetector = new GestureDetector(Context, new GestureDetector.SimpleOnGestureListener());
-					mGestureDetector.OnTouchEvent(ev);
+					mGestureDetector.OnTouchEvent(e);
 				}
 			}
 
-			return base.OnTouchEvent(ev);
+			return base.OnTouchEvent(e);
 		}
 
 		public void SetIndexTextSize(int value)

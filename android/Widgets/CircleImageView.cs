@@ -295,8 +295,11 @@ namespace Alloy.Widgets
 		private Bitmap GetBitmapFromDrawable(Drawable drawable)
 		{
 			if (drawable == null) return null;
-			if (drawable is BitmapDrawable) { return ((BitmapDrawable)drawable).Bitmap; }
-
+			BitmapDrawable bitmapDrawable = drawable as BitmapDrawable;
+			if (bitmapDrawable != null)
+			{
+				return bitmapDrawable.Bitmap;
+			}
 			try
 			{
 				Bitmap bitmap = drawable is ColorDrawable ? Bitmap.CreateBitmap(COLORDRAWABLE_DIMENSION, COLORDRAWABLE_DIMENSION, BITMAP_CONFIG) : Bitmap.CreateBitmap(drawable.IntrinsicWidth, drawable.IntrinsicHeight, BITMAP_CONFIG);

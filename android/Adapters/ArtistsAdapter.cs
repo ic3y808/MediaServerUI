@@ -15,7 +15,7 @@ using Object = Java.Lang.Object;
 
 namespace Alloy.Adapters
 {
-	public class ArtistsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.SectionedAdapter
+	public class ArtistsAdapter : RecyclerView.Adapter, ISectionIndexer, FastScrollRecyclerView.ISectionedAdapter
 	{
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 		private ArrayList sectionPositions;
