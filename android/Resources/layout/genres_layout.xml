@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -31,17 +30,24 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_behavior="@string/appbar_scrolling_view_behavior"
-		android:paddingBottom="?attr/actionBarSize"
 		android:background="@android:color/transparent">
-		<ListView
+		<alloy.widgets.FastScrollRecyclerView
 			android:id="@+id/genres_list"
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"
-			android:divider="#b5b5b5"
-			android:dividerHeight="1dp"
-			android:choiceMode="singleChoice"
-			android:listSelector="@android:color/transparent"
-			android:cacheColorHint="@android:color/transparent"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@android:color/transparent"
+			app:fastScrollAutoHide="true"
+			app:fastScrollAutoHideDelay="1500"
+			app:fastScrollPopupBackgroundSize="88dp"
+			app:fastScrollPopupBgColor="@color/list_popup_color"
+			app:fastScrollPopupPosition="adjacent"
+			app:fastScrollPopupTextColor="@color/list_popup_text_color"
+			app:fastScrollPopupTextSize="56sp"
+			app:fastScrollThumbEnabled="true"
+			app:fastScrollThumbColor="@color/list_popup_color"
+			app:fastScrollEnableThumbInactiveColor="true"
 			app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 	</android.support.v4.widget.SwipeRefreshLayout>
+
+
 </android.support.design.widget.CoordinatorLayout>

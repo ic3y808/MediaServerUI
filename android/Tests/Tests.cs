@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Threading;
 using NUnit.Framework;
 using Xamarin.UITest;
 using Xamarin.UITest.Queries;
@@ -24,17 +26,40 @@ namespace Tests
 			windowRect = app.Query().FirstOrDefault()?.Rect;
 		}
 
-		private void OpenMenu()
+		private void OpenSideMenu()
 		{
 			app.DragCoordinates(windowRect.X, windowRect.CenterY, windowRect.Width, windowRect.CenterY);
 			AppResult[] navView = app.WaitForElement(c => c.Id("nav_view"));
 			Assert.IsTrue(navView.Any());
 		}
 
+		private enum BottomMenuState { Open, Closed, Middle}
+		private void BottomMenu(BottomMenuState from, BottomMenuState to)
+		{
+
+
+			switch (from)
+			{
+				case BottomMenuState.Open:
+					if (to == BottomMenuState.Closed)
+						app.DragCoordinates(windowRect.CenterX, windowRect.Y + 10, windowRect.CenterX, windowRect.Height);
+					break;
+				case BottomMenuState.Closed:
+					if(to == BottomMenuState.Open)
+						app.DragCoordinates(windowRect.CenterX, windowRect.Height - 10, windowRect.CenterX, windowRect.Y);
+					break;
+				case BottomMenuState.Middle:
+					app.DragCoordinates(windowRect.CenterX, windowRect.Height - 10, windowRect.CenterX, windowRect.CenterY);
+					break;
+			}
+		
+	
+		}
+
 
 		private void SelectMenuItem(string item)
 		{
-			OpenMenu();
+			OpenSideMenu();
 			app.Screenshot("Main Menu - Selecting " + item);
 
 			AppResult[] mainMenu = app.WaitForElement(c => c.Marked("main_menu_list"));
@@ -124,8 +149,27 @@ namespace Tests
 		public void BasicOperationTests()
 		{
 			app.Screenshot("Main Screen");
-			//app.Repl();
+			
+			SelectMenuItem("Whats New");
+			CheckItemsLoaded("fresh_new_artists_list", "image_view");
+
+			SelectMenuItem("Starred");
+			CheckItemsLoaded("starred_top_artists_list", "image_view");
+			
 			SelectMenuItem("Artists");
+			CheckItemsLoaded("artists_list", "artist");	
+			
+			SelectMenuItem("Albums");
+			CheckItemsLoaded("albums_list", "album");
+
+			SelectMenuItem("Genres");
+			CheckItemsLoaded("genres_list", "genre");
+			
+			
+			
+			
+			//app.Repl();
+			//SelectMenuItem("Artists");
 			//CheckItemsLoaded("artists_list", "card_layout");
 			//SelectTab("Favorites");
 			//CheckItemsLoaded("favorites_list", "card_layout");
@@ -139,23 +183,36 @@ namespace Tests
 			//CheckItemsLoaded("all_music_list", "card_layout");
 		}
 
+		[Test]
+		public void SlideUpMenuTests()
+		{
+			for (int i = 0; i < 1000; i++)
+			{
+				BottomMenu(BottomMenuState.Closed, BottomMenuState.Open);
+				Thread.Sleep(250);
+				BottomMenu(BottomMenuState.Open, BottomMenuState.Closed);
+			}
+		
+		}
+
+
 		//[Test]
-		//public void TestTagEditor()
-		//{
-		//	app.Screenshot("Main Screen");
+			//public void TestTagEditor()
+			//{
+			//	app.Screenshot("Main Screen");
 
-		//	SelectMenuItem("Artists");
+			//	SelectMenuItem("Artists");
 
-		//	CheckItemsLoaded("artists_list", "right_side_count");
-		//	SelectTrack("artists_list");
-		//	CheckItemsLoaded("artist_track_list", "right_side_count");
-		//	SelectContextTrack("artist_track_list", "action_edit_tags");
+			//	CheckItemsLoaded("artists_list", "right_side_count");
+			//	SelectTrack("artists_list");
+			//	CheckItemsLoaded("artist_track_list", "right_side_count");
+			//	SelectContextTrack("artist_track_list", "action_edit_tags");
 
-		//	WaitForElement("tag_editor_artist");
+			//	WaitForElement("tag_editor_artist");
 
-		//	ReplaceTextView("tag_editor_genre", "Testing");
+			//	ReplaceTextView("tag_editor_genre", "Testing");
 
-		//	SelectElement("btn_save");
-		//}
-	}
+			//	SelectElement("btn_save");
+			//}
+		}
 }

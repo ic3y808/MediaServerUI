@@ -36,7 +36,7 @@
 		sothree:umanoParallaxOffset="100dp"
 		sothree:umanoDragView="@+id/dragView"
 		sothree:umanoOverlay="true"
-		sothree:umanoScrollableView="@+id/list"
+		sothree:umanoScrollableView="@+id/main_playlist"
 
 		android:background="@android:color/transparent" >
 

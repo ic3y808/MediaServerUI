@@ -21,7 +21,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   buildRoute("/config/:id", "<config/>");
   buildRoute("/database", "<database/>");
   buildRoute("/fresh", "<fresh/>");
-  buildRoute("/genres/:id", "<genres/>");
+  buildRoute("/genres", "<genres/>");
   buildRoute("/genre/:id", "<genre/>");
   buildRoute("/genre/:id/trackid", "<genre/>");
   buildRoute("/history", "<history/>");

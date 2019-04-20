@@ -439,6 +439,10 @@ a.list-group-item:focus {
   background-color: #f5f5f5;
 }
 
+.list-group-item-track {
+  line-height: 35px;
+}
+
 .panel {
   margin-bottom: 20px;
   background-color: #fff;
@@ -1737,6 +1741,23 @@ a.text-info:hover {
 
 .bg-light .lt {
   background-color: #edf2f3;
+}
+
+.bg-black {
+  background-color: #232c32;
+  color: #7d94a4;
+}
+
+.bg-black a {
+  color: #9badb9;
+}
+
+.bg-black a:hover {
+  color: #fff;
+}
+
+.bg-black .text-muted {
+  color: #627b8c !important;
 }
 
 .h {

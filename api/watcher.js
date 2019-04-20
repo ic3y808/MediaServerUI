@@ -49,12 +49,10 @@ class Watcher {
     mediaPaths.forEach((mediaPath) => {
       if (mediaPath.path && fs.existsSync(mediaPath.path)) {
         watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
-          var fileName = name; 
+          var fileName = name;
           if (fs.existsSync(fileName)) {
-            if (fs.lstatSync(fileName).isDirectory())
-              {this.startQueue({ evt: evt, name: fileName, path: fileName });}
-            else
-              {this.startQueue({ evt: evt, name: path.dirname(fileName), path: fileName });}
+            if (fs.lstatSync(fileName).isDirectory()) { this.startQueue({ evt: evt, name: fileName, path: fileName }); }
+            else { this.startQueue({ evt: evt, name: path.dirname(fileName), path: fileName }); }
           }
         }));
       }

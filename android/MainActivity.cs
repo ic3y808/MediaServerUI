@@ -38,9 +38,9 @@ namespace Alloy
 	public class MainActivity : AppCompatActivity, IMenuListener, PanelSlideListener
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
-		private ImageView primaryBackground;
-		private ImageView secondaryBackground;
-		private CurrentBackground currentBackground;
+		//private ImageView primaryBackground;
+		//private ImageView secondaryBackground;
+		//private CurrentBackground currentBackground;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
 		private TextView subtitleTextView;
@@ -61,13 +61,13 @@ namespace Alloy
 
 			SetContentView(Resource.Layout.activity_main);
 
-			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
-			secondaryBackground = FindViewById<ImageView>(Resource.Id.secondary_background);
+			//primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
+			//secondaryBackground = FindViewById<ImageView>(Resource.Id.secondary_background);
 
 			DrawerLayout drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
 
 			SlidingUpPanelLayout mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
-			mainLayout.SetAnchorPoint(0.7f);
+			mainLayout.setAnchorPoint(0.7f);
 			mainLayout.AddPanelSlideListener(this);
 
 			ListView mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
@@ -127,7 +127,7 @@ namespace Alloy
 
 			CustomToggle drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
 			drawerLayout.AddDrawerListener(drawerToggle);
-			currentBackground = CurrentBackground.None;
+			//currentBackground = CurrentBackground.None;
 
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
 			ChangeFragment(Resource.String.fresh_fragment_id);
@@ -139,6 +139,13 @@ namespace Alloy
 			View settingsFooter = FindViewById(Resource.Id.settings_footer);
 			settingsFooter.Click += SettingsFooter_Click;
 			BindService();
+		}
+
+		protected async override void OnPostResume()
+		{
+			base.OnPostResume();
+
+			 MusicProvider.FullRefresh();
 		}
 
 		protected override void OnDestroy()
@@ -248,78 +255,78 @@ namespace Alloy
 			}
 		}
 
-		private void SetBackground()
-		{
-			try
-			{
-				Utils.Run(() =>
-				{
-					Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
-					fadeOut.Duration = 3000;
-					Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
-					fadeIn.Duration = 3000;
-					if (serviceConnection?.CurrentSong == null) return;
-					Bitmap newArt = serviceConnection.CurrentSong.GetAlbumArt().Blur(25);
+		//private void SetBackground()
+		//{
+		//	try
+		//	{
+		//		Utils.Run(() =>
+		//		{
+		//			Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
+		//			fadeOut.Duration = 3000;
+		//			Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
+		//			fadeIn.Duration = 3000;
+		//			if (serviceConnection?.CurrentSong == null) return;
+		//			Bitmap newArt = serviceConnection.CurrentSong.GetAlbumArt().Blur(25);
 
-					fadeOut.AnimationEnd += (o, e) =>
-					{
-						switch (currentBackground)
-						{
-							case CurrentBackground.None:
-								currentBackground = CurrentBackground.Primary;
-								break;
-							case CurrentBackground.Primary:
-								if (primaryBackground.Background != null)
-								{
-									BitmapDrawable a = primaryBackground.Background as BitmapDrawable;
-									a?.Bitmap?.Recycle();
-									a?.Bitmap?.Dispose();
-									primaryBackground.Background.Dispose();
-									primaryBackground.Background = null;
-								}
-								currentBackground = CurrentBackground.Secondary;
-								break;
-							case CurrentBackground.Secondary:
-								if (secondaryBackground.Background != null)
-								{
-									BitmapDrawable a = secondaryBackground.Background as BitmapDrawable;
-									a?.Bitmap?.Recycle();
-									a?.Bitmap?.Dispose();
-									secondaryBackground.Background.Dispose();
-									secondaryBackground.Background = null;
-								}
-								currentBackground = CurrentBackground.Primary;
-								break;
-						}
-					};
+		//			fadeOut.AnimationEnd += (o, e) =>
+		//			{
+		//				switch (currentBackground)
+		//				{
+		//					case CurrentBackground.None:
+		//						currentBackground = CurrentBackground.Primary;
+		//						break;
+		//					case CurrentBackground.Primary:
+		//						if (primaryBackground.Background != null)
+		//						{
+		//							BitmapDrawable a = primaryBackground.Background as BitmapDrawable;
+		//							a?.Bitmap?.Recycle();
+		//							a?.Bitmap?.Dispose();
+		//							primaryBackground.Background.Dispose();
+		//							primaryBackground.Background = null;
+		//						}
+		//						currentBackground = CurrentBackground.Secondary;
+		//						break;
+		//					case CurrentBackground.Secondary:
+		//						if (secondaryBackground.Background != null)
+		//						{
+		//							BitmapDrawable a = secondaryBackground.Background as BitmapDrawable;
+		//							a?.Bitmap?.Recycle();
+		//							a?.Bitmap?.Dispose();
+		//							secondaryBackground.Background.Dispose();
+		//							secondaryBackground.Background = null;
+		//						}
+		//						currentBackground = CurrentBackground.Primary;
+		//						break;
+		//				}
+		//			};
 
-					RunOnUiThread(() =>
-					{
-						switch (currentBackground)
-						{
-							case CurrentBackground.None:
-							case CurrentBackground.Secondary:
-								primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
-								primaryBackground.StartAnimation(fadeIn);
-								secondaryBackground.StartAnimation(fadeOut);
-								break;
-							case CurrentBackground.Primary:
-								secondaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
-								primaryBackground.StartAnimation(fadeOut);
-								secondaryBackground.StartAnimation(fadeIn);
-								break;
+		//			RunOnUiThread(() =>
+		//			{
+		//				switch (currentBackground)
+		//				{
+		//					case CurrentBackground.None:
+		//					case CurrentBackground.Secondary:
+		//						primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
+		//						primaryBackground.StartAnimation(fadeIn);
+		//						secondaryBackground.StartAnimation(fadeOut);
+		//						break;
+		//					case CurrentBackground.Primary:
+		//						secondaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
+		//						primaryBackground.StartAnimation(fadeOut);
+		//						secondaryBackground.StartAnimation(fadeIn);
+		//						break;
 						
-						}
-					});
-				});
-			}
-			catch (Exception ee) { Crashes.TrackError(ee); }
-		}
+		//				}
+		//			});
+		//		});
+		//	}
+		//	catch (Exception ee) { Crashes.TrackError(ee); }
+		//}
 
 		private void BackgroundAudioServiceConnection_PlaybackStatusChanged(object sender, StatusEventArg e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			SetBackground();
+			//SetBackground();
 			SetMetaData();
 			SetMainPlaylist();
 		}
@@ -330,10 +337,9 @@ namespace Alloy
 			{
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
 				MediaControllerCompat.SetMediaController(this, serviceConnection.MediaSession.Controller);
-				MusicProvider.FullRefresh();
 			}
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			SetBackground();
+			//SetBackground();
 			SetMetaData();
 			SetMainPlaylist();
 		}

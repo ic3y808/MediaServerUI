@@ -24,8 +24,8 @@ namespace Alloy.Fragments
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);
-			View root_view = inflater.Inflate(Resource.Layout.artists_layout, container, false);
-			FastScrollRecyclerView genresList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.artists_list);
+			View root_view = inflater.Inflate(Resource.Layout.genres_layout, container, false);
+			FastScrollRecyclerView genresList = root_view.FindViewById<FastScrollRecyclerView>(Resource.Id.genres_list);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
 			refreshLayout.SetOnRefreshListener(this);

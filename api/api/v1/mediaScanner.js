@@ -323,38 +323,21 @@ class MediaScanner extends MediaScannerBase {
     if (this.isScanning()) {
       this.updateStatus("Scan in progress", true);
       logger.debug("alloydb", "scan in progress");
-    } else if (fs.existsSync(dir)) {
-      if (fs.lstatSync(dir).isDirectory()) {
-        if (fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) {
-          this.scanArtist({ path: dir }).then(() => {
-            this.db.checkpoint();
-            this.resetStatus();
-            this.updateStatus("Scan Complete", false);
-          });
-        }
-      }
-    } else {
-      var root = path.dirname(dir);
+      return;
+    }
+    if (fs.existsSync(dir)) {
 
-      const artistDirs = klawSync(root, {
-        nofile: true,
-        depthLimit: 0
-      });
+      var pathToCheck = dir;
+      if (!fs.lstatSync(dir).isDirectory()) { pathToCheck = path.dirname(dir); }
 
-      if (artistDirs.length > 0) {
-        artistDirs.forEach((artistDir) => {
-          if (artistDir !== undefined && artistDir !== null && typeof (artistDir) === "string" && artistDir !== "") {
-            if (fs.existsSync(path.join(artistDir, process.env.ARTIST_NFO))) {
-              this.scanArtist({ path: artistDir }).then(() => {
-                this.db.checkpoint();
-                this.resetStatus();
-                this.updateStatus("Scan Complete", false);
-              });
-            }
-          }
+      if (fs.existsSync(path.join(pathToCheck, process.env.ARTIST_NFO))) {
+        this.scanArtist({ path: pathToCheck }).then(() => {
+          this.db.checkpoint();
+          this.resetStatus();
+          this.updateStatus("Scan Complete", false);
         });
-      } else if (fs.existsSync(path.join(root, process.env.ALBUM_NFO))) {
-        this.scanArtist({ path: path.dirname(root) }).then(() => {
+      } else if (fs.existsSync(path.join(pathToCheck, process.env.ALBUM_NFO))) {
+        this.scanArtist({ path: path.dirname(pathToCheck) }).then(() => {
           this.db.checkpoint();
           this.resetStatus();
           this.updateStatus("Scan Complete", false);

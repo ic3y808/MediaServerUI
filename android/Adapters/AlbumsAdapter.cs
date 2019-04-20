@@ -43,7 +43,7 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_row, parent, false);
+			View v = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_row, parent, false);
 			AlbumViewHolder holder = new AlbumViewHolder(v, OnClick, ServiceConnection);
 			return holder;
 		}
@@ -104,7 +104,7 @@ namespace Alloy.Adapters
 			public AlbumViewHolder(View v, Action<AlbumViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(v)
 			{
 				ItemRoot = v.FindViewById<FrameLayout>(Resource.Id.item_root);
-				Name = v.FindViewById<TextView>(Resource.Id.artist);
+				Name = v.FindViewById<TextView>(Resource.Id.album);
 				ServiceConnection = serviceConnection;
 				v.Click += (sender, e) => listener(new AlbumViewHolderEvent { Position = LayoutPosition, ViewHolder = this });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(); };
