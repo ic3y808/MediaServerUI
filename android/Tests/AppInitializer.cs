@@ -32,6 +32,7 @@ namespace Tests
 				return ConfigureApp.Android
 					.InstalledApp("com.d3bug.alloy")
 					.EnableLocalScreenshots()
+					.DevicePort(5687)
 					.StartApp(AppDataMode.Clear);
 			}
 
@@ -41,6 +42,7 @@ namespace Tests
 					.Android
 					.EnableLocalScreenshots()
 					.ApkFile(PathToApk)
+					.DevicePort(5687)
 					.StartApp();
 			}
 			return null;

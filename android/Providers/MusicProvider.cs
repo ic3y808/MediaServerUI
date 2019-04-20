@@ -4,6 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Android.OS;
 using Alloy.Helpers;
 using Alloy.Models;
@@ -489,26 +490,30 @@ namespace Alloy.Providers
 			new StarredLoader().Execute();
 		}
 
-		public static void RefreshFresh()
+		public static async Task RefreshFresh()
 		{
-			FreshStartRefresh?.Invoke(null, EventArgs.Empty);
-			new FreshLoader().Execute();
+
+			string request = ApiRequest(ApiRequestType.Fresh, null, RequestType.GET);
+			FreshContainer result = JsonConvert.DeserializeObject<FreshContainer>(request);
+			result.Fresh.Tracks.Shuffle();
+			Fresh = result.Fresh;
 		}
 
-		public static void RefreshCharts()
+		public static async Task RefreshCharts()
 		{
-			ChartsStartRefresh?.Invoke(null, EventArgs.Empty);
-			new ChartsLoader().Execute();
+			string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
+			ChartsContainer result = JsonConvert.DeserializeObject<ChartsContainer>(request);
+			Charts = result.Charts;
 		}
 
-		public static void FullRefresh()
+		public static async Task FullRefresh()
 		{
-			RefreshFresh();
-			RefreshCharts();
-			RefreshStarred();
-			RefreshArtists();
-			RefreshAlbums();
-			RefreshGenres();
+			await RefreshFresh();
+			//await RefreshCharts();
+			//RefreshStarred();
+			//RefreshArtists();
+			//RefreshAlbums();
+			//RefreshGenres();
 		}
 
 		public static void GetArtist(Artist artist)

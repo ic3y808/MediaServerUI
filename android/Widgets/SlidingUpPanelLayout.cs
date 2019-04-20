@@ -326,7 +326,7 @@ namespace Alloy.Widgets
 			}
 			if (mScrollableViewResId != -1)
 			{
-				SetScrollableView(FindViewById(mScrollableViewResId));
+				setScrollableView(FindViewById(mScrollableViewResId));
 			}
 		}
 
@@ -383,7 +383,7 @@ namespace Alloy.Widgets
      *
      * @param val A height in pixels
      */
-		public void SetPanelHeight(int val)
+		public void setPanelHeight(int val)
 		{
 			if (GetPanelHeight() == val)
 			{
@@ -396,14 +396,14 @@ namespace Alloy.Widgets
 				RequestLayout();
 			}
 
-			if (GetPanelState() != PanelState.COLLAPSED) return;
+			if (getPanelState() != PanelState.COLLAPSED) return;
 			SmoothToBottom();
 			Invalidate();
 		}
 
 		private void SmoothToBottom()
 		{
-			SmoothSlideTo(0);
+			smoothSlideTo(0);
 		}
 
 		/**
@@ -525,30 +525,33 @@ namespace Alloy.Widgets
 		{
 			mDragView?.SetOnClickListener(null);
 			mDragView = dragView;
-			if (mDragView == null) return;
-			mDragView.Clickable = true;
-			mDragView.Focusable = false;
-			mDragView.FocusableInTouchMode = false;
-			mDragView.Click += (sender, args) =>
+			if (mDragView != null)
 			{
-				if (!Enabled || !IsTouchEnabled()) return;
-				if (mSlideState != PanelState.EXPANDED && mSlideState != PanelState.ANCHORED)
+				mDragView.Clickable = true;
+				mDragView.Focusable = false;
+				mDragView.FocusableInTouchMode = false;
+				mDragView.Click += (sender, args) =>
 				{
-					if (mAnchorPoint < 1.0f)
+					if (!Enabled || !IsTouchEnabled()) return;
+					if (mSlideState != PanelState.EXPANDED && mSlideState != PanelState.ANCHORED)
 					{
-						SetPanelState(PanelState.ANCHORED);
+						if (mAnchorPoint < 1.0f)
+						{
+							setPanelState(PanelState.ANCHORED);
+						}
+						else
+						{
+							setPanelState(PanelState.EXPANDED);
+						}
 					}
 					else
 					{
-						SetPanelState(PanelState.EXPANDED);
+						setPanelState(PanelState.COLLAPSED);
 					}
-				}
-				else
-				{
-					SetPanelState(PanelState.COLLAPSED);
-				}
 
-			};
+				};
+
+			}
 		}
 
 		/**
@@ -556,7 +559,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param dragViewResId The resource ID of the new drag view
 		 */
-		public void SetDragView(int dragViewResId)
+		public void setDragView(int dragViewResId)
 		{
 			mDragViewResId = dragViewResId;
 			SetDragView(FindViewById(dragViewResId));
@@ -568,7 +571,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param scrollableView The scrollable view
 		 */
-		public void SetScrollableView(View scrollableView)
+		public void setScrollableView(View scrollableView)
 		{
 			mScrollableView = scrollableView;
 		}
@@ -578,7 +581,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param helper
 		 */
-		public void SetScrollableViewHelper(ScrollableViewHelper helper)
+		public void setScrollableViewHelper(ScrollableViewHelper helper)
 		{
 			mScrollableViewHelper = helper;
 		}
@@ -589,12 +592,14 @@ namespace Alloy.Widgets
 		 * @param anchorPoint A value between 0 and 1, determining the position of the anchor point
 		 *                    starting from the top of the layout.
 		 */
-		public void SetAnchorPoint(float anchorPoint)
+		public void setAnchorPoint(float anchorPoint)
 		{
-			if (!(anchorPoint > 0) || !(anchorPoint <= 1)) return;
-			mAnchorPoint = anchorPoint;
-			mFirstLayout = true;
-			RequestLayout();
+			if (anchorPoint > 0 && anchorPoint <= 1)
+			{
+				mAnchorPoint = anchorPoint;
+				mFirstLayout = true;
+				RequestLayout();
+			}
 		}
 
 		/**
@@ -602,7 +607,7 @@ namespace Alloy.Widgets
 		 *
 		 * @return the currently set anchor point
 		 */
-		public float GetAnchorPoint()
+		public float getAnchorPoint()
 		{
 			return mAnchorPoint;
 		}
@@ -612,7 +617,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param overlayed
 		 */
-		public void SetOverlayed(bool overlayed)
+		public void setOverlayed(bool overlayed)
 		{
 			mOverlayContent = overlayed;
 		}
@@ -620,7 +625,7 @@ namespace Alloy.Widgets
 		/**
 		 * Check if the panel is set as an overlay.
 		 */
-		public bool IsOverlayed()
+		public bool isOverlayed()
 		{
 			return mOverlayContent;
 		}
@@ -630,7 +635,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param clip
 		 */
-		public void SetClipPanel(bool clip)
+		public void setClipPanel(bool clip)
 		{
 			mClipPanel = clip;
 		}
@@ -638,13 +643,13 @@ namespace Alloy.Widgets
 		/**
 		 * Check whether or not the main content is clipped to the top of the panel
 		 */
-		public bool IsClipPanel()
+		public bool isClipPanel()
 		{
 			return mClipPanel;
 		}
 
 
-		void DispatchOnPanelSlide(View panel)
+		void dispatchOnPanelSlide(View panel)
 		{
 			lock (mPanelSlideListeners)
 			{
@@ -656,7 +661,7 @@ namespace Alloy.Widgets
 		}
 
 
-		void DispatchOnPanelStateChanged(View panel, PanelState previousState, PanelState newState)
+		void dispatchOnPanelStateChanged(View panel, PanelState previousState, PanelState newState)
 		{
 			lock (mPanelSlideListeners)
 			{
@@ -668,7 +673,7 @@ namespace Alloy.Widgets
 			SendAccessibilityEvent(EventTypes.WindowStateChanged);
 		}
 
-		void UpdateObscuredViewVisibility()
+		void updateObscuredViewVisibility()
 		{
 			if (ChildCount == 0)
 			{
@@ -682,7 +687,7 @@ namespace Alloy.Widgets
 			int right;
 			int top;
 			int bottom;
-			if (mSlideableView != null && HasOpaqueBackground(mSlideableView))
+			if (mSlideableView != null && hasOpaqueBackground(mSlideableView))
 			{
 				left = mSlideableView.Left;
 				right = mSlideableView.Right;
@@ -715,7 +720,7 @@ namespace Alloy.Widgets
 			child.Visibility = vis;
 		}
 
-		void SetAllChildrenVisible()
+		void setAllChildrenVisible()
 		{
 			for (int i = 0, childCount = ChildCount; i < childCount; i++)
 			{
@@ -724,7 +729,7 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private static bool HasOpaqueBackground(View v)
+		private static bool hasOpaqueBackground(View v)
 		{
 			Drawable bg = v.Background;
 			return bg != null && bg.Opacity == (int)Format.Opaque;
@@ -753,7 +758,7 @@ namespace Alloy.Widgets
 						mIsUnableToDrag = false;
 						mInitialMotionX = x;
 						mInitialMotionY = y;
-						if (!IsViewUnder(mDragView, (int)x, (int)y))
+						if (!isViewUnder(mDragView, (int)x, (int)y))
 						{
 							mDragHelper.Cancel();
 							mIsUnableToDrag = true;
@@ -787,7 +792,7 @@ namespace Alloy.Widgets
 					// Check if this was a click on the faded part of the screen, and fire off the listener if there is one.
 					if (ady <= dragSlop
 							&& adx <= dragSlop
-							&& mSlideOffset > 0 && !IsViewUnder(mSlideableView, (int)mInitialMotionX, (int)mInitialMotionY) && mFadeOnClickListener != null)
+							&& mSlideOffset > 0 && !isViewUnder(mSlideableView, (int)mInitialMotionX, (int)mInitialMotionY) && mFadeOnClickListener != null)
 					{
 						PlaySoundEffect(SoundEffects.Click);
 						mFadeOnClickListener.OnClick(this);
@@ -816,8 +821,8 @@ namespace Alloy.Widgets
 						mSlideOffset = mAnchorPoint;
 						break;
 					case PanelState.HIDDEN:
-						int newTop = ComputePanelTopPosition(0.0f) + (mIsSlidingUp ? +mPanelHeight : -mPanelHeight);
-						mSlideOffset = ComputeSlideOffset(newTop);
+						int newTop = computePanelTopPosition(0.0f) + (mIsSlidingUp ? +mPanelHeight : -mPanelHeight);
+						mSlideOffset = computeSlideOffset(newTop);
 						break;
 					default:
 						mSlideOffset = 0.0f;
@@ -841,10 +846,10 @@ namespace Alloy.Widgets
 
 				if (child == mSlideableView)
 				{
-					childTop = ComputePanelTopPosition(mSlideOffset);
+					childTop = computePanelTopPosition(mSlideOffset);
 				}
 
-				if (!mIsSlidingUp && (child == mMainView && !mOverlayContent)) childTop = ComputePanelTopPosition(mSlideOffset) + mSlideableView.MeasuredHeight;
+				if (!mIsSlidingUp && (child == mMainView && !mOverlayContent)) childTop = computePanelTopPosition(mSlideOffset) + mSlideableView.MeasuredHeight;
 				int childBottom = childTop + childHeight;
 				int childLeft = paddingLeft + lp.LeftMargin;
 				int childRight = childLeft + child.MeasuredWidth;
@@ -854,9 +859,9 @@ namespace Alloy.Widgets
 
 			if (mFirstLayout)
 			{
-				UpdateObscuredViewVisibility();
+				updateObscuredViewVisibility();
 			}
-			ApplyParallaxForCurrentSlideOffset();
+			applyParallaxForCurrentSlideOffset();
 
 			mFirstLayout = false;
 		}
@@ -895,7 +900,7 @@ namespace Alloy.Widgets
 
 				// If the scroll view isn't under the touch, pass the
 				// event along to the dragView.
-				if (!IsViewUnder(mScrollableView, (int)mInitialMotionX, (int)mInitialMotionY))
+				if (!isViewUnder(mScrollableView, (int)mInitialMotionX, (int)mInitialMotionY))
 				{
 					return base.DispatchTouchEvent(e);
 				}
@@ -1112,7 +1117,7 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private bool IsViewUnder(View view, int x, int y)
+		private bool isViewUnder(View view, int x, int y)
 		{
 			if (view == null) return false;
 			int[] viewLocation = new int[2];
@@ -1128,7 +1133,7 @@ namespace Alloy.Widgets
 		/*
 		 * Computes the top position of the panel based on the slide offset.
 		 */
-		private int ComputePanelTopPosition(float slideOffset)
+		private int computePanelTopPosition(float slideOffset)
 		{
 			int slidingViewHeight = mSlideableView != null ? mSlideableView.MeasuredHeight : 0;
 			int slidePixelOffset = (int)(slideOffset * mSlideRange);
@@ -1141,10 +1146,10 @@ namespace Alloy.Widgets
 		/*
 		 * Computes the slide offset based on the top position of the panel
 		 */
-		private float ComputeSlideOffset(int topPosition)
+		private float computeSlideOffset(int topPosition)
 		{
 			// Compute the panel top position if the panel is collapsed (offset 0)
-			int topBoundCollapsed = ComputePanelTopPosition(0);
+			int topBoundCollapsed = computePanelTopPosition(0);
 
 			// Determine the new slide offset based on the collapsed top position and the new required
 			// top position
@@ -1158,7 +1163,7 @@ namespace Alloy.Widgets
 		 *
 		 * @return the current panel state
 		 */
-		public PanelState GetPanelState()
+		public PanelState getPanelState()
 		{
 			return mSlideState;
 		}
@@ -1168,7 +1173,7 @@ namespace Alloy.Widgets
 		 *
 		 * @param state - new panel state
 		 */
-		public void SetPanelState(PanelState state)
+		public void setPanelState(PanelState state)
 		{
 
 			// Abort any running animation, to allow state change
@@ -1189,7 +1194,7 @@ namespace Alloy.Widgets
 
 			if (mFirstLayout)
 			{
-				SetPanelStateInternal(state);
+				setPanelStateInternal(state);
 			}
 			else
 			{
@@ -1201,35 +1206,35 @@ namespace Alloy.Widgets
 				switch (state)
 				{
 					case PanelState.ANCHORED:
-						SmoothSlideTo(mAnchorPoint);
+						smoothSlideTo(mAnchorPoint);
 						break;
 					case PanelState.COLLAPSED:
-						SmoothSlideTo(0);
+						smoothSlideTo(0);
 						break;
 					case PanelState.EXPANDED:
-						SmoothSlideTo(1.0f);
+						smoothSlideTo(1.0f);
 						break;
 					case PanelState.HIDDEN:
-						int newTop = ComputePanelTopPosition(0.0f) + (mIsSlidingUp ? +mPanelHeight : -mPanelHeight);
-						SmoothSlideTo(ComputeSlideOffset(newTop));
+						int newTop = computePanelTopPosition(0.0f) + (mIsSlidingUp ? +mPanelHeight : -mPanelHeight);
+						smoothSlideTo(computeSlideOffset(newTop));
 						break;
 				}
 			}
 		}
 
-		private void SetPanelStateInternal(PanelState state)
+		private void setPanelStateInternal(PanelState state)
 		{
 			if (mSlideState == state) return;
 			PanelState oldState = mSlideState;
 			mSlideState = state;
-			DispatchOnPanelStateChanged(this, oldState, state);
+			dispatchOnPanelStateChanged(this, oldState, state);
 		}
 
 		/**
 		 * Update the parallax based on the current slide offset.
 		 */
 
-		private void ApplyParallaxForCurrentSlideOffset()
+		private void applyParallaxForCurrentSlideOffset()
 		{
 			if (mParallaxOffset > 0)
 			{
@@ -1238,18 +1243,18 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private void OnPanelDragged(int newTop)
+		private void onPanelDragged(int newTop)
 		{
 			if (mSlideState != PanelState.DRAGGING)
 			{
 				mLastNotDraggingSlideState = mSlideState;
 			}
-			SetPanelStateInternal(PanelState.DRAGGING);
+			setPanelStateInternal(PanelState.DRAGGING);
 			// Recompute the slide offset based on the new top position
-			mSlideOffset = ComputeSlideOffset(newTop);
-			ApplyParallaxForCurrentSlideOffset();
+			mSlideOffset = computeSlideOffset(newTop);
+			applyParallaxForCurrentSlideOffset();
 			// Dispatch the slide event
-			DispatchOnPanelSlide(mSlideableView);
+			dispatchOnPanelSlide(mSlideableView);
 			// If the slide offset is negative, and overlay is not on, we need to increase the
 			// height of the main content
 			LayoutParams lp = (LayoutParams)mMainView.LayoutParameters;
@@ -1330,7 +1335,7 @@ namespace Alloy.Widgets
 		* @param slideOffset position to animate to
 		* @param velocity    initial velocity in case of fling, or 0.
 		*/
-		void SmoothSlideTo(float slideOffset)
+		void smoothSlideTo(float slideOffset)
 		{
 			if (!Enabled || mSlideableView == null)
 			{
@@ -1338,10 +1343,10 @@ namespace Alloy.Widgets
 				return;
 			}
 
-			int panelTop = ComputePanelTopPosition(slideOffset);
+			int panelTop = computePanelTopPosition(slideOffset);
 
 			if (!mDragHelper.SmoothSlideViewTo(mSlideableView, mSlideableView.Left, panelTop)) return;
-			SetAllChildrenVisible();
+			setAllChildrenVisible();
 			ViewCompat.PostInvalidateOnAnimation(this);
 		}
 
@@ -1437,40 +1442,40 @@ namespace Alloy.Widgets
 			{
 				if (layout.mDragHelper != null && layout.mDragHelper.GetViewDragState() == ViewDragHelper.STATE_IDLE)
 				{
-					layout.mSlideOffset = layout.ComputeSlideOffset(layout.mSlideableView.Top);
-					layout.ApplyParallaxForCurrentSlideOffset();
+					layout.mSlideOffset = layout.computeSlideOffset(layout.mSlideableView.Top);
+					layout.applyParallaxForCurrentSlideOffset();
 
 					if (Math.Abs(layout.mSlideOffset - 1) < 0.001)
 					{
-						layout.UpdateObscuredViewVisibility();
-						layout.SetPanelStateInternal(PanelState.EXPANDED);
+						layout.updateObscuredViewVisibility();
+						layout.setPanelStateInternal(PanelState.EXPANDED);
 					}
 					else if (Math.Abs(layout.mSlideOffset) < 0.001)
 					{
-						layout.SetPanelStateInternal(PanelState.COLLAPSED);
+						layout.setPanelStateInternal(PanelState.COLLAPSED);
 					}
 					else if (layout.mSlideOffset < 0)
 					{
-						layout.SetPanelStateInternal(PanelState.HIDDEN);
+						layout.setPanelStateInternal(PanelState.HIDDEN);
 						layout.mSlideableView.Visibility = ViewStates.Invisible;
 					}
 					else
 					{
-						layout.UpdateObscuredViewVisibility();
-						layout.SetPanelStateInternal(PanelState.ANCHORED);
+						layout.updateObscuredViewVisibility();
+						layout.setPanelStateInternal(PanelState.ANCHORED);
 					}
 				}
 			}
 
 			public override void OnViewPositionChanged(View changedView, int left, int top, int dx, int dy)
 			{
-				layout.OnPanelDragged(top);
+				layout.onPanelDragged(top);
 				layout.Invalidate();
 			}
 
 			public override void OnViewCaptured(View capturedChild, int activePointerId)
 			{
-				layout.SetAllChildrenVisible();
+				layout.setAllChildrenVisible();
 			}
 
 			public override void OnViewReleased(View releasedChild, float xvel, float yvel)
@@ -1483,37 +1488,37 @@ namespace Alloy.Widgets
 				if (direction > 0 && layout.mSlideOffset <= layout.mAnchorPoint)
 				{
 					// swipe up -> expand and stop at anchor point
-					target = layout.ComputePanelTopPosition(layout.mAnchorPoint);
+					target = layout.computePanelTopPosition(layout.mAnchorPoint);
 				}
 				else if (direction > 0 && layout.mSlideOffset > layout.mAnchorPoint)
 				{
 					// swipe up past anchor -> expand
-					target = layout.ComputePanelTopPosition(1.0f);
+					target = layout.computePanelTopPosition(1.0f);
 				}
 				else if (direction < 0 && layout.mSlideOffset >= layout.mAnchorPoint)
 				{
 					// swipe down -> collapse and stop at anchor point
-					target = layout.ComputePanelTopPosition(layout.mAnchorPoint);
+					target = layout.computePanelTopPosition(layout.mAnchorPoint);
 				}
 				else if (direction < 0 && layout.mSlideOffset < layout.mAnchorPoint)
 				{
 					// swipe down past anchor -> collapse
-					target = layout.ComputePanelTopPosition(0.0f);
+					target = layout.computePanelTopPosition(0.0f);
 				}
 				else if (layout.mSlideOffset >= (1.0f + layout.mAnchorPoint) / 2)
 				{
 					// zero velocity, and far enough from anchor point => expand to the top
-					target = layout.ComputePanelTopPosition(1.0f);
+					target = layout.computePanelTopPosition(1.0f);
 				}
 				else if (layout.mSlideOffset >= layout.mAnchorPoint / 2)
 				{
 					// zero velocity, and close enough to anchor point => go to anchor
-					target = layout.ComputePanelTopPosition(layout.mAnchorPoint);
+					target = layout.computePanelTopPosition(layout.mAnchorPoint);
 				}
 				else
 				{
 					// settle at the Bottom
-					target = layout.ComputePanelTopPosition(0.0f);
+					target = layout.computePanelTopPosition(0.0f);
 				}
 
 				if (layout.mDragHelper != null)
@@ -1535,8 +1540,8 @@ namespace Alloy.Widgets
 
 			public override int ClampViewPositionVertical(View child, int top, int dy)
 			{
-				int collapsedTop = layout.ComputePanelTopPosition(0.0f);
-				int expandedTop = layout.ComputePanelTopPosition(1.0f);
+				int collapsedTop = layout.computePanelTopPosition(0.0f);
+				int expandedTop = layout.computePanelTopPosition(1.0f);
 				if (layout.mIsSlidingUp)
 				{
 					return Math.Min(Math.Max(top, expandedTop), collapsedTop);

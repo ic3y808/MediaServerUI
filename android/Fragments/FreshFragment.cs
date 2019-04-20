@@ -80,26 +80,26 @@ namespace Alloy.Fragments
 
 			ScrollToNowPlaying();
 
-			if (MusicProvider.Fresh == null ||
-				MusicProvider.Fresh.Albums == null ||
-				MusicProvider.Fresh.Artists == null ||
-				MusicProvider.Fresh.Tracks == null)
-			{
-				Utils.Run(MusicProvider.RefreshFresh);
-			}
-			if (MusicProvider.Charts == null ||
-				MusicProvider.Charts.NeverPlayed == null ||
-				MusicProvider.Charts.NeverPlayedAlbums == null ||
-				MusicProvider.Charts.TopTracks == null)
-			{
-				Utils.Run(MusicProvider.RefreshCharts);
-			}
+			//if (MusicProvider.Fresh == null ||
+			//	MusicProvider.Fresh.Albums == null ||
+			//	MusicProvider.Fresh.Artists == null ||
+			//	MusicProvider.Fresh.Tracks == null)
+			//{
+			//	Utils.Run(MusicProvider.RefreshFresh);
+			//}
+			//if (MusicProvider.Charts == null ||
+			//	MusicProvider.Charts.NeverPlayed == null ||
+			//	MusicProvider.Charts.NeverPlayedAlbums == null ||
+			//	MusicProvider.Charts.TopTracks == null)
+			//{
+			//	Utils.Run(MusicProvider.RefreshCharts);
+			//}
 		}
 
 		public override void OnRefreshed()
 		{
-			Utils.Run(MusicProvider.RefreshFresh);
-			Utils.Run(MusicProvider.RefreshCharts);
+			MusicProvider.RefreshFresh();
+			MusicProvider.RefreshCharts();
 		}
 
 		private void Artist_ItemClick(object sender, FreshArtistAdapter.ViewHolder.ViewHolderEvent e)

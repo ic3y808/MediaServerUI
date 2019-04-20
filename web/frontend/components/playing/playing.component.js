@@ -12,20 +12,39 @@ class PlayingController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("playing-controller");
 
+
     $scope.getSong = () => {
 
       $scope.info = this.MediaPlayer.selectedTrack();
-      console.log($scope.info);
+
       if ($scope.info) {
+
+        var artist = this.AlloyDbService.getArtist($scope.info.artist_id);
+        if (artist) {
+          artist.then((info) => {
+            $scope.artist = info;
+
+          });
+        }
+
+        var album = this.AlloyDbService.getAlbum($scope.info.album_id);
+        if (album) {
+          album.then((info) => {
+            $scope.album = info;
+
+          });
+        }
 
         var coverArt = this.AlloyDbService.getCoverArt({ track_id: $scope.info.id });
         if (coverArt) {
           $scope.info.image = coverArt;
           this.AppUtilities.apply();
         }
-        this.AppUtilities.hideLoader();
-        this.AppUtilities.apply();
 
+        Promise.all([artist, album], (result) => {
+          this.AppUtilities.hideLoader();
+          this.AppUtilities.apply();
+        });
 
         $scope.previousTracks = this.MediaPlayer.previousTracks(5);
         $scope.upcomingTracks = this.MediaPlayer.upcomingTracks(5);
@@ -47,6 +66,8 @@ class PlayingController {
         //  }
         //}
       } else { this.AppUtilities.hideLoader(); }
+
+
     };
 
     $rootScope.$on("trackChangedEvent", (event, data) => {

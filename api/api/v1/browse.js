@@ -82,6 +82,7 @@ router.get("/artist", function (req, res) {
     albums: [],
     EPs: [],
     singles: [],
+    other: [],
     total_plays: 0
   };
 
@@ -101,6 +102,9 @@ router.get("/artist", function (req, res) {
         break;
       case "Single":
         result.singles.push(album);
+        break;
+      default:
+        result.other.push(album);
         break;
     }
   });
