@@ -81,18 +81,17 @@ export default class MediaPlayer {
 
     this.MediaElement.addEventListener("timeupdate", () => {
       var duration = MediaElement.duration;
-      if (!isFinite(duration))
-        {duration = this.selectedTrack().duration;}
+      if (!isFinite(duration)) { duration = this.selectedTrack().duration; }
 
       var playPercent = 100 * (MediaElement.currentTime / duration);
       if (!isNaN(playPercent)) {
         var buffered = MediaElement.buffered;
 
         if (buffered.length) {
-         var loaded = 100 * buffered.end(0) / duration;
-         $("#subProgress").attr("aria-valuenow", loaded).css("width", loaded + "%");
+          var loaded = 100 * buffered.end(0) / duration;
+          $("#subProgress").attr("aria-valuenow", loaded).css("width", loaded + "%");
         }
-       
+
         this.currentProgressPercent = playPercent;
         this.currentTime = this.AppUtilities.formatTime(this.MediaElement.currentTime);
         this.currentDuration = this.AppUtilities.formatTime(duration);
@@ -209,7 +208,7 @@ export default class MediaPlayer {
   }
 
   remotePlayerConnected() {
-    if (!this.remotePlayer) {return false;}
+    if (!this.remotePlayer) { return false; }
     return this.remotePlayer.isConnected;
   }
 
@@ -322,10 +321,10 @@ export default class MediaPlayer {
 
   scrobble(instance, source) {
     instance.AlloyDbService.scrobble(source.id).then((scrobbleResult) => {
-      if (scrobbleResult) {instance.Logger.info("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);}
+      if (scrobbleResult) { instance.Logger.info("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
     });
     instance.AlloyDbService.scrobbleNowPlaying(source.id).then((scrobbleResult) => {
-      if (scrobbleResult) {instance.Logger.info("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title);}
+      if (scrobbleResult) { instance.Logger.info("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
     });
   }
 
@@ -441,14 +440,14 @@ export default class MediaPlayer {
   }
 
   previous() {
-    if (!this.repeatEnabled) {this.selectedIndex--;}
+    if (!this.repeatEnabled) { this.selectedIndex--; }
     if (!this.checkPlaylistBeginning(this.selectedIndex)) {
       this.loadTrack(this.selectedIndex);
     }
   }
 
   next() {
-    if (!this.repeatEnabled) {this.selectedIndex++;}
+    if (!this.repeatEnabled) { this.selectedIndex++; }
     if (!this.checkPlaylistEnding(this.selectedIndex)) {
       this.loadTrack(this.selectedIndex);
     }
@@ -654,15 +653,17 @@ export default class MediaPlayer {
 
     var selected = this.selectedTrack();
 
-
     if (selected && type && id) {
-      if (type === "track") {
-        return id === selected.id;
-      } else if (type === "artist") {
-        return id === selected.artist_id;
-      } else if (type === "album") {
-        return id === selected.album_id;
+      if(this.isPlaying){
+        if (type === "track") {
+          return id === selected.id;
+        } else if (type === "artist") {
+          return id === selected.artist_id;
+        } else if (type === "album") {
+          return id === selected.album_id;
+        }
       }
+      
     }
     return false;
   }
