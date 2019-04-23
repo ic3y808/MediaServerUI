@@ -25,34 +25,13 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
       itemlist(data="$root.starred_top_artists", title="Top Artists", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
       
 
-
   .row
     .col-md-7
       h3.font-thin Tracks
       .row.row-sm
-        .padder-lg
-          ol.tracklist
-            .menu-wrapper(ng-repeat="track in $root.starred_tracks | limitTo:25")
-              div
-                li.tracklist-row.tracklist-row--oneline
-                  .tracklist-col.position-outer
-                    .tracklist-play-pause.tracklist-middle-align(ng-click="$root.MediaPlayer.playTrack(track, $root.starred_tracks)")
-                      svg.icon-play(viewBox='0 0 85 100')
-                        path( d='M81 44.6c5 3 5 7.8 0 10.8L9 98.7c-5 3-9 .7-9-5V6.3c0-5.7 4-8 9-5l72 43.3z')
-                          title PLAY
-              
-                  .tracklist-col.name
-                    .track-name-wrapper.tracklist-middle-align
-                      .tracklist-name.ellipsis-one-line(dir='auto')
-                        a(ng-click="$root.MediaPlayer.playTrack(track, $root.starred_tracks)", href="") {{track.title}}
-                      .tracklist-artist.ellipsis-one-line(dir='auto')
-                        a(href="/artist/{{track.artist_id}}") {{track.artist}} - 
-                        a(href="/album/{{track.album_id}}") {{track.album}}
-
-                  .tracklist-col.tracklist-col-duration
-                    .tracklist-duration.tracklist-middle-align
-                      span {{$root.formatTime(track.duration)}}
-
+        .col-md-12(ng-if="$root.starred_tracks.length > 0")
+          itemtable(data="$root.starred_tracks", title="Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="/starred")
+      
     .col-md-5(ng-if="$root.starred_top_tracks.length > 0")
       h3.font-thin Top Tracks
       .list-group.bg-white.list-group-lg.no-bg.auto

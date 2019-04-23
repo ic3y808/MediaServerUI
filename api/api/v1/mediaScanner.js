@@ -131,6 +131,12 @@ class MediaScanner extends MediaScannerBase {
 
   checkExistingTrack(track, metadata) {
     track.id = utils.isStringValid(metadata.common.musicbrainz_recordingid, "");
+
+    var existingDbTrack = this.db.prepare("SELECT * FROM Tracks WHERE id = ?").get(track.id);
+   
+    if (existingDbTrack) {
+      Object.assign(track, existingDbTrack);
+    }
     track.artist = utils.isStringValid(metadata.common.artist, "No Artist");
     track.title = utils.isStringValid(metadata.common.title, "");
     track.album = utils.isStringValid(metadata.common.album, "No Album");
@@ -254,13 +260,14 @@ class MediaScanner extends MediaScannerBase {
               if (utils.isFileValid(track.path)) {
                 allMetaPromises.push(mm.parseFile(track.path).then((metadata) => {
                   var processed_track = new structures.Song();
+                  processed_track = this.checkExistingTrack(processed_track, metadata);
                   processed_track.path = track.path;
                   processed_track.artist = utils.isStringValid(artist.name, "");
                   processed_track.artist_id = artist.id;
                   processed_track.album = utils.isStringValid(album.name, "");
                   processed_track.album_path = album.path;
                   processed_track.getStats();
-                  processed_track = this.checkExistingTrack(processed_track, metadata);
+                  
                   processed_track.album_id = album.id;
 
                   album.releases.forEach((release) => {
