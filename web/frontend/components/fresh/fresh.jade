@@ -19,7 +19,7 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
     .col-md-5(ng-if="top_tracks.length > 0")
       itemlist(data="top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/charts")
   .row
-    .col-md-10.col-md-offset-1(ng-if="$root.fresh_albums.length > 0")
+    .col-md-12(ng-if="$root.fresh_albums.length > 0")
       
       itemtable(data="$root.fresh_albums", title="Recently Added", limit="$root.fresh_albums.length", type="albums", refreshclick="refresh()", viewmorelink="/charts")
       

@@ -185,21 +185,24 @@ router.post("/do_restore", function (req, res) {
   var dbShmPath = process.env.DATABASE_SHM;
   var sampleFile = req.files.data;
   var restoreFile = path.join(process.env.BACKUP_DATA_DIR, sampleFile.name);
-  sampleFile.mv(restoreFile, function (err) {
-    if (err) { return res.status(500).send(err); }
+  setTimeout(() => {
+    sampleFile.mv(restoreFile, function (err) {
+      if (err) { return res.status(500).send(err); }
 
-    if (fs.existsSync(dbPath)) { fs.renameSync(dbPath, dbPath + ".old"); }
-    if (fs.existsSync(dbWalPath)) { fs.renameSync(dbWalPath, dbWalPath + ".old"); }
-    if (fs.existsSync(dbShmPath)) { fs.renameSync(dbShmPath, dbShmPath + ".old"); }
+      if (fs.existsSync(dbPath)) { fs.renameSync(dbPath, dbPath + ".old"); }
+      if (fs.existsSync(dbWalPath)) { fs.renameSync(dbWalPath, dbWalPath + ".old"); }
+      if (fs.existsSync(dbShmPath)) { fs.renameSync(dbShmPath, dbShmPath + ".old"); }
 
-    fs.renameSync(restoreFile, dbPath);
+      fs.renameSync(restoreFile, dbPath);
 
-    logger.info("alloydb", "shutting down.... restart server");
-    setTimeout(() => {
-      process.exit(0);
-    }, 5000);
-    res.send(new structures.StatusResult("success"));
-  });
+      logger.info("alloydb", "shutting down.... restart server");
+      setTimeout(() => {
+        process.exit(0);
+      }, 5000);
+      res.send(new structures.StatusResult("success"));
+    });
+  }, 1000);
+
 });
 
 module.exports = router;

@@ -68,12 +68,12 @@ module.exports.socketConnect = function (socket) {
     });
   });
   socket.on("disconnect_db", function () {
-    log.into("alloyui", "UI requested db to disconnect: ");
+    log.info("alloyui", "UI requested db to disconnect: ");
     module.exports.disconnectDb(function () {
-      log.into("alloyui", "shutting down.... restart server");
-      setTimeout(() => {
-        process.exit(0);
-      }, 5000);
+      log.info("alloyui", "shutting down.... restart server");
+
+      process.exit(0);
+
     });
   });
 };
