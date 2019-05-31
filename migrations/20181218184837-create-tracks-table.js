@@ -3,7 +3,8 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("Tracks", {
+  return {
+    name: "Tracks",
     columns: {
       id: { type: "string", unique: true },
       path: { type: "string", defaultValue: "", unique: true },
@@ -34,7 +35,7 @@ exports.up = function (db) {
       of: { type: "int", defaultValue: 0 }
     },
     ifNotExists: true
-  });
+  };
 };
 
 exports.down = function (db) {

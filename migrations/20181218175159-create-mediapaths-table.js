@@ -3,13 +3,14 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return db.createTable("MediaPaths", {
+  return {
+    name: "MediaPaths",
     columns: {
       display_name: { type: "string", primaryKey: true, unique: true },
       path: { type: "string" }
     },
     ifNotExists: true
-  });
+  };
 };
 
 exports.down = function () {

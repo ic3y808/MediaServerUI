@@ -1,0 +1,197 @@
+@font-face {
+    font-family: "alloyicons";
+    src: url("./alloyicons.eot?d8d856385f6f3ae9fbb9b2bff3c64ffe?#iefix") format("embedded-opentype"),
+url("./alloyicons.woff2?d8d856385f6f3ae9fbb9b2bff3c64ffe") format("woff2"),
+url("./alloyicons.woff?d8d856385f6f3ae9fbb9b2bff3c64ffe") format("woff"),
+url("./alloyicons.ttf?d8d856385f6f3ae9fbb9b2bff3c64ffe") format("truetype"),
+url("./alloyicons.svg?d8d856385f6f3ae9fbb9b2bff3c64ffe#alloyicons") format("svg");
+}
+
+i[class^="icon-"]:before, i[class*=" icon-"]:before {
+    font-family: alloyicons !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-albums:before {
+    content: "\f101";
+}
+.icon-allmusic:before {
+    content: "\f102";
+}
+.icon-alloydb:before {
+    content: "\f103";
+}
+.icon-appicon:before {
+    content: "\f104";
+}
+.icon-artists:before {
+    content: "\f105";
+}
+.icon-ban:before {
+    content: "\f106";
+}
+.icon-bandcamp:before {
+    content: "\f107";
+}
+.icon-bbc:before {
+    content: "\f108";
+}
+.icon-beatport:before {
+    content: "\f109";
+}
+.icon-charts:before {
+    content: "\f10a";
+}
+.icon-chevron-down:before {
+    content: "\f10b";
+}
+.icon-chevron-left:before {
+    content: "\f10c";
+}
+.icon-chevron-right:before {
+    content: "\f10d";
+}
+.icon-chevron-up:before {
+    content: "\f10e";
+}
+.icon-cloud-download:before {
+    content: "\f10f";
+}
+.icon-controls:before {
+    content: "\f110";
+}
+.icon-database:before {
+    content: "\f111";
+}
+.icon-discogs:before {
+    content: "\f112";
+}
+.icon-download:before {
+    content: "\f113";
+}
+.icon-elipsis:before {
+    content: "\f114";
+}
+.icon-external-link:before {
+    content: "\f115";
+}
+.icon-facebook:before {
+    content: "\f116";
+}
+.icon-fast-forward:before {
+    content: "\f117";
+}
+.icon-folder:before {
+    content: "\f118";
+}
+.icon-fresh:before {
+    content: "\f119";
+}
+.icon-genres:before {
+    content: "\f11a";
+}
+.icon-headphones:before {
+    content: "\f11b";
+}
+.icon-history:before {
+    content: "\f11c";
+}
+.icon-last:before {
+    content: "\f11d";
+}
+.icon-loop:before {
+    content: "\f11e";
+}
+.icon-menu:before {
+    content: "\f11f";
+}
+.icon-minus:before {
+    content: "\f120";
+}
+.icon-musical-note:before {
+    content: "\f121";
+}
+.icon-myspace:before {
+    content: "\f122";
+}
+.icon-pause:before {
+    content: "\f123";
+}
+.icon-play:before {
+    content: "\f124";
+}
+.icon-playlist:before {
+    content: "\f125";
+}
+.icon-plus:before {
+    content: "\f126";
+}
+.icon-queue:before {
+    content: "\f127";
+}
+.icon-refresh:before {
+    content: "\f128";
+}
+.icon-repeat:before {
+    content: "\f129";
+}
+.icon-rewind:before {
+    content: "\f12a";
+}
+.icon-sabnzbd:before {
+    content: "\f12b";
+}
+.icon-scheduler:before {
+    content: "\f12c";
+}
+.icon-search:before {
+    content: "\f12d";
+}
+.icon-settings:before {
+    content: "\f12e";
+}
+.icon-shuffle:before {
+    content: "\f12f";
+}
+.icon-soundcloud:before {
+    content: "\f130";
+}
+.icon-star-o:before {
+    content: "\f131";
+}
+.icon-star:before {
+    content: "\f132";
+}
+.icon-starred:before {
+    content: "\f133";
+}
+.icon-status:before {
+    content: "\f134";
+}
+.icon-stop:before {
+    content: "\f135";
+}
+.icon-twitter:before {
+    content: "\f136";
+}
+.icon-volume-off:before {
+    content: "\f137";
+}
+.icon-volume-on:before {
+    content: "\f138";
+}
+.icon-wikidata:before {
+    content: "\f139";
+}
+.icon-wikipedia:before {
+    content: "\f13a";
+}
+.icon-youtube:before {
+    content: "\f13b";
+}
