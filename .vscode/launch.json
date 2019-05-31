@@ -4,49 +4,65 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "UI-ServerDebug",
-      "program": "${workspaceFolder}/web/backend/server.js",
-      "outputCapture": "std",
+      "name": "Electron: Main",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "cwd": "${workspaceFolder}",
       "env": {
-        "MODE": "dev",
-        "PORT": "3000",
-        "JADE_PORT": "34568",
-        "USE_ANALYZER": "false"
-        //error, warn, info, verbose, debug, silly.
-      }
+        "MODE":"dev"
+      },
+      "runtimeArgs": [
+        "--remote-debugging-port=9223",
+        "."
+      ],
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "outputCapture": "std"
+    },
+    {
+      "name": "Electron: Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 30000,
+      "url": "http://localhost:3000/template/alloydb.jade"
+    },
+    {
+      "name": "Electron: MediaScanner",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 30000,
+      "url": "http://localhost:3000/template/mediascanner.jade"
+    },
+    {
+      "name": "Electron: Scheduler",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 30000,
+      "url": "http://localhost:3000/template/scheduler.jade"
+    },
+    {
+      "name": "Electron: Server",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 30000,
+      "url": "http://localhost:3000/template/server.jade"
     },
     {
       "type": "node",
       "request": "launch",
-      "name": "UI-ServerRelease",
-      "outputCapture": "std",
-      "program": "${workspaceFolder}/web/backend/server.js",
-      "env": {
-        "MODE": "prod",
-        "PORT": "3000"
-      }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Backend-ServerDebug",
-      "outputCapture": "std",
-      "program": "${workspaceFolder}/api/index.js",
-      "env": {
-        "MODE": "dev",
-        "API_PORT": "4000"
-      }
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Backend-ServerRelease",
-      "outputCapture": "std",
-      "program": "${workspaceFolder}/api/index.js",
-      "env": {
-        "MODE": "prod",
-        "API_PORT": "4000"
-      }
+      "name": "WebUI",
+      "cwd": "${workspaceFolder}/webui",
+      "program": "${workspaceFolder}/webui/backend/server.js",
+      "outputCapture": "std"
     },
     {
       "type": "node",
@@ -54,7 +70,6 @@
       "name": "Rebuild Icons",
       "program": "${workspaceFolder}/setup.js",
       "args": [
-      
         "-f"
       ]
     },
@@ -85,18 +100,44 @@
   ],
   "compounds": [
     {
+      "name": "Electron: All",
+      "configurations": [
+        "Electron: Main",
+        "Electron: Renderer",
+        "Electron: MediaScanner",
+        "Electron: Scheduler",
+        "Electron: Server"
+      ]
+    },
+    {
+      "name": "Electron: All Release",
+      "configurations": [
+        "Electron: Main",
+        "Electron: Renderer",
+        "Electron: MediaScanner",
+        "Electron: Scheduler",
+        "Electron: Server",
+      ]
+    },
+    {
       "name": "Debug All",
       "configurations": [
-        "UI-ServerDebug",
-        "Backend-ServerDebug",
+        "Electron: Main",
+        "Electron: Renderer",
+        "Electron: MediaScanner",
+        "Electron: Scheduler",
+        "Electron: Server",
         "LaunchChrome"
       ]
     },
     {
       "name": "Release All",
       "configurations": [
-        "UI-ServerRelease",
-        "Backend-ServerRelease",
+        "Electron: Main",
+        "Electron: Renderer",
+        "Electron: MediaScanner",
+        "Electron: Scheduler",
+        "Electron: Server",
         "LaunchChrome"
       ]
     }

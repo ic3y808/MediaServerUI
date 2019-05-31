@@ -1,7 +1,0 @@
-[Nn]ode_modules/
-[Ii]mages/
-data.db
-data.db.journal
-package-lock.json
-data.db-wal
-data.db-shm
