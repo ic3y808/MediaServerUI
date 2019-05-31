@@ -31,6 +31,7 @@
 ```
 
 ## To run: 
+### requires node-v10.11.0
 * Powershell as admin npm i -g --production windows-build-tools@4.0.0
 * npm install
 * node ./setup.js -install
