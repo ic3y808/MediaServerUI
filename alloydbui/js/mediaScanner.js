@@ -88,7 +88,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         albumDirs.forEach((dir) => {
           if (fs.existsSync(path.join(dir.path, process.env.ALBUM_NFO))) {
             var json = JSON.parse(parser.toJson(fs.readFileSync(path.join(dir.path, process.env.ALBUM_NFO))));
-            var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.3/album/" + json.album.musicbrainzalbumid;
+            var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.4/album/" + json.album.musicbrainzalbumid;
             const albumTracks = klawSync(dir.path, { nodir: true });
             var validTracks = [];
             albumTracks.forEach((track) => {
@@ -105,11 +105,11 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
                   id: json.album.musicbrainzalbumid,
                   artist: utils.isStringValid(artist.name, ""),
                   artist_id: artist.id,
-                  name: utils.isStringValid(albumInfo.Title, ""),
+                  name: utils.isStringValid(albumInfo.title, ""),
                   path: dir.path,
                   created: json.album.releasedate,
-                  type: utils.isStringValid(albumInfo.Type, ""),
-                  rating: albumInfo.Rating ? albumInfo.Rating.Count : 0,
+                  type: utils.isStringValid(albumInfo.type, ""),
+                  rating: albumInfo.Rating ? albumInfo.rating.Count : 0,
                   track_count: validTracks.length
                 };
                 var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
@@ -120,8 +120,8 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
                   this.updateStatus("Inserted mapped album " + mappedAlbum.name, true);
                 }
                 mappedAlbum.releases = [];
-                if (albumInfo.Releases) {
-                  albumInfo.Releases.forEach((release) => {
+                if (albumInfo.releases) {
+                  albumInfo.releases.forEach((release) => {
                     mappedAlbum.releases.push(release);
                   });
                 }
@@ -267,7 +267,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) { return; }
         var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
         var json = JSON.parse(parser.toJson(data));
-        var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.3/artist/" + json.artist.musicbrainzartistid;
+        var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.4/artist/" + json.artist.musicbrainzartistid;
         var loaded = false;
         this.downloadPage(artistUrl).then((result) => {
           try {

@@ -14,5 +14,15 @@ section.vbox
         span.input-group-btn
           button.btn.btn-sm.bg-white.btn-icon.rounded(data-target='#nav,.navbar-header', data-toggle='class:nav-xs,nav-xs')
             i.alloy-icon.icon-menu
+    .form-group
+      .input-group
+        span.input-group-btn
+          button.btn.btn-sm.bg-white.btn-icon.rounded(ng-click="$root.goBack()")
+            i.alloy-icon.icon-back-arrow
+    .form-group
+      .input-group
+        span.input-group-btn
+          button.btn.btn-sm.bg-white.btn-icon.rounded(ng-click="refreshCurrentView()")
+            i.alloy-icon.icon-refresh
         
     searchbar
