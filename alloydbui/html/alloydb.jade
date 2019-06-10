@@ -128,7 +128,7 @@ html(ng-app='alloydb', lang='en-us')
                         |  {{scan_status.path}}
               #database.tab-pane.active
                 .row
-                  .col-lg-12.col-md-12
+                  .col-lg-8.col-md-12
                     .card
                       .card-header.card-header-tabs.card-header-primary
                         .nav-tabs-navigation
@@ -156,6 +156,38 @@ html(ng-app='alloydb', lang='en-us')
                             tr
                               td Total Space 
                               td {{library_stats.memory_used}}
+                            tr
+                              td Total Tracks Served 
+                              td {{library_stats.total_requests}}
+                            tr
+                              td Total Data Sent 
+                              td {{library_stats.total_data_served}}
+   
+                  .col-lg-4.col-md-12
+                    .card
+                      .card-header.card-header-tabs.card-header-primary
+                        .nav-tabs-navigation
+                          .nav-tabs-wrapper
+                            span.nav-tabs-title Tasks
+                      .card-body
+                        table.table
+                          tbody
+                            tr
+                              td Restart API Server
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Restart API Server', type='button', title='', rel='tooltip')
+                                  i.material-icons play_arrow
+                            tr
+                              td Enable API Server
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Enable API autostart', type='button', title='', rel='tooltip', ng-click="enableApiServer()")
+                                  i.material-icons play_arrow
+                            tr
+                              td Disable API Server
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Disable API autostart', type='button', title='', rel='tooltip', ng-click="disableApiServer()")
+                                  i.material-icons play_arrow
+
                 .row
                   .col-lg-12.col-md-12
                     .card
@@ -213,19 +245,19 @@ html(ng-app='alloydb', lang='en-us')
                         table.table
                           tbody
                             tr
-                              td Restart Process
+                              td Restart UI Server
                               td.td-actions.text-right
                                 button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
                                   i.material-icons play_arrow
                             tr
-                              td Enable Server
+                              td Enable UI Server
                               td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="enableUiServer()")
                                   i.material-icons play_arrow
                             tr
-                              td Disable Server
+                              td Disable UI Server
                               td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="disableUiServer()")
                                   i.material-icons play_arrow
                            
 

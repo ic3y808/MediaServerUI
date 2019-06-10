@@ -1,8 +1,7 @@
 var electron = require("electron");
 var { ipcRenderer } = electron;
 require("angular");
-const app = angular.module("alloydb", []);
-var logger = {};
+var app = angular.module("alloydb", []);
 
 if (module.hot) { module.hot.accept(); }
 
@@ -27,7 +26,7 @@ app.run(function ($rootScope) {
   });
 
   $rootScope.update = function () {
-    if ($rootScope.$root.$$phase != "$apply" && $rootScope.$root.$$phase != "$digest") {
+    if ($rootScope.$root.$$phase !== "$apply" && $rootScope.$root.$$phase !== "$digest") {
       $rootScope.$apply();
     }
   };
@@ -84,13 +83,29 @@ app.run(function ($rootScope) {
     if (entry.level === "error") { return "error-row"; }
   };
 
-  $rootScope.mediaScannerRestart = function (entry) {
+  $rootScope.mediaScannerRestart = function () {
     ipcRenderer.send("mediascanner-restart");
   };
 
+  $rootScope.enableApiServer = function () {
+    ipcRenderer.send("task-alloydb-toggle-api", { enabled: true });
+  };
+
+  $rootScope.disableApiServer = function () {
+    ipcRenderer.send("task-alloydb-toggle-api", { enabled: false });
+  };
+
+  $rootScope.enableUiServer = function () {
+    ipcRenderer.send("task-alloydb-toggle-ui", { enabled: true });
+  };
+
+  $rootScope.disableUiServer = function () {
+    ipcRenderer.send("task-alloydb-toggle-ui", { enabled: false });
+  };
+
   $rootScope.filterLogEntry = function () {
-    return function( item ) {
-      if($rootScope.selectedLogLevel === "all") {return true;}
+    return function (item) {
+      if ($rootScope.selectedLogLevel === "all") { return true; }
       return item.level === $rootScope.selectedLogLevel;
     };
   };
@@ -116,8 +131,10 @@ app.run(function ($rootScope) {
   });
 
   ipcRenderer.on("logger-logs", (args, e) => {
-    $rootScope.logs = e;
-    $rootScope.update();
+    if (e) {
+      $rootScope.logs = e;
+      $rootScope.update();
+    }
   });
 
   ipcRenderer.on("app-loaded", (args, e) => {

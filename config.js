@@ -5,11 +5,9 @@ const shell = require("shelljs");
 var electron = require("electron");
 var { app } = electron;
 const dotenv = require("dotenv");
-
 var envPath = path.join(__dirname, ".env");
-console.log(process.mainModule.filename);
 var dev = process.mainModule.filename.indexOf("app.asar");
-if(dev === -1) { envPath = ".env"; }
+if (dev === -1) { envPath = ".env"; }
 const result = dotenv.config({ path: envPath });
 if (result.error) {
   throw result.error;
@@ -31,7 +29,6 @@ process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "database.db-shm");
 process.env.TEST_DATABASE = path.join(process.env.DATA_DIR, "testdb.db");
 process.env.COVER_ART_DIR = path.join(process.env.DATA_DIR, "images");
 process.env.COVER_ART_NO_ART = path.join(process.env.APP_DIR, "common", "no_art.jpg");
-
 process.env.UUID_BASE = "1b671a64-40d5-491e-99b0-da01ff1f3341";
 process.env.ARTIST_NFO = "artist.nfo";
 process.env.ALBUM_NFO = "album.nfo";
@@ -40,12 +37,13 @@ process.env.COVERART_IMAGE = "Cover.jpg";
 process.env.FOLDER_IMAGE = "folder.jpg";
 process.env.LOGO_IMAGE = "logo.png";
 
-var config = {
+module.exports.config = {
   api_key: "",
   lastfm_api_key: "",
   lastfm_api_secret: "",
   brainz_api_url: "",
-  ui_only: false
+  ui_enabled: true,
+  api_enabled: true
 };
 
 if (!fs.existsSync(process.env.DATA_DIR)) { shell.mkdir("-p", process.env.DATA_DIR); }
@@ -66,23 +64,46 @@ if (process.env.MODE === "test") {
 //if (fs.existsSync(process.env.DATABASE_WAL)) shell.rm(process.env.DATABASE_WAL);
 //if (fs.existsSync(process.env.DATABASE_SHM)) shell.rm(process.env.DATABASE_SHM);
 
-if (fs.existsSync(process.env.CONFIG_FILE)) {
-  config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
-} else {
+module.exports.getConfig = function () {
 
-  config.api_key = md5(Math.random().toString());
-  fs.writeFileSync(process.env.CONFIG_FILE, JSON.stringify(config, null, 2), function (err, data) {
-    if (err) {
-      console.log(err);
-    }
-    else {
-      console.log("updated!");
-    }
+  if (fs.existsSync(process.env.CONFIG_FILE)) {
+    var config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
+    console.log(config);
+    return config;
+  } else { return null; }
+
+};
+
+module.exports.saveConfig = function () {
+  return new Promise((resolve, reject) => {
+    fs.writeFileSync(process.env.CONFIG_FILE, JSON.stringify(module.exports.config, null, 2), function (err, data) {
+      if (err) {
+        reject(err);
+      }
+      else {
+        resolve();
+      }
+    });
   });
+};
+
+
+var confResult = module.exports.getConfig();
+
+if (confResult === null) {
+  module.exports.config.api_key = md5(Math.random().toString());
+  module.exports.saveConfig().then((result) => {
+    console.log("Created default config");
+  }).catch((err) => {
+    console.log(err);
+  });
+} else {
+  module.exports.config = confResult;
+  process.env.API_KEY = module.exports.config.api_key;
+  process.env.LASTFM_API_KEY = module.exports.config.lastfm_api_key;
+  process.env.LASTFM_API_SECRET = module.exports.config.lastfm_api_secret;
+  process.env.BRAINZ_API_URL = module.exports.config.brainz_api_url;
+  process.env.UI_ENABLED = module.exports.config.ui_enabled;
+  process.env.API_ENABLED = module.exports.config.api_enabled;
 }
 
-process.env.API_KEY = config.api_key;
-process.env.LASTFM_API_KEY = config.lastfm_api_key;
-process.env.LASTFM_API_SECRET = config.lastfm_api_secret;
-process.env.BRAINZ_API_URL = config.brainz_api_url;
-process.env.UI_ONLY = config.ui_only;

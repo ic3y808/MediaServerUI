@@ -1,11 +1,13 @@
 const path = require("path");
 const winston = require("winston");
+const electron = require("electron");
 const log = require("electron-log");
+const { ipcRenderer } = electron;
 log.catchErrors();
-
+module.exports.callback = {};
 
 const transports = {
-  err:  new winston.transports.File({
+  err: new winston.transports.File({
     filename: path.join(process.env.LOGS_DIR, "error.log"),
     level: "error",
     json: true,
@@ -30,7 +32,7 @@ const transports = {
           }
         }
         return out;
-      }),
+      })
     )
   })
 };
@@ -65,6 +67,8 @@ module.exports.log = function (method, obj) {
       logger.log(obj);
     }
   }
+  if (ipcRenderer) { ipcRenderer.send("log-update"); }
+  if (typeof module.exports.callback === "function") { module.exports.callback(); }
 };
 
 module.exports.debug = function (label, message) {
@@ -72,7 +76,7 @@ module.exports.debug = function (label, message) {
   obj.level = "debug";
   obj.label = label;
   obj.message = message;
-  logger.log("debug", obj);
+  module.exports.log("debug", obj);
 };
 
 module.exports.info = function (label, message) {
@@ -80,7 +84,7 @@ module.exports.info = function (label, message) {
   obj.level = "info";
   obj.label = label;
   obj.message = message;
-  logger.log("info", obj);
+  module.exports.log("info", obj);
 };
 
 module.exports.error = function (label, message) {
@@ -88,7 +92,7 @@ module.exports.error = function (label, message) {
   obj.level = "error";
   obj.label = label;
   obj.message = message;
-  logger.log("error", obj);
+  module.exports.log("error", obj);
 };
 
 module.exports.query = function (cb) {
@@ -103,7 +107,6 @@ module.exports.query = function (cb) {
   };
   logger.query(options, function (err, results) {
     if (err) {
-      /* TODO: handle me */
       cb(err);
     } else {
       cb(results.file);

@@ -53,7 +53,7 @@ db.init().then(function () {
   }
 
   app.use(
-    favicon(path.join(__dirname, "..", "..", "common", "appicon.ico"))
+    favicon(path.join(__dirname, "..", "..", "common", "icon.ico"))
   );
 
   // view engine setup
