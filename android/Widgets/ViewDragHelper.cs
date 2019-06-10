@@ -2,9 +2,10 @@
 using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Views.Animations;
+using Android.Widget;
 using Java.Lang;
 using Java.Util;
-#pragma warning disable 618
+
 namespace Alloy.Widgets
 {
 	/**
@@ -105,7 +106,7 @@ namespace Alloy.Widgets
 		private readonly int mEdgeSize;
 		private int mTrackingEdges;
 
-		private readonly ScrollerCompat mScroller;
+		private readonly OverScroller mScroller;
 
 		private readonly Callback mCallback;
 
@@ -402,7 +403,7 @@ namespace Alloy.Widgets
 		 * @param forParent Parent view to monitor
 		 * @param interpolator interpolator for scroller
 		 */
-		private ViewDragHelper(Context context, ViewGroup forParent, IInterpolator interpolator, Callback cb)
+		protected ViewDragHelper(Context context, ViewGroup forParent, IInterpolator interpolator, Callback cb)
 		{
 			if (forParent == null)
 			{
@@ -425,7 +426,8 @@ namespace Alloy.Widgets
 			mMinVelocity = vc.ScaledMinimumFlingVelocity;
 
 			//mScroller = ScrollerCompat.Create(context, interpolator);
-			mScroller = ScrollerCompat.Create(context, sInterpolator);
+			//mScroller = ScrollerCompat.Create(context, sInterpolator);
+			mScroller = new OverScroller(context, interpolator != null ? interpolator : sInterpolator);
 
 			//mScroller = new OverScroller(context,  i);
 			mSetIdleRunnable = new CustomRunnable(this);
@@ -565,11 +567,11 @@ namespace Alloy.Widgets
 			Cancel();
 			if (mDragState == STATE_SETTLING)
 			{
-				int oldX = mScroller.FinalX;
-				int oldY = mScroller.FinalY;
+				int oldX = mScroller.CurrX;
+				int oldY = mScroller.CurrY;
 				mScroller.AbortAnimation();
-				int newX = mScroller.FinalX;
-				int newY = mScroller.FinalY;
+				int newX = mScroller.CurrX;
+				int newY = mScroller.CurrY;
 				mCallback.OnViewPositionChanged(mCapturedView, newX, newY, newX - oldX, newY - oldY);
 			}
 			setDragState(STATE_IDLE);
@@ -643,7 +645,7 @@ namespace Alloy.Widgets
 			}
 
 			int duration = ComputeSettleDuration(mCapturedView, dx, dy, xvel, yvel);
-			mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
+			//mScroller?.StartScroll(startLeft, startTop, dx, dy, duration);
 
 			setDragState(STATE_SETTLING);
 			return true;
@@ -1058,7 +1060,7 @@ namespace Alloy.Widgets
 		 */
 		public bool ShouldInterceptTouchEvent(MotionEvent ev)
 		{
-			MotionEventActions action = ev.ActionMasked;
+			MotionEventActions action = ev.Action;
 			int actionIndex = ev.ActionIndex;
 
 			if (action == MotionEventActions.Down)
@@ -1188,7 +1190,7 @@ namespace Alloy.Widgets
 		 */
 		public void ProcessTouchEvent(MotionEvent ev)
 		{
-			MotionEventActions action = ev.ActionMasked;
+			MotionEventActions action = ev.Action;
 			int actionIndex = ev.ActionIndex;
 
 			if (action == MotionEventActions.Down)
@@ -1664,4 +1666,3 @@ namespace Alloy.Widgets
 		}
 	}
 }
-#pragma warning restore 618

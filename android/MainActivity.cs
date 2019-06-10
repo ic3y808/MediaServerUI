@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -26,6 +27,7 @@ using Alloy.Interfaces;
 using Alloy.Models;
 
 using Alloy.Widgets;
+using Android.Runtime;
 using Exception = System.Exception;
 
 namespace Alloy
@@ -51,6 +53,19 @@ namespace Alloy
 
 		private MainPlaylistAdapter playlistAdapter;
 
+		public class LogTraceListener : System.Diagnostics.TraceListener
+		{
+			public override void Write(string message)
+			{
+				Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "alloy", message);
+			}
+
+			public override void WriteLine(string message)
+			{
+				Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "alloy", message);
+			}
+		}
+
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -59,6 +74,21 @@ namespace Alloy
 				AppCenter.Start(Application.Context.GetString(Resource.String.appcenter_api), typeof(Analytics), typeof(Crashes));
 			}
 
+			System.Diagnostics.Debug.Listeners.Add(new LogTraceListener());
+			AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
+			{
+				Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "alloy", args.ExceptionObject.ToString());
+			};
+
+			TaskScheduler.UnobservedTaskException += (sender, args) =>
+			{
+				Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "alloy", args.Exception.ToString());
+			};
+
+			AndroidEnvironment.UnhandledExceptionRaiser += (sender, args) =>
+			{
+				Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "alloy", args.Exception.ToString());
+			};
 			SetContentView(Resource.Layout.activity_main);
 
 			//primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
@@ -364,7 +394,7 @@ namespace Alloy
 		{
 			Utils.Run(() =>
 			{
-				if (serviceConnection != null && serviceConnection.IsConnected)
+				if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null)
 				{
 					if (serviceConnection.CurrentSong.Starred) { MusicProvider.RemoveStar(serviceConnection.CurrentSong); }
 					else { MusicProvider.AddStar(serviceConnection.CurrentSong); }
@@ -376,7 +406,7 @@ namespace Alloy
 
 		private void CheckFavorite()
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected) { starImageButton?.SetImageDrawable(serviceConnection.CurrentSong.Starred ? starred : notStarred); }
+			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null) { starImageButton?.SetImageDrawable(serviceConnection.CurrentSong.Starred ? starred : notStarred); }
 		}
 
 		private void NextImageButton_Click(object sender, EventArgs e)

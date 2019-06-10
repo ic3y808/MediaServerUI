@@ -1,10 +1,10 @@
 @font-face {
     font-family: "alloyicons";
-    src: url("./alloyicons.eot?d8d856385f6f3ae9fbb9b2bff3c64ffe?#iefix") format("embedded-opentype"),
-url("./alloyicons.woff2?d8d856385f6f3ae9fbb9b2bff3c64ffe") format("woff2"),
-url("./alloyicons.woff?d8d856385f6f3ae9fbb9b2bff3c64ffe") format("woff"),
-url("./alloyicons.ttf?d8d856385f6f3ae9fbb9b2bff3c64ffe") format("truetype"),
-url("./alloyicons.svg?d8d856385f6f3ae9fbb9b2bff3c64ffe#alloyicons") format("svg");
+    src: url("./alloyicons.eot?b55e45d0a114194da7d757be4d218f2a?#iefix") format("embedded-opentype"),
+url("./alloyicons.woff2?b55e45d0a114194da7d757be4d218f2a") format("woff2"),
+url("./alloyicons.woff?b55e45d0a114194da7d757be4d218f2a") format("woff"),
+url("./alloyicons.ttf?b55e45d0a114194da7d757be4d218f2a") format("truetype"),
+url("./alloyicons.svg?b55e45d0a114194da7d757be4d218f2a#alloyicons") format("svg");
 }
 
 i[class^="icon-"]:before, i[class*=" icon-"]:before {

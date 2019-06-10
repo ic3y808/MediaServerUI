@@ -4,6 +4,7 @@ var path = require("path");
 var fs = require("fs");
 const sharp = require("sharp");
 var structures = require("../../common/structures");
+var { ipcRenderer } = require("electron");
 var db = {};
 
 /**
@@ -31,35 +32,42 @@ router.get("/stream", function (req, res) {
     const stat = fs.statSync(track.path);
     const total = stat.size;
     if (req.headers.range) {
-      fs.exists(track.path, (exists) => {
-        if (exists) {
-          const range = req.headers.range;
-          const parts = range.replace(/bytes=/u, "").split("-");
-          const partialStart = parts[0];
-          const partialEnd = parts[1];
+      if (fs.existsSync(track.path)) {
+        const range = req.headers.range;
+        const parts = range.replace(/bytes=/u, "").split("-");
+        const partialStart = parts[0];
+        const partialEnd = parts[1];
 
-          const start = parseInt(partialStart, 10);
-          const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
-          const chunksize = (end - start) + 1;
-          const rstream = fs.createReadStream(track.path, {
-            start,
-            end
-          });
-
-          res.writeHead(206, {
-            "Content-Range": "bytes " + start + "-" + end + "/" + total,
-            "Accept-Ranges": "bytes",
-            "Content-Length": chunksize,
-            "Content-Type": track.content_type
-          });
-          rstream.pipe(res);
-
-        } else {
-          res.send("Error - 404");
-          res.end();
+        const start = parseInt(partialStart, 10);
+        const end = partialEnd ? parseInt(partialEnd, 10) : total - 1;
+        const chunksize = (end - start) + 1;
+        const rstream = fs.createReadStream(track.path, {
+          start,
+          end
+        });
+        try {
+          //res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(req.hostname === "localhost" ? 0 : total);
+          res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(total);
+        } catch (err) {
+          console.log(err);
         }
-      });
+
+        res.writeHead(206, {
+          "Content-Range": "bytes " + start + "-" + end + "/" + total,
+          "Accept-Ranges": "bytes",
+          "Content-Length": chunksize,
+          "Content-Type": track.content_type
+        });
+        rstream.pipe(res);
+
+      } else {
+        res.send("Error - 404");
+        res.end();
+      }
+
     } else {
+     // res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(req.hostname === "localhost" ? 0 : total);
+      res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(total);
       res.writeHead(200, {
         "Content-Length": total,
         "Content-Type": track.content_type
@@ -67,6 +75,8 @@ router.get("/stream", function (req, res) {
       var rstream = fs.createReadStream(track.path);
       rstream.pipe(res);
     }
+    if (ipcRenderer) { ipcRenderer.send("system-get-stats"); }
+
   }
 });
 

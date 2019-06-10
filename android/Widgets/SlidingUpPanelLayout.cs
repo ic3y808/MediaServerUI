@@ -868,7 +868,7 @@ namespace Alloy.Widgets
 
 		public override bool DispatchTouchEvent(MotionEvent e)
 		{
-			MotionEventActions action = e.ActionMasked;
+			MotionEventActions action = e.Action;
 
 			if (!Enabled || !IsTouchEnabled() || (mIsUnableToDrag && action != MotionEventActions.Down))
 			{
@@ -1388,6 +1388,40 @@ namespace Alloy.Widgets
 			mShadowDrawable.Draw(canvas);
 		}
 
+		/**
+	* Tests scrollability within child views of v given a delta of dx.
+	*
+	* @param v      View to test for horizontal scrollability
+	* @param checkV Whether the view v passed should itself be checked for scrollability (true),
+	*               or just its children (false).
+	* @param dx     Delta scrolled in pixels
+	* @param x      X coordinate of the active touch point
+	* @param y      Y coordinate of the active touch point
+	* @return true if child views of v can be scrolled by delta of dx.
+	*/
+		protected bool CanScroll(View v, bool checkV, int dx, int x, int y)
+		{
+			if (v is ViewGroup) {
+				ViewGroup group = (ViewGroup)v;
+				int scrollX = v.ScrollX;
+				int scrollY = v.ScrollY;
+				int count = group.ChildCount;
+				// Count backwards - let topmost views consume scroll distance first.
+				for (int i = count - 1; i >= 0; i--)
+				{
+					View child = group.GetChildAt(i);
+					if (x + scrollX >= child.Left && x + scrollX < child.Right &&
+					    y + scrollY >= child.Top && y + scrollY < child.Bottom &&
+					    CanScroll(child, true, dx, x + scrollX - child.Left,
+						    y + scrollY - child.Top))
+					{
+						return true;
+					}
+				}
+			}
+			return checkV && v.CanScrollHorizontally(-dx);
+		}
+
 		protected override bool CheckLayoutParams(ViewGroup.LayoutParams p)
 		{
 			return p is LayoutParams && base.CheckLayoutParams(p);
@@ -1434,6 +1468,7 @@ namespace Alloy.Widgets
 		private class DragHelperCallback : ViewDragHelper.Callback
 		{
 			private readonly SlidingUpPanelLayout layout;
+			public ViewDragHelper Helper { get; set; }
 			public DragHelperCallback(SlidingUpPanelLayout layout)
 			{
 				this.layout = layout;
@@ -1470,7 +1505,7 @@ namespace Alloy.Widgets
 			public override void OnViewPositionChanged(View changedView, int left, int top, int dx, int dy)
 			{
 				layout.onPanelDragged(top);
-				layout.Invalidate();
+				layout.Invalidate(); //TODO Why is invalidate missing from the base class? 
 			}
 
 			public override void OnViewCaptured(View capturedChild, int activePointerId)

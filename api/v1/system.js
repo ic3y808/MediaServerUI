@@ -72,7 +72,7 @@ router.get("/license", function (req, res) {
  */
 router.get("/scan_start", function (req, res) {
 
-  if(ipcRenderer) { ipcRenderer.send("mediascanner-scan-start"); }
+  if (ipcRenderer) { ipcRenderer.send("mediascanner-scan-start"); }
   res.locals.notify("Rescan Requested", "Full recan requested through API");
   res.send(new structures.StatusResult(res.locals.mediaScanner.startScan()));
 });
@@ -104,13 +104,29 @@ router.get("/scan_status", function (req, res) {
  * @returns {Error}  default - Unexpected error
  * @security ApiKeyAuth
  */
+
+function calculateMemory(val) {
+  var thresh = 1000;
+  if (val == undefined || val === null || val === 0) {return  "0 B";}
+  if (Math.abs(val) < thresh) {
+    return val + " B";
+  } else {
+    var units = ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    var u = -1;
+    do {
+      val /= thresh;
+      ++u;
+    } while (Math.abs(val) >= thresh && u < units.length - 1);
+    return val.toFixed(1) + " " + units[u];
+  }
+}
 router.get("/scan_cancel", function (req, res) {
 
-  if(ipcRenderer) { ipcRenderer.send("mediascanner-scan-cancel"); }
+  if (ipcRenderer) { ipcRenderer.send("mediascanner-scan-cancel"); }
   var status = new structures.StatusResult(res.locals.mediaScanner.cancelScan());
   res.send(status);
 });
-if(ipcRenderer) {
+if (ipcRenderer) {
   ipcRenderer.on("system-scan-cancel", (args, data) => {
     ipcRenderer.send("mediascanner-scan-cancel");
   });
@@ -137,18 +153,11 @@ function getStats(db) {
     libraryStats.memory_used = row["SUM(size)"];
   }
 
-  var thresh = 1000;
-  if (Math.abs(libraryStats.memory_used) < thresh) {
-    libraryStats.memory_used = libraryStats.memory_used + " B";
-  } else {
-    var units = ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-    var u = -1;
-    do {
-      libraryStats.memory_used /= thresh;
-      ++u;
-    } while (Math.abs(libraryStats.memory_used) >= thresh && u < units.length - 1);
-    libraryStats.memory_used = libraryStats.memory_used.toFixed(1) + " " + units[u];
-  }
+  var stats = db.prepare("SELECT * FROM Stats WHERE id=0").get();
+  libraryStats.total_requests = stats.tracks_served;
+  libraryStats.total_data_served = calculateMemory(stats.data_sent);
+  libraryStats.memory_used = calculateMemory(libraryStats.memory_used);
+
   return libraryStats;
 }
 /**
@@ -164,7 +173,7 @@ function getStats(db) {
 router.get("/stats", function (req, res) {
   res.json(getStats(res.locals.db));
 });
-if(ipcRenderer) {
+if (ipcRenderer) {
   ipcRenderer.on("system-get-stats", (args, data) => {
     ipcRenderer.send("system-stats", getStats(module.exports.db));
   });
@@ -182,7 +191,7 @@ router.get("/do_backup", function (req, res) {
 
   res.locals.notify("Starting Backup", "Backup requested");
   res.locals.backup.doBackup().then(() => {
-    console.log( "Backup Complete");
+    console.log("Backup Complete");
     res.send(new structures.StatusResult("success"));
   }).catch((err) => {
     console.log(JSON.stringify(err));
@@ -217,7 +226,7 @@ router.post("/do_restore", function (req, res) {
 
       fs.renameSync(restoreFile, dbPath);
 
-      console.log( "shutting down.... restart server");
+      console.log("shutting down.... restart server");
       setTimeout(() => {
         process.exit(0);
       }, 5000);

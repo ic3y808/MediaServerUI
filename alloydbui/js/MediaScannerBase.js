@@ -13,13 +13,9 @@ module.exports = class MediaScannerBase {
   constructor(database) {
     this.db = database;
     this.resetStatus();
-
-    ipcRenderer.on("mediascanner-get-status", (e, args) => {
-      e.returnValue = this.getStatus();
-    });
   }
 
- 
+
   error(data) { ipcRenderer.send("error", { source: "MediaScanner", data: data }); }
   debug(data) { ipcRenderer.send("debug", { source: "MediaScanner", data: data }); }
   log(data) { ipcRenderer.send("log", { source: "MediaScanner", data: data }); }
@@ -221,7 +217,7 @@ module.exports = class MediaScannerBase {
     const track = audioFiles.shift();
 
     if (track) {
-      this.updateStatus("Collecting album art ", true, { path: track.path });
+      //this.updateStatus("Collecting album art ", true, track.path);
       var coverId = "cvr_" + track.album_id;
       var coverFile = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
 

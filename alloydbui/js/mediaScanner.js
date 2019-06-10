@@ -11,15 +11,11 @@ var structures = {};
 var MediaScannerBase = {};
 var mm = {};
 var watchers = [];
-var mediaScanner = {};
 var currentQueue = [];
 var scanner = {};
-var logger = {};
 
 ipcRenderer.on("mediascanner-start", (args, env) => {
   process.env = env;
-  logger = require(path.join(process.env.APP_DIR, "common", "logger"));
-  logger.info("mediascanner", "media scanner started");
   utils = require(path.join(process.env.APP_DIR, "common", "utils"));
   structures = require(path.join(process.env.APP_DIR, "common", "structures"));
   MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
@@ -42,9 +38,9 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
     startScan() {
       if (this.isScanning()) {
         this.updateStatus("Scan in progress", true);
-        logger.info("mediascanner", "scan in progress");
+        this.info("Scan in progress");
       } else {
-        logger.info("mediascanner", "start Full Scan");
+        this.info("Start Full Scan");
         var collectedArtistFolders = this.collectArtists();
         this.updateStatus("found mapped artists " + collectedArtistFolders.mappedArtists.length + " and unmapped artists " + collectedArtistFolders.unmappedArtists.length, true);
         this.scanArtists(collectedArtistFolders.mappedArtists);
@@ -165,7 +161,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           track.genre_id = existingGenre[0].id;
         }
       } catch (err) {
-        log.error(JSON.stringify(err));
+        this.error(JSON.stringify(err));
       }
       return track;
     }
@@ -214,7 +210,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           if (data) {
             fs.writeFile(coverFile, data, function (err) {
               if (err) {
-                log.error(JSON.stringify(err));
+                this.error(JSON.stringify(err));
               }
             });
           }
@@ -274,92 +270,95 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.3/artist/" + json.artist.musicbrainzartistid;
         var loaded = false;
         this.downloadPage(artistUrl).then((result) => {
-          var artistInfo = JSON.parse(result);
-          if (artistInfo.error) {
-            this.updateStatus("Failed, " + artistInfo.error + " " + artistUrl, true);
-            resolve();
-          } else {
-            this.checkDBLinks(artistInfo);
-            var mappedArtist = {
-              id: json.artist.musicbrainzartistid,
-              name: utils.isStringValid(json.artist.title, ""),
-              sort_name: utils.isStringValid(artistInfo.SortName, ""),
-              biography: utils.isStringValid(json.artist.biography, ""),
-              status: utils.isStringValid(artistInfo.Status, ""),
-              rating: artistInfo.Rating.Count,
-              type: utils.isStringValid(artistInfo.Type, ""),
-              disambiguation: utils.isStringValid(artistInfo.Disambiguation, ""),
-              overview: utils.isStringValid(artistInfo.Overview, "")
-            };
+          try {
+            var artistInfo = JSON.parse(result);
+            if (artistInfo.error) {
+              this.updateStatus("Failed, " + artistInfo.error + " " + artistUrl, true);
+              resolve();
+            } else {
+              this.checkDBLinks(artistInfo);
+              var mappedArtist = {
+                id: json.artist.musicbrainzartistid,
+                name: utils.isStringValid(json.artist.title, ""),
+                sort_name: utils.isStringValid(artistInfo.SortName, ""),
+                biography: utils.isStringValid(json.artist.biography, ""),
+                status: utils.isStringValid(artistInfo.Status, ""),
+                rating: artistInfo.Rating.Count,
+                type: utils.isStringValid(artistInfo.Type, ""),
+                disambiguation: utils.isStringValid(artistInfo.Disambiguation, ""),
+                overview: utils.isStringValid(artistInfo.Overview, "")
+              };
 
-            Object.assign(artist, mappedArtist);
-            this.checkDBArtistExists(artist);
-            this.checkDBAlbumsExist(artist).then((albums) => {
-              var allMetaPromises = [];
-              albums.forEach((album) => {
+              Object.assign(artist, mappedArtist);
+              this.checkDBArtistExists(artist);
+              this.checkDBAlbumsExist(artist).then((albums) => {
+                var allMetaPromises = [];
+                albums.forEach((album) => {
 
-                if (fs.existsSync(album.path)) {
-                  const albumTracks = klawSync(album.path, { nodir: true });
+                  if (fs.existsSync(album.path)) {
+                    const albumTracks = klawSync(album.path, { nodir: true });
 
 
-                  albumTracks.forEach((track) => {
-                    try {
-                      if (utils.isFileValid(track.path)) {
-                        logger.debug("mediascanner", "Scanning " + track.path);
-                        var m = mm.parseFile(track.path).then((metadata) => {
-                          var processed_track = new structures.Song();
-                          processed_track = this.checkExistingTrack(processed_track, metadata);
-                          processed_track.path = track.path;
-                          processed_track.artist = utils.isStringValid(artist.name, "");
-                          processed_track.artist_id = artist.id;
-                          processed_track.album = utils.isStringValid(album.name, "");
-                          processed_track.album_path = album.path;
-                          processed_track.getStats();
+                    albumTracks.forEach((track) => {
+                      try {
+                        if (utils.isFileValid(track.path)) {
+                          this.debug("Scanning " + track.path);
+                          var m = mm.parseFile(track.path).then((metadata) => {
+                            var processed_track = new structures.Song();
+                            processed_track = this.checkExistingTrack(processed_track, metadata);
+                            processed_track.path = track.path;
+                            processed_track.artist = utils.isStringValid(artist.name, "");
+                            processed_track.artist_id = artist.id;
+                            processed_track.album = utils.isStringValid(album.name, "");
+                            processed_track.album_path = album.path;
+                            processed_track.getStats();
 
-                          processed_track.album_id = album.id;
+                            processed_track.album_id = album.id;
 
-                          album.releases.forEach((release) => {
-                            if (release.Tracks) {
-                              release.Tracks.forEach((albumTrack) => {
-                                if (!processed_track.id) {
-                                  var msCompare = processed_track.duration === parseInt(albumTrack.DurationMs / 1000, 10);
-                                  var tracknumCompare = processed_track.no === albumTrack.TrackPosition;
-                                  var mediumCompare = processed_track.of === release.TrackCount;
+                            album.releases.forEach((release) => {
+                              if (release.Tracks) {
+                                release.Tracks.forEach((albumTrack) => {
+                                  if (!processed_track.id) {
+                                    var msCompare = processed_track.duration === parseInt(albumTrack.DurationMs / 1000, 10);
+                                    var tracknumCompare = processed_track.no === albumTrack.TrackPosition;
+                                    var mediumCompare = processed_track.of === release.TrackCount;
 
-                                  if (msCompare && tracknumCompare && mediumCompare) {
-                                    processed_track.id = albumTrack.RecordingId;
+                                    if (msCompare && tracknumCompare && mediumCompare) {
+                                      processed_track.id = albumTrack.RecordingId;
+                                      processed_track.title = albumTrack.TrackName;
+                                    }
+                                  } else if (processed_track.id === albumTrack.RecordingId) {
                                     processed_track.title = albumTrack.TrackName;
                                   }
-                                } else if (processed_track.id === albumTrack.RecordingId) {
-                                  processed_track.title = albumTrack.TrackName;
-                                }
-                              });
-                            }
+                                });
+                              }
+                            });
+
+                            processed_track = this.checkAlbumArt(processed_track, metadata);
+
+                            this.writeDb(processed_track, "Tracks");
+                            this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
+                            this.updateStatus("Scanning track ", true, { path: track.path });
                           });
-
-                          processed_track = this.checkAlbumArt(processed_track, metadata);
-
-                          this.writeDb(processed_track, "Tracks");
-                          this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
-                          this.updateStatus("Scanning track ", true, { path: track.path });
-                        });
-                        if (m) { allMetaPromises.push(m); }
+                          if (m) { allMetaPromises.push(m); }
+                        }
+                      } catch (err) {
+                        this.error(err.message);
+                        this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
                       }
-                    } catch (err) {
-                      log.error(err.message);
-                      this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
-                    }
-                  });
-                }
-              });
+                    });
+                  }
+                });
 
-              Promise.all(allMetaPromises).then(() => {
-                this.updateStatus("finished scanning albums from " + artist.name, true);
-                resolve();
+                Promise.all(allMetaPromises).then(() => {
+                  this.updateStatus("finished scanning albums from " + artist.name, true);
+                  resolve();
+                });
               });
-            });
+            }
+          } catch (err) {
+            this.error(JSON.stringify(err));
           }
-
 
         }, (reason) => {
           this.updateStatus("Failed to fetch URL " + reason + " " + artistUrl, true);
@@ -387,7 +386,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
     scanPath(dir) {
       if (this.isScanning()) {
         this.updateStatus("Scan in progress", true);
-        logger.info("mediascanner", "scan in progress");
+        this.info("scan in progress");
         return;
       }
       if (fs.existsSync(dir)) {
@@ -437,7 +436,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
 
       if (mediaPaths.length === 0) {
-        log.info("No Media Path Defined ");
+        this.info("No Media Path Defined ");
         return;
       }
       mediaPaths.forEach((mediaPath) => {
@@ -453,32 +452,30 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       });
     }
   }
-
-
   scanner = new MediaScanner();
 });
 
 ipcRenderer.on("mediascanner-scan-start", () => {
-  logger.info("mediascanner", "starting scan");
+  scanner.info("starting scan");
   scanner.startScan();
 });
 
 ipcRenderer.on("mediascanner-scan-cancel", () => {
-  logger.info("mediascanner", "cancel scan");
+  scanner.info("cancel scan");
   scanner.cancelScan();
 });
 
 ipcRenderer.on("mediascanner-cleaup-start", () => {
-  logger.info("mediascanner", "cancel scan");
+  scanner.info("cancel scan");
   scanner.cleanup();
 });
 
 ipcRenderer.on("mediascanner-inc-cleaup-start", () => {
-  logger.info("mediascanner", "cancel scan");
+  scanner.info("cancel scan");
   scanner.incrementalCleanup();
 });
 
 ipcRenderer.on("mediascanner-watcher-configure", () => {
-  logger.info("mediascanner", "Reconfigure File Watcher");
+  scanner.info("Reconfigure File Watcher");
   scanner.configFileWatcher();
 });
