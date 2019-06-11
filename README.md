@@ -34,20 +34,8 @@
 ### requires node-v10.11.0
 * Powershell as admin npm i -g --production windows-build-tools@4.0.0
 * npm install
-* node ./setup.js -install
-* node ./setup.js -run
-* navigate to http://localhost:3000
-* navigate to http://localhost:4000/api_docs for information on the database API
-
-## setup.js
-setupjs has some different commands for running and development: 
-```
--ui      # runs the full UI frontend application for connecting to a remote database
--run     # runs the full UI frontend application and database server
--fonts   # rebuilds just the fonts
--build   # builds the resources
--install # includes build, installs and builds
-```
+* npm run build
+* navigate to the Alloy\dist folder and install the package
 
 ### Now Playing Preview
 ![Alt text](/media/preview.png?raw=true "Overall interface")
