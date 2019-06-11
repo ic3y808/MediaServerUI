@@ -13,7 +13,7 @@ const express = require("express");
 const appServer = express();
 var server = require("http").Server(appServer);
 var io = require("socket.io")(server);
-var sockets = require("./alloydbweb/routes/sockets");
+
 var sr = require("screenres");
 const url = require("url");
 
@@ -23,10 +23,29 @@ let mediaScannerWindow = null;
 let schedulerWindow = null;
 let webUIWindow = null;
 let splashWindow = null;
-var tray = null;
-var running = false;
+let tray = null;
 var timer = {};
 var db = {};
+
+/* Single Instance Check */
+const gotTheLock = app.requestSingleInstanceLock()
+
+if (!gotTheLock) {
+  app.quit()
+} else {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    // Someone tried to run a second instance, we should focus our window.
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore()
+      mainWindow.focus()
+    }
+  })
+}
+
+process.on("exit", () => db.close());
+process.on("SIGHUP", () => process.exit(128 + 1));
+process.on("SIGINT", () => process.exit(128 + 2));
+process.on("SIGTERM", () => process.exit(128 + 15));
 
 function isDev() { return process.env.MODE === "dev"; }
 function isApiEnabled() { return process.env.API_ENABLED === "true"; }
@@ -57,14 +76,12 @@ function onClose(e) {
 }
 
 function doCheckpoint() {
-  if (!running) { return; }
   logger.info("alloydb", "Starting checkpoint");
   db.checkpoint();
   logger.info("alloydb", "Checkpoint Complete");
 }
 
 function doBackup() {
-  if (!running) { return; }
   logger.info("alloydb", "Starting backup");
   if (!fs.existsSync(process.env.BACKUP_DATA_DIR)) { shell.mkdir("-p", process.env.BACKUP_DATA_DIR); }
   db.backup(path.join(process.env.BACKUP_DATA_DIR, `backup-${Date.now()}.db`));
@@ -72,25 +89,21 @@ function doBackup() {
 }
 
 function doCleanup() {
-  if (!running) { return; }
   logger.info("alloydb", "Starting Cleanup");
   mediaScannerWindow.webContents.send("mediascanner-cleaup-start");
 }
 
 function doIncCleanup() {
-  if (!running) { return; }
   logger.info("alloydb", "Starting Incremental Cleanup");
   mediaScannerWindow.webContents.send("mediascanner-inc-cleaup-start");
 }
 
 function doRescan() {
-  if (!running) { return; }
   logger.info("alloydb", "Starting Rescan");
   mediaScannerWindow.webContents.send("mediascanner-scan-start");
 }
 
 function doToggleApiServer(e, data) {
-  if (!running) { return; }
   logger.info("alloydb", "Changing API server settings to " + JSON.stringify(data));
   if (data.enabled === true) { settings.config.api_enabled = "true"; }
   else { settings.config.api_enabled = "false"; }
@@ -98,12 +111,47 @@ function doToggleApiServer(e, data) {
 }
 
 function doToggleUiServer(e, data) {
-  if (!running) { return; }
   logger.info("alloydb", "Changing UI server settings to " + JSON.stringify(data));
   if (data.enabled === true) { settings.config.ui_enabled = "true"; }
   else { settings.config.ui_enabled = "false"; }
   settings.saveConfig();
 }
+
+function doDisconnectDb(callback) {
+  try {
+    db.close();
+  } catch (error) {
+    if (error) {
+      logger.error("alloyui", JSON.stringify(error));
+    }
+  }
+  callback();
+};
+
+function doLoadSettings(key, callback) {
+  try {
+    var settingsResult = db.prepare("SELECT * from Settings WHERE settings_key=?").get(key);
+    if (settingsResult && settingsResult.settings_value) {
+      var settings = JSON.parse(settingsResult.settings_value);
+      if (settings) {
+        callback({ key: key, data: settings });
+      } callback(null);
+    } callback(null);
+  } catch (err) { callback(null); }
+};
+
+function doSaveSettings(key, value, callback) {
+  try {
+    const stmt = db.prepare("INSERT OR REPLACE INTO Settings (settings_key, settings_value) VALUES (?, ?) ON CONFLICT(settings_key) DO UPDATE SET settings_value=?");
+    var obj = JSON.stringify(value);
+    const info = stmt.run(key, obj, obj);
+  } catch (error) {
+    if (error) {
+      log.error("alloyui", JSON.stringify(error));
+    }
+  }
+  callback();
+};
 
 function queryLog() {
   logger.query((results) => {
@@ -202,22 +250,15 @@ function createWebUIWindow() {
 function createSplashScreen() {
   return new Promise((resolve, reject) => {
     var res = sr.get();
-    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: res[1] * 0.4, webPreferences: { nodeIntegration: true }, frame: false });
+    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: res[1] * 0.4, alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
     splashWindow.icon = path.join(__dirname, "common", "icon.ico");
     splashWindow.setMenu(null);
-    //webUIWindow.setMinimumSize(min_width, min_height);
-    if (isDev() === true) {
-      splashWindow.webContents.openDevTools({ detach: false });
-    }
     splashWindow.loadURL(url.format({
       pathname: path.join(__dirname, "alloydbui", "html", "splash.html"),
       protocol: "file:",
       slashes: true
     }));
-    //webUIWindow.loadURL("http://localhost:" + process.env.API_UI_PORT);
     splashWindow.setTitle("Alloy");
-
-
     splashWindow.webContents.once("dom-ready", () => {
       splashWindow.webContents.send("webui-start", process.env);
       resolve();
@@ -234,50 +275,52 @@ function createMainWindow() {
 }
 
 function createTrayMenu() {
-  var icon = path.join(__dirname, "common", "icon.ico");
-  var t = new Tray(icon);
+  return new Promise((resolve, reject) => {
+    var icon = path.join(__dirname, "common", "icon.ico");
+    var t = new Tray(icon);
 
-  const contextMenu = Menu.buildFromTemplate([
-    {
-      label: "Show Web UI",
-      click: createWebUIWindow
-    },
-    {
-      label: "Rescan",
-      click: doRescan
-    },
-    {
-      label: "Cleanup",
-      click: doCleanup
-    },
-    {
-      label: "Inc. Cleanup",
-      click: doIncCleanup
-    },
-    {
-      label: "Backup",
-      click: doBackup
-    },
-    {
-      label: "Exit",
-      click: function () {
-        app.exit(0);
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: "Show Web UI",
+        click: createWebUIWindow
+      },
+      {
+        label: "Rescan",
+        click: doRescan
+      },
+      {
+        label: "Cleanup",
+        click: doCleanup
+      },
+      {
+        label: "Inc. Cleanup",
+        click: doIncCleanup
+      },
+      {
+        label: "Backup",
+        click: doBackup
+      },
+      {
+        label: "Exit",
+        click: function () {
+          app.exit(0);
+        }
       }
-    }
-  ]);
-  t.setToolTip("Alloy");
-  t.setContextMenu(contextMenu);
+    ]);
+    t.setToolTip("Alloy");
+    t.setContextMenu(contextMenu);
 
-  t.on("click", () => {
-    mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+    t.on("click", () => {
+      mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+    });
+    mainWindow.on("show", () => {
+      t.setHighlightMode("always");
+    });
+    mainWindow.on("hide", () => {
+      t.setHighlightMode("never");
+    });
+    resolve(t);
   });
-  mainWindow.on("show", () => {
-    t.setHighlightMode("always");
-  });
-  mainWindow.on("hide", () => {
-    t.setHighlightMode("never");
-  });
-  return t;
 }
 
 function createTasks() {
@@ -293,184 +336,254 @@ function createTasks() {
   }
 }
 
+function createBaseServer() {
+  return new Promise((resolve, reject) => {
+
+    appServer.use(favicon(path.join(__dirname, "common", "icon.ico")));
+    appServer.use("/node_modules/", express.static(path.join(__dirname, "node_modules")));
+    appServer.use("/alloydbui/js/", express.static(path.join(__dirname, "alloydbui", "js")));
+    appServer.use("/alloydbui/css/", express.static(path.join(__dirname, "alloydbui", "css")));
+    appServer.use("/alloydbui/img/", express.static(path.join(__dirname, "alloydbui", "img")));
+
+    if (isUiEnabled()) {
+      appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "content")));
+    }
+
+    appServer.set("view engine", "jade");
+    if (isUiEnabled()) {
+      if (isDev()) {
+        logger.info("alloydb", "Running in DEV mode");
+        logger.info("alloydb", "compiling webpack");
+        const webpack = require("webpack");
+        const webpackconfig = require("./alloydbweb/webpack.config");
+        const webpackMiddleware = require("webpack-dev-middleware");
+        const webpackHotMiddleware = require("webpack-hot-middleware");
+        const webpackCompiler = webpack(webpackconfig);
+        const wpmw = webpackMiddleware(webpackCompiler, {});
+        appServer.use(wpmw);
+        const wphmw = webpackHotMiddleware(webpackCompiler);
+        appServer.use(wphmw);
+      } else {
+        appServer.use(express.static(path.join(__dirname, "alloydbweb", "dist")));
+      }
+    }
+
+    appServer.use(function (req, res, next) {
+      res.io = io;
+      next();
+    });
+
+    appServer.use(bodyParser.json());
+    appServer.use(bodyParser.urlencoded({ extended: false }));
+
+    var index = require("./alloydbweb/routes/index");
+    appServer.use("/", index);
+
+    if (isUiEnabled()) {
+      io.on("connection", function (socket) {
+
+        socket.on("load_settings", function (key) {
+          logger.debug("alloyui", "Load settings requested for key: " + key);
+          doLoadSettings(key, function (result) {
+            logger.debug("alloyui", "Settings Loaded");
+            socket.emit("settings_loaded_event", result);
+          });
+        });
+        socket.on("save_settings", function (settings) {
+          logger.debug("alloyui", "Save settings requested for key: " + settings.key);
+          doSaveSettings(settings.key, settings.data, function () {
+            logger.debug("alloyui", "Settings Saved");
+            socket.emit("settings_saved_event");
+          });
+        });
+        socket.on("disconnect_db", function () {
+          logger.info("alloyui", "UI requested db to disconnect: ");
+          doDisconnectDb(function () {
+            logger.info("alloyui", "shutting down.... restart server");
+            process.exit(0);
+          });
+        });
+
+        //sabnzbd.socketConnect(socket);
+        //musicbrainz.socketConnect(socket);
+        logger.debug("alloyui", "WebUI Client connected");
+        socket.on("log", function (data) {
+          var obj = {};
+          obj.level = data.method;
+          obj.label = "clientui";
+          obj.message = data.message;
+          logger.log(data.method, obj);
+        });
+      });
+
+      clearInterval(timer);
+      timer = setInterval(function () {
+        io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
+      }, 500);
+    }
+
+    var views = [];
+    var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
+    views = views.concat(uiViews);
+    console.log("ui enabled: " + isUiEnabled());
+    if (isUiEnabled()) {
+      var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "views"));
+      var componentdirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "components"));
+      var directivedirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "directives"));
+      views = views.concat(webViews, componentdirs, directivedirs);
+    }
+    appServer.set("views", views);
+
+    // catch 404 and forward to error handler
+    appServer.use(function (req, res, next) {
+      var err = new Error("Not Found");
+      err.status = 404;
+      err.url = req.path;
+      logger.error("alloydb", JSON.stringify(err));
+      next(err);
+    });
+
+    if (process.env.MODE === "dev") {
+      appServer.locals.pretty = true;
+      appServer.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        err.url = req.path;
+        logger.error("alloydb", JSON.stringify(err));
+        res.render("error", {
+          message: err.message,
+          error: err
+        });
+      });
+    } else {
+      appServer.use(function (err, req, res, next) {
+        res.status(err.status || 500);
+        logger.error("alloydb", JSON.stringify(err));
+        res.render("error", {
+          message: err.message,
+          error: {}
+        });
+      });
+    }
+
+    if (process.env.MODE === "dev" && isUiEnabled()) {
+      process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
+      var livereload = require("livereload").createServer({ exts: ["jade"], port: process.env.JADE_PORT });
+      livereload.watch(path.join(__dirname, "alloydbweb"));
+    }
+
+    logger.callback = queryLog;
+
+    logger.info("alloydb", "loading database " + process.env.DATABASE);
+    db = require("better-sqlite3")(process.env.DATABASE);
+    db.pragma("journal_mode = WAL");
+
+    require("./common/migrate")(db, path.join(__dirname, "/migrations"));
+
+    server.listen(process.env.API_UI_PORT);
+    server.on("listening", function () {
+      logger.info("alloydb", "Primary Server listening");
+      resolve();
+    });
+  });
+}
+
 function showWebUI(e, data) {
-  if (!running) { return; }
   logger.info("alloydb", "requesting webUI window");
   createWebUIWindow();
 }
 
 function setupRoutes() {
-  if (mainWindow) {
-    ipcMain.on("download-progress", (event, payload) => mainWindow.webContents.send("download-progress", payload));
-    ipcMain.on("download-error", (event, payload) => mainWindow.webContents.send("download-error", payload));
-    ipcMain.on("download-complete", (event, payload) => mainWindow.webContents.send("download-complete", payload));
-    ipcMain.on("url-info-result", (event, payload) => mainWindow.webContents.send("url-info-result", payload));
-    ipcMain.on("search-result", (event, payload) => mainWindow.webContents.send("search-result", payload));
-    ipcMain.on("print", (event, payload) => mainWindow.webContents.send("print", payload));
-  }
+  return new Promise((resolve, reject) => {
+    if (mainWindow) {
+      ipcMain.on("download-progress", (event, payload) => mainWindow.webContents.send("download-progress", payload));
+      ipcMain.on("download-error", (event, payload) => mainWindow.webContents.send("download-error", payload));
+      ipcMain.on("download-complete", (event, payload) => mainWindow.webContents.send("download-complete", payload));
+      ipcMain.on("url-info-result", (event, payload) => mainWindow.webContents.send("url-info-result", payload));
+      ipcMain.on("search-result", (event, payload) => mainWindow.webContents.send("search-result", payload));
+      ipcMain.on("print", (event, payload) => mainWindow.webContents.send("print", payload));
+    }
 
-  //server ICP
-  if (serverWindow) {
-    ipcMain.on("server-start", (event, payload) => serverWindow.webContents.send("server-start", payload));
-    ipcMain.on("config-get-media-paths", (event, payload) => serverWindow.webContents.send("config-get-media-paths", payload));
-    ipcMain.on("config-media-paths", (event, payload) => mainWindow.webContents.send("config-media-paths", payload));
-    ipcMain.on("config-add-media-path", (event, payload) => serverWindow.webContents.send("config-add-media-path", payload));
-    ipcMain.on("config-remove-media-path", (event, payload) => serverWindow.webContents.send("config-remove-media-path", payload));
-    ipcMain.on("config-get-file-list", (event, payload) => serverWindow.webContents.send("config-get-file-list", payload));
-    ipcMain.on("config-file-list", (event, payload) => mainWindow.webContents.send("config-file-list", payload));
-    ipcMain.on("config-get-file-parent", (event, payload) => serverWindow.webContents.send("config-get-file-parent", payload));
-    ipcMain.on("config-file-parent", (event, payload) => mainWindow.webContents.send("config-file-parent", payload));
-    ipcMain.on("system-get-stats", (event, payload) => serverWindow.webContents.send("system-get-stats", payload));
-    ipcMain.on("system-stats", (event, payload) => mainWindow.webContents.send("system-stats", payload));
-  }
+    //server ICP
+    if (serverWindow) {
+      ipcMain.on("server-start", (event, payload) => serverWindow.webContents.send("server-start", payload));
+      ipcMain.on("config-get-media-paths", (event, payload) => serverWindow.webContents.send("config-get-media-paths", payload));
+      ipcMain.on("config-media-paths", (event, payload) => mainWindow.webContents.send("config-media-paths", payload));
+      ipcMain.on("config-add-media-path", (event, payload) => serverWindow.webContents.send("config-add-media-path", payload));
+      ipcMain.on("config-remove-media-path", (event, payload) => serverWindow.webContents.send("config-remove-media-path", payload));
+      ipcMain.on("config-get-file-list", (event, payload) => serverWindow.webContents.send("config-get-file-list", payload));
+      ipcMain.on("config-file-list", (event, payload) => mainWindow.webContents.send("config-file-list", payload));
+      ipcMain.on("config-get-file-parent", (event, payload) => serverWindow.webContents.send("config-get-file-parent", payload));
+      ipcMain.on("config-file-parent", (event, payload) => mainWindow.webContents.send("config-file-parent", payload));
+      ipcMain.on("system-get-stats", (event, payload) => serverWindow.webContents.send("system-get-stats", payload));
+      ipcMain.on("system-stats", (event, payload) => mainWindow.webContents.send("system-stats", payload));
+    }
 
-  //mediaScanner ICP
-  if (mediaScannerWindow) {
-    ipcMain.on("mediascanner-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-start", payload));
-    ipcMain.on("mediascanner-scan-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-scan-start", payload));
-    ipcMain.on("mediascanner-scan-cancel", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-scan-cancel", payload));
-    ipcMain.on("mediascanner-cleaup-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-cleaup-start", payload));
-    ipcMain.on("mediascanner-inc-cleaup-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-inc-cleaup-start", payload));
-    ipcMain.on("mediascanner-watcher-configure", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-watcher-configure", payload));
-    ipcMain.on("mediascanner-status", (event, payload) => mainWindow.webContents.send("mediascanner-status", payload));
-  }
+    //mediaScanner ICP
+    if (mediaScannerWindow) {
+      ipcMain.on("mediascanner-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-start", payload));
+      ipcMain.on("mediascanner-scan-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-scan-start", payload));
+      ipcMain.on("mediascanner-scan-cancel", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-scan-cancel", payload));
+      ipcMain.on("mediascanner-cleaup-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-cleaup-start", payload));
+      ipcMain.on("mediascanner-inc-cleaup-start", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-inc-cleaup-start", payload));
+      ipcMain.on("mediascanner-watcher-configure", (event, payload) => mediaScannerWindow.webContents.send("mediascanner-watcher-configure", payload));
+      ipcMain.on("mediascanner-status", (event, payload) => mainWindow.webContents.send("mediascanner-status", payload));
+    }
 
-  //scheduler ICP
-  if (schedulerWindow) {
-    ipcMain.on("scheduler-start", (event, payload) => schedulerWindow.webContents.send("scheduler-start", payload));
-    ipcMain.on("scheduler-create-job", (event, payload) => schedulerWindow.webContents.send("scheduler-create-job", payload));
-    ipcMain.on("scheduler-current-schedule", (event, payload) => mainWindow.webContents.send("scheduler-current-schedule", payload));
-    ipcMain.on("scheduler-run-task", (event, payload) => schedulerWindow.webContents.send("scheduler-run-task", payload));
-    ipcMain.on("scheduler-job-created", (event, payload) => {
-      logger.debug("alloydb", "created job: " + payload.name + " - " + payload.callback);
+    //scheduler ICP
+    if (schedulerWindow) {
+      ipcMain.on("scheduler-start", (event, payload) => schedulerWindow.webContents.send("scheduler-start", payload));
+      ipcMain.on("scheduler-create-job", (event, payload) => schedulerWindow.webContents.send("scheduler-create-job", payload));
+      ipcMain.on("scheduler-current-schedule", (event, payload) => mainWindow.webContents.send("scheduler-current-schedule", payload));
+      ipcMain.on("scheduler-run-task", (event, payload) => schedulerWindow.webContents.send("scheduler-run-task", payload));
+      ipcMain.on("scheduler-job-created", (event, payload) => {
+        logger.debug("alloydb", "created job: " + payload.name + " - " + payload.callback);
+      });
+    }
+
+    //misc ICP
+    ipcMain.on("task-database-checkpoint", doCheckpoint);
+    ipcMain.on("task-database-backup", doBackup);
+    ipcMain.on("task-database-cleanup", doCleanup);
+    ipcMain.on("task-database-inc-cleanup", doIncCleanup);
+    ipcMain.on("task-database-scan", doRescan);
+    ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
+    ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);
+    ipcMain.on("request-web-ui", showWebUI);
+    ipcMain.on("web-request", (event, payload) => {
+      const request = net.request({ method: payload.method, url: payload.url, });
+      let body = "";
+      request.on("response", (response) => {
+        response.on("data", (chunk) => { body += chunk.toString(); });
+        response.on("end", () => { event.returnValue = body; });
+      });
+      request.end();
     });
-  }
 
-  //misc ICP
-  ipcMain.on("task-database-checkpoint", doCheckpoint);
-  ipcMain.on("task-database-backup", doBackup);
-  ipcMain.on("task-database-cleanup", doCleanup);
-  ipcMain.on("task-database-inc-cleanup", doIncCleanup);
-  ipcMain.on("task-database-scan", doRescan);
-  ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
-  ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);
-  ipcMain.on("request-web-ui", showWebUI);
-  ipcMain.on("web-request", (event, payload) => {
-    const request = net.request({ method: payload.method, url: payload.url, });
-    let body = "";
-    request.on("response", (response) => {
-      response.on("data", (chunk) => { body += chunk.toString(); });
-      response.on("end", () => { event.returnValue = body; });
+    ipcMain.on("log-update", (event) => {
+      queryLog();
     });
-    request.end();
-  });
 
-  ipcMain.on("log-update", (event) => {
-    queryLog();
-  });
-
-  ipcMain.on("logger-get-logs", (event) => {
-    queryLog();
-  });
-
-  ipcMain.on("log", (event, payload) => { logger.log(payload.source, payload.data); });
-  ipcMain.on("error", (event, payload) => { logger.error(payload.source, payload.data); });
-  ipcMain.on("debug", (event, payload) => { logger.debug(payload.source, payload.data); });
-  ipcMain.on("info", (event, payload) => { logger.info(payload.source, payload.data); });
-
-  ipcMain.on("open-dev", (event) => {
-    mainWindow.webContents.openDevTools({ detach: false });
-    serverWindow.webContents.openDevTools({ detach: true });
-    serverWindow.show();
-    mediaScannerWindow.webContents.openDevTools({ detach: true });
-    mediaScannerWindow.show();
-    schedulerWindow.webContents.openDevTools({ detach: true });
-    schedulerWindow.show();
-  });
-}
-
-logger.callback = queryLog;
-
-appServer.use(favicon(path.join(__dirname, "common", "icon.ico")));
-appServer.use("/node_modules/", express.static(path.join(__dirname, "node_modules")));
-appServer.use("/alloydbui/js/", express.static(path.join(__dirname, "alloydbui", "js")));
-appServer.use("/alloydbui/css/", express.static(path.join(__dirname, "alloydbui", "css")));
-appServer.use("/alloydbui/img/", express.static(path.join(__dirname, "alloydbui", "img")));
-
-if (isUiEnabled()) {
-  appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "frontend", "content")));
-}
-
-appServer.set("view engine", "jade");
-if (isUiEnabled()) {
-  if (isDev()) {
-    logger.info("alloydb", "Running in DEV mode");
-    logger.info("alloydb", "compiling webpack");
-    const webpack = require("webpack");
-    const webpackconfig = require("./alloydbweb/webpack.config");
-    const webpackMiddleware = require("webpack-dev-middleware");
-    const webpackHotMiddleware = require("webpack-hot-middleware");
-    const webpackCompiler = webpack(webpackconfig);
-    const wpmw = webpackMiddleware(webpackCompiler, {});
-    appServer.use(wpmw);
-    const wphmw = webpackHotMiddleware(webpackCompiler);
-    appServer.use(wphmw);
-  } else {
-    appServer.use(express.static(path.join(__dirname, "alloydbweb", "dist")));
-  }
-}
-
-appServer.use(function (req, res, next) {
-  res.io = io;
-  next();
-});
-
-appServer.use(bodyParser.json());
-appServer.use(bodyParser.urlencoded({ extended: false }));
-
-var index = require("./alloydbweb/routes/index");
-appServer.use("/", index);
-
-if (isUiEnabled()) {
-  io.on("connection", function (socket) {
-    sockets.socketConnect(socket, db);
-    //sabnzbd.socketConnect(socket);
-    //musicbrainz.socketConnect(socket);
-    logger.debug("alloyui", "WebUI Client connected");
-    socket.on("log", function (data) {
-      var obj = {};
-      obj.level = data.method;
-      obj.label = "clientui";
-      obj.message = data.message;
-      logger.log(data.method, obj);
+    ipcMain.on("logger-get-logs", (event) => {
+      queryLog();
     });
+
+    ipcMain.on("log", (event, payload) => { logger.log(payload.source, payload.data); });
+    ipcMain.on("error", (event, payload) => { logger.error(payload.source, payload.data); });
+    ipcMain.on("debug", (event, payload) => { logger.debug(payload.source, payload.data); });
+    ipcMain.on("info", (event, payload) => { logger.info(payload.source, payload.data); });
+
+    ipcMain.on("open-dev", (event) => {
+      mainWindow.webContents.openDevTools({ detach: false });
+      serverWindow.webContents.openDevTools({ detach: true });
+      serverWindow.show();
+      mediaScannerWindow.webContents.openDevTools({ detach: true });
+      mediaScannerWindow.show();
+      schedulerWindow.webContents.openDevTools({ detach: true });
+      schedulerWindow.show();
+    });
+    resolve();
   });
-
-  clearInterval(timer);
-  timer = setInterval(function () {
-    io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
-  }, 500);
 }
-
-var views = [];
-var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
-views = views.concat(uiViews);
-console.log("ui enabled: " + isUiEnabled());
-if (isUiEnabled()) {
-  var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "frontend", "views"));
-  var componentdirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "frontend", "components"));
-  var directivedirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "frontend", "directives"));
-  views = views.concat(webViews, componentdirs, directivedirs);
-}
-appServer.set("views", views);
-
-if (process.env.MODE === "dev" && isUiEnabled()) {
-  process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
-  var livereload = require("livereload").createServer({ exts: ["jade"], port: process.env.JADE_PORT });
-  livereload.watch(path.join(__dirname, "web", "frontend"));
-}
-
-logger.info("alloydb", "loading database " + process.env.DATABASE);
 
 app.on("window-all-closed", () => {
 
@@ -478,32 +591,24 @@ app.on("window-all-closed", () => {
 
 app.on("ready", () => {
   createSplashScreen().then(() => {
-    db = require("better-sqlite3")(process.env.DATABASE);
-    db.pragma("journal_mode = WAL");
-
-    require("./common/migrate")(db, path.join(__dirname, "/migrations"));
-
-    server.listen(process.env.API_UI_PORT);
-
-    server.on("listening", function () {
-      logger.info("alloydb", "Primary Server listening");
+    createBaseServer().then(() => {
       createServerWindow().then(() => {
         createSchedulerWindow().then(() => {
           createMediaScannerWindow().then(() => {
             createMainWindow().then(() => {
-              setupRoutes();
-              createTrayMenu();
-              mainWindow.webContents.send("app-loaded");
-              splashWindow.close();
-              mainWindow.show();
-              setTimeout(createTasks, 250);
-              running = true;
+              setupRoutes().then(() => {
+                createTrayMenu().then((t) => {
+                  tray = t;
+                  mainWindow.webContents.send("app-loaded");
+                  splashWindow.close();
+                  mainWindow.show();
+                  setTimeout(createTasks, 250);
+                });
+              });
             });
           });
         });
       });
     });
   });
-
-
 });

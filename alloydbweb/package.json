@@ -5,7 +5,6 @@
   "main": "app.js",
   "scripts": {
     "build": "cross-env MODE=prod webpack .",
-    "start": "node ./backend/server.js",
     "test": "nyc --reporter=cobertura --reporter=html --reporter=lcov ./node_modules/.bin/mocha --ui tdd --require setup-env ./test/setup.js --reporter mocha-junit-reporter --reporter-options mochaFile=TEST-RESULTS.xml test/test.js && cross-env CODACY_PROJECT_TOKEN=0c34166541df4c81896f11278c081c60 codacy-coverage < ./coverage/lcov.info"
   },
   "author": "",

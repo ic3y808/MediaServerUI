@@ -6,7 +6,7 @@ const _ = require("lodash");
 const del = require("del");
 var http = require("http");
 const { ipcRenderer } = require("electron");
-const mm = require(path.join(process.env.APP_DIR, "api", "music-metadata"));
+const mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
 
 module.exports = class MediaScannerBase {
 

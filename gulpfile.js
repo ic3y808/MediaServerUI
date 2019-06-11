@@ -12,8 +12,8 @@ var alloyDbUi = {
 
 var alloyDbWeb = {
   HERE: "./",
-  CSS: "./web/frontend/styles/css/",
-  SCSS: "./web/frontend/styles/**/*.scss"
+  CSS: "./alloydbweb/styles/css/",
+  SCSS: "./alloydbweb/styles/**/*.scss"
 };
 
 gulp.task("scss:alloydb", function() {

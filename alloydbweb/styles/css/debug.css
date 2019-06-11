@@ -1,0 +1,22 @@
+.card {
+  box-sizing: content-box;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  border: 0px red; }
+
+.row {
+  border: 0px pink; }
+
+.col {
+  border: 0px pink; }
+
+.main-container {
+  border: 0px blue; }
+
+.sidebar {
+  border: 0px yellow; }
+
+* {
+  border: 0px red; }
+
+/*# sourceMappingURL=debug.css.map */

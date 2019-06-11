@@ -1,0 +1,31 @@
+section.scrollable.padder-lg.w-f-md
+  .row
+    a.u.pull-right.h6.text-muted.m-l(ng-click="refreshclick()")
+      i#refresh.icon-refresh.i-lg.inline
+    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
+    h2.clear.font-thin {{title}}
+  .row(style='overflow:hidden;')
+    .grid(ng-if="type === 'tracks'")
+      .item(ng-repeat="song in data | limitTo:limit", style="background-image:url('{{song.image}}');",ng-click="$root.MediaPlayer.playTrack(song, data)", ng-class="{'item--now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}")
+        .item__details
+          span.clear
+          a(ng-click="navigateToAlbum(song.album_id)", onclick="event.stopPropagation();")
+            span.item__details__album {{song.title}}
+          a(ng-click="navigateToArtist(song.artist_id)", onclick="event.stopPropagation();")
+            small.item__details__artist.text-muted.clear.text-ellipsis by {{song.artist}}    
+
+    .grid(ng-if="type === 'albums'")
+      .item(ng-repeat="album in data | limitTo:limit", style="background-image:url('{{album.image}}');",ng-click="$root.MediaPlayer.playAlbum(album)", ng-class="{'item--now-playing': $root.MediaPlayer.checkIfNowPlaying('album', album.id) == true}")
+        .item__details
+          span.clear
+          a(ng-click="navigateToAlbum(album.id)", onclick="event.stopPropagation();")
+            span.item__details__album {{album.name}}
+          a(ng-click="navigateToArtist(album.artist_id)", onclick="event.stopPropagation();")
+            small.item__details__artist.text-muted.clear.text-ellipsis by {{album.artist}}   
+
+    .grid(ng-if="type === 'artists'")
+      .item(ng-repeat="artist in data | limitTo:limit", style="background-image:url('{{artist.image}}');",ng-click="$root.MediaPlayer.playArtist(artist)", ng-class="{'item--now-playing': $root.MediaPlayer.checkIfNowPlaying('artist', artist.id) == true}")
+        .item__details
+          span.clear
+          a(ng-click="navigateToArtist(artist.id)", onclick="event.stopPropagation();")
+            span.item__details__album {{artist.name}}   
