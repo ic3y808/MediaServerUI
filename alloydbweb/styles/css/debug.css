@@ -2,21 +2,21 @@
   box-sizing: content-box;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
-  border: 0px red; }
+  border: 0px orange; }
 
 .row {
-  border: 0px pink; }
+  border: 0px red; }
 
 .col {
-  border: 0px pink; }
+  border: 0px red; }
 
 .main-container {
-  border: 0px blue; }
+  border: 0px orange; }
 
 .sidebar {
-  border: 0px yellow; }
+  border: 0px lime; }
 
 * {
-  border: 0px red; }
+  border: 0px lime; }
 
 /*# sourceMappingURL=debug.css.map */
