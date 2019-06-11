@@ -136,36 +136,54 @@
   </div>
 
 </section>
+<div class="logo logotext">
 
-<link rel="stylesheet" type="text/css" href="../css/animations.css" />
-<link rel="stylesheet" type="text/css" href="../css/cube.css" />
+  <a class="simple-text logo-normal">Alloy</a>
 
-<style>
-  img {
-    max-width: 100%;
-    max-height: 100%;
-  }
+  <link rel="stylesheet" type="text/css" href="../css/material-dashboard.css" />
+  <link rel="stylesheet" type="text/css" href="../css/animations.css" />
+  <link rel="stylesheet" type="text/css" href="../css/cube.css" />
 
-  * {
-    box-sizing: border-box;
-    transition: 0.35s ease;
-  }
-
-  body {
-    background-color: #eee;
-  }
-
-  @media screen and (max-width: 600px) {
-    .container {
-      -webkit-transform: translate(-50%, -50%) scale(0.55);
-      transform: translate(-50%, -50%) scale(0.55);
+  <style>
+    img {
+      max-width: 100%;
+      max-height: 100%;
     }
-  }
 
-  .container {
-    width: 60px;
-    height: 60px;
-    -webkit-perspective: 6000px;
-    perspective: 6000px;
-  }
-</style>
+    * {
+      box-sizing: border-box;
+      transition: 0.35s ease;
+    }
+
+    body {
+      background-color: #eee;
+      overflow: hidden;
+    }
+
+    @media screen and (max-width: 600px) {
+      .container {
+        -webkit-transform: translate(-50%, -50%) scale(0.55);
+        transform: translate(-50%, -50%) scale(0.55);
+      }
+    }
+
+    .container {
+      width: 60px;
+      height: 60px;
+      -webkit-perspective: 6000px;
+      perspective: 6000px;
+    }
+
+    .logotext {
+      position: relative;
+      float: left;
+      top: 10%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      vertical-align: middle;
+      line-height: 90px;
+      font-size: 60px;
+
+    }
+  </style>

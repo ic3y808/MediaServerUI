@@ -11,16 +11,16 @@ profile.module.rules = [];
 
 if (process.env.MODE === "dev") {
   profile.entry = {
-    app: ["./alloydbweb/frontend/app.js", "webpack-hot-middleware/client"]
+    app: ["./alloydbweb/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
-  console.log( "packing dev mode source");
+  console.log("packing dev mode source");
 } else {
   profile.devtool = "cheap-module-source-map";
   profile.entry = {
-    app: ["./frontend/app.js"]
+    app: ["./app.js"]
   };
-  console.log( "packing release mode source");
+  console.log("packing release mode source");
 }
 
 // Required plugins 
@@ -88,19 +88,12 @@ profile.module.rules.push({
     }
   },
   {
-    loader: path.resolve(__dirname, "fast-sass-loader"),
+    loader: path.resolve(__dirname, "..", "common", "fast-sass-loader"),
     options: {
       implementation: "dart-sass",
       includePaths: [path.join(nodePath, "compass-mixins", "lib")]
     }
   }
-  //,
-  //{
-  //  loader: "sass-resources-loader",
-  //  options: {
-  //    resources: ["./alloydbweb/frontend/styles/_constants.scss", "./alloydbweb/frontend/styles/_material-colors.scss", "./alloydbweb/frontend/styles/_functions.scss", "./alloydbweb/frontend/styles/_variables.scss", "./alloydbweb/frontend/styles/_framework.scss"]
-  //  }
-  //}
   ]
 });
 
@@ -165,7 +158,7 @@ if (process.env.MODE === "dev") {
           "@babel/plugin-proposal-class-properties",
           ["angularjs-annotate", {
             explicitOnly: false
-          }]  
+          }]
         ],
         presets: ["@babel/preset-env"]
       }

@@ -1,0 +1,59 @@
+section.scrollable.padder-lg.w-f-md
+  .row
+    a.u.pull-right.h6.text-muted.m-l(ng-click="refreshclick()")
+      i#refresh.icon-refresh.i-lg.inline
+    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
+    h2.clear.font-thin {{title}}
+  .row 
+    .table-responsives(ng-if="type === 'tracks'", style="overflow:hidden;")
+        table.table.table-striped.b-t.b-light
+          thead
+            tr
+              th
+              th Title
+              th Album
+              th Artist
+              th Length
+              th 
+          tbody(ng-repeat="track in data | limitTo:limit")
+            tr(title='{{track.title}}')
+              td  
+                span.pull-left.thumb-sm.avatar.m-r
+                  img.img-thumbnail(ng-src='{{track.image}}', alt='{{track.title}}')
+              td 
+                a(href="/album/{{track.album_id}}")
+                  span.clear
+                    span {{track.title}}
+              td 
+                a(href="/album/{{track.album_id}}")
+                  span.clear
+                    span {{track.album}}
+              td 
+                a(href="/artist/{{track.artist_id}}") {{track.artist}}
+              td {{$root.formatTime(track.duration)}}
+              td
+                a.centered-anchor(href="", style="height:30px;", ng-click="starTrack(track)")
+                  i.alloy-icon.icon(ng-class="isStarred(track)")
+
+    .table-responsives(ng-if="type === 'albums'")
+        table.table.table-striped.b-t.b-light
+          thead
+            tr
+              th(style="width:1px;")
+              th Album
+              th Artist
+              th Created
+              th Tracks
+          tbody(ng-repeat="album in data | limitTo:limit")
+            tr(title='{{album.name}}')
+              td(style="width:1px;")
+                span.pull-left.thumb-sm.avatar.m-r
+                  img.img-thumbnail(ng-src='{{album.image}}', alt='{{album.name}}')
+              td 
+                a(href="/album/{{album.id}}")
+                  span.clear
+                    span {{album.name}}
+              td 
+                a(href="/artist/{{album.artist_id}}") {{album.artist}}
+              td {{album.created}}
+              td {{album.track_count}}

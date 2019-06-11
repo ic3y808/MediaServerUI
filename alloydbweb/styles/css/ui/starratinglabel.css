@@ -1,0 +1,33 @@
+:export {
+  xxxsmall: 320px;
+  xxsmall: 375px;
+  xsmall: 384px;
+  smalls: 414px;
+  xxxmed: 480px;
+  xxmed: 575px;
+  xmed: 600px;
+  med: 640px;
+  large: 667px;
+  xlarge: 768px;
+  xxlarge: 800px;
+  xxxlarge: 991px;
+  huge: 1024px;
+  xhuge: 1280px;
+  xxhuge: 1366px;
+  xxxhuge: 1440px;
+  maximum: 1600px;
+  primaryColor: #006064;
+  lightColor: #4dd0e1;
+  darkColor: #0097a7;
+  darkerColor: #006064;
+  backgroundColor: #f2f4f8;
+  backgroundAltColor: #F5F5F6;
+  borderColor: #868686; }
+
+.star-rating-base {
+  fill: #788188; }
+
+.star-rating-selected {
+  fill: #4dd0e1 !important; }
+
+/*# sourceMappingURL=starratinglabel.css.map */
