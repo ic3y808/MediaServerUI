@@ -1,1 +1,0 @@
-global.appRoot = window.appRoot = __dirname
