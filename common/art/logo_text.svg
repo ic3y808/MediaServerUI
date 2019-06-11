@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="1920mm"
+   height="1080mm"
+   viewBox="0 0 1920 1080"
+   version="1.1"
+   id="svg6082"
+   inkscape:version="0.92.4 (5da689c313, 2019-01-14)"
+   sodipodi:docname="logo_text.svg"
+   inkscape:export-xdpi="5"
+   inkscape:export-ydpi="5"
+   inkscape:export-filename="D:\Source\Github\Alloy\common\art\logo_text.png">
+  <defs
+     id="defs6076" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.0875"
+     inkscape:cx="3320.4641"
+     inkscape:cy="3119.2904"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="2560"
+     inkscape:window-height="1027"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata6079">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,783)"
+     style="opacity:0.46799999">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:134.9256134px;line-height:1.25;font-family:'Segoe Script';-inkscape-font-specification:'Segoe Script';letter-spacing:0px;word-spacing:0px;fill:none;fill-opacity:1;stroke:#030000;stroke-width:10.95936394;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       x="37.97517"
+       y="-40.910526"
+       id="text6633"
+       inkscape:export-xdpi="5"
+       inkscape:export-ydpi="5"
+       transform="scale(1.0782801,0.92740281)"
+       inkscape:export-filename="D:\Source\Github\Alloy\android\Resources\drawable-nodpi\logo_text.png"><tspan
+         sodipodi:role="line"
+         id="tspan6631"
+         x="37.97517"
+         y="-40.910526"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:773.24395752px;font-family:'SF New Republic';-inkscape-font-specification:'SF New Republic Bold';fill:none;stroke:#030000;stroke-width:10.95936394;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1">Alloy</tspan></text>
+  </g>
+</svg>

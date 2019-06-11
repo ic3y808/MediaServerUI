@@ -87,6 +87,7 @@
     "moment": "^2.24.0",
     "node-watch": "^0.6.2",
     "popper.js": "^1.15.0",
+    "screenres": "^2.0.1",
     "serve-favicon": "^2.5.0",
     "sharp": "^0.22.0",
     "shelljs": "^0.8.3",

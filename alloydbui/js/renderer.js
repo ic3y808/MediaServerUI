@@ -103,6 +103,10 @@ app.run(function ($rootScope) {
     ipcRenderer.send("task-alloydb-toggle-ui", { enabled: false });
   };
 
+  $rootScope.launchWebUI = function () {
+    ipcRenderer.send("request-web-ui", { enabled: false });
+  };
+
   $rootScope.filterLogEntry = function () {
     return function (item) {
       if ($rootScope.selectedLogLevel === "all") { return true; }

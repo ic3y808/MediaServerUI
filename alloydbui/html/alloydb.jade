@@ -47,29 +47,7 @@ html(ng-app='alloydb', lang='en-us')
                 p Restore
     
             
-            li.nav-item
-              select.form-control(ng-model="download_mode_selection")
-                option(ng-repeat='obj in filters', value="{{obj.name}}") {{obj.name}}
-            
-            li.nav-item(ng-show="download_mode_selection === 'Audio'")
-              select.form-control(ng-model="download_bitrate_selection")
-                option(ng-repeat='obj in bitrates', value="{{obj.name}}") {{obj.name}}
-            
-            li.nav-item(ng-show="download_mode_selection === 'Video'")
-              select.form-control(ng-model="download_quality_selection")
-                option(ng-repeat='obj in qualities', value="{{obj.name}}") {{obj.name}}
-            
-            li.nav-item(ng-show="download_mode_selection === 'Video'")
-              select.form-control(ng-model="download_video_format")
-                option(ng-repeat='obj in video_formats', value="{{obj.name}}") {{obj.name}}
-            
-            li.nav-item(ng-show="download_mode_selection === 'Video'")
-              select.form-control(ng-model="download_video_audio_format")
-                option(ng-repeat='obj in video_audio_formats', value="{{obj.name}}") {{obj.name}}
-            
-            li.nav-item(ng-show="download_mode_selection === 'Video'")
-              select.form-control(ng-model="download_video_size")
-                option(ng-repeat='obj in video_sizes', value="{{obj.name}}") {{obj.name}}
+          
 
 
       .main-panel.ps-container.ps-theme-default.ps-active-y(data-ps-id='c0ac7b1e-d2c8-6697-b8b8-643f29ac084f')
@@ -168,7 +146,7 @@ html(ng-app='alloydb', lang='en-us')
                       .card-header.card-header-tabs.card-header-primary
                         .nav-tabs-navigation
                           .nav-tabs-wrapper
-                            span.nav-tabs-title Tasks
+                            span.nav-tabs-title Quick Tasks
                       .card-body
                         table.table
                           tbody
@@ -187,6 +165,11 @@ html(ng-app='alloydb', lang='en-us')
                               td.td-actions.text-right
                                 button.btn.btn-success.btn-link.btn-sm(data-original-title='Disable API autostart', type='button', title='', rel='tooltip', ng-click="disableApiServer()")
                                   i.material-icons play_arrow
+                            tr
+                              td Launch Web UI
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Open the Web UI', type='button', title='', rel='tooltip', ng-click="launchWebUI()")
+                                  i.material-icons launch
 
                 .row
                   .col-lg-12.col-md-12
