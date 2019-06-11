@@ -14,11 +14,15 @@ const appServer = express();
 var server = require("http").Server(appServer);
 var io = require("socket.io")(server);
 var sockets = require("./alloydbweb/routes/sockets");
+var sr = require("screenres");
+const url = require("url");
 
 let mainWindow = null;
 let serverWindow = null;
 let mediaScannerWindow = null;
 let schedulerWindow = null;
+let webUIWindow = null;
+let splashWindow = null;
 var tray = null;
 var running = false;
 var timer = {};
@@ -163,9 +167,68 @@ function createMediaScannerWindow() {
   });
 }
 
+function createWebUIWindow() {
+  return new Promise((resolve, reject) => {
+    if (!isUiEnabled()) { resolve(); }
+    else {
+      if (webUIWindow !== null) {
+        webUIWindow.show();
+      }
+      else {
+        var res = sr.get();
+        webUIWindow = new BrowserWindow({ width: res[0] * 0.8, height: res[1] * 0.8, webPreferences: { nodeIntegration: true } });
+        webUIWindow.icon = path.join(__dirname, "common", "icon.ico");
+        webUIWindow.setMenu(null);
+        //webUIWindow.setMinimumSize(min_width, min_height);
+        if (isDev() === true) {
+          webUIWindow.webContents.openDevTools({ detach: false });
+        }
+        webUIWindow.loadURL("http://localhost:" + process.env.API_UI_PORT);
+        webUIWindow.setTitle("Alloy");
+        webUIWindow.on("close", (e) => {
+          e.preventDefault();
+          webUIWindow.hide();
+        });
+
+        webUIWindow.webContents.once("dom-ready", () => {
+          webUIWindow.webContents.send("webui-start", process.env);
+          resolve();
+        });
+      }
+    }
+  });
+}
+
+function createSplashScreen() {
+  return new Promise((resolve, reject) => {
+    var res = sr.get();
+    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: res[1] * 0.4, webPreferences: { nodeIntegration: true }, frame: false });
+    splashWindow.icon = path.join(__dirname, "common", "icon.ico");
+    splashWindow.setMenu(null);
+    //webUIWindow.setMinimumSize(min_width, min_height);
+    if (isDev() === true) {
+      splashWindow.webContents.openDevTools({ detach: false });
+    }
+    splashWindow.loadURL(url.format({
+      pathname: path.join(__dirname, "alloydbui", "html", "splash.html"),
+      protocol: "file:",
+      slashes: true
+    }));
+    //webUIWindow.loadURL("http://localhost:" + process.env.API_UI_PORT);
+    splashWindow.setTitle("Alloy");
+
+
+    splashWindow.webContents.once("dom-ready", () => {
+      splashWindow.webContents.send("webui-start", process.env);
+      resolve();
+    });
+  });
+}
+
 function createMainWindow() {
   return new Promise((resolve, reject) => {
-    mainWindow = createWindow(1280, 610, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
+    var res = sr.get();
+    mainWindow = createWindow(res[0] * 0.6, res[1] * 0.7, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
     mainWindow.webContents.once("dom-ready", () => { resolve(); });
   });
 }
@@ -175,6 +238,10 @@ function createTrayMenu() {
   var t = new Tray(icon);
 
   const contextMenu = Menu.buildFromTemplate([
+    {
+      label: "Show Web UI",
+      click: createWebUIWindow
+    },
     {
       label: "Rescan",
       click: doRescan
@@ -224,6 +291,12 @@ function createTasks() {
       { name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" }
     ]);
   }
+}
+
+function showWebUI(e, data) {
+  if (!running) { return; }
+  logger.info("alloydb", "requesting webUI window");
+  createWebUIWindow();
 }
 
 function setupRoutes() {
@@ -281,6 +354,7 @@ function setupRoutes() {
   ipcMain.on("task-database-scan", doRescan);
   ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
   ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);
+  ipcMain.on("request-web-ui", showWebUI);
   ipcMain.on("web-request", (event, payload) => {
     const request = net.request({ method: payload.method, url: payload.url, });
     let body = "";
@@ -403,28 +477,33 @@ app.on("window-all-closed", () => {
 });
 
 app.on("ready", () => {
-  db = require("better-sqlite3")(process.env.DATABASE);
-  db.pragma("journal_mode = WAL");
+  createSplashScreen().then(() => {
+    db = require("better-sqlite3")(process.env.DATABASE);
+    db.pragma("journal_mode = WAL");
 
-  require("./common/migrate")(db, path.join(__dirname, "/migrations"));
+    require("./common/migrate")(db, path.join(__dirname, "/migrations"));
 
-  server.listen(process.env.API_UI_PORT);
+    server.listen(process.env.API_UI_PORT);
 
-  server.on("listening", function () {
-    logger.info("alloydb", "Primary Server listening");
-    createServerWindow().then(() => {
-      createSchedulerWindow().then(() => {
-        createMediaScannerWindow().then(() => {
-          createMainWindow().then(() => {
-            setupRoutes();
-            createTrayMenu();
-            mainWindow.webContents.send("app-loaded");
-            mainWindow.show();
-            setTimeout(createTasks, 250);
-            running = true;
+    server.on("listening", function () {
+      logger.info("alloydb", "Primary Server listening");
+      createServerWindow().then(() => {
+        createSchedulerWindow().then(() => {
+          createMediaScannerWindow().then(() => {
+            createMainWindow().then(() => {
+              setupRoutes();
+              createTrayMenu();
+              mainWindow.webContents.send("app-loaded");
+              splashWindow.close();
+              mainWindow.show();
+              setTimeout(createTasks, 250);
+              running = true;
+            });
           });
         });
       });
     });
   });
+
+
 });

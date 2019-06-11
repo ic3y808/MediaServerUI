@@ -8,6 +8,7 @@ export default class AppUtilities {
     this.$timeout = $timeout;
     this.Logger = Logger;
     this.$rootScope.goBack = this.goBack;
+    this.$rootScope.goForward = this.goForward;
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
     this.$rootScope.updateGridRows = this.updateGridRows;
@@ -31,6 +32,10 @@ export default class AppUtilities {
 
   goBack() {
     window.history.back();
+  }
+
+  goForward() {
+    window.history.forward();
   }
 
   getBackgroundStyle(imagepath) {
