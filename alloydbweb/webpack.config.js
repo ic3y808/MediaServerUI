@@ -38,7 +38,7 @@ profile.plugins.push(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
 profile.plugins.push(new webpack.DefinePlugin({
   "DEV_MODE": process.env.MODE === "dev",
   "SERVER_HOST": process.env.SERVER_HOST,
-  "SERVER_PORT": process.env.PORT,
+  "SERVER_PORT": process.env.API_UI_PORT,
   "JADE_PORT": process.env.JADE_PORT
 }));
 

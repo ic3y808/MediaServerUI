@@ -16,20 +16,22 @@ section.scrollable.padder-lg.w-f-md
               th Length
               th 
           tbody(ng-repeat="track in data | limitTo:limit")
-            tr(title='{{track.title}}')
-              td  
+            tr(title='{{track.title}}', ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}")
+              td 
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(ng-src='{{track.image}}', alt='{{track.title}}')
               td 
-                a(href="/album/{{track.album_id}}")
+                a(ng-click="$root.MediaPlayer.playTrack(track, data)")
                   span.clear
                     span {{track.title}}
-              td 
+              td(ng-click="$root.MediaPlayer.playTrack(track, data)") 
                 a(href="/album/{{track.album_id}}")
                   span.clear
                     span {{track.album}}
               td 
-                a(href="/artist/{{track.artist_id}}") {{track.artist}}
+                a(href="/artist/{{track.artist_id}}") 
+                  span.clear
+                    span {{track.artist}}
               td {{$root.formatTime(track.duration)}}
               td
                 a.centered-anchor(href="", style="height:30px;", ng-click="starTrack(track)")

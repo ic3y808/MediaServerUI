@@ -28,19 +28,19 @@ var timer = {};
 var db = {};
 
 /* Single Instance Check */
-const gotTheLock = app.requestSingleInstanceLock()
+const gotTheLock = app.requestSingleInstanceLock();
 
 if (!gotTheLock) {
-  app.quit()
+  app.quit();
 } else {
-  app.on('second-instance', (event, commandLine, workingDirectory) => {
+  app.on("second-instance", (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
-      if (mainWindow.isMinimized()) mainWindow.restore()
+      if (mainWindow.isMinimized()) {mainWindow.restore()};
       mainWindow.show();
-      mainWindow.focus()
+      mainWindow.focus();
     }
-  })
+  });
 }
 
 process.on("exit", () => db.close());
@@ -127,7 +127,7 @@ function doDisconnectDb(callback) {
     }
   }
   callback();
-};
+}
 
 function doLoadSettings(key, callback) {
   try {
@@ -139,7 +139,7 @@ function doLoadSettings(key, callback) {
       } callback(null);
     } callback(null);
   } catch (err) { callback(null); }
-};
+}
 
 function doSaveSettings(key, value, callback) {
   try {
@@ -152,7 +152,7 @@ function doSaveSettings(key, value, callback) {
     }
   }
   callback();
-};
+}
 
 function queryLog() {
   logger.query((results) => {
@@ -581,6 +581,8 @@ function setupRoutes() {
       mediaScannerWindow.show();
       schedulerWindow.webContents.openDevTools({ detach: true });
       schedulerWindow.show();
+      webUIWindow.webContents.openDevTools({ detach: true });
+      webUIWindow.show();
     });
     resolve();
   });
