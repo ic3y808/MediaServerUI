@@ -1,10 +1,11 @@
 @import "./variables";
+
 .modal-body {
   max-height: 70vh;
   overflow: auto;
 }
 
-.centered-anchor{
+.centered-anchor {
   display: inline-block;
   margin-left: auto;
   margin-right: auto;
@@ -12,7 +13,7 @@
   vertical-align: middle;
 }
 
-.centered-anchor i{
+.centered-anchor i {
   display: inline-block;
   text-align: center;
   vertical-align: middle;
@@ -1793,32 +1794,52 @@ a.text-info:hover {
   margin-bottom: 20px;
 }
 
-.table>thead>tr>th,
-.table>tbody>tr>td {
-  padding: 0px;
-  line-height: 1.42857143;
-  vertical-align: middle;
-  border-top: 1px solid #ddd;
-}
+
+
 
 .table>thead>tr>th {
   vertical-align: bottom;
   border-bottom: 2px solid #ddd;
 }
 
+.table>tbody>tr {
+  cursor: pointer;
+  background-color: inherit !important;
+  color: $main-link-color !important;
+
+  a {
+    color: $main-link-color !important;
+
+    span {
+      color: $main-link-color !important;
+    }
+  }
+}
+
+.table-now-playing {
+  background-color: $now-playing-track !important;
+  color: $now-playing-track-text !important;
+
+  a {
+    color: $now-playing-track-text !important;
+
+    span {
+      color: $now-playing-track-text !important;
+    }
+  }
+}
+
+
 .table-centered>thead>tr>th,
 .table-centered>tbody>tr>td,
 .table-centered>tbody>tr>td>span {
   vertical-align: middle !important;
   text-align: left !important;
+  background-color: inherit;
 }
 
 .table>thead:first-child>tr:first-child>th {
   border-top: 0;
-}
-
-.table-striped>tbody>tr:nth-child(odd)>td {
-  background-color: #f9f9f9;
 }
 
 .panel>.table-responsive {
@@ -2425,10 +2446,10 @@ a.text-info:hover {
   display: inline;
 }
 
-.react-contextmenu-wrapper >button{
-  min-width:30px !important;
-  width:30px !important;
-  max-width:30px !important;
+.react-contextmenu-wrapper>button {
+  min-width: 30px !important;
+  width: 30px !important;
+  max-width: 30px !important;
   height: 100%;
 }
 
@@ -2644,21 +2665,26 @@ div.jp-progress {
   .image-col {
     max-height: 240px;
   }
+
   .image-col>.thumbnail {
     max-height: 170px;
   }
+
   .image-absolute {
     max-height: 170px;
     width: 100%;
   }
+
   .image-absolute>img {
     max-height: 160px;
     width: 100%;
     object-fit: cover;
   }
+
   .navbar-form .form-group {
     margin-bottom: 5px;
   }
+
   .nav-off-screen {
     display: block !important;
     position: absolute;
@@ -2671,23 +2697,29 @@ div.jp-progress {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
+
   .nav-off-screen .nav-primary {
     display: block !important;
   }
+
   .nav-off-screen .navbar-fixed-top-xs {
     width: 75%;
   }
+
   .nav-off-screen.push-right .navbar-fixed-top-xs {
     left: 25%;
   }
+
   .nav-off-screen.push-right {
     left: auto;
     right: 0;
   }
+
   .nav-off-screen.push-right+* {
     -webkit-transform: translate3d(-75%, 0px, 0px);
     transform: translate3d(-75%, 0px, 0px);
   }
+
   .nav-off-screen+* {
     background-color: #f2f4f8;
     -webkit-transition: -webkit-transform 0.2s ease-in-out;
@@ -2712,6 +2744,7 @@ div.jp-progress {
     right: 0;
     z-index: 2;
   }
+
   .nav-off-screen+* .nav-off-screen-block {
     display: block !important;
     position: absolute;
@@ -2721,53 +2754,66 @@ div.jp-progress {
     bottom: 0;
     z-index: 1950;
   }
+
   .navbar+section .nav-off-screen {
     top: 50px;
   }
+
   .navbar+section .nav-off-screen+* {
     top: 50px;
   }
+
   .visible-xs {
     display: block !important;
   }
+
   .hidden-xs {
     display: none !important;
   }
+
   .vbox>header.header-md~section {
     top: 0px;
   }
+
   .navbar-fixed-top-xs {
     position: fixed !important;
     left: 0;
     width: 100%;
     z-index: 1100;
   }
+
   .navbar-fixed-top-xs+* {
     padding-top: 50px !important;
   }
+
   html,
   body {
     overflow-x: hidden;
     min-height: 100%;
   }
+
   .navbar-header {
     text-align: center;
   }
+
   .nav-user {
     margin: 0;
     padding: 15px;
   }
+
   .nav-user .dropdown-menu {
     display: block;
     position: static;
     float: none;
   }
+
   .nav-user .dropdown>a {
     display: block;
     text-align: center;
     font-size: 18px;
     padding-bottom: 10px;
   }
+
   .nav-user .avatar {
     width: 160px !important;
     float: none !important;
@@ -2777,6 +2823,7 @@ div.jp-progress {
     background-color: rgba(255, 255, 255, 0.1);
     position: relative;
   }
+
   .nav-user .avatar:before {
     content: "";
     position: absolute;
@@ -2787,14 +2834,17 @@ div.jp-progress {
     border: 4px solid #fff;
     border-radius: 500px;
   }
+
   .app .vbox>footer {
     position: absolute;
     bottom: 0px;
   }
+
   .padder-lg {
     padding-left: 15px;
     padding-right: 15px;
   }
+
   .table-responsive {
     width: 100%;
     margin-bottom: 15px;
@@ -2804,6 +2854,7 @@ div.jp-progress {
     -ms-overflow-style: -ms-autohiding-scrollbar;
     border: 1px solid #ddd;
   }
+
   .footer .jp-gui {
     margin: 0 -10px;
   }
@@ -2825,39 +2876,49 @@ div.jp-progress {
   .navbar {
     border-radius: 4px;
   }
+
   .navbar-header {
     float: left;
   }
+
   .navbar-nav {
     float: left;
     margin: 0;
   }
+
   .navbar-nav>li {
     float: left;
   }
+
   .navbar-nav>li>a {
     padding-top: 15px;
     padding-bottom: 15px;
   }
+
   .navbar-left {
     float: left !important;
   }
+
   .navbar-right {
     float: right !important;
   }
+
   .navbar-form .form-group {
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle;
   }
+
   .navbar-form .form-control {
     display: inline-block;
     width: auto;
     vertical-align: middle;
   }
+
   .navbar-form .input-group>.form-control {
     width: 100%;
   }
+
   .navbar-form {
     width: auto;
     padding-top: 0;
@@ -2868,25 +2929,32 @@ div.jp-progress {
     -webkit-box-shadow: none;
     box-shadow: none;
   }
+
   .hbox>aside,
   .hbox>section {
     display: table-cell;
   }
+
   .aside {
     width: 200px;
   }
+
   .aside-xl {
     width: 360px;
   }
+
   .header-md {
     min-height: 60px;
   }
+
   .nav-xs {
     width: 70px;
   }
+
   .nav-xs .nav-primary li>a>i {
     margin: -10px -5px;
   }
+
   .nav-xs .nav-primary>ul>li>a {
     position: relative;
     padding: 0;
@@ -2896,6 +2964,7 @@ div.jp-progress {
     overflow-y: hidden;
     border: none;
   }
+
   .nav-xs .nav-primary>ul>li>a span {
     display: table-cell;
     vertical-align: middle;
@@ -2903,9 +2972,11 @@ div.jp-progress {
     width: 70px;
     padding: 0 5px;
   }
+
   .nav-xs .nav-primary>ul>li>a span.pull-right {
     display: none !important;
   }
+
   .nav-xs .nav-primary>ul>li>a i {
     width: auto;
     float: none;
@@ -2917,17 +2988,20 @@ div.jp-progress {
     -webkit-transition: margin-top 0.2s;
     transition: margin-top 0.2s;
   }
+
   .nav-xs .nav-primary>ul>li>a .badge {
     position: absolute;
     right: 10px;
     top: 4px;
     z-index: 3;
   }
+
   .nav-xs .nav-primary>ul>li:hover>a i,
   .nav-xs .nav-primary>ul>li:focus>a i,
   .nav-xs .nav-primary>ul>li:active>a i {
     margin-top: -50px;
   }
+
   .nav-xs .nav-primary>ul ul {
     left: 100%;
     top: 0;
@@ -2935,51 +3009,64 @@ div.jp-progress {
     -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   }
+
   .nav-xs .nav-primary li:hover>ul,
   .nav-xs .nav-primary li:focus>ul,
   .nav-xs .nav-primary li:active>ul {
     display: block !important;
   }
+
   .nav-xs>.vbox>.footer {
     padding: 0 20px;
   }
+
   .nav-xs .hidden-nav-xs {
     display: none;
   }
+
   .nav-xs .text-center-nav-xs {
     text-align: center;
   }
+
   .nav-xs .navbar-brand {
     display: block;
     padding: 0;
   }
+
   .nav-xs .navbar-brand img {
     margin-right: 0;
   }
+
   .header-md .navbar-brand {
     line-height: 60px;
   }
+
   .header-md .navbar-brand img {
     max-height: 30px;
   }
+
   .app .hbox.stretch {
     height: 100%;
   }
+
   .app .vbox>section {
     position: absolute;
   }
+
   .hbox {
     display: table;
     table-layout: fixed;
     border-spacing: 0;
     width: 100%;
   }
+
   .hbox>aside {
     display: table-cell;
     vertical-align: top;
     height: 100%;
     float: none;
   }
+
   .vbox {
     display: table;
     border-spacing: 0;
@@ -2987,77 +3074,98 @@ div.jp-progress {
     height: 100%;
     width: 100%;
   }
+
   .vbox>section {
     top: 0;
     bottom: 0;
     width: 100%;
   }
+
   .vbox>header~section {
     top: 50px;
   }
+
   .mini-icon {
     line-height: 0.1em;
     font-size: 12px;
   }
+
   .aside-lg {
     width: 300px;
   }
+
   .scrollable {
     -webkit-overflow-scrolling: touch;
   }
+
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
+
   ::-webkit-scrollbar-thumb {
     background-color: rgba(50, 50, 50, 0.25);
     border: 2px solid transparent;
     border-radius: 10px;
     background-clip: padding-box;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background-color: rgba(50, 50, 50, 0.5);
   }
+
   ::-webkit-scrollbar-track {
     background-color: rgba(50, 50, 50, 0.05);
   }
+
   .col-sm-3,
   .col-sm-4,
   .col-sm-6 {
     float: left;
   }
+
   .col-sm-6 {
     width: 50%;
   }
+
   .col-sm-4 {
     width: 33.33333333%;
   }
+
   .col-sm-3 {
     width: 25%;
   }
+
   .vbox>section.w-f-md {
     bottom: 60px;
   }
+
   .col-sm-4 {
     float: left;
   }
+
   .col-sm-offset-4 {
     margin-left: 33.33333333%;
   }
+
   .col-sm-6 {
     float: left;
   }
+
   .grid--limit>div:nth-child(-n+3) {
     display: block;
   }
+
   .app .vbox>footer {
     position: absolute;
   }
+
   .vbox>footer {
     top: 0;
     bottom: 0;
     width: 100%;
   }
+
   .vbox>footer {
     top: auto;
     z-index: 1000;
@@ -3074,38 +3182,48 @@ div.jp-progress {
   .col-lg-3 {
     float: left;
   }
+
   .col-lg-3 {
     width: 25%;
   }
+
   .col-lg-2 {
     float: left;
   }
+
   .col-lg-2 {
     width: 16.66666667%;
   }
+
   .grid--limit>div:nth-child(-n+12) {
     display: block;
   }
 }
 
 @media (min-width: 992px) {
+
   .col-md-3,
   .col-md-5,
   .col-md-7 {
     float: left;
   }
+
   .col-md-7 {
     width: 58.33333333%;
   }
+
   .col-md-5 {
     width: 41.66666667%;
   }
+
   .col-md-3 {
     width: 25%;
   }
+
   .grid--limit>div:nth-child(-n+8) {
     display: block;
   }
+
   .col-md-3 {
     float: left;
   }
@@ -3115,9 +3233,11 @@ div.jp-progress {
   .grid--limit>div:nth-child(-n+12) {
     display: block;
   }
+
   .col-xl-2 {
     float: left;
   }
+
   .col-xl-2 {
     width: 16.66666667%;
   }

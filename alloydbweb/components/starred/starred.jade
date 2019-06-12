@@ -12,6 +12,12 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
       span.bar5.a5.bg-danger.dker
 
   .row
+    .col-md-7(ng-if="$root.starred_tracks.length > 0")
+      thumblist(data="$root.starred_tracks", title="Tracks", limit="12", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
+          
+    .col-md-5(ng-if="$root.starred_top_tracks.length > 0")
+      itemlist(data="$root.starred_top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/top_tracks")  
+  .row
     .col-md-7(ng-if="$root.starred_albums.length > 0")
       thumblist(data="$root.starred_albums", title="Albums", limit="12", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
           
@@ -26,19 +32,9 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
       
 
   .row
-    .col-md-7
-      h3.font-thin Tracks
+    .col-md-12
+      h3.font-thin All Tracks
       .row.row-sm
         .col-md-12(ng-if="$root.starred_tracks.length > 0")
           itemtable(data="$root.starred_tracks", title="Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="/starred")
-      
-    .col-md-5(ng-if="$root.starred_top_tracks.length > 0")
-      h3.font-thin Top Tracks
-      .list-group.bg-white.list-group-lg.no-bg.auto
-        a.list-group-item.clearfix.pointer(ng-repeat="song in $root.starred_top_tracks | limitTo:10", href='#')
-          span.pull-right.h2.text-muted.m-l {{$index + 1}}
-          span.pull-left.thumb-sm.avatar.m-r
-            img.img-thumbnail(ng-src='{{song.image}}', alt='...')
-          span.clear
-            span {{song.title}}
-            small.text-muted.clear.text-ellipsis by {{song.artist}}
+   

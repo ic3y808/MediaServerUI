@@ -57,6 +57,15 @@
       "url": "http://localhost:3000/template/server.jade"
     },
     {
+      "name": "Web UI",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "webRoot": "${workspaceFolder}",
+      "timeout": 5000,
+      "url": "http://localhost:3000"
+    },
+    {
       "type": "node",
       "request": "launch",
       "name": "Rebuild Icons",
