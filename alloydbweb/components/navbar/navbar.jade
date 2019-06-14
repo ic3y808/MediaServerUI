@@ -8,26 +8,28 @@ section.vbox
     a.btn.btn-link.visible-xs(href='/playing')
       i.alloy-icon.icon-controls
 
-  form.navbar-form.navbar-left.input-s-lg.m-t.m-l-n-xs.hidden-xs(role='search')
-    .form-group
+  form.navbar-form.navbar-left.hidden-xs(role='search')
+    #mainNavGroup.form-group
       .input-group
         span.input-group-btn
-          button.btn.btn-sm.bg-white.btn-icon.rounded(data-target='#nav,.navbar-header', data-toggle='class:nav-xs,nav-xs')
+          button.btn.btn-sm.bg-white.btn-icon.rounded.mainNavButton(data-target='#nav,.navbar-header', data-toggle='class:nav-xs,nav-xs')
             i.alloy-icon.icon-menu
-    .form-group
-      .input-group
+   
         span.input-group-btn
-          button.btn.btn-sm.bg-white.btn-icon.rounded(ng-click="$root.goBack()")
+          button.btn.btn-sm.bg-white.btn-icon.rounded.mainNavButton(ng-click="$root.goBack()")
             i.alloy-icon.icon-back-arrow
-    .form-group
-      .input-group
+   
         span.input-group-btn
-          button.btn.btn-sm.bg-white.btn-icon.rounded(ng-click="$root.goForward()")
+          button.btn.btn-sm.bg-white.btn-icon.rounded.mainNavButton(ng-click="$root.goForward()")
             i.alloy-icon.icon-forward-arrow
-    .form-group
-      .input-group
+    
         span.input-group-btn
-          button.btn.btn-sm.bg-white.btn-icon.rounded(ng-click="refreshCurrentView()")
+          button.btn.btn-sm.bg-white.btn-icon.rounded.mainNavButton(ng-click="refreshCurrentView()")
             i.alloy-icon.icon-refresh
+ 
+  form.navbar-form.navbar-right.hidden-xs(role='search')
+    #mainNavGroup.form-group
+      .input-group
         
-    searchbar
+        searchbar
+   

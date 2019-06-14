@@ -13,19 +13,22 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    //  var focus = $("#search-box").is(":focus") 
-    //if (!focus) {
-    if (key === 32) {
-      e.preventDefault();
-      MediaPlayer.toggleCurrentStatus();
+    var focus = $("#autoComplete").is(":focus");
+    if (!focus) {
+      if (key === 32) {
+        e.preventDefault();
+        MediaPlayer.toggleCurrentStatus();
+      }
     }
-    //}
   };
 
   $window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    if (key === 32) {
-      e.preventDefault();
+    var focus = $("#autoComplete").is(":focus");
+    if (!focus) {
+      if (key === 32) {
+        e.preventDefault();
+      }
     }
   };
 

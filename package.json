@@ -9,7 +9,7 @@
     "rebuild": "electron-builder install-app-deps & node node_modules/sharp/install/dll-copy",
     "build_styles": "gulp scss:alloydb",
     "build_fonts": "icon-font-generator ./common/icons/*.svg -n alloyicons --normalize --html false -j false -o alloydbweb/styles/fonts",
-    "build_web": "cd alloydbweb && npm install && cross-env MODE=prod webpack .",
+    "build_web": "cd alloydbweb && cross-env MODE=prod webpack .",
     "build": "npm run build_styles & npm run build_fonts & npm run build_web & npm run dist",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
