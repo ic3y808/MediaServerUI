@@ -16,7 +16,7 @@ if (process.env.MODE === "dev") {
   profile.devtool = "inline-source-map";
   console.log("packing dev mode source");
 } else {
-  profile.devtool = "cheap-module-source-map";
+  profile.devtool = "inline-source-map";
   profile.entry = {
     app: ["./app.js"]
   };
@@ -164,7 +164,7 @@ if (process.env.MODE === "dev") {
       }
     }
     ],
-    exclude: /(node_modules|bower_components|angular-auto-complete\.js)/
+    exclude: /(node_modules|bower_components)/
   });
 
   profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
@@ -174,20 +174,20 @@ if (process.env.MODE === "dev") {
     }) => /node_modules/.test(resource),
   }));
 
-  profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    mangle: true,
-    compress: {
-      warnings: false, // Suppress uglification warnings
-      pure_getters: false,
-      unsafe: false,
-      unsafe_comps: false,
-      screw_ie8: false
-    },
-    output: {
-      comments: false,
-    },
-    exclude: [/\.min\.js$/gi] // skip pre-minified libs
-  }));
+  //profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
+  //  mangle: true,
+  //  compress: {
+  //    warnings: false, // Suppress uglification warnings
+  //    pure_getters: false,
+  //    unsafe: false,
+  //    unsafe_comps: false,
+  //    screw_ie8: false
+  //  },
+  //  output: {
+  //    comments: false,
+  //  },
+  //  exclude: [/\.min\.js$/gi] // skip pre-minified libs
+  //}));
 
 }
 

@@ -27,6 +27,14 @@
   overflow-x: hidden;
 }
 
+.page-title {
+  line-height: 30px !important;
+  font-size: 30px !important;
+  font-weight: bold !important;
+  font-family: $main-font !important;
+}
+
+
 .jp-controls {
   display: table;
   table-layout: fixed;
@@ -1793,9 +1801,6 @@ a.text-info:hover {
   width: 100%;
   margin-bottom: 20px;
 }
-
-
-
 
 .table>thead>tr>th {
   vertical-align: bottom;
