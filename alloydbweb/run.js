@@ -10,21 +10,38 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   $(window).on("resize", windowResized);
 
+  function toggleFullScreen() {
+    var doc = window.document;
+    var docEl = doc.documentElement;
+
+    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+      requestFullScreen.call(docEl);
+    }
+    else {
+      cancelFullScreen.call(doc);
+    }
+  }
 
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    var focus = $("#autoComplete").is(":focus");
+    var focus = $("input").is(":focus");
     if (!focus) {
       if (key === 32) {
         e.preventDefault();
         MediaPlayer.toggleCurrentStatus();
+      }
+      if(key === 122){
+        toggleFullScreen();
       }
     }
   };
 
   $window.onkeydown = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
-    var focus = $("#autoComplete").is(":focus");
+    var focus = $("input").is(":focus");
     if (!focus) {
       if (key === 32) {
         e.preventDefault();
@@ -255,22 +272,6 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $(this).tab("show");
   });
 
-  function toggleFullScreen() {
-    var doc = window.document;
-    var docEl = doc.documentElement;
-
-    var requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
-    var cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
-
-    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
-      requestFullScreen.call(docEl);
-    }
-    else {
-      cancelFullScreen.call(doc);
-    }
-  }
-
-  // toggleFullScreen();
 
   //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";

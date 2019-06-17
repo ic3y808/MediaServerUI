@@ -7,6 +7,6 @@ import "./ui/forms.scss";
 import "./ui/animations.scss";
 import "./fonts.scss";
 import "./fonts/alloyicons.css";
-//import "./mixins.scss";
+import "./mixins.scss";
 import "./debug.scss";
 import "./ui/starratinglabel.scss";

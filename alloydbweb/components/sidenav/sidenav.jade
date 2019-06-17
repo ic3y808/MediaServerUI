@@ -1,11 +1,7 @@
 
 section.w-f-md.scrollable
-  
-  // nav
   nav.nav-primary.hidden-xs
-  
     ul.nav(data-ride='collapse')
-      //li.hidden-nav-xs.padder.m-t.m-b-sm.text-xs.text-muted Discover 
       li
         a(href='/fresh')
           i.alloy-icon.icon-fresh
@@ -123,12 +119,12 @@ section.w-f-md.scrollable
             button.btn.btn-secondary(data-dismiss='modal', type='button') Close
             button.btn.btn-primary(ng-click='createNewPlaylist()', type='button') Add
     // / nav
-footer.footer.hidden-xs.no-padder.text-center-nav-xs(ng-show="$root.currentTrack.image")
-  .bg.hidden-xs
+footer.footer.hidden-xs.no-padder.text-center-nav-xs.bg-dark(style="height:100%;")
+  .hidden-xs
     .dropdown.dropup.wrapper-sm.clearfix
       a.dropdown-toggle(href="/playing")
         span.thumb-sm.avatar.pull-left.m-l-xs
-          img.dker(src='{{$root.currentTrack.image}}', alt='...')
+          img.dker(src='{{$root.currentTrack.image}}', ng-show="$root.currentTrack.image", alt='...', style="height:100%")
         span.hidden-nav-xs.clear
           span.truncate.block.m-l
             strong.truncate.font-bold.text-lt {{$root.currentTrack.title}}

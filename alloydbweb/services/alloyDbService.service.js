@@ -1,12 +1,13 @@
 import AlloyApi from "../API/alloy.db";
 export default class AlloyDbService {
-  constructor($rootScope, Logger, AppUtilities, $routeParams) {
+  constructor($rootScope, Logger, AppUtilities, $window) {
     "ngInject";
     this.isLoggingIn = true;
     this.isLoggedIn = false;
     this.$rootScope = $rootScope;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
+    this.$window = $window;
     this.$rootScope.refreshPage = this.refreshPage;
   }
 
@@ -299,7 +300,7 @@ export default class AlloyDbService {
 
   stream(id, quality) {
     this.doLogin();
-     return this.alloydb.stream(id, quality); 
+    return this.alloydb.stream(id, quality);
   }
 
   download(id) {
@@ -618,10 +619,6 @@ export default class AlloyDbService {
     }
   }
 
-  refreshPage(page) {
-    console.log(page);
-  }
-
   preload() {
 
     var index = this.getArtistsIndex();
@@ -650,5 +647,17 @@ export default class AlloyDbService {
         this.AppUtilities.apply();
       }
     });
+  }
+
+  refreshPage(path) {
+    //var path = window.location.pathname;
+    switch(path){
+      case "/": this.preload(); break;
+      case "/artists": this.refreshArtists(); break;
+      case "/albums": this.refreshAlbums(); break;
+      case "/genres": this.refreshGenres(); break;
+      case "/starred": this.refreshStarred(); break;
+    }
+    console.log(path);
   }
 }

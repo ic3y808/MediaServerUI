@@ -2,10 +2,10 @@
 @import "./constants";
 @import "./functions";
 @import "./material-colors";
-$primary-color: $clr-cyan-900;
-$light-color:$clr-cyan-300;
-$dark-color: $clr-cyan-700;
-$darker-color: $clr-cyan-900;
+$primary-color: $clr-pink-300;
+$light-color:$clr-grey-900;
+$dark-color: $clr-grey-800;
+$darker-color: $clr-grey-900;
 $background-color: #f2f4f8;
 $background-alt-color: #F5F5F6;
 $border-color: #868686;
@@ -119,8 +119,9 @@ $slider-thumb-border-color:rgb(25, 24, 24);
 $toolbar-height:45px;
 $navbar-background-color:$dark-color;
 //scrollbar
-$scrollbar-track-color: mix($main-background-color, white, 50%);
-$scrollbar-thumb-color: mix($sub-background-color, black, 50%);
+$scrollbar-track-color: transparent;
+$scrollbar-thumb-color: $primary-color;
+$scrollbar-hover-color: $primary-color;
 $scrollbar-thickness: 0.5em;
 
 

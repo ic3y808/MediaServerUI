@@ -67,11 +67,6 @@
   height: 100%;
 }
 
-div.jp-progress {
-  width: auto;
-  vertical-align: top;
-  position: relative;
-}
 
 .jp-subtitle {
   position: absolute;
@@ -98,6 +93,7 @@ div.jp-progress {
 
 #volumeSliderValue {
   height: 6px;
+  background-color: choose-contrast-color($dark-color);
 }
 
 a.hid {
@@ -196,10 +192,6 @@ a.jp-playlist-current:before {
 
 .bg-success {
   background-color: #dff0d8;
-}
-
-.bg-info {
-  background-color: #d9edf7;
 }
 
 .bg-danger {
@@ -763,6 +755,10 @@ a.list-group-item:focus {
 
 .scrollable {
   overflow-x: hidden;
+  overflow-y: hidden;
+}
+.scrollable:hover {
+  overflow-x: hidden;
   overflow-y: auto;
 }
 
@@ -919,30 +915,30 @@ a.list-group-item:focus {
 }
 
 .bg-light {
-  background-color: #e8eff0;
-  color: #788188;
+  background-color: $light-color;
+  color: choose-contrast-color($light-color);
 }
 
 .bg-light.dk {
-  background-color: #e0eaec;
+  background-color: $light-color;
 }
 
 .bg-dark {
-  background-color: #5a6a7a;
-  color: #c9d0d7;
+  background-image: linear-gradient($light-color, $dark-color );
+  color: choose-contrast-color($dark-color);
 }
 
 .bg-dark.dk,
 .bg-dark .dk {
-  background-color: #4d5d6e;
+  background-color: $dark-color;
 }
 
 .bg-dark .dker {
-  background-color: #405161;
+  background-color: $darker-color;
 }
 
 .bg-dark .bg {
-  background-color: #5a6a7a;
+  background-color: $dark-color;
 }
 
 .bg-dark a {
@@ -957,16 +953,16 @@ a.list-group-item:focus {
 .bg-dark .nav>li:focus>a,
 .bg-dark .nav>li:active>a {
   color: #fff;
-  background-color: #62778c;
+  background-color: $dark-color;
 }
 
 .bg-dark .nav>li>a {
-  color: #d8dde2;
+  color: choose-contrast-color($dark-color);
 }
 
 .bg-dark .nav>li>a:hover,
 .bg-dark .nav>li>a:focus {
-  background-color: #62778c;
+  background-color: $dark-color;
 }
 
 .bg-dark .caret {
@@ -983,7 +979,7 @@ a.list-group-item:focus {
 }
 
 .bg-primary {
-  background-color: #545ca6;
+  background-color: $primary-color;
   color: #dadcec;
 }
 
@@ -997,22 +993,22 @@ a.list-group-item:focus {
 }
 
 .bg-info {
-  background-color: #4cb6cb;
+  background-image: linear-gradient($primary-color, $dark-color );
   color: #eaf6f9;
 }
 
 .bg-info .lter {
-  background-color: #78c3d2;
+  background-color: $light-color;
 }
 
 .bg-info.dk,
 .bg-info .dk {
-  background-color: #36b0c8;
+  background-color: $dark-color;
 }
 
 .bg-info.dker,
 .bg-info .dker {
-  background-color: #2ea0b6;
+  background-color: $darker-color;
 }
 
 .bg-info a {
@@ -2656,14 +2652,6 @@ div.jp-progress {
   right: 25px;
   display: block !important;
   line-height: 60px;
-}
-
-.bg-dark .lter {
-  background-color: #778490;
-}
-
-.bg-dark .dk {
-  background-color: #4d5d6e;
 }
 
 @media (max-width: 767px) {

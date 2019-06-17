@@ -19,7 +19,6 @@ var getLastFm = function (res, isPublic) {
             api_secret: process.env.LASTFM_API_SECRET,
             username: settings.alloydb_lastfm_username,
             password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
-            //authToken: 'xxx' // Optional, you can use this instead of password, where authToken = md5(username + md5(password))
           });
           return res.locals.lastfm ;
         } else {

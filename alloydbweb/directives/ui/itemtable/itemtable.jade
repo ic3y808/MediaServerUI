@@ -1,9 +1,7 @@
 section.scrollable.padder-lg.w-f-md
   .row
-    a.u.pull-right.h6.text-muted.m-l(ng-click="refreshclick()")
-      i#refresh.icon-refresh.i-lg.inline
-    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
     h2.clear.font-thin {{title}}
+      a(href="{{viewmorelink}}").u.h6.text-muted.m-l View More
   .row 
     .table-responsives(ng-if="type === 'tracks'", style="overflow:hidden;")
         table.table.table-striped.b-t.b-light

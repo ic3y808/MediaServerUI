@@ -122,7 +122,7 @@ export default class AlloyApi {
         var res = e.target.response;
         resolve(res);
       }, (fe) => {
-        reject(e);
+        reject(fe);
       });
     });
   }
