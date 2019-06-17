@@ -21,7 +21,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
   MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
   mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
 
-
+ 
   class MediaScanner extends MediaScannerBase {
     constructor() {
       super(require("better-sqlite3")(process.env.DATABASE));
@@ -280,13 +280,13 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
               var mappedArtist = {
                 id: json.artist.musicbrainzartistid,
                 name: utils.isStringValid(json.artist.title, ""),
-                sort_name: utils.isStringValid(artistInfo.SortName, ""),
+                sort_name: utils.isStringValid(artistInfo.sortName, ""),
                 biography: utils.isStringValid(json.artist.biography, ""),
-                status: utils.isStringValid(artistInfo.Status, ""),
-                rating: artistInfo.Rating.Count,
-                type: utils.isStringValid(artistInfo.Type, ""),
-                disambiguation: utils.isStringValid(artistInfo.Disambiguation, ""),
-                overview: utils.isStringValid(artistInfo.Overview, "")
+                status: utils.isStringValid(artistInfo.status, ""),
+                rating: artistInfo.rating.count,
+                type: utils.isStringValid(artistInfo.type, ""),
+                disambiguation: utils.isStringValid(artistInfo.disambiguation, ""),
+                overview: utils.isStringValid(artistInfo.overview, "")
               };
 
               Object.assign(artist, mappedArtist);
@@ -357,7 +357,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
               });
             }
           } catch (err) {
-            this.error(JSON.stringify(err));
+            this.error(JSON.stringify(err.message));
           }
 
         }, (reason) => {
@@ -384,11 +384,11 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
     }
 
     scanPath(dir) {
-      if (this.isScanning()) {
-        this.updateStatus("Scan in progress", true);
-        this.info("scan in progress");
-        return;
-      }
+      //if (this.isScanning()) {
+      //  this.updateStatus("Scan in progress", true);
+      //  this.info("scan in progress");
+      //  return;
+      //}
       if (fs.existsSync(dir)) {
 
         var pathToCheck = dir;

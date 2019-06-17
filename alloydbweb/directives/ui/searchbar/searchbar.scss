@@ -119,8 +119,8 @@
 }
 
 .autoComplete_divider {
-  background-color: $main-link-color;
-  color: $faded-text-color;
+  background-color: $dark-color;
+  color: choose-contrast-color($dark-color);;
   font-weight: bold;
 }
 

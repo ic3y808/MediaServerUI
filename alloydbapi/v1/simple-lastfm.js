@@ -4,7 +4,6 @@ var crypto = require("crypto");
 var xml2js = require("xml2js");
 var querystring = require("querystring");
 
-var db = {};
 
 var Lastfm = function (options) {
   options = options || {};
@@ -21,22 +20,20 @@ var Lastfm = function (options) {
   this.debug = options.debug || false;
 
   this.api_key = options.api_key;
-  if (options.api_secret != undefined && options.api_secret != "") { this.api_secret = options.api_secret; }
-  if (options.username != undefined && options.username != "") { this.username = options.username; }
-  if (options.password != undefined && options.password != "") { this.password = options.password; }
-  if (options.session_key != undefined && options.session_key != "") { this.session_key = options.session_key; }
-  if (options.authToken != undefined && options.authToken != "") { this.authToken = options.authToken; }
+  if (options.api_secret != undefined && options.api_secret != "")
+    {this.api_secret = options.api_secret;}
+  if (options.username != undefined && options.username != "")
+    {this.username = options.username;}
+  if (options.password != undefined && options.password != "")
+    {this.password = options.password;}
+  if (options.session_key != undefined && options.session_key != "")
+    {this.session_key = options.session_key;}
+  if (options.authToken != undefined && options.authToken != "")
+    {this.authToken = options.authToken;}
 
-  function now() {
-    return new Date().getTime();
-  }
-
-  function md5(string) {
-    return crypto.createHash("md5").update(string, "utf8").digest("hex");
-  }
   // Privileged method - available to public methods but not to the instance itself.
   self._getInfo = function (opt) {
-    if (!self._isTheMethodCaller) { throw new Error("Security exception."); }
+    if (!self._isTheMethodCaller) {throw new Error("Security exception.");}
     try {
       if (typeof opt.callback !== "function") {
         opt.callback({
@@ -79,7 +76,8 @@ var Lastfm = function (options) {
         });
       }
     } catch (e) {
-      if (this.debug) { console.log("Exception getting track info: ", e); }
+      if (this.debug)
+        {console.log("Exception getting track info: ", e);}
     }
   };
 };
@@ -87,10 +85,14 @@ var Lastfm = function (options) {
 // Left for backwards compatibility
 Lastfm.prototype.init = function (options) {
   this.api_key = options.api_key;
-  if (options.api_secret != undefined && options.api_secret != "") { this.api_secret = options.api_secret; }
-  if (options.username != undefined && options.username != "") { this.username = options.username; }
-  if (options.password != undefined && options.password != "") { this.password = options.password; }
-  if (options.session_key != undefined && options.session_key != "") { this.session_key = options.session_key; }
+  if (options.api_secret != undefined && options.api_secret != "")
+    {this.api_secret = options.api_secret;}
+  if (options.username != undefined && options.username != "")
+    {this.username = options.username;}
+  if (options.password != undefined && options.password != "")
+    {this.password = options.password;}
+  if (options.session_key != undefined && options.session_key != "")
+    {this.session_key = options.session_key;}
 };
 
 Lastfm.prototype.getSessionKey = function (callback) {
@@ -121,13 +123,15 @@ Lastfm.prototype.getSessionKey = function (callback) {
           if (ret.success) {
             ret.session_key = result.session.key;
             lastfmObj.session_key = result.session.key;
-          } else { ret.error = result.error["#"]; }
+          } else
+            {ret.error = result.error["#"];}
           if (typeof callback === "function") {
             callback(ret);
           }
         });
       } catch (e) {
-        if (lastfmObj.debug) { console.log("Exception: ", e); }
+        if (lastfmObj.debug)
+          {console.log("Exception: ", e);}
       }
     });
   });
@@ -159,7 +163,8 @@ Lastfm.prototype.addTrackTags = function (opt) {
 };
 
 Lastfm.prototype.doScrobble = function (options) {
-  if (this.debug) { console.log("Starting scrobbleTrack: ", options); }
+  if (this.debug)
+    {console.log("Starting scrobbleTrack: ", options);}
   options = options || {};
   if ((this.api_secret == undefined || this.api_secret == "") && typeof options.callback === "function") {
     options.callback({
@@ -182,7 +187,8 @@ Lastfm.prototype.doScrobble = function (options) {
 
   options.timestamp = options.timestamp != undefined ? Math.floor(options.timestamp) : Math.floor(now() / 1000);
 
-  if (this.debug) { console.log("Using session key: " + this.session_key + "\n\n"); }
+  if (this.debug)
+    {console.log("Using session key: " + this.session_key + "\n\n");}
   var authToken = this.authToken ? this.authToken : md5(this.username + md5(this.password));
   var sig = "api_key" + this.api_key + "artist" + options.artist + "method" + options.method + "sk" + this.session_key + (options.tags != null ? "tags" + options.tags : "") + "timestamp" + options.timestamp + "track" + options.track + this.api_secret;
   var api_sig = md5(sig);
@@ -197,7 +203,8 @@ Lastfm.prototype.doScrobble = function (options) {
     track: options.track
   };
 
-  if (options.tags != null) { post_obj.tags = options.tags; }
+  if (options.tags != null)
+    {post_obj.tags = options.tags;}
   var post_data = querystring.stringify(post_obj);
 
   //	console.log("post_data: ", post_data);
@@ -236,7 +243,8 @@ Lastfm.prototype.doScrobble = function (options) {
             }
           }
         } catch (e) {
-          if (this.debug) { console.log("Exception parsing scrobble result: ", e); }
+          if (this.debug)
+            {console.log("Exception parsing scrobble result: ", e);}
         }
       });
     });
@@ -345,7 +353,7 @@ Lastfm.prototype.getAlbumInfo = function (opt) {
 Lastfm.prototype.getGenreInfo = function (opt) {
   opt = opt || {};
 
-  if ((opt.genre == undefined || opt.genre == "") && typeof opt.callback === "function") {
+  if ((opt.genre == undefined || opt.genre == "")  && typeof opt.callback === "function") {
     opt.callback({
       success: false,
       error: "Need to specify Genre."
@@ -383,13 +391,15 @@ Lastfm.prototype.getTags = function (opt) {
       if (typeof the_callback === "function") {
         if (result["@"].status == "ok") {
           var tags = opt.track != undefined && opt.track != "" ? result.track.toptags.tag : result.artist.tags.tag;
-          if (typeof tags === "object" && !tags.length) { tags = [tags]; }
+          if (typeof tags === "object" && !tags.length)
+            {tags = [tags];}
           var args = {
             success: true,
             tags: tags || [],
             artist: opt.track != undefined && opt.track != "" ? result.track.artist.name : result.artist.name
           };
-          if (opt.track != undefined && opt.track != "") { args.track = result.track.name; }
+          if (opt.track != undefined && opt.track != "")
+            {args.track = result.track.name;}
           the_callback(args);
         } else {
           the_callback({
@@ -416,8 +426,10 @@ Lastfm.prototype.getPlays = function (opt) {
             plays: opt.track != undefined && opt.track != "" ? result.track.userplaycount : result.artist.stats.userplaycount,
             artist: opt.track != undefined && opt.track != "" ? result.track.artist.name : result.artist.name
           };
-          if (ret.plays == undefined) { ret.plays = 0; }
-          if (opt.track != undefined && opt.track != "") { ret.track = result.track.name; }
+          if (ret.plays == undefined)
+            {ret.plays = 0;}
+          if (opt.track != undefined && opt.track != "")
+            {ret.track = result.track.name;}
           the_callback(ret);
         } else {
           the_callback({
@@ -467,7 +479,8 @@ Lastfm.prototype.getAllTracks = function (opt) {
     } else {
       var numPages = result.artisttracks["@"].totalPages;
       for (var i = 0; i < result.artisttracks.track.length; i++) {
-        if (tracks.indexOf(result.artisttracks.track[i].name) < 0) { tracks.push(result.artisttracks.track[i].name); }
+        if (tracks.indexOf(result.artisttracks.track[i].name) < 0)
+          {tracks.push(result.artisttracks.track[i].name);}
       }
       if (result.artisttracks["@"].page < numPages) {
         opt.page++;
@@ -556,3 +569,13 @@ Lastfm.prototype.doGet = function (opt) {
     });
   });
 };
+
+function now() {
+  return new Date().getTime();
+}
+
+function md5(string) {
+  return crypto.createHash("md5").update(string, "utf8").digest("hex");
+}
+
+module.exports = Lastfm;

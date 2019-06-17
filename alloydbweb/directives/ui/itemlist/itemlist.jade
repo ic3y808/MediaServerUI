@@ -1,9 +1,7 @@
 section.scrollable.padder-lg.w-f-md
   .row
-    a.u.pull-right.h6.text-muted.m-l(ng-click="refreshclick()")
-      i#refresh.icon-refresh.i-lg.inline
-    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
     h2.clear.font-thin {{title}}
+      a(href="{{viewmorelink}}").u.h6.text-muted.m-l View More
   .row 
     .list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'tracks'")
       a.list-group-item.clearfix.pointer(ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', song.id) == true}", ng-click="$root.MediaPlayer.playTrack(song, data)", ng-repeat="song in data | limitTo:itemLimit")

@@ -87,7 +87,7 @@ export default function (AlloyDbService, $location, AppUtilities) {
         document.querySelector("#autoComplete").addEventListener(eventType, function () {
           // Hide results list & show other elemennts
           if (eventType === "blur") {
-           // resultsList.style.display = "none";
+            resultsList.style.display = "none";
           } else if (eventType === "focus") {
             // Show results list & hide other elemennts
             resultsList.style.display = "block";
@@ -105,7 +105,7 @@ export default function (AlloyDbService, $location, AppUtilities) {
           ) {
             resultsList.style.display = "block";
           } else {
-            //resultsList.style.display = "none";
+            resultsList.style.display = "none";
           }
         });
       });

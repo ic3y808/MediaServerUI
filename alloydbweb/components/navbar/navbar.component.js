@@ -11,7 +11,11 @@ class NavbarController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug("nav-controller");   
+    this.Logger.debug("nav-controller");
+
+    this.$scope.refreshCurrentView = function () {
+      AlloyDbService.refreshPage(window.location.pathname);
+    };
   }
 
   $onInit() {
