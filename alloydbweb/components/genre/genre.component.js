@@ -39,7 +39,18 @@ class GenreController {
         if (AlloyDbService.isLoggedIn) {
           this.AlloyDbService.getGenre(this.$routeParams.id).then((result) => {
             $scope.info = result;
-
+            $scope.info.tracks.forEach((track) => {
+              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
+            });
+            $scope.info.never_played.forEach((track) => {
+              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
+            });
+            $scope.info.artists.forEach((artist) => {
+              artist.image = this.AlloyDbService.getCoverArt({ artist_id: artist.id });
+            });
+            $scope.info.albums.forEach((album) => {
+              album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
+            });
             var randomTrack = $scope.info.tracks[Math.floor(Math.random() * $scope.info.tracks.length)];
             if (randomTrack) {
               $scope.info.image = this.AlloyDbService.getCoverArt({ track_id: randomTrack.id });
@@ -52,14 +63,14 @@ class GenreController {
     };
 
     $scope.toggleAlbums = () => {
-      if ($scope.albums_expanded) {$("#albumListContainer").hide();}
-      else {$("#albumListContainer").show();}
+      if ($scope.albums_expanded) { $("#albumListContainer").hide(); }
+      else { $("#albumListContainer").show(); }
       $scope.albums_expanded = !$scope.albums_expanded;
     };
 
     $scope.toggleTracks = () => {
-      if ($scope.genre.tracks_expanded) {$("#trackListContainer").hide();}
-      else {$("#trackListContainer").show();}
+      if ($scope.genre.tracks_expanded) { $("#trackListContainer").hide(); }
+      else { $("#trackListContainer").show(); }
       $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
     };
 
@@ -67,11 +78,11 @@ class GenreController {
       $scope.genre.tracks_expanded = $scope.all_expanded;
       $scope.albums_expanded = $scope.all_expanded;
 
-      if ($scope.albums_expanded) {$("#albumListContainer").hide();}
-      else {$("#albumListContainer").show();}
+      if ($scope.albums_expanded) { $("#albumListContainer").hide(); }
+      else { $("#albumListContainer").show(); }
 
-      if ($scope.genre.tracks_expanded) {$("#trackListContainer").hide();}
-      else {$("#trackListContainer").show();}
+      if ($scope.genre.tracks_expanded) { $("#trackListContainer").hide(); }
+      else { $("#trackListContainer").show(); }
 
       $scope.all_expanded = !$scope.all_expanded;
     };

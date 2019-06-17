@@ -206,7 +206,34 @@ router.get("/genre", function (req, res) {
   var id = req.query.id;
   var result = {};
   result.genre = res.locals.db.prepare("SELECT * FROM Genres WHERE id=?").get(id);
+
+  result.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? AND play_count=0").all(id);
+  result.popular_tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? ORDER BY play_count DESC LIMIT 30").all(id);
   result.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? ORDER BY artist ASC, album ASC, no ASC, of ASC").all(id);
+  var artistIds = [];
+  var albumIds = [];
+  result.tracks.forEach((track) => {
+    artistIds.push(track.artist_id);
+    albumIds.push(track.album_id);
+  });
+
+  artistIds = _.uniq(artistIds);
+  albumIds = _.uniq(albumIds);
+
+  result.artists = [];
+  artistIds.forEach((id) => {
+    var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(id);
+    artist.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC").all(id);
+    result.artists.push(artist);
+  });
+
+  result.albums = [];
+  albumIds.forEach((id) => {
+    var album = res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id);
+    album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=? ORDER BY album ASC, no ASC, of ASC").all(id);
+    result.albums.push(album);
+  });
+
   result.total_plays = 0;
   var totalSize = 0;
   result.tracks.forEach((track) => {
