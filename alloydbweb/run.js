@@ -270,6 +270,8 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $(document).on("click.bs.tab.data-api", "[data-toggle=\"tab\"], [data-toggle=\"pill\"]", function (e) {
     e.preventDefault();
     $(this).tab("show");
+    $(".selection-tab-title").removeClass("selection-tab-title-selected");
+    $(this).addClass("selection-tab-title-selected");
   });
 
 

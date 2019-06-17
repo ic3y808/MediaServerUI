@@ -11,7 +11,7 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
       refreshclick: "&",
       viewmorelink: "@"
     },
-    templateUrl: "template/thumblist.jade",
+    templateUrl: "/template/thumblist.jade",
     replace: true,
     link: function (scope, elm, attrs) {
       
