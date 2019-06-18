@@ -18,10 +18,13 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
               a.selection-tab-title.selection-tab-title-selected(data-target='#overview', data-toggle='tab') Overview
           li.selection-tab
             div
+              a.selection-tab-title(data-target='#all', data-toggle='tab') All Tracks
+          li.selection-tab
+            div
               a.selection-tab-title(data-target='#related', data-toggle='tab') Related Artists
           li.selection-tab
             div
-              a.selection-tab-title(data-target='#about', data-toggle='tab') About
+              a.selection-tab-title(data-target='#about', data-toggle='tab') Artist Info
     section.scrollable
       .tab-content
         #overview.tab-pane.active
@@ -134,6 +137,14 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                             .react-contextmenu-wrapper
                               a(dir='auto', href='/artist/{{other.artist_id}}') {{other.artist}}
 
+        #all.tab-pane
+          section.artist-music.container-fluid(ng-if="info.tracks.length > 0")
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  section.tracklist-container.full-width
+                    itemtable(data="info.tracks", title="Tracks", limit="info.tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="")
+
         #related.tab-pane
           section.artist-music.container-fluid
             .row
@@ -145,7 +156,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
         #about.tab-pane
            section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
             .contentSpacing
-              h1.section-title(dir='auto') Singles
+              h1.section-title(dir='auto') Info
               .container-fluid.container-fluid--noSpaceAround
             
                 div

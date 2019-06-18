@@ -1,4 +1,4 @@
-section.scrollable.padder-lg.w-f-md
+section.padder-lg.w-f-md(style="height:100vh;")
   .row
     h2.clear.font-thin {{title}}
       a(href="{{viewmorelink}}").u.h6.text-muted.m-l View More
@@ -11,7 +11,6 @@ section.scrollable.padder-lg.w-f-md
             span.item__details__album {{song.title}}
           a(ng-click="navigateToArtist(song.artist_id)", onclick="event.stopPropagation();")
             small.item__details__artist.text-muted.clear.text-ellipsis by {{song.artist}}    
-
     .grid(ng-if="type === 'albums'")
       .item(ng-repeat="album in data | limitTo:limit", style="background-image:url('{{album.image}}');",ng-click="$root.MediaPlayer.playAlbum(album)", ng-class="{'item--now-playing': $root.MediaPlayer.checkIfNowPlaying('album', album.id) == true}")
         .item__details
