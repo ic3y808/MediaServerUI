@@ -196,14 +196,11 @@ router.get("/cover_art", function (req, res) {
   if (coverFile && fs.existsSync(coverFile)) {
     const stats = fs.statSync(coverFile);
     const fileSizeInBytes = stats.size;
-    if(fileSizeInBytes > 15000){
+    if (fileSizeInBytes > 15000) {
       input = coverFile;
     }
-   
-    
-    console.log("Cover file size: " + fileSizeInBytes);
   }
- 
+
   if (width && height) {
     sharp(input)
       .rotate()
