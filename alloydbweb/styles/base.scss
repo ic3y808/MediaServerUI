@@ -1,5 +1,24 @@
 @import "./variables";
 
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  font-size: 62.5%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: $background-color;
+}
+
+body {
+  margin: 0;
+  background-color: $background-color;
+  font-family: $sub-font, $extra-font, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: $main-text-color;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.40;
+}
+
 .modal-body {
   max-height: 70vh;
   overflow: auto;
@@ -94,6 +113,19 @@
 #volumeSliderValue {
   height: 6px;
   background-color: choose-contrast-color($dark-color);
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+a:hover,
+a:focus {
+  color: $main-link-focus-color;
+  text-decoration: none;
+  outline: none;
+  outline-offset: -2px;
 }
 
 a.hid {
@@ -757,6 +789,7 @@ a.list-group-item:focus {
   overflow-x: hidden;
   overflow-y: hidden;
 }
+
 .scrollable:hover {
   overflow-x: hidden;
   overflow-y: auto;
@@ -924,7 +957,7 @@ a.list-group-item:focus {
 }
 
 .bg-dark {
-  background-image: linear-gradient($light-color, $dark-color );
+  background-image: linear-gradient($light-color, $dark-color);
   color: choose-contrast-color($dark-color);
 }
 
@@ -993,7 +1026,7 @@ a.list-group-item:focus {
 }
 
 .bg-info {
-  background-image: linear-gradient($primary-color, $dark-color );
+  background-image: linear-gradient($primary-color, $dark-color);
   color: #eaf6f9;
 }
 
@@ -1805,14 +1838,14 @@ a.text-info:hover {
 
 .table>tbody>tr {
   cursor: pointer;
-  background-color: inherit !important;
-  color: $main-link-color !important;
+  background-color: inherit;
+  color: $main-link-color;
 
   a {
-    color: $main-link-color !important;
+    color: $main-link-color;
 
     span {
-      color: $main-link-color !important;
+      color: $main-link-color;
     }
   }
 }
@@ -2498,7 +2531,7 @@ a.text-info:hover {
 .selection-tab-title.selection-tab-title-selected:before {
   content: "";
   height: 2px;
-  background-color: #1db954;
+  background-color: $primary-color;
   width: 30px;
   position: absolute;
   display: block;
@@ -2508,7 +2541,7 @@ a.text-info:hover {
 }
 
 .selection-tab-title.selection-tab-title-selected:hover:before {
-  background-color: #1db954;
+  background-color: $primary-color;
 }
 
 .bg-primary.lt {

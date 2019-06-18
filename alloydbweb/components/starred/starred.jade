@@ -13,7 +13,7 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
 
   .row
     .col-md-7(ng-if="$root.starred_tracks.length > 0")
-      thumblist(data="$root.starred_tracks", title="Tracks", limit="12", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
+      thumblist(data="$root.starred_tracks", title="Tracks", limit="12", type="tracks", refreshclick="refresh()", viewmorelink="/fresh")
           
     .col-md-5(ng-if="$root.starred_top_tracks.length > 0")
       itemlist(data="$root.starred_top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/top_tracks")  
