@@ -45,6 +45,10 @@ class ArtistController {
               artist_id: $routeParams.id
             });
 
+            $scope.info.tracks.forEach((track) => {
+              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
+            });
+
             $scope.info.albums.forEach((album) => {
               album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
             });

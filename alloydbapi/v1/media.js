@@ -66,7 +66,7 @@ router.get("/stream", function (req, res) {
       }
 
     } else {
-     // res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(req.hostname === "localhost" ? 0 : total);
+      // res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(req.hostname === "localhost" ? 0 : total);
       res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(total);
       res.writeHead(200, {
         "Content-Length": total,
@@ -193,7 +193,17 @@ router.get("/cover_art", function (req, res) {
   }
 
   var input = process.env.COVER_ART_NO_ART;
-  if (coverFile) { input = coverFile; }
+  if (coverFile && fs.existsSync(coverFile)) {
+    const stats = fs.statSync(coverFile);
+    const fileSizeInBytes = stats.size;
+    if(fileSizeInBytes > 15000){
+      input = coverFile;
+    }
+   
+    
+    console.log("Cover file size: " + fileSizeInBytes);
+  }
+ 
   if (width && height) {
     sharp(input)
       .rotate()
