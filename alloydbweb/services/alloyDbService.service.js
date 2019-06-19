@@ -9,6 +9,7 @@ export default class AlloyDbService {
     this.AppUtilities = AppUtilities;
     this.$window = $window;
     this.$rootScope.refreshPage = this.refreshPage;
+    this.$rootScope.starArtist = this.starArtist;
   }
 
   doLogin() {
@@ -651,7 +652,7 @@ export default class AlloyDbService {
 
   refreshPage(path) {
     //var path = window.location.pathname;
-    switch(path){
+    switch (path) {
       case "/": this.preload(); break;
       case "/artists": this.refreshArtists(); break;
       case "/albums": this.refreshAlbums(); break;
@@ -659,5 +660,24 @@ export default class AlloyDbService {
       case "/starred": this.refreshStarred(); break;
     }
     console.log(path);
+  }
+
+  starArtist(artist) {
+
+    if (artist.starred === "true") {
+      this.unstar({
+        artist: artist.id
+      }).then((result) => {
+        artist.starred = "false";
+        this.AppUtilities.apply();
+      });
+    } else {
+      this.star({
+        artist: artist.id
+      }).then((result) => {
+        artist.starred = "true";
+        this.AppUtilities.apply();
+      });
+    }
   }
 }

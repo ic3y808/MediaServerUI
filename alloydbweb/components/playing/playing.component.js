@@ -1,9 +1,10 @@
 import "./playing.scss";
 class PlayingController {
-  constructor($scope, $rootScope, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
+  constructor($scope, $rootScope, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
+    this.$element = $element;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
@@ -66,8 +67,29 @@ class PlayingController {
         //  }
         //}
       } else { this.AppUtilities.hideLoader(); }
+    };
 
-
+    $scope.starTrack = () => {
+      if (this.MediaPlayer) {
+        var selected = this.MediaPlayer.selectedTrack();
+        if (selected) {
+          this.Logger.info("Trying to star track: " + selected.title);
+          if (selected.starred === "true") {
+            this.AlloyDbService.unstar({ id: selected.id }).then((result) => {
+              this.Logger.info("UnStarred " + selected.title + " " + JSON.stringify(result));
+              selected.starred = "false";
+              this.AppUtilities.apply();
+            });
+          } else {
+            this.AlloyDbService.star({ id: selected.id }).then((result) => {
+              this.Logger.info("Starred " + selected.title + " " + JSON.stringify(result));
+              selected.starred = "true";
+              this.AppUtilities.apply();
+            });
+          }
+          $scope.info = this.MediaPlayer.selectedTrack();
+        }
+      }
     };
 
     $rootScope.$on("trackChangedEvent", (event, data) => {
@@ -81,6 +103,11 @@ class PlayingController {
     });
 
     $scope.getSong();
+  }
+
+  $onInit() {
+    this.$element.addClass("vbox");
+    this.$element.addClass("scrollable");
   }
 }
 

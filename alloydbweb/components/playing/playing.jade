@@ -31,9 +31,9 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                     p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.content_type") {{info.content_type}}
                     p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.size") {{$root.humanFileSize(info.size)}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-green.false(title='Add to Starred') Add to Starred
+                    button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starTrack()") {{info.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    starratinglabel(album="info.album", extrastyles="btn-green")
+                    starratinglabel(album="info", extrastyles="")
               
             .col-xs-12.col-lg-9.col-xl-8(ng-if="artist.artist.biography")
               .wrapper-md.r
