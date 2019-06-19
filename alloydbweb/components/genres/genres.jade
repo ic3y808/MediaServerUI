@@ -16,27 +16,18 @@ section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
       h3.font-thin
       .row.row-sm
         .table-responsive
-          .dataTables_wrapper(role='grid')
-            .row
-              .col-sm-6
-
-              .col-sm-6
-                .dataTables_filter
-                  label
-                    | Search: 
-                    input(type='text')
-            table.table.table-striped.m-b-none
-              thead
-                tr(role='row')
-                  th(style='width: 220px;', rowspan='1', colspan='1') Genre
-                  th(style='width: 1px;', rowspan='1', colspan='1') Artist(s)
-                  th(style='width: 1px;', rowspan='1', colspan='1') Album(s)
-                  th(style='width: 1px;', rowspan='1', colspan='1') Track(s)
-              tbody(ng-repeat="genre in $root.genres")
-                tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                  td
-                    a(href="/genre/{{genre.id}}") {{genre.name}}
-                  
-                  td {{genre.artist_count}}
-                  td {{genre.album_count}}
-                  td {{genre.track_count}}
+          table.table.table-striped.m-b-none
+            thead
+              tr(role='row')
+                th(style='width: 220px;', rowspan='1', colspan='1') Genre
+                th(style='width: 1px;', rowspan='1', colspan='1') Artist(s)
+                th(style='width: 1px;', rowspan='1', colspan='1') Album(s)
+                th(style='width: 1px;', rowspan='1', colspan='1') Track(s)
+            tbody(ng-repeat="genre in $root.genres")
+              tr(ng-class-odd="'odd'" ng-class-even="'even'")
+                td
+                  a(href="/genre/{{genre.id}}") {{genre.name}}
+                
+                td {{genre.artist_count}}
+                td {{genre.album_count}}
+                td {{genre.track_count}}
