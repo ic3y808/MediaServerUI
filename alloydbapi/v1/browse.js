@@ -206,7 +206,6 @@ router.get("/genre", function (req, res) {
   var id = req.query.id;
   var result = {};
   result.genre = res.locals.db.prepare("SELECT * FROM Genres WHERE id=?").get(id);
-
   result.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? AND play_count=0").all(id);
   result.popular_tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? ORDER BY play_count DESC LIMIT 30").all(id);
   result.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE genre_id=? ORDER BY artist ASC, album ASC, no ASC, of ASC").all(id);
