@@ -9,32 +9,32 @@ section.w-f-md.scrollable
       li
         a(href='/starred')
           i.alloy-icon.icon-starred
-          b.badge.bg-primary.pull-right {{$root.starred.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.starred.length}}
           span.font-bold Starred
       li
         a(href='/charts')
           i.alloy-icon.icon-charts
-          b.badge.bg-primary.pull-right {{$root.rated.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.rated.length}}
           span.font-bold Charts
       li
         a(href='/history')
           i.alloy-icon.icon-history
-          b.badge.bg-primary.pull-right {{$root.history.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.history.length}}
           span.font-bold History
       li
         a(href='/artists')
           i.alloy-icon.icon-artists
-          b.badge.bg-primary.pull-right {{$root.artists.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.artists.length}}
           span.font-bold Artists
       li
         a(href='/albums')
           i.alloy-icon.icon-albums
-          b.badge.bg-primary.pull-right {{$root.albums.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.albums.length}}
           span.font-bold Albums
       li
         a(href='/genres')
           i.alloy-icon.icon-genres
-          b.badge.bg-primary.pull-right {{$root.genres.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.genres.length}}
           span.font-bold Genres
 
 
@@ -98,7 +98,7 @@ section.w-f-md.scrollable
       li(ng-repeat="playlist in $root.playlists")
         a.playlist-link(href='/playlist/{{playlist.id}}')
           i.alloy-icon.icon-playlist.icon
-          b.badge.bg-success.dker.pull-right(ng-if='playlist.tracks') {{playlist.tracks.length}}
+          b.badge.bg-primary.dker.pull-right(ng-if='playlist.tracks') {{playlist.tracks.length}}
           span {{playlist.name}}
     
     #addPlaylistModal.modal.fade(role='dialog')
