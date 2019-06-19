@@ -1,8 +1,9 @@
-section.scrollable.no-padder.w-f-md(style="padding:0px;")
-  div
+section.scrollable.w-f-md
+  .row(ng-show="info") 
     .contentSpacing.no-padder
       section.content.album-content
         .container-fluid
+
           .album-container
             .col-xs-12.col-lg-3.col-xl-4
               .album-header-container
@@ -12,11 +13,7 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                       .react-contextmenu-wrapper.col-xs-12
                         .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
                           .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
-                    .row
-                      .mo-info
-                        .react-contextmenu-wrapper.col-xs-12
-                          .mo-info-name(title='{{info.title}}')
-                            span(dir='auto') {{info.title}}
+
                       
 
                     .mo-meta.ellipsis-one-line
@@ -35,13 +32,10 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                   .TrackListHeader__button.TrackListHeader__button--top
                     starratinglabel(album="info", extrastyles="")
               
-            .col-xs-12.col-lg-9.col-xl-8(ng-if="artist.artist.biography")
-              .wrapper-md.r
-                a(href='#')
-                  span.h4.m-b-xs.block
-                    i.icon-cloud-download.i-lg
-                    |  Bio
-                  span.text-muted
-                    | {{artist.artist.biography}}
+            .col-xs-12.col-lg-9.col-xl-8
+              h2.font-thin(ng-if="info.title") {{info.title}} -  {{info.artist}}
+              .row
+                span.text-muted(ng-if="artist.artist.biography")
+                  | {{artist.artist.biography}}
 
-             
+  h1(ng-hide="info").font-thin.centered-anchor-text Nothing Playing          
