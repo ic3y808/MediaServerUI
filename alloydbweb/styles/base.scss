@@ -1014,7 +1014,7 @@ a.list-group-item:focus {
 
 .bg-primary {
   background-color: $primary-color;
-  color: #dadcec;
+  color: $main-link-focus-color;
 }
 
 .bg-success {
