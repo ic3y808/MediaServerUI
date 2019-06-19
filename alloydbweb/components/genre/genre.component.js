@@ -15,18 +15,7 @@ class GenreController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("genre-controller");
     this.AppUtilities.showLoader();
-    $scope.artist = {};
-    $scope.albums = [];
-    $scope.genre = { tracks: [] };
-    $scope.artistName = "";
-    $scope.all_expanded = false;
-    $scope.albums_expanded = true;
-    $scope.genre.tracks_expanded = false;
     $scope.genre = this.$routeParams.id;
-
-    $scope.getCoverArt = (id) => {
-      return this.AlloyDbService.getCoverArt(id);
-    };
 
     $scope.getGenre = () => {
       var cache = Cache.get($routeParams.id);
@@ -62,31 +51,6 @@ class GenreController {
       }
     };
 
-    $scope.toggleAlbums = () => {
-      if ($scope.albums_expanded) { $("#albumListContainer").hide(); }
-      else { $("#albumListContainer").show(); }
-      $scope.albums_expanded = !$scope.albums_expanded;
-    };
-
-    $scope.toggleTracks = () => {
-      if ($scope.genre.tracks_expanded) { $("#trackListContainer").hide(); }
-      else { $("#trackListContainer").show(); }
-      $scope.genre.tracks_expanded = !$scope.genre.tracks_expanded;
-    };
-
-    $scope.toggleAll = () => {
-      $scope.genre.tracks_expanded = $scope.all_expanded;
-      $scope.albums_expanded = $scope.all_expanded;
-
-      if ($scope.albums_expanded) { $("#albumListContainer").hide(); }
-      else { $("#albumListContainer").show(); }
-
-      if ($scope.genre.tracks_expanded) { $("#trackListContainer").hide(); }
-      else { $("#trackListContainer").show(); }
-
-      $scope.all_expanded = !$scope.all_expanded;
-    };
-
     $scope.refresh = () => {
       this.Logger.debug("refresh genre");
       Cache.put($routeParams.id, null);
@@ -95,7 +59,7 @@ class GenreController {
 
     $scope.shuffle = () => {
       this.Logger.debug("shuffle play");
-      $rootScope.tracks = AppUtilities.shuffle($scope.genre.tracks);
+      $rootScope.tracks = AppUtilities.shuffle($scope.info.tracks);
       MediaPlayer.loadTrack(0);
     };
 
