@@ -239,16 +239,6 @@ button:active {
   background-color: rgba(0, 0, 0, 0);
 }
 
-.btn.btn-green {
-  background-color: #1db954;
-  padding: 11px 44px;
-}
-
-.btn.btn-green:focus,
-.btn.btn-green:hover {
-  background-color: #1ed760;
-}
-
 .btn:not(.disabled):focus,
 .btn:not(.disabled):hover {
   -webkit-transition-duration: 66ms;
@@ -326,16 +316,28 @@ button:active {
   box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
 }
 
-.spotify-btn.btn-transparent {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.spotify-btn.btn-green {
-  background-color: #1db954;
+.spotify-btn.btn-edit {
   padding: 11px 44px;
+  background: $edit-color;
+  color: #fff;
+  -webkit-box-shadow: inset 0 0 0 2px #b3b3b3;
+  box-shadow: inset 0 0 0 2px #b3b3b3;
 }
 
-.spotify-btn.btn-green:focus,
-.spotify-btn.btn-green:hover {
-  background-color: #1ed760;
+.spotify-btn.btn-edit:hover {
+  -webkit-box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
+}
+
+.spotify-btn.btn-warning {
+  padding: 11px 44px;
+  background: $warning-color;
+  color: #fff;
+  -webkit-box-shadow: inset 0 0 0 2px #b3b3b3;
+  box-shadow: inset 0 0 0 2px #b3b3b3;
+}
+
+.spotify-btn.btn-warning:hover {
+  -webkit-box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
 }

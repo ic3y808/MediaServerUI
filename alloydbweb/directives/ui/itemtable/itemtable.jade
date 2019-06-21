@@ -1,10 +1,10 @@
 section.scrollable.padder-lg.w-f-md
-  .row
+  .row(ng-show="title")
     h2.clear.font-thin {{title}}
-      a(href="{{viewmorelink}}").u.h6.text-muted.m-l View More
+      a(ng-show="showviewmore", href="{{viewmorelink}}").u.h6.text-muted.m-l View More
   .row 
     .table-responsives(ng-if="type === 'tracks'", style="overflow:hidden;")
-        table.table.b-t.b-light
+        table.table.table-striped.b-t.b-light
           thead
             tr
               th
@@ -14,7 +14,7 @@ section.scrollable.padder-lg.w-f-md
               th Length
               th 
           tbody(ng-repeat="track in data | limitTo:limit")
-            tr(title='{{track.title}}', ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}")
+            tr(title='{{track.title}}', data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}")
               td 
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(ng-src='{{track.image}}', alt='{{track.title}}')
@@ -45,7 +45,7 @@ section.scrollable.padder-lg.w-f-md
               th Created
               th Tracks
           tbody(ng-repeat="album in data | limitTo:limit")
-            tr(title='{{album.name}}')
+            tr(title='{{album.name}}', data-value="album;{{album.id}}")
               td(style="width:1px;")
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(ng-src='{{album.image}}', alt='{{album.name}}')

@@ -3,7 +3,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
     header.genre-header(style='background-image: url({{info.image}});')
       h1.monthly-listeners.large(dir='auto') {{info.genre.name}}
       .genre-header-buttons
-        button.spotify-btn.btn-green(ng-click="shuffle()") PLAY
+        button.spotify-btn.btn-black.btn--narrow(ng-click="shuffle()") PLAY
       .genre-header-buttons
         starratinglabel(genre="genre")
       .genre-header-buttons
@@ -33,9 +33,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
             .row
               .contentSpacing
                 section.artist-toptracks
-                  h1.section-title(dir='auto') Popular Tracks
-                  section.tracklist-container.full-width
-                    tracklist(data="info.popular_tracks", canaddplaylist="true")
+                  tracklist(data="info.popular_tracks", canaddplaylist="true", title="Popular")
          
         #artists.tab-pane
           section.artist-music.container-fluid(ng-if="info.artists.length > 0")
@@ -48,17 +46,13 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
             .row
               .contentSpacing
                 section.genre-toptracks
-                  h1.section-title(dir='auto') Albums
-                  section.tracklist-container.full-width
-                    itemtable(data="info.albums", title="Albums", limit="info.albums.length", type="albums", refreshclick="refresh()", viewmorelink="")
+                  itemtable(data="info.albums", title="Albums", limit="info.albums.length", type="albums", refreshclick="refresh()", viewmorelink="")
         #neverPlayed.tab-pane
           section.artist-music.container-fluid(ng-if="info.artists.length > 0")
             .row
               .contentSpacing
                 section.genre-toptracks
-                  h1.section-title(dir='auto') Never Played
-                  section.tracklist-container.full-width
-                    itemtable(data="info.never_played", title="Never Played", limit="info.never_played.length", type="tracks", refreshclick="refresh()", viewmorelink="")
+                  itemtable(data="info.never_played", title="Never Played", limit="info.never_played.length", type="tracks", refreshclick="refresh()", viewmorelink="")
 
         #all.tab-pane
           section.genre-music.container-fluid(ng-if="info.tracks.length > 0")

@@ -9,6 +9,7 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, A
       limit: "@",
       type: "@",
       refreshclick: "&",
+      showviewmore: "@",
       viewmorelink: "@"
     },
     templateUrl: "/template/thumblist.jade",

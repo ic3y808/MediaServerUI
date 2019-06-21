@@ -1,4 +1,6 @@
-export default function ApplicationRun($window, $rootScope, $location, $timeout, Logger, Backend, MediaPlayer, AppUtilities) {
+import AlloyDbService from "./services/alloyDbService.service";
+
+export default function ApplicationRun($window, $rootScope, $location, $timeout, Logger, Backend, MediaPlayer, AppUtilities, AlloyDbService) {
   "ngInject";
   Logger.info("starting application");
   $rootScope.settings = [];
@@ -25,6 +27,84 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     }
   }
 
+  $rootScope.setupContext = function () {
+
+    var $contextMenu = $("#contextMenu");
+
+    $("body").on("contextmenu", "ul li", function (e) {
+      $contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
+    });
+
+    $("body").on("contextmenu", ".item", function (e) {
+      $contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
+    });
+
+    $("body").on("contextmenu", "table tr", function (e) {
+      $contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
+    });
+
+    $("body").on("click", function (e) {
+      $contextMenu.hide();
+    });
+
+    $contextMenu.off("click").on("click", "a", (e) => {
+      $contextMenu.hide();
+
+      var $invokedOn = $contextMenu.data("invokedOn");
+
+      var opts = $invokedOn.split(";");
+      var method = opts[0];
+      var id = opts[1];
+      var $selectedMenu = $(e.target);
+      var playlist = $selectedMenu[0].getAttribute("playlist-id");
+
+      switch (method) {
+        case "track":
+          AlloyDbService.updatePlaylist({ id: playlist, songId: id }).then(() => {
+            AlloyDbService.refreshPlaylists();
+          });
+          break;
+        case "artist":
+          AlloyDbService.getArtist(id).then((result) => {
+            var ids = [];
+            result.tracks.forEach((track) => {
+              ids.push(track.id);
+            });
+            AlloyDbService.updatePlaylist({ id: playlist, songIds: ids, replace: false }).then(() => {
+              AlloyDbService.refreshPlaylists();
+            });
+          });
+          break;
+        case "album":
+          AlloyDbService.getAlbum(id).then((result) => {
+            var ids = [];
+            result.tracks.forEach((track) => {
+              ids.push(track.id);
+            });
+            AlloyDbService.updatePlaylist({ id: playlist, songIds: ids, replace: false }).then(() => {
+              AlloyDbService.refreshPlaylists();
+            });
+          });
+
+
+          break;
+      }
+
+
+      console.log("adding id " + opts[1] + " to " + playlist);
+      //settings.menuSelected.call(this, $invokedOn, $selectedMenu);
+    });
+
+    $contextMenu.on("click", "a", function (e) {
+
+
+      $contextMenu.hide();
+    });
+  };
+
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     var focus = $("input").is(":focus");
@@ -33,7 +113,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
         e.preventDefault();
         MediaPlayer.toggleCurrentStatus();
       }
-      if(key === 122){
+      if (key === 122) {
         toggleFullScreen();
       }
     }
@@ -48,6 +128,10 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       }
     }
   };
+
+  $rootScope.$on("$routeChangeSuccess", function ($event, next, current) {
+    $rootScope.setupContext();
+  });
 
   $(document).on("click", "[data-toggle=fullscreen]", function (e) {
     e.preventDefault();
@@ -291,6 +375,8 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       }
     }, 1000);
   });
-
   Logger.info("Application Loaded");
+
+
 }
+
