@@ -8,6 +8,7 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       limit: "@",
       type: "@",
       refreshclick: "&",
+      showviewmore: "@",
       viewmorelink: "@"
 
     },

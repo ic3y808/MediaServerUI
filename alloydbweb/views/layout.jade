@@ -23,6 +23,21 @@ html.app(ng-app='alloy',lang='en')
                 footer.footer.bg-dark
                   footbar
 
+    #contextMenu.dropdown.clearfix
+      ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu', style='display:block;position:static;margin-bottom:5px;')
+        li
+          a(tabindex='-1', href='#') Play
+        li.divider
+          li.dropdown-submenu
+            a(tabindex='-1', href='#') Add to Playlist
+            ul.dropdown-menu
+              li(ng-repeat="playlist in $root.playlists")
+                a(playlist-id="{{playlist.id}}") {{playlist.name}}
+
+
+
+
+
         video#media-player(preload='true', controls='hidden', style="display:none;")
       - if(!dev_mode)
         script(src='/vendor.js', type='text/javascript')

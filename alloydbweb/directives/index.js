@@ -1,5 +1,4 @@
 import angular from "angular";
-
 import ToolbarButton from "./ui/toolbarbutton";
 import ToolbarSeperator from "./ui/toolbarseperator";
 import NavButton from "./ui/navbutton";

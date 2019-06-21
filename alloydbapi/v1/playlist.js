@@ -4,7 +4,7 @@ var structures = require("../../common/structures");
 var db = {};
 
 /**
- * This function comment is parsed by doctrine
+
  * @route GET /playlist/playlists
  * @produces application/json 
  * @consumes application/json 
@@ -25,7 +25,7 @@ router.get("/playlists", function (req, res) {
 });
 
 /**
- * This function comment is parsed by doctrine
+
  * @route PUT /playlist/playlists
  * @produces application/json 
  * @consumes application/json 
@@ -33,6 +33,8 @@ router.get("/playlists", function (req, res) {
  * @param {string} id.query leave blank if creating a new playlist
  * @param {string} name.query required if creating a playlist
  * @param {string} songId.query ID of a song to add to the playlist. Use one songId parameter for each song in the playlist.
+ * @param {string} songIds.query ID of a song to add to the playlist. Use one songId parameter for each song in the playlist.
+ * @param {string} replace.query Replaces the contents of the playlist with the id/s
  * @returns {Playlist} 200 - The newly created/updated playlist is returned
  * @security ApiKeyAuth
  */
@@ -40,13 +42,34 @@ router.put("/playlists", function (req, res) {
   var id = req.query.id;
   var name = req.query.name;
   var songId = req.query.songId;
+  var songIds = req.query.songIds;
+  var replace = req.query.replace;
 
   if (id && songId) {
     var existing = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=? AND song_id=?").all(id, songId);
     if (existing.length === 0) {
       res.locals.db.prepare("INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);").run(id, songId);
     }
-  } else if (!id && name && songId) {
+  }
+  else if (id && songIds) {
+    var ids = songIds.split(",");
+
+    var existingTracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
+
+    if(replace === "true"){
+      existingTracks.forEach((existingId) => {
+        res.locals.db.prepare("DELETE from PlaylistTracks WHERE id=? AND song_id=?").run(id, existingId.song_id);
+      });
+    }
+    
+    ids.forEach((newId) => {
+      var existingEntry = res.locals.db.prepare("SELECT * FROM PlaylistTracks WHERE id=? AND song_id=?").get(id, newId);
+      if(existingEntry === undefined){
+        res.locals.db.prepare("INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);").run(id, newId);
+      }
+    });
+  }
+  else if (!id && name && songId) {
     var existinPlaylist = res.locals.db.prepare("SELECT * from Playlists").all();
     if (existinPlaylist.length === 0) {
       var info = res.locals.db.prepare("INSERT INTO Playlists (`name`) VALUES (?);").run(name);
@@ -63,7 +86,6 @@ router.put("/playlists", function (req, res) {
 });
 
 /**
- * This function comment is parsed by doctrine
  * @route DELETE /playlist/playlists
  * @produces application/json 
  * @consumes application/json 
@@ -75,20 +97,26 @@ router.put("/playlists", function (req, res) {
  */
 router.delete("/playlists", function (req, res) {
   var id = req.query.id;
-  var existinPlaylist = res.locals.db.prepare("SELECT * from Playlists WHERE id=?").all(id);
-  if (existinPlaylist.length !== 0) {
+
+  var existingTracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
+
+  if (existingTracks.length > 0) {
+    existingTracks.forEach((track) => {
+      res.locals.db.prepare("DELETE FROM PlaylistTracks WHERE id=? AND song_id=?").run(id, track.id);
+    });
+  }
+
+  var existinPlaylist = res.locals.db.prepare("SELECT * from Playlists WHERE id=?").get(id);
+  if (existinPlaylist) {
     res.locals.db.prepare("DELETE FROM Playlists WHERE id=?").run(id);
   }
-  var playlistTracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
-  playlistTracks.forEach((track) => {
-    res.locals.db.prepare("DELETE FROM PlaylistTracks WHERE song_id=?").run(track.song_id);
-  });
-  res.send("Deleted");
+
+  res.send(new structures.StatusResult("Deleted"));
 });
 
 
 /**
- * This function comment is parsed by doctrine
+
  * @route GET /playlist
  * @produces application/json 
  * @consumes application/json 

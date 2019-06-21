@@ -12,7 +12,6 @@ export default class AppUtilities {
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
     this.$rootScope.apply = this.apply;
     this.$rootScope.updateGridRows = this.updateGridRows;
-
     this.$rootScope.decryptPassword = this.decryptPassword;
     this.$rootScope.formatTime = this.formatTime;
     this.$rootScope.formatUnixTime = this.formatUnixTime;

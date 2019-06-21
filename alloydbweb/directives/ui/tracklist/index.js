@@ -4,6 +4,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
     restrict: "E",
     scope: {
       data: "=",
+      title: "@",
       showstar: "@",
       showtracknum: "@",
       showartist: "@",
@@ -11,6 +12,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
       showgenre: "@",
       showplays: "@",
       showduration: "@",
+      showviewmore: "@",
       canaddplaylist: "@"
     },
     templateUrl: "/template/tracklist.jade",
@@ -61,7 +63,7 @@ export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, B
       scope.$watch("data", function (newVal, oldVal) {
         AppUtilities.apply();
       });
-
+      
       scope.currentTrack = $rootScope.currentTrack;
       scope.isPlaying = $rootScope.MediaPlayer.isPlaying();
     }

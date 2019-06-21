@@ -15,28 +15,57 @@ class PlaylistController {
     this.Logger.debug("playlist-controller");
 
     $scope.refresh = () => {
+      var playlist = this.AlloyDbService.getPlaylist($routeParams.id);
+      if (playlist) {
+        playlist.then((info) => {
+          if (info) {
+            $scope.info = info.playlist;
 
-      
-        var playlist = this.AlloyDbService.getPlaylist($routeParams.id);
-        if (playlist) {
-          playlist.then((info) => {
-            if (info) {
-              $scope.info = info.playlist;
-              
-              var randomTrack = $scope.info.tracks[Math.floor(Math.random() * $scope.info.tracks.length)];
-              if (randomTrack) {
-                $scope.info.image = this.AlloyDbService.getCoverArt({ track_id: randomTrack.id });
-              }
-             
-              this.AppUtilities.apply();
-
-              this.AppUtilities.hideLoader();
+            var randomTrack = $scope.info.tracks[0];
+            if (randomTrack) {
+              $scope.info.image = this.AlloyDbService.getCoverArt({ track_id: randomTrack.id });
             }
-          });
-        }
-      
+
+            this.AppUtilities.apply();
+            this.AppUtilities.hideLoader();
+            $(".sortable").sortable({ items: "li" });
+
+
+            $(".sortable").on("sortupdate", function (event, ui) {
+
+              var ids = [];
+              $(".list-group-item-track").each(function (item) {
+                var opts = $(this).attr("data-value").split(";");
+                var method = opts[0];
+                var id = opts[1];
+                ids.push(id);
+              });
+
+              AlloyDbService.updatePlaylist({ id: $scope.info.id, songIds: ids, replace: true }).then((result) => {
+
+                $scope.refresh();
+              });
+
+            });
+
+          }
+        });
+      }
+
     };
-   
+
+    $scope.removePlaylist = () => {
+      this.AlloyDbService.removePlaylist({ id: $routeParams.id }).then(() => {
+        this.AlloyDbService.refreshPlaylists();
+      });
+    };
+
+    $scope.shuffle = () => {
+      this.Logger.debug("shuffle play playlist " + $scope.info.name);
+      this.$rootScope.tracks = $scope.info.tracks;
+      this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
+    };
+
     $rootScope.$on("loginStatusChange", (event, data) => {
       this.Logger.debug("Playlist reload on loginsatuschange");
       $scope.refresh();
