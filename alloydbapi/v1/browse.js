@@ -446,12 +446,15 @@ router.get("/starred", function (req, res) {
  * @produces application/json 
  * @consumes application/json 
  * @group list - List API
+ * @param {int} limit.query Max number of songs to return.
  * @returns {Object} 200 - Returns play and action history.
  * @security ApiKeyAuth
  */
 router.get("/history", function (req, res) {
-  var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time DESC").all();
-  res.json({ history });
+  var limit = req.query.limit === undefined ? 50 : req.query.limit;
+  var totalCount = res.locals.db.prepare("SELECT count(*) FROM  History;").all()[0]["count(*)"];
+  var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time DESC LIMIT ?").all(limit);
+  res.json({ history:history, count: totalCount });
 });
 
 /**

@@ -376,8 +376,8 @@ export default class AlloyDbService {
     if (data) {
       data.forEach((info) => {
         if (info.history) {
-          this.$rootScope.history = info.history;
-          this.$rootScope.history.forEach((item) => {
+          this.$rootScope.history = info;
+          this.$rootScope.history.history.forEach((item) => {
             item.image = this.getCoverArt({ track_id: item.id });
           });
           this.AppUtilities.apply();
@@ -387,7 +387,6 @@ export default class AlloyDbService {
   }
 
   loadAlbums(data) {
-
     if (data) {
       data.forEach((info) => {
         if (info.albums) {
