@@ -24,7 +24,7 @@ section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
                   th(style='width: 1px;', rowspan='1', colspan='1') Album
                   th(style='width: 1px;', rowspan='1', colspan='1') Genre
                   th(style='width: 1px;', rowspan='1', colspan='1') Date
-              tbody(ng-repeat="item in $root.history")
+              tbody(ng-repeat="item in $root.history.history")
                 tr(ng-class-odd="'odd'" ng-class-even="'even'")
                   td 
                     a(href="/album/{{item.album_id}}") {{item.title}}

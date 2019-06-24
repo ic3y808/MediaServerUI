@@ -25,11 +25,11 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starAlbum()") {{info.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(title='Save to Your Library', ng-click="starAlbum()") {{info.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    starratinglabel(album="info.album", extrastyles="")
+                    starratinglabel(album="info.album", extrastyles="btn-block")
               
             .col-xs-12.col-lg-9.col-xl-8
               tracklist(data="info.tracks", canaddplaylist="true")

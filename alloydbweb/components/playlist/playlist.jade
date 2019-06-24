@@ -11,7 +11,7 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                     .row
                       .react-contextmenu-wrapper.col-xs-12
                         .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
-                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.album.image}}");')
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
                     .row
                       .mo-info
                         .react-contextmenu-wrapper.col-xs-12
@@ -23,15 +23,19 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                       .react-contextmenu-wrapper
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-black.btn--narrow(ng-click="shuffle()") PLAY
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()") Play
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starPlaylist()") {{info.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()") Shuffle
                   .TrackListHeader__button.TrackListHeader__button--top
-                    starratinglabel(album="info.playlist", extrastyles="")
-                  .TrackListHeader__button.TrackListHeader__button--top.btn-group
-                    button.spotify-btn.btn-edit.btn--narrow(title='Edit Playlist', ng-click="editPlaylist()") Edit
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(title='Edit Playlist', ng-click="editPlaylist()") Edit  
+                  .TrackListHeader__button.TrackListHeader__button--top              
+                    button.spotify-btn.btn-block.btn-warning.btn--narrow(title='Remove Playlist', ng-click="removePlaylist()") Remove
+                  .TrackListHeader__button.TrackListHeader__button--top
                   
-                    button.spotify-btn.btn-warning.btn--narrow(title='Remove Playlist', ng-click="removePlaylist()") Remove
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(title='Save to Your Library', ng-click="starPlaylist()") {{info.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+                  .TrackListHeader__button.TrackListHeader__button--top
+                    starratinglabel(album="info.playlist", extrastyles="btn-block")
+
               
             .col-xs-12.col-lg-9.col-xl-8
               tracklist(data="info.tracks", canaddplaylist="")
