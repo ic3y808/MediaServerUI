@@ -21,7 +21,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
   MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
   mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
 
- 
+
   class MediaScanner extends MediaScannerBase {
     constructor() {
       super(require("better-sqlite3")(process.env.DATABASE));
@@ -46,7 +46,6 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         this.scanArtists(collectedArtistFolders.mappedArtists);
       }
     }
-
 
     checkDBLinks(artist) {
       if (artist && artist.Links) {
@@ -384,30 +383,36 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
     }
 
     scanPath(dir) {
-      //if (this.isScanning()) {
-      //  this.updateStatus("Scan in progress", true);
-      //  this.info("scan in progress");
-      //  return;
-      //}
-      if (fs.existsSync(dir)) {
+      if (this.isScanning()) {
+        this.updateStatus("Scan in progress", true);
+        this.info("scan in progress");
+        return;
+      }
+      try {
+        if (fs.existsSync(dir)) {
 
-        var pathToCheck = dir;
-        if (!fs.lstatSync(dir).isDirectory()) { pathToCheck = path.dirname(dir); }
+          var pathToCheck = dir;
+          if (!fs.lstatSync(dir).isDirectory()) { pathToCheck = path.dirname(dir); }
 
-        if (fs.existsSync(path.join(pathToCheck, process.env.ARTIST_NFO))) {
-          this.scanArtist({ path: pathToCheck }).then(() => {
-            this.db.checkpoint();
-            this.resetStatus();
-            this.updateStatus("Scan Complete", false);
-          });
-        } else if (fs.existsSync(path.join(pathToCheck, process.env.ALBUM_NFO))) {
-          this.scanArtist({ path: path.dirname(pathToCheck) }).then(() => {
-            this.db.checkpoint();
-            this.resetStatus();
-            this.updateStatus("Scan Complete", false);
-            this.cleanup();
-          });
+          if (fs.existsSync(path.join(pathToCheck, process.env.ARTIST_NFO))) {
+            this.scanArtist({ path: pathToCheck }).then(() => {
+              this.db.checkpoint();
+              this.resetStatus();
+              this.updateStatus("Scan Complete", false);
+            });
+          } else if (fs.existsSync(path.join(pathToCheck, process.env.ALBUM_NFO))) {
+            this.scanArtist({ path: path.dirname(pathToCheck) }).then(() => {
+              this.db.checkpoint();
+              this.resetStatus();
+              this.updateStatus("Scan Complete", false);
+              this.cleanup();
+            });
+          }
+        } else {
+          this.updateStatus("Scan Complete", false);
         }
+      } catch (err) {
+        this.updateStatus("Scan Complete", false);
       }
     }
 

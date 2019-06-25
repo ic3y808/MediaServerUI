@@ -653,10 +653,12 @@ export default class AlloyDbService {
     //var path = window.location.pathname;
     switch (path) {
       case "/": this.preload(); break;
+      case "/fresh": this.refreshFresh(); break;
       case "/artists": this.refreshArtists(); break;
       case "/albums": this.refreshAlbums(); break;
       case "/genres": this.refreshGenres(); break;
       case "/starred": this.refreshStarred(); break;
+      default: this.preload();
     }
     console.log(path);
   }
