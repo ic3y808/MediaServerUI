@@ -6,6 +6,7 @@ const uuidv3 = require("uuid/v3");
 const parser = require("xml2json");
 const klawSync = require("klaw-sync");
 const { ipcRenderer } = require("electron");
+var Queue = require("better-queue");
 var utils = {};
 var structures = {};
 var MediaScannerBase = {};
@@ -32,18 +33,53 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       process.on("SIGHUP", () => process.exit(128 + 1));
       process.on("SIGINT", () => process.exit(128 + 2));
       process.on("SIGTERM", () => process.exit(128 + 15));
+      this.configureQueue();
       this.configFileWatcher();
     }
 
+    configureQueue() {
+      this.queue = new Queue((input, cb) => {
+        if (this.shouldCancel()) {
+          cb(null, null);
+        } else {
+          this.scanPath(input).then(() => {
+            this.checkQueue();
+            cb(null, null);
+          });
+        }
+      }, {
+          concurrent: 1,
+          id: function (task, cb) {
+            // Compute the ID
+            cb(null, task);
+          }
+        });
+
+      this.queue.on("batch_finish", () => {
+        this.checkQueue();
+        if (Object.keys(this.tickets).length > 0) { return; }
+        this.db.checkpoint();
+        this.cleanup();
+        this.resetStatus();
+        this.updateStatus("Scan Complete", false);
+      });
+    }
+
     startScan() {
+      if (this.shouldCancel()) {
+        return;
+      }
       if (this.isScanning()) {
         this.updateStatus("Scan in progress", true);
         this.info("Scan in progress");
       } else {
-        this.info("Start Full Scan");
+        this.resetStatus();
+        this.updateStatus("Start Full Scan", true);
         var collectedArtistFolders = this.collectArtists();
         this.updateStatus("found mapped artists " + collectedArtistFolders.mappedArtists.length + " and unmapped artists " + collectedArtistFolders.unmappedArtists.length, true);
-        this.scanArtists(collectedArtistFolders.mappedArtists);
+        collectedArtistFolders.mappedArtists.forEach((artist) => {
+          this.tickets[artist.path] = this.queue.push(artist.path);
+        });
       }
     }
 
@@ -231,13 +267,6 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       var unmappedArtistDirectories = [];
 
       mediaPaths.forEach((mediaPath) => {
-        if (this.shouldCancel()) {
-          return {
-            mappedArtists: mappedArtistDirectories,
-            unmappedArtists: unmappedArtistDirectories
-          };
-        }
-
         const artistDirs = klawSync(mediaPath.path, { nofile: true, depthLimit: 0 });
 
         artistDirs.forEach((dir) => {
@@ -261,13 +290,12 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
 
     scanArtist(artist) {
       return new Promise((resolve, reject) => {
-        if (this.shouldCancel()) { return; }
+        if (this.shouldCancel()) { resolve(); }
         this.updateStatus("Scanning artist ", true, { path: artist.path });
-        if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) { return; }
+        if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) { resolve(); }
         var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
         var json = JSON.parse(parser.toJson(data));
         var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.4/artist/" + json.artist.musicbrainzartistid;
-        var loaded = false;
         this.downloadPage(artistUrl).then((result) => {
           try {
             var artistInfo = JSON.parse(result);
@@ -301,7 +329,6 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
                     albumTracks.forEach((track) => {
                       try {
                         if (utils.isFileValid(track.path)) {
-                          this.debug("Scanning " + track.path);
                           var m = mm.parseFile(track.path).then((metadata) => {
                             var processed_track = new structures.Song();
                             processed_track = this.checkExistingTrack(processed_track, metadata);
@@ -337,7 +364,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
 
                             this.writeDb(processed_track, "Tracks");
                             this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
-                            this.updateStatus("Scanning track ", true, { path: track.path });
+                            //this.updateStatus("Scanning track ", true, { path: track.path });
                           });
                           if (m) { allMetaPromises.push(m); }
                         }
@@ -350,13 +377,13 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
                 });
 
                 Promise.all(allMetaPromises).then(() => {
-                  this.updateStatus("finished scanning albums from " + artist.name, true);
                   resolve();
                 });
               });
             }
           } catch (err) {
             this.error(JSON.stringify(err.message));
+            resolve();
           }
 
         }, (reason) => {
@@ -367,67 +394,30 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       });
     }
 
-    scanArtists(artists) {
-      const artist = artists.shift();
-
-      if (artist && !this.shouldCancel()) {
-        this.scanArtist(artist).then(() => {
-          this.scanArtists(artists);
-        });
-
-      } else {
-        this.db.checkpoint();
-        this.resetStatus();
-        this.updateStatus("Scan Complete", false);
-      }
-    }
-
     scanPath(dir) {
-      if (this.isScanning()) {
-        this.updateStatus("Scan in progress", true);
-        this.info("scan in progress");
-        return;
-      }
-      try {
-        if (fs.existsSync(dir)) {
+      return new Promise((resolve, reject) => {
+        try {
+          if (fs.existsSync(dir)) {
 
-          var pathToCheck = dir;
-          if (!fs.lstatSync(dir).isDirectory()) { pathToCheck = path.dirname(dir); }
+            var pathToCheck = dir;
+            if (!fs.lstatSync(dir).isDirectory()) { pathToCheck = path.dirname(dir); }
 
-          if (fs.existsSync(path.join(pathToCheck, process.env.ARTIST_NFO))) {
-            this.scanArtist({ path: pathToCheck }).then(() => {
-              this.db.checkpoint();
-              this.resetStatus();
-              this.updateStatus("Scan Complete", false);
-            });
-          } else if (fs.existsSync(path.join(pathToCheck, process.env.ALBUM_NFO))) {
-            this.scanArtist({ path: path.dirname(pathToCheck) }).then(() => {
-              this.db.checkpoint();
-              this.resetStatus();
-              this.updateStatus("Scan Complete", false);
-              this.cleanup();
-            });
+            if (fs.existsSync(path.join(pathToCheck, process.env.ARTIST_NFO))) {
+              this.scanArtist({ path: pathToCheck }).then(() => {
+                resolve();
+              });
+            } else if (fs.existsSync(path.join(pathToCheck, process.env.ALBUM_NFO))) {
+              this.scanArtist({ path: path.dirname(pathToCheck) }).then(() => {
+                resolve();
+              });
+            }
+          } else {
+            resolve();
           }
-        } else {
-          this.updateStatus("Scan Complete", false);
+        } catch (err) {
+          reject();
         }
-      } catch (err) {
-        this.updateStatus("Scan Complete", false);
-      }
-    }
-
-    startQueue(event) {
-      clearTimeout(this.timeout);
-      currentQueue.push(event);
-      this.timeout = setTimeout(() => {
-        var queue = _.uniq(currentQueue, "name");
-        currentQueue = [];
-        for (var i = queue.length - 1; i >= 0; --i) {
-          this.scanPath(queue[i].path);
-          queue.splice(i, 1);
-        }
-        clearTimeout(this.timeout);
-      }, 5000);
+      });
     }
 
     configFileWatcher() {
@@ -449,8 +439,13 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
             var fileName = name;
             if (fs.existsSync(fileName)) {
-              if (fs.lstatSync(fileName).isDirectory()) { this.startQueue({ evt: evt, name: fileName, path: fileName }); }
-              else { this.startQueue({ evt: evt, name: path.dirname(fileName), path: fileName }); }
+              if (fs.lstatSync(fileName).isDirectory()) {
+
+                this.tickets[fileName] = this.queue.push(fileName);
+              }
+              else {
+                this.tickets[path.dirname(fileName)] = this.queue.push(path.dirname(fileName));
+              }
             }
           }));
         }

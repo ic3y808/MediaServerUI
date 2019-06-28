@@ -251,7 +251,7 @@ function createWebUIWindow() {
 function createSplashScreen() {
   return new Promise((resolve, reject) => {
     var res = sr.get();
-    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: res[1] * 0.4, alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
+    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height:Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
     splashWindow.icon = path.join(__dirname, "common", "icon.ico");
     splashWindow.setMenu(null);
     splashWindow.loadURL(url.format({

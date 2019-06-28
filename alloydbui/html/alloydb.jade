@@ -96,7 +96,7 @@ html(ng-app='alloydb', lang='en-us')
                     .card-header.card-header-tabs.card-header-primary
                       .nav-tabs-navigation
                         .nav-tabs-wrapper
-                          span.nav-tabs-title Task in progress
+                          span.nav-tabs-title Scan in progress
                           button.btn.btn-danger.pull-right(ng-click="cancelScan()", type="button", style="margin-left: auto;") Abort
                     .card-body(style="text-align: left;overflow:hidden;") 
                       p.card-category(style="text-align: left;overflow:hidden;") 
@@ -104,6 +104,7 @@ html(ng-app='alloydb', lang='en-us')
                         |  {{scan_status.status}}
                         h3.text-muted(ng-if="scan_status.path", style="text-align: left;overflow:hidden;") 
                         |  {{scan_status.path}}
+                      
               #database.tab-pane.active
                 .row
                   .col-lg-8.col-md-12
@@ -317,10 +318,27 @@ html(ng-app='alloydb', lang='en-us')
                               td.td-actions.text-right
                                 button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
                                   i.material-icons play_arrow
+
+                .row(ng-if="scan_status.isScanning === true")
+                  .col-lg-12.col-md-12
+                    .card
+                      .card-header.card-header-tabs.card-header-primary
+                        .nav-tabs-navigation
+                          .nav-tabs-wrapper
+                            span.nav-tabs-title Scan Queue
+                            button.btn.btn-danger.pull-right(ng-click="cancelScan()", type="button", style="margin-left: auto;") Abort
+                      .card-body(style="text-align: left;overflow:hidden;") 
+                        table.table
+                          thead
+                            tr
+                              th Path
+                              th status
+                          tbody
+                            tr(ng-repeat="(key, value) in scan_status.queue")
+                              td {{key}} 
+                              td {{value.status}}
                            
-
-          
-
+                      
                      
 
               #logs.tab-pane
