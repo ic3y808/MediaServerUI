@@ -13,6 +13,8 @@ module.exports = class MediaScannerBase {
   constructor(database) {
     this.db = database;
     this.resetStatus();
+    this.queue = {};
+    this.tickets = {};
   }
 
 
@@ -22,18 +24,18 @@ module.exports = class MediaScannerBase {
   info(data) { ipcRenderer.send("info", { source: "MediaScanner", data: data }); }
 
   shouldCancel() {
-    if (this.scanStatus.shouldCancel) {
-      this.updateStatus("Scanning Cacelled", false);
-      return true;
-    }
-    return false;
+    return this.scanStatus.shouldCancel;
   }
 
   cancelScan() {
     if (this.isScanning()) {
+      this.updateStatus("Cancelling scan", false);
+      this.info("Cancelling scan");
       this.scanStatus.shouldCancel = true;
-      this.updateStatus("Starting cancel", false);
-      this.info("Starting cancel scan");
+      setTimeout(() => {
+        this.scanStatus.shouldCancel = false;
+      }, 5000);
+      this.tickets = {};
     } else {
       this.updateStatus("Cancelled scanning", false);
       this.info("Cancelled scanning");
@@ -51,9 +53,36 @@ module.exports = class MediaScannerBase {
   updateStatus(status, isScanning, opts = {}) {
     this.scanStatus.status = status;
     this.scanStatus.isScanning = isScanning;
+    this.checkQueue();
     Object.assign(opts, this.scanStatus);
     ipcRenderer.send("mediascanner-status", opts);
-    this.info(JSON.stringify(opts));
+    //this.info(JSON.stringify(opts));
+  }
+
+
+  checkQueue() {
+    if (this.queue) {
+      if (this.queue._tickets) {
+        var keys = Object.keys(this.queue._tickets);
+        keys.forEach((key) => {
+          if (this.tickets) {
+            this.tickets[key] = this.queue._tickets[key].tickets[0];
+          }
+        });
+      }
+
+      if (this.tickets) {
+        var ticketKeys = Object.keys(this.tickets);
+
+        ticketKeys.forEach((key) => {
+          if (this.tickets[key].isFinished === true || this.tickets[key].isFinished === "true") {
+            delete this.tickets[key];
+          }
+        });
+        this.scanStatus.queue = this.tickets;
+      }
+      //this.scanStatus.queue.stats = this.queue.getStats(); 
+    }
   }
 
   getStatus() {
@@ -62,12 +91,6 @@ module.exports = class MediaScannerBase {
 
   isScanning() {
     return this.scanStatus.isScanning;
-  }
-
-  dl(url) {
-    return new Promise((resolve, reject) => {
-
-    });
   }
 
   downloadPage(url, method = "GET") {
@@ -213,7 +236,7 @@ module.exports = class MediaScannerBase {
   }
 
   parseFiles(audioFiles) {
-    if (this.scanStatus.shouldCancel) { return Promise.resolve(); }
+    if (this.shouldCancel()) { return Promise.resolve(); }
     const track = audioFiles.shift();
 
     if (track) {

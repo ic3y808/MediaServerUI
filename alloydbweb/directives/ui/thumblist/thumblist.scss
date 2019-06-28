@@ -81,6 +81,7 @@
 
   $debug-grid: false;
   $debug-grid-border: none;
+
   @if $debug-grid {
     $debug-grid-border: 5px dashed;
 

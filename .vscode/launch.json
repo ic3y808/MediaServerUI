@@ -9,7 +9,7 @@
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "cwd": "${workspaceFolder}",
       "env": {
-        "MODE":"dev"
+        "MODE":"prod"
       },
       "runtimeArgs": [
         "--remote-debugging-port=9223",
