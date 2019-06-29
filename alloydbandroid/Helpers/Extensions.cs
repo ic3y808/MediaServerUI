@@ -142,7 +142,7 @@ namespace Alloy.Helpers
 
 		public static Bitmap GetAlbumArt(this Song song)
 		{
-			return null;
+			//return null;
 			try
 			{
 				return GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }));
@@ -156,7 +156,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Song song, ImageView view)
 		{
-			return;
+			//return;
 			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } })).Into(view); }
 			catch (Exception e)
 			{
@@ -166,7 +166,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Artist artist, ImageView view)
 		{
-			return;
+			//return;
 			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } })).Into(view); }
 			catch (Exception e)
 			{
@@ -176,7 +176,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Genre genre, ImageView view)
 		{
-			return;
+			//return;
 			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } })).Into(view); }
 			catch (Exception e)
 			{
@@ -186,7 +186,7 @@ namespace Alloy.Helpers
 
 		public static void GetAlbumArt(this Album album, ImageView view)
 		{
-			return;
+			//return;
 			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } })).Into(view); }
 			catch (Exception e)
 			{

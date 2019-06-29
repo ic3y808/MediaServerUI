@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 using Android.OS;
 using Alloy.Helpers;
 using Alloy.Models;
+using Android.App;
+using Android.Content;
+using Android.Support.V7.Preferences;
 using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using Debug = System.Diagnostics.Debug;
@@ -54,19 +57,19 @@ namespace Alloy.Providers
 		}
 		public static string GetHost()
 		{
-			return "http://127.0.0.1:4000";
+			//return "http://127.0.0.1:4000";
 
 			//TODO change loading from preferences
-			//ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			//return sp.GetString("alloydbhost", "");
+			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			return sp.GetString("alloydbhost", "");
 		}
 
 		public static string GetApiKey()
 		{
-			return "b1413ebe481e48880a466ffe8523060a";
+			//return "b1413ebe481e48880a466ffe8523060a";
 			//TODO change loading from preferences
-			//ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			//return sp.GetString("alloydbapikey", "");
+			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			return sp.GetString("alloydbapikey", "");
 		}
 
 		public static string ProcessApiRequest(ApiRequestType t)

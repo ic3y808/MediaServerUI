@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# android keystore
+alloy.keystore
+
 #icons
 alloydbweb/styles/fonts/alloyicons.css
 alloydbweb/styles/fonts/alloyicons.eot
