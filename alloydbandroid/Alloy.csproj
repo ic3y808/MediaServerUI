@@ -28,7 +28,7 @@
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
     <AndroidKeyStore>true</AndroidKeyStore>
-    <AndroidSigningKeyStore>D:\Source\Github\Alloy\data\alloy.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyStore>D:\Source\Github\Alloy\alloy.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>37a2447966364633bbed42866b87ad13</AndroidSigningStorePass>
     <AndroidSigningKeyPass>37a2447966364633bbed42866b87ad13</AndroidSigningKeyPass>
     <AndroidSigningKeyAlias>android</AndroidSigningKeyAlias>

@@ -79,7 +79,7 @@
         "no-alert": 2,
         "no-array-constructor": 2,
         "no-async-promise-executor": 2,
-        "no-await-in-loop": 2,
+        "no-await-in-loop": 0,
         "no-bitwise": 0,
         "no-buffer-constructor": 2,
         "no-caller": 2,

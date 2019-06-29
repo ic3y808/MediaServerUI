@@ -1,6 +1,6 @@
 {
     "predef": [ "$", "jQuery", "text", "$p", "window", "document", "console", "parent", "angular" ],
-    "esversion"     : 6,
+    "esversion"     : 8,
     "passfail"      : false, 
     "maxerr"        : 100,    
     "browser"       : true,
