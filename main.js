@@ -36,7 +36,7 @@ if (!gotTheLock) {
   app.on("second-instance", (event, commandLine, workingDirectory) => {
     // Someone tried to run a second instance, we should focus our window.
     if (mainWindow) {
-      if (mainWindow.isMinimized()) {mainWindow.restore();}
+      if (mainWindow.isMinimized()) { mainWindow.restore(); }
       mainWindow.show();
       mainWindow.focus();
     }
@@ -251,7 +251,7 @@ function createWebUIWindow() {
 function createSplashScreen() {
   return new Promise((resolve, reject) => {
     var res = sr.get();
-    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height:Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
+    splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
     splashWindow.icon = path.join(__dirname, "common", "icon.ico");
     splashWindow.setMenu(null);
     splashWindow.loadURL(url.format({
@@ -278,7 +278,7 @@ function createMainWindow() {
 function createTrayMenu() {
   return new Promise((resolve, reject) => {
     var icon = path.join(__dirname, "common", "icon.ico");
-    var t = new Tray(icon);
+    tray = new Tray(icon);
 
     const contextMenu = Menu.buildFromTemplate([
       {
@@ -308,19 +308,19 @@ function createTrayMenu() {
         }
       }
     ]);
-    t.setToolTip("Alloy");
-    t.setContextMenu(contextMenu);
+    tray.setToolTip("Alloy");
+    tray.setContextMenu(contextMenu);
 
-    t.on("click", () => {
+    tray.on("click", () => {
       mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
     });
     mainWindow.on("show", () => {
-      t.setHighlightMode("always");
+      tray.setHighlightMode("always");
     });
     mainWindow.on("hide", () => {
-      t.setHighlightMode("never");
+      tray.setHighlightMode("never");
     });
-    resolve(t);
+    resolve();
   });
 }
 
@@ -592,26 +592,17 @@ app.on("window-all-closed", () => {
 
 });
 
-app.on("ready", () => {
-  createSplashScreen().then(() => {
-    createBaseServer().then(() => {
-      createServerWindow().then(() => {
-        createSchedulerWindow().then(() => {
-          createMediaScannerWindow().then(() => {
-            createMainWindow().then(() => {
-              setupRoutes().then(() => {
-                createTrayMenu().then((t) => {
-                  tray = t;
-                  mainWindow.webContents.send("app-loaded");
-                  splashWindow.close();
-                  mainWindow.show();
-                  setTimeout(createTasks, 250);
-                });
-              });
-            });
-          });
-        });
-      });
-    });
-  });
+app.on("ready", async () => {
+  await createSplashScreen();
+  await createBaseServer();
+  await createServerWindow();
+  await createSchedulerWindow();
+  await createMediaScannerWindow();
+  await createMainWindow();
+  await setupRoutes();
+  await createTrayMenu();
+  mainWindow.webContents.send("app-loaded");
+  splashWindow.close();
+  mainWindow.show();
+  setTimeout(createTasks, 250);
 });

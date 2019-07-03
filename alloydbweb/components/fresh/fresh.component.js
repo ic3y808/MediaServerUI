@@ -99,50 +99,6 @@ class FreshController {
     $rootScope.$on("playlistEndEvent", (event, data) => {
      
     });
-
-
-    $rootScope.$watch("fresh_albums", (newVal, oldVal) => {
-      if ($rootScope.fresh_albums) {
-        $scope.fresh_albums = $rootScope.fresh_albums.slice(0, 12);
-
-        var albumTracks = [];
-        $scope.fresh_albums.forEach((album) => {
-          album.tracks.forEach((track) => {
-            track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
-            albumTracks.push(track);
-          });
-        });
-        $scope.quick_picks = AppUtilities.getRandom(albumTracks, 10);
-        $scope.quick_picks.forEach((track) => {
-          track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
-        });
-        this.AppUtilities.apply();
-      }
-    });
-    $rootScope.$watch("fresh_artists", (newVal, oldVal) => {
-      if ($rootScope.fresh_artists) {
-        $scope.fresh_artists = AppUtilities.getRandom($rootScope.fresh_artists, 12);
-        this.AppUtilities.apply();
-      }
-    });
-    $rootScope.$watch("fresh_tracks", (newVal, oldVal) => {
-      if ($rootScope.fresh_tracks) {
-        $scope.fresh_tracks = AppUtilities.getRandom($rootScope.fresh_tracks, 12);
-        $scope.songs = AppUtilities.getRandom($rootScope.fresh_tracks, 12);
-        $scope.extra_fresh = AppUtilities.getRandom($rootScope.fresh_tracks, 12);
-        this.AppUtilities.apply();
-      }
-    });
-
-    $rootScope.$watch("charts", (newVal, oldVal) => {
-      if ($rootScope.charts) {
-        if ($rootScope.charts.top_tracks) {
-          $scope.top_tracks = AppUtilities.getRandom($rootScope.charts.top_tracks, 10);
-          $scope.never_played = AppUtilities.getRandom($rootScope.charts.never_played, 10);
-          this.AppUtilities.apply();
-        }
-      }
-    });
   }
 
   $onInit() {
