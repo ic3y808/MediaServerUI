@@ -348,14 +348,20 @@ export default class AlloyDbService {
     if (data) {
       data.forEach((info) => {
         if (info.fresh) {
-          this.$rootScope.fresh_albums = info.fresh.albums;
+          var albumTracks = [];
+          this.$rootScope.fresh_albums = this.AppUtilities.getRandom(info.fresh.albums, info.fresh.albums.length);
           this.$rootScope.fresh_albums.forEach((album) => {
             album.image = this.getCoverArt({ album_id: album.id });
             album.tracks.forEach((track) => {
               track.image = this.getCoverArt({ track_id: track.cover_art });
+              albumTracks.push(track);
             });
           });
-          this.$rootScope.fresh_artists = info.fresh.artists;
+          this.$rootScope.quick_picks = this.AppUtilities.getRandom(albumTracks, 10);
+          this.$rootScope.quick_picks.forEach((track) => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+          this.$rootScope.fresh_artists = this.AppUtilities.getRandom(info.fresh.artists, info.fresh.artists.length) ;
           this.$rootScope.fresh_artists.forEach((artist) => {
             artist.image = this.getCoverArt({ artist_id: artist.id });
             artist.tracks.forEach((track) => {
@@ -494,8 +500,6 @@ export default class AlloyDbService {
           this.$rootScope.charts.never_played_albums.forEach((album) => {
             album.image = this.getCoverArt({ album_id: album.id });
           });
-
-
           this.AppUtilities.apply();
         }
       });
@@ -653,7 +657,7 @@ export default class AlloyDbService {
     //var path = window.location.pathname;
     switch (path) {
       case "/": this.preload(); break;
-      case "/fresh": this.refreshFresh(); break;
+      case "/fresh": this.refreshFresh(); this.refreshCharts();break;
       case "/artists": this.refreshArtists(); break;
       case "/albums": this.refreshAlbums(); break;
       case "/genres": this.refreshGenres(); break;

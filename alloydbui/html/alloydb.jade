@@ -26,6 +26,12 @@ html(ng-app='alloydb', lang='en-us')
         .sidebar-wrapper
           ul.nav
             li.nav-item
+              a.nav-link(ng-click='launchWebUI();', href="#")
+                i.material-icons launch
+                p Web UI
+            
+            li.nav-item
+            li.nav-item
               a.nav-link(ng-click='rescanLibrary();', href="#")
                 i.material-icons refresh
                 p Rescan Library

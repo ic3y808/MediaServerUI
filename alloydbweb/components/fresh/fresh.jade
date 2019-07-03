@@ -11,13 +11,13 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
   .row
     .col-md-7(ng-if="$root.fresh_albums.length > 0")
       thumblist(data="$root.fresh_albums", title="New Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
-    .col-md-5(ng-if="quick_picks.length > 0")
-      itemlist(data="quick_picks", title="Quick Picks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/never_played")  
+    .col-md-5(ng-if="$root.quick_picks.length > 0")
+      itemlist(data="$root.quick_picks", title="Quick Picks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/never_played")  
   .row
     .col-md-7(ng-if="$root.fresh_artists.length > 0")
       thumblist(data="$root.fresh_artists", title="New Artists", limit="36", type="artists", refreshclick="refresh()", viewmorelink="/fresh")             
-    .col-md-5(ng-if="top_tracks.length > 0")
-      itemlist(data="top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/charts")
+    .col-md-5(ng-if="$root.charts.top_tracks.length > 0")
+      itemlist(data="$root.charts.top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/charts")
   .row
     .col-md-12(ng-if="$root.fresh_albums.length > 0")
       
