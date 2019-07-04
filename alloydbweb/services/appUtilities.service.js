@@ -44,14 +44,25 @@ export default class AppUtilities {
     };
   }
 
-  shuffle(a) {
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
+  shuffle(array) {
+    let counter = array.length;
 
+    // While there are elements in the array
+    while (counter > 0) {
+        // Pick a random index
+        const index = Math.floor(Math.random() * counter);
+
+        // Decrease counter by 1
+        counter--;
+
+        // And swap the last element with it
+        const temp = array[counter];
+        array[counter] = array[index];
+        array[index] = temp;
+    }
+
+    return array;
+}
   showLoader() {
     $("#root.root").css("display", "none");
     $(".loader").css("display", "block");

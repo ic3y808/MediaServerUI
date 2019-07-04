@@ -332,7 +332,8 @@ router.get("/fresh", function (req, res) {
   //var tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE CAST((last_modified/1000) AS LONG) >= strftime("%s", "now", "-" + days_back + " day");").all()
   var albumIds = res.locals.db.prepare("SELECT DISTINCT album_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit);
   var artistsIds = res.locals.db.prepare("SELECT DISTINCT artist_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit);
-  result.fresh.tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit * 4);
+  result.fresh.tracks = [];
+
 
   artistsIds.forEach((id) => {
     var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(id.artist_id);
@@ -343,7 +344,11 @@ router.get("/fresh", function (req, res) {
     var album = res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id.album_id);
     album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     result.fresh.albums.push(album);
+    album.tracks.forEach((track) => {
+      result.fresh.tracks.push(track);
+    });
   });
+  result.fresh.tracks = _.shuffle(result.fresh.tracks);
   res.json(result);
 });
 
@@ -454,7 +459,7 @@ router.get("/history", function (req, res) {
   var limit = req.query.limit === undefined ? 50 : req.query.limit;
   var totalCount = res.locals.db.prepare("SELECT count(*) FROM  History;").all()[0]["count(*)"];
   var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time DESC LIMIT ?").all(limit);
-  res.json({ history:history, count: totalCount });
+  res.json({ history: history, count: totalCount });
 });
 
 /**

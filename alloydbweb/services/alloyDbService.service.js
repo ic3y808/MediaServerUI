@@ -1,4 +1,5 @@
 import AlloyApi from "../API/alloy.db";
+import _ from "lodash";
 export default class AlloyDbService {
   constructor($rootScope, Logger, AppUtilities, $window) {
     "ngInject";
@@ -361,14 +362,17 @@ export default class AlloyDbService {
           this.$rootScope.quick_picks.forEach((track) => {
             track.image = this.getCoverArt({ track_id: track.id });
           });
-          this.$rootScope.fresh_artists = this.AppUtilities.getRandom(info.fresh.artists, info.fresh.artists.length) ;
+          this.$rootScope.fresh_artists = this.AppUtilities.getRandom(info.fresh.artists, info.fresh.artists.length);
           this.$rootScope.fresh_artists.forEach((artist) => {
             artist.image = this.getCoverArt({ artist_id: artist.id });
             artist.tracks.forEach((track) => {
               track.image = this.getCoverArt({ track_id: track.cover_art });
             });
           });
-          this.$rootScope.fresh_tracks = this.AppUtilities.getRandom(info.fresh.tracks, info.fresh.tracks.length);
+          // var t = _.uniq(info.fresh.tracks, "album");
+
+
+          this.$rootScope.fresh_tracks = info.fresh.tracks;
           this.$rootScope.fresh_tracks.forEach((track) => {
             track.image = this.getCoverArt({ track_id: track.id });
           });
@@ -535,7 +539,7 @@ export default class AlloyDbService {
 
   refreshFresh() {
 
-    var fresh = this.getFresh(50);
+    var fresh = this.getFresh(100);
     if (fresh) {
       fresh.then((info) => {
         this.loadFresh([info]);
@@ -628,7 +632,7 @@ export default class AlloyDbService {
     var index = this.getArtistsIndex();
     var history = this.getHistory();
     var artists = this.getArtists();
-    var fresh = this.getFresh(50);
+    var fresh = this.getFresh(100);
     var albums = this.getAlbums();
     var genres = this.getGenres();
     var starred = this.getStarred();
@@ -657,7 +661,7 @@ export default class AlloyDbService {
     //var path = window.location.pathname;
     switch (path) {
       case "/": this.preload(); break;
-      case "/fresh": this.refreshFresh(); this.refreshCharts();break;
+      case "/fresh": this.refreshFresh(); this.refreshCharts(); break;
       case "/artists": this.refreshArtists(); break;
       case "/albums": this.refreshAlbums(); break;
       case "/genres": this.refreshGenres(); break;

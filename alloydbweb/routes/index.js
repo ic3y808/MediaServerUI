@@ -82,6 +82,10 @@ router.get("/index", function (req, res) {
   res.render("index", options);
 });
 
+router.get("/neverplayed", function (req, res) {
+  res.render("index", options);
+});
+
 router.get("/playlist", function (req, res) {
   res.render("index", options);
 });
