@@ -15,6 +15,7 @@ import HistoryComponent from "./history/history.component";
 import HomeComponent from "./home/home.component";
 import IndexComponent from "./index/index.component";
 import NavbarComponent from "./navbar/navbar.component";
+import NeverPlayed from "./neverPlayed/neverPlayed.component";
 import PlayingComponent from "./playing/playing.component";
 import PlaylistComponent from "./playlist/playlist.component";
 import PlaylistsComponent from "./playlists/playlists.component";
@@ -50,6 +51,7 @@ export default angular
   .component("history", HistoryComponent)
   .component("index", IndexComponent)
   .component("navbar", NavbarComponent)
+  .component("neverplayed", NeverPlayed)
   .component("playing", PlayingComponent)
   .component("playlist", PlaylistComponent)
   .component("playlists", PlaylistsComponent)

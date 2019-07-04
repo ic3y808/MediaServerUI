@@ -26,6 +26,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   buildRoute("/genre/:id/trackid", "<genre/>");
   buildRoute("/history", "<history/>");
   buildRoute("/index", "<index/>");
+  buildRoute("/neverplayed", "<neverplayed/>");
   buildRoute("/playing", "<playing/>");
   buildRoute("/playlists", "<playlists/>");
   buildRoute("/playlist/:id", "<playlist/>");

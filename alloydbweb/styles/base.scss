@@ -1,4 +1,5 @@
 @import "./variables";
+@import "./framework";
 
 html {
   font-family: sans-serif;
@@ -1121,6 +1122,11 @@ a.list-group-item:focus {
   background-color: #fff;
 }
 
+.bg-normal a:hover{
+  background-color: $background-color !important;
+  color: choose-contrast-color($background-color) !important;
+}
+
 .text-success {
   color: #1ab667;
 }
@@ -1605,7 +1611,7 @@ a.text-info:hover {
 .h2,
 .h4 {
   font-family: inherit;
-  font-weight: 500;
+  font-weight: 300;
   line-height: 1.1;
   color: inherit;
 }
@@ -1654,7 +1660,6 @@ a.text-info:hover {
   clear: both;
 }
 
-.h2,
 .h4 {
   margin: 0;
 }
