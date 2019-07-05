@@ -98,7 +98,7 @@ namespace Alloy
 
 			SlidingUpPanelLayout mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
 			mainLayout.setAnchorPoint(0.7f);
-			mainLayout.AddPanelSlideListener(this);
+			//mainLayout.AddPanelSlideListener(this);
 
 			ListView mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
 
