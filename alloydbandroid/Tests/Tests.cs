@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using NUnit.Framework;
@@ -60,9 +61,9 @@ namespace Tests
 		private void SelectMenuItem(string item)
 		{
 			OpenSideMenu();
-			app.Screenshot("Main Menu - Selecting " + item);
+			//app.Screenshot("Main Menu - Selecting " + item);
 
-			AppResult[] mainMenu = app.WaitForElement(c => c.Marked("main_menu_list"));
+			AppResult[] mainMenu = app.WaitForElement(c => c.Marked("main_menu_list"),"Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(100));
 			Assert.IsTrue(mainMenu.Any());
 			var children = app.Query(q => q.Id("main_menu_list").Child());
 			foreach (var element in children)
@@ -89,14 +90,14 @@ namespace Tests
 
 		private void CheckItemsLoaded(string view, string item)
 		{
-			AppResult[] view1 = app.WaitForElement(c => c.Id(view));
+			AppResult[] view1 = app.WaitForElement(c => c.Id(view), "Timed Out", TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(10));
 			Assert.IsTrue(view1.Any());
-			app.Screenshot(item + " loaded");
-			AppResult[] view2 = app.WaitForElement(c => c.Id(item));
+			//app.Screenshot(item + " loaded");
+			AppResult[] view2 = app.WaitForElement(c => c.Id(item), "Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(100));
 			Assert.IsTrue(view2.Any());
 			var result = app.Query(q => q.Id(view).Child()).Length;
 			Assert.IsTrue(result > 0);
-			app.Screenshot(item + " items loaded count " + result);
+			//app.Screenshot(item + " items loaded count " + result);
 		}
 
 		private void SelectTrack(string view)
@@ -148,9 +149,12 @@ namespace Tests
 		[Test]
 		public void BasicOperationTests()
 		{
-			app.Screenshot("Main Screen");
+			//app.Screenshot("Main Screen");
+
+			//SelectMenuItem("Whats New");
 			
-			SelectMenuItem("Whats New");
+			
+			
 			CheckItemsLoaded("fresh_new_artists_list", "image_view");
 
 			SelectMenuItem("Starred");
@@ -165,9 +169,10 @@ namespace Tests
 			SelectMenuItem("Genres");
 			CheckItemsLoaded("genres_list", "genre");
 			
-			
-			
-			
+
+			//app.WaitFor(() => app.Query(e => e.Class("UIButton").Index(1)).First().Enabled, "Waiting for Element", timeout: TimeSpan.FromMinutes(3.0));
+
+
 			//app.Repl();
 			//SelectMenuItem("Artists");
 			//CheckItemsLoaded("artists_list", "card_layout");
@@ -182,6 +187,26 @@ namespace Tests
 			//SelectMenuItem("All Music");
 			//CheckItemsLoaded("all_music_list", "card_layout");
 		}
+
+
+
+		[Test]
+		public void FreshTest()
+		{
+			AppResult[] view1 = app.WaitForElement(c => c.Id("drawer_layout"), "Timed Out", TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(10));
+			Assert.IsTrue(view1.Any());
+
+			Stopwatch timer = new Stopwatch();
+			timer.Start();
+
+			CheckItemsLoaded("fresh_new_artists_list", "image_view");
+
+		//	app.Flash(c => c.Id("image_view"));
+
+			timer.Stop();
+			Debug.WriteLine("Test time taken: " + timer.Elapsed);
+		}
+
 
 		[Test]
 		public void SlideUpMenuTests()
