@@ -22,7 +22,7 @@ namespace Tests
 				if (directoryInfo?.Parent?.Parent?.Parent != null)
 				{
 					string dir = directoryInfo.Parent.Parent.Parent.FullName;
-					PathToApk = Path.Combine(dir, "android", "bin", "Debug", "com.d3bug.alloy-Signed.apk");
+					PathToApk = Path.Combine(dir, "alloydbandroid", "bin", "Debug", "com.d3bug.alloy-Signed.apk");
 					Debug.WriteLine("local apk path: " + PathToApk);
 				}
 			}
