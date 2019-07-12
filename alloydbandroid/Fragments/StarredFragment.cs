@@ -17,6 +17,8 @@ namespace Alloy.Fragments
 		private RecyclerView starredContentView;
 		private SwipeRefreshLayout refreshLayout;
 
+		public override string Name => "Starred";
+
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			MusicProvider.StarredStartRefresh += MusicProvider_StarredStartRefresh;
@@ -44,6 +46,7 @@ namespace Alloy.Fragments
 		private void MusicProvider_StarredRefreshed(object sender, Starred e)
 		{
 			refreshLayout.Refreshing = false;
+			Adapters.Adapters.UpdateAdapters();
 		}
 
 		public override void ScrollToNowPlaying()

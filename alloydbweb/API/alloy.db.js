@@ -164,6 +164,14 @@ export default class AlloyApi {
     return this._get("system/ping");
   }
 
+  clearCache(){
+    return this._get("system/clear_cache");
+  }
+
+  clearStarredCache(){
+    return this._get("system/clear_starred_cache");
+  }
+
   getSchedulerStatus() {
     return this._get("system/scheduler");
   }
@@ -328,8 +336,8 @@ export default class AlloyApi {
     return this._put("annotation/set_rating", params);
   }
 
-  stream(id, quality) {
-    return this._buildUrl("media/stream", { api_key: this._settings.alloydb_apikey, id, quality });
+  stream(id, bitrate, format) {
+    return this._buildUrl("media/stream", { api_key: this._settings.alloydb_apikey, id, bitrate, format });
   }
 
   download(id, quality) {

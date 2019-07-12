@@ -19,6 +19,8 @@ namespace Alloy.Fragments
 		private AlbumDetailAdapter albumDetailAdapter;
 		private AlbumContainer album;
 
+		public override string Name => "AlbumDetail";
+
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			MusicProvider.AlbumStartRefresh += MusicProvider_AlbumStartRefresh;

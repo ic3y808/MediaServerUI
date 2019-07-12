@@ -15,6 +15,8 @@ namespace Alloy.Fragments
 		private RecyclerView genreContentView;
 		private SwipeRefreshLayout refreshLayout;
 
+		public override string Name => "GenreDetail";
+
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			MusicProvider.GenreStartRefresh += MusicProvider_GenreStartRefresh;

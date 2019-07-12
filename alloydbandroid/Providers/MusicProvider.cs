@@ -57,7 +57,7 @@ namespace Alloy.Providers
 		}
 		public static string GetHost()
 		{
-			//return "http://127.0.0.1:4000";
+			return "http://127.0.0.1:4000";
 
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
@@ -66,7 +66,7 @@ namespace Alloy.Providers
 
 		public static string GetApiKey()
 		{
-			//return "b1413ebe481e48880a466ffe8523060a";
+			return "b1413ebe481e48880a466ffe8523060a";
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
 			return sp.GetString("alloydbapikey", "");
@@ -493,26 +493,22 @@ namespace Alloy.Providers
 			new StarredLoader().Execute();
 		}
 
-		public static async Task RefreshFresh()
+		public static void RefreshFresh()
 		{
-
-			string request = ApiRequest(ApiRequestType.Fresh, null, RequestType.GET);
-			FreshContainer result = JsonConvert.DeserializeObject<FreshContainer>(request);
-			result.Fresh.Tracks.Shuffle();
-			Fresh = result.Fresh;
+			FreshStartRefresh?.Invoke(null, EventArgs.Empty);
+			new FreshLoader().Execute();
 		}
 
-		public static async Task RefreshCharts()
+		public static void RefreshCharts()
 		{
-			string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
-			ChartsContainer result = JsonConvert.DeserializeObject<ChartsContainer>(request);
-			Charts = result.Charts;
+			ChartsStartRefresh?.Invoke(null, EventArgs.Empty);
+			new ChartsLoader().Execute();
 		}
 
-		public static async Task FullRefresh()
+		public static void FullRefresh()
 		{
-			await RefreshFresh();
-			//await RefreshCharts();
+			RefreshFresh();
+			//RefreshCharts();
 			//RefreshStarred();
 			//RefreshArtists();
 			//RefreshAlbums();
@@ -542,12 +538,12 @@ namespace Alloy.Providers
 
 		public static string GetStreamUri(Song song)
 		{
-			Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection();
-
-			parameters["api_key"] = GetApiKey();
+			Extensions.HttpValueCollection parameters = new Extensions.HttpValueCollection { ["api_key"] = GetApiKey() };
 			UriBuilder uriBuilder = new UriBuilder(ProcessApiRequest(ApiRequestType.Stream));
 			parameters["id"] = song.Id;
-
+			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			parameters["format"] = sp.GetString("alloydbstreamingformat", "MP3");
+			parameters["bitrate"] = sp.GetString("alloydbstreamingbitrate", "128");
 			uriBuilder.Query = parameters.ToString();
 			return uriBuilder.Uri.ToString();
 		}

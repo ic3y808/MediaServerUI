@@ -104,6 +104,11 @@ function doRescan() {
   mediaScannerWindow.webContents.send("mediascanner-scan-start");
 }
 
+function doReache() {
+  logger.info("alloydb", "Starting Re-Cache of streamable media");
+  mediaScannerWindow.webContents.send("mediascanner-recache-start");
+}
+
 function doToggleApiServer(e, data) {
   logger.info("alloydb", "Changing API server settings to " + JSON.stringify(data));
   if (data.enabled === true) { settings.config.api_enabled = "true"; }
@@ -290,6 +295,10 @@ function createTrayMenu() {
         click: doRescan
       },
       {
+        label: "Recache",
+        click: doReache
+      },
+      {
         label: "Cleanup",
         click: doCleanup
       },
@@ -332,7 +341,8 @@ function createTasks() {
       { name: "DB Backup", time: "0 0 * * *", callback: "task-database-backup" },
       { name: "Clean Database", time: "0 0 * * *", callback: "task-database-cleanup" },
       { name: "Incremental Clean", time: "0 0 * * *", callback: "task-database-inc-cleanup" },
-      { name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" }
+      { name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" },
+      { name: "Cache Starred", time: "0 0 * * 0", callback: "task-database-cache-starred" }
     ]);
   }
 }
@@ -547,6 +557,7 @@ function setupRoutes() {
     ipcMain.on("task-database-cleanup", doCleanup);
     ipcMain.on("task-database-inc-cleanup", doIncCleanup);
     ipcMain.on("task-database-scan", doRescan);
+    ipcMain.on("task-database-cache-starred", doReache);
     ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
     ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);
     ipcMain.on("request-web-ui", showWebUI);
@@ -581,8 +592,11 @@ function setupRoutes() {
       mediaScannerWindow.show();
       schedulerWindow.webContents.openDevTools({ detach: true });
       schedulerWindow.show();
-      webUIWindow.webContents.openDevTools({ detach: true });
-      webUIWindow.show();
+      if (webUIWindow) {
+        webUIWindow.webContents.openDevTools({ detach: true });
+        webUIWindow.show();
+      }
+
     });
     resolve();
   });

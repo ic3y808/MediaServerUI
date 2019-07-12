@@ -15,8 +15,8 @@ using Android.Widget;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Models;
 using Alloy.Providers;
-
-using Bumptech.Glide;
+using Android.Support.V7.Preferences;
+using FFImageLoading;
 using Exception = System.Exception;
 using Math = System.Math;
 using String = System.String;
@@ -117,6 +117,11 @@ namespace Alloy.Helpers
 
 		public static Dictionary<string, Bitmap> ImageCache { get; set; }
 
+		public static bool CanLoadImages()
+		{
+			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
+			return sp.GetBoolean("alloydbdownloadimages", true);
+		}
 		public static Bitmap GetImageBitmapFromUrl(string url)
 		{
 			if (ImageCache == null) ImageCache = new Dictionary<string, Bitmap>();
@@ -142,7 +147,7 @@ namespace Alloy.Helpers
 
 		public static Bitmap GetAlbumArt(this Song song)
 		{
-			return null;
+			if (!CanLoadImages()) return null;
 			try
 			{
 				return GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }));
@@ -154,40 +159,68 @@ namespace Alloy.Helpers
 			}
 		}
 
-		public static void GetAlbumArt(this Song song, ImageView view)
+		public static async void GetAlbumArt(this Song song, ImageView view)
 		{
-			return;
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } })).Into(view); }
+			if (!CanLoadImages()) return;
+			try
+			{
+				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }))
+					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.Retry(3, 200)
+					.Into(view);
+			}
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
 			}
 		}
 
-		public static void GetAlbumArt(this Artist artist, ImageView view)
+		public static async void GetAlbumArt(this Artist artist, ImageView view)
 		{
-			return;
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } })).Into(view); }
+			if (!CanLoadImages()) return;
+			try
+			{
+				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } }))
+					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.Retry(3, 200)
+					.Into(view);
+			}
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
 			}
 		}
 
-		public static void GetAlbumArt(this Genre genre, ImageView view)
+		public static async void GetAlbumArt(this Genre genre, ImageView view)
 		{
-			return;
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } })).Into(view); }
+			if (!CanLoadImages()) return;
+			try
+			{
+				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } }))
+					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.Retry(3, 200)
+					.Into(view);
+			}
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
 			}
 		}
 
-		public static void GetAlbumArt(this Album album, ImageView view)
+		public static async void GetAlbumArt(this Album album, ImageView view)
 		{
-			return;
-			try { Glide.With(Application.Context).Load(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } })).Into(view); }
+			if (!CanLoadImages()) return;
+			try
+			{
+				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } }))
+					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
+					.Retry(3, 200)
+					.Into(view);
+			}
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
@@ -229,24 +262,6 @@ namespace Alloy.Helpers
 			}
 		}
 
-		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment)
-		{
-			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
-			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
-			fragmentTx.Commit();
-		}
-
-		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment, bool stack, string name)
-		{
-			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
-			if (stack)
-			{
-				fragmentTx.AddToBackStack(name);
-			}
-			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
-			fragmentTx.Commit();
-		}
-
 		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment, bool stack, string name, Bundle bundle)
 		{
 			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
@@ -257,6 +272,7 @@ namespace Alloy.Helpers
 			if (bundle != null) { otherFragment.Arguments = bundle; }
 			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
 			fragmentTx.Commit();
+			fragmentManager.ExecutePendingTransactions();
 		}
 
 		public static void Shuffle<T>(this IList<T> list)

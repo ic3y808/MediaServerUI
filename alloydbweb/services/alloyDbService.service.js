@@ -54,6 +54,18 @@ export default class AlloyDbService {
     else { return false; }
   }
 
+  clearCache() {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.clearCache(); }
+    else { return false; }
+  }
+
+  clearStarredCache() {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.clearStarredCache(); }
+    else { return false; }
+  }
+
   getSchedulerStatus() {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.getSchedulerStatus(); }
@@ -300,9 +312,9 @@ export default class AlloyDbService {
     else { return false; }
   }
 
-  stream(id, quality) {
+  stream(id, bitrate, format) {
     this.doLogin();
-    return this.alloydb.stream(id, quality);
+    return this.alloydb.stream(id, bitrate, format);
   }
 
   download(id) {

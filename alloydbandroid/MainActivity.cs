@@ -28,6 +28,7 @@ using Alloy.Models;
 
 using Alloy.Widgets;
 using Android.Runtime;
+using Debug = System.Diagnostics.Debug;
 using Exception = System.Exception;
 
 namespace Alloy
@@ -37,6 +38,7 @@ namespace Alloy
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "content", DataMimeTypes = new[] { "audio/*", "application/ogg", "application/x-ogg", "application/x-vorbis", "application/x-flac" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "http", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm", "audio/x-wav", "audio/ogg", "audio/webm", "application/ogg", "application/x-ogg" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "sshttp", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm" })]
+	[IntentFilter(new[] { Intent.ActionManageNetworkUsage, }, Categories = new[] { Intent.CategoryDefault })]
 	public class MainActivity : AppCompatActivity, IMenuListener, PanelSlideListener
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
@@ -149,7 +151,7 @@ namespace Alloy
 			items.Add(new Item(Resource.String.albums_fragment_id, Resource.String.albums_fragment_title, Resource.Drawable.albums));
 			items.Add(new Item(Resource.String.genres_fragment_id, Resource.String.genres_fragment_title, Resource.Drawable.genres));
 			items.Add(new Item(Resource.String.history_fragment_id, Resource.String.history_title, Resource.Drawable.history));
-			
+
 			mainMenuaAdapter = new MenuAdapter(items);
 			mainMenu.Adapter = mainMenuaAdapter;
 			mainMenu.SetSelection(1);
@@ -171,11 +173,9 @@ namespace Alloy
 			BindService();
 		}
 
-		protected async override void OnPostResume()
+		protected override void OnPostResume()
 		{
 			base.OnPostResume();
-
-			 MusicProvider.FullRefresh();
 		}
 
 		protected override void OnDestroy()
@@ -263,7 +263,7 @@ namespace Alloy
 
 			if (fragment != null)
 			{
-				FragmentManager.ChangeTo(fragment, backstack, Application.Context.GetString(itemText));
+				FragmentManager.ChangeTo(fragment, backstack, Application.Context.GetString(itemText), null);
 			}
 		}
 
@@ -345,7 +345,7 @@ namespace Alloy
 		//						primaryBackground.StartAnimation(fadeOut);
 		//						secondaryBackground.StartAnimation(fadeIn);
 		//						break;
-						
+
 		//				}
 		//			});
 		//		});
@@ -420,20 +420,20 @@ namespace Alloy
 			//activeMenuItem?.SetChecked(false);
 			//if (FragmentManager.BackStackEntryCount == 0)
 			//{
-				//activeMenuItem = navigationView.Menu.GetItem(0);
-				//activeMenuItem?.SetChecked(true);
+			//activeMenuItem = navigationView.Menu.GetItem(0);
+			//activeMenuItem?.SetChecked(true);
 			//}
 			//else
 			//{
-				//var name = FragmentManager.GetBackStackEntryAt(FragmentManager.BackStackEntryCount - 1).Name;
-				//for (var i = 0; i < navigationView.Menu.Size(); i++)
-				//{
-				//	var item = navigationView.Menu.GetItem(i);
-				//	if (!item.ToString().Equals(name)) continue;
-				//	activeMenuItem = item;
-				//	activeMenuItem?.SetChecked(true);
-				//	break;
-				//}
+			//var name = FragmentManager.GetBackStackEntryAt(FragmentManager.BackStackEntryCount - 1).Name;
+			//for (var i = 0; i < navigationView.Menu.Size(); i++)
+			//{
+			//	var item = navigationView.Menu.GetItem(i);
+			//	if (!item.ToString().Equals(name)) continue;
+			//	activeMenuItem = item;
+			//	activeMenuItem?.SetChecked(true);
+			//	break;
+			//}
 			//}
 		}
 
@@ -442,7 +442,7 @@ namespace Alloy
 			//activeMenuItem?.SetChecked(false);
 			//activeMenuItem = null;
 			SettingsFragment fragment = new SettingsFragment();
-			FragmentManager.ChangeTo(fragment, true, "Settings");
+			FragmentManager.ChangeTo(fragment, true, "Settings", null);
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
 		}

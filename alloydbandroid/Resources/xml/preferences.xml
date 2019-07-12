@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-	<EditTextPreference android:title="Host"
-	                    android:key="alloydbhost"
-	                    android:summary="Host for AlloyDB including port"></EditTextPreference>	
-	<EditTextPreference android:title="ApiKey"
-	                    android:key="alloydbapikey"
-	                    android:summary="APIKey for AlloyDB"></EditTextPreference>
-	
+	<PreferenceCategory
+		android:title="AlloyDB">
+		<EditTextPreference android:title="Host"
+							android:key="alloydbhost"
+							android:summary="Host for AlloyDB including port"
+		                    android:persistent="true"/>
+		<EditTextPreference android:title="ApiKey"
+							android:key="alloydbapikey"
+							android:summary="APIKey for AlloyDB"
+		                    android:persistent="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Data">
+		<CheckBoxPreference
+			android:key="alloydbdownloadimages"
+			android:title="Download Images over Cellular?"
+			android:summary="Toggles downloading images when using cellular"
+			android:defaultValue="true"
+			android:persistent="true"/>
+	</PreferenceCategory>
+	<PreferenceCategory
+		android:title="Streaming">
+		<ListPreference
+			android:key="alloydbstreamingformat"
+			android:title="Streaming Format"
+			android:defaultValue="MP3"
+			android:entries="@array/streaming_formats_names_array"
+			android:entryValues="@array/streaming_formats_values_array"
+			android:summary="Select a Streaming Format"/>
+		<ListPreference
+		android:key="alloydbstreamingbitrate"
+		android:title="Streaming Bitrate"
+		android:defaultValue="128"
+		android:entries="@array/streaming_bitrate_names_array"
+		android:entryValues="@array/streaming_bitrate_values_array"
+		android:summary="Select a Streaming Bitrate"/>
+	</PreferenceCategory>
+
 </PreferenceScreen>

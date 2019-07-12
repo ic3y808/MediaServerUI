@@ -19,9 +19,12 @@ process.env.BASE_DIR = app.getPath("userData");
 process.env.MODE = process.env.MODE ? process.env.MODE : "prod";
 console.log("starting up on port " + process.env.API_UI_PORT);
 process.env.API_UI_PORT = process.env.API_UI_PORT ? process.env.API_UI_PORT : 6003;
+process.env.FFMPEG_PATH = require("ffmpeg-static").path.replace("app.asar", "app.asar.unpacked");
 process.env.DATA_DIR = path.join(process.env.BASE_DIR, "data");
 process.env.BACKUP_DATA_DIR = path.join(process.env.DATA_DIR, "backup");
 process.env.LOGS_DIR = path.join(process.env.BASE_DIR, "logs");
+process.env.CONVERTED_MEDIA_DIR = path.join(process.env.DATA_DIR, "converted");
+process.env.CONVERTED_STARRED_MEDIA_DIR = path.join(process.env.DATA_DIR, "converted_starred");
 process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json");
 process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
 process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "database.db-wal");
@@ -48,6 +51,8 @@ module.exports.config = {
 
 if (!fs.existsSync(process.env.DATA_DIR)) { shell.mkdir("-p", process.env.DATA_DIR); }
 if (!fs.existsSync(process.env.LOGS_DIR)) { shell.mkdir("-p", process.env.LOGS_DIR); }
+if (!fs.existsSync(process.env.CONVERTED_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_MEDIA_DIR); }
+if (!fs.existsSync(process.env.CONVERTED_STARRED_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_STARRED_MEDIA_DIR); }
 if (!fs.existsSync(process.env.COVER_ART_DIR)) { shell.mkdir("-p", process.env.COVER_ART_DIR); }
 
 if (process.env.MODE === "test") {

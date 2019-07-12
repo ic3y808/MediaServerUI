@@ -1,6 +1,6 @@
 const fs = require("fs");
 const mime = require("mime-types");
-const ffmpeg = require("ffprobe-static");
+const ffprobe = require("ffprobe-static");
 const execSync = require("child_process").execSync;
 
 /**
@@ -38,9 +38,8 @@ module.exports.License = class License {
   }
 
   licenseType() {
-    if (this.license === "test")
-      {return "Test License";}
-    else {return "Unknown License";}
+    if (this.license === "test") { return "Test License"; }
+    else { return "Unknown License"; }
   }
 
 };
@@ -155,6 +154,9 @@ module.exports.Artist = class Artist {
  * @typedef Song 
  * @property {string} id
  * @property {string} path
+ * @property {string} converted_path
+ * @property {string} converted_content_type
+ * @property {integer} converted_size
  * @property {string} title
  * @property {string} artist
  * @property {string} artist_id
@@ -182,6 +184,9 @@ module.exports.Song = class Song {
   constructor() {
     this.id = "";
     this.path = "";
+    this.converted_path = "";
+    this.converted_content_type = "";
+    this.converted_size = "";
     this.title = "";
     this.artist = "";
     this.artist_id = "";
@@ -215,10 +220,10 @@ module.exports.Song = class Song {
       this.last_modified = stats.mtime.getTime();
       var params = " -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1  \"" + this.path + "\"";
       try {
-        var duration_out = execSync(ffmpeg.path + params);
+        var duration_out = execSync(ffprobe.path + params);
         this.duration = parseInt(duration_out.toString(), 10);
       } catch (ex) {
-        duration_out = ex.stdout;
+
       }
     }
   }
