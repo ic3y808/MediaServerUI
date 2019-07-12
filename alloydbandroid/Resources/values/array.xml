@@ -1,75 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- foreground color names array -->
-	<string-array name="foreground_color_names_array">
-		<item>Aqua</item>
-		<!--item>#00FFFF</item-->
-
-		<item>Azure</item>
-		<!--item>#F0FFFF</item-->
-
-		<item>Beige</item>
-		<!--item>#F5F5DC</item-->
-
-		<item>Cornsilk</item>
-		<!--item>#FFF8DC</item-->
-
-		<item>Ivory</item>
-		<!--item>#FFFFF0</item-->
+	<string-array name="streaming_formats_names_array">
+		<item>MP3</item>
+		<item>Unchanged</item>
 	</string-array>
 
-	<!-- foreground color values array -->
-	<string-array name="foreground_color_values_array">
-		<!--item>Aqua</item-->
-		<item>#00FFFF</item>
-
-		<!--item>Azure</item-->
-		<item>#F0FFFF</item>
-
-		<!--item>Beige</item-->
-		<item>#F5F5DC</item>
-
-		<!--item>Cornsilk</item-->
-		<item>#FFF8DC</item>
-
-		<!--item>Ivory</item-->
-		<item>#FFFFF0</item>
+	<string-array name="streaming_formats_values_array">
+		<item>MP3</item>
+		<item>Unchanged</item>
 	</string-array>
 
-
-	<!-- background color names array -->
-	<string-array name="background_color_names_array">
-		<item>Blue</item>
-		<!--item>#0000FF</item-->
-
-		<item>Crimson</item>
-		<!--item>#DC143C</item-->
-
-		<item>Purple</item>
-		<!--item>#800080</item-->
-
-		<item>Green</item>
-		<!--item>#008000</item-->
-
-		<item>Coral</item>
-		<!--item>#FF7F50</item-->
+	<string-array name="streaming_bitrate_names_array">
+		<item>128K</item>
+		<item>256K</item>
+		<item>320K</item>
+		<item>Original</item>
 	</string-array>
 
-	<!-- background color values array -->
-	<string-array name="background_color_values_array">
-		<!--item>Blue</item-->
-		<item>#0000FF</item>
-
-		<!--item>Crimson</item-->
-		<item>#DC143C</item>
-
-		<!--item>Purple</item-->
-		<item>#800080</item>
-
-		<!--item>Green</item-->
-		<item>#008000</item>
-
-		<!--item>Coral</item-->
-		<item>#FF7F50</item>
+	<string-array name="streaming_bitrate_values_array">
+		<item>128K</item>
+		<item>256K</item>
+		<item>320K</item>
+		<item>Original</item>
 	</string-array>
 </resources>

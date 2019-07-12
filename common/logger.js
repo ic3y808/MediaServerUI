@@ -1,20 +1,24 @@
 const path = require("path");
 const winston = require("winston");
+const rotater = require("./log-rotator");
 const electron = require("electron");
 const log = require("electron-log");
 const { ipcRenderer } = electron;
 log.catchErrors();
 module.exports.callback = {};
+var rotaterTransport = new (winston.transports.DailyRotateFile)({
+  filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
+  datePattern: "YYYY-MM-DD-HH",
+  zippedArchive: true,
+  json: true,
+  maxSize: "20m",
+  maxFiles: "14d"
+});
+
 
 const transports = {
-  err: new winston.transports.File({
-    filename: path.join(process.env.LOGS_DIR, "error.log"),
-    level: "error",
-    json: true,
-    timestamp: true
-  }),
   log: new winston.transports.File({
-    filename: path.join(process.env.LOGS_DIR, "combined.log"),
+    filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
     json: true,
     timestamp: true,
   }),
@@ -34,9 +38,9 @@ const transports = {
         return out;
       })
     )
-  })
+  }),
+  DailyRotateFile: rotaterTransport
 };
-
 
 const logger = winston.createLogger({
   level: "info",
@@ -46,12 +50,27 @@ const logger = winston.createLogger({
   ),
   defaultMeta: { service: "user-service" },
   transports: [
-    transports.err,
-    transports.log
+    transports.DailyRotateFile
   ]
 });
 
-transports.err.level = "error";
+rotaterTransport.on("new", function (newFilename) {
+  transports.log.filename = newFilename;
+  logger.remove(transports.log);
+  logger.add(transports.log);
+});
+
+rotaterTransport.on("rotate", function (oldFilename, newFilename) {
+  transports.log.filename = newFilename;
+  logger.remove(transports.log);
+  logger.add(transports.log);
+});
+
+rotaterTransport.on("archive", function (newFilename) {
+  transports.log.filename = newFilename;
+  logger.remove(transports.log);
+  logger.add(transports.log);
+});
 
 
 if (process.env.MODE === "dev" || process.env.MODE === "test") {

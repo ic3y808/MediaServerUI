@@ -1,7 +1,7 @@
 const path = require("path");
 module.exports = function migrate(db, migrationDir) {
   db.prepare("CREATE TABLE IF NOT EXISTS Migrations (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR (255) NOT NULL, `run_on` datetime NOT NULL)").run();
-  var fs = require('fs');
+  var fs = require("fs");
   var files = fs.readdirSync(migrationDir);
   files.forEach((file) => {
     var existingInDb = db.prepare("SELECT * FROM Migrations WHERE name=?").get(file);
@@ -19,7 +19,7 @@ module.exports = function migrate(db, migrationDir) {
         }
       } else {
         var sql = "CREATE TABLE ";
-        if (data.ifNotExists) sql += "IF NOT EXISTS ";
+        if (data.ifNotExists) {sql += "IF NOT EXISTS ";}
         sql += data.name + " (";
 
         var values = {};
@@ -38,10 +38,10 @@ module.exports = function migrate(db, migrationDir) {
             sql += key;
             sql += " ";
             sql += getType(data.columns[key].type);
-            if (data.columns[key].primaryKey === true) sql += " PRIMARY KEY";
-            if (data.columns[key].unique === true) sql += " UNIQUE";
-            if (data.columns[key].autoIncrement === true) sql += " AUTOINCREMENT";
-            if (data.columns[key].defaultValue) sql += " DEFAULT `" + data.columns[key].defaultValue + "`";
+            if (data.columns[key].primaryKey === true) {sql += " PRIMARY KEY";}
+            if (data.columns[key].unique === true) {sql += " UNIQUE";}
+            if (data.columns[key].autoIncrement === true) {sql += " AUTOINCREMENT";}
+            if (data.columns[key].defaultValue) {sql += " DEFAULT `" + data.columns[key].defaultValue + "`";}
             sql += ", ";
           }
         });
@@ -60,6 +60,6 @@ module.exports = function migrate(db, migrationDir) {
       }
     }
   });
-}
+};
 
 

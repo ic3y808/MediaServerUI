@@ -21,6 +21,8 @@ namespace Alloy.Fragments
 		private ArtistsAdapter adapter;
 		private SwipeRefreshLayout refreshLayout;
 
+		public override string Name => "Artist";
+
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);

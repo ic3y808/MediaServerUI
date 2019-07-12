@@ -1,4 +1,5 @@
-﻿using Android.OS;
+﻿using System;
+using Android.OS;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -15,14 +16,12 @@ namespace Alloy.Fragments
 	{
 		private RecyclerView freshContentView;
 		private SwipeRefreshLayout refreshLayout;
-
+		private FreshAdapter freshAdapter;
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			MusicProvider.FreshStartRefresh += MusicProvider_FreshStartRefresh;
 			MusicProvider.FreshRefreshed += MusicProvider_FreshRefreshed;
-			MusicProvider.ChartsStartRefresh += MusicProvider_ChartsStartRefresh;
-			MusicProvider.ChartsRefreshed += MusicProvider_ChartsRefreshed;
 			View root_view = inflater.Inflate(Resource.Layout.fresh_layout, container, false);
 
 			refreshLayout = (SwipeRefreshLayout)root_view.FindViewById(Resource.Id.swipe_container);
@@ -38,16 +37,6 @@ namespace Alloy.Fragments
 			return root_view;
 		}
 
-		private void MusicProvider_ChartsStartRefresh(object sender, System.EventArgs e)
-		{
-			refreshLayout.Refreshing = true;
-		}
-
-		private void MusicProvider_ChartsRefreshed(object sender, Charts e)
-		{
-			refreshLayout.Refreshing = false;
-		}
-
 		private void MusicProvider_FreshStartRefresh(object sender, System.EventArgs e)
 		{
 			refreshLayout.Refreshing = true;
@@ -56,7 +45,11 @@ namespace Alloy.Fragments
 		private void MusicProvider_FreshRefreshed(object sender, Fresh e)
 		{
 			refreshLayout.Refreshing = false;
+			ScrollToNowPlaying();
+			Adapters.Adapters.SetAdapters(Activity, freshAdapter);
 		}
+
+		public override string Name => "Fresh";
 
 		public override void ScrollToNowPlaying()
 		{
@@ -71,29 +64,29 @@ namespace Alloy.Fragments
 
 		public override void ServiceConnected()
 		{
-			FreshAdapter freshAdapter = new FreshAdapter(Activity, ServiceConnection);
+			freshAdapter = new FreshAdapter(Activity, ServiceConnection);
 			freshContentView.SetAdapter(freshAdapter);
 			freshAdapter.TrackClick += Track_ItemClick;
 			freshAdapter.AlbumClick += Album_ItemClick;
 			freshAdapter.ArtistClick += Artist_ItemClick;
-			Adapters.Adapters.SetAdapters(Activity, freshAdapter);
 
-			ScrollToNowPlaying();
+			MusicProvider.RefreshFresh();
 
-			//if (MusicProvider.Fresh == null ||
-			//	MusicProvider.Fresh.Albums == null ||
-			//	MusicProvider.Fresh.Artists == null ||
-			//	MusicProvider.Fresh.Tracks == null)
-			//{
-			//	Utils.Run(MusicProvider.RefreshFresh);
-			//}
-			//if (MusicProvider.Charts == null ||
-			//	MusicProvider.Charts.NeverPlayed == null ||
-			//	MusicProvider.Charts.NeverPlayedAlbums == null ||
-			//	MusicProvider.Charts.TopTracks == null)
-			//{
-			//	Utils.Run(MusicProvider.RefreshCharts);
-			//}
+
+			if (MusicProvider.Fresh == null ||
+				MusicProvider.Fresh.Albums == null ||
+				MusicProvider.Fresh.Artists == null ||
+				MusicProvider.Fresh.Tracks == null)
+			{
+				MusicProvider.RefreshFresh();
+			}
+			if (MusicProvider.Charts == null ||
+				MusicProvider.Charts.NeverPlayed == null ||
+				MusicProvider.Charts.NeverPlayedAlbums == null ||
+				MusicProvider.Charts.TopTracks == null)
+			{
+				MusicProvider.RefreshCharts();
+			}
 		}
 
 		public override void OnRefreshed()

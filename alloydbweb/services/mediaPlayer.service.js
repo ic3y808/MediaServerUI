@@ -357,7 +357,7 @@ export default class MediaPlayer {
     source.artistUrl = "/artist/" + source.artist_id;
     source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {
-      source.url = this.AlloyDbService.stream(source.id, 320);
+      source.url = this.AlloyDbService.stream(source.id, this.$rootScope.settings.alloydb.alloydb_streaming_bitrate, this.$rootScope.settings.alloydb.alloydb_streaming_format);
       //if (source.artistId) {
       this.checkStarred(source);
       this.checkArtistInfo(source);
@@ -654,7 +654,7 @@ export default class MediaPlayer {
     var selected = this.selectedTrack();
 
     if (selected && type && id) {
-      if(this.isPlaying){
+      if (this.isPlaying) {
         if (type === "track") {
           return id === selected.id;
         } else if (type === "artist") {
@@ -663,7 +663,7 @@ export default class MediaPlayer {
           return id === selected.album_id;
         }
       }
-      
+
     }
     return false;
   }

@@ -5,6 +5,7 @@ const fs = require("fs");
 const _ = require("lodash");
 const del = require("del");
 var http = require("http");
+var convert = require("../../common/convert");
 const { ipcRenderer } = require("electron");
 const mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
 
@@ -301,6 +302,83 @@ module.exports = class MediaScannerBase {
         this.updateStatus("Cleanup Complete", false);
       });
     }
+  }
+
+  processCacheTrack(settings, tracks) {
+
+    var track = tracks.shift();
+    if (track && !this.shouldCancel()) {
+      var outputPath = path.join(process.env.CONVERTED_STARRED_MEDIA_DIR, path.basename(track.path, path.extname(track.path)) + "." + settings.alloydb_streaming_format.toLowerCase());
+      if (!fs.existsSync(outputPath)) {
+        convert(this.db, track, settings.alloydb_streaming_bitrate, settings.alloydb_streaming_format, outputPath, () => {
+          this.processCacheTrack(settings, tracks);
+        });
+      } else { this.processCacheTrack(settings, tracks); }
+    } else {
+      this.info("Caching tracks complete");
+      this.updateStatus("Caching tracks complete", false);
+    }
+  }
+
+  recache() {
+    if (this.isScanning()) {
+      this.debug("scan in progress");
+    } else {
+      this.updateStatus("Recaching Starred", true);
+      this.info("Recache Starred");
+
+      var settingsResult = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+      if (settingsResult && settingsResult.settings_value) {
+        var settings = JSON.parse(settingsResult.settings_value);
+        if (settings) {
+
+          if (settings.alloydb_streaming_format === "Unchanged") {
+            this.updateStatus("Recache Finished, Cannot use setting: Unchanged", false);
+            this.info("Recache Finished, Cannot use setting: Unchanged");
+            return;
+          }
+          var tracksToCache = [];
+          var starredTracks = this.db.prepare("SELECT * FROM Tracks WHERE starred=?").all("true");
+          var topTracks = this.db.prepare("SELECT * FROM Tracks WHERE starred=? ORDER BY play_count DESC LIMIT 25").all("true");
+          var starredAlbums = this.db.prepare("SELECT * FROM Albums WHERE starred=?").all("true");
+
+
+          topTracks.forEach((track) => {
+            tracksToCache.push(track);
+          });
+
+
+          starredAlbums.forEach((album) => {
+            album.tracks = this.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
+            album.tracks.forEach((track) => {
+              tracksToCache.push(track);
+            });
+          });
+
+
+          starredTracks.forEach((track) => {
+            tracksToCache.push(track);
+          });
+
+
+          var starredArtists = this.db.prepare("SELECT * FROM Artists WHERE starred=? ORDER BY name ASC").all("true");
+          starredArtists.forEach((artist) => {
+            starredArtists.tracks = this.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
+            starredArtists.albums = this.db.prepare("SELECT * FROM Albums WHERE artist_id=? ORDER BY name ASC").all(artist.id);
+            artist.play_count = 0;
+            starredArtists.albums.forEach((album) => {
+              album.tracks = this.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
+              album.tracks.forEach((track) => {
+                tracksToCache.push(track);
+              });
+            });
+          });
+
+          this.processCacheTrack(settings, tracksToCache);
+        }
+      }
+    }
+
   }
 
   writeDb(data, table) {

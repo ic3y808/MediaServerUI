@@ -34,7 +34,7 @@ namespace Tests
 			Assert.IsTrue(navView.Any());
 		}
 
-		private enum BottomMenuState { Open, Closed, Middle}
+		private enum BottomMenuState { Open, Closed, Middle }
 		private void BottomMenu(BottomMenuState from, BottomMenuState to)
 		{
 
@@ -46,15 +46,15 @@ namespace Tests
 						app.DragCoordinates(windowRect.CenterX, windowRect.Y + 10, windowRect.CenterX, windowRect.Height);
 					break;
 				case BottomMenuState.Closed:
-					if(to == BottomMenuState.Open)
+					if (to == BottomMenuState.Open)
 						app.DragCoordinates(windowRect.CenterX, windowRect.Height - 10, windowRect.CenterX, windowRect.Y);
 					break;
 				case BottomMenuState.Middle:
 					app.DragCoordinates(windowRect.CenterX, windowRect.Height - 10, windowRect.CenterX, windowRect.CenterY);
 					break;
 			}
-		
-	
+
+
 		}
 
 
@@ -63,7 +63,7 @@ namespace Tests
 			OpenSideMenu();
 			//app.Screenshot("Main Menu - Selecting " + item);
 
-			AppResult[] mainMenu = app.WaitForElement(c => c.Marked("main_menu_list"),"Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(100));
+			AppResult[] mainMenu = app.WaitForElement(c => c.Marked("main_menu_list"), "Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(100));
 			Assert.IsTrue(mainMenu.Any());
 			var children = app.Query(q => q.Id("main_menu_list").Child());
 			foreach (var element in children)
@@ -90,10 +90,12 @@ namespace Tests
 
 		private void CheckItemsLoaded(string view, string item)
 		{
-			AppResult[] view1 = app.WaitForElement(c => c.Id(view), "Timed Out", TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(10));
+
+
+			AppResult[] view1 = app.WaitForElement(c => c.Id(view), "Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(200));
 			Assert.IsTrue(view1.Any());
 			//app.Screenshot(item + " loaded");
-			AppResult[] view2 = app.WaitForElement(c => c.Id(item), "Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(100));
+			AppResult[] view2 = app.WaitForElement(c => c.Id(item), "Timed Out", TimeSpan.FromSeconds(15), TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(200));
 			Assert.IsTrue(view2.Any());
 			var result = app.Query(q => q.Id(view).Child()).Length;
 			Assert.IsTrue(result > 0);
@@ -152,23 +154,23 @@ namespace Tests
 			//app.Screenshot("Main Screen");
 
 			//SelectMenuItem("Whats New");
-			
-			
-			
+
+
+
 			CheckItemsLoaded("fresh_new_artists_list", "image_view");
 
 			SelectMenuItem("Starred");
 			CheckItemsLoaded("starred_top_artists_list", "image_view");
-			
+
 			SelectMenuItem("Artists");
-			CheckItemsLoaded("artists_list", "artist");	
-			
+			CheckItemsLoaded("artists_list", "artist");
+
 			SelectMenuItem("Albums");
 			CheckItemsLoaded("albums_list", "album");
 
 			SelectMenuItem("Genres");
 			CheckItemsLoaded("genres_list", "genre");
-			
+
 
 			//app.WaitFor(() => app.Query(e => e.Class("UIButton").Index(1)).First().Enabled, "Waiting for Element", timeout: TimeSpan.FromMinutes(3.0));
 
@@ -189,22 +191,50 @@ namespace Tests
 		}
 
 
+		public void ExecuteAndWait(Action action, TimeSpan waitTime)
+		{
+			DateTime utcNow = DateTime.UtcNow;
+			action();
+			TimeSpan timeSpan = waitTime - (DateTime.UtcNow - utcNow);
+			if (timeSpan.TotalMilliseconds > 0)
+			{
+				Thread.Sleep(timeSpan);
+			}
+		}
+
+		public void TestForElement(string id)
+		{
+			while (true)
+			{
+				AppResult[] res = null;
+				ExecuteAndWait(() =>
+				{
+					res = app.Query(c => c.Id(id));
+					Debug.WriteLine(res);
+				}, TimeSpan.FromMilliseconds(100));
+
+				if (res != null && res.Length > 0) break;
+			}
+		}
+
+		public void TimeTest(Action action)
+		{
+			Stopwatch timer = new Stopwatch();
+			timer.Start();
+			action();
+			timer.Stop();
+			Debug.WriteLine("Test time taken: " + timer.Elapsed);
+		}
 
 		[Test]
 		public void FreshTest()
 		{
-			AppResult[] view1 = app.WaitForElement(c => c.Id("drawer_layout"), "Timed Out", TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(100), TimeSpan.FromMilliseconds(10));
-			Assert.IsTrue(view1.Any());
-
-			Stopwatch timer = new Stopwatch();
-			timer.Start();
-
-			CheckItemsLoaded("fresh_new_artists_list", "image_view");
-
-		//	app.Flash(c => c.Id("image_view"));
-
-			timer.Stop();
-			Debug.WriteLine("Test time taken: " + timer.Elapsed);
+			TimeTest(() =>
+			{
+				TestForElement("drawer_layout");
+				TestForElement("image_view");
+				TestForElement("fresh_new_artists_list");
+			});
 		}
 
 
@@ -217,27 +247,26 @@ namespace Tests
 				Thread.Sleep(250);
 				BottomMenu(BottomMenuState.Open, BottomMenuState.Closed);
 			}
-		
 		}
 
 
 		//[Test]
-			//public void TestTagEditor()
-			//{
-			//	app.Screenshot("Main Screen");
+		//public void TestTagEditor()
+		//{
+		//	app.Screenshot("Main Screen");
 
-			//	SelectMenuItem("Artists");
+		//	SelectMenuItem("Artists");
 
-			//	CheckItemsLoaded("artists_list", "right_side_count");
-			//	SelectTrack("artists_list");
-			//	CheckItemsLoaded("artist_track_list", "right_side_count");
-			//	SelectContextTrack("artist_track_list", "action_edit_tags");
+		//	CheckItemsLoaded("artists_list", "right_side_count");
+		//	SelectTrack("artists_list");
+		//	CheckItemsLoaded("artist_track_list", "right_side_count");
+		//	SelectContextTrack("artist_track_list", "action_edit_tags");
 
-			//	WaitForElement("tag_editor_artist");
+		//	WaitForElement("tag_editor_artist");
 
-			//	ReplaceTextView("tag_editor_genre", "Testing");
+		//	ReplaceTextView("tag_editor_genre", "Testing");
 
-			//	SelectElement("btn_save");
-			//}
-		}
+		//	SelectElement("btn_save");
+		//}
+	}
 }

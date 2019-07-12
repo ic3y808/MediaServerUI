@@ -25,7 +25,22 @@
     },
     "appId": "com.d3bug.alloy",
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/darwin${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffprobe-static/bin/darwin${/*}",
+        "!node_modules/ffprobe-static/bin/linux${/*}"
+      ]
+    },
+    "mac": {
+      "category": "public.app-category.productivity",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffmpeg-static/bin/linux${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/linux${/*}"
+      ]
     },
     "files": [
       "config.js",
@@ -46,7 +61,13 @@
         "filter": [
           "**/*.env"
         ]
-      }
+      },
+      "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffmpeg-static/index.js",
+      "node_modules/ffmpeg-static/package.json",
+      "node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
+      "node_modules/ffprobe-static/index.js",
+      "node_modules/ffprobe-static/package.json"
     ]
   },
   "author": "Jesse Nelson",
@@ -76,8 +97,11 @@
     "express": "^4.16.4",
     "express-fileupload": "^1.1.4",
     "express-swagger-generator": "^1.1.14",
+    "ffmpeg-static": "^2.5.0",
     "ffprobe-static": "^3.0.0",
+    "file-stream-rotator": "^0.4.1",
     "file-type": "^11.0.0",
+    "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^8.0.1",
     "jade": "^1.11.0",
     "jquery": "^3.4.1",
@@ -88,8 +112,10 @@
     "map": "^1.0.1",
     "moment": "^2.24.0",
     "node-watch": "^0.6.2",
+    "object-hash": "^1.3.1",
     "popper.js": "^1.15.0",
     "screenres": "^2.0.1",
+    "semver": "^6.2.0",
     "serve-favicon": "^2.5.0",
     "sharp": "^0.22.0",
     "shelljs": "^0.8.3",
@@ -98,8 +124,11 @@
     "sqlite3": "^4.0.8",
     "strtok3": "^2.3.0",
     "three": "^0.83.0",
+    "triple-beam": "^1.3.0",
     "underscore": "^1.9.1",
     "winston": "^3.2.1",
+    "winston-compat": "^0.1.4",
+    "winston-transport": "^4.3.0",
     "xml2js": "^0.4.19",
     "xml2json": "^0.11.2"
   },

@@ -19,11 +19,9 @@ class ConfigAlloyDbController {
     $scope.generateConnectionString = () => {
       var url = "http://";
       if ($rootScope.settings.alloydb) {
-        if ($rootScope.settings.alloydb.alloydb_use_ssl)
-          {url = "https://";}
+        if ($rootScope.settings.alloydb.alloydb_use_ssl) { url = "https://"; }
         url += $rootScope.settings.alloydb.alloydb_host;
-        if ($rootScope.settings.alloydb.alloydb_include_port_in_url)
-          {url += ":" + $rootScope.settings.alloydb.alloydb_port;}
+        if ($rootScope.settings.alloydb.alloydb_include_port_in_url) { url += ":" + $rootScope.settings.alloydb.alloydb_port; }
       }
 
 
@@ -35,8 +33,7 @@ class ConfigAlloyDbController {
     };
 
     $scope.testSettings = () => {
-      if (this.$rootScope.socket)
-        {this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd);}
+      if (this.$rootScope.socket) { this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd); }
     };
 
     $scope.startBackup = () => {
@@ -111,6 +108,24 @@ class ConfigAlloyDbController {
       });
     };
 
+    $scope.clearCache = () => {
+      this.AlloyDbService.clearCache().then((result) => {
+        this.$scope.cache_status = result.result;
+        setTimeout(() => {
+          this.$scope.cache_status = undefined;
+        }, 3000);
+      });
+    };
+
+    $scope.clearStarredCache = () => {
+      this.AlloyDbService.clearStarredCache().then((result) => {
+        this.$scope.cache_status = result.result;
+        setTimeout(() => {
+          this.$scope.cache_status = undefined;
+        }, 3000);
+      });
+    };
+
 
     $scope.addBackup = () => {
       $(".file-upload-input").trigger("click");
@@ -123,8 +138,7 @@ class ConfigAlloyDbController {
       }
     };
 
-    if (this.$rootScope.socket)
-      {this.$rootScope.socket.emit("load_settings", "alloydb_settings");}
+    if (this.$rootScope.socket) { this.$rootScope.socket.emit("load_settings", "alloydb_settings"); }
 
     $rootScope.$on("menuSizeChange", (event, currentState) => {
 

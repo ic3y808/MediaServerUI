@@ -136,16 +136,16 @@ namespace Alloy
 		{
 			
 			// aapt resource value: 0x7f110002
-			public const int background_color_names_array = 2131820546;
+			public const int streaming_bitrate_names_array = 2131820546;
 			
 			// aapt resource value: 0x7f110003
-			public const int background_color_values_array = 2131820547;
+			public const int streaming_bitrate_values_array = 2131820547;
 			
 			// aapt resource value: 0x7f110000
-			public const int foreground_color_names_array = 2131820544;
+			public const int streaming_formats_names_array = 2131820544;
 			
 			// aapt resource value: 0x7f110001
-			public const int foreground_color_values_array = 2131820545;
+			public const int streaming_formats_values_array = 2131820545;
 			
 			static Array()
 			{

@@ -20,6 +20,8 @@ namespace Alloy.Fragments
 		private AlbumsAdapter adapter;
 		private SwipeRefreshLayout refreshLayout;
 
+		public override string Name => "Albums";
+
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
 			base.OnCreateView(inflater, container, savedInstanceState);

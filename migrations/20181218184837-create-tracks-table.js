@@ -8,6 +8,9 @@ exports.up = function (db) {
     columns: {
       id: { type: "string", unique: true },
       path: { type: "string", defaultValue: "", unique: true },
+      converted_path: { type: "string", defaultValue: "" },
+      converted_content_type: { type: "string", defaultValue: ""},
+      converted_size: { type: "int", defaultValue: 0 },
       title: { type: "string", defaultValue: "" },
       artist: { type: "string", defaultValue: "" },
       artist_id: { type: "string", defaultValue: "" },

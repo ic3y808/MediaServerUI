@@ -21,7 +21,6 @@ using Android.Graphics;
 using Android.OS;
 using Android.Provider;
 using Android.Views.InputMethods;
-using Bumptech.Glide;
 using Java.Interop;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using Newtonsoft.Json;
@@ -34,6 +33,8 @@ namespace Alloy.Fragments
 		public virtual BackgroundAudioServiceConnection ServiceConnection { get; set; }
 		public bool HasBack { get; set; }
 		private SearchView searchView;
+		public static event EventHandler<string> FragmentLoaded;
+		public abstract string Name { get; }
 
 		public override void OnResume()
 		{
@@ -103,7 +104,7 @@ namespace Alloy.Fragments
 		public void CreateToolbar(View root_view, int title, bool hasBack)
 		{
 			HasBack = hasBack;
-			CreateToolbar(root_view, title);			
+			CreateToolbar(root_view, title);
 		}
 
 		public void CreateToolbar(View root_view, int title)
@@ -158,7 +159,6 @@ namespace Alloy.Fragments
 			}
 		}
 
-
 		private void MusicProvider_SearchResultsRecieved(object sender, SearchResult e)
 		{
 			if (e == null) return;
@@ -198,7 +198,7 @@ namespace Alloy.Fragments
 			}
 
 			getCursorFromList(items, matrix);
-			
+
 			SearchAdapter suggestionAdapter = new SearchAdapter(Context, matrix);
 			searchView.SuggestionsAdapter = suggestionAdapter;
 		}
@@ -234,7 +234,6 @@ namespace Alloy.Fragments
 			searchView.SuggestionClick += SearchView_SuggestionClick;
 		}
 
-	
 		private void SearchView_SuggestionClick(object sender, SearchView.SuggestionClickEventArgs e)
 		{
 			ICursor item = searchView.SuggestionsAdapter.GetItem(e.Position).JavaCast<ICursor>();
@@ -324,14 +323,9 @@ namespace Alloy.Fragments
 		public virtual void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo) { }
 		public virtual void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info) { }
 
-		public Bitmap GetArtwork(string url)
+		public virtual void Loaded()
 		{
-			return (Bitmap) Glide.With(Application.Context)
-				.AsBitmap()
-				.Load(url)
-				.Submit(-1, -1).Get();
+			FragmentLoaded?.Invoke(null, Name);
 		}
 	}
-
-
 }

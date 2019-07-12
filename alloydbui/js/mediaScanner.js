@@ -452,3 +452,8 @@ ipcRenderer.on("mediascanner-watcher-configure", () => {
   scanner.info("Reconfigure File Watcher");
   scanner.configFileWatcher();
 });
+
+ipcRenderer.on("mediascanner-recache-start", () => {
+  scanner.info("Recache Media");
+  scanner.recache();
+});

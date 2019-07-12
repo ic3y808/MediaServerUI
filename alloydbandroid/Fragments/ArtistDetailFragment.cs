@@ -16,7 +16,8 @@ namespace Alloy.Fragments
 		private ArtistDetailAdapter artistDetailAdapter;
 		private RecyclerView artistContentView;
 		private SwipeRefreshLayout refreshLayout;
-		
+
+		public override string Name => "ArtistDetail";
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{

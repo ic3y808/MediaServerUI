@@ -236,5 +236,51 @@ router.post("/do_restore", function (req, res) {
 
 });
 
+/**
+ * @route GET /system/clear_cache
+ * @group system - System API 
+ * @returns {StatusResult} 200 - Clears the Cache
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.get("/clear_cache", function (req, res) {
+
+  res.locals.notify("Clearing Cache", "Clear Cache requested");
+  console.log("Clearing Cache");
+  
+
+});
+
+/**
+ * @route GET /system/clear_starred_cache
+ * @group system - System API 
+ * @returns {StatusResult} 200 - Clears the Starred Cache
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.get("/clear_starred_cache", function (req, res) {
+
+  res.locals.notify("Clearing Starred Cache", "Clear Starred Cache requested");
+  console.log("Clearing Starred Cache");
+  
+
+});
+
+/**
+ * @route GET /system/start_recache
+ * @group system - System API 
+ * @returns {StatusResult} 200 - Clears the Starred Cache
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.get("/start_recache", function (req, res) {
+  if (ipcRenderer) { ipcRenderer.send("mediascanner-recache-start"); }
+  res.locals.notify("Starting Recache", "Start Recache Requested");
+  console.log("Starting Recache");
+  var status = new structures.StatusResult(res.locals.mediaScanner.startRecache());
+  res.send(status);
+
+});
+
 module.exports = router;
 module.exports.db = {};
