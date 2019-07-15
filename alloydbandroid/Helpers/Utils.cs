@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using Android.Annotation;
 using Android.App;
@@ -7,6 +8,7 @@ using Android.OS;
 using Android.Util;
 using Java.Lang;
 using Environment = Android.OS.Environment;
+using Exception = Com.Microsoft.Appcenter.Crashes.Ingestion.Models.Exception;
 using File = Java.IO.File;
 using LayoutDirection = Android.Views.LayoutDirection;
 using Math = System.Math;
@@ -55,8 +57,48 @@ namespace Alloy.Helpers
 		
 		public static void UnlockSsl(bool shouldUnlock)
 		{
-			if (!shouldUnlock) return;
-			ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+			//if (!shouldUnlock) return;
+			//ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, errors) => true;
+		}
+
+		public static class Retry
+		{
+			public static void Do(
+				Action action,
+				TimeSpan retryInterval,
+				int maxAttemptCount = 3)
+			{
+				Do<object>(() =>
+				{
+					action();
+					return null;
+				}, retryInterval, maxAttemptCount);
+			}
+
+			public static T Do<T>(
+				Func<T> action,
+				TimeSpan retryInterval,
+				int maxAttemptCount = 3)
+			{
+				var exceptions = new List<System.Exception>();
+
+				for (int attempted = 0; attempted < maxAttemptCount; attempted++)
+				{
+					try
+					{
+						if (attempted > 0)
+						{
+							Thread.Sleep((long)retryInterval.TotalMilliseconds);
+						}
+						return action();
+					}
+					catch (System.Exception ex)
+					{
+						exceptions.Add(ex);
+					}
+				}
+				throw new AggregateException(exceptions);
+			}
 		}
 	}
 }

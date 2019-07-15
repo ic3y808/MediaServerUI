@@ -10,8 +10,8 @@ using Android.OS;
 using Android.Support.V4.App;
 using Android.Support.V4.Content;
 using Java.Lang;
-using Alloy.Common;
-using Alloy.Fragments;
+//using Alloy.Common;
+//using Alloy.Fragments;
 
 
 
@@ -34,14 +34,14 @@ namespace Alloy
 			//CheckShortcut();
 			CheckDynamicShortcuts();
 
-			ShortcutHelper mHelper = new ShortcutHelper(this);
+			//ShortcutHelper mHelper = new ShortcutHelper(this);
 
-			mHelper.maybeRestoreAllDynamicShortcuts();
-			//TODO fix dynamic shortcuts
-			mHelper.AddShortcut("AllMusic", "All Music", "All Music");
-			mHelper.AddShortcut("Favorites", "Favorites", "Favorites");
-			mHelper.AddShortcut("Artists", "Artists", "Artists");
-			mHelper.refreshShortcuts(true);
+			//mHelper.maybeRestoreAllDynamicShortcuts();
+			////TODO fix dynamic shortcuts
+			//mHelper.AddShortcut("AllMusic", "All Music", "All Music");
+			//mHelper.AddShortcut("Favorites", "Favorites", "Favorites");
+			//mHelper.AddShortcut("Artists", "Artists", "Artists");
+			//mHelper.refreshShortcuts(true);
 		}
 
 		public override void OnBackPressed()

@@ -4,7 +4,7 @@ const path = require("path");
 const fileUpload = require("express-fileupload");
 const express = require("express");
 var bodyParser = require("body-parser");
-
+process.env.DEBUG = "*";
 var logger = {};
 class Server {
   constructor(env) {
@@ -26,6 +26,7 @@ class Server {
   create() {
     this.notify(null, null);
     this.app = express();
+    this.server = require("http").Server(this.app);
     this.app.use(express.json());
     this.app.use(express.urlencoded());
     this.app.use(fileUpload({
@@ -81,7 +82,7 @@ class Server {
           version: "1.0.0"
         },
         host: "localhost:" + process.env.API_PORT,
-        basePath: "/alloydbapi/v1",
+        basePath: "/api/v1",
         produces: ["application/json"],
         schemes: ["http",
           "https"],
@@ -157,8 +158,9 @@ class Server {
 
 
   startServer(cb) {
-    this.server = this.app.listen(this.app.get("port"), () => {
-      logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.server.address().port);
+    this.server.listen(this.app.get("port"));
+    this.server.on("listening", () => {
+      logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.app.get("port"));
       ipcRenderer.send("system-get-stats");
 
       if (cb) { cb(this.server); }

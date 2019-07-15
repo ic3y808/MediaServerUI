@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Reflection;
+using System.Runtime.Remoting.Messaging;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Database;
@@ -17,6 +20,7 @@ using Alloy.Models;
 using Alloy.Providers;
 using Android.Support.V7.Preferences;
 using FFImageLoading;
+using Java.Lang;
 using Exception = System.Exception;
 using Math = System.Math;
 using String = System.String;
@@ -122,30 +126,11 @@ namespace Alloy.Helpers
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
 			return sp.GetBoolean("alloydbdownloadimages", true);
 		}
-		public static Bitmap GetImageBitmapFromUrl(string url)
-		{
-			if (ImageCache == null) ImageCache = new Dictionary<string, Bitmap>();
-			if (ImageCache.ContainsKey(url))
-			{
-				return ImageCache[url];
-			}
 
-			Bitmap imageBitmap = null;
 
-			using (WebClient webClient = new WebClient())
-			{
-				byte[] imageBytes = webClient.DownloadData(url);
-				if (imageBytes != null && imageBytes.Length > 0)
-				{
-					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-				}
-			}
-			if (imageBitmap == null) imageBitmap = GetDefaultAlbumArtEfficiently();
-			ImageCache[url] = imageBitmap;
-			return imageBitmap;
-		}
 
-		public static Bitmap GetAlbumArt(this Song song)
+
+		public static async Task<Bitmap> GetAlbumArt(this Song song)
 		{
 			if (!CanLoadImages()) return null;
 			try
@@ -162,69 +147,25 @@ namespace Alloy.Helpers
 		public static async void GetAlbumArt(this Song song, ImageView view)
 		{
 			if (!CanLoadImages()) return;
-			try
-			{
-				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }))
-					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.Retry(3, 200)
-					.Into(view);
-			}
-			catch (Exception e)
-			{
-				Crashes.TrackError(e);
-			}
+			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }), song.AlbumId, song);
 		}
 
 		public static async void GetAlbumArt(this Artist artist, ImageView view)
 		{
 			if (!CanLoadImages()) return;
-			try
-			{
-				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } }))
-					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.Retry(3, 200)
-					.Into(view);
-			}
-			catch (Exception e)
-			{
-				Crashes.TrackError(e);
-			}
+			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } }), artist.Id, artist);
 		}
 
 		public static async void GetAlbumArt(this Genre genre, ImageView view)
 		{
 			if (!CanLoadImages()) return;
-			try
-			{
-				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } }))
-					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.Retry(3, 200)
-					.Into(view);
-			}
-			catch (Exception e)
-			{
-				Crashes.TrackError(e);
-			}
+			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } }), genre.Id, genre);
 		}
 
 		public static async void GetAlbumArt(this Album album, ImageView view)
 		{
 			if (!CanLoadImages()) return;
-			try
-			{
-				ImageService.Instance.LoadUrl(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } }))
-					.LoadingPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.ErrorPlaceholder(ImageService.Instance.LoadCompiledResource("wave.png").Path)
-					.Retry(3, 200)
-					.Into(view);
-			}
-			catch (Exception e)
-			{
-				Crashes.TrackError(e);
-			}
+			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } }), album.Id, album);
 		}
 
 		public static Bitmap GetDefaultAlbumArtEfficiently()
@@ -322,15 +263,16 @@ namespace Alloy.Helpers
 		public static Bitmap GetBitmap(this string url)
 		{
 			Bitmap imageBitmap = null;
-			using (WebClient webClient = new WebClient())
-			{
-				if (string.IsNullOrEmpty(url)) return null;
-				byte[] imageBytes = webClient.DownloadData(url);
-				if (imageBytes != null && imageBytes.Length > 0)
-				{
-					imageBitmap = BitmapFactory.DecodeByteArray(imageBytes, 0, imageBytes.Length);
-				}
-			}
+			HttpClient _client = new HttpClient();
+
+			Task<HttpResponseMessage> task = _client.GetAsync(url);
+			task.Wait();
+
+			HttpResponseMessage response = task.Result;
+			if (!response.IsSuccessStatusCode) return imageBitmap;
+			Task<byte[]> stream = response.Content.ReadAsByteArrayAsync();
+			stream.Wait();
+			imageBitmap = BitmapFactory.DecodeByteArray(stream.Result, 0, stream.Result.Length);
 
 			return imageBitmap;
 		}

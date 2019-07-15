@@ -7,7 +7,7 @@ using Alloy.Services;
 namespace Alloy.Recievers
 {
 	[BroadcastReceiver(Enabled = true)]
-	[IntentFilter(new[] { Intent.ActionMediaButton, BackgroundAudioService.ActionNext, BackgroundAudioService.ActionPlayPause,BackgroundAudioService.ActionStarTrack, BackgroundAudioService.ActionPrevious, BackgroundAudioService.ActionExit })]
+	[IntentFilter(new[] { Intent.ActionMediaButton, BackgroundAudioService.ActionNext, BackgroundAudioService.ActionPlayPause, BackgroundAudioService.ActionStarTrack, BackgroundAudioService.ActionPrevious, BackgroundAudioService.ActionExit })]
 	public class MediaButtonReciever : BroadcastReceiver
 	{
 		private readonly BackgroundAudioService service;
@@ -18,7 +18,7 @@ namespace Alloy.Recievers
 
 		public MediaButtonReciever() { }
 
-		public override void OnReceive(Context context, Intent intent)
+		public override async void OnReceive(Context context, Intent intent)
 		{
 			switch (intent.Action)
 			{

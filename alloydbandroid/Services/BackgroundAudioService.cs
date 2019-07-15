@@ -11,6 +11,9 @@ using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Recievers;
 using Alloy.Providers;
+using Java.IO;
+using Java.Lang;
+using Exception = System.Exception;
 
 namespace Alloy.Services
 {
@@ -177,58 +180,100 @@ namespace Alloy.Services
 		{
 			if (loading) return;
 			loading = true;
-			try
-			{
-				Reset();
-				CurrentSong = song;
-				MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(song));
-				MediaPlayer.Prepare();
-			}
-			catch (Exception e)
-			{
-				System.Diagnostics.Debug.WriteLine(e);
-				Crashes.TrackError(e);
-				loading = false;
-			}
+			Reset();
+			CurrentSong = song;
+			new PlayLoader(this).Execute();
 		}
 
 		public void Play(int index, Queue queue)
 		{
 			if (loading) return;
 			loading = true;
-			try
+
+			Reset();
+
+			if (MainQueue != null && MainQueue.Count > 0)
 			{
-				Reset();
-
-				if (MainQueue != null && MainQueue.Count > 0)
-				{
-					foreach (Song item in MainQueue) { item.IsSelected = false; }
-				}
-
-				MainQueue = queue;
-
-				if (index > MainQueue.Count)
-				{
-					loading = false;
-					return;
-				}
-
-				if (index < MainQueue.Count)
-					CurrentSong = MainQueue[index];
-
-				Utils.UnlockSsl(true);
-
-				MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(CurrentSong));
-				MediaPlayer.Prepare();
-
-
-				Utils.UnlockSsl(false);
+				foreach (Song item in MainQueue) { item.IsSelected = false; }
 			}
-			catch (Exception e)
+
+			MainQueue = queue;
+
+			if (index > MainQueue.Count)
 			{
-				System.Diagnostics.Debug.WriteLine(e);
-				Crashes.TrackError(e);
 				loading = false;
+				return;
+			}
+
+			if (index < MainQueue.Count)
+				CurrentSong = MainQueue[index];
+			new PlayLoader(this).Execute();
+		}
+
+		public class PlayLoader : AsyncTask<object, Song, int>
+		{
+			private readonly BackgroundAudioService backgroundAudioService;
+
+			public PlayLoader(BackgroundAudioService backgroundAudioService)
+			{
+				this.backgroundAudioService = backgroundAudioService;
+				this.backgroundAudioService.MediaPlayer.Prepared += MediaPlayer_Prepared;
+			}
+
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+					backgroundAudioService.MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(backgroundAudioService.CurrentSong));
+
+					int result = Utils.Retry.Do(() =>
+					{
+						backgroundAudioService.MediaPlayer.Prepare();
+						return 0;
+					}, TimeSpan.FromSeconds(1), 25);
+					
+				
+				}
+				catch (Exception e)
+				{
+					System.Diagnostics.Debug.WriteLine(e);
+					Crashes.TrackError(e);
+					backgroundAudioService.loading = false;
+				}
+				return 0;
+			}
+
+			protected override void OnPostExecute(int result)
+			{
+				backgroundAudioService.MediaPlayer.Prepared -= MediaPlayer_Prepared;
+				base.OnPostExecute(result);
+			}
+
+			private void MediaPlayer_Prepared(object sender, EventArgs e)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+					backgroundAudioService.MediaPlayer.Start();
+					backgroundAudioService.loading = false;
+					backgroundAudioService.PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = backgroundAudioService.CurrentSong, Status = BackgroundAudioStatus.Playing });
+					backgroundAudioService.NotificationService1.ShowNotification();
+					backgroundAudioService.NotificationService1.UpdateMediaSessionMeta();
+
+					MusicProvider.AddPlay(backgroundAudioService.CurrentSong.Id);
+					MusicProvider.AddHistory("track", "played", backgroundAudioService.CurrentSong.Id, backgroundAudioService.CurrentSong.Title, backgroundAudioService.CurrentSong.Artist, backgroundAudioService.CurrentSong.ArtistId, backgroundAudioService.CurrentSong.Album, backgroundAudioService.CurrentSong.AlbumId, backgroundAudioService.CurrentSong.Genre, backgroundAudioService.CurrentSong.GenreId);
+
+
+					
+
+				}
+				catch (Exception ee)
+				{
+					System.Diagnostics.Debug.WriteLine(ee);
+					Crashes.TrackError(ee);
+					backgroundAudioService.loading = false;
+				}
 			}
 		}
 
@@ -236,8 +281,7 @@ namespace Alloy.Services
 		{
 			try
 			{
-
-				if (CurrentSong == null || MainQueue.Count <= 0) return;
+				if (loading || CurrentSong == null || MainQueue.Count <= 0) return;
 				CurrentSong.IsSelected = false;
 				int index = MainQueue.IndexOf(CurrentSong);
 				if (index >= MainQueue.Count)
@@ -313,35 +357,12 @@ namespace Alloy.Services
 
 		public MediaPlayer MediaPlayer { get; set; }
 
-		private void MediaPlayer_Prepared(object sender, EventArgs e)
-		{
-			try
-			{
-				Utils.UnlockSsl(true);
-				MediaPlayer.Start();
-				loading = false;
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
-				NotificationService1.ShowNotification();
-				NotificationService1.UpdateMediaSessionMeta();
-				Utils.Run(() =>
-				{
-					MusicProvider.AddPlay(CurrentSong.Id);
-					MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
-				});
 
-				Utils.UnlockSsl(false);
-
-			}
-			catch (Exception ee)
-			{
-				System.Diagnostics.Debug.WriteLine(ee);
-				Crashes.TrackError(ee);
-				loading = false;
-			}
-		}
 
 		private void MediaPlayer_Completion(object sender, EventArgs e)
 		{
+			if (loading) return;
+			Reset();
 			if (CurrentSong != null) CurrentSong.IsSelected = false;
 			PlayNextSong();
 		}
@@ -373,7 +394,7 @@ namespace Alloy.Services
 					.Build());
 
 				MediaPlayer.Completion += MediaPlayer_Completion;
-				MediaPlayer.Prepared += MediaPlayer_Prepared;
+
 				MediaPlayer.SetVolume(1.0f, 1.0f);
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
@@ -484,7 +505,8 @@ namespace Alloy.Services
 				bundle.PutBoolean("exceptMusicController", true);
 
 				MediaSession.SetExtras(bundle);
-				using (PlaybackStateCompat.Builder mediaStateBuilder = new PlaybackStateCompat.Builder()) {
+				using (PlaybackStateCompat.Builder mediaStateBuilder = new PlaybackStateCompat.Builder())
+				{
 					mediaStateBuilder.SetActions(
 						PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionFastForward | PlaybackStateCompat.ActionRewind |
 						PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious | PlaybackStateCompat.ActionStop | PlaybackStateCompat.ActionSetRating |

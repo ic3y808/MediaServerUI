@@ -49,6 +49,7 @@ process.on("SIGINT", () => process.exit(128 + 2));
 process.on("SIGTERM", () => process.exit(128 + 15));
 
 function isDev() { return process.env.MODE === "dev"; }
+function isWebpackEnabled() { return process.env.ENABLE_WEBPACK_REBUILD === "true"; }
 function isApiEnabled() { return process.env.API_ENABLED === "true"; }
 function isUiEnabled() { return process.env.UI_ENABLED === "true"; }
 function isPacked() { return process.mainModule.filename.indexOf("app.asar") > -1; }
@@ -362,7 +363,7 @@ function createBaseServer() {
 
     appServer.set("view engine", "jade");
     if (isUiEnabled()) {
-      if (isDev()) {
+      if (isDev() && isWebpackEnabled()) {
         logger.info("alloydb", "Running in DEV mode");
         logger.info("alloydb", "compiling webpack");
         const webpack = require("webpack");

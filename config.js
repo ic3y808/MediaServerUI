@@ -25,6 +25,7 @@ process.env.BACKUP_DATA_DIR = path.join(process.env.DATA_DIR, "backup");
 process.env.LOGS_DIR = path.join(process.env.BASE_DIR, "logs");
 process.env.CONVERTED_MEDIA_DIR = path.join(process.env.DATA_DIR, "converted");
 process.env.CONVERTED_STARRED_MEDIA_DIR = path.join(process.env.DATA_DIR, "converted_starred");
+process.env.CONVERTED_PLAYLIST_MEDIA_DIR = path.join(process.env.DATA_DIR, "converted_playlists");
 process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json");
 process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
 process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "database.db-wal");
@@ -53,6 +54,7 @@ if (!fs.existsSync(process.env.DATA_DIR)) { shell.mkdir("-p", process.env.DATA_D
 if (!fs.existsSync(process.env.LOGS_DIR)) { shell.mkdir("-p", process.env.LOGS_DIR); }
 if (!fs.existsSync(process.env.CONVERTED_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_MEDIA_DIR); }
 if (!fs.existsSync(process.env.CONVERTED_STARRED_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_STARRED_MEDIA_DIR); }
+if (!fs.existsSync(process.env.CONVERTED_PLAYLIST_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_PLAYLIST_MEDIA_DIR); }
 if (!fs.existsSync(process.env.COVER_ART_DIR)) { shell.mkdir("-p", process.env.COVER_ART_DIR); }
 
 if (process.env.MODE === "test") {

@@ -431,12 +431,13 @@ namespace Alloy.Adapters
 			Songs[position].GetAlbumArt(h.Image);
 			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
 			h.Album.SetText(Songs[position].Album, TextView.BufferType.Normal);
+			h.Artist.SetText(Songs[position].Artist, TextView.BufferType.Normal);
 			h.SetSelected(position);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.artist_detail_song_item, parent, false);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_song_item, parent, false);
 			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
@@ -454,6 +455,7 @@ namespace Alloy.Adapters
 			public LinearLayout ItemRoot { get; set; }
 			public ImageView Image { get; set; }
 			public TextView Title { get; set; }
+			public TextView Artist { get; set; }
 			public TextView Album { get; set; }
 			public MusicQueue Songs { get; set; }
 			private BackgroundAudioServiceConnection ServiceConnection { get; }
@@ -463,7 +465,9 @@ namespace Alloy.Adapters
 				ItemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				Title = itemView.FindViewById<TextView>(Resource.Id.title);
+				Artist = itemView.FindViewById<TextView>(Resource.Id.artist);
 				Album = itemView.FindViewById<TextView>(Resource.Id.album);
+				Album.Typeface = Typeface.Create(Album.Typeface, TypefaceStyle.Italic);
 				ServiceConnection = serviceConnection;
 				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Songs = Songs });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };

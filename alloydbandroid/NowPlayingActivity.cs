@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Timers;
 using Android.App;
 using Android.Content;
@@ -226,11 +227,14 @@ namespace Alloy
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
+		private bool loadingBackground = false;
 		private void SetBackground(Song song = null)
 		{
+			if(loadingBackground) return;
+			loadingBackground = true;
 			try
 			{
-				Utils.Run(() =>
+				Utils.Run(async () =>
 				{
 
 					Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
@@ -239,7 +243,8 @@ namespace Alloy
 					fadeIn.Duration = 3000;
 
 					if (serviceConnection == null || !serviceConnection.IsConnected) return;
-					Bitmap newArt = song == null ? serviceConnection.CurrentSong.GetAlbumArt().Blur(25) : song.GetAlbumArt().Blur(25);
+					Bitmap art = song == null ? await serviceConnection.CurrentSong.GetAlbumArt() : await song.GetAlbumArt();
+					Bitmap newArt = art.Blur(25);
 
 					fadeOut.AnimationEnd += (o, e) =>
 					{
@@ -255,11 +260,9 @@ namespace Alloy
 									a?.Bitmap?.Recycle();
 									a?.Bitmap?.Dispose();
 									primaryBackground?.Background?.Dispose();
-									if (primaryBackground != null)
-									{
-										primaryBackground.Background = null;
-									}
+									if (primaryBackground != null) { primaryBackground.Background = null; }
 								}
+
 								currentBackground = CurrentBackground.Secondary;
 								break;
 							case CurrentBackground.Secondary:
@@ -269,14 +272,14 @@ namespace Alloy
 									a?.Bitmap?.Recycle();
 									a?.Bitmap?.Dispose();
 									secondaryBackground?.Background?.Dispose();
-									if (secondaryBackground != null)
-									{
-										secondaryBackground.Background = null;
-									}
+									if (secondaryBackground != null) { secondaryBackground.Background = null; }
 								}
+
 								currentBackground = CurrentBackground.Primary;
 								break;
 						}
+
+						loadingBackground = false;
 					};
 
 					RunOnUiThread(() =>
@@ -298,7 +301,11 @@ namespace Alloy
 					});
 				});
 			}
-			catch (Exception ee) { Crashes.TrackError(ee); }
+			catch (Exception ee)
+			{
+				Crashes.TrackError(ee);
+				loadingBackground = false;
+			}
 		}
 
 		private void ScrollToNowPlaying()
@@ -346,7 +353,7 @@ namespace Alloy
 			return diff > 0.5f;
 		}
 
-		private void UpdateColors(Song song = null)
+		private async Task UpdateColors(Song song = null)
 		{
 			try
 			{
@@ -356,14 +363,15 @@ namespace Alloy
 
 				if (song != null)
 				{
-					Bitmap art = song.GetAlbumArt();
+					Bitmap art = await song.GetAlbumArt();
 					color = art.GetDominateColor();
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 				else if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) { return; }
 				else
 				{
-					color = serviceConnection.CurrentSong.GetAlbumArt().GetDominateColor();
+					Bitmap art = await serviceConnection.CurrentSong.GetAlbumArt();
+					color = art.GetDominateColor();
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 
@@ -442,7 +450,7 @@ namespace Alloy
 		private void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.MediaPlayer != null)
+			if (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying)
 			{
 				int val = serviceConnection.MediaPlayer.CurrentPosition.GetProgressPercentage(serviceConnection.MediaPlayer.Duration);
 				RunOnUiThread(() =>

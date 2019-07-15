@@ -260,7 +260,7 @@ namespace Alloy.Adapters
 
 			h.Artist = Artists[position];
 			Artists[position].GetAlbumArt(h.Image);
-			h.Name.SetText(Artists[position].Name, TextView.BufferType.Normal);
+			h.Name.Text = Artists[position].Name;
 			h.SetSelected();
 		}
 
@@ -276,6 +276,7 @@ namespace Alloy.Adapters
 		{
 			ItemClick?.Invoke(this, e);
 		}
+
 		public event EventHandler<ViewHolder.ViewHolderEvent> ItemClick;
 
 		public class ViewHolder : RecyclerView.ViewHolder
@@ -310,7 +311,6 @@ namespace Alloy.Adapters
 				{
 					ItemRoot.SetBackgroundColor(Color.Transparent);
 				}
-
 			}
 
 			public class ViewHolderEvent
@@ -337,7 +337,7 @@ namespace Alloy.Adapters
 			ViewHolder h = (ViewHolder)holder;
 			h.Album = Albums[position];
 			Albums[position].GetAlbumArt(h.Image);
-			h.Name.SetText(Albums[position].Name, TextView.BufferType.Normal);
+			h.Name.Text = Albums[position].Name;
 			h.SetSelected();
 		}
 
@@ -426,8 +426,9 @@ namespace Alloy.Adapters
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
 			Songs[position].GetAlbumArt(h.Image);
-			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
-			h.Album.SetText(Songs[position].Album, TextView.BufferType.Normal);
+			h.Title.Text = Songs[position].Title;
+			h.Artist.Text = Songs[position].Artist;
+			h.Album.Text = Songs[position].Album;
 			if (Songs[position].IsSelected)
 			{
 				h.ItemView.FindViewById<LinearLayout>(Resource.Id.item_root).SetBackgroundResource(Resource.Color.menu_selection_color);
@@ -455,6 +456,7 @@ namespace Alloy.Adapters
 			public LinearLayout ItemRoot { get; set; }
 			public ImageView Image { get; set; }
 			public TextView Title { get; set; }
+			public TextView Artist { get; set; }
 			public TextView Album { get; set; }
 			public MusicQueue Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
@@ -464,6 +466,7 @@ namespace Alloy.Adapters
 				ItemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				Title = itemView.FindViewById<TextView>(Resource.Id.title);
+				Artist = itemView.FindViewById<TextView>(Resource.Id.artist);
 				Album = itemView.FindViewById<TextView>(Resource.Id.album);
 				ServiceConnection = serviceConnection;
 				itemView.Click += (sender, e) => listener(new TrackViewHolderEvent { Position = LayoutPosition, Songs = Songs });
@@ -504,7 +507,7 @@ namespace Alloy.Adapters
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
 			Songs[position].GetAlbumArt(h.Image);
-			h.Name.SetText(Songs[position].Title, TextView.BufferType.Normal);
+			h.Name.Text = Songs[position].Title;
 			h.SetSelected(position);
 		}
 

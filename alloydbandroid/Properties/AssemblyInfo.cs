@@ -21,13 +21,12 @@ using Alloy.Common;
 [assembly: UsesPermission(Name = "android.permission.INTERNET")]
 [assembly: UsesPermission(Name = "android.permission.ACCESS_NETWORK_STATE")]
 [assembly: UsesPermission(Name = "android.permission.ACCESS_WIFI_STATE")]
+[assembly: UsesPermission(Name = "android.permission.CHANGE_NETWORK_STATE")]
 [assembly: UsesPermission(Name = "android.permission.CHANGE_WIFI_STATE")]
 [assembly: UsesPermission(Name = "android.permission.BLUETOOTH")]
 [assembly: UsesPermission(Name = "android.permission.SUBSTITUTE_NOTIFICATION_APP_NAME")]
 [assembly: UsesPermission(Name = "android.permission.DEVICE_POWER")]
 [assembly: UsesPermission(Name = "android.permission.INJECT_EVENTS")]
-[assembly: UsesPermission(Name = "android.permission.CHANGE_NETWORK_STATE")]
-[assembly: UsesPermission(Name = "android.permission.CHANGE_WIFI_STATE")]
 [assembly: UsesPermission(Name = "android.permission.CONFIGURE_WIFI_DISPLAY")]
 [assembly: UsesPermission(Name = "android.permission.BROADCAST_STICKY")]
 [assembly: UsesPermission(Name = "android.permission.MODIFY_AUDIO_SETTINGS")]
@@ -40,9 +39,9 @@ using Alloy.Common;
 [assembly: MetaData("com.google.android.gms.cast.framework.OPTIONS_PROVIDER_CLASS_NAME", Value = "alloy.providers.CastOptionsProvider")]
 [assembly: UsesFeature("android.hardware.wifi")]
 [assembly: SupportedFormat("Mpeg", Extensions = new[] { ".mp3", ".mp4" })]
-[assembly: SupportedFormat("Wave", Extensions = new []{ ".wav" })]
-[assembly: SupportedFormat("flac", Extensions = new []{ ".flac" })]
-[assembly: SupportedFormat("ogg vorbis", Extensions = new []{ ".ogg" })]
+[assembly: SupportedFormat("Wave", Extensions = new[] { ".wav" })]
+[assembly: SupportedFormat("flac", Extensions = new[] { ".flac" })]
+[assembly: SupportedFormat("ogg vorbis", Extensions = new[] { ".ogg" })]
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

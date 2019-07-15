@@ -147,6 +147,12 @@ html(ng-app='alloydb', lang='en-us')
                             tr
                               td Total Data Sent 
                               td {{library_stats.total_data_served}}
+                            tr
+                              td General Cache Size:
+                              td {{library_stats.total_cache_size}}
+                            tr
+                              td Starred Cache Size:
+                              td {{library_stats.total_starred_cache_size}}
    
                   .col-lg-4.col-md-12
                     .card
