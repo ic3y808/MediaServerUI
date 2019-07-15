@@ -67,15 +67,18 @@ namespace Alloy.Helpers
 					Task<byte[]> stream = response.Content.ReadAsByteArrayAsync();
 					stream.Wait();
 					bitmap = BitmapFactory.DecodeByteArray(stream.Result, 0, stream.Result.Length);
-					App.Cache.put(cacheKey, new File(ExportBitmapAsPNG(bitmap, cacheKey)));
-
-					if (@params[0] is Song song) { song.Art = bitmap; }
-					if (@params[0] is Artist artist) { artist.Art = bitmap; }
-					if (@params[0] is Album album) { album.Art = bitmap; }
-					new Handler(Looper.MainLooper).PostDelayed(new Runnable(() =>
+					if (bitmap != null && bitmap.Width > 1 && bitmap.Height > 1)
 					{
-						view.SetImageBitmap(bitmap);
-					}), 0);
+						App.Cache.put(cacheKey, new File(ExportBitmapAsPNG(bitmap, cacheKey)));
+
+						if (@params[0] is Song song) { song.Art = bitmap; }
+						if (@params[0] is Artist artist) { artist.Art = bitmap; }
+						if (@params[0] is Album album) { album.Art = bitmap; }
+						new Handler(Looper.MainLooper).PostDelayed(new Runnable(() =>
+						{
+							view.SetImageBitmap(bitmap);
+						}), 0);
+					}
 				}
 
 				return bitmap;

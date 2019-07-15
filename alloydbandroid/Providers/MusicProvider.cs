@@ -30,6 +30,7 @@ namespace Alloy.Providers
 		public static Starred Starred { get; set; }
 		public static Fresh Fresh { get; set; }
 		public static Charts Charts { get; set; }
+		public static List<History> History { get; set; }
 
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler ArtistsRefreshed;
@@ -49,6 +50,8 @@ namespace Alloy.Providers
 		public static event EventHandler<Fresh> FreshRefreshed;
 		public static event EventHandler ChartsStartRefresh;
 		public static event EventHandler<Charts> ChartsRefreshed;
+		public static event EventHandler HistoryStartRefresh;
+		public static event EventHandler<List<History>> HistoryRefreshed;
 		public static event EventHandler SearchStart;
 		public static event EventHandler<SearchResult> SearchResultsRecieved;
 
@@ -59,11 +62,13 @@ namespace Alloy.Providers
 			Genres = new List<Genre>();
 			Albums = new List<Album>();
 			Artists = new List<Artist>();
+			History = new List<History>();
 		}
 		public static string GetHost()
 		{
 			//return "http://127.0.0.1:4000";
-			
+			return "http://71.56.197.213:4000";
+
 
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
@@ -72,7 +77,7 @@ namespace Alloy.Providers
 
 		public static string GetApiKey()
 		{
-			
+			return "b1413ebe481e48880a466ffe8523060a";
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
 			return sp.GetString("alloydbapikey", "");
@@ -116,6 +121,8 @@ namespace Alloy.Providers
 					return $"{GetHost()}/api/v1/browse/fresh";
 				case ApiRequestType.Charts:
 					return $"{GetHost()}/api/v1/browse/charts";
+				case ApiRequestType.History:
+					return $"{GetHost()}/api/v1/browse/history";
 
 				default:
 					return null;
@@ -533,6 +540,35 @@ namespace Alloy.Providers
 			}
 		}
 
+		public class HistoryLoader : AsyncTask<object, object, int>
+		{
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+					string request = ApiRequest(ApiRequestType.History, null, RequestType.GET);
+					HistoryContainer result = JsonConvert.DeserializeObject<HistoryContainer>(request);
+					History = result.History.ToList();
+					return 0;
+				}
+				catch (Exception e)
+				{
+					Crashes.TrackError(e);
+					Debug.WriteLine(e.Message);
+				}
+				return 1;
+			}
+
+			protected override void OnPostExecute(int result)
+			{
+				base.OnPostExecute(result);
+				if (result != 0) return;
+				HistoryRefreshed?.Invoke(null, History);
+				Adapters.Adapters.UpdateAdapters();
+			}
+		}
+
 		public class AddPlayTask : AsyncTask<object, object, int>
 		{
 			protected override int RunInBackground(params object[] @params)
@@ -547,6 +583,7 @@ namespace Alloy.Providers
 				return 0;
 			}
 		}
+
 		public class AddHistoryTask : AsyncTask<object, object, int>
 		{
 			protected override int RunInBackground(params object[] @params)
@@ -599,6 +636,12 @@ namespace Alloy.Providers
 		{
 			ChartsStartRefresh?.Invoke(null, EventArgs.Empty);
 			new ChartsLoader().Execute();
+		}
+
+		public static void RefreshHistory()
+		{
+			HistoryStartRefresh?.Invoke(null, EventArgs.Empty);
+			new HistoryLoader().Execute();
 		}
 
 		public static void FullRefresh()

@@ -239,6 +239,20 @@ namespace Tests
 
 
 		[Test]
+		public void HistoryTest()
+		{
+			TimeTest(() =>
+			{
+				SelectMenuItem("History");
+
+				TestForElement("drawer_layout");
+				TestForElement("image_view");
+				TestForElement("history_list");
+			});
+		}
+
+
+		[Test]
 		public void SlideUpMenuTests()
 		{
 			for (int i = 0; i < 1000; i++)

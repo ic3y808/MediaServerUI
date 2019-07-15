@@ -261,6 +261,12 @@ namespace Alloy
 				case Resource.String.genres_fragment_id:
 					fragment = new GenresFragment();
 					break;
+				case Resource.String.history_fragment_id:
+					fragment = new HistoryFragment();
+					break;
+				case Resource.String.charts_fragment_id:
+					fragment = new ChartsFragment();
+					break;
 
 			}
 

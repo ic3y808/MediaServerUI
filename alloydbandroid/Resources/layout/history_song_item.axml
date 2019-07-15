@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:id="@+id/item_root"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	style="@style/TextView.Song.Layout">
+	 <ImageView
+		android:id="@+id/image_view"
+		android:src="@drawable/no_art"
+		style="@style/TextView.Song.AlbumArt"/>
+	<RelativeLayout
+		style="@style/TextView.Song.InfoLayout">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="30dp"
+			android:text="Drive"
+			android:id="@+id/title"
+			style="@style/TextView.Song.Title"/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:text="TOKiMONSTA"
+			android:layout_below="@+id/title"
+			android:id="@+id/artist"
+			android:gravity="right"
+			style="@style/TextView.Song.Artist"/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:text=" - "
+			android:layout_below="@+id/title"
+			android:layout_alignBottom="@id/image_view"
+			android:layout_toRightOf="@+id/artist"
+			android:id="@+id/hyphen"
+			style="@style/TextView.Song.Hyphen"/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:text="Album"
+			android:layout_below="@+id/title"
+			android:layout_alignBottom="@id/image_view"
+			android:layout_toRightOf="@+id/hyphen"
+			android:id="@+id/album"
+			style="@style/TextView.Song.Album"/>
+	</RelativeLayout>
+</LinearLayout>
