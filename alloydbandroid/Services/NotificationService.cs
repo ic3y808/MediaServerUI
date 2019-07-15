@@ -7,7 +7,7 @@ using Android.Support.V4.Media;
 using Android.Support.V4.Media.Session;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Helpers;
-
+using Android.Graphics;
 
 
 namespace Alloy.Services
@@ -43,7 +43,7 @@ namespace Alloy.Services
 			return notificationBuilder;
 		}
 
-		private void GenerateIntents(ref NotificationCompat.Builder builder)
+		private void GenerateIntents(NotificationCompat.Builder builder)
 		{
 			PendingIntent pIntentPrev = PendingIntent.GetBroadcast(Application.Context, (int)DateTime.Now.Ticks, new Intent(BackgroundAudioService.ActionPrevious), PendingIntentFlags.CancelCurrent);
 			PendingIntent pIntentNext = PendingIntent.GetBroadcast(Application.Context, (int)DateTime.Now.Ticks, new Intent(BackgroundAudioService.ActionNext), PendingIntentFlags.CancelCurrent);
@@ -68,14 +68,15 @@ namespace Alloy.Services
 			.SetDeleteIntent(pIntentExit);			
 		}
 
-		private void GenerateMetadata(ref NotificationCompat.Builder builder)
+		private async void GenerateMetadata(NotificationCompat.Builder builder)
 		{
 			if (audioService.CurrentSong == null) return;
+			Bitmap art = await audioService.CurrentSong.GetAlbumArt();
 			builder
 				.SetContentTitle(audioService.CurrentSong.Album)
 				.SetContentText(audioService.CurrentSong.Artist)
 				.SetSubText(audioService.CurrentSong.Title)
-				.SetLargeIcon(audioService.CurrentSong.GetAlbumArt());
+				.SetLargeIcon(art);
 		}
 
 
@@ -89,8 +90,8 @@ namespace Alloy.Services
 				}
 				NotificationManager notificationManager = (NotificationManager)Application.Context.GetSystemService(Context.NotificationService);
 				NotificationCompat.Builder builder = GenerateBuilder();
-				GenerateIntents(ref builder);
-				GenerateMetadata(ref builder);
+				GenerateIntents(builder);
+				GenerateMetadata(builder);
 				UpdateMediaSessionMeta();
 				notificationManager.Notify(BackgroundAudioService.NOTIFICATION_ID, builder.Build());
 			}
@@ -108,17 +109,18 @@ namespace Alloy.Services
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
-		public void UpdateMediaSessionMeta()
+		public async void UpdateMediaSessionMeta()
 		{
 			try
 			{
 				if (audioService.CurrentSong == null) return;
+				Bitmap art = await audioService.CurrentSong.GetAlbumArt();
 				MediaMetadataCompat metadata = new MediaMetadataCompat.Builder()
 					.PutString(MediaMetadataCompat.MetadataKeyTitle, audioService.CurrentSong.Title)
 					.PutString(MediaMetadataCompat.MetadataKeyArtist, audioService.CurrentSong.Artist)
 					.PutString(MediaMetadataCompat.MetadataKeyAlbum, audioService.CurrentSong.Album)
 					.PutLong(MediaMetadataCompat.MetadataKeyDuration, audioService.CurrentSong.Duration)
-					.PutBitmap(MediaMetadataCompat.MetadataKeyArt, audioService.CurrentSong.GetAlbumArt())
+					.PutBitmap(MediaMetadataCompat.MetadataKeyArt, art)
 					.Build();
 
 				PlaybackStateCompat state = new PlaybackStateCompat.Builder()

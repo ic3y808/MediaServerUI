@@ -348,7 +348,7 @@ router.get("/fresh", function (req, res) {
       result.fresh.tracks.push(track);
     });
   });
-  result.fresh.tracks = _.shuffle(result.fresh.tracks);
+  result.fresh.tracks = _.shuffle(result.fresh.tracks).slice(0, limit);
   res.json(result);
 });
 

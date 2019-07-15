@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Globalization;
 using Alloy.Converters;
+using Android.Graphics;
 using Android.OS;
 using Java.Interop;
 using Newtonsoft.Json;
@@ -16,6 +17,8 @@ namespace Alloy.Models
 		public string Path { get; set; }
 		[JsonProperty("title")]
 		public string Title { get; set; }
+		[JsonIgnore]
+		public Bitmap Art { get; set; }
 		[JsonProperty("artist")]
 		public string Artist { get; set; }
 		[JsonProperty("artist_id")]

@@ -13,7 +13,10 @@ var defaults = {
   alloydb_love_tracks: false,
   alloydb_streaming_format: "Unchanged",
   alloydb_streaming_bitrate: "128",
-  alloydb_streaming_cache_strat: "",
+  alloydb_streaming_cache_strat: "memory",
+  alloydb_streaming_cache_strat_days: "10",
+  alloydb_streaming_cache_strat_tracks: "100",
+  alloydb_streaming_cache_strat_memory: "5gb",
   alloydb_streaming_cache_starred: true
 };
 

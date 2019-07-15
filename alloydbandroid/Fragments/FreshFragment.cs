@@ -70,7 +70,7 @@ namespace Alloy.Fragments
 			freshAdapter.AlbumClick += Album_ItemClick;
 			freshAdapter.ArtistClick += Artist_ItemClick;
 
-			MusicProvider.RefreshFresh();
+			//MusicProvider.RefreshFresh();
 
 
 			if (MusicProvider.Fresh == null ||

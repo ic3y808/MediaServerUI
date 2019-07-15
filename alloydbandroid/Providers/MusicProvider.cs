@@ -4,6 +4,9 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using Android.OS;
 using Alloy.Helpers;
@@ -49,6 +52,8 @@ namespace Alloy.Providers
 		public static event EventHandler SearchStart;
 		public static event EventHandler<SearchResult> SearchResultsRecieved;
 
+		private static HttpClient httpClient = new HttpClient();
+
 		static MusicProvider()
 		{
 			Genres = new List<Genre>();
@@ -57,7 +62,8 @@ namespace Alloy.Providers
 		}
 		public static string GetHost()
 		{
-			return "http://127.0.0.1:4000";
+			//return "http://127.0.0.1:4000";
+			return "http://71.56.197.213:4000";
 
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
@@ -130,47 +136,108 @@ namespace Alloy.Providers
 
 				if (paramsDictionary != null)
 				{
-					foreach (KeyValuePair<string, object> o in paramsDictionary)
-					{
-						parameters[o.Key] = o.Value as string;
-					}
+					foreach (KeyValuePair<string, object> o in paramsDictionary) { parameters[o.Key] = o.Value as string; }
 				}
 
 				uriBuilder.Query = parameters.ToString();
 
 				Debug.WriteLine("API REQUEST: " + uriBuilder.Uri + "\n");
 
-
-				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uriBuilder.Uri);
-
-				request.Method = requestType.ToString();
-				request.ContentType = "application/x-www-form-urlencoded";
-
-				HttpWebResponse response;
-				try { response = (HttpWebResponse)request.GetResponse(); }
-				catch (Exception e)
+				switch (requestType)
 				{
-					Crashes.TrackError(e);
-					return string.Empty;
+					case RequestType.GET:
+						Task<HttpResponseMessage> getTask = httpClient.GetAsync(uriBuilder.Uri);
+						getTask.Wait();
+
+						HttpResponseMessage getResponse = getTask.Result;
+						if (getResponse.IsSuccessStatusCode)
+						{
+							Task<string> getResponseContent = getResponse.Content.ReadAsStringAsync();
+							getResponseContent.Wait();
+							json = getResponseContent.Result;
+						}
+						break;
+					case RequestType.POST:
+						string postData = JsonConvert.SerializeObject(paramsDictionary);
+						byte[] buffer = System.Text.Encoding.UTF8.GetBytes(postData);
+						ByteArrayContent byteContent = new ByteArrayContent(buffer);
+						byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+						Task<HttpResponseMessage> postTask = httpClient.PostAsync(uriBuilder.Uri, byteContent);
+						postTask.Wait();
+
+						HttpResponseMessage postResponse = postTask.Result;
+						if (postResponse.IsSuccessStatusCode)
+						{
+							Task<string> postResponseContent = postResponse.Content.ReadAsStringAsync();
+							postResponseContent.Wait();
+							json = postResponseContent.Result;
+						}
+						break;
+					case RequestType.PUT:
+						string param = JsonConvert.SerializeObject(paramsDictionary);
+						HttpContent content = new StringContent(param, Encoding.UTF8, "application/json");
+						Task<HttpResponseMessage> putTask = httpClient.PutAsync(uriBuilder.Uri, content);
+						putTask.Wait();
+						HttpResponseMessage putResponse = putTask.Result;
+						if (putResponse.IsSuccessStatusCode)
+						{
+							Task<string> putResponseContent = putResponse.Content.ReadAsStringAsync();
+							putResponseContent.Wait();
+							json = putResponseContent.Result;
+						}
+
+						break;
+					case RequestType.DELETE:
+						Task<HttpResponseMessage> deleteTask = httpClient.GetAsync(uriBuilder.Uri);
+						deleteTask.Wait();
+
+						HttpResponseMessage deleteResponse = deleteTask.Result;
+						if (deleteResponse.IsSuccessStatusCode)
+						{
+							Task<string> deleteResponseContent = deleteResponse.Content.ReadAsStringAsync();
+							deleteResponseContent.Wait();
+							json = deleteResponseContent.Result;
+						}
+						break;
+					default:
+						throw new ArgumentOutOfRangeException(nameof(requestType), requestType, null);
 				}
 
-				Stream stream = response.GetResponseStream();
-				try
-				{
-					if (response.Headers["Content-Encoding"] != null && (response.Headers["Content-Encoding"].Equals("gzip") || response.Headers["Content-Encoding"].Equals("deflate")) && stream != null) stream = new GZipStream(stream, CompressionMode.Decompress);
-				}
-				catch (Exception e) { Crashes.TrackError(e); }
+
+
+				//	HttpWebRequest request = (HttpWebRequest) WebRequest.Create(uriBuilder.Uri);
+				//	request.Timeout = 5000;
+				//	request.Method = requestType.ToString();
+				////	request.ContentType = "application/x-www-form-urlencoded";
+
+				//	HttpWebResponse response;
+				//	try { response = (HttpWebResponse) request.GetResponse(); }
+				//	catch (Exception e)
+				//	{
+				//		Crashes.TrackError(e);
+				//		return string.Empty;
+				//	}
+
+				//	Stream stream = response.GetResponseStream();
+				//	try
+				//	{
+				//		if (response.Headers["Content-Encoding"] != null && (response.Headers["Content-Encoding"].Equals("gzip") || response.Headers["Content-Encoding"].Equals("deflate")) && stream != null) stream = new GZipStream(stream, CompressionMode.Decompress);
+				//	}
+				//	catch (Exception e) { Crashes.TrackError(e); }
 
 
 
-				if (stream == null) return null;
-				using (StreamReader reader = new StreamReader(stream))
-				{
-					try { json = reader.ReadToEnd(); }
-					catch (Exception e) { Crashes.TrackError(e); }
-				}
+				//	if (stream == null) return null;
+				//	using (StreamReader reader = new StreamReader(stream))
+				//	{
+				//		try { json = reader.ReadToEnd(); }
+				//		catch (Exception e) { Crashes.TrackError(e); }
+				//	}
 			}
-			catch (Exception e) { Crashes.TrackError(e); }
+			catch (Exception e)
+			{
+				Crashes.TrackError(e);
+			}
 			return json;
 		}
 
@@ -190,7 +257,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Album, new Dictionary<string, object> { { "id", album.Id } }, RequestType.GET);
 					albumResult = JsonConvert.DeserializeObject<AlbumContainer>(request);
-					Utils.UnlockSsl(false);
+
 					return 0;
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -215,7 +282,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Albums, null, RequestType.GET);
 					Albums = JsonConvert.DeserializeObject<AlbumList>(request).Albums;
-					Utils.UnlockSsl(false);
+
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
 				return 0;
@@ -245,7 +312,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Artist, new Dictionary<string, object> { { "id", artist.Id } }, RequestType.GET);
 					artistResult = JsonConvert.DeserializeObject<ArtistContainer>(request);
-					Utils.UnlockSsl(false);
+
 					return 0;
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -273,7 +340,7 @@ namespace Alloy.Providers
 
 					Artists = JsonConvert.DeserializeObject<ArtistList>(request).Artists;
 
-					Utils.UnlockSsl(false);
+
 				}
 				catch (Exception e)
 				{
@@ -307,7 +374,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Genre, new Dictionary<string, object> { { "id", genre.Id } }, RequestType.GET);
 					genreResult = JsonConvert.DeserializeObject<GenreContainer>(request);
-					Utils.UnlockSsl(false);
+
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
 
@@ -339,7 +406,7 @@ namespace Alloy.Providers
 					string request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
 					List<Genre> result = JsonConvert.DeserializeObject<GenreList>(request).Genres;
 					Genres = result.OrderBy(x => x.Name).ToList();
-					Utils.UnlockSsl(false);
+
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
 				return 0;
@@ -372,7 +439,7 @@ namespace Alloy.Providers
 
 					results = JsonConvert.DeserializeObject<SearchResult>(request);
 
-					Utils.UnlockSsl(false);
+
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
 				return 0;
@@ -396,7 +463,6 @@ namespace Alloy.Providers
 					string request = ApiRequest(ApiRequestType.Starred, null, RequestType.GET);
 					StarredContainer result = JsonConvert.DeserializeObject<StarredContainer>(request);
 					Starred = result.Starred;
-					Utils.UnlockSsl(false);
 					return 0;
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -423,7 +489,6 @@ namespace Alloy.Providers
 					FreshContainer result = JsonConvert.DeserializeObject<FreshContainer>(request);
 					result.Fresh.Tracks.Shuffle();
 					Fresh = result.Fresh;
-					Utils.UnlockSsl(false);
 					return 0;
 				}
 				catch (Exception e) { Crashes.TrackError(e); }
@@ -449,7 +514,6 @@ namespace Alloy.Providers
 					string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
 					ChartsContainer result = JsonConvert.DeserializeObject<ChartsContainer>(request);
 					Charts = result.Charts;
-					Utils.UnlockSsl(false);
 					return 0;
 				}
 				catch (Exception e)
@@ -466,6 +530,38 @@ namespace Alloy.Providers
 				if (result != 0) return;
 				ChartsRefreshed?.Invoke(null, Charts);
 				Adapters.Adapters.UpdateAdapters();
+			}
+		}
+
+		public class AddPlayTask : AsyncTask<object, object, int>
+		{
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+					ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", @params[0].ToString() } }, RequestType.PUT);
+
+				}
+				catch (Exception e) { Crashes.TrackError(e); }
+				return 0;
+			}
+		}
+		public class AddHistoryTask : AsyncTask<object, object, int>
+		{
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					Utils.UnlockSsl(true);
+					ApiRequest(ApiRequestType.AddHistory, (Dictionary<string, object>)@params[0], RequestType.PUT);
+				}
+				catch (Exception e)
+				{
+					Crashes.TrackError(e);
+					return 1;
+				}
+				return 0;
 			}
 		}
 
@@ -569,13 +665,7 @@ namespace Alloy.Providers
 
 		public static void AddPlay(string id)
 		{
-			try
-			{
-				Utils.UnlockSsl(true);
-				ApiRequest(ApiRequestType.AddPlay, new Dictionary<string, object> { { "id", id } }, RequestType.PUT);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
+			new AddPlayTask().Execute(id);
 		}
 
 		public static void AddStar(Dictionary<string, object> @params)
@@ -584,7 +674,7 @@ namespace Alloy.Providers
 			{
 				Utils.UnlockSsl(true);
 				ApiRequest(ApiRequestType.Star, @params, RequestType.PUT);
-				Utils.UnlockSsl(false);
+
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
@@ -595,7 +685,7 @@ namespace Alloy.Providers
 			{
 				Utils.UnlockSsl(true);
 				ApiRequest(ApiRequestType.UnStar, @params, RequestType.PUT);
-				Utils.UnlockSsl(false);
+
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
@@ -658,25 +748,19 @@ namespace Alloy.Providers
 
 		public static void AddHistory(string type, string action, string id, string title, string artist, string artist_id, string album, string album_id, string genre, string genre_id)
 		{
-			try
+			new AddHistoryTask().Execute(new Dictionary<string, object>
 			{
-				Utils.UnlockSsl(true);
-				ApiRequest(ApiRequestType.AddHistory, new Dictionary<string, object>
-				{
-					{ "type", type },
-					{ "action", action },
-					{ "id", id },
-					{ "title", title },
-					{ "artist", artist },
-					{ "artist_id", artist_id },
-					{ "album", album },
-					{ "album_id", album_id },
-					{ "genre", genre },
-					{ "genre_id", genre_id },
-				}, RequestType.PUT);
-				Utils.UnlockSsl(false);
-			}
-			catch (Exception e) { Crashes.TrackError(e); }
+				{ "type", type },
+				{ "action", action },
+				{ "id", id },
+				{ "title", title },
+				{ "artist", artist },
+				{ "artist_id", artist_id },
+				{ "album", album },
+				{ "album_id", album_id },
+				{ "genre", genre },
+				{ "genre_id", genre_id },
+			});
 		}
 
 		public static void Search(string query)

@@ -20,6 +20,7 @@ class PlaylistController {
         playlist.then((info) => {
           if (info) {
             $scope.info = info.playlist;
+            $scope.info.cache = $scope.info.cache === "true";
 
             var randomTrack = $scope.info.tracks[0];
             if (randomTrack) {
@@ -64,6 +65,20 @@ class PlaylistController {
       this.Logger.debug("shuffle play playlist " + $scope.info.name);
       this.$rootScope.tracks = $scope.info.tracks;
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
+    };
+
+    $scope.cachePlaylistChanged = () => {
+      if ($scope.info) {
+        if ($scope.info.cache === undefined || $scope.info.cache === null || $scope.info.cache === "false") {
+          $scope.info.cache = "true";
+        } else if ($scope.info.cache === "true") {
+          $scope.info.cache = "false";
+        }
+        AlloyDbService.updatePlaylist({ id: $scope.info.id, cache: $scope.info.cache }).then((result) => {
+          $scope.refresh();
+        });
+      }
+
     };
 
     $rootScope.$on("loginStatusChange", (event, data) => {

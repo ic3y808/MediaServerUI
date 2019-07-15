@@ -62,13 +62,26 @@ section.panel.panel-default
             option(value="trackcount") Keep Last X Tracks
             option(value="days") Keep Tracks For Past X Days
             option(value="memory") Keep Max XGB of Data
-  
+
+      .form-group(ng-if="$root.settings.alloydb.alloydb_streaming_cache_strat === 'memory'")
+        label.col-sm-2.control-label Memory Limit
+        .col-sm-10
+          input.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_cache_strat_memory', type='text', placeholder='Memory Limit')
+      .form-group(ng-if="$root.settings.alloydb.alloydb_streaming_cache_strat === 'days'")
+        label.col-sm-2.control-label Days Limit
+        .col-sm-10
+          input.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_cache_strat_days', type='text', placeholder='Days Limit')
+      .form-group(ng-if="$root.settings.alloydb.alloydb_streaming_cache_strat === 'trackcount'")
+        label.col-sm-2.control-label Tracks Limit
+        .col-sm-10
+          input.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_cache_strat_tracks', type='text', placeholder='Tracks Limit')
+
       .form-group
         label.col-sm-2.control-label Cache Starred?
         .col-sm-10
           .checkbox
             label
-              input(type='checkbox', ng-model='$root.settings.alloydb.alloydb_streaming_cache_starred')
+              input(type='checkbox', ng-model='$root.settings.alloydb.alloydb_streaming_cache_starred', ng-change="cachePlaylistChanged()")
               |  Starred Tracks will converted to a streamable quality ahead of time, they will also be held outside the general cache
 
   header.panel-heading.font-bold  AlloyDB Actions 

@@ -35,6 +35,7 @@ router.get("/playlists", function (req, res) {
  * @param {string} songId.query ID of a song to add to the playlist. Use one songId parameter for each song in the playlist.
  * @param {string} songIds.query ID of a song to add to the playlist. Use one songId parameter for each song in the playlist.
  * @param {string} replace.query Replaces the contents of the playlist with the id/s
+ * @param {string} cache.query Changes the playlist Cache setting
  * @returns {Playlist} 200 - The newly created/updated playlist is returned
  * @security ApiKeyAuth
  */
@@ -44,6 +45,7 @@ router.put("/playlists", function (req, res) {
   var songId = req.query.songId;
   var songIds = req.query.songIds;
   var replace = req.query.replace;
+  var cache = req.query.cache;
 
   if (id && songId) {
     var existing = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=? AND song_id=?").all(id, songId);
@@ -56,15 +58,15 @@ router.put("/playlists", function (req, res) {
 
     var existingTracks = res.locals.db.prepare("SELECT * from PlaylistTracks WHERE id=?").all(id);
 
-    if(replace === "true"){
+    if (replace === "true") {
       existingTracks.forEach((existingId) => {
         res.locals.db.prepare("DELETE from PlaylistTracks WHERE id=? AND song_id=?").run(id, existingId.song_id);
       });
     }
-    
+
     ids.forEach((newId) => {
       var existingEntry = res.locals.db.prepare("SELECT * FROM PlaylistTracks WHERE id=? AND song_id=?").get(id, newId);
-      if(existingEntry === undefined){
+      if (existingEntry === undefined) {
         res.locals.db.prepare("INSERT INTO PlaylistTracks (`id`, `song_id`) VALUES (?, ?);").run(id, newId);
       }
     });
@@ -81,6 +83,9 @@ router.put("/playlists", function (req, res) {
 
     res.locals.db.prepare("INSERT INTO Playlists (`name`) VALUES (?);").run(name);
 
+  }
+  else if (id && cache) {
+    res.locals.db.prepare("UPDATE Playlists SET cache=? WHERE id=?").run(cache, id);
   }
   res.send(new structures.StatusResult("Done"));
 });

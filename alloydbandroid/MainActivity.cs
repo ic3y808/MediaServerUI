@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -28,6 +29,7 @@ using Alloy.Models;
 
 using Alloy.Widgets;
 using Android.Runtime;
+using Java.IO;
 using Debug = System.Diagnostics.Debug;
 using Exception = System.Exception;
 
@@ -39,12 +41,12 @@ namespace Alloy
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "http", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm", "audio/x-wav", "audio/ogg", "audio/webm", "application/ogg", "application/x-ogg" })]
 	[IntentFilter(new[] { Intent.ActionView, }, Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable }, DataScheme = "sshttp", DataMimeTypes = new[] { "audio/*", "audio/mp3", "audio/x-mp3", "audio/mpeg", "audio/mp4", "audio/mp4a-latm" })]
 	[IntentFilter(new[] { Intent.ActionManageNetworkUsage, }, Categories = new[] { Intent.CategoryDefault })]
-	public class MainActivity : AppCompatActivity, IMenuListener, PanelSlideListener
+	public class MainActivity : AppCompatActivity //, IMenuListener, PanelSlideListener
 	{
 		private BackgroundAudioServiceConnection serviceConnection;
-		//private ImageView primaryBackground;
-		//private ImageView secondaryBackground;
-		//private CurrentBackground currentBackground;
+		private ImageView primaryBackground;
+		private ImageView secondaryBackground;
+		private CurrentBackground currentBackground;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
 		private TextView subtitleTextView;
@@ -52,8 +54,8 @@ namespace Alloy
 		private ImageButton playPauseImageButton;
 		private ImageButton starImageButton;
 		private Drawable starred, notStarred, play, pause;
-
 		private MainPlaylistAdapter playlistAdapter;
+		private bool loadingBackground = false;
 
 		public class LogTraceListener : System.Diagnostics.TraceListener
 		{
@@ -91,10 +93,11 @@ namespace Alloy
 			{
 				Android.Util.Log.WriteLine(Android.Util.LogPriority.Debug, "alloy", args.Exception.ToString());
 			};
+
 			SetContentView(Resource.Layout.activity_main);
 
-			//primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
-			//secondaryBackground = FindViewById<ImageView>(Resource.Id.secondary_background);
+			primaryBackground = FindViewById<ImageView>(Resource.Id.primary_background);
+			secondaryBackground = FindViewById<ImageView>(Resource.Id.secondary_background);
 
 			DrawerLayout drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
 
@@ -159,7 +162,7 @@ namespace Alloy
 
 			CustomToggle drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
 			drawerLayout.AddDrawerListener(drawerToggle);
-			//currentBackground = CurrentBackground.None;
+			currentBackground = CurrentBackground.None;
 
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
 			ChangeFragment(Resource.String.fresh_fragment_id);
@@ -285,80 +288,80 @@ namespace Alloy
 			}
 		}
 
-		//private void SetBackground()
-		//{
-		//	try
-		//	{
-		//		Utils.Run(() =>
-		//		{
-		//			Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
-		//			fadeOut.Duration = 3000;
-		//			Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
-		//			fadeIn.Duration = 3000;
-		//			if (serviceConnection?.CurrentSong == null) return;
-		//			Bitmap newArt = serviceConnection.CurrentSong.GetAlbumArt().Blur(25);
+		private void SetBackground()
+		{
+			try
+			{
+				Utils.Run(async () =>
+				{
+					Animation fadeOut = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeOut);
+					fadeOut.Duration = 3000;
+					Animation fadeIn = AnimationUtils.LoadAnimation(Application.Context, Android.Resource.Animation.FadeIn);
+					fadeIn.Duration = 3000;
+					if (serviceConnection?.CurrentSong == null) return;
+					Bitmap bitmap = await serviceConnection.CurrentSong.GetAlbumArt();
+					Bitmap newArt = bitmap.Blur(25);
 
-		//			fadeOut.AnimationEnd += (o, e) =>
-		//			{
-		//				switch (currentBackground)
-		//				{
-		//					case CurrentBackground.None:
-		//						currentBackground = CurrentBackground.Primary;
-		//						break;
-		//					case CurrentBackground.Primary:
-		//						if (primaryBackground.Background != null)
-		//						{
-		//							BitmapDrawable a = primaryBackground.Background as BitmapDrawable;
-		//							a?.Bitmap?.Recycle();
-		//							a?.Bitmap?.Dispose();
-		//							primaryBackground.Background.Dispose();
-		//							primaryBackground.Background = null;
-		//						}
-		//						currentBackground = CurrentBackground.Secondary;
-		//						break;
-		//					case CurrentBackground.Secondary:
-		//						if (secondaryBackground.Background != null)
-		//						{
-		//							BitmapDrawable a = secondaryBackground.Background as BitmapDrawable;
-		//							a?.Bitmap?.Recycle();
-		//							a?.Bitmap?.Dispose();
-		//							secondaryBackground.Background.Dispose();
-		//							secondaryBackground.Background = null;
-		//						}
-		//						currentBackground = CurrentBackground.Primary;
-		//						break;
-		//				}
-		//			};
+					fadeOut.AnimationEnd += (o, e) =>
+					{
+						switch (currentBackground)
+						{
+							case CurrentBackground.None:
+								currentBackground = CurrentBackground.Primary;
+								break;
+							case CurrentBackground.Primary:
+								if (primaryBackground.Background != null)
+								{
+									BitmapDrawable a = primaryBackground.Background as BitmapDrawable;
+									a?.Bitmap?.Recycle();
+									a?.Bitmap?.Dispose();
+									primaryBackground.Background.Dispose();
+									primaryBackground.Background = null;
+								}
+								currentBackground = CurrentBackground.Secondary;
+								break;
+							case CurrentBackground.Secondary:
+								if (secondaryBackground.Background != null)
+								{
+									BitmapDrawable a = secondaryBackground.Background as BitmapDrawable;
+									a?.Bitmap?.Recycle();
+									a?.Bitmap?.Dispose();
+									secondaryBackground.Background.Dispose();
+									secondaryBackground.Background = null;
+								}
+								currentBackground = CurrentBackground.Primary;
+								break;
+						}
+					};
 
-		//			RunOnUiThread(() =>
-		//			{
-		//				switch (currentBackground)
-		//				{
-		//					case CurrentBackground.None:
-		//					case CurrentBackground.Secondary:
-		//						primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
-		//						primaryBackground.StartAnimation(fadeIn);
-		//						secondaryBackground.StartAnimation(fadeOut);
-		//						break;
-		//					case CurrentBackground.Primary:
-		//						secondaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
-		//						primaryBackground.StartAnimation(fadeOut);
-		//						secondaryBackground.StartAnimation(fadeIn);
-		//						break;
+					RunOnUiThread(() =>
+					{
+						switch (currentBackground)
+						{
+							case CurrentBackground.None:
+							case CurrentBackground.Secondary:
+								primaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
+								primaryBackground.StartAnimation(fadeIn);
+								secondaryBackground.StartAnimation(fadeOut);
+								break;
+							case CurrentBackground.Primary:
+								secondaryBackground.Background = new BitmapDrawable(Application.Context.Resources, newArt);
+								primaryBackground.StartAnimation(fadeOut);
+								secondaryBackground.StartAnimation(fadeIn);
+								break;
 
-		//				}
-		//			});
-		//		});
-		//	}
-		//	catch (Exception ee) { Crashes.TrackError(ee); }
-		//}
+						}
+					});
+				});
+			}
+			catch (Exception ee) { Crashes.TrackError(ee); }
+		}
 
 		private void BackgroundAudioServiceConnection_PlaybackStatusChanged(object sender, StatusEventArg e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			//SetBackground();
-			SetMetaData();
 			SetMainPlaylist();
+			new MetaLoader(this, true, true, true, true).Execute();
 		}
 
 		private void ServiceConnection_ServiceConnected(object sender, bool e)
@@ -369,9 +372,8 @@ namespace Alloy
 				MediaControllerCompat.SetMediaController(this, serviceConnection.MediaSession.Controller);
 			}
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			//SetBackground();
-			SetMetaData();
 			SetMainPlaylist();
+			new MetaLoader(this, true, true, true, true).Execute();
 		}
 
 		private void AlbumArtImageView_Click(object sender, EventArgs e)
@@ -387,7 +389,7 @@ namespace Alloy
 				if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.Pause(); }
 				else { serviceConnection.Play(); }
 
-			SetPlaying();
+			new MetaLoader(this, true, false, false, false).Execute();
 		}
 
 		private void StarImageButton_Click(object sender, EventArgs e)
@@ -476,10 +478,6 @@ namespace Alloy
 				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
 				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
 			}
-
-			SetPlaying();
-			CheckFavorite();
-
 		}
 
 		public void SetMainPlaylist()
@@ -496,6 +494,50 @@ namespace Alloy
 				Adapters.Adapters.SetAdapters(this, playlistAdapter);
 			}
 			playlistAdapter?.NotifyDataSetChanged();
+		}
+
+		public class MetaLoader : AsyncTask<object, object, int>
+		{
+			private readonly MainActivity mainActivity;
+			private readonly bool setPlaying;
+			private readonly bool setMetaData;
+			private readonly bool checkFavorite;
+			private readonly bool setBackground;
+
+			public MetaLoader(MainActivity mainActivity, bool setPlaying, bool setMetaData, bool checkFavorite, bool setBackground)
+			{
+				this.mainActivity = mainActivity;
+				this.setPlaying = setPlaying;
+				this.setMetaData = setMetaData;
+				this.checkFavorite = checkFavorite;
+				this.setBackground = setBackground;
+			}
+			protected override int RunInBackground(params object[] @params)
+			{
+				try
+				{
+					if (setPlaying) { mainActivity.SetPlaying(); }
+
+					if (setMetaData) { mainActivity.SetMetaData(); }
+
+					if (checkFavorite) { mainActivity.CheckFavorite(); }
+
+					if (setBackground) { mainActivity.SetBackground(); }
+
+					return 0;
+				}
+				catch (Exception e)
+				{
+					Crashes.TrackError(e);
+				}
+				return 1;
+			}
+
+			protected override void OnPostExecute(int result)
+			{
+				base.OnPostExecute(result);
+
+			}
 		}
 	}
 }

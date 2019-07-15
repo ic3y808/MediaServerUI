@@ -5,7 +5,9 @@ const electron = require("electron");
 const log = require("electron-log");
 const { ipcRenderer } = electron;
 log.catchErrors();
+
 module.exports.callback = {};
+
 var rotaterTransport = new (winston.transports.DailyRotateFile)({
   filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
   datePattern: "YYYY-MM-DD-HH",
@@ -54,30 +56,45 @@ const logger = winston.createLogger({
   ]
 });
 
-rotaterTransport.on("new", function (newFilename) {
-  transports.log.filename = newFilename;
-  logger.remove(transports.log);
-  logger.add(transports.log);
-});
-
-rotaterTransport.on("rotate", function (oldFilename, newFilename) {
-  transports.log.filename = newFilename;
-  logger.remove(transports.log);
-  logger.add(transports.log);
-});
-
-rotaterTransport.on("archive", function (newFilename) {
-  transports.log.filename = newFilename;
-  logger.remove(transports.log);
-  logger.add(transports.log);
-});
-
 
 if (process.env.MODE === "dev" || process.env.MODE === "test") {
   transports.log.level = "debug";
   transports.console.level = "debug";
-  logger.add(transports.console);
 }
+
+
+rotaterTransport.on("new", (newFilename) => {
+  transports.log.filename = newFilename;
+  logger.configure({
+    transports: [
+      transports.DailyRotateFile,
+      transports.log,
+      transports.console
+    ]
+  });
+});
+
+rotaterTransport.on("rotate", function (oldFilename, newFilename) {
+  transports.log.filename = newFilename;
+  logger.configure({
+    transports: [
+      transports.DailyRotateFile,
+      transports.log,
+      transports.console
+    ]
+  });
+});
+
+rotaterTransport.on("archive", function (newFilename) {
+  transports.log.filename = newFilename;
+  logger.configure({
+    transports: [
+      transports.DailyRotateFile,
+      transports.log,
+      transports.console
+    ]
+  });
+});
 
 module.exports.log = function (method, obj) {
   if (typeof obj === "string" || obj instanceof String) { logger.log(method, "from client: " + obj); }

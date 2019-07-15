@@ -4,6 +4,8 @@ const mime = require("mime-types");
 const fs = require("fs");
 const _ = require("lodash");
 const del = require("del");
+const klawSync = require("klaw-sync");
+const shell = require("shelljs");
 var http = require("http");
 var convert = require("../../common/convert");
 const { ipcRenderer } = require("electron");
@@ -236,6 +238,76 @@ module.exports = class MediaScannerBase {
     });
   }
 
+  checkCache() {
+    var settingsResult = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+    if (settingsResult && settingsResult.settings_value) {
+      var settings = JSON.parse(settingsResult.settings_value);
+      if (settings) {
+        switch (settings.alloydb_streaming_cache_strat) {
+          case "trackcount":
+            var trackLimit = settings.alloydb_streaming_cache_strat_tracks;
+            var files = fs.readdirSync(process.env.CONVERTED_MEDIA_DIR);
+            files = files.map(function (fileName) {
+              return {
+                name: fileName,
+                time: fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName)).ctime.getTime()
+              };
+            }).sort(function (a, b) {
+              return a.time - b.time;
+            }).map(function (v) {
+              return v.name;
+            });
+            while (files.length > trackLimit) {
+              shell.rm(path.join(process.env.CONVERTED_MEDIA_DIR, files[0]));
+              files.shift();
+            }
+            break;
+          case "days":
+            var dayslimit = settings.alloydb_streaming_cache_strat_days;
+            var d = new Date();
+            d.setDate(d.getDate() - dayslimit);
+            var files2 = fs.readdirSync(process.env.CONVERTED_MEDIA_DIR);
+            files2.forEach((fileName) => {
+              if (fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName)).ctime.getTime() < d) {
+                shell.rm(path.join(process.env.CONVERTED_MEDIA_DIR, fileName));
+              }
+            });
+            break;
+          case "memory":
+            var memLimit = settings.alloydb_streaming_cache_strat_memory;
+
+            memLimit = memLimit.replace("GB", "");
+            memLimit = memLimit * 1024;
+            var files3 = fs.readdirSync(process.env.CONVERTED_MEDIA_DIR);
+            files3 = files3.map(function (fileName) {
+              return {
+                name: fileName,
+                time: fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName)).ctime.getTime()
+              };
+            }).sort(function (a, b) {
+              return a.time - b.time;
+            }).map(function (v) {
+              return v.name;
+            });
+
+            var totalSize = 0;
+            files3.forEach((fileName) => {
+              const stats = fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName));
+              totalSize += stats.size / 1000000.0;
+            });
+
+            while (totalSize > memLimit) {
+              var fileName = files3.shift();
+              const stats = fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName));
+              totalSize -= stats.size / 1000000.0;
+              shell.rm(path.join(process.env.CONVERTED_MEDIA_DIR, fileName));
+            }
+            break;
+        }
+      }
+    }
+  }
+
   parseFiles(audioFiles) {
     if (this.shouldCancel()) { return Promise.resolve(); }
     const track = audioFiles.shift();
@@ -286,6 +358,7 @@ module.exports = class MediaScannerBase {
     this.checkSortOrder();
     this.checkCounts();
     this.checkHistory();
+    this.checkCache();
     this.info("Cleanup complete");
     this.updateStatus("Cleanup Complete", false);
   }
@@ -341,6 +414,7 @@ module.exports = class MediaScannerBase {
           var starredTracks = this.db.prepare("SELECT * FROM Tracks WHERE starred=?").all("true");
           var topTracks = this.db.prepare("SELECT * FROM Tracks WHERE starred=? ORDER BY play_count DESC LIMIT 25").all("true");
           var starredAlbums = this.db.prepare("SELECT * FROM Albums WHERE starred=?").all("true");
+          var playlists = this.db.prepare("SELECT * FROM Playlists WHERE cache=?").all("true");
 
 
           topTracks.forEach((track) => {
@@ -371,6 +445,15 @@ module.exports = class MediaScannerBase {
               album.tracks.forEach((track) => {
                 tracksToCache.push(track);
               });
+            });
+          });
+
+          playlists.forEach((playlist) => {
+            playlist.tracks = this.db.prepare("SELECT * FROM PlaylistTracks WHERE id=?").all(playlist.id);
+
+            playlist.tracks.forEach((playlistTrack) => {
+              var track = this.db.prepare("SELECT * FROM Tracks WHERE id=?").all(playlistTrack.song_id);
+              tracksToCache.push(track);
             });
           });
 

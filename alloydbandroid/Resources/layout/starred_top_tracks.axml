@@ -9,16 +9,13 @@
 	
 
 	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
 		android:text="@string/starred_top_tracks_list_label"
-		android:textColor="@color/textPrimary"
-		android:textSize="13sp" />
+		style="@style/TextView.ListHeader" />
 	
 	<View
 		android:layout_width="match_parent"
 		android:layout_height="1dp"
-		android:layout_marginTop="15dp"
+		android:layout_marginTop="2dp"
 		android:background="@color/divider_color" />
 
 	<android.support.v7.widget.RecyclerView

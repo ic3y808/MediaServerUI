@@ -158,6 +158,26 @@ function getStats(db) {
   libraryStats.total_data_served = calculateMemory(stats.data_sent);
   libraryStats.memory_used = calculateMemory(libraryStats.memory_used);
 
+  var generalCacheFiles = fs.readdirSync(process.env.CONVERTED_MEDIA_DIR);
+  
+  var generalCacheSize = 0;
+  generalCacheFiles.forEach((fileName) => {
+    const stats = fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName));
+    generalCacheSize += stats.size;
+  });
+  var starredCacheFiles = fs.readdirSync(process.env.CONVERTED_STARRED_MEDIA_DIR);
+  
+  var starredCacheSize = 0;
+  starredCacheFiles.forEach((fileName) => {
+    const stats = fs.statSync(path.join(process.env.CONVERTED_STARRED_MEDIA_DIR, fileName));
+    starredCacheSize += stats.size;
+  });
+
+  libraryStats.total_cache_size= calculateMemory(generalCacheSize);
+  libraryStats.total_starred_cache_size= calculateMemory(starredCacheSize);
+  var starredCache = fs.readdirSync(process.env.CONVERTED_STARRED_MEDIA_DIR);
+
+
   return libraryStats;
 }
 /**
