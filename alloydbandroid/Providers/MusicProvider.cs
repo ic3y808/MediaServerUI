@@ -63,7 +63,7 @@ namespace Alloy.Providers
 		public static string GetHost()
 		{
 			//return "http://127.0.0.1:4000";
-			return "http://71.56.197.213:4000";
+			
 
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
@@ -72,7 +72,7 @@ namespace Alloy.Providers
 
 		public static string GetApiKey()
 		{
-			return "b1413ebe481e48880a466ffe8523060a";
+			
 			//TODO change loading from preferences
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
 			return sp.GetString("alloydbapikey", "");
