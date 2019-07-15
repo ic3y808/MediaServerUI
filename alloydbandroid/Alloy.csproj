@@ -23,7 +23,7 @@
     <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
     <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
     <AndroidHttpClientHandlerType>Xamarin.Android.Net.AndroidClientHandler</AndroidHttpClientHandlerType>
-    <AndroidKeyStore>true</AndroidKeyStore>
+    <AndroidKeyStore>false</AndroidKeyStore>
     <AndroidSigningKeyStore>D:\Source\Github\Alloy\alloy.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>37a2447966364633bbed42866b87ad13</AndroidSigningStorePass>
     <AndroidSigningKeyPass>37a2447966364633bbed42866b87ad13</AndroidSigningKeyPass>
@@ -76,6 +76,7 @@
     <Compile Include="Adapters\AlbumsAdapter.cs" />
     <Compile Include="Adapters\ArtistDetailAdapters.cs" />
     <Compile Include="Adapters\ArtistsAdapter.cs" />
+    <Compile Include="Adapters\ChartsAdapter.cs" />
     <Compile Include="Adapters\FreshAdapter.cs" />
     <Compile Include="Adapters\GenreDetailAdapter.cs" />
     <Compile Include="Adapters\GenresAdapter.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Adapters\MenuAdapter.cs" />
     <Compile Include="Adapters\NowPlayingAdapter.cs" />
     <Compile Include="Adapters\SearchAdapter.cs" />
+    <Compile Include="Adapters\HistoryAdapter.cs" />
     <Compile Include="Adapters\StarredAdapter.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Common\PackageUtil.cs" />
@@ -100,9 +102,11 @@
     <Compile Include="Fragments\ArtistDetailFragment.cs" />
     <Compile Include="Fragments\ArtistsFragment.cs" />
     <Compile Include="Fragments\FragmentBase.cs" />
+    <Compile Include="Fragments\ChartsFragment.cs" />
     <Compile Include="Fragments\FreshFragment.cs" />
     <Compile Include="Fragments\GenreDetailFragment.cs" />
     <Compile Include="Fragments\GenresFragment.cs" />
+    <Compile Include="Fragments\HistoryFragment.cs" />
     <Compile Include="Fragments\SettingsFragment.cs" />
     <Compile Include="Fragments\StarredFragment.cs" />
     <Compile Include="Helpers\DiskLRUCache\DiskLruCache.cs" />
@@ -130,6 +134,7 @@
     <Compile Include="Models\Artist.cs" />
     <Compile Include="Models\BackgroundAudioStatus.cs" />
     <Compile Include="Models\Category.cs" />
+    <Compile Include="Models\History.cs" />
     <Compile Include="Models\Charts.cs" />
     <Compile Include="Models\CurrentBackground.cs" />
     <Compile Include="Models\CustomToggle.cs" />
@@ -869,7 +874,7 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\fresh_top_played_tracks.axml">
+    <AndroidResource Include="Resources\layout\history_tracks.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -931,7 +936,48 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\history_layout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\history_song_item.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fresh_top_played_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\charts_layout.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\charts_top_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\charts_never_played_albums.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\charts_never_played_tracks.axml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
     Other similar extension points exist, see Microsoft.Common.targets.

@@ -107,6 +107,14 @@
 	<string name="genre_details_info_play_button_text">Play Genre</string>
 	
 
+	<string name="history_tracks_list_label">Play History</string>
+	
+
+	<string name="charts_top_tracks_list_label">Top Played</string>
+	<string name="charts_never_played_albums_list_label">Never Played Albums</string>
+	<string name="charts_never_played_tracks_list_label">Never Played Tracks</string>
+
+
 
 	<string name="nav_favorites">Favorites</string>
 	<string name="nav_stream">Stream</string>

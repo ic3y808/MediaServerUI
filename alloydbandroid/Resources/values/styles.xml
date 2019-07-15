@@ -7,7 +7,7 @@
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:windowContentTransitions">true</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
-		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+	
 	</style>
 
 	<!-- Activity theme. -->
@@ -19,14 +19,14 @@
 		<item name="android:actionBarTabTextStyle">@style/AppTheme.ActionBar.TabText</item>
 		<item name="android:actionMenuTextColor">@color/actionbar_foreground</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
-		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+		
 	</style>
 
 	<!-- Splashscreen theme. -->
 	<style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar.FullScreen">
 		<item name="android:windowBackground">@drawable/splash</item>
 		<item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
-		<item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+		
 	</style>
 
 	<!-- General toolbar style. -->

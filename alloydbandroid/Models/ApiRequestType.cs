@@ -19,5 +19,6 @@
 		Starred,
 		Fresh,
 		Charts,
+		History
 	}
 }
