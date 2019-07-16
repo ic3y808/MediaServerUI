@@ -48,6 +48,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="fill_parent"
 			android:orientation="vertical"
+			android:paddingBottom="10dp"
 			android:background="@android:color/transparent">
 		</FrameLayout>
 
@@ -73,7 +74,7 @@
 				
 				<include android:id="@+id/sample1" layout="@layout/playback_controls"
 				         android:layout_width="match_parent"
-				         android:layout_height="68dp"/>
+				         android:layout_height="@dimen/playback_controls_height"/>
 				
 
 

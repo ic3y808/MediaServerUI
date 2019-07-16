@@ -6,7 +6,6 @@ using Android.Util;
 
 namespace Alloy.Recievers
 {
-	[BroadcastReceiver(Enabled = true)]
 	[IntentFilter(new[] { BluetoothDevice.ActionAclConnected, BluetoothDevice.ActionAclDisconnectRequested, BluetoothDevice.ActionAclDisconnected })]
 	public class BluetoothIntentReceiver : BroadcastReceiver
 	{
@@ -37,12 +36,12 @@ namespace Alloy.Recievers
 			if (BluetoothDevice.ActionAclConnected.Equals(action))
 			{
 				actionConnected = true;
-				ServiceProvider.Play();
+				ServiceProvider?.Play();
 			}
 			else if (BluetoothDevice.ActionAclDisconnected.Equals(action) || BluetoothDevice.ActionAclDisconnectRequested.Equals(action))
 			{
 				actionDisconnected = true;
-				ServiceProvider.Pause();
+				ServiceProvider?.Pause();
 			}
 			System.Diagnostics.Debug.WriteLine($"BluetoothDevice actionConnected {actionConnected} actionDisconnected {actionDisconnected}");
 		}

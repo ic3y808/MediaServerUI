@@ -2212,8 +2212,8 @@ namespace Alloy
 			// aapt resource value: 0x7f090011
 			public const int abc_text_size_title_material_toolbar = 2131296273;
 			
-			// aapt resource value: 0x7f0900ae
-			public const int action_buttons_large = 2131296430;
+			// aapt resource value: 0x7f0900af
+			public const int action_buttons_large = 2131296431;
 			
 			// aapt resource value: 0x7f0900a2
 			public const int activity_horizontal_margin = 2131296418;
@@ -2221,8 +2221,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0900a3
 			public const int activity_vertical_margin = 2131296419;
 			
-			// aapt resource value: 0x7f0900ab
-			public const int button_spacing_large = 2131296427;
+			// aapt resource value: 0x7f0900ac
+			public const int button_spacing_large = 2131296428;
 			
 			// aapt resource value: 0x7f09000a
 			public const int cardview_compat_inset_shadow = 2131296266;
@@ -2368,8 +2368,8 @@ namespace Alloy
 			// aapt resource value: 0x7f090058
 			public const int disabled_alpha_material_light = 2131296344;
 			
-			// aapt resource value: 0x7f0900b8
-			public const int fab_margin = 2131296440;
+			// aapt resource value: 0x7f0900b9
+			public const int fab_margin = 2131296441;
 			
 			// aapt resource value: 0x7f090000
 			public const int fastscroll_default_thickness = 2131296256;
@@ -2380,11 +2380,11 @@ namespace Alloy
 			// aapt resource value: 0x7f090002
 			public const int fastscroll_minimum_range = 2131296258;
 			
-			// aapt resource value: 0x7f0900be
-			public const int general_list_item_height = 2131296446;
+			// aapt resource value: 0x7f0900bf
+			public const int general_list_item_height = 2131296447;
 			
-			// aapt resource value: 0x7f0900b4
-			public const int gif_card_height = 2131296436;
+			// aapt resource value: 0x7f0900b5
+			public const int gif_card_height = 2131296437;
 			
 			// aapt resource value: 0x7f090059
 			public const int highlight_alpha_material_colored = 2131296345;
@@ -2416,11 +2416,11 @@ namespace Alloy
 			// aapt resource value: 0x7f090005
 			public const int item_touch_helper_swipe_escape_velocity = 2131296261;
 			
-			// aapt resource value: 0x7f0900af
-			public const int layout_section_spacing_large = 2131296431;
+			// aapt resource value: 0x7f0900b0
+			public const int layout_section_spacing_large = 2131296432;
 			
-			// aapt resource value: 0x7f0900b3
-			public const int mini_text_size = 2131296435;
+			// aapt resource value: 0x7f0900b4
+			public const int mini_text_size = 2131296436;
 			
 			// aapt resource value: 0x7f0900a5
 			public const int nav_header_height = 2131296421;
@@ -2428,11 +2428,11 @@ namespace Alloy
 			// aapt resource value: 0x7f0900a4
 			public const int nav_header_vertical_spacing = 2131296420;
 			
-			// aapt resource value: 0x7f0900b5
-			public const int nav_icon = 2131296437;
+			// aapt resource value: 0x7f0900b6
+			public const int nav_icon = 2131296438;
 			
-			// aapt resource value: 0x7f0900b7
-			public const int nav_tab_label_font_size = 2131296439;
+			// aapt resource value: 0x7f0900b8
+			public const int nav_tab_label_font_size = 2131296440;
 			
 			// aapt resource value: 0x7f090097
 			public const int notification_action_icon_size = 2131296407;
@@ -2479,23 +2479,26 @@ namespace Alloy
 			// aapt resource value: 0x7f0900a1
 			public const int notification_top_pad_large_text = 2131296417;
 			
-			// aapt resource value: 0x7f0900ac
-			public const int play_button_height_large = 2131296428;
+			// aapt resource value: 0x7f0900ad
+			public const int play_button_height_large = 2131296429;
 			
-			// aapt resource value: 0x7f0900aa
-			public const int playback_controller_size_large = 2131296426;
-			
-			// aapt resource value: 0x7f0900a6
-			public const int playback_controls_albumart_horizontal_margin = 2131296422;
+			// aapt resource value: 0x7f0900ab
+			public const int playback_controller_size_large = 2131296427;
 			
 			// aapt resource value: 0x7f0900a7
-			public const int playback_controls_albumart_size = 2131296423;
-			
-			// aapt resource value: 0x7f0900a9
-			public const int playback_controls_margin = 2131296425;
+			public const int playback_controls_albumart_horizontal_margin = 2131296423;
 			
 			// aapt resource value: 0x7f0900a8
-			public const int playback_controls_padding = 2131296424;
+			public const int playback_controls_albumart_size = 2131296424;
+			
+			// aapt resource value: 0x7f0900a6
+			public const int playback_controls_height = 2131296422;
+			
+			// aapt resource value: 0x7f0900aa
+			public const int playback_controls_margin = 2131296426;
+			
+			// aapt resource value: 0x7f0900a9
+			public const int playback_controls_padding = 2131296425;
 			
 			// aapt resource value: 0x7f090006
 			public const int preference_icon_minWidth = 2131296262;
@@ -2509,35 +2512,35 @@ namespace Alloy
 			// aapt resource value: 0x7f090009
 			public const int preference_seekbar_value_width = 2131296265;
 			
-			// aapt resource value: 0x7f0900ad
-			public const int skip_buttons_height_large = 2131296429;
-			
-			// aapt resource value: 0x7f0900b0
-			public const int song_card_height = 2131296432;
-			
-			// aapt resource value: 0x7f0900bc
-			public const int standard_100 = 2131296444;
-			
-			// aapt resource value: 0x7f0900b9
-			public const int standard_12 = 2131296441;
-			
-			// aapt resource value: 0x7f0900bd
-			public const int standard_145 = 2131296445;
-			
-			// aapt resource value: 0x7f0900ba
-			public const int standard_23 = 2131296442;
-			
-			// aapt resource value: 0x7f0900bb
-			public const int standard_55 = 2131296443;
-			
-			// aapt resource value: 0x7f0900b2
-			public const int sub_text_size = 2131296434;
-			
-			// aapt resource value: 0x7f0900b6
-			public const int tiny_padding = 2131296438;
+			// aapt resource value: 0x7f0900ae
+			public const int skip_buttons_height_large = 2131296430;
 			
 			// aapt resource value: 0x7f0900b1
-			public const int title_text_size = 2131296433;
+			public const int song_card_height = 2131296433;
+			
+			// aapt resource value: 0x7f0900bd
+			public const int standard_100 = 2131296445;
+			
+			// aapt resource value: 0x7f0900ba
+			public const int standard_12 = 2131296442;
+			
+			// aapt resource value: 0x7f0900be
+			public const int standard_145 = 2131296446;
+			
+			// aapt resource value: 0x7f0900bb
+			public const int standard_23 = 2131296443;
+			
+			// aapt resource value: 0x7f0900bc
+			public const int standard_55 = 2131296444;
+			
+			// aapt resource value: 0x7f0900b3
+			public const int sub_text_size = 2131296435;
+			
+			// aapt resource value: 0x7f0900b7
+			public const int tiny_padding = 2131296439;
+			
+			// aapt resource value: 0x7f0900b2
+			public const int title_text_size = 2131296434;
 			
 			// aapt resource value: 0x7f090060
 			public const int tooltip_corner_radius = 2131296352;

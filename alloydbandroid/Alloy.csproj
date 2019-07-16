@@ -161,6 +161,7 @@
     <Compile Include="Services\BackgroundAudioService.cs" />
     <Compile Include="Services\BackgroundAudioServiceBinder.cs" />
     <Compile Include="Services\BackgroundAudioServiceConnection.cs" />
+    <Compile Include="Services\MediaPlayerService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\StatusEventArg.cs" />
     <Compile Include="SplashScreen.cs" />

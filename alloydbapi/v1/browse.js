@@ -127,7 +127,7 @@ router.get("/artist", function (req, res) {
  * @route GET /browse/albums
  * @produces application/json 
  * @consumes application/json 
- * @group list - List API
+ * @group browse - Browse API
  * @param {string} type.query.required The list type. Must be one of the following: random, newest, highest, frequent, recent. you can also use alphabeticalByName or alphabeticalByArtist to page through all albums alphabetically, and starred to retrieve starred albums. Since 1.10.1 you can use byYear and byGenre to list albums in a given year range or genre.
  * @param {int} offset.query The list offset. Useful if you for example want to page through the list of newest albums.
  * @param {string} genre.query.required The name of the genre, e.g., "Rock".
@@ -450,7 +450,7 @@ router.get("/starred", function (req, res) {
  * @route GET /browse/history
  * @produces application/json 
  * @consumes application/json 
- * @group list - List API
+ * @group browse - Browse API
  * @param {int} limit.query Max number of songs to return.
  * @returns {Object} 200 - Returns play and action history.
  * @security ApiKeyAuth
@@ -467,7 +467,7 @@ router.get("/history", function (req, res) {
  * @route PUT /browse/history
  * @produces application/json 
  * @consumes application/json 
- * @group list - List API
+ * @group browse - Browse API
  * @param {string} id.query        
  * @param {string} type.query      
  * @param {string} action.query    
