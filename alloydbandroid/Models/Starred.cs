@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Alloy.Interfaces;
 using Newtonsoft.Json;
 
 namespace Alloy.Models
@@ -12,7 +13,7 @@ namespace Alloy.Models
 	public class Starred
 	{
 		[JsonProperty("tracks")]
-		public MusicQueue Tracks { get; set; }
+		public List<Song> Tracks { get; set; }
 		[JsonProperty("albums")]
 		public List<Album> Albums { get; set; }
 		[JsonProperty("artists")]
@@ -20,7 +21,7 @@ namespace Alloy.Models
 		[JsonProperty("top_artists")]
 		public List<Artist> TopArtists { get; set; }
 		[JsonProperty("top_tracks")]
-		public MusicQueue TopTracks { get; set; }
+		public List<Song> TopTracks { get; set; }
 		[JsonProperty("top_albums")]
 		public List<Album> TopAlbums { get; set; }
 	}

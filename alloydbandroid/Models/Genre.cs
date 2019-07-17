@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using Alloy.Converters;
+using Alloy.Interfaces;
 using Android.Graphics;
 using Android.OS;
 using Java.Interop;
@@ -21,7 +22,7 @@ namespace Alloy.Models
 		public Genre Genre { get; set; }
 
 		[JsonProperty("tracks")]
-		public MusicQueue Tracks { get; set; }
+		public Queue Tracks { get; set; }
 
 		[JsonProperty("total_plays")]
 		public int TotalPlays { get; set; }

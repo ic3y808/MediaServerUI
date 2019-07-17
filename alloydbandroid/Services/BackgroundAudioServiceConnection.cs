@@ -60,11 +60,6 @@ namespace Alloy.Services
 			Binder?.Service.Pause();
 		}
 
-		public void Play(Song song)
-		{
-			Binder?.Service.Play(song);
-		}
-
 		public void Play(int index, Queue queue)
 		{
 			Binder?.Service.Play(index, queue);
@@ -113,5 +108,7 @@ namespace Alloy.Services
 			get => Binder.MediaSession;
 			set => Binder.MediaSession = value;
 		}
+
+		public bool IsPlaying => Binder.IsPlaying;
 	}
 }

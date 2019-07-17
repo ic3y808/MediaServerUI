@@ -109,7 +109,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, StarredTrackAdapter.ViewHolder.ViewHolderEvent e)
 		{
-			ServiceConnection?.Play(e.Position, e.Songs);
+			ServiceConnection?.Play(e.Position, e.Songs.ToQueue());
 		}
 	}
 }

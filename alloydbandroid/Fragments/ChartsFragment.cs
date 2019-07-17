@@ -102,7 +102,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, TrackViewHolderEvent e)
 		{
-			Utils.Run(() => ServiceConnection?.Play(e.Position, e.Songs));
+			Utils.Run(() => ServiceConnection?.Play(e.Position, e.Songs.ToQueue()));
 		}
 	}
 }

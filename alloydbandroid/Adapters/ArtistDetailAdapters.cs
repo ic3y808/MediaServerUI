@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Alloy.Helpers;
+using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Providers;
 
@@ -373,10 +374,10 @@ namespace Alloy.Adapters
 
 	public class ArtistDetailTrackAdapter : RecyclerView.Adapter
 	{
-		public MusicQueue Songs { get; set; }
+		public Queue Songs { get; set; }
 		private BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
-		public ArtistDetailTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
+		public ArtistDetailTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -418,7 +419,7 @@ namespace Alloy.Adapters
 			public ImageView Image { get; set; }
 			public TextView Title { get; set; }
 			public TextView Album { get; set; }
-			public MusicQueue Songs { get; set; }
+			public Queue Songs { get; set; }
 			public bool Configured { get; set; }
 			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
@@ -451,7 +452,7 @@ namespace Alloy.Adapters
 			public class ViewHolderEvent
 			{
 				public int Position { get; set; }
-				public MusicQueue Songs { get; set; }
+				public Queue Songs { get; set; }
 			}
 		}
 	}
