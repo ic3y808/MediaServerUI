@@ -494,10 +494,10 @@ namespace Alloy.Adapters
 
 	public class FreshHorizontalTrackAdapter : RecyclerView.Adapter
 	{
-		public Queue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-		public FreshHorizontalTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
+		public FreshHorizontalTrackAdapter(List<Song> songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -532,7 +532,7 @@ namespace Alloy.Adapters
 			public RelativeLayout ItemRoot { get; set; }
 			public ImageView Image { get; set; }
 			public TextView Name { get; set; }
-			public Queue Songs { get; set; }
+			public List<Song> Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)

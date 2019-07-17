@@ -86,7 +86,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, HistoryTrackViewHolderEvent e)
 		{
-			ServiceConnection?.Play(e.Position, e.Songs);
+			ServiceConnection?.Play(e.Position, e.Songs.ToQueue());
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace Alloy.Recievers
 		public override void OnReceive(Context context, Intent intent)
 		{
 			if (!AudioManager.ActionAudioBecomingNoisy.Equals(intent.Action)) return;
-			if (serviceConnection != null && serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying)
+			if (serviceConnection != null &&  serviceConnection.IsPlaying)
 			{
 				serviceConnection.Pause();
 			}

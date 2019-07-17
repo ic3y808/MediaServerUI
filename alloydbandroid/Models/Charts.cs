@@ -17,8 +17,8 @@ namespace Alloy.Models
 		[JsonProperty("never_played_albums")]
 		public List<Album> NeverPlayedAlbums { get; set; }
 		[JsonProperty("top_tracks")]
-		public Queue TopTracks { get; set; }
+		public List<Song> TopTracks { get; set; }
 		[JsonProperty("never_played")]
-		public Queue NeverPlayed { get; set; }
+		public List<Song> NeverPlayed { get; set; }
 	}
 }

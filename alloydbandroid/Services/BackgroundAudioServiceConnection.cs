@@ -85,12 +85,6 @@ namespace Alloy.Services
 			return Binder?.Service.GetPreviousSong();
 		}
 
-		public MediaPlayer MediaPlayer
-		{
-			get => Binder.MediaPlayer;
-			set => Binder.MediaPlayer = value;
-		}
-
 		public Song CurrentSong
 		{
 			get => Binder.CurrentSong;

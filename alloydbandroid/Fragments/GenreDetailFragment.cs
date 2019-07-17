@@ -1,6 +1,7 @@
 ﻿using Android.OS;
 using Android.Views;
 using Alloy.Adapters;
+using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
@@ -83,7 +84,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, GenreDetailTrackAdapter.ViewHolder.ViewHolderEvent e)
 		{
-			ServiceConnection?.Play(e.Position, e.Songs);
+			ServiceConnection?.Play(e.Position, e.Songs.ToQueue());
 		}
 	}
 }

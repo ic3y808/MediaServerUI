@@ -60,7 +60,7 @@ namespace Alloy.Services
 
 			builder.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPrevious, "Previous", pIntentPrev));
 
-			builder.AddAction(audioService.MediaPlayer.IsPlaying ? new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPause, "Pause", pIntentPlayPause) : new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPlay, "Play", pIntentPlayPause));
+			builder.AddAction(audioService.IsPlaying ? new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPause, "Pause", pIntentPlayPause) : new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPlay, "Play", pIntentPlayPause));
 			
 			builder
 			.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMediaNext, "Next", pIntentNext))
@@ -125,7 +125,7 @@ namespace Alloy.Services
 
 				PlaybackStateCompat state = new PlaybackStateCompat.Builder()
 					.SetActions(PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionPlayPause | PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious)
-					.SetState(PlaybackStateCompat.StatePlaying, audioService.MediaPlayer.CurrentPosition.ProgressToTimer(audioService.MediaPlayer.Duration), 1.0f, SystemClock.ElapsedRealtime())
+					.SetState(PlaybackStateCompat.StatePlaying, audioService.MainQueue.CurrentPosition.ProgressToTimer(audioService.MainQueue.Duration), 1.0f, SystemClock.ElapsedRealtime())
 					.Build();
 				audioService.MediaSession.SetMetadata(metadata);
 				audioService.MediaSession.SetPlaybackState(state);

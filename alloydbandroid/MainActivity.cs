@@ -367,7 +367,7 @@ namespace Alloy
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			SetMainPlaylist();
-			new MetaLoader(this, true, true, true, true).Execute();
+			UpdateMeta(true, true, true, true);
 		}
 
 		private void ServiceConnection_ServiceConnected(object sender, bool e)
@@ -379,7 +379,7 @@ namespace Alloy
 			}
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 			SetMainPlaylist();
-			new MetaLoader(this, true, true, true, true).Execute();
+			UpdateMeta(true, true, true, true);
 		}
 
 		private void AlbumArtImageView_Click(object sender, EventArgs e)
@@ -391,11 +391,11 @@ namespace Alloy
 
 		private void PlayPauseImageButton_Click(object sender, EventArgs e)
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.MediaPlayer != null)
-				if (serviceConnection.MediaPlayer.IsPlaying) { serviceConnection.Pause(); }
+			if (serviceConnection != null && serviceConnection.IsConnected)
+				if (serviceConnection.IsPlaying) { serviceConnection.Pause(); }
 				else { serviceConnection.Play(); }
 
-			new MetaLoader(this, true, false, false, false).Execute();
+			UpdateMeta(true, true, false, false);
 		}
 
 		private void StarImageButton_Click(object sender, EventArgs e)
@@ -502,47 +502,22 @@ namespace Alloy
 			playlistAdapter?.NotifyDataSetChanged();
 		}
 
-		public class MetaLoader : AsyncTask<object, object, int>
+		public void UpdateMeta(bool setPlaying, bool setMetaData, bool checkFavorite, bool setBackground)
 		{
-			private readonly MainActivity mainActivity;
-			private readonly bool setPlaying;
-			private readonly bool setMetaData;
-			private readonly bool checkFavorite;
-			private readonly bool setBackground;
-
-			public MetaLoader(MainActivity mainActivity, bool setPlaying, bool setMetaData, bool checkFavorite, bool setBackground)
+			try
 			{
-				this.mainActivity = mainActivity;
-				this.setPlaying = setPlaying;
-				this.setMetaData = setMetaData;
-				this.checkFavorite = checkFavorite;
-				this.setBackground = setBackground;
+				if (setPlaying) { SetPlaying(); }
+
+				if (setMetaData) { SetMetaData(); }
+
+				if (checkFavorite) { CheckFavorite(); }
+
+				if (setBackground) { SetBackground(); }
+				
 			}
-			protected override int RunInBackground(params object[] @params)
+			catch (Exception e)
 			{
-				try
-				{
-					if (setPlaying) { mainActivity.SetPlaying(); }
-
-					if (setMetaData) { mainActivity.SetMetaData(); }
-
-					if (checkFavorite) { mainActivity.CheckFavorite(); }
-
-					if (setBackground) { mainActivity.SetBackground(); }
-
-					return 0;
-				}
-				catch (Exception e)
-				{
-					Crashes.TrackError(e);
-				}
-				return 1;
-			}
-
-			protected override void OnPostExecute(int result)
-			{
-				base.OnPostExecute(result);
-
+				Crashes.TrackError(e);
 			}
 		}
 	}

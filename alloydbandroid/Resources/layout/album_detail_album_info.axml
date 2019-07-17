@@ -36,6 +36,8 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@+id/imgUser"
 		android:layout_centerHorizontal="true"
+		android:gravity="center_horizontal"
+		android:layout_gravity="center_horizontal"
 		android:layout_marginTop="15sp"
 		android:fontFamily="sans-serif-light"
 		android:textColor="@color/white"

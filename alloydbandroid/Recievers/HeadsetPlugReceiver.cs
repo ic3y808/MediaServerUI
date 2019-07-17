@@ -41,7 +41,7 @@ namespace Alloy.Recievers
 
 			//media player
 			bool hasPosition = service?.CurrentSong != null;
-			bool? p = service?.MediaPlayer?.IsPlaying;
+			bool? p = service?.IsPlaying;
 			bool isPlaying = (p.HasValue && p.Value);
 
 			if (!hd && (!isInteractive || atLockscreen) && hasPosition && isPlaying)

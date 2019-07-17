@@ -23,7 +23,7 @@ namespace Alloy.Recievers
 			switch (intent.Action)
 			{
 				case BackgroundAudioService.ActionPlayPause:
-					if (service?.MediaPlayer != null && service.MediaPlayer.IsPlaying)
+					if (service.IsPlaying)
 					{
 						service?.Pause();
 					}
@@ -65,7 +65,7 @@ namespace Alloy.Recievers
 							service?.Play();
 							break;
 						case Keycode.MediaPlayPause:
-							if (service?.MediaPlayer != null && service.MediaPlayer.IsPlaying)
+							if (service.IsPlaying)
 							{
 								service?.Pause();
 							}
