@@ -375,10 +375,12 @@ namespace Alloy.Services
 
 		private void MediaPlayer_Info(object sender, MediaPlayer.InfoEventArgs info)
 		{
-			PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
-			NotificationService1.ShowNotification();
-			NotificationService1.UpdateMediaSessionMeta();
-
+			Utils.Run(() =>
+			{
+				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
+				NotificationService1.ShowNotification();
+				NotificationService1.UpdateMediaSessionMeta();
+			});
 		}
 		private void MediaPlayer_Buffer(object sender, MediaPlayer.BufferingUpdateEventArgs bufferUpdate)
 		{
@@ -417,9 +419,7 @@ namespace Alloy.Services
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
-
-		public MediaPlayer MediaPlayer { get; set; }
-
+		
 		public void InitHeadsetPlugReceiver()
 		{
 			try

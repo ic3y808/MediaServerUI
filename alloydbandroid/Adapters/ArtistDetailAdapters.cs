@@ -374,10 +374,10 @@ namespace Alloy.Adapters
 
 	public class ArtistDetailTrackAdapter : RecyclerView.Adapter
 	{
-		public Queue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 		private BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
-		public ArtistDetailTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
+		public ArtistDetailTrackAdapter(List<Song> songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -419,7 +419,7 @@ namespace Alloy.Adapters
 			public ImageView Image { get; set; }
 			public TextView Title { get; set; }
 			public TextView Album { get; set; }
-			public Queue Songs { get; set; }
+			public List<Song> Songs { get; set; }
 			public bool Configured { get; set; }
 			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
@@ -452,7 +452,7 @@ namespace Alloy.Adapters
 			public class ViewHolderEvent
 			{
 				public int Position { get; set; }
-				public Queue Songs { get; set; }
+				public List<Song> Songs { get; set; }
 			}
 		}
 	}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Graphics;
 using Android.Views;
@@ -171,10 +172,10 @@ namespace Alloy.Adapters
 
 	public class GenreDetailTrackAdapter : RecyclerView.Adapter
 	{
-		public Queue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 		private BackgroundAudioServiceConnection ServiceConnection { get; }
 
-		public GenreDetailTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
+		public GenreDetailTrackAdapter(List<Song> songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -217,7 +218,7 @@ namespace Alloy.Adapters
 			public TextView Title { get; set; }
 			public TextView Artist { get; set; }
 			public TextView TrackNo { get; set; }
-			public Queue Songs { get; set; }
+			public List<Song> Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; set; }
 
 			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
@@ -248,7 +249,7 @@ namespace Alloy.Adapters
 			public class ViewHolderEvent
 			{
 				public int Position { get; set; }
-				public Queue Songs { get; set; }
+				public List<Song> Songs { get; set; }
 			}
 		}
 	}

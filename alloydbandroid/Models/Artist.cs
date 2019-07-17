@@ -27,10 +27,10 @@ namespace Alloy.Models
 		public Artist Artist { get; set; }
 
 		[JsonProperty("popular_tracks")]
-		public Queue PopularTracks { get; set; }
+		public List<Song> PopularTracks { get; set; }
 
 		[JsonProperty("tracks")]
-		public Queue Tracks { get; set; }
+		public List<Song> Tracks { get; set; }
 
 		[JsonProperty("links")]
 		public List<Link> Links { get; set; }

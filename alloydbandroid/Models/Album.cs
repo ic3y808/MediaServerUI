@@ -22,7 +22,7 @@ namespace Alloy.Models
 		public Album Album { get; set; }
 
 		[JsonProperty("tracks")]
-		public Queue Tracks { get; set; }
+		public List<Song> Tracks { get; set; }
 
 		[JsonProperty("total_plays")]
 		public int TotalPlays { get; set; }

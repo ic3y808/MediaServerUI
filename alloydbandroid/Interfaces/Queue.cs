@@ -66,7 +66,14 @@ namespace Alloy.Interfaces
 			Clear();
 		}
 
+		public void Seek(int to)
+		{
+			Players[CurrentSong].SeekTo(to);
+		}
+
 		public bool IsPlaying => Players.Any(pair => pair.Value.IsPlaying);
+		public int CurrentPosition => Players[CurrentSong].CurrentPosition;
+		public int Duration => Players[CurrentSong].Duration;
 
 		public virtual void PrepareTracks()
 		{

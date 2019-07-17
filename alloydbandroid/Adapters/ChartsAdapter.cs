@@ -317,10 +317,10 @@ namespace Alloy.Adapters
 
 	public class ChartsTrackAdapter : RecyclerView.Adapter
 	{
-		public Queue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-		public ChartsTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
+		public ChartsTrackAdapter(List<Song> songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -368,7 +368,7 @@ namespace Alloy.Adapters
 			public TextView Title { get; set; }
 			public TextView Artist { get; set; }
 			public TextView Album { get; set; }
-			public Queue Songs { get; set; }
+			public List<Song> Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
@@ -404,6 +404,6 @@ namespace Alloy.Adapters
 	public class ChartTrackViewHolderEvent
 	{
 		public int Position { get; set; }
-		public Queue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 	}
 }

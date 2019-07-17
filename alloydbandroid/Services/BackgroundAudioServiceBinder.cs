@@ -58,12 +58,6 @@ namespace Alloy.Services
 			return Service?.GetPreviousSong();
 		}
 
-		public MediaPlayer MediaPlayer
-		{
-			get => Service.MediaPlayer;
-			set => Service.MediaPlayer = value;
-		}
-
 		public Song CurrentSong
 		{
 			get => Service.CurrentSong;

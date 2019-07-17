@@ -184,11 +184,11 @@ namespace Alloy
 		{
 			if (!e) return;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
-			
-				updateTimer = new Timer(500);
-				updateTimer.Elapsed += UpdateTimer_Elapsed;
-				updateTimer.Start();
-			
+
+			updateTimer = new Timer(500);
+			updateTimer.Elapsed += UpdateTimer_Elapsed;
+			updateTimer.Start();
+
 
 			SetPlaying();
 			SetFavorite();
@@ -205,7 +205,7 @@ namespace Alloy
 
 				int item = nowPlayingLayoutManager.FindFirstCompletelyVisibleItemPosition();
 				if (item < 0) return;
-				
+
 				int index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
 
 				if (item == index) return;
@@ -230,7 +230,7 @@ namespace Alloy
 		private bool loadingBackground = false;
 		private void SetBackground(Song song = null)
 		{
-			if(loadingBackground) return;
+			if (loadingBackground) return;
 			loadingBackground = true;
 			try
 			{
@@ -413,11 +413,10 @@ namespace Alloy
 				{
 					title = serviceConnection.CurrentSong.Title;
 					artist = serviceConnection.CurrentSong.Artist;
-					if (serviceConnection.MediaPlayer != null)
+					if (serviceConnection.IsPlaying)
 					{
-						duration = serviceConnection.MediaPlayer.CurrentPosition.ToTime() + " / " + serviceConnection.CurrentSong.Duration.ToTimeFromSeconds();
+						duration = serviceConnection.MainQueue.CurrentPosition.ToTime() + " / " + serviceConnection.CurrentSong.Duration.ToTimeFromSeconds();
 					}
-
 				}
 
 				titleTextView?.SetText(title, TextView.BufferType.Normal);
@@ -450,9 +449,9 @@ namespace Alloy
 		private void UpdateTimer_Elapsed(object sender, ElapsedEventArgs e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying)
+			if (serviceConnection.IsPlaying)
 			{
-				int val = serviceConnection.MediaPlayer.CurrentPosition.GetProgressPercentage(serviceConnection.MediaPlayer.Duration);
+				int val = serviceConnection.MainQueue.CurrentPosition.GetProgressPercentage(serviceConnection.MainQueue.Duration);
 				RunOnUiThread(() =>
 				{
 					seekBar.Progress = val;
@@ -464,38 +463,35 @@ namespace Alloy
 		private void SeekBar_ProgressChanged(object sender, SeekBar.ProgressChangedEventArgs e)
 		{
 			if (!e.FromUser || !serviceConnection.IsConnected) return;
-			if (serviceConnection.MediaPlayer != null)
-			{
-				int time = e.Progress.ProgressToTimer(serviceConnection.MediaPlayer.Duration);
-				serviceConnection.MediaPlayer.SeekTo(time);
-			}
+
+			int time = e.Progress.ProgressToTimer(serviceConnection.MainQueue.Duration);
+			serviceConnection.MainQueue.Seek(time);
+
 
 		}
 
 		public void SetPlaying()
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.MediaPlayer != null)
-			{
-				if (serviceConnection.MediaPlayer.IsPlaying)
-					playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
-				else
-					playPauseImageButton?.SetImageResource(Resource.Drawable.play);
-			}
+
+			if (serviceConnection.IsPlaying)
+				playPauseImageButton?.SetImageResource(Resource.Drawable.pause);
+			else
+				playPauseImageButton?.SetImageResource(Resource.Drawable.play);
+
 
 		}
 
 		private void PlayPauseImageButton_Click(object sender, EventArgs e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.MediaPlayer != null)
-			{
 
-				if (serviceConnection.MediaPlayer.IsPlaying)
-					serviceConnection.Pause();
-				else
-					serviceConnection.Play();
-			}
+
+			if (serviceConnection.IsPlaying)
+				serviceConnection.Pause();
+			else
+				serviceConnection.Play();
+
 
 
 			SetPlaying();
@@ -506,7 +502,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.CurrentSong != null)
 				ScrollTo(serviceConnection.GetPreviousSong());
-			if (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying) Utils.Run(() => { serviceConnection.PlayPreviousSong(); });
+			if (serviceConnection.IsPlaying) Utils.Run(() => { serviceConnection.PlayPreviousSong(); });
 		}
 
 		private void NextImageButton_Click(object sender, EventArgs e)
@@ -514,7 +510,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.CurrentSong != null)
 				ScrollTo(serviceConnection.GetNextSong());
-			if (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying) Utils.Run(() => { serviceConnection.PlayNextSong(); });
+			if (serviceConnection.IsPlaying) Utils.Run(() => { serviceConnection.PlayNextSong(); });
 		}
 
 		private void SetFavorite()
