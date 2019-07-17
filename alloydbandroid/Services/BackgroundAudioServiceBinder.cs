@@ -33,11 +33,6 @@ namespace Alloy.Services
 			Service?.Pause();
 		}
 
-		public void Play(Song song)
-		{
-			Service?.Play(song);
-		}
-
 		public void Play(int index, Queue queue)
 		{
 			Service?.Play(index, queue);
@@ -86,5 +81,7 @@ namespace Alloy.Services
 			get => Service.MediaSession;
 			set => Service.MediaSession = value;
 		}
+
+		public bool IsPlaying => Service.IsPlaying;
 	}
 }

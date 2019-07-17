@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Alloy.Helpers;
+using Alloy.Interfaces;
 using Android.Views;
 using Android.Widget;
 using Alloy.Models;
@@ -407,10 +408,10 @@ namespace Alloy.Adapters
 
 	public class FreshTrackAdapter : RecyclerView.Adapter
 	{
-		public MusicQueue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-		public FreshTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
+		public FreshTrackAdapter(List<Song> songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -458,7 +459,7 @@ namespace Alloy.Adapters
 			public TextView Title { get; set; }
 			public TextView Artist { get; set; }
 			public TextView Album { get; set; }
-			public MusicQueue Songs { get; set; }
+			public List<Song> Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
@@ -493,10 +494,10 @@ namespace Alloy.Adapters
 
 	public class FreshHorizontalTrackAdapter : RecyclerView.Adapter
 	{
-		public MusicQueue Songs { get; set; }
+		public Queue Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-		public FreshHorizontalTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
+		public FreshHorizontalTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -531,7 +532,7 @@ namespace Alloy.Adapters
 			public RelativeLayout ItemRoot { get; set; }
 			public ImageView Image { get; set; }
 			public TextView Name { get; set; }
-			public MusicQueue Songs { get; set; }
+			public Queue Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
@@ -565,6 +566,6 @@ namespace Alloy.Adapters
 	public class TrackViewHolderEvent
 	{
 		public int Position { get; set; }
-		public MusicQueue Songs { get; set; }
+		public List<Song> Songs { get; set; }
 	}
 }

@@ -2,6 +2,7 @@
 using Android.OS;
 using Android.Views;
 using Alloy.Adapters;
+using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 
@@ -95,7 +96,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent e)
 		{
-			ServiceConnection?.Play(e.Position, e.Songs);
+			ServiceConnection?.Play(e.Position, e.Songs.ToQueue());
 		}
 
 		private void MusicProvider_AlbumStartRefresh(object sender, EventArgs e)

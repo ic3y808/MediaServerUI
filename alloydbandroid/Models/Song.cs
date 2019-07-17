@@ -67,7 +67,10 @@ namespace Alloy.Models
 		public string No { get; set; }
 		[JsonProperty("of")]
 		public string Of { get; set; }
+		[JsonIgnore]
 		public bool IsSelected { get; set; }
+		[JsonIgnore]
+		public bool IsPrepared { get; set; }
 
 		public override string ToString()
 		{

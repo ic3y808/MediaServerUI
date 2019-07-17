@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Alloy.Helpers;
+using Alloy.Interfaces;
 using Android.Views;
 using Android.Widget;
 using Alloy.Models;
@@ -78,10 +79,10 @@ namespace Alloy.Adapters
 	
 	public class HistoryTrackAdapter : RecyclerView.Adapter
 	{
-		public MusicQueue Songs { get; set; }
+		public Queue Songs { get; set; }
 		public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-		public HistoryTrackAdapter(MusicQueue songs, BackgroundAudioServiceConnection serviceConnection)
+		public HistoryTrackAdapter(Queue songs, BackgroundAudioServiceConnection serviceConnection)
 		{
 			Songs = songs;
 			ServiceConnection = serviceConnection;
@@ -129,7 +130,7 @@ namespace Alloy.Adapters
 			public TextView Title { get; set; }
 			public TextView Artist { get; set; }
 			public TextView Album { get; set; }
-			public MusicQueue Songs { get; set; }
+			public Queue Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public ViewHolder(View itemView, Action<HistoryTrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
@@ -166,6 +167,6 @@ namespace Alloy.Adapters
 	public class HistoryTrackViewHolderEvent
 	{
 		public int Position { get; set; }
-		public MusicQueue Songs { get; set; }
+		public Queue Songs { get; set; }
 	}
 }

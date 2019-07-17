@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Alloy.Interfaces;
 using Newtonsoft.Json;
 
 namespace Alloy.Models
@@ -16,8 +17,8 @@ namespace Alloy.Models
 		[JsonProperty("never_played_albums")]
 		public List<Album> NeverPlayedAlbums { get; set; }
 		[JsonProperty("top_tracks")]
-		public MusicQueue TopTracks { get; set; }
+		public Queue TopTracks { get; set; }
 		[JsonProperty("never_played")]
-		public MusicQueue NeverPlayed { get; set; }
+		public Queue NeverPlayed { get; set; }
 	}
 }

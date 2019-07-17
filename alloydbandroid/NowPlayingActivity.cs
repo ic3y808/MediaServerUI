@@ -205,7 +205,7 @@ namespace Alloy
 
 				int item = nowPlayingLayoutManager.FindFirstCompletelyVisibleItemPosition();
 				if (item < 0) return;
-				if (item >= serviceConnection.MainQueue.Count - 1) serviceConnection.MainQueue.GetMoreData();
+				
 				int index = serviceConnection.MainQueue.IndexOf(serviceConnection.CurrentSong);
 
 				if (item == index) return;

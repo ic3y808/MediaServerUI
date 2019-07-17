@@ -144,7 +144,6 @@
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemClickEventArgs.cs" />
     <Compile Include="Models\Link.cs" />
-    <Compile Include="Models\MusicQueue.cs" />
     <Compile Include="Models\RequestType.cs" />
     <Compile Include="Models\SearchResult.cs" />
     <Compile Include="Models\Song.cs" />

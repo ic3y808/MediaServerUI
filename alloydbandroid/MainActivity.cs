@@ -419,7 +419,7 @@ namespace Alloy
 
 		private void NextImageButton_Click(object sender, EventArgs e)
 		{
-			if (serviceConnection != null && serviceConnection.IsConnected && (serviceConnection.MediaPlayer != null && serviceConnection.MediaPlayer.IsPlaying)) serviceConnection.PlayNextSong();
+			if (serviceConnection != null && serviceConnection.IsConnected && serviceConnection.CurrentSong != null) serviceConnection.PlayNextSong();
 		}
 
 		private void FragmentManager_BackStackChanged(object sender, EventArgs e)
@@ -473,7 +473,7 @@ namespace Alloy
 		public void SetPlaying()
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
-			if (serviceConnection.MediaPlayer != null) { playPauseImageButton?.SetImageDrawable(serviceConnection.MediaPlayer.IsPlaying ? pause : play); }
+			playPauseImageButton?.SetImageDrawable(serviceConnection.IsPlaying ? pause : play);
 		}
 
 		public void SetMetaData()

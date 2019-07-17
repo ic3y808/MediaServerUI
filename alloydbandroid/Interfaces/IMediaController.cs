@@ -7,10 +7,8 @@ namespace Alloy.Interfaces
 	{
 		void Play();
 		void Pause();
-		void Play(Song song);
 		void Play(int index, Queue queue);
 		void PlayNextSong();
 		void PlayPreviousSong();
-		MediaPlayer MediaPlayer { get; set; }
 	}
 }

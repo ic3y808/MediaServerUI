@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
+using Alloy.Interfaces;
 using Android.App;
 using Android.Content;
 using Android.Database;
@@ -588,7 +589,16 @@ namespace Alloy.Helpers
 			}
 		}
 
+		public static Queue ToQueue(this List<Song> songs)
+		{
+			Queue queue = new Queue();
+			foreach (Song song in songs)
+			{
+				queue.Add(song);
+			}
 
+			return queue;
+		}
 
 		public static void Toast(this string text)
 		{
