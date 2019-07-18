@@ -43,6 +43,16 @@ namespace Alloy.Interfaces
 			Players[CurrentSong].Start();
 		}
 
+		public void Play()
+		{
+			Players[CurrentSong]?.Start();
+		}
+
+		public void Pause()
+		{
+			Players[CurrentSong]?.Pause();
+		}
+
 		public void Stop()
 		{
 			Players[CurrentSong]?.Pause();
@@ -121,12 +131,7 @@ namespace Alloy.Interfaces
 
 		private void Prepare(MediaPlayer player, Song song, Action callback)
 		{
-			int result = Utils.Retry.Do(() =>
-							{
-								player.Prepare();
-								return 0;
-							}, TimeSpan.FromSeconds(1), 25);
-
+			player.PrepareAsync();
 			player.Prepared += (s, e) =>
 			{
 				song.IsPrepared = true;

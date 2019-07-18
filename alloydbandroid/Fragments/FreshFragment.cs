@@ -64,6 +64,7 @@ namespace Alloy.Fragments
 
 		public override void ServiceConnected()
 		{
+			
 			freshAdapter = new FreshAdapter(Activity, ServiceConnection);
 			freshContentView.SetAdapter(freshAdapter);
 			freshAdapter.TrackClick += Track_ItemClick;
@@ -93,6 +94,11 @@ namespace Alloy.Fragments
 		{
 			MusicProvider.RefreshFresh();
 			MusicProvider.RefreshCharts();
+		}
+
+		public override void ApiError()
+		{
+			refreshLayout.Refreshing = false;
 		}
 
 		private void Artist_ItemClick(object sender, FreshArtistAdapter.ViewHolder.ViewHolderEvent e)

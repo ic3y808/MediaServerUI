@@ -74,12 +74,14 @@ namespace Alloy.Fragments
 		{
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			MusicProvider.SearchResultsRecieved -= MusicProvider_SearchResultsRecieved;
+			MusicProvider.ApiError -= MusicProvider_ApiError;
 		}
 
 		private void AddHandlers()
 		{
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			MusicProvider.SearchResultsRecieved += MusicProvider_SearchResultsRecieved;
+			MusicProvider.ApiError += MusicProvider_ApiError;
 		}
 
 		public override bool OnContextItemSelected(IMenuItem item)
@@ -203,6 +205,11 @@ namespace Alloy.Fragments
 			searchView.SuggestionsAdapter = suggestionAdapter;
 		}
 
+		private void MusicProvider_ApiError(object sender, EventArgs e)
+		{
+			ApiError();
+		}
+
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
 			int id = item.ItemId;
@@ -322,6 +329,7 @@ namespace Alloy.Fragments
 		public virtual void OnRefreshed() { }
 		public virtual void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo) { }
 		public virtual void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info) { }
+		public virtual void ApiError() { }
 
 		public virtual void Loaded()
 		{
