@@ -10,8 +10,11 @@ using Alloy.Providers;
 using Alloy.Services;
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.Graphics;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
+using MaterialRippleLibrary;
 
 namespace Alloy.Adapters
 {
@@ -66,7 +69,7 @@ namespace Alloy.Adapters
 						StarredTrackAdapter starredTopTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.TopTracks, ServiceConnection);
 						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTopTracksAdapter.NotifyDataSetChanged(); };
 						starredTopTracksHolder.StarredTopTracksRecycleView?.SetAdapter(starredTopTracksAdapter);
-						starredTopTracksAdapter.ItemClick += TrackClick;
+						//starredTopTracksAdapter.ItemClick += TrackClick;
 						Adapters.SetAdapters(Activity, starredTopTracksAdapter);
 					}
 
@@ -107,7 +110,7 @@ namespace Alloy.Adapters
 						StarredTrackAdapter starredTracksAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, ServiceConnection);
 						BackgroundAudioServiceConnection.PlaybackStatusChanged += (sender, arg) => { starredTracksAdapter.NotifyDataSetChanged(); };
 						starredTracksHolder.StarredTracksRecycleView?.SetAdapter(starredTracksAdapter);
-						starredTracksAdapter.ItemClick += TrackClick;
+						//starredTracksAdapter.ItemClick += TrackClick;
 						Adapters.SetAdapters(Activity, starredTracksAdapter);
 					}
 
@@ -138,7 +141,11 @@ namespace Alloy.Adapters
 				case 1:
 					return new StarredTopAlbumsViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_top_albums, parent, false));
 				case 2:
-					return new StarredTopTracksViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_top_tracks, parent, false));
+					return new StarredTopTracksViewHolder(MaterialRippleLayout.on(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_top_tracks, parent, false))
+						.RippleColor(Color.ParseColor("#FF0000"))
+						.RippleAlpha(0.2f)
+						.RippleHover(true)
+						.create());
 				case 3:
 					return new StarredArtistsViewHolder(LayoutInflater.From(Context).Inflate(Resource.Layout.starred_artists, parent, false));
 				case 4:
@@ -211,6 +218,7 @@ namespace Alloy.Adapters
 			public RecyclerView StarredTopTracksRecycleView { get; set; }
 			public StarredTopTracksViewHolder(View itemView) : base(itemView)
 			{
+				itemView.Clickable = true;
 				StarredTopTracksListContainer = itemView.FindViewById<LinearLayout>(Resource.Id.starred_top_tracks_list_container);
 				StarredTopTracksListContainer.Visibility = ViewStates.Gone;
 				LinearLayoutManager layoutManager = new LinearLayoutManager(ItemView.Context, LinearLayoutManager.Vertical, false);
@@ -438,20 +446,17 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_song_item, parent, false);
-			return new ViewHolder(view, OnClick, ServiceConnection);
+			return new ViewHolder(
+				MaterialRippleLayout.on(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_song_item, parent, false))
+					.RippleColor(new Color(ContextCompat.GetColor(parent.Context, Resource.Color.ripple_color)))
+					.RippleAlpha(0.2f)
+					.RippleHover(true)
+					.create(), ServiceConnection);
 		}
 
 		public override int ItemCount => Songs.Count;
 
-		void OnClick(ViewHolder.ViewHolderEvent e)
-		{
-			ItemClick?.Invoke(this, e);
-		}
-
-		public event EventHandler<ViewHolder.ViewHolderEvent> ItemClick;
-
-		public class ViewHolder : RecyclerView.ViewHolder
+		public class ViewHolder : RecyclerView.ViewHolder, View.IOnClickListener, View.IOnLongClickListener
 		{
 			public LinearLayout ItemRoot { get; set; }
 			public ImageView Image { get; set; }
@@ -461,8 +466,9 @@ namespace Alloy.Adapters
 			public List<Song> Songs { get; set; }
 			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
-			public ViewHolder(View itemView, Action<ViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
+			public ViewHolder(View itemView, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
+				
 				ItemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
 				Title = itemView.FindViewById<TextView>(Resource.Id.title);
@@ -470,8 +476,12 @@ namespace Alloy.Adapters
 				Album = itemView.FindViewById<TextView>(Resource.Id.album);
 				Album.Typeface = Typeface.Create(Album.Typeface, TypefaceStyle.Italic);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Songs = Songs });
+				//itemView.Click += (sender, e) => listener(new ViewHolderEvent { Position = LayoutPosition, Songs = Songs });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
+				ItemView.LayoutParameters = (new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MatchParent, RecyclerView.LayoutParams.WrapContent));
+				itemView.SetOnClickListener(this);
+				itemView.SetOnLongClickListener(this);
+
 			}
 
 			public void SetSelected(int position)
@@ -494,6 +504,17 @@ namespace Alloy.Adapters
 			{
 				public int Position { get; set; }
 				public List<Song> Songs { get; set; }
+			}
+
+			public void OnClick(View v)
+			{
+				ServiceConnection?.Play(AdapterPosition, Songs.ToQueue());
+			}
+
+			public bool OnLongClick(View v)
+			{
+				return true;
+				
 			}
 		}
 	}

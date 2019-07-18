@@ -162,7 +162,7 @@ namespace Alloy
 			currentBackground = CurrentBackground.None;
 
 			FragmentManager.BackStackChanged += FragmentManager_BackStackChanged;
-			ChangeFragment(Resource.String.fresh_fragment_id);
+			ChangeFragment(Resource.String.starred_fragment_id);
 		}
 
 		protected override void OnResume()
@@ -448,21 +448,6 @@ namespace Alloy
 			FragmentManager.ChangeTo(fragment, true, "Settings", null);
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
-		}
-
-		public void OnActiveViewChanged(View v)
-		{
-			//TODO implement view change logic for OnActiveViewChanged
-		}
-
-		public void onPanelSlide(View panel, float slideOffset)
-		{
-			//TODO implement view change logic for onPanelSlide
-		}
-
-		public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState)
-		{
-			//TODO implement view change logic for onPanelStateChanged
 		}
 
 		public void SetPlaying()

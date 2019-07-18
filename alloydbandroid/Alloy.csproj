@@ -85,6 +85,7 @@
     <Compile Include="Adapters\NowPlayingAdapter.cs" />
     <Compile Include="Adapters\SearchAdapter.cs" />
     <Compile Include="Adapters\HistoryAdapter.cs" />
+    <Compile Include="Adapters\StarredAdapter - Copy.cs" />
     <Compile Include="Adapters\StarredAdapter.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Common\PackageUtil.cs" />
@@ -170,12 +171,9 @@
     <Compile Include="Widgets\FastScrollRecyclerView.cs" />
     <Compile Include="Widgets\IndexFastScrollRecyclerSection.cs" />
     <Compile Include="Widgets\IndexFastScrollRecyclerView.cs" />
-    <Compile Include="Widgets\PanelSlideListener.cs" />
+    <Compile Include="Widgets\MaterialRipple.cs" />
     <Compile Include="Widgets\ScrollableViewHelper.cs" />
-    <Compile Include="Widgets\SimplePanelSlideListener.cs" />
     <Compile Include="Widgets\SlideDrawable.cs" />
-    <Compile Include="Widgets\SlidingUpPanelLayout.cs" />
-    <Compile Include="Widgets\ViewDragHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\AboutAssets.txt" />
