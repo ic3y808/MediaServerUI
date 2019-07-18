@@ -38,24 +38,20 @@
 		<attr name="fastScrollEnableThumbInactiveColor" format="reference|boolean" />
 		<attr name="fastScrollThumbEnabled" format="reference|boolean" />
 	</declare-styleable>
-	
-	<declare-styleable name="SlidingUpPanelLayout">
-		<attr name="umanoPanelHeight" format="dimension" />
-		<attr name="umanoShadowHeight" format="dimension" />
-		<attr name="umanoParallaxOffset" format="dimension" />
-		<attr name="umanoFadeColor" format="color" />
-		<attr name="umanoFlingVelocity" format="integer" />
-		<attr name="umanoDragView" format="reference" />
-		<attr name="umanoScrollableView" format="reference" />
-		<attr name="umanoOverlay" format="boolean"/>
-		<attr name="umanoClipPanel" format="boolean"/>
-		<attr name="umanoAnchorPoint" format="float" />
-		<attr name="umanoInitialState" format="enum">
-			<enum name="expanded" value="0" />
-			<enum name="collapsed" value="1" />
-			<enum name="anchored" value="2" />
-			<enum name="hidden" value="3" />
-		</attr>
-		<attr name="umanoScrollInterpolator" format="reference" />
+
+	<declare-styleable name="MaterialRippleLayout">
+		<attr name="mrl_rippleColor" format="color" localization="suggested" />
+		<attr name="mrl_rippleDimension" format="dimension" localization="suggested" />
+		<attr name="mrl_rippleOverlay" format="boolean" localization="suggested" />
+		<attr name="mrl_rippleAlpha" format="float" localization="suggested" />
+		<attr name="mrl_rippleDuration" format="integer" localization="suggested" />
+		<attr name="mrl_rippleFadeDuration" format="integer" localization="suggested" />
+		<attr name="mrl_rippleHover" format="boolean" localization="suggested" />
+		<attr name="mrl_rippleBackground" format="color" localization="suggested" />
+		<attr name="mrl_rippleDelayClick" format="boolean" localization="suggested" />
+		<attr name="mrl_ripplePersistent" format="boolean" localization="suggested" />
+		<attr name="mrl_rippleInAdapter" format="boolean" localization="suggested" />
+		<attr name="mrl_rippleRoundedCorners" format="dimension" localization="suggested" />
 	</declare-styleable>
+
 </resources>

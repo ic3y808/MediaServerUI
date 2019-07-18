@@ -13,7 +13,7 @@ namespace Alloy.Fragments
 {
 	public class StarredFragment : FragmentBase
 	{
-		private StarredAdapter starredAdapter;
+		private StarredTrackAdapter starredAdapter;
 		private RecyclerView starredContentView;
 		private SwipeRefreshLayout refreshLayout;
 
@@ -29,7 +29,7 @@ namespace Alloy.Fragments
 			refreshLayout.SetOnRefreshListener(this);
 			refreshLayout.SetColorSchemeResources(Resource.Color.colorPrimary, Android.Resource.Color.HoloGreenDark, Android.Resource.Color.HoloOrangeDark, Android.Resource.Color.HoloBlueDark);
 
-			LinearLayoutManager layoutManager = new LinearLayoutManager(Context, LinearLayoutManager.Vertical, false);
+			LinearLayoutManager layoutManager = new LinearLayoutManager(Context);
 			starredContentView = root_view.FindViewById<RecyclerView>(Resource.Id.starred_content_list);
 			starredContentView.SetLayoutManager(layoutManager);
 			RegisterForContextMenu(starredContentView);
@@ -46,6 +46,16 @@ namespace Alloy.Fragments
 		private void MusicProvider_StarredRefreshed(object sender, Starred e)
 		{
 			refreshLayout.Refreshing = false;
+			if (starredAdapter == null)
+			{
+				starredAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, ServiceConnection);
+				starredContentView.SetAdapter(starredAdapter);
+				//starredAdapter.TrackClick += Track_ItemClick;
+				//starredAdapter.AlbumClick += Album_ItemClick;
+				//starredAdapter.ArtistClick += Artist_ItemClick;
+				Adapters.Adapters.SetAdapters(Activity, starredAdapter);
+			}
+
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -68,12 +78,7 @@ namespace Alloy.Fragments
 
 			ScrollToNowPlaying();
 
-			starredAdapter = new StarredAdapter(Activity, ServiceConnection);
-			starredContentView.SetAdapter(starredAdapter);
-			starredAdapter.TrackClick += Track_ItemClick;
-			starredAdapter.AlbumClick += Album_ItemClick;
-			starredAdapter.ArtistClick += Artist_ItemClick;
-			Adapters.Adapters.SetAdapters(Activity, starredAdapter);
+
 
 
 			if (MusicProvider.Starred == null ||
@@ -99,7 +104,7 @@ namespace Alloy.Fragments
 			b.PutParcelable("artist", e.Artist);
 			FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
 		}
-		
+
 		private void Album_ItemClick(object sender, StarredAlbumAdapter.ViewHolder.ViewHolderEvent e)
 		{
 			Bundle b = new Bundle();

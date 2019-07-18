@@ -53,4 +53,5 @@
 	<color name="cloudy_action_tint">#FF1B3147</color>
 	<color name="list_popup_color">#242424</color>
 	<color name="list_popup_text_color">#ffffff</color>
+	<color name="ripple_color">#9FC0C0C0</color>
 </resources>
