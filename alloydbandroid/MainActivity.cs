@@ -100,10 +100,7 @@ namespace Alloy
 			secondaryBackground = FindViewById<ImageView>(Resource.Id.secondary_background);
 
 			DrawerLayout drawerLayout = (DrawerLayout)FindViewById(Resource.Id.drawer_layout);
-
-			SlidingUpPanelLayout mainLayout = (SlidingUpPanelLayout)FindViewById(Resource.Id.main_layout);
-			mainLayout.setAnchorPoint(0.7f);
-			//mainLayout.AddPanelSlideListener(this);
+			RelativeLayout mainContent = (RelativeLayout)FindViewById(Resource.Id.main_content);
 
 			ListView mainMenu = (ListView)FindViewById(Resource.Id.main_menu_list);
 
@@ -160,7 +157,7 @@ namespace Alloy
 			mainMenu.SetSelection(1);
 			mainMenu.ItemClick += MainMenu_ItemClick;
 
-			CustomToggle drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainLayout };
+			CustomToggle drawerToggle = new CustomToggle(this, drawerLayout, Resource.String.app_name, Resource.String.app_name) { Layout = mainContent };
 			drawerLayout.AddDrawerListener(drawerToggle);
 			currentBackground = CurrentBackground.None;
 
@@ -366,7 +363,6 @@ namespace Alloy
 		private void BackgroundAudioServiceConnection_PlaybackStatusChanged(object sender, StatusEventArg e)
 		{
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			SetMainPlaylist();
 			UpdateMeta(true, true, true, true);
 		}
 
@@ -378,7 +374,6 @@ namespace Alloy
 				MediaControllerCompat.SetMediaController(this, serviceConnection.MediaSession.Controller);
 			}
 			if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
-			SetMainPlaylist();
 			UpdateMeta(true, true, true, true);
 		}
 
@@ -484,22 +479,6 @@ namespace Alloy
 				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
 				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
 			}
-		}
-
-		public void SetMainPlaylist()
-		{
-			ListView lv = (ListView)FindViewById(Resource.Id.main_playlist);
-			if (playlistAdapter == null)
-			{
-				playlistAdapter = new MainPlaylistAdapter(serviceConnection);
-				lv.Adapter = playlistAdapter;
-				lv.ItemClick += (sender, e) =>
-				{
-					serviceConnection.Play(e.Position, serviceConnection.MainQueue);
-				};
-				Adapters.Adapters.SetAdapters(this, playlistAdapter);
-			}
-			playlistAdapter?.NotifyDataSetChanged();
 		}
 
 		public void UpdateMeta(bool setPlaying, bool setMetaData, bool checkFavorite, bool setBackground)

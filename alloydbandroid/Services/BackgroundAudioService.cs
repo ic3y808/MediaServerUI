@@ -150,8 +150,8 @@ namespace Alloy.Services
 		{
 			try
 			{
-				//MediaPlayer.Start();
-				//MediaPlayer.SeekTo((int)pausedPosition);
+				MainQueue.Play();
+				MainQueue.Seek((int)pausedPosition);
 
 				NotificationService1.ShowNotification();
 				RequestAudioFocus();
@@ -169,14 +169,45 @@ namespace Alloy.Services
 			try
 			{
 
-				//MediaPlayer.Pause();
-				//pausedPosition = MediaPlayer.CurrentPosition;
+				MainQueue.Pause();
+				pausedPosition = MainQueue.CurrentPosition;
 
 
 				NotificationService1.ShowNotification();
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
+		}
+
+		public class QueueLoader : AsyncTask<object, object, int>
+		{
+			private BackgroundAudioService service;
+			private int index;
+			public QueueLoader(BackgroundAudioService service, int index)
+			{
+				this.service = service;
+				this.index = index;
+			}
+
+			protected override int RunInBackground(params object[] @params)
+			{
+				service.MainQueue.Prepare(index, () =>
+				{
+					service.loading = false;
+					service.MainQueue.PlayCurrentTrack();
+					Utils.Run(() =>
+					{
+						service.PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = service.CurrentSong, Status = BackgroundAudioStatus.Playing });
+						service.NotificationService1.ShowNotification();
+						service.NotificationService1.UpdateMediaSessionMeta();
+					});
+				});
+
+				MusicProvider.AddPlay(service.CurrentSong.Id);
+				MusicProvider.AddHistory("track", "played", service.CurrentSong.Id, service.CurrentSong.Title, service.CurrentSong.Artist, service.CurrentSong.ArtistId, service.CurrentSong.Album, service.CurrentSong.AlbumId, service.CurrentSong.Genre, service.CurrentSong.GenreId);
+
+				return 0;
+			}
 		}
 
 		public void Play(int index)
@@ -187,8 +218,6 @@ namespace Alloy.Services
 				loading = false;
 				return;
 			}
-
-
 
 			if (MainQueue != null && MainQueue.Count > 0)
 			{
@@ -204,14 +233,7 @@ namespace Alloy.Services
 			MainQueue.BufferUpdate += MediaPlayer_Buffer;
 			MainQueue.Info += MediaPlayer_Info;
 
-			MainQueue.Prepare(index, () =>
-			{
-				loading = false;
-				MainQueue.PlayCurrentTrack();
-			});
-
-			MusicProvider.AddPlay(CurrentSong.Id);
-			MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
+			new QueueLoader(this, index).Execute();
 		}
 
 		public void Play(int index, Queue queue)
@@ -419,7 +441,7 @@ namespace Alloy.Services
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
-		
+
 		public void InitHeadsetPlugReceiver()
 		{
 			try

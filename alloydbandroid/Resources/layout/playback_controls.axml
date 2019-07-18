@@ -7,7 +7,7 @@
 					android:layout_height="68dp"
 					android:layout_alignParentBottom="true"
 					
-					android:background="@color/menu_default_background"
+					android:background="@android:color/transparent"
 					android:padding="@dimen/playback_controls_padding">
 	<ImageView
 		android:id="@+id/album_art"
@@ -18,16 +18,6 @@
 		android:scaleType="centerCrop"
 		android:contentDescription="@string/currently_playing_song"
 		android:layout_alignParentLeft="true"/>
-	
-	<ImageView
-		android:id="@+id/gripper"
-		android:transitionName="now_playing_transition"
-		android:layout_height="8dp"
-		android:layout_width="48dp"
-		android:scaleType="centerCrop"
-		android:src="@drawable/gripper"
-		android:layout_alignParentTop="true"
-		android:layout_centerInParent="true"/>
 
 	<LinearLayout
 		android:id="@+id/content"

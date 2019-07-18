@@ -32,6 +32,7 @@ namespace Alloy.Providers
 		public static Charts Charts { get; set; }
 		public static List<History> History { get; set; }
 
+		public static event EventHandler ApiError;
 		public static event EventHandler ArtistsStartRefresh;
 		public static event EventHandler ArtistsRefreshed;
 		public static event EventHandler AlbumsStartRefresh;
@@ -63,7 +64,9 @@ namespace Alloy.Providers
 			Albums = new List<Album>();
 			Artists = new List<Artist>();
 			History = new List<History>();
+			httpClient.Timeout = TimeSpan.FromSeconds(10);
 		}
+
 		public static string GetHost()
 		{
 			//return "http://127.0.0.1:4000";
@@ -241,9 +244,20 @@ namespace Alloy.Providers
 				//		catch (Exception e) { Crashes.TrackError(e); }
 				//	}
 			}
+			catch (TaskCanceledException e)
+			{
+				Crashes.TrackError(e);
+				ApiError?.Invoke(null, EventArgs.Empty);
+			}
+			catch (HttpRequestException e)
+			{
+				Crashes.TrackError(e);
+				ApiError?.Invoke(null, EventArgs.Empty);
+			}
 			catch (Exception e)
 			{
 				Crashes.TrackError(e);
+				ApiError?.Invoke(null, EventArgs.Empty);
 			}
 			return json;
 		}
@@ -412,6 +426,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Genres, null, RequestType.GET);
 					List<Genre> result = JsonConvert.DeserializeObject<GenreList>(request).Genres;
+					if (result == null) return 0;
 					Genres = result.OrderBy(x => x.Name).ToList();
 
 				}
@@ -469,6 +484,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Starred, null, RequestType.GET);
 					StarredContainer result = JsonConvert.DeserializeObject<StarredContainer>(request);
+					if (result == null) return 0;
 					Starred = result.Starred;
 					return 0;
 				}
@@ -494,6 +510,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Fresh, null, RequestType.GET);
 					FreshContainer result = JsonConvert.DeserializeObject<FreshContainer>(request);
+					if (result == null) return 0;
 					result.Fresh.Tracks.Shuffle();
 					Fresh = result.Fresh;
 					return 0;
@@ -520,6 +537,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.Charts, null, RequestType.GET);
 					ChartsContainer result = JsonConvert.DeserializeObject<ChartsContainer>(request);
+					if (result == null) return 0;
 					Charts = result.Charts;
 					return 0;
 				}
@@ -549,6 +567,7 @@ namespace Alloy.Providers
 					Utils.UnlockSsl(true);
 					string request = ApiRequest(ApiRequestType.History, null, RequestType.GET);
 					HistoryContainer result = JsonConvert.DeserializeObject<HistoryContainer>(request);
+					if (result == null) return 0;
 					History = result.History.ToList();
 					return 0;
 				}
