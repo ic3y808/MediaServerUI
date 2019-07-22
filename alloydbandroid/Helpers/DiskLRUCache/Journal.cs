@@ -113,7 +113,7 @@ namespace Alloy.Helpers.DiskLRUCache
 		{
 			try
 			{
-				using (DataOutputStream stream = new DataOutputStream(new FileStream(file.AbsolutePath, FileMode.OpenOrCreate,FileAccess.ReadWrite,FileShare.ReadWrite)))
+				using (DataOutputStream stream = new DataOutputStream(new FileStream(file.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
 				{
 					stream.WriteShort(DiskLruCache.JOURNAL_FORMAT_VERSION);
 					stream.WriteInt(map.Count);

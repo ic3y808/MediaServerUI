@@ -11,6 +11,7 @@ using Android.Views;
 using Android.Widget;
 using Alloy.Compat;
 using Alloy.Helpers;
+using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Providers;
 
@@ -28,18 +29,20 @@ using SearchView = Android.Support.V7.Widget.SearchView;
 
 namespace Alloy.Fragments
 {
-	public abstract class FragmentBase : Fragment, ISensorEventListener, SwipeRefreshLayout.IOnRefreshListener
+	public abstract class FragmentBase : Android.Support.V4.App.Fragment, ISensorEventListener, SwipeRefreshLayout.IOnRefreshListener
 	{
 		public virtual BackgroundAudioServiceConnection ServiceConnection { get; set; }
 		public bool HasBack { get; set; }
 		private SearchView searchView;
 		public static event EventHandler<string> FragmentLoaded;
 		public abstract string Name { get; }
+		public bool IsServiceConnected { get; private set; }
 
 		public override void OnResume()
 		{
 			base.OnResume();
 			BindService();
+			Extensions.StartShake(Activity, this);
 		}
 
 		public override void OnPause()
@@ -68,6 +71,21 @@ namespace Alloy.Fragments
 			base.OnStop();
 			Removehanders();
 			Extensions.ResetShake();
+		}
+
+		public override void OnSaveInstanceState(Bundle outState)
+		{
+			base.OnSaveInstanceState(outState);
+			outState.PutBoolean("serviceStatus", IsServiceConnected);
+		}
+
+		public override void OnViewStateRestored(Bundle savedInstanceState)
+		{
+			base.OnViewStateRestored(savedInstanceState);
+			if (savedInstanceState != null)
+			{
+				IsServiceConnected = savedInstanceState.GetBoolean("serviceStatus", false);
+			}
 		}
 
 		private void Removehanders()
@@ -111,7 +129,7 @@ namespace Alloy.Fragments
 
 		public void CreateToolbar(View root_view, int title)
 		{
-			SetHasOptionsMenu(true);
+			HasOptionsMenu = true;
 			((AppCompatActivity)Activity).SetSupportActionBar(root_view.FindViewById<Toolbar>(Resource.Id.main_toolbar));
 			((AppCompatActivity)Activity).SupportActionBar.SetHomeButtonEnabled(true);
 			((AppCompatActivity)Activity).SupportActionBar.SetTitle(title);
@@ -129,16 +147,13 @@ namespace Alloy.Fragments
 
 		private void BindService()
 		{
-			Extensions.ResetShake();
-			Extensions.StartShake(Activity, this);
-
 			if (ServiceConnection == null)
 			{
 				ServiceConnection = new BackgroundAudioServiceConnection();
 				ServiceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
+				ServiceConnection.ServiceDisconnected += ServiceConnectionOnServiceDisconnected;
 				Intent serviceToStart = new Intent(Application.Context, typeof(BackgroundAudioService));
 				Activity.BindService(serviceToStart, ServiceConnection, Bind.AutoCreate);
-
 			}
 
 			if (ServiceConnection != null && ServiceConnection.IsConnected)
@@ -146,6 +161,7 @@ namespace Alloy.Fragments
 				ServiceConnection_ServiceConnected(null, true);
 			}
 		}
+
 
 		public void getCursorFromList(List<Tuple<string, string, string, string, string>> items, MatrixCursor cursor)
 		{
@@ -303,9 +319,17 @@ namespace Alloy.Fragments
 		{
 			if (!e) return;
 			AddHandlers();
+			IsServiceConnected = true;
 			ServiceConnected();
 			if (ServiceConnection.CurrentSong == null) return;
 			ScrollToNowPlaying();
+		}
+
+
+		private void ServiceConnectionOnServiceDisconnected(object sender, bool e)
+		{
+			Removehanders();
+			IsServiceConnected = false;
 		}
 
 		public void OnAccuracyChanged(Sensor sensor, SensorStatus accuracy)
@@ -330,6 +354,21 @@ namespace Alloy.Fragments
 		public virtual void ContextMenuCreated(IContextMenu menu, View v, IContextMenuContextMenuInfo menuInfo) { }
 		public virtual void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info) { }
 		public virtual void ApiError() { }
+
+		public virtual void Play(Queue queue, int position)
+		{
+			if (!IsServiceConnected)
+			{
+				BindService();
+			}
+			else
+			{
+				Intent broadcastIntent = new Intent(BackgroundAudioService.ActionPlayNew);
+				broadcastIntent.PutExtra("playlist", JsonConvert.SerializeObject(queue));
+				broadcastIntent.PutExtra("position", position);
+				Activity.SendBroadcast(broadcastIntent);
+			}
+		}
 
 		public virtual void Loaded()
 		{

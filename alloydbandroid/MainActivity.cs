@@ -203,7 +203,7 @@ namespace Alloy
 			{
 				if (FragmentManager.BackStackEntryCount > 0)
 				{
-					FragmentManager.PopBackStack();
+					SupportFragmentManager.PopBackStack();
 				}
 				else
 				{
@@ -239,7 +239,7 @@ namespace Alloy
 
 		private void ChangeFragment(int itemText, bool backstack = true)
 		{
-			Fragment fragment = null;
+			Android.Support.V4.App.Fragment fragment = null;
 
 			switch (itemText)
 			{
@@ -269,7 +269,7 @@ namespace Alloy
 
 			if (fragment != null)
 			{
-				FragmentManager.ChangeTo(fragment, backstack, Application.Context.GetString(itemText), null);
+				SupportFragmentManager.ChangeTo(fragment, backstack, Application.Context.GetString(itemText), null);
 			}
 		}
 
@@ -444,8 +444,8 @@ namespace Alloy
 		{
 			//activeMenuItem?.SetChecked(false);
 			//activeMenuItem = null;
-			SettingsFragment fragment = new SettingsFragment();
-			FragmentManager.ChangeTo(fragment, true, "Settings", null);
+		//	SettingsFragment fragment = new SettingsFragment();
+			//SupportFragmentManager.ChangeTo(fragment, true, "Settings", null);
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
 		}
@@ -460,7 +460,7 @@ namespace Alloy
 		{
 			if (serviceConnection?.CurrentSong != null)
 			{
-				serviceConnection.CurrentSong.GetAlbumArt(albumArtImageView);
+				//serviceConnection.CurrentSong.GetAlbumArt(albumArtImageView);
 				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
 				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
 			}

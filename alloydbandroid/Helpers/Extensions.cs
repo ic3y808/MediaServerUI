@@ -40,7 +40,7 @@ namespace Alloy.Helpers
 		private static SensorManager sensorManager;
 		private static ISensorEventListener currentListener;
 		const int ShakeDetectionTimeLapse = 250;
-		const double ShakeThreshold = 800;
+		const double ShakeThreshold = 80;
 		private static Bitmap defaultBitmapArt;
 
 		private static Random rng = new Random();
@@ -148,6 +148,7 @@ namespace Alloy.Helpers
 		public static async void GetAlbumArt(this Song song, ImageView view)
 		{
 			if (!CanLoadImages()) return;
+
 			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }), song.AlbumId, song);
 		}
 
@@ -204,9 +205,9 @@ namespace Alloy.Helpers
 			}
 		}
 
-		public static void ChangeTo(this FragmentManager fragmentManager, Fragment otherFragment, bool stack, string name, Bundle bundle)
+		public static void ChangeTo(this Android.Support.V4.App.FragmentManager fragmentManager, Android.Support.V4.App.Fragment otherFragment, bool stack, string name, Bundle bundle)
 		{
-			FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
+			Android.Support.V4.App.FragmentTransaction fragmentTx = fragmentManager.BeginTransaction();
 			if (stack)
 			{
 				fragmentTx.AddToBackStack(name);
@@ -406,45 +407,6 @@ namespace Alloy.Helpers
 			if (!l.HasValue) return "00:00";
 			TimeSpan duration = TimeSpan.FromSeconds(l.Value);
 			return ToTime((long)duration.TotalMilliseconds);
-		}
-
-		public static MemoryStream GetImageForTag(this string url)
-		{
-			try
-			{
-				if (string.IsNullOrEmpty(url)) { return null; }
-				const int bytesToRead = 100;
-
-				WebRequest request = WebRequest.Create(new Uri(url, UriKind.Absolute));
-				request.Timeout = -1;
-				WebResponse response = request.GetResponse();
-				Stream responseStream = response.GetResponseStream();
-				if (responseStream != null)
-				{
-					MemoryStream memoryStream;
-					byte[] bytebuffer = new byte[bytesToRead];
-					using (BinaryReader reader = new BinaryReader(responseStream))
-					{
-						memoryStream = new MemoryStream();
-
-						int bytesRead = reader.Read(bytebuffer, 0, bytesToRead);
-
-						while (bytesRead > 0)
-						{
-							memoryStream.Write(bytebuffer, 0, bytesRead);
-							bytesRead = reader.Read(bytebuffer, 0, bytesToRead);
-						}
-					}
-
-					return memoryStream;
-				}
-			}
-			catch (Exception e)
-			{
-				Crashes.TrackError(e);
-			}
-
-			return null;
 		}
 
 		public static void ResetShake()

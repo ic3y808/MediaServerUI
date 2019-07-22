@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media.Session;
@@ -33,9 +34,14 @@ namespace Alloy.Services
 			Service?.Pause();
 		}
 
-		public void Play(int index, Queue queue)
+		public void Play(int index, List<Song> queue)
 		{
 			Service?.Play(index, queue);
+		}
+
+		public void Seek(int to)
+		{
+			Service?.Seek(to);
 		}
 
 		public void PlayNextSong()
@@ -64,11 +70,15 @@ namespace Alloy.Services
 			set => Service.CurrentSong = value;
 		}
 
-		public Queue MainQueue
+		public List<Song> MainQueue
 		{
 			get => Service.MainQueue;
 			set => Service.MainQueue = value;
 		}
+
+		public int CurrentPosition => Service.CurrentPosition;
+		public int CurrentQueuePosition => Service.CurrentQueuePosition;
+		public int Duration => Service.Duration;
 
 		public MediaSessionCompat MediaSession
 		{

@@ -41,7 +41,7 @@ namespace Alloy.Adapters
 						albumInfoHolder.AlbumSize.SetText(Album.Size, TextView.BufferType.Normal);
 						albumInfoHolder.ArtistName.SetText(Album.Album.Artist, TextView.BufferType.Normal);
 						albumInfoHolder.ItemClick += PlayAlbum;
-						Album.Album.GetAlbumArt(albumInfoHolder.AlbumImage);
+						//Album.Album.GetAlbumArt(albumInfoHolder.AlbumImage);
 						albumInfoHolder.CheckStarred();
 					}
 					break;

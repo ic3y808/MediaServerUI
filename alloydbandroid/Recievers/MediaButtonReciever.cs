@@ -1,8 +1,10 @@
-﻿using Android.App;
+﻿using Alloy.Interfaces;
+using Android.App;
 using Android.Content;
 using Android.Views;
 using Alloy.Providers;
 using Alloy.Services;
+using Newtonsoft.Json;
 
 namespace Alloy.Recievers
 {
@@ -22,6 +24,11 @@ namespace Alloy.Recievers
 		{
 			switch (intent.Action)
 			{
+				case BackgroundAudioService.ActionPlayNew:
+					Queue playlist = JsonConvert.DeserializeObject<Queue>(intent.GetStringExtra("playlist"));
+					int position = intent.GetIntExtra("position", 0);
+					service.Play(position, playlist);
+					break;
 				case BackgroundAudioService.ActionPlayPause:
 					if (service.IsPlaying)
 					{

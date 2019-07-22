@@ -29,15 +29,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:background="@color/menu_default_background"> 
-			<FrameLayout
-				android:id="@+id/flContent"
-				android:layout_width="match_parent"
-				android:layout_height="fill_parent"
-				android:gravity="bottom"
-				android:orientation="vertical"
-				android:paddingBottom="10dp"
-				android:background="@android:color/transparent">
-			</FrameLayout>
+			
 
 			<FrameLayout
 				android:id="@+id/controls_container"
@@ -56,6 +48,15 @@
 
 
 
+			</FrameLayout>
+			<FrameLayout
+				android:id="@+id/flContent"
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:gravity="bottom"
+				android:orientation="vertical"
+				android:paddingBottom="10dp"
+				android:background="@android:color/transparent">
 			</FrameLayout>
 	
 	</RelativeLayout>

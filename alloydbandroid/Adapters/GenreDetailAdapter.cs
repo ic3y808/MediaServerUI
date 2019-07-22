@@ -40,7 +40,7 @@ namespace Alloy.Adapters
 						genreInfoHolder.Genre = Genre.Genre;
 						genreInfoHolder.GenreName.SetText(Genre.Genre.Name, TextView.BufferType.Normal);
 						genreInfoHolder.GenreSize.SetText(Genre.Size, TextView.BufferType.Normal);
-						Genre.Genre.GetAlbumArt(genreInfoHolder.GenreImage);
+						//Genre.Genre.GetAlbumArt(genreInfoHolder.GenreImage);
 						genreInfoHolder.CheckStarred();
 					}
 					break;

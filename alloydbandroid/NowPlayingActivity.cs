@@ -415,7 +415,7 @@ namespace Alloy
 					artist = serviceConnection.CurrentSong.Artist;
 					if (serviceConnection.IsPlaying)
 					{
-						duration = serviceConnection.MainQueue.CurrentPosition.ToTime() + " / " + serviceConnection.CurrentSong.Duration.ToTimeFromSeconds();
+						duration = serviceConnection.CurrentPosition.ToTime() + " / " + serviceConnection.CurrentSong.Duration.ToTimeFromSeconds();
 					}
 				}
 
@@ -451,7 +451,7 @@ namespace Alloy
 			if (serviceConnection == null || !serviceConnection.IsConnected) return;
 			if (serviceConnection.IsPlaying)
 			{
-				int val = serviceConnection.MainQueue.CurrentPosition.GetProgressPercentage(serviceConnection.MainQueue.Duration);
+				int val = serviceConnection.CurrentPosition.GetProgressPercentage(serviceConnection.Duration);
 				RunOnUiThread(() =>
 				{
 					seekBar.Progress = val;
@@ -464,8 +464,8 @@ namespace Alloy
 		{
 			if (!e.FromUser || !serviceConnection.IsConnected) return;
 
-			int time = e.Progress.ProgressToTimer(serviceConnection.MainQueue.Duration);
-			serviceConnection.MainQueue.Seek(time);
+			int time = e.Progress.ProgressToTimer(serviceConnection.Duration);
+			serviceConnection.Seek(time);
 
 
 		}

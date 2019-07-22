@@ -13,8 +13,8 @@ namespace Alloy.Fragments
 {
 	public class StarredFragment : FragmentBase
 	{
-		private StarredTrackAdapter starredAdapter;
 		private RecyclerView starredContentView;
+		private StarredTrackAdapter starredAdapter;
 		private SwipeRefreshLayout refreshLayout;
 
 		public override string Name => "Starred";
@@ -34,7 +34,6 @@ namespace Alloy.Fragments
 			starredContentView.SetLayoutManager(layoutManager);
 			RegisterForContextMenu(starredContentView);
 			CreateToolbar(root_view, Resource.String.starred_title);
-
 			return root_view;
 		}
 
@@ -46,16 +45,6 @@ namespace Alloy.Fragments
 		private void MusicProvider_StarredRefreshed(object sender, Starred e)
 		{
 			refreshLayout.Refreshing = false;
-			if (starredAdapter == null)
-			{
-				starredAdapter = new StarredTrackAdapter(MusicProvider.Starred.Tracks, ServiceConnection);
-				starredContentView.SetAdapter(starredAdapter);
-				//starredAdapter.TrackClick += Track_ItemClick;
-				//starredAdapter.AlbumClick += Album_ItemClick;
-				//starredAdapter.ArtistClick += Artist_ItemClick;
-				Adapters.Adapters.SetAdapters(Activity, starredAdapter);
-			}
-
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -68,7 +57,7 @@ namespace Alloy.Fragments
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
-			starredAdapter.NotifyDataSetChanged();
+			starredAdapter?.NotifyDataSetChanged();
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -76,10 +65,10 @@ namespace Alloy.Fragments
 		{
 			base.ServiceConnected();
 
-			ScrollToNowPlaying();
-
-
-
+			starredAdapter = new StarredTrackAdapter(ServiceConnection);
+			starredAdapter.TrackClick += StarredAdapter_TrackClick;
+			starredContentView.SetAdapter(starredAdapter);
+			Adapters.Adapters.SetAdapters(Activity, starredAdapter);
 
 			if (MusicProvider.Starred == null ||
 				MusicProvider.Starred.Albums == null ||
@@ -91,6 +80,13 @@ namespace Alloy.Fragments
 			{
 				Utils.Run(MusicProvider.RefreshStarred);
 			}
+
+			ScrollToNowPlaying();
+		}
+
+		private void StarredAdapter_TrackClick(object sender, TrackViewHolderEvent e)
+		{
+			Play(e.Songs.ToQueue(), e.Position);
 		}
 
 		public override void OnRefreshed()
@@ -98,23 +94,6 @@ namespace Alloy.Fragments
 			MusicProvider.RefreshStarred();
 		}
 
-		private void Artist_ItemClick(object sender, StarredArtistAdapter.ViewHolder.ViewHolderEvent e)
-		{
-			Bundle b = new Bundle();
-			b.PutParcelable("artist", e.Artist);
-			FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
-		}
 
-		private void Album_ItemClick(object sender, StarredAlbumAdapter.ViewHolder.ViewHolderEvent e)
-		{
-			Bundle b = new Bundle();
-			b.PutParcelable("album", e.Album);
-			FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
-		}
-
-		private void Track_ItemClick(object sender, StarredTrackAdapter.ViewHolder.ViewHolderEvent e)
-		{
-			ServiceConnection?.Play(e.Position, e.Songs.ToQueue());
-		}
 	}
 }

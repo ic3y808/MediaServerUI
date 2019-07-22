@@ -25,6 +25,7 @@ namespace Alloy.Helpers
 			}
 			else
 			{
+				view.SetImageBitmap(Extensions.GetDefaultAlbumArtEfficiently());
 				new LoadImageToViewTask(view, url, cacheKey).Execute(o);
 			}
 		}

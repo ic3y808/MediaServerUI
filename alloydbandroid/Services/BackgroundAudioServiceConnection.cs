@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Content;
 using Android.Media;
 using Android.OS;
@@ -13,6 +14,7 @@ namespace Alloy.Services
 		private static BackgroundAudioServiceBinder binder;
 		public static event EventHandler<StatusEventArg> PlaybackStatusChanged;
 		public event EventHandler<bool> ServiceConnected;
+		public event EventHandler<bool> ServiceDisconnected;
 
 		public BackgroundAudioServiceConnection()
 		{
@@ -40,7 +42,6 @@ namespace Alloy.Services
 		{
 			Binder = service as BackgroundAudioServiceBinder;
 			IsConnected = Binder != null;
-
 			ServiceConnected?.Invoke(this, IsConnected);
 		}
 
@@ -48,6 +49,7 @@ namespace Alloy.Services
 		{
 			IsConnected = false;
 			Binder = null;
+			ServiceDisconnected?.Invoke(this, IsConnected);
 		}
 
 		public void Play()
@@ -60,9 +62,14 @@ namespace Alloy.Services
 			Binder?.Service.Pause();
 		}
 
-		public void Play(int index, Queue queue)
+		public void Play(int index, List<Song> queue)
 		{
 			Binder?.Service.Play(index, queue);
+		}
+
+		public void Seek(int to)
+		{
+			Binder.Service.Seek(to);
 		}
 
 		public void PlayNextSong()
@@ -91,11 +98,15 @@ namespace Alloy.Services
 			set => Binder.CurrentSong = value;
 		}
 		
-		public Queue MainQueue
+		public List<Song> MainQueue
 		{
 			get => Binder.MainQueue;
 			set => Binder.MainQueue = value;
-		}
+		}		
+
+		public int CurrentPosition => Binder.CurrentPosition;
+		public int CurrentQueuePosition => Binder.CurrentQueuePosition;
+		public int Duration => Binder.Duration;
 
 		public MediaSessionCompat MediaSession
 		{

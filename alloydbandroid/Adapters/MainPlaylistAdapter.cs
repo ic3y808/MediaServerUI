@@ -30,7 +30,7 @@ namespace Alloy.Adapters
 			v.FindViewById<TextView>(Resource.Id.title).Text = ServiceConnection.MainQueue[position].Title;
 			v.FindViewById<TextView>(Resource.Id.artist).Text = ServiceConnection.MainQueue[position].Artist;
 			v.FindViewById<TextView>(Resource.Id.right_side_count).Text = ServiceConnection.MainQueue[position].Duration.ToTimeFromSeconds();
-			ServiceConnection.MainQueue[position].GetAlbumArt(v.FindViewById<ImageView>(Resource.Id.album_art));
+			//ServiceConnection.MainQueue[position].GetAlbumArt(v.FindViewById<ImageView>(Resource.Id.album_art));
 
 			if (ServiceConnection.MainQueue[position].IsSelected)
 			{
