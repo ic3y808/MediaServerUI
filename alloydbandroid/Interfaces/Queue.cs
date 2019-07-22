@@ -7,6 +7,9 @@ using Alloy.Providers;
 using Android.App;
 using Android.Drm;
 using Android.Media;
+using Java.IO;
+using Java.Lang;
+using Microsoft.AppCenter.Crashes;
 
 namespace Alloy.Interfaces
 {
@@ -33,6 +36,7 @@ namespace Alloy.Interfaces
 
 		public void SetCurrentSong(int index)
 		{
+			if (index < 0 || index > Count) return;
 			if (CurrentSong != null) CurrentSong.IsSelected = false;
 			CurrentSong = this[index];
 		}
@@ -82,7 +86,15 @@ namespace Alloy.Interfaces
 		}
 
 		public bool IsPlaying => Players.Any(pair => pair.Value.IsPlaying);
-		public int CurrentPosition => Players[CurrentSong].CurrentPosition;
+
+		public int CurrentPosition
+		{
+			get
+			{
+				if (CurrentSong == null) return 0;
+				return IsPlaying ? Players[CurrentSong].CurrentPosition : 0;
+			}
+		}
 		public int Duration => Players[CurrentSong].Duration;
 
 		public virtual void PrepareTracks()
@@ -131,12 +143,33 @@ namespace Alloy.Interfaces
 
 		private void Prepare(MediaPlayer player, Song song, Action callback)
 		{
-			player.PrepareAsync();
-			player.Prepared += (s, e) =>
+			try
 			{
-				song.IsPrepared = true;
+				player.PrepareAsync();
+				player.Prepared += (s, e) =>
+				{
+					song.IsPrepared = true;
+					callback();
+				};
+			}
+			catch (IllegalArgumentException e)
+			{
+				e.PrintStackTrace();
+				Crashes.TrackError(e);
 				callback();
-			};
+			}
+			catch (IllegalStateException e)
+			{
+				e.PrintStackTrace();
+				Crashes.TrackError(e);
+				callback();
+			}
+			catch (IOException e)
+			{
+				e.PrintStackTrace();
+				Crashes.TrackError(e);
+				callback();
+			}
 		}
 	}
 }

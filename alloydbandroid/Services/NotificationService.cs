@@ -125,7 +125,7 @@ namespace Alloy.Services
 
 				PlaybackStateCompat state = new PlaybackStateCompat.Builder()
 					.SetActions(PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionPlayPause | PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious)
-					.SetState(PlaybackStateCompat.StatePlaying, audioService.MainQueue.CurrentPosition.ProgressToTimer(audioService.MainQueue.Duration), 1.0f, SystemClock.ElapsedRealtime())
+					.SetState(PlaybackStateCompat.StatePlaying, audioService.mediaPlayer.CurrentPosition.ProgressToTimer(audioService.mediaPlayer.Duration), 1.0f, SystemClock.ElapsedRealtime())
 					.Build();
 				audioService.MediaSession.SetMetadata(metadata);
 				audioService.MediaSession.SetPlaybackState(state);

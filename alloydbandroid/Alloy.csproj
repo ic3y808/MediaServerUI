@@ -120,6 +120,7 @@
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\ImageLoader.cs" />
     <Compile Include="Helpers\NowPlayingSnapHelper.cs" />
+    <Compile Include="Helpers\StorageUtil.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Interfaces\IMediaController.cs" />
     <Compile Include="Interfaces\IMenuListener.cs" />
@@ -158,10 +159,10 @@
     <Compile Include="Recievers\MediaButtonReciever.cs" />
     <Compile Include="Recievers\NoisyAudioReciever.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Services\BackgroundAudioService - Copy.cs" />
     <Compile Include="Services\BackgroundAudioService.cs" />
     <Compile Include="Services\BackgroundAudioServiceBinder.cs" />
     <Compile Include="Services\BackgroundAudioServiceConnection.cs" />
-    <Compile Include="Services\MediaPlayerService.cs" />
     <Compile Include="Services\NotificationService.cs" />
     <Compile Include="Services\StatusEventArg.cs" />
     <Compile Include="SplashScreen.cs" />
@@ -172,8 +173,12 @@
     <Compile Include="Widgets\IndexFastScrollRecyclerSection.cs" />
     <Compile Include="Widgets\IndexFastScrollRecyclerView.cs" />
     <Compile Include="Widgets\MaterialRipple.cs" />
+    <Compile Include="Widgets\PagerSlidingTabStrip.cs" />
     <Compile Include="Widgets\ScrollableViewHelper.cs" />
     <Compile Include="Widgets\SlideDrawable.cs" />
+    <Compile Include="Widgets\Solid.cs" />
+    <Compile Include="Widgets\Wave.cs" />
+    <Compile Include="Widgets\WaveView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\AboutAssets.txt" />
@@ -974,6 +979,22 @@
     <AndroidResource Include="Resources\layout\charts_never_played_tracks.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-v21\psts_background_tab.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\psts_background_tab.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\psts_tab.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\fragment_card.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

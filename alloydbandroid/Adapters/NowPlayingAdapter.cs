@@ -31,7 +31,7 @@ namespace Alloy.Adapters
 			NowPlayingViewHolder h = (NowPlayingViewHolder)holder;
 			h.Title.SetText(ServiceConnection.MainQueue[position].Title, TextView.BufferType.Normal);
 			h.Artist.SetText(ServiceConnection.MainQueue[position].Artist, TextView.BufferType.Normal);
-			ServiceConnection.MainQueue[position].GetAlbumArt(h.ImageView);
+			//ServiceConnection.MainQueue[position].GetAlbumArt(h.ImageView);
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { h.SetSelected(); };
 		}
 

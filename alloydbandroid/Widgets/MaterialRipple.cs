@@ -1,5 +1,4 @@
 ﻿using System;
-using Alloy;
 using Android.Animation;
 using Android.Content;
 using Android.Content.Res;
@@ -12,11 +11,10 @@ using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
 using Java.Lang;
-using static Android.Views.GestureDetector;
 using Math = Java.Lang.Math;
 using Object = Java.Lang.Object;
 
-namespace MaterialRippleLibrary
+namespace Alloy.Widgets
 {
 	public class MaterialRippleLayout : FrameLayout
 	{
@@ -769,7 +767,7 @@ namespace MaterialRippleLibrary
 			}
 		}
 
-		public class LongClickListenerGesture : SimpleOnGestureListener
+		public class LongClickListenerGesture : GestureDetector.SimpleOnGestureListener
 		{
 			private MaterialRippleLayout layout;
 			public LongClickListenerGesture(MaterialRippleLayout layout)

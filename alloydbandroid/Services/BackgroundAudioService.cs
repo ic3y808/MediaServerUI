@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Bluetooth;
 using Android.Content;
@@ -11,6 +12,7 @@ using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Recievers;
 using Alloy.Providers;
+using Android.Util;
 using Java.IO;
 using Java.Lang;
 using Exception = System.Exception;
@@ -19,7 +21,9 @@ namespace Alloy.Services
 {
 	[Service]
 	[IntentFilter(new[] { ActionPlayNew, ActionPlayPause, ActionPrevious, ActionNext, ActionUpdateMetaData, ActionStarTrack, ActionExit })]
-	public class BackgroundAudioService : Service, AudioManager.IOnAudioFocusChangeListener, IMediaController
+	public class BackgroundAudioService : Service, MediaPlayer.IOnCompletionListener,
+		MediaPlayer.IOnPreparedListener, MediaPlayer.IOnErrorListener, MediaPlayer.IOnSeekCompleteListener,
+		MediaPlayer.IOnInfoListener, MediaPlayer.IOnBufferingUpdateListener, AudioManager.IOnAudioFocusChangeListener, IMediaController
 	{
 		public const string ActionPlayNew = "com.xamarin.action.PLAY_NEW";
 		public const string ActionPlayPause = "com.xamarin.action.PLAY_PAUSE";
@@ -31,32 +35,52 @@ namespace Alloy.Services
 
 		public event EventHandler<StatusEventArg> PlaybackStatusChanged;
 
-		public Queue MainQueue { get; set; }
+		public List<Song> MainQueue { get; set; }
+		public int CurrentQueuePosition { get; set; }
 		public NotificationService NotificationService1 { get; set; }
 		public MediaSessionCompat MediaSession { get; set; }
 
 		private NoisyAudioReciever noisyReceiver;
 		private HeadsetPlugReceiver headsetPlugReceiver;
 		private MediaButtonReciever mediaButtonReciever;
-		private Song currentSong;
-		private long pausedPosition;
+		public MediaPlayer mediaPlayer;
+		private int pausedPosition;
 		public const string CHANNEL_ID = "mediaStateBuilder";
 		public const string MEDIA_NAME = "Media playback";
 		public const string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
 		public const int NOTIFICATION_ID = 165164465;
 		private bool loading;
 
+		private Song currentSong;
 		public Song CurrentSong
 		{
-			get => MainQueue?.CurrentSong;
-			set
+			get
 			{
-				MainQueue.SetCurrentSong(MainQueue.IndexOf(value));
-				MainQueue.CurrentSong.IsSelected = true;
+				if (MainQueue == null || MainQueue.Count == 0) return null;
+				return MainQueue[CurrentQueuePosition];
+			}
+			set { currentSong = value; }
+		}
+
+		public int CurrentPosition
+		{
+			get
+			{
+				if (mediaPlayer == null || !mediaPlayer.IsPlaying) return 0;
+				return mediaPlayer.CurrentPosition;
 			}
 		}
 
-		public bool IsPlaying => MainQueue.IsPlaying;
+		public int Duration
+		{
+			get
+			{
+				if (mediaPlayer == null || !mediaPlayer.IsPlaying) return 0;
+				return mediaPlayer.Duration;
+			}
+		}
+
+		public bool IsPlaying => mediaPlayer != null && mediaPlayer.IsPlaying;
 
 		public IBinder Binder { get; private set; }
 
@@ -77,7 +101,6 @@ namespace Alloy.Services
 			InitMediaButtonReceiver();
 			InitHeadsetPlugReceiver();
 			InitMediaSession();
-			Reset();
 		}
 
 		public override void OnDestroy()
@@ -87,6 +110,11 @@ namespace Alloy.Services
 			if (headsetPlugReceiver != null) UnregisterReceiver(headsetPlugReceiver);
 			if (noisyReceiver != null) UnregisterReceiver(noisyReceiver);
 			Services.NotificationService.CloseNotification();
+			if (mediaPlayer != null)
+			{
+				mediaPlayer.Stop();
+				mediaPlayer.Release();
+			}
 		}
 
 		public void RequestAudioFocus()
@@ -146,12 +174,25 @@ namespace Alloy.Services
 			//}
 		}
 
+		public void Stop()
+		{
+			if (mediaPlayer == null) return;
+			if (mediaPlayer.IsPlaying)
+			{
+				mediaPlayer.Stop();
+			}
+			mediaPlayer.Reset();
+			InitMediaPlayer();
+		}
+
 		public void Play()
 		{
 			try
 			{
-				MainQueue.Play();
-				MainQueue.Seek((int)pausedPosition);
+				if (!mediaPlayer.IsPlaying)
+				{
+					mediaPlayer.Start();
+				}
 
 				NotificationService1.ShowNotification();
 				RequestAudioFocus();
@@ -164,55 +205,29 @@ namespace Alloy.Services
 			}
 		}
 
+		private void Resume()
+		{
+			if (!mediaPlayer.IsPlaying)
+			{
+				mediaPlayer.SeekTo(pausedPosition);
+				mediaPlayer.Start();
+			}
+		}
+
 		public void Pause()
 		{
 			try
 			{
-
-				MainQueue.Pause();
-				pausedPosition = MainQueue.CurrentPosition;
-
-
+				mediaPlayer.Pause();
+				pausedPosition = mediaPlayer.CurrentPosition;
 				NotificationService1.ShowNotification();
 				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Paused });
 			}
 			catch (Exception e) { Crashes.TrackError(e); }
 		}
 
-		public class QueueLoader : AsyncTask<object, object, int>
-		{
-			private BackgroundAudioService service;
-			private int index;
-			public QueueLoader(BackgroundAudioService service, int index)
-			{
-				this.service = service;
-				this.index = index;
-			}
-
-			protected override int RunInBackground(params object[] @params)
-			{
-				service.MainQueue.Prepare(index, () =>
-				{
-					service.loading = false;
-					service.MainQueue.PlayCurrentTrack();
-					Utils.Run(() =>
-					{
-						service.PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = service.CurrentSong, Status = BackgroundAudioStatus.Playing });
-						service.NotificationService1.ShowNotification();
-						service.NotificationService1.UpdateMediaSessionMeta();
-					});
-				});
-
-				MusicProvider.AddPlay(service.CurrentSong.Id);
-				MusicProvider.AddHistory("track", "played", service.CurrentSong.Id, service.CurrentSong.Title, service.CurrentSong.Artist, service.CurrentSong.ArtistId, service.CurrentSong.Album, service.CurrentSong.AlbumId, service.CurrentSong.Genre, service.CurrentSong.GenreId);
-
-				return 0;
-			}
-		}
-
 		public void Play(int index)
 		{
-			if (IsPlaying) MainQueue.Stop();
 			if (index > MainQueue.Count)
 			{
 				loading = false;
@@ -225,93 +240,36 @@ namespace Alloy.Services
 			}
 
 			if (index < MainQueue.Count)
-				MainQueue.SetCurrentSong(index);
+				CurrentSong = MainQueue[index];
 
-			Reset();
-			MainQueue.Completion += MediaPlayer_Completion;
-			MainQueue.Error += MediaPlayer_Error;
-			MainQueue.BufferUpdate += MediaPlayer_Buffer;
-			MainQueue.Info += MediaPlayer_Info;
-
-			new QueueLoader(this, index).Execute();
+			try
+			{
+				// Set the data source to the mediaFile location
+				mediaPlayer.SetDataSource(MusicProvider.GetStreamUri(CurrentSong));
+			}
+			catch (IOException e)
+			{
+				e.PrintStackTrace();
+				//StopSelf();
+			}
+			mediaPlayer.PrepareAsync();
 		}
 
-		public void Play(int index, Queue queue)
+		public void Play(int index, List<Song> queue)
 		{
 			if (loading) return;
 			loading = true;
-			if (IsPlaying) MainQueue.Stop();
-			MainQueue.Release();
+			Stop();
 			MainQueue = queue;
+			CurrentQueuePosition = index;
+			CurrentSong = MainQueue[CurrentQueuePosition];
 			Play(index);
 		}
 
-		//public class PlayLoader : AsyncTask<object, Song, int>
-		//{
-		//	private readonly BackgroundAudioService backgroundAudioService;
-
-		//	public PlayLoader(BackgroundAudioService backgroundAudioService)
-		//	{
-		//		this.backgroundAudioService = backgroundAudioService;
-		//		this.backgroundAudioService.MediaPlayer.Prepared += MediaPlayer_Prepared;
-		//	}
-
-		//	protected override int RunInBackground(params object[] @params)
-		//	{
-		//		try
-		//		{
-		//			Utils.UnlockSsl(true);
-		//			backgroundAudioService.MediaPlayer.SetDataSource(MusicProvider.GetStreamUri(backgroundAudioService.CurrentSong));
-
-		//			int result = Utils.Retry.Do(() =>
-		//			{
-		//				backgroundAudioService.MediaPlayer.Prepare();
-		//				return 0;
-		//			}, TimeSpan.FromSeconds(1), 25);
-
-
-		//		}
-		//		catch (Exception e)
-		//		{
-		//			System.Diagnostics.Debug.WriteLine(e);
-		//			Crashes.TrackError(e);
-		//			backgroundAudioService.loading = false;
-		//		}
-		//		return 0;
-		//	}
-
-		//	protected override void OnPostExecute(int result)
-		//	{
-		//		backgroundAudioService.MediaPlayer.Prepared -= MediaPlayer_Prepared;
-		//		base.OnPostExecute(result);
-		//	}
-
-		//	private void MediaPlayer_Prepared(object sender, EventArgs e)
-		//	{
-		//		try
-		//		{
-		//			Utils.UnlockSsl(true);
-		//			backgroundAudioService.MediaPlayer.Start();
-		//			backgroundAudioService.loading = false;
-		//			backgroundAudioService.PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = backgroundAudioService.CurrentSong, Status = BackgroundAudioStatus.Playing });
-		//			backgroundAudioService.NotificationService1.ShowNotification();
-		//			backgroundAudioService.NotificationService1.UpdateMediaSessionMeta();
-
-		//			MusicProvider.AddPlay(backgroundAudioService.CurrentSong.Id);
-		//			MusicProvider.AddHistory("track", "played", backgroundAudioService.CurrentSong.Id, backgroundAudioService.CurrentSong.Title, backgroundAudioService.CurrentSong.Artist, backgroundAudioService.CurrentSong.ArtistId, backgroundAudioService.CurrentSong.Album, backgroundAudioService.CurrentSong.AlbumId, backgroundAudioService.CurrentSong.Genre, backgroundAudioService.CurrentSong.GenreId);
-
-
-
-
-		//		}
-		//		catch (Exception ee)
-		//		{
-		//			System.Diagnostics.Debug.WriteLine(ee);
-		//			Crashes.TrackError(ee);
-		//			backgroundAudioService.loading = false;
-		//		}
-		//	}
-		//}
+		public void Seek(int to)
+		{
+			mediaPlayer.SeekTo(to);
+		}
 
 		public void PlayNextSong()
 		{
@@ -321,6 +279,9 @@ namespace Alloy.Services
 				CurrentSong.IsSelected = false;
 				int index = MainQueue.IndexOf(CurrentSong);
 				index = index + 1 >= MainQueue.Count ? 0 : index + 1;
+				Stop();
+				CurrentQueuePosition = index;
+				CurrentSong = MainQueue[CurrentQueuePosition];
 				Play(index);
 
 			}
@@ -359,6 +320,9 @@ namespace Alloy.Services
 				CurrentSong.IsSelected = false;
 				int index = MainQueue.IndexOf(CurrentSong);
 				index = index - 1 < 0 ? MainQueue.Count - 1 : index - 1;
+				Stop();
+				CurrentQueuePosition = index;
+				CurrentSong = MainQueue[CurrentQueuePosition];
 				Play(index);
 
 			}
@@ -379,65 +343,30 @@ namespace Alloy.Services
 			return null;
 		}
 
-		private void MediaPlayer_Completion(object sender, EventArgs e)
-		{
-			if (loading) return;
-			Reset();
-			if (CurrentSong != null) CurrentSong.IsSelected = false;
-			PlayNextSong();
-		}
-
-		private void MediaPlayer_Error(object sender, MediaPlayer.ErrorEventArgs error)
-		{
-			if (loading) return;
-			Reset();
-			if (CurrentSong != null) CurrentSong.IsSelected = false;
-			PlayNextSong();
-		}
-
-		private void MediaPlayer_Info(object sender, MediaPlayer.InfoEventArgs info)
-		{
-			Utils.Run(() =>
-			{
-				PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
-				NotificationService1.ShowNotification();
-				NotificationService1.UpdateMediaSessionMeta();
-			});
-		}
-		private void MediaPlayer_Buffer(object sender, MediaPlayer.BufferingUpdateEventArgs bufferUpdate)
-		{
-
-		}
-
-		public void Reset()
-		{
-			try
-			{
-				//MediaPlayer?.Stop();
-				//MediaPlayer?.Release();
-
-
-				//InitMediaPlayer();
-				InitHeadsetPlugReceiver();
-				InitBluetoothReceiver();
-			}
-			catch (Exception ee) { Crashes.TrackError(ee); }
-		}
-
 		public void InitMediaPlayer()
 		{
 			try
 			{
-				//MediaPlayer = new MediaPlayer();
-				//MediaPlayer.SetWakeMode(Application.Context, WakeLockFlags.Partial);
-				//MediaPlayer.SetAudioAttributes(new AudioAttributes.Builder()
-				//	.SetUsage(AudioUsageKind.Media)
-				//	.SetContentType(AudioContentType.Music)
-				//	.Build());
+				if (mediaPlayer == null)
+					mediaPlayer = new MediaPlayer();
+				mediaPlayer.SetWakeMode(Application.Context, WakeLockFlags.Partial);
 
-				//MediaPlayer.Completion += MediaPlayer_Completion;
+				//Set up MediaPlayer event listeners
+				mediaPlayer.SetOnCompletionListener(this);
+				mediaPlayer.SetOnErrorListener(this);
+				mediaPlayer.SetOnPreparedListener(this);
+				mediaPlayer.SetOnBufferingUpdateListener(this);
+				mediaPlayer.SetOnSeekCompleteListener(this);
+				mediaPlayer.SetOnInfoListener(this);
+				//Reset so that the MediaPlayer is not pointing to another data source
+				mediaPlayer.Reset();
 
-				//MediaPlayer.SetVolume(1.0f, 1.0f);
+				mediaPlayer.SetVolume(1.0f, 1.0f);
+				mediaPlayer.SetAudioStreamType(Stream.Music);
+				mediaPlayer.SetAudioAttributes(new AudioAttributes.Builder()
+					.SetUsage(AudioUsageKind.Media)
+					.SetContentType(AudioContentType.Music)
+					.Build());
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
@@ -493,6 +422,7 @@ namespace Alloy.Services
 				filter.AddAction(Intent.ActionMediaButton);
 				filter.AddAction(ActionNext);
 				filter.AddAction(ActionPrevious);
+				filter.AddAction(ActionPlayNew);
 				filter.AddAction(ActionPlayPause);
 				filter.AddAction(ActionStarTrack);
 				filter.AddAction(ActionExit);
@@ -561,6 +491,123 @@ namespace Alloy.Services
 				MediaSession.Active = true;
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
+		}
+
+
+		public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
+		{
+			var a = flags;
+			//try
+			//{
+
+			//	//Load data from SharedPreferences
+			//	StorageUtil storage = new StorageUtil(getApplicationContext());
+			//	audioList = storage.loadAudio();
+			//	audioIndex = storage.loadAudioIndex();
+
+			//	if (audioIndex != -1 && audioIndex < audioList.size())
+			//	{
+			//		//index is in a valid range
+			//		activeAudio = audioList.get(audioIndex);
+			//	}
+			//	else
+			//	{
+			//		stopSelf();
+			//	}
+			//}
+			//catch (NullPointerException e)
+			//{
+			//	stopSelf();
+			//}
+
+			////Request audio focus
+			//if (requestAudioFocus() == false)
+			//{
+			//	//Could not gain focus
+			//	stopSelf();
+			//}
+
+			//if (mediaSessionManager == null)
+			//{
+			//	try
+			//	{
+			//		initMediaSession();
+			//		initMediaPlayer();
+			//	}
+			//	catch (RemoteException e)
+			//	{
+			//		e.printStackTrace();
+			//		stopSelf();
+			//	}
+			//	buildNotification(PlaybackStatus.PLAYING);
+			//}
+
+			////Handle Intent action from MediaSession.TransportControls
+			//handleIncomingActions(intent);
+			return base.OnStartCommand(intent, flags, startId);
+		}
+
+		public void OnCompletion(MediaPlayer mp)
+		{
+			if (loading) return;
+			if (CurrentSong != null) CurrentSong.IsSelected = false;
+			PlayNextSong();
+		}
+
+		public void OnPrepared(MediaPlayer mp)
+		{
+			if (!mediaPlayer.IsPlaying)
+			{
+				mediaPlayer.Start();
+				loading = false;
+				Utils.Run(() =>
+				{
+					PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
+					NotificationService1.ShowNotification();
+					NotificationService1.UpdateMediaSessionMeta();
+				});
+				MusicProvider.AddPlay(CurrentSong.Id);
+				MusicProvider.AddHistory("track", "played", CurrentSong.Id, CurrentSong.Title, CurrentSong.Artist, CurrentSong.ArtistId, CurrentSong.Album, CurrentSong.AlbumId, CurrentSong.Genre, CurrentSong.GenreId);
+			}
+		}
+
+		public bool OnError(MediaPlayer mp, MediaError what, int extra)
+		{
+			//Invoked when there has been an error during an asynchronous operation
+			switch (what)
+			{
+				case MediaError.NotValidForProgressivePlayback:
+					Log.Debug("MediaPlayer Error", "MEDIA ERROR NOT VALID FOR PROGRESSIVE PLAYBACK " + extra);
+					break;
+				case MediaError.ServerDied:
+					Log.Debug("MediaPlayer Error", "MEDIA ERROR SERVER DIED " + extra);
+					break;
+				case MediaError.Unknown:
+					Log.Debug("MediaPlayer Error", "MEDIA ERROR UNKNOWN " + extra);
+					break;
+			}
+			return false;
+		}
+
+		public void OnSeekComplete(MediaPlayer mp)
+		{
+
+		}
+
+		public bool OnInfo(MediaPlayer mp, MediaInfo what, int extra)
+		{
+			//Utils.Run(() =>
+			//{
+			//	PlaybackStatusChanged?.Invoke(this, new StatusEventArg { CurrentSong = CurrentSong, Status = BackgroundAudioStatus.Playing });
+			//	NotificationService1.ShowNotification();
+			//	NotificationService1.UpdateMediaSessionMeta();
+			//});
+			return false;
+		}
+
+		public void OnBufferingUpdate(MediaPlayer mp, int percent)
+		{
+
 		}
 	}
 }

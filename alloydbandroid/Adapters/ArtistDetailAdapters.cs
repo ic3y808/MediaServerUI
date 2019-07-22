@@ -39,7 +39,7 @@ namespace Alloy.Adapters
 						artistInfoHolder.Artist = Artist.Artist;
 						artistInfoHolder.ArtistName.SetText(Artist.Artist.Name, TextView.BufferType.Normal);
 						artistInfoHolder.ArtistSize.SetText(Artist.Size, TextView.BufferType.Normal);
-						Artist.Artist.GetAlbumArt(artistInfoHolder.ArtistImage);
+					//	Artist.Artist.GetAlbumArt(artistInfoHolder.ArtistImage);
 						artistInfoHolder.CheckStarred();
 					}
 					break;
@@ -300,7 +300,7 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Album = Albums[position];
-			Albums[position].GetAlbumArt(h.Image);
+			//Albums[position].GetAlbumArt(h.Image);
 			h.Name.SetText(Albums[position].Name, TextView.BufferType.Normal);
 			h.SetSelected();
 		}
@@ -392,7 +392,7 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
-			Songs[position].GetAlbumArt(h.Image);
+			//Songs[position].GetAlbumArt(h.Image);
 			h.Title.SetText(Songs[position].Title, TextView.BufferType.Normal);
 			h.Album.SetText(Songs[position].Album, TextView.BufferType.Normal);
 			h.SetSelected(position);

@@ -169,7 +169,7 @@ namespace Alloy.Adapters
 			ViewHolder h = (ViewHolder)holder;
 
 			h.Artist = Artists[position];
-			Artists[position].GetAlbumArt(h.Image);
+			//Artists[position].GetAlbumArt(h.Image);
 			h.Name.Text = Artists[position].Name;
 			h.SetSelected();
 		}
@@ -246,7 +246,7 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Album = Albums[position];
-			Albums[position].GetAlbumArt(h.Image);
+			//Albums[position].GetAlbumArt(h.Image);
 			h.Name.Text = Albums[position].Name;
 			h.SetSelected();
 		}
@@ -335,7 +335,7 @@ namespace Alloy.Adapters
 		{
 			ViewHolder h = (ViewHolder)holder;
 			h.Songs = Songs;
-			Songs[position].GetAlbumArt(h.Image);
+			//Songs[position].GetAlbumArt(h.Image);
 			h.Title.Text = Songs[position].Title;
 			h.Artist.Text = Songs[position].Artist;
 			h.Album.Text = Songs[position].Album;

@@ -12,6 +12,13 @@ namespace Alloy.Models
 
 	public class Charts
 	{
+		public Charts()
+		{
+			Tags = new List<Tag>();
+			NeverPlayedAlbums = new List<Album>();
+			TopTracks = new List<Song>();
+			NeverPlayed = new List<Song>();
+		}
 		[JsonProperty("tags")]
 		public List<Tag> Tags { get; set; }
 		[JsonProperty("never_played_albums")]
