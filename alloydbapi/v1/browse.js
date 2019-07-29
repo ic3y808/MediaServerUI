@@ -295,7 +295,7 @@ router.get("/charts", function (req, res) {
     var allTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     if (allTracks.length > 0) {
       var anyPlays = allTracks.every((obj) => {
-        return obj.play_count !== 0;
+        return obj.play_count === 0;
       });
       if (anyPlays === false) {
         album.tracks = allTracks;
