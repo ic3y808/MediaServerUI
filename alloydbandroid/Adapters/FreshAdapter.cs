@@ -23,15 +23,24 @@ namespace Alloy.Adapters
 		private MaterialRippleAdapter adapter;
 		private event EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick;
 		private event EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick;
+		private event EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> artistClick;
 		public int Position { get; set; }
 
-		public FreshCardFragment(EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackCLick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick)
+		public FreshCardFragment(EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackCLick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick, EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> artistClick)
 		{
 			this.trackClick = trackCLick;
 			this.albumClick = albumClick;
-			MusicProvider.ChartsStartRefresh += MusicProvider_ChartsStartRefresh;
-			MusicProvider.ChartsRefreshed += MusicProvider_ChartsRefreshed;
+			this.artistClick = artistClick;
+			MusicProvider.FreshStartRefresh += MusicProvider_FreshStartRefresh;
+			MusicProvider.FreshRefreshed += MusicProvider_FreshRefreshed;
 			BackgroundAudioServiceConnection.ServiceConnected += BackgroundAudioServiceConnection_ServiceConnected;
+		}
+
+
+
+		private void MusicProvider_FreshStartRefresh(object sender, EventArgs e)
+		{
+			refreshLayout.Refreshing = true;
 		}
 
 		private void BackgroundAudioServiceConnection_ServiceConnected(object sender, bool e)
@@ -39,12 +48,7 @@ namespace Alloy.Adapters
 			if (e) { SetDataSource(); }
 		}
 
-		private void MusicProvider_ChartsStartRefresh(object sender, EventArgs e)
-		{
-			refreshLayout.Refreshing = true;
-		}
-
-		private void MusicProvider_ChartsRefreshed(object sender, Charts e)
+		private void MusicProvider_FreshRefreshed(object sender, Fresh e)
 		{
 			SetDataSource();
 			refreshLayout.Refreshing = false;
@@ -55,21 +59,21 @@ namespace Alloy.Adapters
 			switch (Position)
 			{
 				case 0:
-					adapter.Songs = MusicProvider.Charts.NeverPlayed;
+					adapter.Songs = MusicProvider.Fresh.Tracks;
 					break;
 				case 1:
-					adapter.Albums = MusicProvider.Charts.NeverPlayedAlbums;
+					adapter.Albums = MusicProvider.Fresh.Albums;
 					break;
 				case 2:
-					adapter.Songs = MusicProvider.Charts.TopTracks;
+					adapter.Artists = MusicProvider.Fresh.Artists;
 					break;
 			}
 			Adapters.UpdateAdapters();
 		}
 
-		public static FreshCardFragment newInstance(int position, EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick)
+		public static FreshCardFragment newInstance(int position, EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick, EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> artistClick)
 		{
-			FreshCardFragment f = new FreshCardFragment(trackClick, albumClick);
+			FreshCardFragment f = new FreshCardFragment(trackClick, albumClick, artistClick);
 			Bundle b = new Bundle();
 			b.PutInt("position", position);
 			f.Arguments = b;
@@ -88,13 +92,13 @@ namespace Alloy.Adapters
 			switch (Position)
 			{
 				case 0:
-					rootView = inflater.Inflate(Resource.Layout.track_layout, container, false);
+					rootView = inflater.Inflate(Resource.Layout.track_list_layout, container, false);
 					break;
 				case 1:
-					rootView = inflater.Inflate(Resource.Layout.album_layout, container, false);
+					rootView = inflater.Inflate(Resource.Layout.album_list_layout, container, false);
 					break;
 				case 2:
-					rootView = inflater.Inflate(Resource.Layout.track_layout, container, false);
+					rootView = inflater.Inflate(Resource.Layout.artists_list_layout, container, false);
 					break;
 			}
 
@@ -108,7 +112,6 @@ namespace Alloy.Adapters
 			switch (Position)
 			{
 				case 0:
-				case 2:
 					recyclerView = rootView.FindViewById<RecyclerView>(Resource.Id.track_list);
 					adapter = new MaterialRippleAdapter();
 					adapter.TrackClick += (sender, e) => { trackClick?.Invoke(sender, e); };
@@ -126,6 +129,16 @@ namespace Alloy.Adapters
 					recyclerView.HasFixedSize = true;
 					Adapters.SetAdapters(Activity, adapter);
 					break;
+				case 2:
+					recyclerView = rootView.FindViewById<RecyclerView>(Resource.Id.artist_list);
+					adapter = new MaterialRippleAdapter();
+					adapter.ArtistClick += (sender, e) => { artistClick?.Invoke(sender, e); };
+					recyclerView.SetAdapter(adapter);
+					recyclerView.SetLayoutManager(new LinearLayoutManager(Context));
+					recyclerView.HasFixedSize = true;
+					Adapters.SetAdapters(Activity, adapter);
+					break;
+
 			}
 
 
@@ -136,7 +149,7 @@ namespace Alloy.Adapters
 
 		private void RefreshLayout_Refresh(object sender, EventArgs e)
 		{
-			MusicProvider.RefreshCharts();
+			MusicProvider.RefreshFresh();
 		}
 	}
 
@@ -144,6 +157,7 @@ namespace Alloy.Adapters
 	{
 		public event EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> TrackClick;
 		public event EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> AlbumClick;
+		public event EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> ArtistClick;
 
 		public FreshAdapter(FragmentManager fm) : base(fm)
 		{
@@ -156,7 +170,7 @@ namespace Alloy.Adapters
 			return base.GetItemPosition(@object);
 		}
 
-		private ICharSequence[] TITLES = CharSequence.ArrayFromStringArray(new[] { "Never Played Tracks", "Never Played Albums", "Top Tracks" });
+		private ICharSequence[] TITLES = CharSequence.ArrayFromStringArray(new[] { "Tracks", "Albums", "Artists" });
 
 		public override ICharSequence GetPageTitleFormatted(int position)
 		{
@@ -165,7 +179,7 @@ namespace Alloy.Adapters
 
 		public override Fragment GetItem(int position)
 		{
-			return FreshCardFragment.newInstance(position, TrackClick, AlbumClick);
+			return FreshCardFragment.newInstance(position, TrackClick, AlbumClick, ArtistClick);
 		}
 
 		public override int Count => TITLES.Length;

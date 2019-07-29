@@ -16,11 +16,13 @@ namespace Alloy.Adapters
 	{
 		public List<Song> Songs { get; set; }
 		public List<Album> Albums { get; set; }
+		public List<Artist> Artists { get; set; }
 
 		public MaterialRippleAdapter()
 		{
 			Songs = new List<Song>();
 			Albums = new List<Album>();
+			Artists = new List<Artist>();
 		}
 
 		public override long GetItemId(int position)
@@ -47,6 +49,12 @@ namespace Alloy.Adapters
 				h.Title.Text = Albums[position].Name;
 				h.Artist.Text = Albums[position].Artist;
 			}
+			if (Artists.Count > 0)
+			{
+				Artists[position].GetAlbumArt(h.Image);
+				h.Image.SetImageBitmap(Artists[position].Art);
+				h.Title.Text = Artists[position].Name;
+			}
 			h.SetSelected(position);
 		}
 
@@ -57,7 +65,7 @@ namespace Alloy.Adapters
 					.RippleAlpha(0.2f)
 					.RippleHover(true)
 					.RippleOverlay(true)
-					.create(), TrackClick, AlbumClick);
+					.create(), TrackClick, AlbumClick, ArtistClick);
 		}
 
 		public override int ItemCount
@@ -66,12 +74,14 @@ namespace Alloy.Adapters
 			{
 				if (Songs.Count > 0) return Songs.Count;
 				if (Albums.Count > 0) return Albums.Count;
+				if (Artists.Count > 0) return Artists.Count;
 				return 0;
 			}
 		}
 
 		public event EventHandler<TrackViewHolderEvent> TrackClick;
 		public event EventHandler<AlbumViewHolderEvent> AlbumClick;
+		public event EventHandler<ArtistViewHolderEvent> ArtistClick;
 
 		public class MaterialRippleViewHolder : RecyclerView.ViewHolder, View.IOnClickListener, View.IOnLongClickListener
 		{
@@ -84,12 +94,14 @@ namespace Alloy.Adapters
 			public TextView AlbumTitle { get; set; }
 			public List<Song> Songs { get; set; }
 			public List<Album> Albums { get; set; }
+			public List<Artist> Artists { get; set; }
 			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public event EventHandler<TrackViewHolderEvent> TrackClick;
 			public event EventHandler<AlbumViewHolderEvent> AlbumClick;
+			public event EventHandler<ArtistViewHolderEvent> ArtistClick;
 
-			public MaterialRippleViewHolder(View itemView, EventHandler<TrackViewHolderEvent> trackClick, EventHandler<AlbumViewHolderEvent> albumClick) : base(itemView)
+			public MaterialRippleViewHolder(View itemView, EventHandler<TrackViewHolderEvent> trackClick, EventHandler<AlbumViewHolderEvent> albumClick, EventHandler<ArtistViewHolderEvent> artistClick ) : base(itemView)
 			{
 				ItemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
 				Wave = itemView.FindViewById<WaveView>(Resource.Id.wave_view);
@@ -105,6 +117,7 @@ namespace Alloy.Adapters
 				itemView.SetOnLongClickListener(this);
 				TrackClick = trackClick;
 				AlbumClick = albumClick;
+				ArtistClick = artistClick;
 				Hyphen.Visibility = ViewStates.Gone;
 				Wave.Visibility = ViewStates.Gone;
 				Wave.setProgress(0);
@@ -147,6 +160,7 @@ namespace Alloy.Adapters
 				SetWave(true);
 				TrackClick?.Invoke(this, new TrackViewHolderEvent() { Position = AdapterPosition, Songs = Songs });
 				AlbumClick?.Invoke(this, new AlbumViewHolderEvent() { Position = AdapterPosition, Albums = Albums });
+				ArtistClick?.Invoke(this, new ArtistViewHolderEvent() { Position = AdapterPosition, Artists = Artists });
 			}
 
 			public bool OnLongClick(View v)
@@ -165,6 +179,12 @@ namespace Alloy.Adapters
 		{
 			public int Position { get; set; }
 			public List<Album> Albums { get; set; }
+		}
+
+		public class ArtistViewHolderEvent
+		{
+			public int Position { get; set; }
+			public List<Artist> Artists { get; set; }
 		}
 	}
 }
