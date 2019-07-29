@@ -5,6 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
+	android:id="@+id/fresh_layout"
 	android:background="@android:color/transparent"
 	tools:context="Alloy.Fragments.StarredFragment">
 
@@ -26,12 +27,12 @@
 	</android.support.design.widget.AppBarLayout>
 
 	<RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:background="@color/transparent_background"
 		android:paddingTop="?attr/actionBarSize">
 
-        <Alloy.Widgets.PagerSlidingTabStrip
+		<Alloy.Widgets.PagerSlidingTabStrip
 			android:id="@+id/tabs"
 			android:layout_width="match_parent"
 			android:layout_height="?attr/actionBarSize"
@@ -47,5 +48,5 @@
 			android:paddingTop="?attr/actionBarSize"
 			android:paddingBottom="?attr/actionBarSize"/>
 
-        </RelativeLayout>
+	</RelativeLayout>
 </RelativeLayout>

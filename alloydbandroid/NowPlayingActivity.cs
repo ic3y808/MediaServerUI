@@ -143,7 +143,7 @@ namespace Alloy
 			if (serviceConnection == null)
 			{
 				serviceConnection = new BackgroundAudioServiceConnection();
-				serviceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
+				BackgroundAudioServiceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
 				Intent serviceToStart = new Intent(Application.Context, typeof(BackgroundAudioService));
 				BindService(serviceToStart, serviceConnection, Bind.AutoCreate);
 			}

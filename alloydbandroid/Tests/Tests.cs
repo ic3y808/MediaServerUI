@@ -57,6 +57,31 @@ namespace Tests
 
 		}
 
+		private enum Direction { Left, Right, Top, Bottom }
+		private void Swipe(Direction from, Direction to, string id)
+		{
+			switch (from)
+			{
+				case Direction.Left:
+					if (to == Direction.Right)
+						app.DragCoordinates(windowRect.X + 150, windowRect.CenterY, windowRect.Width - 150, windowRect.CenterY);
+					break;
+				case Direction.Right:
+					if (to == Direction.Left)
+						app.DragCoordinates(windowRect.Width - 150, windowRect.CenterY, windowRect.X + 150, windowRect.CenterY);
+					break;
+				case Direction.Top:
+					if (to == Direction.Bottom)
+						app.ScrollUp(q => q.Id(id), ScrollStrategy.Gesture, 0.65, 2000, true);
+					break;
+				case Direction.Bottom:
+					if (to == Direction.Top)
+						app.ScrollDown(q => q.Id(id), ScrollStrategy.Gesture, 0.65, 2000, true);
+					//	app.DragCoordinates(windowRect.CenterX, windowRect.Height - 150, windowRect.CenterX, windowRect.Y + 150);
+					break;
+			}
+		}
+
 
 		private void SelectMenuItem(string item)
 		{
@@ -231,9 +256,19 @@ namespace Tests
 		{
 			TimeTest(() =>
 			{
-				TestForElement("drawer_layout");
-				TestForElement("image_view");
-				TestForElement("fresh_new_artists_list");
+				SelectMenuItem("Whats New");
+
+				TestForElement("fresh_layout");
+				TestForElement("track_list");
+				Swipe(Direction.Right, Direction.Left, "track_list");
+				Swipe(Direction.Right, Direction.Left, "track_list");
+				TestForElement("track_list");
+				Swipe(Direction.Top, Direction.Bottom, "track_list");
+				Swipe(Direction.Bottom, Direction.Top, "track_list");
+				Swipe(Direction.Left, Direction.Right, "track_list");
+				Swipe(Direction.Left, Direction.Right, "track_list");
+				Swipe(Direction.Top, Direction.Bottom, "track_list");
+				Swipe(Direction.Bottom, Direction.Top, "track_list");
 			});
 		}
 
