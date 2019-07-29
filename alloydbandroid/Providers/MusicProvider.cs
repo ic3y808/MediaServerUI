@@ -64,6 +64,8 @@ namespace Alloy.Providers
 			Albums = new List<Album>();
 			Artists = new List<Artist>();
 			History = new List<History>();
+			Starred = new Starred();
+			Charts = new Charts();
 			httpClient.Timeout = TimeSpan.FromSeconds(10);
 		}
 

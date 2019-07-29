@@ -100,7 +100,7 @@ namespace Alloy.Fragments
 			FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
 		}
 
-		private void Track_ItemClick(object sender, TrackViewHolderEvent e)
+		private void Track_ItemClick(object sender, MaterialRippleTrackAdapter.TrackViewHolderEvent e)
 		{
 			Utils.Run(() => ServiceConnection?.Play(e.Position, e.Songs.ToQueue()));
 		}

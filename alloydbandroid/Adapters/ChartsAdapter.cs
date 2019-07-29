@@ -104,7 +104,7 @@ namespace Alloy.Adapters
 			get { return 3; }
 		}
 
-		public event EventHandler<TrackViewHolderEvent> TrackClick;
+		public event EventHandler<MaterialRippleTrackAdapter.TrackViewHolderEvent> TrackClick;
 		public event EventHandler<ChartsArtistAdapter.ViewHolder.ViewHolderEvent> ArtistClick;
 		public event EventHandler<ChartsAlbumAdapter.ViewHolder.ViewHolderEvent> AlbumClick;
 
@@ -176,7 +176,7 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_artist_item, parent, false);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_song_item, parent, false);
 			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
@@ -348,18 +348,18 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.fresh_song_item, parent, false);
+			View view = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_song_item, parent, false);
 			return new ViewHolder(view, OnClick, ServiceConnection);
 		}
 
 		public override int ItemCount => Songs.Count;
 
-		void OnClick(TrackViewHolderEvent e)
+		void OnClick(MaterialRippleTrackAdapter.TrackViewHolderEvent e)
 		{
 			ItemClick?.Invoke(this, e);
 		}
 
-		public event EventHandler<TrackViewHolderEvent> ItemClick;
+		public event EventHandler<MaterialRippleTrackAdapter.TrackViewHolderEvent> ItemClick;
 
 		public class ViewHolder : RecyclerView.ViewHolder
 		{
@@ -371,7 +371,7 @@ namespace Alloy.Adapters
 			public List<Song> Songs { get; set; }
 			public BackgroundAudioServiceConnection ServiceConnection { get; }
 
-			public ViewHolder(View itemView, Action<TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
+			public ViewHolder(View itemView, Action<MaterialRippleTrackAdapter.TrackViewHolderEvent> listener, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
 				ItemRoot = itemView.FindViewById<LinearLayout>(Resource.Id.item_root);
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
@@ -379,7 +379,7 @@ namespace Alloy.Adapters
 				Artist = itemView.FindViewById<TextView>(Resource.Id.artist);
 				Album = itemView.FindViewById<TextView>(Resource.Id.album);
 				ServiceConnection = serviceConnection;
-				itemView.Click += (sender, e) => listener(new TrackViewHolderEvent { Position = LayoutPosition, Songs = Songs });
+				itemView.Click += (sender, e) => listener(new MaterialRippleTrackAdapter.TrackViewHolderEvent { Position = LayoutPosition, Songs = Songs });
 				BackgroundAudioServiceConnection.PlaybackStatusChanged += (o, e) => { SetSelected(LayoutPosition); };
 			}
 

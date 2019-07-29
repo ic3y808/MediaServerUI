@@ -5,7 +5,7 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:background="@color/menu_default_background"
+	android:background="@android:color/transparent"
 	tools:context="Alloy.Fragments.StarredFragment">
 
 
@@ -28,6 +28,7 @@
 	<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+		android:background="@color/transparent_background"
 		android:paddingTop="?attr/actionBarSize">
 
         <Alloy.Widgets.PagerSlidingTabStrip

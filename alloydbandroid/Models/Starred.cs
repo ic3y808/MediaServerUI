@@ -12,6 +12,15 @@ namespace Alloy.Models
 
 	public class Starred
 	{
+		public Starred()
+		{
+			Tracks = new List<Song>();
+			Albums = new List<Album>();
+			Artists = new List<Artist>();
+			TopArtists = new List<Artist>();
+			TopTracks = new List<Song>();
+			TopAlbums = new List<Album>();
+		}
 		[JsonProperty("tracks")]
 		public List<Song> Tracks { get; set; }
 		[JsonProperty("albums")]

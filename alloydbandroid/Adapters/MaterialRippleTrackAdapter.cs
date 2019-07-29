@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using Alloy.Helpers;
+using Alloy.Models;
 using Android.Views;
 using Android.Widget;
 using Alloy.Providers;
@@ -11,12 +13,14 @@ using Android.Support.V7.Widget;
 
 namespace Alloy.Adapters
 {
-	public class StarredTrackAdapter : RecyclerView.Adapter
+	public class MaterialRippleTrackAdapter : RecyclerView.Adapter
 	{
 		private BackgroundAudioServiceConnection ServiceConnection { get; }
+		public List<Song> Songs { get; set; }
 
-		public StarredTrackAdapter(BackgroundAudioServiceConnection serviceConnection)
+		public MaterialRippleTrackAdapter(BackgroundAudioServiceConnection serviceConnection)
 		{
+			Songs = new List<Song>();
 			ServiceConnection = serviceConnection;
 		}
 
@@ -27,19 +31,19 @@ namespace Alloy.Adapters
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			ViewHolder h = (ViewHolder)holder;
-			MusicProvider.Starred.Tracks[position].GetAlbumArt(h.Image);
-			h.Image.SetImageBitmap(MusicProvider.Starred.Tracks[position].Art);
-			
-			h.Title.Text = MusicProvider.Starred.Tracks[position].Title;
-			h.Album.Text = MusicProvider.Starred.Tracks[position].Album;
-			h.Artist.Text = MusicProvider.Starred.Tracks[position].Artist;
+			MaterialRippleTrackViewHolder h = (MaterialRippleTrackViewHolder)holder;
+			Songs[position].GetAlbumArt(h.Image);
+			h.Image.SetImageBitmap(Songs[position].Art);
+
+			h.Title.Text = Songs[position].Title;
+			h.Album.Text = Songs[position].Album;
+			h.Artist.Text = Songs[position].Artist;
 			h.SetSelected(position);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			return new ViewHolder(
+			return new MaterialRippleTrackViewHolder(Songs,
 				MaterialRippleLayout.on(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.starred_song_item, parent, false))
 					.RippleColor(new Color(ContextCompat.GetColor(parent.Context, Resource.Color.ripple_color)))
 					.RippleAlpha(0.2f)
@@ -52,14 +56,14 @@ namespace Alloy.Adapters
 		{
 			get
 			{
-				if (MusicProvider.Starred == null || MusicProvider.Starred.Tracks == null) return 0;
-				return MusicProvider.Starred.Tracks.Count;
+				if (MusicProvider.Starred == null || Songs == null) return 0;
+				return Songs.Count;
 			}
 		}
 
 		public event EventHandler<TrackViewHolderEvent> TrackClick;
 
-		public class ViewHolder : RecyclerView.ViewHolder, View.IOnClickListener, View.IOnLongClickListener
+		public class MaterialRippleTrackViewHolder : RecyclerView.ViewHolder, View.IOnClickListener, View.IOnLongClickListener
 		{
 			public RelativeLayout ItemRoot { get; set; }
 			public WaveView Wave { get; set; }
@@ -67,13 +71,14 @@ namespace Alloy.Adapters
 			public TextView Title { get; set; }
 			public TextView Artist { get; set; }
 			public TextView Album { get; set; }
+			public List<Song> Songs { get; set; }
 			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public event EventHandler<TrackViewHolderEvent> ItemClick;
 
-			public ViewHolder(View itemView, EventHandler<TrackViewHolderEvent> itemClick, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
+			public MaterialRippleTrackViewHolder(List<Song> songs, View itemView, EventHandler<TrackViewHolderEvent> itemClick, BackgroundAudioServiceConnection serviceConnection) : base(itemView)
 			{
-
+				Songs = songs;
 				ItemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
 				Wave = itemView.FindViewById<WaveView>(Resource.Id.wave_view);
 				Image = itemView.FindViewById<ImageView>(Resource.Id.image_view);
@@ -94,9 +99,9 @@ namespace Alloy.Adapters
 
 			public void SetSelected(int position)
 			{
-				if (MusicProvider.Starred.Tracks == null || MusicProvider.Starred.Tracks.Count == 0 || position < 0 || position >= MusicProvider.Starred.Tracks.Count) return;
+				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
 
-				bool selected = MusicProvider.Starred.Tracks[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(MusicProvider.Starred.Tracks[position].Id);
+				bool selected = Songs[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
 
 				if (selected)
 				{
@@ -127,13 +132,19 @@ namespace Alloy.Adapters
 			public void OnClick(View v)
 			{
 				SetWave(true);
-				ItemClick?.Invoke(this, new TrackViewHolderEvent() { Position = AdapterPosition, Songs = MusicProvider.Starred.Tracks });
+				ItemClick?.Invoke(this, new TrackViewHolderEvent() { Position = AdapterPosition, Songs = Songs });
 			}
 
 			public bool OnLongClick(View v)
 			{
 				return true;
 			}
+		}
+
+		public class TrackViewHolderEvent
+		{
+			public int Position { get; set; }
+			public List<Song> Songs { get; set; }
 		}
 	}
 }
