@@ -150,8 +150,8 @@ namespace Alloy.Fragments
 			if (ServiceConnection == null)
 			{
 				ServiceConnection = new BackgroundAudioServiceConnection();
-				ServiceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
-				ServiceConnection.ServiceDisconnected += ServiceConnectionOnServiceDisconnected;
+				BackgroundAudioServiceConnection.ServiceConnected += ServiceConnection_ServiceConnected;
+				BackgroundAudioServiceConnection.ServiceDisconnected += ServiceConnectionOnServiceDisconnected;
 				Intent serviceToStart = new Intent(Application.Context, typeof(BackgroundAudioService));
 				Activity.BindService(serviceToStart, ServiceConnection, Bind.AutoCreate);
 			}

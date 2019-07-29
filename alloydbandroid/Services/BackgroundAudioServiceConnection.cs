@@ -13,8 +13,8 @@ namespace Alloy.Services
 	{
 		private static BackgroundAudioServiceBinder binder;
 		public static event EventHandler<StatusEventArg> PlaybackStatusChanged;
-		public event EventHandler<bool> ServiceConnected;
-		public event EventHandler<bool> ServiceDisconnected;
+		public static event EventHandler<bool> ServiceConnected;
+		public static event EventHandler<bool> ServiceDisconnected;
 
 		public BackgroundAudioServiceConnection()
 		{

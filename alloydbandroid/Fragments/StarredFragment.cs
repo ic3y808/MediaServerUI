@@ -14,7 +14,7 @@ namespace Alloy.Fragments
 	public class StarredFragment : FragmentBase
 	{
 		private RecyclerView starredContentView;
-		private MaterialRippleTrackAdapter materialRippleAdapter;
+		private MaterialRippleAdapter materialRippleAdapter;
 		private SwipeRefreshLayout refreshLayout;
 
 		public override string Name => "Starred";
@@ -65,8 +65,7 @@ namespace Alloy.Fragments
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
-
-			materialRippleAdapter = new MaterialRippleTrackAdapter(ServiceConnection);
+			materialRippleAdapter = new MaterialRippleAdapter();
 			materialRippleAdapter.TrackClick += MaterialRippleAdapterTrackClick;
 			starredContentView.SetAdapter(materialRippleAdapter);
 			materialRippleAdapter.Songs = MusicProvider.Starred.Tracks;
@@ -75,7 +74,7 @@ namespace Alloy.Fragments
 			ScrollToNowPlaying();
 		}
 
-		private void MaterialRippleAdapterTrackClick(object sender, MaterialRippleTrackAdapter.TrackViewHolderEvent e)
+		private void MaterialRippleAdapterTrackClick(object sender, MaterialRippleAdapter.TrackViewHolderEvent e)
 		{
 			Play(e.Songs.ToQueue(), e.Position);
 		}
