@@ -304,6 +304,8 @@ router.get("/charts", function (req, res) {
     }
   });
 
+  result.charts.never_played_albums = _.shuffle(result.charts.never_played_albums);
+
   result.charts.top_tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT ?").all(limit);
   result.charts.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
 
