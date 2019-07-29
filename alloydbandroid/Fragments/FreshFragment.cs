@@ -54,16 +54,15 @@ namespace Alloy.Fragments
 
 		public override void ServiceConnected()
 		{
-			if (MusicProvider.Charts.NeverPlayed.Count == 0)
+			if (MusicProvider.Fresh.Tracks.Count == 0)
 			{
-				MusicProvider.RefreshCharts();
+				MusicProvider.RefreshFresh();
 			}
 		}
 
 		public override void OnRefreshed()
 		{
 			MusicProvider.RefreshFresh();
-			MusicProvider.RefreshCharts();
 		}
 	}	
 }

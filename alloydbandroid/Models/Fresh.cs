@@ -12,6 +12,12 @@ namespace Alloy.Models
 
 	public class Fresh
 	{
+		public Fresh()
+		{
+			Albums = new List<Album>();
+			Artists = new List<Artist>();
+			Tracks = new List<Song>();
+		}
 		[JsonProperty("albums")]
 		public List<Album> Albums { get; set; }
 		[JsonProperty("artists")]

@@ -88,13 +88,13 @@ namespace Alloy.Adapters
 			switch (Position)
 			{
 				case 0:
-					rootView = inflater.Inflate(Resource.Layout.track_layout, container, false);
+					rootView = inflater.Inflate(Resource.Layout.track_list_layout, container, false);
 					break;
 				case 1:
-					rootView = inflater.Inflate(Resource.Layout.album_layout, container, false);
+					rootView = inflater.Inflate(Resource.Layout.album_list_layout, container, false);
 					break;
 				case 2:
-					rootView = inflater.Inflate(Resource.Layout.track_layout, container, false);
+					rootView = inflater.Inflate(Resource.Layout.track_list_layout, container, false);
 					break;
 			}
 
