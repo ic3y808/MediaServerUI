@@ -50,6 +50,7 @@ namespace Alloy.Services
 		public const string MEDIA_CHANNEL_DESCRIPTION = "Media playback controls";
 		public const int NOTIFICATION_ID = 165164465;
 		private bool loading;
+		private PowerManager.WakeLock wakeLock;
 
 		private Song currentSong;
 		public Song CurrentSong
@@ -97,6 +98,7 @@ namespace Alloy.Services
 			NotificationService1 = new NotificationService(this);
 			MainQueue = new Queue();
 			InitMediaPlayer();
+			GetWakeLock();
 			InitBluetoothReceiver();
 			InitMediaButtonReceiver();
 			InitHeadsetPlugReceiver();
@@ -106,6 +108,7 @@ namespace Alloy.Services
 		public override void OnDestroy()
 		{
 			base.OnDestroy();
+			ReleaseWakeLock();
 			if (mediaButtonReciever != null) UnregisterReceiver(mediaButtonReciever);
 			if (headsetPlugReceiver != null) UnregisterReceiver(headsetPlugReceiver);
 			if (noisyReceiver != null) UnregisterReceiver(noisyReceiver);
@@ -343,30 +346,37 @@ namespace Alloy.Services
 			return null;
 		}
 
+		public void GetWakeLock()
+		{
+			var _powerManager = (PowerManager)GetSystemService(PowerService);
+			wakeLock = _powerManager.NewWakeLock(WakeLockFlags.Partial, "Alloy");
+		}
+
+		public void ReleaseWakeLock()
+		{
+			if (wakeLock != null && wakeLock.IsHeld)
+				wakeLock.Release();
+		}
+
 		public void InitMediaPlayer()
 		{
 			try
 			{
 				if (mediaPlayer == null)
+				{
 					mediaPlayer = new MediaPlayer();
+				}
+				else { mediaPlayer.Reset(); }
 				mediaPlayer.SetWakeMode(Application.Context, WakeLockFlags.Partial);
-
-				//Set up MediaPlayer event listeners
+				mediaPlayer.SetScreenOnWhilePlaying(false);
 				mediaPlayer.SetOnCompletionListener(this);
 				mediaPlayer.SetOnErrorListener(this);
 				mediaPlayer.SetOnPreparedListener(this);
 				mediaPlayer.SetOnBufferingUpdateListener(this);
 				mediaPlayer.SetOnSeekCompleteListener(this);
 				mediaPlayer.SetOnInfoListener(this);
-				//Reset so that the MediaPlayer is not pointing to another data source
-				mediaPlayer.Reset();
-
 				mediaPlayer.SetVolume(1.0f, 1.0f);
-				mediaPlayer.SetAudioStreamType(Stream.Music);
-				mediaPlayer.SetAudioAttributes(new AudioAttributes.Builder()
-					.SetUsage(AudioUsageKind.Media)
-					.SetContentType(AudioContentType.Music)
-					.Build());
+				mediaPlayer.SetAudioAttributes(new AudioAttributes.Builder().SetUsage(AudioUsageKind.Media).SetContentType(AudioContentType.Music).SetLegacyStreamType(Stream.Music).Build());
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
@@ -382,23 +392,6 @@ namespace Alloy.Services
 				headsetPlugReceiver = new HeadsetPlugReceiver(this);
 
 				RegisterReceiver(headsetPlugReceiver, filter);
-			}
-			catch (Exception ee) { Crashes.TrackError(ee); }
-		}
-
-		public void InitNoisyReceiver()
-		{
-			try
-			{
-				if (noisyReceiver != null)
-				{
-					UnregisterReceiver(noisyReceiver);
-					noisyReceiver = null;
-				}
-				IntentFilter filter = new IntentFilter(AudioManager.ActionAudioBecomingNoisy);
-				noisyReceiver = new NoisyAudioReciever(this);
-
-				RegisterReceiver(noisyReceiver, filter);
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
@@ -492,7 +485,6 @@ namespace Alloy.Services
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
-
 
 		public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
 		{

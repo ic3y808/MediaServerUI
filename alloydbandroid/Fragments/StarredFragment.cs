@@ -14,7 +14,7 @@ namespace Alloy.Fragments
 	public class StarredFragment : FragmentBase
 	{
 		private RecyclerView starredContentView;
-		private StarredTrackAdapter starredAdapter;
+		private MaterialRippleTrackAdapter materialRippleAdapter;
 		private SwipeRefreshLayout refreshLayout;
 
 		public override string Name => "Starred";
@@ -45,6 +45,7 @@ namespace Alloy.Fragments
 		private void MusicProvider_StarredRefreshed(object sender, Starred e)
 		{
 			refreshLayout.Refreshing = false;
+			materialRippleAdapter.Songs = MusicProvider.Starred.Tracks;
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -57,7 +58,7 @@ namespace Alloy.Fragments
 		public override void PlaybackStatusChanged(StatusEventArg args)
 		{
 			base.PlaybackStatusChanged(args);
-			starredAdapter?.NotifyDataSetChanged();
+			materialRippleAdapter?.NotifyDataSetChanged();
 			Adapters.Adapters.UpdateAdapters();
 		}
 
@@ -65,26 +66,16 @@ namespace Alloy.Fragments
 		{
 			base.ServiceConnected();
 
-			starredAdapter = new StarredTrackAdapter(ServiceConnection);
-			starredAdapter.TrackClick += StarredAdapter_TrackClick;
-			starredContentView.SetAdapter(starredAdapter);
-			Adapters.Adapters.SetAdapters(Activity, starredAdapter);
-
-			if (MusicProvider.Starred == null ||
-				MusicProvider.Starred.Albums == null ||
-				MusicProvider.Starred.Artists == null ||
-				MusicProvider.Starred.TopAlbums == null ||
-				MusicProvider.Starred.TopArtists == null ||
-				MusicProvider.Starred.TopTracks == null ||
-				MusicProvider.Starred.Tracks == null)
-			{
-				Utils.Run(MusicProvider.RefreshStarred);
-			}
-
+			materialRippleAdapter = new MaterialRippleTrackAdapter(ServiceConnection);
+			materialRippleAdapter.TrackClick += MaterialRippleAdapterTrackClick;
+			starredContentView.SetAdapter(materialRippleAdapter);
+			materialRippleAdapter.Songs = MusicProvider.Starred.Tracks;
+			Adapters.Adapters.SetAdapters(Activity, materialRippleAdapter);
+			if (MusicProvider.Starred == null || MusicProvider.Starred.Tracks.Count == 0) { MusicProvider.RefreshStarred(); }
 			ScrollToNowPlaying();
 		}
 
-		private void StarredAdapter_TrackClick(object sender, TrackViewHolderEvent e)
+		private void MaterialRippleAdapterTrackClick(object sender, MaterialRippleTrackAdapter.TrackViewHolderEvent e)
 		{
 			Play(e.Songs.ToQueue(), e.Position);
 		}
@@ -93,7 +84,5 @@ namespace Alloy.Fragments
 		{
 			MusicProvider.RefreshStarred();
 		}
-
-
 	}
 }
