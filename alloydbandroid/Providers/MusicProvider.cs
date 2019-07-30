@@ -47,6 +47,7 @@ namespace Alloy.Providers
 		public static event EventHandler<GenreContainer> GenreRefreshed;
 		public static event EventHandler StarredStartRefresh;
 		public static event EventHandler<Starred> StarredRefreshed;
+		public static bool IsStarredRefreshing { get; private set; }
 		public static event EventHandler FreshStartRefresh;
 		public static event EventHandler<Fresh> FreshRefreshed;
 		public static event EventHandler ChartsStartRefresh;
@@ -499,6 +500,7 @@ namespace Alloy.Providers
 			{
 				base.OnPostExecute(result);
 				if (result != 0) return;
+				IsStarredRefreshing = false;
 				StarredRefreshed?.Invoke(null, Starred);
 				Adapters.Adapters.UpdateAdapters();
 			}
@@ -644,6 +646,8 @@ namespace Alloy.Providers
 
 		public static void RefreshStarred()
 		{
+			if (IsStarredRefreshing) return;
+			IsStarredRefreshing = true;
 			StarredStartRefresh?.Invoke(null, EventArgs.Empty);
 			new StarredLoader().Execute();
 		}

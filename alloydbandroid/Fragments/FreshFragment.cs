@@ -28,9 +28,17 @@ namespace Alloy.Fragments
 			pager.OffscreenPageLimit = 10;
 			freshAdapter = new FreshAdapter(FragmentManager);
 			freshAdapter.TrackClick += (s, e) =>
-			 {
+			{
 				 Play(e.Songs.ToQueue(), e.Position);
-			 };
+			};
+			freshAdapter.AlbumClick += (s, e) =>
+			{
+				ShowAlbum(e.Albums[e.Position]);
+			};
+			freshAdapter.ArtistClick += (s, e) =>
+			{
+				ShowArtist(e.Artists[e.Position]);
+			};
 			pager.Adapter = freshAdapter;
 			tabs.setViewPager(pager);
 			int pageMargin = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Resources.DisplayMetrics);

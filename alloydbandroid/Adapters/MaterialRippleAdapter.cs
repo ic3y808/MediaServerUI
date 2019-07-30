@@ -14,7 +14,18 @@ namespace Alloy.Adapters
 {
 	public class MaterialRippleAdapter : RecyclerView.Adapter
 	{
-		public List<Song> Songs { get; set; }
+		private List<Song> songs;
+
+		public List<Song> Songs
+		{
+			get => songs;
+			set
+			{
+				songs = value;
+
+			}
+		}
+
 		public List<Album> Albums { get; set; }
 		public List<Artist> Artists { get; set; }
 
@@ -60,12 +71,21 @@ namespace Alloy.Adapters
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
-			return new MaterialRippleViewHolder(MaterialRippleLayout.on(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.material_ripple_item, parent, false))
-					.RippleColor(new Color(ContextCompat.GetColor(parent.Context, Resource.Color.ripple_color)))
-					.RippleAlpha(0.2f)
-					.RippleHover(true)
-					.RippleOverlay(true)
-					.create(), TrackClick, AlbumClick, ArtistClick);
+			MaterialRippleViewHolder vh = new MaterialRippleViewHolder(MaterialRippleLayout.on(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.material_ripple_item, parent, false))
+				.RippleColor(new Color(ContextCompat.GetColor(parent.Context, Resource.Color.ripple_color)))
+				.RippleAlpha(0.2f)
+				.RippleHover(true)
+				.RippleOverlay(true)
+				.create())
+			{
+				Songs = Songs,
+				Albums = Albums,
+				Artists = Artists,
+			};
+			vh.TrackClick += TrackClick;
+			vh.AlbumClick += AlbumClick;
+			vh.ArtistClick += ArtistClick;
+			return vh;
 		}
 
 		public override int ItemCount
@@ -101,7 +121,7 @@ namespace Alloy.Adapters
 			public event EventHandler<AlbumViewHolderEvent> AlbumClick;
 			public event EventHandler<ArtistViewHolderEvent> ArtistClick;
 
-			public MaterialRippleViewHolder(View itemView, EventHandler<TrackViewHolderEvent> trackClick, EventHandler<AlbumViewHolderEvent> albumClick, EventHandler<ArtistViewHolderEvent> artistClick ) : base(itemView)
+			public MaterialRippleViewHolder(View itemView) : base(itemView)
 			{
 				ItemRoot = itemView.FindViewById<RelativeLayout>(Resource.Id.item_root);
 				Wave = itemView.FindViewById<WaveView>(Resource.Id.wave_view);
@@ -115,9 +135,6 @@ namespace Alloy.Adapters
 				ItemView.LayoutParameters = (new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.WrapContent));
 				itemView.SetOnClickListener(this);
 				itemView.SetOnLongClickListener(this);
-				TrackClick = trackClick;
-				AlbumClick = albumClick;
-				ArtistClick = artistClick;
 				Hyphen.Visibility = ViewStates.Gone;
 				Wave.Visibility = ViewStates.Gone;
 				Wave.setProgress(0);

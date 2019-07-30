@@ -323,7 +323,7 @@ router.get("/charts", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/fresh", function (req, res) {
-  var limit = req.query.limit === undefined ? 10 : req.query.limit;
+  var limit = req.query.limit === undefined ? 15 : req.query.limit;
   var result = {
     fresh: {
       albums: [],
