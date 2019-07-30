@@ -1,16 +1,15 @@
 exports.setup = function (options, seedLink) {
-
+ 
 };
 
 exports.up = function (db) {
-  return {
-    name: "PlaylistTracks",
+  return db.createTable("PlaylistTracks", {
     columns: {
       id: { type: "int" },
       song_id: { type: "int" }
     },
     ifNotExists: true
-  };
+  });
 };
 
 exports.down = function (db) {

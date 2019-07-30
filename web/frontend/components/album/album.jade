@@ -1,0 +1,35 @@
+section.scrollable.no-padder.w-f-md(style="padding:0px;")
+  div
+    .contentSpacing.no-padder
+      section.content.album-content
+        .container-fluid
+          .album-container
+            .col-xs-12.col-lg-3.col-xl-4
+              .album-header-container
+                header.TrackListHeader
+                  .media-object
+                    .row
+                      .react-contextmenu-wrapper.col-xs-12
+                        .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.album.image}}");')
+                    .row
+                      .mo-info
+                        .react-contextmenu-wrapper.col-xs-12
+                          .mo-info-name(title='{{info.album.name}}')
+                            span(dir='auto') {{info.album.name}}
+                      
+
+                    .mo-meta.ellipsis-one-line
+                      .react-contextmenu-wrapper
+                        a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
+                  .TrackListHeader__button.TrackListHeader__button--top
+                    button.spotify-btn.btn-green.false(ng-click="playAlbum()") PLAY
+                  .TrackListHeader__button.TrackListHeader__button--top
+                    button.spotify-btn.btn-green.false(title='Add to Starred') Add to Starred
+                  .TrackListHeader__button.TrackListHeader__button--top
+                    starratinglabel(album="info.album", extrastyles="btn-green")
+              
+            .col-xs-12.col-lg-9.col-xl-8
+              tracklist(data="info.tracks", canaddplaylist="true")

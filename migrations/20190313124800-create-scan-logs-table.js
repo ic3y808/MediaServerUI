@@ -1,10 +1,10 @@
 exports.setup = function (options, seedLink) {
-
+ 
 };
 
 exports.up = function (db) {
-  return {
-    name: "ScanEvents", columns: {
+  return db.createTable("ScanEvents", {
+    columns: {
       event_type: { type: "string", defaultValue: "" },
       reason: { type: "string", defaultValue: "" },
       result: { type: "string", defaultValue: "" },
@@ -18,7 +18,7 @@ exports.up = function (db) {
       quality: { type: "string", defaultValue: "" },
     },
     ifNotExists: true
-  };
+  });
 };
 
 exports.down = function (db) {

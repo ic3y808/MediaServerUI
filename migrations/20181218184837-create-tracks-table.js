@@ -3,14 +3,10 @@ exports.setup = function (options, seedLink) {
 };
 
 exports.up = function (db) {
-  return {
-    name: "Tracks",
+  return db.createTable("Tracks", {
     columns: {
       id: { type: "string", unique: true },
       path: { type: "string", defaultValue: "", unique: true },
-      converted_path: { type: "string", defaultValue: "" },
-      converted_content_type: { type: "string", defaultValue: ""},
-      converted_size: { type: "int", defaultValue: 0 },
       title: { type: "string", defaultValue: "" },
       artist: { type: "string", defaultValue: "" },
       artist_id: { type: "string", defaultValue: "" },
@@ -38,7 +34,7 @@ exports.up = function (db) {
       of: { type: "int", defaultValue: 0 }
     },
     ifNotExists: true
-  };
+  });
 };
 
 exports.down = function (db) {

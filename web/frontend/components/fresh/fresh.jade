@@ -1,0 +1,25 @@
+section.scrollable.padder-lg.w-f-md.scrollsaver
+  .row
+    .col-md-7
+        h1.font-thin.m-b
+          | Discover What's New
+  .row 
+    .col-md-7(ng-if="$root.fresh_tracks.length > 0")
+      thumblist(data="$root.fresh_tracks", title="New Songs", limit="36", type="tracks", refreshclick="refresh()", origin="fresh", viewmorelink="/fresh")
+    .col-md-5(ng-if="$root.charts.never_played.length > 0")
+      itemlist(data="$root.charts.never_played", title="Never Played", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/never_played")
+  .row
+    .col-md-7(ng-if="$root.fresh_albums.length > 0")
+      thumblist(data="$root.fresh_albums", title="New Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
+    .col-md-5(ng-if="quick_picks.length > 0")
+      itemlist(data="quick_picks", title="Quick Picks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/never_played")  
+  .row
+    .col-md-7(ng-if="$root.fresh_artists.length > 0")
+      thumblist(data="$root.fresh_artists", title="New Artists", limit="36", type="artists", refreshclick="refresh()", viewmorelink="/fresh")             
+    .col-md-5(ng-if="top_tracks.length > 0")
+      itemlist(data="top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/charts")
+  .row
+    .col-md-10.col-md-offset-1(ng-if="$root.fresh_albums.length > 0")
+      
+      itemtable(data="$root.fresh_albums", title="Recently Added", limit="$root.fresh_albums.length", type="albums", refreshclick="refresh()", viewmorelink="/charts")
+      

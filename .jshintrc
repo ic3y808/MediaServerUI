@@ -1,13 +1,22 @@
 {
-    "predef": [ "$", "jQuery", "text", "$p", "window", "document", "console", "parent", "angular" ],
-    "esversion"     : 8,
+    "esversion": 6,
     "passfail"      : false, 
     "maxerr"        : 100,    
+
+
     "browser"       : true,
+
     "node"          : true,
     "jquery"        : true,
-    "strict"        : false,  
+    "ender"         : true,
+
+
+  
+
+    "strict"        : true,  
     "globalstrict"  : true,  
+
+
     "asi"           : true,  
     "laxbreak"      : true, 
     "bitwise"       : true, 
@@ -27,7 +36,10 @@
     "scripturl"     : true, 
     "shadow"        : false,
     "supernew"      : false,
-    "undef"         : true,    
+    "undef"         : true, 
+
+
+   
     "newcap"        : true,   
     "noempty"       : true,   
     "nonew"         : true,   

@@ -1,0 +1,30 @@
+div
+  .Table-tableContainer(ng-show="!folderlist && !driveList")
+    table.Table-table
+      thead
+        tr
+          th.TableHeaderCell-headerCell.Link-link(label='Album') | Loading...
+
+  .Table-tableContainer(ng-show="driveList")
+    table.Table-table
+      thead
+        tr
+          th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') Pick a Drive and Path
+          th.TableHeaderCell-headerCell
+      tbody
+        tr.TableRow-row(ng-repeat='drive in driveList')
+          td.TableRowCell-cell
+            span.Link-link.ng-binding(ng-click="navigateToPath(drive.path)") {{drive.path}}
+          td.TableRowCell-cell
+            span.Link-link {{drive.size}}
+  .Table-tableContainer(ng-show="folderlist")
+    table.Table-table
+      thead
+        tr
+          th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') {{currentpath}}
+      tbody
+        tr.TableRow-row(ng-repeat='folder in folderlist')
+          td.TableRowCell-cell
+            span.Link-link.ng-binding(ng-click="navigateToPath(folder.Path)") {{folder.Name}}
+
+

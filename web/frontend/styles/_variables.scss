@@ -1,0 +1,150 @@
+//colors
+$primary-color: $clr-cyan-900;
+$light-color:$clr-cyan-300;
+$dark-color: $clr-cyan-700;
+$darker-color: $clr-cyan-900;
+$background-color: #f2f4f8;
+$background-alt-color: #F5F5F6;
+$border-color: #868686;
+$main-background-color: $background-color;
+$main-background-color-transparent: rgba($primary-color, .35);
+$main-text-color: #788188;
+$main-link-color: #545a5f;
+$main-link-focus-color: #303437;
+$faded-text-color: choose-contrast-color($primary-color);
+$alt-text-color: choose-contrast-color($darker-color);
+$sub-background-color:$primary-color;
+$alt-sub-background-color: $light-color;
+$now-playing-track: rgba($light-color, 0.904);
+$now-playing-track-text: rgba(choose-contrast-color($light-color), 0.904);
+$general-border-color:rgba($border-color, 0.904);
+$grid-selection-color:rgba($light-color, 0.5);
+$label-color:rgba(choose-contrast-color($primary-color), 0.904);
+$sub-label-color:#8895aa;
+//page size breaks 
+$break-xxxsmall: 320px;
+$break-xxsmall: 375px;
+$break-xsmall: 384px;
+$break-small: 414px;
+$break-xxxmed: 480px;
+$break-xxmed: 575px;
+$break-xmed: 600px;
+$break-med: 640px;
+$break-large: 667px;
+$break-xlarge: 768px;
+$break-xxlarge: 800px;
+$break-xxxlarge: 991px;
+$break-huge: 1024px;
+$break-xhuge: 1280px;
+$break-xxhuge: 1366px;
+$break-xxxhuge: 1440px;
+$break-maximum: 1600px;
+
+//@media screen and (max-width:$break-xxxsmall) { } //320px;
+//@media screen and (max-width:$break-xxsmall) { } //375px;
+//@media screen and (max-width:$break-xsmall) { } //384px;
+//@media screen and (max-width:$break-small) { } //414px;
+//@media screen and (max-width:$break-xxxmed) { } //480px;
+//@media screen and (max-width:$break-xxmed) { } //568px;
+//@media screen and (max-width:$break-xmed) { } //600px;
+//@media screen and (max-width:$break-med) { } //640px;
+//@media screen and (max-width:$break-large) { } //667px;
+//@media screen and (max-width:$break-xlarge) { } //768px;
+//@media screen and (max-width:$break-xxlarge) { } //800px;
+//@media screen and (max-width:$break-xxxlarge) { } //991px;
+//@media screen and (max-width:$break-huge) { } //1024px;
+//@media screen and (max-width:$break-xhuge) { } //1280px;
+//@media screen and (max-width:$break-xxhuge) { } //1366px;
+//@media screen and (max-width:$break-xxxhuge) { } //1440px;
+//@media screen and (max-width:$break-maximum) { } //1600px;
+//typography
+$main-font: 'circular',
+sans-serif;
+$main-font-size: 1em;
+$sub-font: 'Source Sans Pro',
+sans-serif;
+$sub-font-size: 0.85em;
+$extra-font: 'Helvetica Neue',
+sans-serif;
+$extra-font-size: 0.85em;
+
+
+//buttons
+$main-btn-hover-color:$now-playing-track;
+//navbar
+$navbar-height:40px;
+//range
+$track-color: $alt-sub-background-color !default;
+$thumb-color: $main-background-color !default;
+$thumb-radius: 3px !default;
+$thumb-height: 24px !default;
+$thumb-width: 10px !default;
+$thumb-shadow-size: 4px !default;
+$thumb-shadow-blur: 4px !default;
+$thumb-shadow-color: rgba(0, 0, 0, .2) !default;
+$thumb-border-width: 2px !default;
+$thumb-border-color: rgba(choose-contrast-color($general-border-color), .5) !default;
+$track-width: 100% !default;
+$track-height: 8px !default;
+$track-shadow-size: 1px !default;
+$track-shadow-blur: 1px !default;
+$track-shadow-color: rgba(0, 0, 0, .2) !default;
+$track-border-width: 2px !default;
+$track-border-color: $alt-sub-background-color !default;
+$track-radius: 5px !default;
+$contrast: 5% !default;
+$ie-bottom-track-color: darken($track-color, $contrast) !default;
+//footer
+$footer-height:70px;
+$buffer-color: rgba($primary-color, 0.25);
+$progress-color: rgba($light-color, 0.728);
+$progress-container-color: rgba($primary-color, 0.25);
+//sidebar
+$sidebar-width: 160px;
+$sidebar-collapsed-width: 50px;
+$sidebar-font-color: #e1e2e3;
+$sidebar-line-height: .8;
+$sidebar-font-size: .7em;
+$sidebar-font: 'Roboto',
+sans-serif;
+$sidebar-font-weight: bold;
+//slider
+$slider-track-color:rgb(90, 90, 90);
+$slider-thumb-color:rgb(224, 224, 224);
+$slider-thumb-border-color:rgb(25, 24, 24);
+//toolbar 
+$toolbar-height:45px;
+$navbar-background-color:$dark-color;
+//scrollbar
+$scrollbar-track-color: mix($main-background-color, white, 50%);
+$scrollbar-thumb-color: mix($sub-background-color, black, 50%);
+$scrollbar-thickness: 0.5em;
+
+
+
+:export {
+  xxxsmall: $break-xxxsmall;
+  xxsmall: $break-xxsmall;
+  xsmall: $break-xsmall;
+  smalls: $break-small;
+  xxxmed: $break-xxxmed;
+  xxmed: $break-xxmed;
+  xmed: $break-xmed;
+  med: $break-med;
+  large: $break-large;
+  xlarge: $break-xlarge;
+  xxlarge: $break-xxlarge;
+  xxxlarge: $break-xxxlarge;
+  huge: $break-huge;
+  xhuge: $break-xhuge;
+  xxhuge: $break-xxhuge;
+  xxxhuge: $break-xxxhuge;
+  maximum: $break-maximum;
+  primaryColor: $primary-color;
+  lightColor: $light-color;
+  darkColor: $dark-color;
+  darkerColor: $darker-color;
+  backgroundColor: $background-color;
+  backgroundAltColor: $background-alt-color;
+  borderColor: $border-color;
+}

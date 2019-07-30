@@ -1,9 +1,0 @@
-section.scrollable.padder-lg.w-f-md.scrollsaver
-  .row
-    .col-md-7(ng-if="$root.charts.never_played_albums.length > 0")
-      thumblist(data="$root.charts.never_played_albums", title="Never Played Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
-
-    .col-md-5(ng-if="$root.charts.never_played.length > 0")
-      itemlist(data="$root.charts.never_played", title="Never Played Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/never_played")
-     
- 

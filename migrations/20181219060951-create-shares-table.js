@@ -1,11 +1,10 @@
 exports.setup = function (options, seedLink) {
-
+ 
 };
 
-exports.up = function (db) {
-  return {
-    name: "Shares",
-    columns: {
+exports.up = function(db) {
+  return db.createTable("Shares", {
+    columns:{
       id: { type: "string", unique: true },
       url: { type: "string", defaultValue: "" },
       description: { type: "string", defaultValue: "" },
@@ -15,10 +14,10 @@ exports.up = function (db) {
       visitCount: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true
-  };
+  });
 };
 
-exports.down = function (db) {
+exports.down = function(db) {
   return null;
 };
 

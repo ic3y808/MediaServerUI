@@ -1,0 +1,1 @@
+npm i -g --production windows-build-tools@4.0.0

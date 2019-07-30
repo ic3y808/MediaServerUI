@@ -1,18 +1,17 @@
 exports.setup = function (options, seedLink) {
-
+ 
 };
 
 exports.up = function (db) {
-  return {
-    name: "Links",
+  return db.createTable("Links", {
     columns: {
       id: { type: "int", primaryKey: true, autoIncrement: true },
-      type: { type: "string" },
-      target: { type: "string" },
+      type: { type: "string"},
+      target: { type: "string"},
       artist_id: { type: "string" },
     },
     ifNotExists: true
-  };
+  });
 };
 
 exports.down = function (db) {

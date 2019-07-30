@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	android:id="@+id/item_root"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+	 <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:scaleType="centerCrop"
+                android:gravity="left"
+                android:id="@+id/image_view"
+				android:src="@drawable/no_art"/>
+
+     <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+			android:background="@android:color/transparent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="Canada"
+                android:id="@+id/title"
+                android:gravity="left"
+                android:layout_marginTop="5dp"
+                android:textColor="#fff"
+                android:layout_marginBottom="5dp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeMaxTextSize="15sp"/>
+          
+		<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="16dp"
+                android:text="Canada"
+                android:layout_below="@+id/title"
+                android:id="@+id/album"
+                android:gravity="left"
+                android:layout_marginTop="5dp"
+                android:textColor="#fff"
+                android:layout_marginBottom="5dp"
+                android:autoSizeTextType="uniform"
+                android:autoSizeMinTextSize="8sp"
+                android:autoSizeMaxTextSize="15sp"/>
+
+        </RelativeLayout>
+
+</LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

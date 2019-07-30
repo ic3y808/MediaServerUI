@@ -1,0 +1,135 @@
+
+section.w-f-md.scrollable
+  
+  // nav
+  nav.nav-primary.hidden-xs
+  
+    ul.nav(data-ride='collapse')
+      //li.hidden-nav-xs.padder.m-t.m-b-sm.text-xs.text-muted Discover 
+      li
+        a(href='/fresh')
+          i.alloy-icon.icon-fresh
+          span.font-bold What's new
+      li
+        a(href='/starred')
+          i.alloy-icon.icon-starred
+          b.badge.bg-primary.pull-right {{$root.starred.length}}
+          span.font-bold Starred
+      li
+        a(href='/charts')
+          i.alloy-icon.icon-charts
+          b.badge.bg-primary.pull-right {{$root.rated.length}}
+          span.font-bold Charts
+      li
+        a(href='/history')
+          i.alloy-icon.icon-history
+          b.badge.bg-primary.pull-right {{$root.history.length}}
+          span.font-bold History
+      li
+        a(href='/artists')
+          i.alloy-icon.icon-artists
+          b.badge.bg-primary.pull-right {{$root.artists.length}}
+          span.font-bold Artists
+      li
+        a(href='/albums')
+          i.alloy-icon.icon-albums
+          b.badge.bg-primary.pull-right {{$root.albums.length}}
+          span.font-bold Albums
+      li
+        a(href='/genres')
+          i.alloy-icon.icon-genres
+          b.badge.bg-primary.pull-right {{$root.genres.length}}
+          span.font-bold Genres
+
+
+      li
+        a.auto(href='#')
+          span.pull-right.text-muted
+            i.fa.fa-angle-left.text
+            i.fa.fa-angle-down.text-active
+          i.alloy-icon.icon-sabnzbd.text-xs
+          span.font-bold SABnzbd
+        ul.nav.dk.text-sm
+          li(style="height:30px;")
+            a.auto(href='/activity/queue', title='Queue', style="height:30px;")
+              i.alloy-icon.icon-queue.text-xs
+              span.hidden-nav-xs.font-bold Queue
+          li(style="height:30px;")
+            a.auto(href='/activity/history', title='History', style="height:30px;")
+              i.alloy-icon.icon-history.text-xs
+              span.hidden-nav-xs.font-bold History
+          li(style="height:30px;")
+            a.auto(href='/activity/blacklist', title='Blacklist', style="height:30px;")
+              i.alloy-icon.icon-ban.text-xs
+              span.hidden-nav-xs.font-bold Blacklist
+
+      li
+        a(href='/status')
+          i.alloy-icon.icon-status
+          span.font-bold Status 
+      li
+        a.auto(href='#')
+          span.pull-right.text-muted
+            i.fa.fa-angle-left.text
+            i.fa.fa-angle-down.text-active
+          i.alloy-icon.icon-sabnzbd.text-xs
+          span Config
+        ul.nav.dk.text-sm
+          li(style="height:30px;")
+            a(href='/config/alloydb', title='AlloyDB', style="height:30px;")
+              i.alloy-icon.icon-alloydb.text-xs
+              span.hidden-nav-xs.font-bold AlloyDB 
+          li(style="height:30px;")
+            a(href='/database', title='Database', style="height:30px;")
+              i.alloy-icon.icon-database.text-xs
+              span.hidden-nav-xs.font-bold Database 
+          li(style="height:30px;")
+            a.auto(href='/config/scheduler', title='Scheduler', style="height:30px;")
+              i.alloy-icon.icon-scheduler.text-xs
+              span.hidden-nav-xs Scheduler
+          li(style="height:30px;")
+            a.auto(href='/config/sabnzbd', title='SABnzbd', style="height:30px;")
+              i.alloy-icon.icon-sabnzbd.text-xs
+              span.hidden-nav-xs SABnzbd
+          
+    ul.nav.text-sm
+      li.hidden-nav-xs.padder.m-t.m-b-sm.text-xs.text-muted
+        span.pull-right
+          a(ng-click="showCreatePlaylistModal()")
+            i.alloy-icon.icon-plus.i-lg
+        | Playlists
+    ul.nav.text-sm.sidenav-playlist-list
+      li(ng-repeat="playlist in $root.playlists")
+        a.playlist-link(href='/playlist/{{playlist.id}}')
+          i.alloy-icon.icon-playlist.icon
+          b.badge.bg-success.dker.pull-right(ng-if='playlist.tracks') {{playlist.tracks.length}}
+          span {{playlist.name}}
+    
+    #addPlaylistModal.modal.fade(role='dialog')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5#addMediaPathModalLabel.modal-title Create new Playlist
+            button.Link-link.close(data-dismiss='modal', type='button', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    input.Naming-namingInput.TextInput-input.Input-input(ng-model='newPlaylistName', type='text', placeholder='Playlist Name')
+            
+          .modal-footer
+            button.btn.btn-secondary(data-dismiss='modal', type='button') Close
+            button.btn.btn-primary(ng-click='createNewPlaylist()', type='button') Add
+    // / nav
+footer.footer.hidden-xs.no-padder.text-center-nav-xs(ng-show="$root.currentTrack.image")
+  .bg.hidden-xs
+    .dropdown.dropup.wrapper-sm.clearfix
+      a.dropdown-toggle(href="/playing")
+        span.thumb-sm.avatar.pull-left.m-l-xs
+          img.dker(src='{{$root.currentTrack.image}}', alt='...')
+        span.hidden-nav-xs.clear
+          span.truncate.block.m-l
+            strong.truncate.font-bold.text-lt {{$root.currentTrack.title}}
+          span.truncate.text-muted.text-xs.block.m-l {{$root.currentTrack.artist}}

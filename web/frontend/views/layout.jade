@@ -1,0 +1,33 @@
+doctype html
+html.app(ng-app='alloy',lang='en')
+  head
+    title= title  
+    meta(name='description', content='app, web app, responsive, admin dashboard, admin, flat, flat ui, ui kit, off screen nav')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    meta(charset='utf-8')
+
+  body
+      section.vbox
+        header.bg-white-only.header.header-md.navbar.navbar-fixed-top-xs
+          navbar
+        section
+          section.hbox.stretch
+            aside#nav.bg-dark.dk.nav-xs.aside.hidden-print.collapse
+              section.vbox
+                sidenav
+            section#content
+              section.vbox
+                ng-view#primary-content.vbox
+                a.hide.nav-off-screen-block(href='#', data-toggle='class:nav-off-screen,open', data-target='#nav,html')
+                footer.footer.bg-dark
+                  footbar
+
+        video#media-player(preload='true', controls='hidden', style="display:none;")
+      - if(!dev_mode)
+        script(src='/vendor.js', type='text/javascript')
+      script(src='/app.js', type='text/javascript')
+      script(src='http://localhost:#{jade_port}/livereload.js?snipver=1') 
+
+
+
+      

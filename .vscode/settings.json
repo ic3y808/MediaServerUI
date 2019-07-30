@@ -5,9 +5,5 @@
     "editor.insertSpaces": true,
     "editor.detectIndentation": false,
     "mochaExplorer.optsFile": "${workspaceFolder}/mocha.opts",
-    "mochaExplorer.env": { "NYC_ROOT_ID": "true" },
-    "git.ignoreLimitWarning": true,
-    "eslint.autoFixOnSave": true,
-    "javascript.suggestionActions.enabled": false,
-    "telemetry.enableTelemetry":false
+    "git.ignoreLimitWarning": true
 }

@@ -1,0 +1,65 @@
+section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
+  a.pull-right.text-muted.m-t-lg(href='#', data-toggle='class:fa-spin')
+    i#refresh.icon-refresh.i-lg.inline
+  h2.font-thin.m-b
+    | Artists 
+    span.musicbar.inline.m-l-sm(style='width:20px;height:20px')
+      span.bar1.a1.bg-primary.lter
+      span.bar2.a2.bg-info.lt
+      span.bar3.a3.bg-success
+      span.bar4.a4.bg-warning.dk
+      span.bar5.a5.bg-danger.dker
+
+  .row
+    .col-md-12
+      h3.font-thin
+      .row.row-sm
+
+        .table-responsive
+          #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
+            .row
+              .col-sm-6
+                #DataTables_Table_0_length.dataTables_length
+                  label
+                    | Show 
+                    select(size='1', name='DataTables_Table_0_length', aria-controls='DataTables_Table_0')
+                      option(value='10', selected='selected') 10
+                      option(value='25') 25
+                      option(value='50') 50
+                      option(value='100') 100
+                    |  entries
+              .col-sm-6
+                #DataTables_Table_0_filter.dataTables_filter
+                  label
+                    | Search: 
+                    input(type='text', aria-controls='DataTables_Table_0')
+              #DataTables_Table_0_processing.dataTables_processing(style='visibility: hidden;') Processing...
+            table#DataTables_Table_0.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
+              thead
+                tr(role='row')
+                  th.sorting(style='width: 220px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Artist
+                  th.sorting(style='width: 100px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Track(s)
+              tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat="artist in $root.artists")
+                tr(ng-class-odd="'odd'" ng-class-even="'even'")
+                  td.sorting_1
+                    a(href="/artist/{{artist.id}}") {{artist.name}}
+   
+                  td {{artist.track_count}}
+                
+            .row
+              .col-sm-6
+                #DataTables_Table_0_info.dataTables_info Showing 1 to 10 of 57 entries
+              .col-sm-6
+                #DataTables_Table_0_paginate.dataTables_paginate.paging_full_numbers
+                  a#DataTables_Table_0_first.first.paginate_button.paginate_button_disabled(tabindex='0') First
+                  a#DataTables_Table_0_previous.previous.paginate_button.paginate_button_disabled(tabindex='0') Previous
+                  span
+                    a.paginate_active(tabindex='0') 1
+                    a.paginate_button(tabindex='0') 2
+                    a.paginate_button(tabindex='0') 3
+                    a.paginate_button(tabindex='0') 4
+                    a.paginate_button(tabindex='0') 5
+                  a#DataTables_Table_0_next.next.paginate_button(tabindex='0') Next
+                  a#DataTables_Table_0_last.last.paginate_button(tabindex='0') Last
+
+
