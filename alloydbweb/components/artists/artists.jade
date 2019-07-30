@@ -1,0 +1,24 @@
+section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
+  h2.font-thin.m-b
+    | Artists 
+    span.musicbar.inline.m-l-sm(style='width:20px;height:20px')
+      span.bar1.a1.bg-primary.lter
+      span.bar2.a2.bg-info.lt
+      span.bar3.a3.bg-success
+      span.bar4.a4.bg-warning.dk
+      span.bar5.a5.bg-danger.dker
+  .row
+    .col-md-12
+      h3.font-thin
+      .row.row-sm
+        .table-responsive
+          table.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
+            thead
+              tr(role='row')
+                th.sorting(style='width: 220px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Artist
+                th.sorting(style='width: 100px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Track(s)
+            tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat="artist in $root.artists")
+              tr(ng-class-odd="'odd'" ng-class-even="'even'")
+                td.sorting_1
+                  a(href="/artist/{{artist.id}}") {{artist.name}}
+                td {{artist.track_count}}

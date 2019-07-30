@@ -1,20 +1,35 @@
 var gulp = require("gulp");
-var mocha = require("gulp-mocha");
-var istanbul = require("gulp-istanbul");
-var fs = require("fs");
+var path = require("path");
+var sass = require("gulp-sass");
+var autoprefixer = require("gulp-autoprefixer");
+var sourcemaps = require("gulp-sourcemaps");
 
-gulp.task("default", function () {
-  gulp.src("tests/**/*.js")
-    .pipe(mocha({
-      reporter: "mocha-junit-reporter",
-      reporterOptions: {
-        mochaFile: "./TEST-RESULTS.xml"
-      }
-    }))
-    .pipe(istanbul())
-    .pipe(istanbul.hookRequire())
-    .pipe(istanbul.writeReports({
-      dir: "./coverage",
-      reporters: ["cobertura", "html"]
-    }));
+var alloyDbUi = {
+  HERE: "./",
+  CSS: "./alloydbui/css/",
+  SCSS: "./alloydbui/scss/**/**"
+};
+
+var alloyDbWeb = {
+  HERE: "./",
+  CSS: "./alloydbweb/styles/css/",
+  SCSS: "./alloydbweb/styles/**/*.scss"
+};
+
+gulp.task("scss:alloydb", function() {
+  return gulp.src(alloyDbUi.SCSS)
+    .pipe(sourcemaps.init())
+    .pipe(sass().on("error", sass.logError))
+    .pipe(autoprefixer())
+    .pipe(sourcemaps.write(alloyDbUi.HERE))
+    .pipe(gulp.dest(alloyDbUi.CSS));
+});
+
+gulp.task("scss:web", function() {
+  return gulp.src(alloyDbWeb.SCSS)
+    .pipe(sourcemaps.init())
+    .pipe(sass().on("error", sass.logError))
+    .pipe(autoprefixer())
+    .pipe(sourcemaps.write(alloyDbWeb.HERE))
+    .pipe(gulp.dest(alloyDbWeb.CSS));
 });

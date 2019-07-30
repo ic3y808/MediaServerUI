@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					xmlns:tools="http://schemas.android.com/tools"
+					android:id="@+id/playback_controls"
+					android:layout_width="match_parent"
+					android:layout_height="68dp"
+					android:layout_alignParentBottom="true"
+					
+					android:background="@android:color/transparent"
+					android:padding="@dimen/playback_controls_padding">
+	<ImageView
+		android:id="@+id/album_art"
+		android:transitionName="now_playing_transition"
+		android:background="@drawable/rectangle_border"
+		android:layout_height="68dp"
+		android:layout_width="68dp"
+		android:scaleType="centerCrop"
+		android:contentDescription="@string/currently_playing_song"
+		android:layout_alignParentLeft="true"/>
+
+	<LinearLayout
+		android:id="@+id/content"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:background="@android:color/transparent"
+		android:layout_marginStart="@dimen/playback_controls_margin"
+		android:layout_marginEnd="@dimen/playback_controls_margin"
+		android:orientation="vertical"
+		android:layout_toRightOf="@id/album_art"
+		android:layout_toLeftOf="@+id/star_button"
+		android:layout_centerVertical="true">
+		<TextView
+			android:id="@+id/title"
+			android:singleLine="true"
+			android:ellipsize="marquee"
+			android:background="@android:color/transparent"
+			android:marqueeRepeatLimit="marquee_forever"
+			android:scrollHorizontally="true"
+			android:focusable="true"
+			android:focusableInTouchMode="true"
+			android:freezesText="true"
+			android:maxLines="1"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/currently_playing_song"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:textColor="#FFF"
+			android:shadowColor="#000"
+			android:shadowDx="1"
+			android:shadowDy="1"
+			android:shadowRadius="1"/>
+		<TextView
+			android:id="@+id/artist"
+			android:ellipsize="end"
+			android:maxLines="1"
+			android:background="@android:color/transparent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:contentDescription="@string/currently_playing_artist"
+			android:textAppearance="?android:attr/textAppearanceSmall"
+			android:textColor="#FFF"
+			android:shadowColor="#000"
+			android:shadowDx="0"
+			android:shadowDy="0"
+			android:shadowRadius="5"/>
+	</LinearLayout>
+
+	<ImageButton
+		android:id="@+id/star_button"
+		android:layout_centerVertical="true"
+		android:layout_width="?attr/actionBarSize"
+		android:layout_height="?attr/actionBarSize"
+		android:layout_toLeftOf="@+id/play_pause_button"
+		android:scaleType="fitCenter"
+		android:background="?selectableItemBackgroundBorderless"
+		android:src="@drawable/star_o"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"/>
+
+	<ImageButton
+		android:id="@+id/play_pause_button"
+		android:layout_height="?attr/actionBarSize"
+		android:layout_width="?attr/actionBarSize"
+		android:scaleType="fitCenter"
+		android:layout_toLeftOf="@+id/next_button"
+		android:background="?selectableItemBackgroundBorderless"
+		android:src="@drawable/play"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+		android:contentDescription="@string/play_pause"/>
+
+	<ImageButton
+		android:id="@+id/next_button"
+		android:layout_centerVertical="true"
+		android:layout_width="?attr/actionBarSize"
+		android:layout_height="?attr/actionBarSize"
+		android:layout_alignParentRight="true"
+		android:scaleType="fitCenter"
+		android:background="?selectableItemBackgroundBorderless"
+		android:layout_marginRight="15dp"
+		android:layout_marginTop="5dp"
+		android:layout_marginBottom="5dp"
+		android:src="@drawable/next"/>
+
+</RelativeLayout>
+
+

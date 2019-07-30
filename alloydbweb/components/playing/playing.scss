@@ -1,0 +1,67 @@
+@import "../../styles/variables";
+.playingWrapper {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  padding: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  margin: 0;
+}
+
+.playingBodyWrapper {
+  position: absolute;
+  padding: 0;
+  top: $toolbar-height;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+.playing-artist-name{
+  text-align: center;
+  font-size: 1.4em;
+  font-weight: bolder;
+}
+
+.playing-sub-info{
+  text-align: center;
+  font-size: 0.75em;
+  font-weight:200;
+}
+
+.playing-bio{
+  text-align: center;
+  margin: 10px;
+  font-size: 1em;
+  max-height: 300px;
+  font-weight: 500;
+  overflow-y: auto;
+}
+
+.similar-artists-header{
+  text-align: left;
+}
+.similar-artists-container{
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  text-align: center;
+  margin: 10px;
+  font-size: 1em;
+  max-height: 300px;
+  font-weight: 500;
+  overflow-y: auto;
+}
+
+
+.FlexContainer{
+  display: flex;
+ height:100%;
+  flex-direction: row;
+  justify-content:space-between;
+}

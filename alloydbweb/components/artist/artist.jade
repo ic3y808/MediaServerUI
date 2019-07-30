@@ -1,0 +1,175 @@
+section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style="padding:0px;")
+  section.content.artist
+    header.artist-header(style='background-image: url({{info.image}});')
+      h1.monthly-listeners.large(dir='auto') {{info.artist.name}}
+      .header-buttons
+        button.spotify-btn.btn-black.btn--narrow(ng-click="shuffle()") PLAY
+      .header-buttons
+        starratinglabel(artist="artist")
+      .header-buttons
+        button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starArtist()") {{info.artist.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+
+      nav.tab-nav-list
+        ul.selection-tabs
+          li.selection-tab.active
+            div
+              a.selection-tab-title.selection-tab-title-selected(data-target='#overview', data-toggle='tab') Overview
+          li.selection-tab
+            div
+              a.selection-tab-title(data-target='#all', data-toggle='tab') All Tracks
+          li.selection-tab
+            div
+              a.selection-tab-title(data-target='#related', data-toggle='tab') Related Artists
+          li.selection-tab
+            div
+              a.selection-tab-title(data-target='#about', data-toggle='tab') Artist Info
+    section.scrollable
+      .tab-content
+        #overview.tab-pane.active
+          section.artist-music.container-fluid(ng-if="info.popular_tracks.length > 0")
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  h1.section-title(dir='auto') Popular
+                  section.tracklist-container.full-width
+                    tracklist(data="info.popular_tracks", canaddplaylist="true")
+                    
+          section.artist-albums(ng-if="info.albums.length > 0")
+            .contentSpacing
+              h1.section-title(dir='auto') Albums
+              .row
+                .container-fluid.container-fluid--noSpaceAround
+                  .section-row.row
+                    .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="album in info.albums")
+                      div
+                        div(draggable='true')
+                          .media-object
+                            div
+                              .react-contextmenu-wrapper
+                                a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{album.id}}', style='width: auto; height: auto;')
+                                  div
+                                    .icon
+                                      svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                        title Album
+                                        path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                    .cover-art-image.cover-art-image-loaded(style='background-image: url("{{album.image}}");')
+                              .mo-info
+                                .react-contextmenu-wrapper
+                                  a.mo-info-name(title='Holograms', dir='auto', href='/album/{{album.id}}') {{album.name}}
+                            .mo-meta.ellipsis-one-line
+                              .react-contextmenu-wrapper
+                                a(dir='auto', href='/artist/{{album.artist_id}}') {{album.artist}}
+                  
+          section.artist-singles.artist-albums(ng-if="info.EPs.length > 0")
+            .contentSpacing
+              h1.section-title(dir='auto') EPs
+              .container-fluid.container-fluid--noSpaceAround
+                .section-row.grid--limit.row
+                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="ep in info.EPs")
+                    div
+                      div(draggable='true')
+                        .media-object
+                          div
+                            .react-contextmenu-wrapper
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{ep.id}}', style='width: auto; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                      title Album
+                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{ep.image}}");')
+                            .mo-info
+                              .react-contextmenu-wrapper
+                                a.mo-info-name(title='Bass Real Big', dir='auto', href='/album/{{ep.id}}') {{ep.name}}
+                          .mo-meta.ellipsis-one-line
+                            .react-contextmenu-wrapper
+                              a(dir='auto', href='/artist/{{ep.artist_id}}') {{ep.artist}}
+                
+          section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
+            .contentSpacing
+              h1.section-title(dir='auto') Singles
+              .container-fluid.container-fluid--noSpaceAround
+                .section-row.grid--limit.row
+                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="single in info.singles")
+                    div
+                      div(draggable='true')
+                        .media-object
+                          div
+                            .react-contextmenu-wrapper
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{single.id}}', style='width: auto; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                      title Album
+                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{single.image}}");')
+                            .mo-info
+                              .react-contextmenu-wrapper
+                                a.mo-info-name(title='Firepower 200', dir='auto', href='/album/{{single.id}}') {{single.name}}
+                          .mo-meta.ellipsis-one-line
+                            .react-contextmenu-wrapper
+                              a(dir='auto', href='/artist/{{single.artist_id}}') {{single.artist}}
+          
+          section.artist-appears-on.artist-albums(ng-if="info.other.length > 0")
+            .contentSpacing
+              h1.section-title(dir='auto') Other
+              .container-fluid.container-fluid--noSpaceAround
+                .section-row.grid--limit.row
+                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="other in info.other")
+                    div
+                      div(draggable='true')
+                        .media-object
+                          div
+                            .react-contextmenu-wrapper
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{other.id}}', style='width: auto; height: auto;')
+                                div
+                                  .icon
+                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
+                                      title Album
+                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
+                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{other.image}}");')
+                            .mo-info
+                              .react-contextmenu-wrapper
+                                a.mo-info-name(title='Firepower 200', dir='auto', href='/album/{{other.id}}') {{other.name}}
+                          .mo-meta.ellipsis-one-line
+                            .react-contextmenu-wrapper
+                              a(dir='auto', href='/artist/{{other.artist_id}}') {{other.artist}}
+
+        #all.tab-pane
+          section.artist-music.container-fluid(ng-if="info.tracks.length > 0")
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  section.tracklist-container.full-width
+                    itemtable(data="info.tracks", title="Tracks", limit="info.tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="")
+
+        #related.tab-pane
+          section.artist-music.container-fluid
+            .row
+              .contentSpacing
+                section.artist-toptracks
+                  h1.section-title(dir='auto') Related
+                  .vbox.stretch
+
+        #about.tab-pane
+           section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
+            .contentSpacing
+              h1.section-title(dir='auto') Info
+              .container-fluid.container-fluid--noSpaceAround
+            
+                div
+                  small.text-uc.text-xs.text-muted Path
+                  p {{info.artist.path}}
+                  small.text-uc.text-xs.text-muted Size
+                  p {{info.size}}
+                  small.text-uc.text-xs.text-muted Type
+                  p {{info.artist.type}}
+                  small.text-uc.text-xs.text-muted Status
+                  p {{info.artist.status}}
+                  small.text-uc.text-xs.text-muted info
+                  p {{info.artist.biography}}
+                  .line
+                  small.text-uc.text-xs.text-muted 
+                  p.m-t-sm 
+                    a.btn.btn-rounded.btn-twitter.btn-icon(href='{{link.target}}', target="_blank", ng-repeat="link in info.links")
+                      i.alloy-icon.icon(ng-class="$parent.getLinkIcon(link)")

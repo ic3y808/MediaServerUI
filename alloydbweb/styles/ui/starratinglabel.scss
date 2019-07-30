@@ -1,0 +1,7 @@
+@import "../../styles/variables";
+.star-rating-base {
+  fill: $main-text-color;
+}
+.star-rating-selected {
+  fill: $primary-color !important;
+}

@@ -1,0 +1,21 @@
+.truncate {
+  width: 125px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.playlist-link {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidenav-playlist-list {
+  height: 150px;
+  max-height: 200px;
+  overflow: hidden;
+}
+.sidenav-playlist-list:hover {
+  overflow: auto;
+}

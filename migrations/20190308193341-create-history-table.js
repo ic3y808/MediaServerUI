@@ -1,9 +1,10 @@
 exports.setup = function (options, seedLink) {
- 
+
 };
 
 exports.up = function (db) {
-  return db.createTable("History", {
+  return {
+    name: "History",
     columns: {
       history_id: { type: "int", primaryKey: true, autoIncrement: true },
       id: { type: "string" },
@@ -19,7 +20,7 @@ exports.up = function (db) {
       genre_id: { type: "string", defaultValue: "" }
     },
     ifNotExists: true
-  });
+  };
 };
 
 exports.down = function (db) {

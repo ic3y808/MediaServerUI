@@ -1,0 +1,201 @@
+<resources>
+	<!-- Base application theme. -->
+	<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar.FullScreen">
+		<item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="colorAccent">@color/colorAccent</item>
+		<item name="android:windowContentTransitions">true</item>
+		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
+	
+	</style>
+
+	<!-- Activity theme. -->
+	<style name="AppTheme.NoActionBar" parent="ThemeOverlay.AppCompat.ActionBar">
+		<item name="windowActionBar">false</item>
+		<item name="windowNoTitle">true</item>
+		<item name="android:textColor">@color/colorPrimary</item>
+		<item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+		<item name="android:actionBarTabTextStyle">@style/AppTheme.ActionBar.TabText</item>
+		<item name="android:actionMenuTextColor">@color/actionbar_foreground</item>
+		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
+		
+	</style>
+
+	<!-- Splashscreen theme. -->
+	<style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar.FullScreen">
+		<item name="android:windowBackground">@drawable/splash</item>
+		<item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
+		
+	</style>
+
+	<!-- General toolbar style. -->
+	<style name="AppTheme.ActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+		<item name="android:textColor">@color/actionbar_foreground</item>
+		<item name="android:statusBarColor">@color/status_bar_color</item>
+		<item name="android:titleTextStyle">@style/AppTheme.ActionBar.Title</item>
+		<item name="android:actionMenuTextColor">@color/actionbar_foreground</item>
+		<item name="android:colorControlNormal">@color/actionbar_foreground</item>
+		<item name="android:textColorPrimary">@color/actionbar_foreground</item>
+		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
+	</style>
+
+	<style name="AppTheme.ActionBar.Title"  parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+		<item name="android:textColor">@color/actionbar_foreground</item>
+		<item name="android:textColorPrimary">@color/actionbar_foreground</item>
+
+	</style>
+
+	<style name="AppTheme.ActionBar.TabText" parent="@style/Widget.AppCompat.ActionBar.TabText">
+		<item name="android:textColor">@color/actionbar_foreground</item>
+	</style>
+
+	<style name="AppTheme.ActionBar.OverflowButtonStyle" parent="@style/Widget.AppCompat.ActionButton.Overflow">
+		<item name="android:tint">@color/actionbar_foreground</item>
+		<item name="android:colorBackground">@color/actionbar_background</item>
+		<item name="android:textColor">@color/actionbar_background</item>
+		<item name="android:background">@android:color/transparent</item>
+	</style>
+
+
+	<!-- Fullscreen style. -->
+	<style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowActionBar">false</item>
+		<item name="android:windowFullscreen">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+	</style>
+
+	<!-- Menu style. -->
+	<style name="MenuDrawer" />
+
+	<style name="MenuDrawer.Widget" />
+
+	<style name="MenuDrawer.Widget.Divider">
+		<item name="android:background">@color/divider_color</item>
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:paddingLeft">16dp</item>
+		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="MenuDrawer.Widget.Category">
+		<item name="android:textStyle">bold</item>
+		<item name="android:textColor">@color/menu_title_color</item>
+		<item name="android:textSize">14sp</item>
+		<item name="android:textAllCaps">true</item>
+
+		<item name="android:gravity">center_vertical</item>
+		<item name="android:paddingLeft">16dp</item>
+		<item name="android:paddingStart">16dp</item>
+		<item name="android:background">@android:color/transparent</item>
+
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">end</item>
+	</style>
+
+	<style name="MenuDrawer.Widget.Title">
+		<item name="android:background">@android:color/transparent</item>
+		<item name="android:textAppearance">?android:attr/textAppearance</item>
+		<item name="android:textColor">@color/menu_text_color</item>
+		<item name="android:textSize">18sp</item>
+		<item name="android:paddingLeft">16dp</item>
+		<item name="android:paddingRight">32dp</item>
+		<item name="android:paddingStart">16dp</item>
+		<item name="android:paddingEnd">32dp</item>
+		<item name="android:paddingTop">8dp</item>
+		<item name="android:paddingBottom">8dp</item>
+		<item name="android:drawablePadding">16dp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
+	<!-- Cloudy FabButton style. -->
+	<style name="Cloudy.ActionButton" parent="Theme.AppCompat.Light">
+		<item name="colorAccent">@color/cloudy_action_accent</item>
+		<item name="tint">@color/cloudy_action_tint</item>
+	</style>
+
+	<style name="TextView.ListHeader" parent="TextAppearance.AppCompat">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:background">@color/transparent_background</item>
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:paddingLeft">5dp</item>
+		<item name="android:shadowColor">#000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">1</item>
+		<item name="android:textSize">16sp</item>
+	</style>
+
+	<style name="TextView.MarqueeText" parent="TextAppearance.AppCompat">
+		<item name="android:shadowColor">#000</item>
+		<item name="android:shadowDx">1</item>
+		<item name="android:shadowDy">1</item>
+		<item name="android:shadowRadius">1</item>
+		<item name="android:marqueeRepeatLimit">marquee_forever</item>
+		<item name="android:scrollHorizontally">true</item>
+		<item name="android:focusable">true</item>
+		<item name="android:focusableInTouchMode">true</item>
+		<item name="android:freezesText">true</item>
+		<item name="android:maxLines">1</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:ellipsize">marquee</item>
+		<item name="android:textColor">@color/textPrimary</item>
+		<item name="android:background">@android:color/transparent</item>
+
+	</style>
+	<style name="TextView.Song.Title" parent="TextView.MarqueeText">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:gravity">bottom</item>
+		<item name="android:textSize">20sp</item>
+		<item name="android:layout_marginTop">5dp</item>
+	</style>
+	<style name="TextView.Song.Artist" parent="TextView.MarqueeText">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:gravity">right</item>
+		<item name="android:layout_marginTop">5dp</item>
+		<item name="android:textSize">14sp</item>
+	</style>
+	<style name="TextView.Song.Hyphen" parent="TextView.MarqueeText">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:gravity">top</item>
+		<item name="android:layout_marginTop">5dp</item>
+		<item name="android:textSize">13sp</item>
+	</style>
+	<style name="TextView.Song.Album" parent="TextView.MarqueeText">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">30dp</item>
+		<item name="android:gravity">left</item>
+		<item name="android:layout_marginTop">8dp</item>
+		<item name="android:textSize">10sp</item>
+		<item name="android:textStyle">bold|italic</item>
+	</style>
+	<style name="TextView.Song.InfoLayout" parent="Theme.AppCompat.Light">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginLeft">5dp</item>
+		<item name="android:textSize">10sp</item>
+		<item name="android:textStyle">bold|italic</item>
+		<item name="android:background">@android:color/transparent</item>
+	</style>
+	<style name="TextView.Song.Layout" parent="Theme.AppCompat.Light">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">60dp</item>
+		<item name="android:orientation">horizontal</item>
+		<item name="android:gravity">left</item>
+	</style>
+	<style name="TextView.Song.AlbumArt" parent="Theme.AppCompat.Light">
+		<item name="android:layout_width">58dp</item>
+		<item name="android:layout_height">58dp</item>
+		<item name="android:scaleType">centerCrop</item>
+		<item name="android:gravity">left</item>
+		<item name="android:layout_marginLeft">2dp</item>
+		<item name="android:layout_marginTop">1dp</item>
+		<item name="android:layout_marginBottom">1dp</item>
+	</style>
+
+
+</resources>

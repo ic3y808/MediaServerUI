@@ -1,0 +1,124 @@
+<resources>
+	<!-- application -->
+	<string name="app_name">Alloy</string>
+
+	<!-- API -->
+	<string name="master_salt">DsfdDGDGH823974lkfAB06Fsddfd7C</string>
+	<string name="appcenter_api">7532b1a0-cba6-46b9-a865-aa4870ef4f49</string>
+	<string name="cast_app_id">DAB06F7C</string>
+
+	<!-- Main Menu. -->
+	<string name="quick_access_header">Quick Access</string>
+	<string name="music_header">Media</string>
+
+	<!-- Toolbar. -->
+	<string name="toolbar_search_text">Search</string>
+
+	<!-- Fragments. -->
+	<string name="fresh_fragment_title">Whats New</string>
+	<string name="fresh_fragment_id">local_fresh</string>
+
+	<string name="starred_fragment_title">Starred</string>
+	<string name="starred_fragment_id">local_starred</string>
+
+	<string name="charts_fragment_title">Charts</string>
+	<string name="charts_fragment_id">charts_fragment</string>
+	
+	<string name="artists_fragment_title">Artists</string>
+	<string name="artists_fragment_id">local_artists</string>
+		
+	<string name="albums_fragment_title">Albums</string>
+	<string name="albums_fragment_id">local_albums</string>
+		
+	<string name="genres_fragment_title">Genres</string>
+	<string name="genres_fragment_id">local_genres</string>		
+	
+	<string name="history_fragment_title">History</string>
+	<string name="history_fragment_id">history_fragment</string>
+		
+	<!-- Strings. -->
+	<string name="background_audio_service">AlloyBackgroundAudio</string>
+	<string name="navigation_drawer_open">Open navigation drawer</string>
+	<string name="navigation_drawer_close">Close navigation drawer</string>
+	<string name="action_settings">Settings</string>
+
+	<string name="fresh_title">Whats New</string>
+	<string name="starred_title">Starred</string>
+	<string name="charts_title">Charts</string>
+	<string name="history_title">History</string>
+	<string name="artists_title">Artists</string>
+	<string name="artist_detail_title">Artist</string>
+	<string name="albums_title">Albums</string>
+	<string name="album_detail_title">Album</string>
+	<string name="genres_title">Genres</string>
+	<string name="genre_detail_title">Genre</string>
+	<string name="playlists_title">Playlists</string>
+	<string name="status_title">Status</string>
+	<string name="settings_title">Settings</string>
+
+	
+	<!-- Fragments. -->
+	<string name="currently_playing_song">Song currently playing</string>
+	<string name="currently_playing_artist">Artist of currently playing song</string>
+	<string name="currently_playing_extra_info">Extra info for currently playing song</string>
+	<string name="play_item">Play item</string>
+	<string name="play_pause">play or pause</string>
+	<string name="skip_next">skip to next</string>
+	<string name="skip_prev">skip to previous</string>
+
+	<string name="browse_genres">Genres</string>
+	<string name="browse_genre_subtitle">Songs by genre</string>
+	<string name="browse_musics_by_genre_subtitle">%1$s songs</string>
+	<string name="random_queue_title">Random music</string>
+	<string name="search_queue_title">Search results</string>
+
+	<string name="fragment_image_trans">fragment_image_transition</string>
+
+
+	<string name="artist_details_top_list_label">Top Tracks</string>
+	<string name="artist_details_albums_list_label">Albums</string>
+	<string name="artist_details_eps_list_label">EPs</string>
+	<string name="artist_details_singles_list_label">Singles</string>
+	<string name="artist_details_all_tracks_list_label">All Tracks</string>
+	<string name="artist_details_metrics_plays_label">Plays</string>
+	<string name="artist_details_metrics_tracks_label">Tracks</string>
+	<string name="artist_details_info_play_button_text">Play</string>
+	
+	<string name="album_details_metrics_plays_label">Plays</string>
+	<string name="album_details_metrics_tracks_label">Tracks</string>
+	<string name="album_details_info_play_button_text">Play Album</string>
+	
+	<string name="starred_albums_label">All Albums</string>
+	<string name="starred_top_albums_label">Top Albums</string>
+	<string name="starred_tracks_list_label">All Tracks</string>
+	<string name="starred_top_tracks_list_label">Top Tracks</string>
+	<string name="starred_artists_label">All Artists</string>
+	<string name="starred_top_artists_label">Top Artists</string>
+
+	<string name="fresh_new_tracks_list_label">New Tracks</string>
+	<string name="fresh_new_artists_list_label">New Artists</string>
+	<string name="fresh_new_albums_list_label">New Albums</string>
+	<string name="fresh_never_played_albums_list_label">Never Played Albums</string>
+	<string name="fresh_never_played_tracks_list_label">Never Played Tracks</string>
+	<string name="fresh_top_played_tracks_list_label">Top Played Tracks</string>
+
+	<string name="genre_details_metrics_plays_label">Plays</string>
+	<string name="genre_details_metrics_tracks_label">Tracks</string>
+	<string name="genre_details_info_play_button_text">Play Genre</string>
+	
+
+	<string name="history_tracks_list_label">Play History</string>
+	
+
+	<string name="charts_top_tracks_list_label">Top Played</string>
+	<string name="charts_never_played_albums_list_label">Never Played Albums</string>
+	<string name="charts_never_played_tracks_list_label">Never Played Tracks</string>
+
+
+
+	<string name="nav_favorites">Favorites</string>
+	<string name="nav_stream">Stream</string>
+	<string name="nav_stations">Stations</string>
+	<!-- Settings. -->
+	
+</resources>
