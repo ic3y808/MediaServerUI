@@ -38,7 +38,7 @@
 * navigate to the Alloy\dist folder and install the package
 
 ### Now Playing Preview
-![Alt text](/media/preview.png?raw=true "Overall interface")
+![Alt text](/common/media/webui.png?raw=true "Web interface")
 
-### GIF Preview
-![Alt Text](/media/preview.gif)
+### Server Interface
+![Alt Text](/common/media/server.png?raw=true "Server interface")

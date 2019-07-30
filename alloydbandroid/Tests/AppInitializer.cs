@@ -27,14 +27,14 @@ namespace Tests
 				}
 			}
 
-			if (string.IsNullOrEmpty(PathToApk))
-			{
-				return ConfigureApp.Android
-					.InstalledApp("com.d3bug.alloy")
-					.EnableLocalScreenshots()
-					.DevicePort(5687)
-					.StartApp(AppDataMode.Clear);
-			}
+			//if (string.IsNullOrEmpty(PathToApk))
+			//{
+			//	return ConfigureApp.Android
+			//		.InstalledApp("com.d3bug.alloy")
+			//		.EnableLocalScreenshots()
+			//		.DevicePort(5687)
+			//		.StartApp(AppDataMode.Clear);
+			//}
 
 			if (platform == Platform.Android)
 			{

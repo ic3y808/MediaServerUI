@@ -32,6 +32,8 @@ using Android.Runtime;
 using Java.IO;
 using Debug = System.Diagnostics.Debug;
 using Exception = System.Exception;
+using Fragment = Android.Support.V4.App.Fragment;
+using FragmentManager = Android.Support.V4.App.FragmentManager;
 
 namespace Alloy
 {
@@ -203,14 +205,23 @@ namespace Alloy
 			{
 				if (FragmentManager.BackStackEntryCount > 0)
 				{
+
+					foreach (Fragment frag in SupportFragmentManager.Fragments)
+					{
+						if (!frag.IsVisible) continue;
+						FragmentManager childFm = frag.ChildFragmentManager;
+						if (childFm.BackStackEntryCount <= 0) continue;
+						childFm.PopBackStack();
+						return;
+					}
 					SupportFragmentManager.PopBackStack();
+					return;
 				}
-				else
-				{
-					MoveTaskToBack(true);
-					BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
-				}
+				MoveTaskToBack(true);
+				BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
+				return;
 			}
+			base.OnBackPressed();
 		}
 
 		protected override void OnPause()
@@ -444,7 +455,7 @@ namespace Alloy
 		{
 			//activeMenuItem?.SetChecked(false);
 			//activeMenuItem = null;
-		//	SettingsFragment fragment = new SettingsFragment();
+			//	SettingsFragment fragment = new SettingsFragment();
 			//SupportFragmentManager.ChangeTo(fragment, true, "Settings", null);
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
@@ -477,7 +488,7 @@ namespace Alloy
 				if (checkFavorite) { CheckFavorite(); }
 
 				if (setBackground) { SetBackground(); }
-				
+
 			}
 			catch (Exception e)
 			{

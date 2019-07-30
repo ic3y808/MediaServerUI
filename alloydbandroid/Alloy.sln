@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Alloy", "Alloy.csproj", "{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "Tests\Tests.csproj", "{B19C892E-2628-4CA7-AD27-08D406A3B14B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6} = {3BC0AC7E-3B3B-4D3F-9CC0-B2BDECC460A6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -26,7 +26,7 @@ namespace Alloy.Fragments
 			pager = root_view.FindViewById<ViewPager>(Resource.Id.pager);
 			pager.LayoutParameters = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 			pager.OffscreenPageLimit = 10;
-			freshAdapter = new FreshAdapter(FragmentManager);
+			freshAdapter = new FreshAdapter(ChildFragmentManager);
 			freshAdapter.TrackClick += (s, e) =>
 			{
 				 Play(e.Songs.ToQueue(), e.Position);
