@@ -213,6 +213,7 @@ namespace Alloy.Helpers
 				fragmentTx.AddToBackStack(name);
 			}
 			if (bundle != null) { otherFragment.Arguments = bundle; }
+
 			fragmentTx.Replace(Resource.Id.flContent, otherFragment);
 			fragmentTx.Commit();
 			fragmentManager.ExecutePendingTransactions();

@@ -6,6 +6,7 @@ using Android.Views;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Android.Content;
 using Android.Runtime;
 using Android.Support.V4.App;
 using Java.Lang;
@@ -31,11 +32,19 @@ namespace Alloy.Adapters
 			this.trackClick = trackCLick;
 			this.albumClick = albumClick;
 			this.artistClick = artistClick;
-			MusicProvider.FreshStartRefresh += MusicProvider_FreshStartRefresh;
-			MusicProvider.FreshRefreshed += MusicProvider_FreshRefreshed;
-			BackgroundAudioServiceConnection.ServiceConnected += BackgroundAudioServiceConnection_ServiceConnected;
 		}
 
+		public override void OnResume()
+		{
+			base.OnResume();
+			SetDataSource();
+		}
+
+		public override void OnAttach(Context context)
+		{
+			base.OnAttach(context);
+			SetDataSource();
+		}
 
 
 		private void MusicProvider_FreshStartRefresh(object sender, EventArgs e)
@@ -56,6 +65,7 @@ namespace Alloy.Adapters
 
 		private void SetDataSource()
 		{
+			if (adapter == null) return;
 			switch (Position)
 			{
 				case 0:
@@ -140,11 +150,21 @@ namespace Alloy.Adapters
 					break;
 
 			}
-
-
+			SetDataSource();
+			MusicProvider.FreshStartRefresh += MusicProvider_FreshStartRefresh;
+			MusicProvider.FreshRefreshed += MusicProvider_FreshRefreshed;
+			BackgroundAudioServiceConnection.ServiceConnected += BackgroundAudioServiceConnection_ServiceConnected;
 
 			return rootView;
 
+		}
+
+		public override void OnDestroyView()
+		{
+			base.OnDestroyView();
+			MusicProvider.FreshStartRefresh -= MusicProvider_FreshStartRefresh;
+			MusicProvider.FreshRefreshed -= MusicProvider_FreshRefreshed;
+			BackgroundAudioServiceConnection.ServiceConnected -= BackgroundAudioServiceConnection_ServiceConnected;
 		}
 
 		private void RefreshLayout_Refresh(object sender, EventArgs e)

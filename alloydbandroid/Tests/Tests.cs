@@ -113,6 +113,18 @@ namespace Tests
 			}
 		}
 
+		private void NavigateBack()
+		{
+			var buttons = app.Query(q => q.Class("AppCompatImageButton"));
+			foreach (AppResult appResult in buttons)
+			{
+				var label = appResult.Label;
+				if (label == "Navigate up")
+					app.TapCoordinates(appResult.Rect.CenterX, appResult.Rect.CenterY);
+			}
+
+		}
+
 		private void CheckItemsLoaded(string view, string item)
 		{
 
@@ -127,7 +139,7 @@ namespace Tests
 			//app.Screenshot(item + " items loaded count " + result);
 		}
 
-		private void SelectTrack(string view)
+		private void SelectItem(string view)
 		{
 			AppResult[] mainTabs = app.WaitForElement(c => c.Marked(view));
 			Assert.IsTrue(mainTabs.Any());
@@ -299,23 +311,21 @@ namespace Tests
 		}
 
 
-		//[Test]
-		//public void TestTagEditor()
-		//{
-		//	app.Screenshot("Main Screen");
 
-		//	SelectMenuItem("Artists");
+		[Test]
+		public void CustomTest()
+		{
+			SelectMenuItem("Whats New");
 
-		//	CheckItemsLoaded("artists_list", "right_side_count");
-		//	SelectTrack("artists_list");
-		//	CheckItemsLoaded("artist_track_list", "right_side_count");
-		//	SelectContextTrack("artist_track_list", "action_edit_tags");
+			TestForElement("fresh_layout");
+			TestForElement("track_list");
+			Swipe(Direction.Right, Direction.Left, "track_list");
 
-		//	WaitForElement("tag_editor_artist");
+			TestForElement("album_list");
+			SelectItem("album_list");
+			TestForElement("album_image");
+			NavigateBack();
 
-		//	ReplaceTextView("tag_editor_genre", "Testing");
-
-		//	SelectElement("btn_save");
-		//}
+		}
 	}
 }

@@ -6,6 +6,7 @@ using Android.Views;
 using Alloy.Models;
 using Alloy.Providers;
 using Alloy.Services;
+using Android.Content;
 using Android.Runtime;
 using Android.Support.V4.App;
 using Java.Lang;
@@ -34,6 +35,18 @@ namespace Alloy.Adapters
 			BackgroundAudioServiceConnection.ServiceConnected += BackgroundAudioServiceConnection_ServiceConnected;
 		}
 
+		public override void OnResume()
+		{
+			base.OnResume();
+			SetDataSource();
+		}
+
+		public override void OnAttach(Context context)
+		{
+			base.OnAttach(context);
+			SetDataSource();
+		}
+
 		private void BackgroundAudioServiceConnection_ServiceConnected(object sender, bool e)
 		{
 			if (e) { SetDataSource(); }
@@ -52,6 +65,7 @@ namespace Alloy.Adapters
 
 		private void SetDataSource()
 		{
+			if (adapter == null) return;
 			switch (Position)
 			{
 				case 0:
