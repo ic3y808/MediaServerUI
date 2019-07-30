@@ -32,6 +32,10 @@ namespace Alloy.Fragments
 			{
 				Play(e.Songs.ToQueue(), e.Position);
 			};
+			chartsAdapter.AlbumClick += (s, e) =>
+			{
+				ShowAlbum(e.Albums[e.Position]);
+			};
 			pager.Adapter = chartsAdapter;
 			tabs.setViewPager(pager);
 			int pageMargin = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 4, Resources.DisplayMetrics);

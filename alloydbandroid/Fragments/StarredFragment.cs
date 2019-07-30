@@ -65,12 +65,16 @@ namespace Alloy.Fragments
 		public override void ServiceConnected()
 		{
 			base.ServiceConnected();
-			materialRippleAdapter = new MaterialRippleAdapter();
-			materialRippleAdapter.TrackClick += MaterialRippleAdapterTrackClick;
-			starredContentView.SetAdapter(materialRippleAdapter);
+			if (materialRippleAdapter == null)
+			{
+				materialRippleAdapter = new MaterialRippleAdapter();
+				materialRippleAdapter.TrackClick += MaterialRippleAdapterTrackClick;
+				starredContentView.SetAdapter(materialRippleAdapter);
+				Adapters.Adapters.SetAdapters(Activity, materialRippleAdapter);
+			}
 			materialRippleAdapter.Songs = MusicProvider.Starred.Tracks;
-			Adapters.Adapters.SetAdapters(Activity, materialRippleAdapter);
 			if (MusicProvider.Starred == null || MusicProvider.Starred.Tracks.Count == 0) { MusicProvider.RefreshStarred(); }
+			Adapters.Adapters.UpdateAdapters();
 			ScrollToNowPlaying();
 		}
 

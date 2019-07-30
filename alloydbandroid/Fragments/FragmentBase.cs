@@ -370,6 +370,20 @@ namespace Alloy.Fragments
 			}
 		}
 
+		public virtual void ShowArtist(Artist artist)
+		{
+			Bundle b = new Bundle();
+			b.PutParcelable("artist", artist);
+			FragmentManager.ChangeTo(new ArtistDetailFragment(), true, "Artist Details", b);
+		}
+
+		public virtual void ShowAlbum(Album album)
+		{
+			Bundle b = new Bundle();
+			b.PutParcelable("album", album);
+			FragmentManager.ChangeTo(new AlbumDetailFragment(), true, "Album Details", b);
+		}
+
 		public virtual void Loaded()
 		{
 			FragmentLoaded?.Invoke(null, Name);
