@@ -12,7 +12,8 @@
     "build_web": "cd alloydbweb && cross-env MODE=prod webpack .",
     "build": "npm run build_styles & npm run build_fonts & npm run build_web & npm run dist",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "install": "npm install && cd alloydbweb && npm install"
   },
   "build": {
     "npmRebuild": true,
