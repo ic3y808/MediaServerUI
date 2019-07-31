@@ -1,41 +1,30 @@
 const path = require("path");
 const winston = require("winston");
-var config = require("./config");
+const rotater = require("./log-rotator");
+const electron = require("electron");
+const log = require("electron-log");
+const { ipcRenderer } = electron;
+log.catchErrors();
 
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.metadata({ fillExcept: ["message", "level", "timestamp", "label"] }),
-    //winston.format.colorize(),
-    winston.format.printf((info) => {
-      if (info.label) {
-        var out = `${info.timestamp} [${info.label}][${info.level}]: ${info.message}`;
-        return out;
-      }
-      var out2 = `${info.timestamp} [${info.level}]: ${info.message}`;
-      return out2;
+module.exports.callback = {};
 
-    }),
-  ),
-  defaultMeta: { service: "user-service" },
-  transports: [
-    new winston.transports.File({
-      filename: path.join(process.env.LOGS_DIR, "error.log"),
-      level: "error"
-    }),
-    new winston.transports.File({
-      filename: path.join(process.env.LOGS_DIR, "combined.log")
-    })
-  ]
+var rotaterTransport = new (winston.transports.DailyRotateFile)({
+  filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
+  datePattern: "YYYY-MM-DD-HH",
+  zippedArchive: true,
+  json: true,
+  maxSize: "20m",
+  maxFiles: "14d"
 });
 
-//
-// If we"re not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-// 
-if (process.env.MODE === "dev" || process.env.MODE === "test") {
-  logger.add(new winston.transports.Console({
+
+const transports = {
+  log: new winston.transports.File({
+    filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
+    json: true,
+    timestamp: true,
+  }),
+  console: new winston.transports.Console({
     format: winston.format.combine(
       winston.format.timestamp(),
       winston.format.metadata({ fillExcept: ["message", "level", "timestamp", "label"] }),
@@ -49,46 +38,63 @@ if (process.env.MODE === "dev" || process.env.MODE === "test") {
           }
         }
         return out;
-      }),
+      })
     )
-  }));
+  }),
+  DailyRotateFile: rotaterTransport
+};
+
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  defaultMeta: { service: "user-service" },
+  transports: [
+    transports.DailyRotateFile
+  ]
+});
+
+
+if (process.env.MODE === "dev" || process.env.MODE === "test") {
+  transports.log.level = "debug";
+  transports.console.level = "debug";
 }
 
 
-//const logger = winston.createLogger({
-//  level: "info",
-//  format: winston.format.json(),
-//  transports: [
-//    new winston.transports.File({
-//      filename: path.join(process.env.LOGS_DIR, "error.log"),
-//      level: "error"
-//    }),
-//    new winston.transports.File({
-//      filename: path.join(process.env.LOGS_DIR, "combined.log")
-//    })
-//  ]
-//});
+rotaterTransport.on("new", (newFilename) => {
+  transports.log.filename = newFilename;
+  logger.configure({
+    transports: [
+      transports.DailyRotateFile,
+      transports.log,
+      transports.console
+    ]
+  });
+});
 
-//
-// If we"re not in production then log to the `console` with the format:
-// `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
-// 
-//if (process.env.MODE === "dev") {
-//  logger.add(new winston.transports.Console({
-//    format: combine(
-//      label({ label: "right meow!" }),
-//      timestamp(),
-//      prettyPrint()
-//    ),
-//   
-//    level: "silly",
-//  }));
-//} else {
-//  logger.add(new winston.transports.Console({
-//    format: winston.format.simple(),
-//    level: "info"
-//  }));
-//}
+rotaterTransport.on("rotate", function (oldFilename, newFilename) {
+  transports.log.filename = newFilename;
+  logger.configure({
+    transports: [
+      transports.DailyRotateFile,
+      transports.log,
+      transports.console
+    ]
+  });
+});
+
+rotaterTransport.on("archive", function (newFilename) {
+  transports.log.filename = newFilename;
+  logger.configure({
+    transports: [
+      transports.DailyRotateFile,
+      transports.log,
+      transports.console
+    ]
+  });
+});
 
 module.exports.log = function (method, obj) {
   if (typeof obj === "string" || obj instanceof String) { logger.log(method, "from client: " + obj); }
@@ -97,6 +103,8 @@ module.exports.log = function (method, obj) {
       logger.log(obj);
     }
   }
+  if (ipcRenderer) { ipcRenderer.send("log-update"); }
+  if (typeof module.exports.callback === "function") { module.exports.callback(); }
 };
 
 module.exports.debug = function (label, message) {
@@ -104,7 +112,7 @@ module.exports.debug = function (label, message) {
   obj.level = "debug";
   obj.label = label;
   obj.message = message;
-  logger.log("debug", obj);
+  module.exports.log("debug", obj);
 };
 
 module.exports.info = function (label, message) {
@@ -112,7 +120,7 @@ module.exports.info = function (label, message) {
   obj.level = "info";
   obj.label = label;
   obj.message = message;
-  logger.log("info", obj);
+  module.exports.log("info", obj);
 };
 
 module.exports.error = function (label, message) {
@@ -120,5 +128,24 @@ module.exports.error = function (label, message) {
   obj.level = "error";
   obj.label = label;
   obj.message = message;
-  logger.log("error", obj);
+  module.exports.log("error", obj);
+};
+
+module.exports.query = function (cb) {
+
+  const options = {
+    from: new Date() - (24 * 60 * 60 * 1000),
+    until: new Date(),
+    limit: 100,
+    order: "desc",
+    fields: ["message", "level", "timestamp", "label"],
+    json: true
+  };
+  logger.query(options, function (err, results) {
+    if (err) {
+      cb(err);
+    } else {
+      cb(results.file);
+    }
+  });
 };

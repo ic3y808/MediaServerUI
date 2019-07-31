@@ -1,9 +1,10 @@
 exports.setup = function (options, seedLink) {
- 
+
 };
 
 exports.up = function (db) {
-  return db.createTable("Artists", {
+  return {
+    name: "Artists",
     columns: {
       id: { type: "string", defaultValue: "", unique: true },
       name: { type: "string", defaultValue: "" },
@@ -21,7 +22,7 @@ exports.up = function (db) {
       track_count: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true
-  });
+  };
 };
 
 exports.down = function (db) {

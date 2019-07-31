@@ -1,4 +1,0 @@
-# mocha.opts
-  --require setup-env ./test/setup.js
-  --ui bdd
-
