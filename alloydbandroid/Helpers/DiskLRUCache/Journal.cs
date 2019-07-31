@@ -134,13 +134,13 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		public static Journal readJournal(FileManager fileManager)
 		{
-			File file = fileManager.journal();
-			Journal journal = new Journal(file, fileManager);
+			File file1 = fileManager.journal();
+			Journal journal = new Journal(file1, fileManager);
 
 			try
 			{
-				if (!System.IO.File.Exists(file.Path)) return journal;
-				using (DataInputStream stream = new DataInputStream(new FileStream(file.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+				if (!System.IO.File.Exists(file1.Path)) return journal;
+				using (DataInputStream stream = new DataInputStream(new FileStream(file1.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
 				{
 					int version = stream.ReadShort();
 					if (version != DiskLruCache.JOURNAL_FORMAT_VERSION)

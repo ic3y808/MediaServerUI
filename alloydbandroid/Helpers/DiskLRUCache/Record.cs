@@ -43,23 +43,28 @@ namespace Alloy.Helpers.DiskLRUCache
 			return size;
 		}
 
-		public bool Equals(Record o)
+		public override bool Equals(Object o)
 		{
-			if (this == o) return true;
-			if (o == null || GetType() != o.GetType()) return false;
-			if (time != o.time) return false;
-			if (size != o.size) return false;
-			if (!key.Equals(o.key)) return false;
-			return name.Equals(o.name);
+			return Equals((Record) o);
 		}
 
 		public override int GetHashCode()
 		{
-			int result = key.GetHashCode();
-			result = 31 * result + name.GetHashCode();
-			result = 31 * result + (int)(time ^ (int)((uint)time >> 32));
-			result = 31 * result + (int)(size ^ (int)((uint)time >> 32));
-			return result;
+			unchecked
+			{
+				int hashCode = (key != null ? key.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ (name != null ? name.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ time.GetHashCode();
+				hashCode = (hashCode * 397) ^ size.GetHashCode();
+				return hashCode;
+			}
+		}
+
+		public bool Equals(Record other)
+		{
+			if (ReferenceEquals(null, other)) return false;
+			if (ReferenceEquals(this, other)) return true;
+			return string.Equals(key, other.key) && string.Equals(name, other.name) && time == other.time && size == other.size;
 		}
 	}
 }

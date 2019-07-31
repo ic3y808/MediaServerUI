@@ -131,7 +131,7 @@ namespace Alloy.Helpers
 			if (!CanLoadImages()) return null;
 			try
 			{
-				return await GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }));
+				return await GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } })).ConfigureAwait(false);
 			}
 			catch (Exception e)
 			{
@@ -140,26 +140,26 @@ namespace Alloy.Helpers
 			}
 		}
 
-		public static async void GetAlbumArt(this Song song, ImageView view)
+		public static async Task GetAlbumArt(this Song song, ImageView view)
 		{
 			if (!CanLoadImages()) return;
 
 			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }), song.AlbumId, song);
 		}
 
-		public static async void GetAlbumArt(this Artist artist, ImageView view)
+		public static async Task GetAlbumArt(this Artist artist, ImageView view)
 		{
 			if (!CanLoadImages()) return;
 			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "artist_id", artist.Id } }), artist.Id, artist);
 		}
 
-		public static async void GetAlbumArt(this Genre genre, ImageView view)
+		public static async Task GetAlbumArt(this Genre genre, ImageView view)
 		{
 			if (!CanLoadImages()) return;
 			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "genre_id", genre.Id } }), genre.Id, genre);
 		}
 
-		public static async void GetAlbumArt(this Album album, ImageView view)
+		public static async Task GetAlbumArt(this Album album, ImageView view)
 		{
 			if (!CanLoadImages()) return;
 			ImageLoader.LoadImageIntoView(view, MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "album_id", album.Id } }), album.Id, album);
@@ -263,9 +263,9 @@ namespace Alloy.Helpers
 			HttpClient _client = new HttpClient();
 			HttpResponseMessage response = await _client.GetAsync(url);
 			if (!response.IsSuccessStatusCode) return null;
-			Task<byte[]> stream = response.Content.ReadAsByteArrayAsync();
-			stream.Wait();
-			Bitmap imageBitmap = BitmapFactory.DecodeByteArray(stream.Result, 0, stream.Result.Length);
+			byte[] stream = await response.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+
+			Bitmap imageBitmap = BitmapFactory.DecodeByteArray(stream, 0, stream.Length);
 
 			return imageBitmap;
 		}

@@ -69,7 +69,7 @@ namespace Alloy.Services
 			.SetDeleteIntent(pIntentExit);			
 		}
 
-		private async void GenerateMetadata(NotificationCompat.Builder builder)
+		private async Task GenerateMetadata(NotificationCompat.Builder builder)
 		{
 			if (audioService.CurrentSong == null) return;
 			Bitmap art = await audioService.CurrentSong.GetAlbumArt();
@@ -93,7 +93,7 @@ namespace Alloy.Services
 				NotificationCompat.Builder builder = GenerateBuilder();
 				GenerateIntents(builder);
 				GenerateMetadata(builder);
-				await UpdateMediaSessionMeta();
+				await UpdateMediaSessionMeta().ConfigureAwait(false);
 				notificationManager.Notify(BackgroundAudioService.NOTIFICATION_ID, builder.Build());
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }

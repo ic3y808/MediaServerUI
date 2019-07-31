@@ -536,7 +536,7 @@ namespace Alloy.Services
 
 		public void OnBufferingUpdate(MediaPlayer mp, int percent)
 		{
-
+			// not currently used
 		}
 	}
 }

@@ -46,7 +46,6 @@ namespace Alloy
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
 		private TextView subtitleTextView;
-		private ImageView albumArtImageView;
 		private ImageButton playPauseImageButton;
 		private ImageButton starImageButton;
 		private Drawable starred, notStarred, play, pause;
@@ -102,7 +101,7 @@ namespace Alloy
 			titleTextView.Selected = true;
 
 			subtitleTextView = FindViewById<TextView>(Resource.Id.artist);
-			albumArtImageView = FindViewById<ImageView>(Resource.Id.album_art);
+			ImageView albumArtImageView = FindViewById<ImageView>(Resource.Id.album_art);
 
 			if (albumArtImageView != null)
 			{

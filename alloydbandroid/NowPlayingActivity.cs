@@ -41,6 +41,7 @@ namespace Alloy
 		private CurrentBackground currentBackground;
 		private ImageView primaryBackground;
 		private ImageView secondaryBackground;
+		private bool loadingBackground;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -227,7 +228,7 @@ namespace Alloy
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
-		private bool loadingBackground = false;
+	
 		private void SetBackground(Song song = null)
 		{
 			if (loadingBackground) return;
