@@ -131,7 +131,7 @@ namespace Alloy.Helpers
 			if (!CanLoadImages()) return null;
 			try
 			{
-				return GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }));
+				return await GetBitmap(MusicProvider.GetAlbumArt(new Dictionary<string, object> { { "track_id", song.Id } }));
 			}
 			catch (Exception e)
 			{
@@ -258,19 +258,14 @@ namespace Alloy.Helpers
 			}
 		}
 
-		public static Bitmap GetBitmap(this string url)
+		public static async Task<Bitmap> GetBitmap(this string url)
 		{
-			Bitmap imageBitmap = null;
 			HttpClient _client = new HttpClient();
-
-			Task<HttpResponseMessage> task = _client.GetAsync(url);
-			task.Wait();
-
-			HttpResponseMessage response = task.Result;
-			if (!response.IsSuccessStatusCode) return imageBitmap;
+			HttpResponseMessage response = await _client.GetAsync(url);
+			if (!response.IsSuccessStatusCode) return null;
 			Task<byte[]> stream = response.Content.ReadAsByteArrayAsync();
 			stream.Wait();
-			imageBitmap = BitmapFactory.DecodeByteArray(stream.Result, 0, stream.Result.Length);
+			Bitmap imageBitmap = BitmapFactory.DecodeByteArray(stream.Result, 0, stream.Result.Length);
 
 			return imageBitmap;
 		}

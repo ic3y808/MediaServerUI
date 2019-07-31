@@ -5,7 +5,6 @@ using Android.Content.Res;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
@@ -19,18 +18,18 @@ namespace Alloy.Widgets
 {
 	public sealed class MaterialRippleLayout : FrameLayout
 	{
-		private static int DEFAULT_DURATION = 350;
-		private static int DEFAULT_FADE_DURATION = 75;
-		private static float DEFAULT_DIAMETER_DP = 35;
-		private static float DEFAULT_ALPHA = 0.2f;
+		private const int DEFAULT_DURATION = 350;
+		private const int DEFAULT_FADE_DURATION = 75;
+		private const float DEFAULT_DIAMETER_DP = 35;
+		private const float DEFAULT_ALPHA = 0.2f;
 		private static readonly Color DEFAULT_COLOR = Color.Black;
 		private static readonly Color DEFAULT_BACKGROUND = Color.Transparent;
-		private static bool DEFAULT_HOVER = true;
-		private static bool DEFAULT_DELAY_CLICK = true;
-		private static bool DEFAULT_PERSISTENT = false;
-		private static bool DEFAULT_SEARCH_ADAPTER = false;
-		private static bool DEFAULT_RIPPLE_OVERLAY = false;
-		private static int DEFAULT_ROUNDED_CORNERS = 0;
+		private const bool DEFAULT_HOVER = true;
+		private const bool DEFAULT_DELAY_CLICK = true;
+		private const bool DEFAULT_PERSISTENT = false;
+		private const bool DEFAULT_SEARCH_ADAPTER = false;
+		private const bool DEFAULT_RIPPLE_OVERLAY = false;
+		private const int DEFAULT_ROUNDED_CORNERS = 0;
 
 		private static int FADE_EXTRA_DELAY = 50;
 		private static long HOVER_DURATION = 2500;
@@ -38,7 +37,7 @@ namespace Alloy.Widgets
 		private readonly Paint paint = new Paint(PaintFlags.AntiAlias);
 		private readonly Rect bounds = new Rect();
 
-		private Color rippleColor;
+
 		private bool rippleOverlay;
 		private bool rippleHover;
 		private int rippleDiameter;
@@ -68,8 +67,7 @@ namespace Alloy.Widgets
 		private bool prepressed;
 		private int positionInAdapter;
 
-		private GestureDetector gestureDetector;
-		private PerformClickEvent pendingClickEvent;
+		private readonly GestureDetector gestureDetector;
 		private PressedEvent pendingPressEvent;
 
 		public static RippleBuilder on(View view)
@@ -94,8 +92,8 @@ namespace Alloy.Widgets
 			gestureDetector = new GestureDetector(context, longClickListener);
 
 			TypedArray a = context.ObtainStyledAttributes(attrs, Resource.Styleable.MaterialRippleLayout);
-			rippleColor = a.GetColor(Resource.Styleable.MaterialRippleLayout_mrl_rippleColor, DEFAULT_COLOR);
-			rippleDiameter = a.GetDimensionPixelSize(Resource.Styleable.MaterialRippleLayout_mrl_rippleDimension, (int)dpToPx(Resources, DEFAULT_DIAMETER_DP));
+			Color rippleColor = a.GetColor(Resource.Styleable.MaterialRippleLayout_mrl_rippleColor, DEFAULT_COLOR);
+			rippleDiameter = a.GetDimensionPixelSize(Resource.Styleable.MaterialRippleLayout_mrl_rippleDimension, (int)DpToPx(Resources, DEFAULT_DIAMETER_DP));
 			rippleOverlay = a.GetBoolean(Resource.Styleable.MaterialRippleLayout_mrl_rippleOverlay, DEFAULT_RIPPLE_OVERLAY);
 			rippleHover = a.GetBoolean(Resource.Styleable.MaterialRippleLayout_mrl_rippleHover, DEFAULT_HOVER);
 			rippleDuration = a.GetInt(Resource.Styleable.MaterialRippleLayout_mrl_rippleDuration, DEFAULT_DURATION);
@@ -112,7 +110,7 @@ namespace Alloy.Widgets
 			paint.Color = rippleColor;
 			paint.Alpha = rippleAlpha;
 
-			enableClipPathSupportIfNecessary();
+			EnableClipPathSupportIfNecessary();
 		}
 
 		public override void AddView(View child, int index, ViewGroup.LayoutParams @params)
@@ -196,7 +194,7 @@ namespace Alloy.Widgets
 			else
 			{
 
-				var action = e.ActionMasked;
+				MotionEventActions action = e.ActionMasked;
 				switch (action)
 				{
 					case MotionEventActions.Move:
@@ -261,7 +259,7 @@ namespace Alloy.Widgets
 						break;
 
 					case MotionEventActions.Up:
-						pendingClickEvent = new PerformClickEvent(this);
+						PerformClickEvent pendingClickEvent = new PerformClickEvent(this);
 
 						if (prepressed)
 						{
@@ -342,8 +340,8 @@ namespace Alloy.Widgets
 
 		public class AnimationListener : AnimatorListenerAdapter
 		{
-			private MaterialRippleLayout layout;
-			private IRunnable animationEndRunnable;
+			private readonly MaterialRippleLayout layout;
+			private readonly IRunnable animationEndRunnable;
 			public AnimationListener(MaterialRippleLayout layout, IRunnable animationEndRunnable)
 			{
 				this.layout = layout;
@@ -354,7 +352,7 @@ namespace Alloy.Widgets
 				if (!layout.ripplePersistent)
 				{
 					layout.setRadius(0);
-					layout.setRippleAlpha(layout.rippleAlpha);
+					layout.SetRippleAlpha(layout.rippleAlpha);
 				}
 				if (animationEndRunnable != null && layout.rippleDelayClick)
 				{
@@ -408,10 +406,7 @@ namespace Alloy.Widgets
 				rippleAnimator.RemoveAllListeners();
 			}
 
-			if (hoverAnimator != null)
-			{
-				hoverAnimator.Cancel();
-			}
+			hoverAnimator?.Cancel();
 		}
 
 		private float getEndRadius()
@@ -431,7 +426,7 @@ namespace Alloy.Widgets
 		private bool isInScrollingContainer()
 		{
 			IViewParent p = Parent;
-			while (p != null && p is ViewGroup)
+			while (p is ViewGroup)
 			{
 				if (((ViewGroup)p).ShouldDelayChildPressedState())
 				{
@@ -451,22 +446,20 @@ namespace Alloy.Widgets
 			IViewParent current = Parent;
 			while (true)
 			{
-				if (current is AdapterView)
+				if (current is AdapterView view)
 				{
-					parentAdapter = (AdapterView)current;
+					parentAdapter = view;
 					return parentAdapter;
 				}
-				else
+
+				try
 				{
-					try
-					{
-						current = current.Parent;
-					}
-					catch (NullPointerException npe)
-					{
-						Crashes.TrackError(npe);
-						throw new RuntimeException("Could not find a parent AdapterView");
-					}
+					current = current.Parent;
+				}
+				catch (NullPointerException npe)
+				{
+					Crashes.TrackError(npe);
+					throw new RuntimeException("Could not find a parent AdapterView");
 				}
 			}
 		}
@@ -502,9 +495,9 @@ namespace Alloy.Widgets
 
 		private bool findClickableViewInChild(View view, int x, int y)
 		{
-			if (view is ViewGroup)
+			ViewGroup viewGroup = view as ViewGroup;
+			if (viewGroup != null)
 			{
-				ViewGroup viewGroup = (ViewGroup)view;
 				for (int i = 0; i < viewGroup.ChildCount; i++)
 				{
 					View child = viewGroup.GetChildAt(i);
@@ -542,92 +535,92 @@ namespace Alloy.Widgets
 			return paint.Alpha;
 		}
 
-		public void setRippleAlpha(int newRippleAlpha)
+		public void SetRippleAlpha(int newRippleAlpha)
 		{
 			paint.Alpha = newRippleAlpha;
 			Invalidate();
 		}
 
-		public void setRippleColor(Color newRippleColor)
+		public void SetRippleColor(Color newRippleColor)
 		{
-			rippleColor = newRippleColor;
+			Color rippleColor = newRippleColor;
 			paint.Color = rippleColor;
 			paint.Alpha = rippleAlpha;
 			Invalidate();
 		}
 
-		public void setRippleOverlay(bool newRippleOverlay)
+		public void SetRippleOverlay(bool newRippleOverlay)
 		{
 			rippleOverlay = newRippleOverlay;
 		}
 
-		public void setRippleDiameter(int newRippleDiameter)
+		public void SetRippleDiameter(int newRippleDiameter)
 		{
 			rippleDiameter = newRippleDiameter;
 		}
 
-		public void setRippleDuration(int newRippleDuration)
+		public void SetRippleDuration(int newRippleDuration)
 		{
 			rippleDuration = newRippleDuration;
 		}
 
-		public void setRippleBackground(Color color)
+		public void SetRippleBackground(Color color)
 		{
 			rippleBackground = new ColorDrawable(color) { Bounds = bounds };
 			Invalidate();
 		}
 
-		public void setRippleHover(bool newRippleHover)
+		public void SetRippleHover(bool newRippleHover)
 		{
 			rippleHover = newRippleHover;
 		}
 
-		public void setRippleDelayClick(bool newRippleDelayClick)
+		public void SetRippleDelayClick(bool newRippleDelayClick)
 		{
 			rippleDelayClick = newRippleDelayClick;
 		}
 
-		public void setRippleFadeDuration(int newRippleFadeDuration)
+		public void SetRippleFadeDuration(int newRippleFadeDuration)
 		{
 			rippleFadeDuration = newRippleFadeDuration;
 		}
 
-		public void setRipplePersistent(bool newRipplePersistent)
+		public void SetRipplePersistent(bool newRipplePersistent)
 		{
 			ripplePersistent = newRipplePersistent;
 		}
 
-		public void setRippleInAdapter(bool newRippleInAdapter)
+		public void SetRippleInAdapter(bool newRippleInAdapter)
 		{
 			rippleInAdapter = newRippleInAdapter;
 		}
 
-		public void setRippleRoundedCorners(int rippleRoundedCorner)
+		public void SetRippleRoundedCorners(int rippleRoundedCorner)
 		{
 			rippleRoundedCorners = rippleRoundedCorner;
-			enableClipPathSupportIfNecessary();
+			EnableClipPathSupportIfNecessary();
 		}
 
-		public void setDefaultRippleAlpha(float alpha)
+		public void SetDefaultRippleAlpha(float alpha)
 		{
 			rippleAlpha = (int)(255 * alpha);
 			paint.Alpha = rippleAlpha;
 			Invalidate();
 		}
 
-		public void performRipple()
+		public void PerformRipple()
 		{
 			currentCoords = new Point(Width / 2, Height / 2);
 			startRipple(null);
 		}
 
-		public void performRipple(Point anchor)
+		public void PerformRipple(Point anchor)
 		{
 			currentCoords = new Point(anchor.X, anchor.Y);
 			startRipple(null);
 		}
 
-		private void enableClipPathSupportIfNecessary()
+		private void EnableClipPathSupportIfNecessary()
 		{
 			if (Build.VERSION.SdkInt > BuildVersionCodes.JellyBeanMr1) return;
 			if (System.Math.Abs(rippleRoundedCorners) > 0.00001)
@@ -641,54 +634,46 @@ namespace Alloy.Widgets
 			}
 		}
 
-		static float dpToPx(Resources resources, float dp)
+		static float DpToPx(Resources resources, float dp)
 		{
 			return TypedValue.ApplyDimension(ComplexUnitType.Dip, dp, resources.DisplayMetrics);
 		}
 
 		public class RadiusPropertyClass : Property
 		{
-			public RadiusPropertyClass(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-			{
-			}
-
 			public RadiusPropertyClass(Class type, string name) : base(type, name)
 			{
 			}
 
 			public override Object Get(Object @object)
 			{
-				var layout = (MaterialRippleLayout)@object;
+				MaterialRippleLayout layout = (MaterialRippleLayout)@object;
 				return layout.getRadius();
 			}
 
 			public override void Set(Object @object, Object value)
 			{
-				var layout = (MaterialRippleLayout)@object;
+				MaterialRippleLayout layout = (MaterialRippleLayout)@object;
 				layout.setRadius((float)value);
 			}
 		}
 
 		public class CircleAlphaPropertyClass : Property
 		{
-			public CircleAlphaPropertyClass(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-			{
-			}
-
 			public CircleAlphaPropertyClass(Class type, string name) : base(type, name)
 			{
 			}
 
 			public override Object Get(Object @object)
 			{
-				var layout = (MaterialRippleLayout)@object;
+				MaterialRippleLayout layout = (MaterialRippleLayout)@object;
 				return layout.getRippleAlpha();
 			}
 
 			public override void Set(Object @object, Object value)
 			{
-				var layout = (MaterialRippleLayout)@object;
-				layout.setRippleAlpha((int)value);
+				MaterialRippleLayout layout = (MaterialRippleLayout)@object;
+				layout.SetRippleAlpha((int)value);
 			}
 		}
 
@@ -767,22 +752,21 @@ namespace Alloy.Widgets
 
 		public class LongClickListenerGesture : GestureDetector.SimpleOnGestureListener
 		{
-			private MaterialRippleLayout layout;
+			private readonly MaterialRippleLayout layout;
 			public LongClickListenerGesture(MaterialRippleLayout layout)
 			{
 				this.layout = layout;
 			}
-			public void onLongPress(MotionEvent e)
+
+			public override void OnLongPress(MotionEvent e)
 			{
 				layout.hasPerformedLongPress = layout.childView.PerformLongClick();
-				if (layout.hasPerformedLongPress)
+				if (!layout.hasPerformedLongPress) return;
+				if (layout.rippleHover)
 				{
-					if (layout.rippleHover)
-					{
-						layout.startRipple(null);
-					}
-					layout.cancelPressedEvent();
+					layout.startRipple(null);
 				}
+				layout.cancelPressedEvent();
 			}
 			public override bool OnDown(MotionEvent e)
 			{
@@ -891,18 +875,18 @@ namespace Alloy.Widgets
 			public MaterialRippleLayout create()
 			{
 				MaterialRippleLayout layout = new MaterialRippleLayout(context);
-				layout.setRippleColor(rippleColor);
-				layout.setDefaultRippleAlpha(rippleAlpha);
-				layout.setRippleDelayClick(rippleDelayClick);
-				layout.setRippleDiameter((int)dpToPx(context.Resources, rippleDiameter));
-				layout.setRippleDuration(rippleDuration);
-				layout.setRippleFadeDuration(rippleFadeDuration);
-				layout.setRippleHover(rippleHover);
-				layout.setRipplePersistent(ripplePersistent);
-				layout.setRippleOverlay(rippleOverlay);
-				layout.setRippleBackground(rippleBackground);
-				layout.setRippleInAdapter(rippleSearchAdapter);
-				layout.setRippleRoundedCorners((int)dpToPx(context.Resources, rippleRoundedCorner));
+				layout.SetRippleColor(rippleColor);
+				layout.SetDefaultRippleAlpha(rippleAlpha);
+				layout.SetRippleDelayClick(rippleDelayClick);
+				layout.SetRippleDiameter((int)DpToPx(context.Resources, rippleDiameter));
+				layout.SetRippleDuration(rippleDuration);
+				layout.SetRippleFadeDuration(rippleFadeDuration);
+				layout.SetRippleHover(rippleHover);
+				layout.SetRipplePersistent(ripplePersistent);
+				layout.SetRippleOverlay(rippleOverlay);
+				layout.SetRippleBackground(rippleBackground);
+				layout.SetRippleInAdapter(rippleSearchAdapter);
+				layout.SetRippleRoundedCorners((int)DpToPx(context.Resources, rippleRoundedCorner));
 
 				ViewGroup.LayoutParams @params = child.LayoutParameters;
 				ViewGroup parent = (ViewGroup)child.Parent;

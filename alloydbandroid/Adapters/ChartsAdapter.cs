@@ -20,15 +20,14 @@ namespace Alloy.Adapters
 	public class ChartsCardFragment : Fragment
 	{
 		private SwipeRefreshLayout refreshLayout;
-		private RecyclerView recyclerView;
 		private MaterialRippleAdapter adapter;
 		private event EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick;
 		private event EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick;
 		public int Position { get; set; }
 
-		public ChartsCardFragment(EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackCLick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick)
+		public ChartsCardFragment(EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick)
 		{
-			this.trackClick = trackCLick;
+			this.trackClick = trackClick;
 			this.albumClick = albumClick;
 			MusicProvider.ChartsStartRefresh += MusicProvider_ChartsStartRefresh;
 			MusicProvider.ChartsRefreshed += MusicProvider_ChartsRefreshed;
@@ -118,6 +117,7 @@ namespace Alloy.Adapters
 
 			refreshLayout = rootView.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_container);
 			refreshLayout.Refresh += RefreshLayout_Refresh;
+			RecyclerView recyclerView;
 
 			switch (Position)
 			{
@@ -170,7 +170,7 @@ namespace Alloy.Adapters
 			return base.GetItemPosition(@object);
 		}
 
-		private ICharSequence[] TITLES = CharSequence.ArrayFromStringArray(new[] { "Never Played Tracks", "Never Played Albums", "Top Tracks" });
+		private readonly ICharSequence[] TITLES = CharSequence.ArrayFromStringArray(new[] { "Never Played Tracks", "Never Played Albums", "Top Tracks" });
 
 		public override ICharSequence GetPageTitleFormatted(int position)
 		{

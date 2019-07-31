@@ -6,7 +6,7 @@ namespace Alloy.Helpers.DiskLRUCache
 	public class SimpleFileManager : FileManager
 	{
 
-		private File dir;
+		private readonly File dir;
 
 		public SimpleFileManager(File dir)
 		{

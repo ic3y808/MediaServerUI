@@ -132,7 +132,7 @@ namespace Alloy.Adapters
 
 			public void SetSelected(int position)
 			{
-				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
+				//if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
 
 				//bool selected = Songs[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
 
@@ -165,9 +165,9 @@ namespace Alloy.Adapters
 			public void OnClick(View v)
 			{
 				SetWave(true);
-				TrackClick?.Invoke(this, new TrackViewHolderEvent() { Position = AdapterPosition, Songs = Songs });
-				AlbumClick?.Invoke(this, new AlbumViewHolderEvent() { Position = AdapterPosition, Albums = Albums });
-				ArtistClick?.Invoke(this, new ArtistViewHolderEvent() { Position = AdapterPosition, Artists = Artists });
+				TrackClick?.Invoke(this, new TrackViewHolderEvent { Position = AdapterPosition, Songs = Songs });
+				AlbumClick?.Invoke(this, new AlbumViewHolderEvent { Position = AdapterPosition, Albums = Albums });
+				ArtistClick?.Invoke(this, new ArtistViewHolderEvent { Position = AdapterPosition, Artists = Artists });
 			}
 
 			public bool OnLongClick(View v)
