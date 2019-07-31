@@ -20,11 +20,9 @@ steps:
     npm run build
 
 - task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
-    SourceFolder: dist
-    Contents: |
-     dist/*.exe
+    SourceFolder: '$(Build.SourcesDirectory)/dist'
+    Contents: '**/*.exe'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: PowerShell@2
