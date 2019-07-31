@@ -19,6 +19,42 @@ steps:
 - script: |
     npm run build
 
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+  inputs:
+    SourceFolder: dist
+    Contents: |
+     dist/*.exe
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PowerShell@2
+  displayName: 'PowerShell Script'
+  inputs:
+    targetType: filePath
+    filePath: ./version.ps1
+
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: 'Github'
+    repositoryName: '$(Build.Repository.Name)' 
+    action: 'edit'
+    target: '$(Build.SourceVersion)' 
+    tagSource: 'manual' # Required when action == Create# Options: auto, manual
+    tag: '$(NPM_VER)'
+    title: 'Release - v$(NPM_VER)'
+    #releaseNotesSource: 'file' # Optional. Options: file, input
+    #releaseNotesFile: # Optional
+    #releaseNotes: # Optional
+    assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
+    #assetUploadMode: 'delete' # Optional. Options: delete, replace
+    isDraft: true # Optional
+    isPreRelease: false # Optional
+    addChangeLog: true # Optional
+
+
+
+
+    
 #- task: Npm@1
 #  displayName: 'npm test'
 #  inputs:
@@ -44,22 +80,3 @@ steps:
 
 #- task: PublishBuildArtifacts@1
    
-# GitHub Release
-# Create, edit, or delete a GitHub release.
-- task: GitHubRelease@0
-  inputs:
-    gitHubConnection: 'Github'
-    repositoryName: '$(Build.Repository.Name)' 
-    action: 'edit'
-    target: '$(Build.SourceVersion)' 
-    tagSource: 'manual' # Required when action == Create# Options: auto, manual
-    tag: 'v$(Build.SourceVersion)'
-    title: 'Automated Release'
-    #releaseNotesSource: 'file' # Optional. Options: file, input
-    #releaseNotesFile: # Optional
-    #releaseNotes: # Optional
-    assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
-    #assetUploadMode: 'delete' # Optional. Options: delete, replace
-    isDraft: true # Optional
-    isPreRelease: false # Optional
-    addChangeLog: true # Optional
