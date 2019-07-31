@@ -32,7 +32,11 @@ steps:
 - task: MSBuild@1
   inputs:
     solution: '$(Build.SourcesDirectory)/alloydbandroid/Alloy.sln'
+    msbuildArchitecture: 'x64'
+    configuration: 'Release'
+    maximumCpuCount: true
     restoreNugetPackages: true
+    
 
 - task: XamarinAndroid@1
   displayName: 'Build Alloy-Android'
