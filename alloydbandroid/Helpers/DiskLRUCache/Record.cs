@@ -1,7 +1,9 @@
 
+using System;
+
 namespace Alloy.Helpers.DiskLRUCache
 {
-	public class Record
+	public class Record : IEquatable<Record>
 	{
 
 		private readonly string key;
@@ -41,17 +43,14 @@ namespace Alloy.Helpers.DiskLRUCache
 			return size;
 		}
 
-		public override bool Equals(object o)
+		public bool Equals(Record o)
 		{
 			if (this == o) return true;
 			if (o == null || GetType() != o.GetType()) return false;
-
-			Record record = (Record)o;
-
-			if (time != record.time) return false;
-			if (size != record.size) return false;
-			if (!key.Equals(record.key)) return false;
-			return name.Equals(record.name);
+			if (time != o.time) return false;
+			if (size != o.size) return false;
+			if (!key.Equals(o.key)) return false;
+			return name.Equals(o.name);
 		}
 
 		public override int GetHashCode()

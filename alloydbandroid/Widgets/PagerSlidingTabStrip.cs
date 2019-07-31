@@ -26,10 +26,10 @@ namespace Alloy.Widgets
 		};
 
 		//These indexes must be related with the ATTR array above
-		private static int TEXT_COLOR_PRIMARY = 0;
-		private static int PADDING_INDEX = 1;
-		private static int PADDING_LEFT_INDEX = 2;
-		private static int PADDING_RIGHT_INDEX = 3;
+		private const int TEXT_COLOR_PRIMARY = 0;
+		private const int PADDING_INDEX = 1;
+		private const int PADDING_LEFT_INDEX = 2;
+		private const int PADDING_RIGHT_INDEX = 3;
 
 		private readonly LinearLayout mTabsContainer;
 		private readonly LinearLayout.LayoutParams mTabLayoutParams;
@@ -317,7 +317,9 @@ namespace Alloy.Widgets
 			{
 				View view = mTabsContainer.GetChildAt(0);
 				int halfWidthFirstTab = view.MeasuredWidth / 2;
-				mPaddingLeft = mPaddingRight = Width / 2 - halfWidthFirstTab;
+				int newWidth = Width / 2 - halfWidthFirstTab;
+				mPaddingLeft = newWidth;
+				mPaddingRight = newWidth;
 			}
 
 			if (isPaddingMiddle || mPaddingLeft > 0 || mPaddingRight > 0)
@@ -389,7 +391,7 @@ namespace Alloy.Widgets
 			if (mIndicatorHeight > 0)
 			{
 				mRectPaint.Color = mIndicatorColor;
-				var lines = getIndicatorCoordinates();
+				Point lines = getIndicatorCoordinates();
 				canvas.DrawRect(lines.X + mPaddingLeft, height - mIndicatorHeight, lines.Y + mPaddingLeft, height, mRectPaint);
 			}
 		}
@@ -541,7 +543,7 @@ namespace Alloy.Widgets
 		protected override IParcelable OnSaveInstanceState()
 		{
 			IParcelable superState = base.OnSaveInstanceState();
-			SavedState savedState = new SavedState(superState) {currentPosition = mCurrentPosition};
+			SavedState savedState = new SavedState(superState) { currentPosition = mCurrentPosition };
 			return savedState;
 		}
 

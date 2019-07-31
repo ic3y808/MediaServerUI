@@ -3,6 +3,7 @@ using Alloy.Helpers.DiskLRUCache;
 using Android.App;
 using Android.Runtime;
 using Java.IO;
+using Microsoft.AppCenter.Crashes;
 
 namespace Alloy
 {
@@ -23,8 +24,9 @@ namespace Alloy
 			{
 				Cache = DiskLruCache.create(cacheDir, CACHE_SIZE);
 			}
-			catch (IOException ignored)
+			catch (IOException e)
 			{
+				Crashes.TrackError(e);
 			}
 		}
 

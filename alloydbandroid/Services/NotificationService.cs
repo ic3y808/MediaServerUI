@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -80,7 +81,7 @@ namespace Alloy.Services
 		}
 
 
-		public void ShowNotification()
+		public async Task ShowNotification()
 		{
 			try
 			{
@@ -92,7 +93,7 @@ namespace Alloy.Services
 				NotificationCompat.Builder builder = GenerateBuilder();
 				GenerateIntents(builder);
 				GenerateMetadata(builder);
-				UpdateMediaSessionMeta();
+				await UpdateMediaSessionMeta();
 				notificationManager.Notify(BackgroundAudioService.NOTIFICATION_ID, builder.Build());
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
@@ -109,7 +110,7 @@ namespace Alloy.Services
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
 
-		public async void UpdateMediaSessionMeta()
+		public async Task UpdateMediaSessionMeta()
 		{
 			try
 			{
@@ -125,7 +126,7 @@ namespace Alloy.Services
 
 				PlaybackStateCompat state = new PlaybackStateCompat.Builder()
 					.SetActions(PlaybackStateCompat.ActionPlay | PlaybackStateCompat.ActionPlayPause | PlaybackStateCompat.ActionPause | PlaybackStateCompat.ActionSkipToNext | PlaybackStateCompat.ActionSkipToPrevious)
-					.SetState(PlaybackStateCompat.StatePlaying, audioService.mediaPlayer.CurrentPosition.ProgressToTimer(audioService.mediaPlayer.Duration), 1.0f, SystemClock.ElapsedRealtime())
+					.SetState(PlaybackStateCompat.StatePlaying, audioService.CurrentPosition.ProgressToTimer(audioService.Duration), 1.0f, SystemClock.ElapsedRealtime())
 					.Build();
 				audioService.MediaSession.SetMetadata(metadata);
 				audioService.MediaSession.SetPlaybackState(state);

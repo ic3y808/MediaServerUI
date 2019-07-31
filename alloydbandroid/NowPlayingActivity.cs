@@ -353,7 +353,7 @@ namespace Alloy
 			return diff > 0.5f;
 		}
 
-		private async Task UpdateColors(Song song = null)
+		private void UpdateColors(Song song = null)
 		{
 			try
 			{
@@ -363,15 +363,17 @@ namespace Alloy
 
 				if (song != null)
 				{
-					Bitmap art = await song.GetAlbumArt();
-					color = art.GetDominateColor();
+					Task<Bitmap> artTask = song.GetAlbumArt();
+					artTask.Wait();
+					color = artTask.Result.GetDominateColor();
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 				else if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) { return; }
 				else
 				{
-					Bitmap art = await serviceConnection.CurrentSong.GetAlbumArt();
-					color = art.GetDominateColor();
+					Task<Bitmap> artTask = serviceConnection.CurrentSong.GetAlbumArt();
+					artTask.Wait();
+					color = artTask.Result.GetDominateColor();
 					contrasting = color.Contrasting(backgroundContrast);
 				}
 

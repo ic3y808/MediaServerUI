@@ -39,10 +39,9 @@ namespace Alloy.Services
 		public NotificationService NotificationService1 { get; set; }
 		public MediaSessionCompat MediaSession { get; set; }
 
-		private NoisyAudioReciever noisyReceiver;
 		private HeadsetPlugReceiver headsetPlugReceiver;
 		private MediaButtonReciever mediaButtonReciever;
-		public MediaPlayer mediaPlayer;
+		private MediaPlayer mediaPlayer;
 		private int pausedPosition;
 		public const string CHANNEL_ID = "mediaStateBuilder";
 		public const string MEDIA_NAME = "Media playback";
@@ -108,7 +107,6 @@ namespace Alloy.Services
 			ReleaseWakeLock();
 			if (mediaButtonReciever != null) UnregisterReceiver(mediaButtonReciever);
 			if (headsetPlugReceiver != null) UnregisterReceiver(headsetPlugReceiver);
-			if (noisyReceiver != null) UnregisterReceiver(noisyReceiver);
 			Services.NotificationService.CloseNotification();
 			if (mediaPlayer != null)
 			{
@@ -476,59 +474,6 @@ namespace Alloy.Services
 				MediaSession.Active = true;
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
-		}
-
-		public override StartCommandResult OnStartCommand(Intent intent, StartCommandFlags flags, int startId)
-		{
-			var a = flags;
-			//try
-			//{
-
-			//	//Load data from SharedPreferences
-			//	StorageUtil storage = new StorageUtil(getApplicationContext());
-			//	audioList = storage.loadAudio();
-			//	audioIndex = storage.loadAudioIndex();
-
-			//	if (audioIndex != -1 && audioIndex < audioList.size())
-			//	{
-			//		//index is in a valid range
-			//		activeAudio = audioList.get(audioIndex);
-			//	}
-			//	else
-			//	{
-			//		stopSelf();
-			//	}
-			//}
-			//catch (NullPointerException e)
-			//{
-			//	stopSelf();
-			//}
-
-			////Request audio focus
-			//if (requestAudioFocus() == false)
-			//{
-			//	//Could not gain focus
-			//	stopSelf();
-			//}
-
-			//if (mediaSessionManager == null)
-			//{
-			//	try
-			//	{
-			//		initMediaSession();
-			//		initMediaPlayer();
-			//	}
-			//	catch (RemoteException e)
-			//	{
-			//		e.printStackTrace();
-			//		stopSelf();
-			//	}
-			//	buildNotification(PlaybackStatus.PLAYING);
-			//}
-
-			////Handle Intent action from MediaSession.TransportControls
-			//handleIncomingActions(intent);
-			return base.OnStartCommand(intent, flags, startId);
 		}
 
 		public void OnCompletion(MediaPlayer mp)

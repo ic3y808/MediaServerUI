@@ -96,13 +96,15 @@ namespace Alloy.Adapters
 				view?.ClearAnimation();
 			}
 
-			public async void SetSelected()
+			public void SetSelected()
 			{
 				if (Song == null) return;
 
 				if (Song.IsSelected)
 				{
-					Bitmap art = await Song.GetAlbumArt();
+					var artTask = Song.GetAlbumArt();
+					artTask.Wait();
+					var art = artTask.Result;
 					CardLayout?.SetBackgroundColor(art.GetDominateColor().Contrasting(64));
 					CardLayout?.SetPadding(20, 20, 20, 20);
 				}

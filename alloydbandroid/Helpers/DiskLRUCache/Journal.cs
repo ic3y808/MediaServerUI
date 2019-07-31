@@ -9,7 +9,7 @@ using IOException = Java.IO.IOException;
 
 namespace Alloy.Helpers.DiskLRUCache
 {
-	public class Journal
+	class Journal
 	{
 		private readonly File file;
 		private readonly FileManager fileManager;
@@ -134,43 +134,40 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		public static Journal readJournal(FileManager fileManager)
 		{
-			Journal journal;
-			using (File newFile = fileManager.journal())
-			{
-				journal = new Journal(newFile, fileManager);
+			File file = fileManager.journal();
+			Journal journal = new Journal(file, fileManager);
 
-				try
+			try
+			{
+				if (!System.IO.File.Exists(file.Path)) return journal;
+				using (DataInputStream stream = new DataInputStream(new FileStream(file.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
 				{
-					if (!System.IO.File.Exists(newFile.Path)) return journal;
-					using (DataInputStream stream = new DataInputStream(new FileStream(newFile.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+					int version = stream.ReadShort();
+					if (version != DiskLruCache.JOURNAL_FORMAT_VERSION)
 					{
-						int version = stream.ReadShort();
-						if (version != DiskLruCache.JOURNAL_FORMAT_VERSION)
-						{
-							throw new IllegalArgumentException("Invalid journal format version");
-						}
-						int count = stream.ReadInt();
-						long newTotalSize = 0;
-						for (int c = 0; c < count; c++)
-						{
-							string key = stream.ReadUTF();
-							string name = stream.ReadUTF();
-							long time = stream.ReadLong();
-							long size = stream.ReadLong();
-							newTotalSize += size;
-							Record record = new Record(key, name, time, size);
-							journal.put(record);
-						}
-						journal.setTotalSize(newTotalSize);
+						throw new IllegalArgumentException("Invalid journal format version");
 					}
-				}
-				catch (IOException e)
-				{
-					Crashes.TrackError(e);
+					int count = stream.ReadInt();
+					long totalJournalSize = 0;
+					for (int c = 0; c < count; c++)
+					{
+						string key = stream.ReadUTF();
+						string name = stream.ReadUTF();
+						long time = stream.ReadLong();
+						long size = stream.ReadLong();
+						totalJournalSize += size;
+						Record record = new Record(key, name, time, size);
+						journal.put(record);
+					}
+					journal.setTotalSize(totalJournalSize);
 				}
 			}
-
+			catch (IOException e)
+			{
+				Crashes.TrackError(e);
+			}
 			return journal;
 		}
+
 	}
 }

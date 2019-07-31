@@ -50,7 +50,7 @@ namespace Alloy
 		private ImageButton playPauseImageButton;
 		private ImageButton starImageButton;
 		private Drawable starred, notStarred, play, pause;
-		
+
 		public class LogTraceListener : TraceListener
 		{
 			public override void Write(string message)
@@ -229,7 +229,7 @@ namespace Alloy
 
 		private void MainMenu_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
 		{
-			if (mainMenuaAdapter.GetItem(e.Position) is Item && mainMenuaAdapter.GetItem(e.Position) is Item item) ChangeFragment(item.Id);
+			if (mainMenuaAdapter.GetItem(e.Position) is Item item) ChangeFragment(item.Id);
 
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
