@@ -3,17 +3,18 @@ using System.IO;
 using System.Linq;
 using Java.IO;
 using Java.Lang;
+using Microsoft.AppCenter.Crashes;
 using File = Java.IO.File;
 using IOException = Java.IO.IOException;
 
 namespace Alloy.Helpers.DiskLRUCache
 {
-	class Journal
+	public class Journal
 	{
-		private File file;
-		private FileManager fileManager;
-		private Dictionary<string, Record> map = new Dictionary<string, Record>();
-		private long totalSize = 0;
+		private readonly File file;
+		private readonly FileManager fileManager;
+		private readonly Dictionary<string, Record> map = new Dictionary<string, Record>();
+		private long totalSize;
 
 		private Journal(File file, FileManager fileManager)
 		{
@@ -36,8 +37,7 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		public Record get(string key)
 		{
-			Record record = null;
-			map.TryGetValue(key, out record);
+			map.TryGetValue(key, out Record record);
 			if (record != null)
 			{
 				updateTime(record);
@@ -47,8 +47,7 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		public Record delete(string key)
 		{
-			Record record = null;
-			map.TryGetValue(key, out record);
+			map.TryGetValue(key, out Record record);
 			if (record != null)
 			{
 				map.Remove(key);
@@ -64,7 +63,7 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		private void updateTime(Record record)
 		{
-			long time = Java.Lang.JavaSystem.CurrentTimeMillis();
+			long time = JavaSystem.CurrentTimeMillis();
 			map[record.getKey()] = new Record(record, time);
 		}
 
@@ -104,9 +103,9 @@ namespace Alloy.Helpers.DiskLRUCache
 			return file.Length();
 		}
 
-		private void setTotalSize(long totalSize)
+		private void setTotalSize(long newTotalSize)
 		{
-			this.totalSize = totalSize;
+			totalSize = newTotalSize;
 		}
 
 		public void writeJournal()
@@ -127,47 +126,51 @@ namespace Alloy.Helpers.DiskLRUCache
 					stream.Close();
 				}
 			}
-			catch (IOException ex)
+			catch (IOException e)
 			{
-
+				Crashes.TrackError(e);
 			}
 		}
 
 		public static Journal readJournal(FileManager fileManager)
 		{
-			File file = fileManager.journal();
-			Journal journal = new Journal(file, fileManager);
-
-			try
+			Journal journal;
+			using (File newFile = fileManager.journal())
 			{
-				if (!System.IO.File.Exists(file.Path)) return journal;
-				using (DataInputStream stream = new DataInputStream(new FileStream(file.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
+				journal = new Journal(newFile, fileManager);
+
+				try
 				{
-					int version = stream.ReadShort();
-					if (version != DiskLruCache.JOURNAL_FORMAT_VERSION)
+					if (!System.IO.File.Exists(newFile.Path)) return journal;
+					using (DataInputStream stream = new DataInputStream(new FileStream(newFile.AbsolutePath, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.ReadWrite)))
 					{
-						throw new IllegalArgumentException("Invalid journal format version");
+						int version = stream.ReadShort();
+						if (version != DiskLruCache.JOURNAL_FORMAT_VERSION)
+						{
+							throw new IllegalArgumentException("Invalid journal format version");
+						}
+						int count = stream.ReadInt();
+						long newTotalSize = 0;
+						for (int c = 0; c < count; c++)
+						{
+							string key = stream.ReadUTF();
+							string name = stream.ReadUTF();
+							long time = stream.ReadLong();
+							long size = stream.ReadLong();
+							newTotalSize += size;
+							Record record = new Record(key, name, time, size);
+							journal.put(record);
+						}
+						journal.setTotalSize(newTotalSize);
 					}
-					int count = stream.ReadInt();
-					long totalSize = 0;
-					for (int c = 0; c < count; c++)
-					{
-						string key = stream.ReadUTF();
-						string name = stream.ReadUTF();
-						long time = stream.ReadLong();
-						long size = stream.ReadLong();
-						totalSize += size;
-						Record record = new Record(key, name, time, size);
-						journal.put(record);
-					}
-					journal.setTotalSize(totalSize);
+				}
+				catch (IOException e)
+				{
+					Crashes.TrackError(e);
 				}
 			}
-			catch (IOException ex)
-			{
-			}
+
 			return journal;
 		}
-
 	}
 }

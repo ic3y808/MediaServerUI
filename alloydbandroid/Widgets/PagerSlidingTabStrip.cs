@@ -14,11 +14,11 @@ using Orientation = Android.Widget.Orientation;
 
 namespace Alloy.Widgets
 {
-	public class PagerSlidingTabStrip : HorizontalScrollView
+	public sealed class PagerSlidingTabStrip : HorizontalScrollView
 	{
 
-		public static int DEF_VALUE_TAB_TEXT_ALPHA = 150;
-		private static int[] ANDROID_ATTRS = new int[]{
+		public const int DEF_VALUE_TAB_TEXT_ALPHA = 150;
+		private static readonly int[] ANDROID_ATTRS = {
 			Android.Resource.Attribute.TextColorPrimary,
 			Android.Resource.Attribute.Padding,
 			Android.Resource.Attribute.PaddingLeft,
@@ -31,50 +31,49 @@ namespace Alloy.Widgets
 		private static int PADDING_LEFT_INDEX = 2;
 		private static int PADDING_RIGHT_INDEX = 3;
 
-		private LinearLayout mTabsContainer;
-		private LinearLayout.LayoutParams mTabLayoutParams;
+		private readonly LinearLayout mTabsContainer;
+		private readonly LinearLayout.LayoutParams mTabLayoutParams;
 
 		private PagerAdapterObserver mAdapterObserver;
-		private PageListener mPageListener;
-		private OnTabReselectedListener mTabReselectedListener = null;
-		public ViewPager.IOnPageChangeListener mDelegatePageListener;
+
+		private OnTabReselectedListener mTabReselectedListener;
+		private ViewPager.IOnPageChangeListener mDelegatePageListener;
 		private ViewPager mPager;
 
 		private int mTabCount;
 
-		private int mCurrentPosition = 0;
-		private float mCurrentPositionOffset = 0f;
+		private int mCurrentPosition;
+		private float mCurrentPositionOffset;
 
-		private Paint mRectPaint;
-		private Paint mDividerPaint;
+		private readonly Paint mRectPaint;
+		private readonly Paint mDividerPaint;
 
 		private Color mIndicatorColor;
 		private int mIndicatorHeight = 2;
 
-		private int mUnderlineHeight = 0;
+		private int mUnderlineHeight;
 		private Color mUnderlineColor;
 
-		private int mDividerWidth = 0;
-		private int mDividerPadding = 0;
+		private int mDividerWidth;
+		private int mDividerPadding;
 		private Color mDividerColor;
 
 		private int mTabPadding = 12;
 		private int mTabTextSize = 14;
-		private ColorStateList mTabTextColor = null;
+		private ColorStateList mTabTextColor;
 
-		private int mPaddingLeft = 0;
-		private int mPaddingRight = 0;
+		private int mPaddingLeft;
+		private int mPaddingRight;
 
-		private bool isExpandTabs = false;
-		private bool isCustomTabs;
-		private bool isPaddingMiddle = false;
+		private bool isExpandTabs;
+		private bool isPaddingMiddle;
 		private bool isTabTextAllCaps = true;
 
-		private Typeface mTabTextTypeface = null;
+		private Typeface mTabTextTypeface;
 		private TypefaceStyle mTabTextTypefaceStyle = TypefaceStyle.Bold;
 
 		private int mScrollOffset;
-		private int mLastScrollX = 0;
+		private int mLastScrollX;
 
 		private int mTabBackgroundResId = Resource.Drawable.psts_background_tab;
 
@@ -89,7 +88,6 @@ namespace Alloy.Widgets
 
 		public PagerSlidingTabStrip(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
 		{
-
 			FillViewport = true;
 			SetWillNotDraw(false);
 			mTabsContainer = new LinearLayout(context);
@@ -98,7 +96,6 @@ namespace Alloy.Widgets
 
 			mRectPaint = new Paint();
 			mRectPaint.AntiAlias = true;
-
 			mRectPaint.SetStyle(Paint.Style.Fill);
 
 			DisplayMetrics dm = Resources.DisplayMetrics;
@@ -125,11 +122,10 @@ namespace Alloy.Widgets
 			mPaddingRight = padding > 0 ? padding : a.GetDimensionPixelSize(PADDING_RIGHT_INDEX, 0);
 			a.Recycle();
 
-			Typeface tabTextTypefaceName = Typeface.SansSerif;
+
 			// Use Roboto Medium as the default typeface from API 21 onwards
-			if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.Lollipop)
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
 			{
-				tabTextTypefaceName = Typeface.Serif;
 				mTabTextTypefaceStyle = TypefaceStyle.Bold;
 			}
 
@@ -173,8 +169,8 @@ namespace Alloy.Widgets
 
 			//Configure tab's container LayoutParams for either equal divided space or just wrap tabs
 			mTabLayoutParams = isExpandTabs ?
-				new LinearLayout.LayoutParams(0, LayoutParams.MatchParent, 1.0f) :
-				new LinearLayout.LayoutParams(LayoutParams.WrapContent, LayoutParams.MatchParent);
+				new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MatchParent, 1.0f) :
+				new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.MatchParent);
 		}
 
 		private void setTabsContainerParentViewPaddings()
@@ -185,14 +181,13 @@ namespace Alloy.Widgets
 
 		public void setViewPager(ViewPager pager)
 		{
-			this.mPager = pager;
+			mPager = pager;
 			if (pager.Adapter == null)
 			{
 				throw new IllegalStateException("ViewPager does not have adapter instance.");
 			}
 
-			isCustomTabs = pager.Adapter is CustomTabProvider;
-			mPageListener = new PageListener(this);
+			PageListener mPageListener = new PageListener(this);
 			pager.AddOnPageChangeListener(mPageListener);
 			mAdapterObserver = new PagerAdapterObserver(this);
 			pager.Adapter.RegisterDataSetObserver(mAdapterObserver);
@@ -204,17 +199,11 @@ namespace Alloy.Widgets
 		{
 			mTabsContainer.RemoveAllViews();
 			mTabCount = mPager.Adapter.Count;
-			View tabView;
 			for (int i = 0; i < mTabCount; i++)
 			{
-				if (isCustomTabs)
-				{
-					tabView = ((CustomTabProvider)mPager.Adapter).getCustomTabView(this, i);
-				}
-				else
-				{
-					tabView = LayoutInflater.From(Context).Inflate(Resource.Layout.psts_tab, this, false);
-				}
+
+				View tabView = LayoutInflater.From(Context).Inflate(Resource.Layout.psts_tab, this, false);
+
 
 				string title = mPager.Adapter.GetPageTitle(i);
 				addTab(i, title, tabView);
@@ -242,7 +231,7 @@ namespace Alloy.Widgets
 				}
 				else if (mTabReselectedListener != null) { mTabReselectedListener.onTabReselected(position); }
 			};
-	
+
 			mTabsContainer.AddView(tabView, position, mTabLayoutParams);
 		}
 
@@ -263,13 +252,13 @@ namespace Alloy.Widgets
 					// pre-ICS-build
 					if (isTabTextAllCaps)
 					{
-						if (Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.IceCreamSandwich)
+						if (Build.VERSION.SdkInt >= BuildVersionCodes.IceCreamSandwich)
 						{
 							tab_title.SetAllCaps(true);
 						}
 						else
 						{
-							tab_title.Text = tab_title.Text.ToString().ToUpper();
+							tab_title.Text = tab_title.Text.ToUpper();
 						}
 					}
 				}
@@ -407,15 +396,15 @@ namespace Alloy.Widgets
 
 		public void setOnTabReselectedListener(OnTabReselectedListener tabReselectedListener)
 		{
-			this.mTabReselectedListener = tabReselectedListener;
+			mTabReselectedListener = tabReselectedListener;
 		}
 
 		public void setOnPageChangeListener(ViewPager.IOnPageChangeListener listener)
 		{
-			this.mDelegatePageListener = listener;
+			mDelegatePageListener = listener;
 		}
 
-		private class PageListener : Java.Lang.Object, ViewPager.IOnPageChangeListener
+		private class PageListener : Object, ViewPager.IOnPageChangeListener
 		{
 			private PagerSlidingTabStrip pagerSlidingTabStrip;
 			public PageListener(PagerSlidingTabStrip pagerSlidingTabStrip)
@@ -497,7 +486,6 @@ namespace Alloy.Widgets
 			{
 				TextView tab_title = (TextView)tab.FindViewById(Resource.Id.psts_tab_title);
 				if (tab_title != null) { tab_title.Selected = false; }
-				if (isCustomTabs) ((CustomTabProvider)mPager.Adapter).tabUnselected(tab);
 			}
 		}
 
@@ -507,7 +495,6 @@ namespace Alloy.Widgets
 			{
 				TextView tab_title = (TextView)tab.FindViewById(Resource.Id.psts_tab_title);
 				if (tab_title != null) { tab_title.Selected = true; }
-				if (isCustomTabs) ((CustomTabProvider)mPager.Adapter).tabSelected(tab);
 			}
 		}
 
@@ -554,21 +541,21 @@ namespace Alloy.Widgets
 		protected override IParcelable OnSaveInstanceState()
 		{
 			IParcelable superState = base.OnSaveInstanceState();
-			SavedState savedState = new SavedState(superState);
-			savedState.currentPosition = mCurrentPosition;
+			SavedState savedState = new SavedState(superState) {currentPosition = mCurrentPosition};
 			return savedState;
 		}
-	
+
 		class SavedState : BaseSavedState
 		{
 			public int currentPosition;
-		
+
 			public SavedState(Parcel state) : base(state)
 			{
 				currentPosition = state.ReadInt();
 			}
 			public SavedState(IParcelable state) : base(state)
 			{
+
 			}
 
 			public override void WriteToParcel(Parcel dest, ParcelableWriteFlags flags)
@@ -600,7 +587,7 @@ namespace Alloy.Widgets
 
 		public int getIndicatorColor()
 		{
-			return this.mIndicatorColor;
+			return mIndicatorColor;
 		}
 
 		public int getIndicatorHeight()
@@ -690,73 +677,73 @@ namespace Alloy.Widgets
 
 		public void setIndicatorColor(Color indicatorColor)
 		{
-			this.mIndicatorColor = indicatorColor;
+			mIndicatorColor = indicatorColor;
 			Invalidate();
 		}
 
 		public void setIndicatorColorResource(int resId)
 		{
-			this.mIndicatorColor = new Color(ContextCompat.GetColor(Context, resId));
+			mIndicatorColor = new Color(ContextCompat.GetColor(Context, resId));
 			Invalidate();
 		}
 
 		public void setIndicatorHeight(int indicatorLineHeightPx)
 		{
-			this.mIndicatorHeight = indicatorLineHeightPx;
+			mIndicatorHeight = indicatorLineHeightPx;
 			Invalidate();
 		}
 
 		public void setUnderlineColor(Color underlineColor)
 		{
-			this.mUnderlineColor = underlineColor;
+			mUnderlineColor = underlineColor;
 			Invalidate();
 		}
 
 		public void setUnderlineColorResource(int resId)
 		{
-			this.mUnderlineColor = new Color(ContextCompat.GetColor(Context, resId));
+			mUnderlineColor = new Color(ContextCompat.GetColor(Context, resId));
 			Invalidate();
 		}
 
 		public void setDividerColor(Color dividerColor)
 		{
-			this.mDividerColor = dividerColor;
+			mDividerColor = dividerColor;
 			Invalidate();
 		}
 
 		public void setDividerColorResource(int resId)
 		{
-			this.mDividerColor = new Color(ContextCompat.GetColor(Context, resId));
+			mDividerColor = new Color(ContextCompat.GetColor(Context, resId));
 			Invalidate();
 		}
 
 		public void setDividerWidth(int dividerWidthPx)
 		{
-			this.mDividerWidth = dividerWidthPx;
+			mDividerWidth = dividerWidthPx;
 			Invalidate();
 		}
 
 		public void setUnderlineHeight(int underlineHeightPx)
 		{
-			this.mUnderlineHeight = underlineHeightPx;
+			mUnderlineHeight = underlineHeightPx;
 			Invalidate();
 		}
 
 		public void setDividerPadding(int dividerPaddingPx)
 		{
-			this.mDividerPadding = dividerPaddingPx;
+			mDividerPadding = dividerPaddingPx;
 			Invalidate();
 		}
 
 		public void setScrollOffset(int scrollOffsetPx)
 		{
-			this.mScrollOffset = scrollOffsetPx;
+			mScrollOffset = scrollOffsetPx;
 			Invalidate();
 		}
 
 		public void setShouldExpand(bool shouldExpand)
 		{
-			this.isExpandTabs = shouldExpand;
+			isExpandTabs = shouldExpand;
 			if (mPager != null)
 			{
 				RequestLayout();
@@ -765,12 +752,12 @@ namespace Alloy.Widgets
 
 		public void setAllCaps(bool textAllCaps)
 		{
-			this.isTabTextAllCaps = textAllCaps;
+			isTabTextAllCaps = textAllCaps;
 		}
 
 		public void setTextSize(int textSizePx)
 		{
-			this.mTabTextSize = textSizePx;
+			mTabTextSize = textSizePx;
 			updateTabStyles();
 		}
 
@@ -791,17 +778,18 @@ namespace Alloy.Widgets
 
 		public void setTextColor(ColorStateList colorStateList)
 		{
-			this.mTabTextColor = colorStateList;
+			mTabTextColor = colorStateList;
 			updateTabStyles();
 		}
 
 		private ColorStateList createColorStateList(int color_state_default)
 		{
 			return new ColorStateList(
-				new int[][]{
+				new[]
+				{
 					new int[]{} //default
 				},
-				new int[]{
+				new[]{
 					color_state_default //default
 				}
 			);
@@ -810,12 +798,13 @@ namespace Alloy.Widgets
 		private ColorStateList createColorStateList(int color_state_pressed, int color_state_selected, int color_state_default)
 		{
 			return new ColorStateList(
-				new int[][]{
-					new int[]{Android.Resource.Attribute.StatePressed}, //pressed
-					new int[]{Android.Resource.Attribute.StateSelected}, // enabled
+				new[]
+				{
+					new[]{Android.Resource.Attribute.StatePressed}, //pressed
+					new[]{Android.Resource.Attribute.StateSelected}, // enabled
 					new int[]{} //default
 				},
-				new int[]{
+				new[]{
 					color_state_pressed,
 					color_state_selected,
 					color_state_default
@@ -825,19 +814,19 @@ namespace Alloy.Widgets
 
 		public void setTypeface(Typeface typeface, TypefaceStyle style)
 		{
-			this.mTabTextTypeface = typeface;
-			this.mTabTextTypefaceStyle = style;
+			mTabTextTypeface = typeface;
+			mTabTextTypefaceStyle = style;
 			updateTabStyles();
 		}
 
 		public void setTabBackground(int resId)
 		{
-			this.mTabBackgroundResId = resId;
+			mTabBackgroundResId = resId;
 		}
 
 		public void setTabPaddingLeftRight(int paddingPx)
 		{
-			this.mTabPadding = paddingPx;
+			mTabPadding = paddingPx;
 			updateTabStyles();
 		}
 
@@ -857,13 +846,13 @@ namespace Alloy.Widgets
 
 		private class PagerAdapterObserver : DataSetObserver
 		{
-			private PagerSlidingTabStrip pagerSlidingTabStrip;
+			private readonly PagerSlidingTabStrip pagerSlidingTabStrip;
 			public PagerAdapterObserver(PagerSlidingTabStrip pagerSlidingTabStrip)
 			{
 				this.pagerSlidingTabStrip = pagerSlidingTabStrip;
 			}
 
-			private bool attached = false;
+			private bool attached;
 
 
 			public override void OnChanged()
@@ -871,9 +860,9 @@ namespace Alloy.Widgets
 				pagerSlidingTabStrip.notifyDataSetChanged();
 			}
 
-			public void setAttached(bool attached)
+			public void setAttached(bool isAttached)
 			{
-				this.attached = attached;
+				attached = isAttached;
 			}
 
 			public bool isAttached()

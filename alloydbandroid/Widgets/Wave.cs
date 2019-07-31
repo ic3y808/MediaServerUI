@@ -10,29 +10,29 @@ namespace Alloy.Widgets
 {
 	public class Wave : View
 	{
-		private int WAVE_HEIGHT_LARGE = 128;
-		private int WAVE_HEIGHT_MIDDLE = 96;
-		private int WAVE_HEIGHT_LITTLE = 64;
+		private readonly int WAVE_HEIGHT_LARGE = 128;
+		private readonly int WAVE_HEIGHT_MIDDLE = 96;
+		private readonly int WAVE_HEIGHT_LITTLE = 64;
 
-		private float WAVE_LENGTH_MULTIPLE_LARGE = 0.38f;
-		private float WAVE_LENGTH_MULTIPLE_MIDDLE = 0.9f;
-		private float WAVE_LENGTH_MULTIPLE_LITTLE = 0.1f;
+		private readonly float WAVE_LENGTH_MULTIPLE_LARGE = 0.38f;
+		private readonly float WAVE_LENGTH_MULTIPLE_MIDDLE = 0.9f;
+		private readonly float WAVE_LENGTH_MULTIPLE_LITTLE = 0.1f;
 
-		private float WAVE_HZ_FAST = 0.2f;
-		private float WAVE_HZ_NORMAL = 0.09f;
-		private float WAVE_HZ_SLOW = 0.05f;
+		private readonly float WAVE_HZ_FAST = 0.2f;
+		private readonly float WAVE_HZ_NORMAL = 0.09f;
+		private readonly float WAVE_HZ_SLOW = 0.05f;
 
 		public int DEFAULT_ABOVE_WAVE_ALPHA = 50;
 		public int DEFAULT_BLOW_WAVE_ALPHA = 30;
 
-		private float X_SPACE = 20;
-		private double PI2 = 2 * Math.PI;
+		private readonly float X_SPACE = 20;
+		private readonly double PI2 = 2 * Math.PI;
 
-		private Path mAboveWavePath = new Path();
-		private Path mBlowWavePath = new Path();
+		private readonly Path mAboveWavePath = new Path();
+		private readonly Path mBlowWavePath = new Path();
 
-		private Paint mAboveWavePaint = new Paint();
-		private Paint mBlowWavePaint = new Paint();
+		private readonly Paint mAboveWavePaint = new Paint();
+		private readonly Paint mBlowWavePaint = new Paint();
 
 		private Color mAboveWaveColor;
 		private Color mBlowWaveColor;
@@ -44,12 +44,12 @@ namespace Alloy.Widgets
 		private float mWaveHz;
 
 		// wave animation
-		private float mAboveOffset = 0.0f;
+		private float mAboveOffset;
 		private float mBlowOffset;
 
 		private RefreshProgressRunnable mRefreshProgressRunnable;
 
-		private int left, right, bottom;
+		private int waveLeft, waveRight, waveBottom;
 
 		private Random random;
 		// ω
@@ -65,12 +65,12 @@ namespace Alloy.Widgets
 
 		public void setAboveWaveColor(Color aboveWaveColor)
 		{
-			this.mAboveWaveColor = aboveWaveColor;
+			mAboveWaveColor = aboveWaveColor;
 		}
 
 		public void setBlowWaveColor(Color blowWaveColor)
 		{
-			this.mBlowWaveColor = blowWaveColor;
+			mBlowWaveColor = blowWaveColor;
 		}
 
 		public Paint getAboveWavePaint()
@@ -161,21 +161,21 @@ namespace Alloy.Widgets
 			getWaveOffset();
 
 			float y;
-			mAboveWavePath.MoveTo(left, bottom);
+			mAboveWavePath.MoveTo(waveLeft, waveBottom);
 			for (float x = 0; x <= mMaxRight; x += X_SPACE)
 			{
 				y = (float)(mWaveHeight * Math.Sin(omega * x + mAboveOffset) + mWaveHeight);
 				mAboveWavePath.LineTo(x, y);
 			}
-			mAboveWavePath.LineTo(right, bottom);
+			mAboveWavePath.LineTo(waveRight, waveBottom);
 
-			mBlowWavePath.MoveTo(left, bottom);
+			mBlowWavePath.MoveTo(waveLeft, waveBottom);
 			for (float x = 0; x <= mMaxRight; x += X_SPACE)
 			{
 				y = (float)(mWaveHeight * Math.Sin(omega * x + mBlowOffset) + mWaveHeight);
 				mBlowWavePath.LineTo(x, y);
 			}
-			mBlowWavePath.LineTo(right, bottom);
+			mBlowWavePath.LineTo(waveRight, waveBottom);
 		}
 
 		protected override void OnDraw(Canvas canvas)
@@ -185,15 +185,10 @@ namespace Alloy.Widgets
 			canvas.DrawPath(mAboveWavePath, mAboveWavePaint);
 		}
 
-		protected override void OnDetachedFromWindow()
-		{
-			base.OnDetachedFromWindow();
-		}
-
 		protected override void OnLayout(bool changed, int left, int top, int right, int bottom)
 		{
 			base.OnLayout(changed, left, top, right, bottom);
-			if (mWaveLength == 0)
+			if (Math.Abs(mWaveLength) < 0.0001)
 			{
 				startWave();
 			}
@@ -202,12 +197,9 @@ namespace Alloy.Widgets
 		public override void OnWindowFocusChanged(bool hasWindowFocus)
 		{
 			base.OnWindowFocusChanged(hasWindowFocus);
-			if (hasWindowFocus)
+			if (hasWindowFocus && Math.Abs(mWaveLength) < 0.0001)
 			{
-				if (mWaveLength == 0)
-				{
-					startWave();
-				}
+				startWave();
 			}
 		}
 
@@ -232,10 +224,10 @@ namespace Alloy.Widgets
 			{
 				int width = Width;
 				mWaveLength = width * mWaveMultiple;
-				left = Left;
-				right = Right;
-				bottom = Bottom + 2;
-				mMaxRight = right + X_SPACE;
+				waveLeft = Left;
+				waveRight = Right;
+				waveBottom = Bottom + 2;
+				mMaxRight = waveRight + X_SPACE;
 				omega = PI2 / mWaveLength;
 			}
 		}
@@ -263,7 +255,7 @@ namespace Alloy.Widgets
 
 		private class RefreshProgressRunnable : Java.Lang.Object, IRunnable
 		{
-			private Wave wave;
+			private readonly Wave wave;
 			public RefreshProgressRunnable(Wave wave)
 			{
 				this.wave = wave;
@@ -271,13 +263,13 @@ namespace Alloy.Widgets
 			public void Run()
 			{
 
-				long start = Java.Lang.JavaSystem.CurrentTimeMillis();
+				long start = JavaSystem.CurrentTimeMillis();
 
 				wave.calculatePath();
 
 				wave.Invalidate();
 
-				long gap = 16 - (Java.Lang.JavaSystem.CurrentTimeMillis() - start);
+				long gap = 16 - (JavaSystem.CurrentTimeMillis() - start);
 				wave.PostDelayed(this, gap < 0 ? 0 : gap);
 
 			}

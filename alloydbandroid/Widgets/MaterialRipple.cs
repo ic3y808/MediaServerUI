@@ -11,19 +11,20 @@ using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
 using Java.Lang;
+using Microsoft.AppCenter.Crashes;
 using Math = Java.Lang.Math;
 using Object = Java.Lang.Object;
 
 namespace Alloy.Widgets
 {
-	public class MaterialRippleLayout : FrameLayout
+	public sealed class MaterialRippleLayout : FrameLayout
 	{
 		private static int DEFAULT_DURATION = 350;
 		private static int DEFAULT_FADE_DURATION = 75;
 		private static float DEFAULT_DIAMETER_DP = 35;
 		private static float DEFAULT_ALPHA = 0.2f;
-		private static Color DEFAULT_COLOR = Color.Black;
-		private static Color DEFAULT_BACKGROUND = Color.Transparent;
+		private static readonly Color DEFAULT_COLOR = Color.Black;
+		private static readonly Color DEFAULT_BACKGROUND = Color.Transparent;
 		private static bool DEFAULT_HOVER = true;
 		private static bool DEFAULT_DELAY_CLICK = true;
 		private static bool DEFAULT_PERSISTENT = false;
@@ -34,8 +35,8 @@ namespace Alloy.Widgets
 		private static int FADE_EXTRA_DELAY = 50;
 		private static long HOVER_DURATION = 2500;
 
-		private Paint paint = new Paint(PaintFlags.AntiAlias);
-		private Rect bounds = new Rect();
+		private readonly Paint paint = new Paint(PaintFlags.AntiAlias);
+		private readonly Rect bounds = new Rect();
 
 		private Color rippleColor;
 		private bool rippleOverlay;
@@ -88,10 +89,8 @@ namespace Alloy.Widgets
 
 		public MaterialRippleLayout(Context context, IAttributeSet attrs, int defStyle) : base(context, attrs, defStyle)
 		{
-
-
 			SetWillNotDraw(false);
-			longClickListener = new LongClickListenerGesture(this);
+			LongClickListenerGesture longClickListener = new LongClickListenerGesture(this);
 			gestureDetector = new GestureDetector(context, longClickListener);
 
 			TypedArray a = context.ObtainStyledAttributes(attrs, Resource.Styleable.MaterialRippleLayout);
@@ -144,7 +143,7 @@ namespace Alloy.Widgets
 				//base.Draw(canvas);
 				if (!positionChanged)
 				{
-					if (rippleRoundedCorners != 0)
+					if (System.Math.Abs(rippleRoundedCorners) > 0.00001)
 					{
 						Path clipPath = new Path();
 						RectF rect = new RectF(0, 0, canvas.Width, canvas.Height);
@@ -308,13 +307,14 @@ namespace Alloy.Widgets
 
 		private bool hasPerformedLongPress;
 
-		public override void SetOnClickListener(IOnClickListener onClickListener)
+		public override void SetOnClickListener(IOnClickListener l)
 		{
+			if (l == null) throw new ArgumentNullException(nameof(l));
 			if (childView == null)
 			{
 				throw new IllegalStateException("MaterialRippleLayout must have a child view to handle clicks");
 			}
-			childView.SetOnClickListener(onClickListener);
+			childView.SetOnClickListener(l);
 		}
 
 		public override void SetOnLongClickListener(IOnLongClickListener onClickListener)
@@ -334,8 +334,8 @@ namespace Alloy.Widgets
 			{
 				hoverAnimator.Cancel();
 			}
-			float radius = (float)(Math.Sqrt(Math.Pow(Width, 2) + Math.Pow(Height, 2)) * 1.2f);
-			hoverAnimator = ObjectAnimator.OfFloat(this, radiusProperty, rippleDiameter, radius).SetDuration(HOVER_DURATION);
+			float newRadius = (float)(Math.Sqrt(Math.Pow(Width, 2) + Math.Pow(Height, 2)) * 1.2f);
+			hoverAnimator = ObjectAnimator.OfFloat(this, radiusProperty, rippleDiameter, newRadius).SetDuration(HOVER_DURATION);
 			hoverAnimator.SetInterpolator(new LinearInterpolator());
 			hoverAnimator.Start();
 		}
@@ -464,6 +464,7 @@ namespace Alloy.Widgets
 					}
 					catch (NullPointerException npe)
 					{
+						Crashes.TrackError(npe);
 						throw new RuntimeException("Could not find a parent AdapterView");
 					}
 				}
@@ -530,9 +531,9 @@ namespace Alloy.Widgets
 			return radius;
 		}
 
-		public void setRadius(float radius)
+		public void setRadius(float newRadius)
 		{
-			this.radius = radius;
+			radius = newRadius;
 			Invalidate();
 		}
 
@@ -541,76 +542,75 @@ namespace Alloy.Widgets
 			return paint.Alpha;
 		}
 
-		public void setRippleAlpha(int rippleAlpha)
+		public void setRippleAlpha(int newRippleAlpha)
 		{
-			paint.Alpha = rippleAlpha;
+			paint.Alpha = newRippleAlpha;
 			Invalidate();
 		}
 
-		public void setRippleColor(Color rippleColor)
+		public void setRippleColor(Color newRippleColor)
 		{
-			this.rippleColor = rippleColor;
+			rippleColor = newRippleColor;
 			paint.Color = rippleColor;
 			paint.Alpha = rippleAlpha;
 			Invalidate();
 		}
 
-		public void setRippleOverlay(bool rippleOverlay)
+		public void setRippleOverlay(bool newRippleOverlay)
 		{
-			this.rippleOverlay = rippleOverlay;
+			rippleOverlay = newRippleOverlay;
 		}
 
-		public void setRippleDiameter(int rippleDiameter)
+		public void setRippleDiameter(int newRippleDiameter)
 		{
-			this.rippleDiameter = rippleDiameter;
+			rippleDiameter = newRippleDiameter;
 		}
 
-		public void setRippleDuration(int rippleDuration)
+		public void setRippleDuration(int newRippleDuration)
 		{
-			this.rippleDuration = rippleDuration;
+			rippleDuration = newRippleDuration;
 		}
 
 		public void setRippleBackground(Color color)
 		{
-			rippleBackground = new ColorDrawable(color);
-			rippleBackground.Bounds = bounds;
+			rippleBackground = new ColorDrawable(color) { Bounds = bounds };
 			Invalidate();
 		}
 
-		public void setRippleHover(bool rippleHover)
+		public void setRippleHover(bool newRippleHover)
 		{
-			this.rippleHover = rippleHover;
+			rippleHover = newRippleHover;
 		}
 
-		public void setRippleDelayClick(bool rippleDelayClick)
+		public void setRippleDelayClick(bool newRippleDelayClick)
 		{
-			this.rippleDelayClick = rippleDelayClick;
+			rippleDelayClick = newRippleDelayClick;
 		}
 
-		public void setRippleFadeDuration(int rippleFadeDuration)
+		public void setRippleFadeDuration(int newRippleFadeDuration)
 		{
-			this.rippleFadeDuration = rippleFadeDuration;
+			rippleFadeDuration = newRippleFadeDuration;
 		}
 
-		public void setRipplePersistent(bool ripplePersistent)
+		public void setRipplePersistent(bool newRipplePersistent)
 		{
-			this.ripplePersistent = ripplePersistent;
+			ripplePersistent = newRipplePersistent;
 		}
 
-		public void setRippleInAdapter(bool rippleInAdapter)
+		public void setRippleInAdapter(bool newRippleInAdapter)
 		{
-			this.rippleInAdapter = rippleInAdapter;
+			rippleInAdapter = newRippleInAdapter;
 		}
 
 		public void setRippleRoundedCorners(int rippleRoundedCorner)
 		{
-			this.rippleRoundedCorners = rippleRoundedCorner;
+			rippleRoundedCorners = rippleRoundedCorner;
 			enableClipPathSupportIfNecessary();
 		}
 
 		public void setDefaultRippleAlpha(float alpha)
 		{
-			this.rippleAlpha = (int)(255 * alpha);
+			rippleAlpha = (int)(255 * alpha);
 			paint.Alpha = rippleAlpha;
 			Invalidate();
 		}
@@ -629,17 +629,15 @@ namespace Alloy.Widgets
 
 		private void enableClipPathSupportIfNecessary()
 		{
-			if (Build.VERSION.SdkInt <= Android.OS.BuildVersionCodes.JellyBeanMr1)
+			if (Build.VERSION.SdkInt > BuildVersionCodes.JellyBeanMr1) return;
+			if (System.Math.Abs(rippleRoundedCorners) > 0.00001)
 			{
-				if (rippleRoundedCorners != 0)
-				{
-					layerType = LayerType;
-					SetLayerType(LayerType.Software, null);
-				}
-				else
-				{
-					SetLayerType(layerType, null);
-				}
+				layerType = LayerType;
+				SetLayerType(LayerType.Software, null);
+			}
+			else
+			{
+				SetLayerType(layerType, null);
 			}
 		}
 
@@ -699,7 +697,7 @@ namespace Alloy.Widgets
 
 		public Property circleAlphaProperty = new CircleAlphaPropertyClass(Class.FromType(typeof(MaterialRippleLayout)), "rippleAlpha");
 
-		private class PerformClickEvent : Java.Lang.Object, IRunnable
+		private class PerformClickEvent : Object, IRunnable
 		{
 			private MaterialRippleLayout layout;
 
@@ -743,7 +741,7 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private class PressedEvent : Java.Lang.Object, IRunnable
+		private class PressedEvent : Object, IRunnable
 		{
 			private MaterialRippleLayout layout;
 			private MotionEvent motionEvent;
@@ -751,7 +749,7 @@ namespace Alloy.Widgets
 			public PressedEvent(MaterialRippleLayout layout, MotionEvent e)
 			{
 				this.layout = layout;
-				this.motionEvent = e;
+				motionEvent = e;
 			}
 
 			public void Run()
@@ -793,14 +791,11 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private LongClickListenerGesture longClickListener;
-
-
 		public class RippleBuilder
 		{
 
-			private Context context;
-			private View child;
+			private readonly Context context;
+			private readonly View child;
 
 			private Color rippleColor = DEFAULT_COLOR;
 			private bool rippleOverlay = DEFAULT_RIPPLE_OVERLAY;
@@ -818,78 +813,78 @@ namespace Alloy.Widgets
 			public RippleBuilder(View child)
 			{
 				this.child = child;
-				this.context = child.Context;
+				context = child.Context;
 			}
 
 			public RippleBuilder RippleColor(Color color)
 			{
-				this.rippleColor = color;
+				rippleColor = color;
 				return this;
 			}
 
 			public RippleBuilder RippleOverlay(bool overlay)
 			{
-				this.rippleOverlay = overlay;
+				rippleOverlay = overlay;
 				return this;
 			}
 
 			public RippleBuilder RippleHover(bool hover)
 			{
-				this.rippleHover = hover;
+				rippleHover = hover;
 				return this;
 			}
 
 			public RippleBuilder RippleDiameterDp(int diameterDp)
 			{
-				this.rippleDiameter = diameterDp;
+				rippleDiameter = diameterDp;
 				return this;
 			}
 
 			public RippleBuilder RippleDuration(int duration)
 			{
-				this.rippleDuration = duration;
+				rippleDuration = duration;
 				return this;
 			}
 
 			public RippleBuilder RippleAlpha(float alpha)
 			{
-				this.rippleAlpha = alpha;
+				rippleAlpha = alpha;
 				return this;
 			}
 
 			public RippleBuilder RippleDelayClick(bool delayClick)
 			{
-				this.rippleDelayClick = delayClick;
+				rippleDelayClick = delayClick;
 				return this;
 			}
 
 			public RippleBuilder RippleFadeDuration(int fadeDuration)
 			{
-				this.rippleFadeDuration = fadeDuration;
+				rippleFadeDuration = fadeDuration;
 				return this;
 			}
 
 			public RippleBuilder RipplePersistent(bool persistent)
 			{
-				this.ripplePersistent = persistent;
+				ripplePersistent = persistent;
 				return this;
 			}
 
 			public RippleBuilder RippleBackground(Color color)
 			{
-				this.rippleBackground = color;
+				rippleBackground = color;
 				return this;
 			}
 
 			public RippleBuilder RippleInAdapter(bool inAdapter)
 			{
-				this.rippleSearchAdapter = inAdapter;
+				rippleSearchAdapter = inAdapter;
 				return this;
 			}
 
 			public RippleBuilder RippleRoundedCorners(int radiusDp)
 			{
-				this.rippleRoundedCorner = radiusDp;
+				rippleRoundedCorner = radiusDp;
 				return this;
 			}
 
