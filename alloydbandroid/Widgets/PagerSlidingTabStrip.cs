@@ -66,7 +66,7 @@ namespace Alloy.Widgets
 		private int mPaddingRight;
 
 		private bool isExpandTabs;
-		private bool isPaddingMiddle;
+		private readonly bool isPaddingMiddle;
 		private bool isTabTextAllCaps = true;
 
 		private Typeface mTabTextTypeface;
@@ -408,7 +408,7 @@ namespace Alloy.Widgets
 
 		private class PageListener : Object, ViewPager.IOnPageChangeListener
 		{
-			private PagerSlidingTabStrip pagerSlidingTabStrip;
+			private readonly PagerSlidingTabStrip pagerSlidingTabStrip;
 			public PageListener(PagerSlidingTabStrip pagerSlidingTabStrip)
 			{
 				this.pagerSlidingTabStrip = pagerSlidingTabStrip;

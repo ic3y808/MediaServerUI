@@ -677,10 +677,10 @@ namespace Alloy.Widgets
 			}
 		}
 
-		private Property radiusProperty = new RadiusPropertyClass(Class.FromType(typeof(MaterialRippleLayout)), "radius");
+		private readonly Property radiusProperty = new RadiusPropertyClass(Class.FromType(typeof(MaterialRippleLayout)), "radius");
 
 
-		public Property circleAlphaProperty = new CircleAlphaPropertyClass(Class.FromType(typeof(MaterialRippleLayout)), "rippleAlpha");
+		private readonly Property circleAlphaProperty = new CircleAlphaPropertyClass(Class.FromType(typeof(MaterialRippleLayout)), "rippleAlpha");
 
 		private class PerformClickEvent : Object, IRunnable
 		{
@@ -728,8 +728,8 @@ namespace Alloy.Widgets
 
 		private class PressedEvent : Object, IRunnable
 		{
-			private MaterialRippleLayout layout;
-			private MotionEvent motionEvent;
+			private readonly MaterialRippleLayout layout;
+			private readonly MotionEvent motionEvent;
 
 			public PressedEvent(MaterialRippleLayout layout, MotionEvent e)
 			{
@@ -740,7 +740,7 @@ namespace Alloy.Widgets
 			public void Run()
 			{
 				layout.prepressed = false;
-				layout.childView.LongClickable = false;//prevent the child's long click,let's the ripple layout call it's performLongClick
+				layout.childView.LongClickable = false; //prevent the child's long click,let's the ripple layout call it's performLongClick
 				layout.childView.OnTouchEvent(motionEvent);
 				layout.childView.Pressed = true;
 				if (layout.rippleHover)

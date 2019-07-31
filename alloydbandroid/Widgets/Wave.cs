@@ -10,23 +10,23 @@ namespace Alloy.Widgets
 {
 	public class Wave : View
 	{
-		private readonly int WAVE_HEIGHT_LARGE = 128;
-		private readonly int WAVE_HEIGHT_MIDDLE = 96;
-		private readonly int WAVE_HEIGHT_LITTLE = 64;
+		private const int WAVE_HEIGHT_LARGE = 128;
+		private const int WAVE_HEIGHT_MIDDLE = 96;
+		private const int WAVE_HEIGHT_LITTLE = 64;
 
-		private readonly float WAVE_LENGTH_MULTIPLE_LARGE = 0.38f;
-		private readonly float WAVE_LENGTH_MULTIPLE_MIDDLE = 0.9f;
-		private readonly float WAVE_LENGTH_MULTIPLE_LITTLE = 0.1f;
+		private const float WAVE_LENGTH_MULTIPLE_LARGE = 0.38f;
+		private const float WAVE_LENGTH_MULTIPLE_MIDDLE = 0.9f;
+		private const float WAVE_LENGTH_MULTIPLE_LITTLE = 0.1f;
 
-		private readonly float WAVE_HZ_FAST = 0.2f;
-		private readonly float WAVE_HZ_NORMAL = 0.09f;
-		private readonly float WAVE_HZ_SLOW = 0.05f;
+		private const float WAVE_HZ_FAST = 0.2f;
+		private const float WAVE_HZ_NORMAL = 0.09f;
+		private const float WAVE_HZ_SLOW = 0.05f;
 
-		public int DEFAULT_ABOVE_WAVE_ALPHA = 50;
-		public int DEFAULT_BLOW_WAVE_ALPHA = 30;
+		private const int DEFAULT_ABOVE_WAVE_ALPHA = 50;
+		private const int DEFAULT_BLOW_WAVE_ALPHA = 30;
 
-		private readonly float X_SPACE = 20;
-		private readonly double PI2 = 2 * Math.PI;
+		private const float X_SPACE = 20;
+		private const double PI2 = 2 * Math.PI;
 
 		private readonly Path mAboveWavePath = new Path();
 		private readonly Path mBlowWavePath = new Path();
