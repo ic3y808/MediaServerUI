@@ -1,10 +1,23 @@
-# Build NodeJS Express app using Azure Pipelines
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript?view=vsts
+pool:
+  name: Default
+  demands:
+  - MSBuild
+  - Xamarin.Android
+  - JDK
+
 variables:
+  BuildConfiguration: 'Release'
   configuration: release
   platform: x64
+  apkPath: '$(build.binariesdirectory)/$(BuildConfiguration)/com.d3bug.unity.apk'
 
 steps:
+- task: PowerShell@2
+  displayName: 'PowerShell Script'
+  inputs:
+    targetType: filePath
+    filePath: ./version.ps1
+
 - task: NodeTool@0
   inputs:
     versionSpec: 11.2.0
@@ -25,11 +38,40 @@ steps:
     Contents: '**/*.exe'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: PowerShell@2
-  displayName: 'PowerShell Script'
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
   inputs:
-    targetType: filePath
-    filePath: ./version.ps1
+    versionSpec: 4.4.1
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(agent.builddirectory)/alloydbandroid/Alloy.sln'
+    restoreDirectory: '$(agent.builddirectory)/packages'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Alloy-Android'
+  inputs:
+    projectFile: android/Alloy.csproj
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    configuration: '$(BuildConfiguration)'
+    clean: true
+
+- task: AndroidSigning@2
+  displayName: 'Signing and aligning APK file(s)'
+  inputs:
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+    jarsignerKeystoreFile: alloy.keystore
+    jarsignerKeystorePassword: 37a2447966364633bbed42866b87ad13
+    jarsignerKeystoreAlias: android
+    jarsignerKeyPassword: 37a2447966364633bbed42866b87ad13
+    jarsignerArguments: '-verbose -sigalg SHA1withRSA -digestalg SHA1'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    Contents: '**/*.apk'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: GitHubRelease@0
   inputs:
@@ -40,15 +82,11 @@ steps:
     tagSource: 'manual' # Required when action == Create# Options: auto, manual
     tag: '$(NPM_VER)'
     title: 'Release - v$(NPM_VER)'
-    #releaseNotesSource: 'file' # Optional. Options: file, input
-    #releaseNotesFile: # Optional
-    #releaseNotes: # Optional
-    assets: '$(Build.ArtifactStagingDirectory)/*' # Optional
-    #assetUploadMode: 'delete' # Optional. Options: delete, replace
+    assets: '$(Build.ArtifactStagingDirectory)/*'
+    assetUploadMode: 'replace'
     isDraft: true # Optional
     isPreRelease: false # Optional
     addChangeLog: true # Optional
-
 
 
 
