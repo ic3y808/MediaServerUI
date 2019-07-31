@@ -79,7 +79,7 @@ steps:
     gitHubConnection: 'Github'
     repositoryName: '$(Build.Repository.Name)' 
     action: 'edit'
-    target: '$(Build.SourceVersion)' 
+    target: '$(NPM_VER)' 
     tagSource: 'manual' # Required when action == Create# Options: auto, manual
     tag: '$(NPM_VER)'
     title: 'Release - v$(NPM_VER)'
