@@ -1,6 +1,7 @@
 ---
 exclude_paths:
  - 'alloydbweb/API/angular-auto-complete.js'
+ - 'alloydbweb/API/autoComplete.js'
  - 'alloydbweb/API/cast.framework.js'
  - 'alloydbweb/API/cast.v1.js'
  - 'alloydbweb/API/jquery.sortable.js'
@@ -11,6 +12,8 @@ exclude_paths:
  - 'common/log-rotator/**'
  - 'common/fast-sass-loader/**'
  - 'alloydbandroid/Tests/**.*'
+ - 'alloydbui/js/material-dashboard.js'
+ - '.vscode/**.*'
  - '*.md'
  - '**/*.md'
  - 'alloydbapi/music-metadata/**'

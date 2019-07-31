@@ -1,34 +1,32 @@
+/* jshint -W117 */
 function run() {
-  var $body = document.body,
-    $wrap = document.getElementById("wrap"),
-
-    areawidth = window.innerWidth,
-    areaheight = window.innerHeight,
-
-    canvassize = 500,
-
-    length = 30,
-    radius = 5.6,
-
-    rotatevalue = 0.035,
-    acceleration = 0,
-    animatestep = 0,
-    toend = true,
-
-    pi2 = Math.PI * 2,
-
-    group = new THREE.Group(),
-    mesh, ringcover, ring, 
-    alloyLogo,
-
-    camera, scene, renderer;
+  var $body = document.body;
+  var $wrap = document.getElementById("wrap");
+  var areawidth = window.innerWidth;
+  var areaheight = window.innerHeight;
+  var canvassize = 500;
+  var length = 30;
+  var radius = 5.6;
+  var rotatevalue = 0.035;
+  var acceleration = 0;
+  var animatestep = 0;
+  var toend = true;
+  var pi2 = Math.PI * 2;
+  var group = new THREE.Group();
+  var mesh = null;
+  var ringcover = null;
+  var ring = null;
+  var alloyLogo = null;
+  var camera = null;
+  var scene = null;
+  var renderer = null;
 
 
   camera = new THREE.PerspectiveCamera(65, 1, 1, 10000);
   camera.position.z = 150;
 
   scene = new THREE.Scene();
-  // scene.add(new THREE.AxisHelper(30));
+
   scene.add(group);
 
   mesh = new THREE.Mesh(
@@ -41,7 +39,7 @@ function run() {
 
         t = percent % 0.25 / 0.25;
         t = percent % 0.25 - (2 * (1 - t) * t * -0.0185 + t * t * 0.25);
-        if (Math.floor(percent / 0.25) == 0 || Math.floor(percent / 0.25) == 2) {
+        if (Math.floor(percent / 0.25) === 0 || Math.floor(percent / 0.25) === 2) {
           t *= -1;
         }
         z = radius * Math.sin(pi2 * 2 * (percent - t));
@@ -52,7 +50,7 @@ function run() {
     ))(), 200, 1.1, 2, true),
     new THREE.MeshBasicMaterial({
       color: 0xab47bc,
-      
+
       // , wireframe: true
     })
   );
@@ -68,7 +66,7 @@ function run() {
   ring.position.x = length + 1.1;
   ring.rotation.y = Math.PI / 2;
   group.add(ring);
-  
+
 
   var map = new THREE.TextureLoader().load("../../common/art/icon-white.png");
   var material = new THREE.SpriteMaterial({ map: map, color: 0xffffff, opacity: 0, transparent: true });
@@ -141,3 +139,5 @@ function run() {
 
 }
 window.onload = run;
+
+/* jshint +W117 */
