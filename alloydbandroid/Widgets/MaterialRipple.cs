@@ -684,7 +684,7 @@ namespace Alloy.Widgets
 
 		private class PerformClickEvent : Object, IRunnable
 		{
-			private MaterialRippleLayout layout;
+			private readonly MaterialRippleLayout layout;
 
 			public PerformClickEvent(MaterialRippleLayout layout)
 			{

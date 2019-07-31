@@ -520,7 +520,7 @@ namespace Alloy.Services
 
 		public void OnSeekComplete(MediaPlayer mp)
 		{
-
+			// not currently used
 		}
 
 		public bool OnInfo(MediaPlayer mp, MediaInfo what, int extra)

@@ -62,22 +62,24 @@ namespace Alloy.Services
 			builder.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPrevious, "Previous", pIntentPrev));
 
 			builder.AddAction(audioService.IsPlaying ? new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPause, "Pause", pIntentPlayPause) : new NotificationCompat.Action(Android.Resource.Drawable.IcMediaPlay, "Play", pIntentPlayPause));
-			
+
 			builder
 			.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMediaNext, "Next", pIntentNext))
 			.AddAction(new NotificationCompat.Action(Android.Resource.Drawable.IcMenuCloseClearCancel, "Close", pIntentExit))
-			.SetDeleteIntent(pIntentExit);			
+			.SetDeleteIntent(pIntentExit);
 		}
 
 		private async Task GenerateMetadata(NotificationCompat.Builder builder)
 		{
-			if (audioService.CurrentSong == null) return;
-			Bitmap art = await audioService.CurrentSong.GetAlbumArt();
-			builder
-				.SetContentTitle(audioService.CurrentSong.Album)
-				.SetContentText(audioService.CurrentSong.Artist)
-				.SetSubText(audioService.CurrentSong.Title)
-				.SetLargeIcon(art);
+			if (audioService.CurrentSong != null)
+			{
+				Bitmap art = await audioService.CurrentSong.GetAlbumArt();
+				builder
+					.SetContentTitle(audioService.CurrentSong.Album)
+					.SetContentText(audioService.CurrentSong.Artist)
+					.SetSubText(audioService.CurrentSong.Title)
+					.SetLargeIcon(art);
+			}
 		}
 
 
@@ -142,7 +144,7 @@ namespace Alloy.Services
 				string id = BackgroundAudioService.CHANNEL_ID;
 				string name = BackgroundAudioService.MEDIA_NAME;
 				string description = BackgroundAudioService.MEDIA_CHANNEL_DESCRIPTION;
-				NotificationChannel mChannel = new NotificationChannel(id, name, NotificationImportance.Low) {Description = description};
+				NotificationChannel mChannel = new NotificationChannel(id, name, NotificationImportance.Low) { Description = description };
 				mChannel.SetShowBadge(false);
 				mChannel.LockscreenVisibility = NotificationVisibility.Public;
 				notificationManager.CreateNotificationChannel(mChannel);
