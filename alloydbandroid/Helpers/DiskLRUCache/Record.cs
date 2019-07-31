@@ -4,10 +4,10 @@ namespace Alloy.Helpers.DiskLRUCache
 	public class Record
 	{
 
-		private string key;
-		private string name;
-		private long time;
-		private long size;
+		private readonly string key;
+		private readonly string name;
+		private readonly long time;
+		private readonly long size;
 
 		public Record(Record record, long time) : this(record.key, record.name, time, record.size)
 		{

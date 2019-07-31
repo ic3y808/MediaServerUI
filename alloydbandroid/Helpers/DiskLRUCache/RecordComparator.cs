@@ -6,8 +6,8 @@ namespace Alloy.Helpers.DiskLRUCache
 	{
 		public int Compare(Record x, Record y)
 		{
-
-			return (x.getTime() < y.getTime()) ? -1 : ((x.getTime() == y.getTime()) ? 0 : 1);
+			int t = x.getTime() == y.getTime() ? 0 : 1;
+			return x.getTime() < y.getTime() ? -1 : t;
 		}
 	}
 }
