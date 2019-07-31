@@ -107,7 +107,7 @@ router.get("/scan_status", function (req, res) {
 
 function calculateMemory(val) {
   var thresh = 1000;
-  if (val == undefined || val === null || val === 0) {return  "0 B";}
+  if (val === undefined || val === null || val === 0) {return  "0 B";}
   if (Math.abs(val) < thresh) {
     return val + " B";
   } else {
