@@ -26,13 +26,13 @@ steps:
 - task: NuGetCommand@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '$(agent.builddirectory)/alloydbandroid/Alloy.sln'
-    restoreDirectory: '$(agent.builddirectory)/packages'
+    restoreSolution: '$(Build.SourcesDirectory)/alloydbandroid/Alloy.sln'
+    restoreDirectory: '$(Build.SourcesDirectory)/packages'
 
 - task: XamarinAndroid@1
   displayName: 'Build Alloy-Android'
   inputs:
-    projectFile: $(agent.builddirectory)/alloydbandroid/Alloy.csproj
+    projectFile: $(Build.SourcesDirectory)/alloydbandroid/Alloy.csproj
     outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
     configuration: '$(BuildConfiguration)'
     clean: true
