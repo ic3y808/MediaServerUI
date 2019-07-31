@@ -36,6 +36,25 @@ var seq2 = 0,
   delays2 = 80,
   durations2 = 500;
 
+  
+// Returns a function, that, as long as it continues to be invoked, will not
+// be triggered. The function will be called after it stops being called for
+// N milliseconds. If `immediate` is passed, trigger the function on the
+// leading edge, instead of the trailing.
+
+function debounce(func, wait, immediate) {
+  var timeout = null;
+  return function () {
+    var context = this,
+      args = arguments;
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+      timeout = null;
+      if (!immediate) { func.apply(context, args); }
+    }, wait);
+    if (immediate && !timeout) { func.apply(context, args); }
+  };
+}
 
 $(document).ready(function () {
 
@@ -51,7 +70,7 @@ $(document).ready(function () {
   md.checkSidebarImage();
 
   //  Activate the tooltips
-  $("[rel=\"tooltip\"]").tooltip({trigger : "hover"});
+  $("[rel=\"tooltip\"]").tooltip({ trigger: "hover" });
   $.fn.selectpicker.Constructor.BootstrapVersion = "4";
 
   $(".form-control").on("focus", function () {
@@ -117,13 +136,13 @@ $(document).ready(function () {
       $(this).parent("li").siblings().removeClass("active");
       $(this).parent("li").addClass("active");
       var new_image = $(this).find("img").attr("src");
-      if ($sidebar_img_container.length != 0 && $(".switch-sidebar-image input:checked").length != 0) {
+      if ($sidebar_img_container.length !== 0 && $(".switch-sidebar-image input:checked").length != 0) {
         $sidebar_img_container.fadeOut("fast", function () {
           $sidebar_img_container.css("background-image", "url(\"" + new_image + "\")");
           $sidebar_img_container.fadeIn("fast");
         });
       }
-      if ($full_page_background.length != 0 && $(".switch-sidebar-image input:checked").length != 0) {
+      if ($full_page_background.length !== 0 && $(".switch-sidebar-image input:checked").length != 0) {
         var new_image_full_page = $(".fixed-plugin li.active .img-holder").find("img").data("src");
         $full_page_background.fadeOut("fast", function () {
           $full_page_background.css("background-image", "url(\"" + new_image_full_page + "\")");
@@ -251,18 +270,18 @@ md = {
   },
 
   checkSidebarImage: function () {
-    $sidebar = $(".sidebar");
-    image_src = $sidebar.data("image");
+    var $sidebar = $(".sidebar");
+    var image_src = $sidebar.data("image");
 
     if (image_src !== undefined) {
-      sidebar_container = "<div class=\"sidebar-background\" style=\"background-image: url(" + image_src + ") \"/>";
+      var sidebar_container = "<div class=\"sidebar-background\" style=\"background-image: url(" + image_src + ") \"/>";
       $sidebar.append(sidebar_container);
     }
   },
 
   showNotification: function (from, align, icon, type, message) {
 
-    color = Math.floor((Math.random() * 6) + 1);
+    var color = Math.floor((Math.random() * 6) + 1);
 
     $.notify({
       icon: icon,
@@ -361,11 +380,11 @@ md = {
   },
 
   checkFullPageBackgroundImage: function () {
-    $page = $(".full-page");
-    image_src = $page.data("image");
+    var $page = $(".full-page");
+    var image_src = $page.data("image");
 
     if (image_src !== undefined) {
-      image_container = "<div class=\"full-page-background\" style=\"background-image: url(" + image_src + ") \"/>";
+      var image_container = "<div class=\"full-page-background\" style=\"background-image: url(" + image_src + ") \"/>";
       $page.append(image_container);
     }
   },
@@ -401,20 +420,20 @@ md = {
 
 
   initRightMenu: debounce(function () {
-    $sidebar_wrapper = $(".sidebar-wrapper");
+    var $sidebar_wrapper = $(".sidebar-wrapper");
 
     if (!mobile_menu_initialized) {
-      $navbar = $("nav").find(".navbar-collapse").children(".navbar-nav");
+      var $navbar = $("nav").find(".navbar-collapse").children(".navbar-nav");
 
-      mobile_menu_content = "";
+      var mobile_menu_content = "";
 
-      nav_content = $navbar.html();
+      var nav_content = $navbar.html();
 
-      nav_content = "<ul class=\"nav navbar-nav nav-mobile-menu\">" + nav_content + "</ul>";
+      var nav_content = "<ul class=\"nav navbar-nav nav-mobile-menu\">" + nav_content + "</ul>";
 
-      navbar_form = $("nav").find(".navbar-form").get(0).outerHTML;
+      var navbar_form = $("nav").find(".navbar-form").get(0).outerHTML;
 
-      $sidebar_nav = $sidebar_wrapper.find(" > .nav");
+      var $sidebar_nav = $sidebar_wrapper.find(" > .nav");
 
       // insert the navbar form before the sidebar list
       $nav_content = $(nav_content);
@@ -440,22 +459,3 @@ md = {
   }, 200),
 
 };
-
-// Returns a function, that, as long as it continues to be invoked, will not
-// be triggered. The function will be called after it stops being called for
-// N milliseconds. If `immediate` is passed, trigger the function on the
-// leading edge, instead of the trailing.
-
-function debounce(func, wait, immediate) {
-  var timeout;
-  return function () {
-    var context = this,
-      args = arguments;
-    clearTimeout(timeout);
-    timeout = setTimeout(function () {
-      timeout = null;
-      if (!immediate) {func.apply(context, args);}
-    }, wait);
-    if (immediate && !timeout) {func.apply(context, args);}
-  };
-}

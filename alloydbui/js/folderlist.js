@@ -1,10 +1,10 @@
 require("angular");
 var { ipcRenderer } = require("electron");
-angular.module('alloydb').directive('folderlist', function () {
+angular.module("alloydb").directive("folderlist", function () {
   return {
-    restrict: 'E',
+    restrict: "E",
     scope: { currentpath: "=" },
-    templateUrl: 'folderlist.jade',
+    templateUrl: "folderlist.jade",
     replace: true,
     link: function (scope, element, attrs) {
       var reload = function () {

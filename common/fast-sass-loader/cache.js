@@ -1,7 +1,7 @@
-'use strict'
+"use strict";
 
-const fs = require('fs')
-const utils = require('./utils')
+const fs = require("fs");
+const utils = require("./utils");
 
 // compile cache
 // cache = {
@@ -18,7 +18,7 @@ const utils = require('./utils')
 //   },
 //   ...
 // }
-const CACHE_STORE = {}
+const CACHE_STORE = {};
 
 /**
  * Cache
@@ -35,70 +35,68 @@ const CACHE_STORE = {}
  * }
  */
 class Cache {
-  constructor (entry) {
-    this.entry = entry
+  constructor(entry) {
+    this.entry = entry;
   }
 
-  isValid () {
+  isValid() {
     if (!(this.entry in CACHE_STORE)) {
-      return false
+      return false;
     }
 
-    let cache = CACHE_STORE[this.entry]
-    let estat = utils.fstat(this.entry)
+    const cache = CACHE_STORE[this.entry];
+    const estat = utils.fstat(this.entry);
 
     // 文件不存在, 或时间不正确
     if (!estat || estat.mtime.getTime() !== cache.mtime) {
-      return false
+      return false;
     }
 
-    for (let depFile in cache.dependencies) {
-      if (!cache.dependencies.hasOwnProperty(depFile)) {
-        continue
-      }
+    for (const depFile in cache.dependencies) {
+      if (cache.dependencies.hasOwnProperty(depFile)) {
+        const mtime = cache.dependencies[depFile];
+        const dstat = utils.fstat(depFile);
 
-      let mtime = cache.dependencies[depFile]
-      let dstat = utils.fstat(depFile)
-
-      if (!dstat || dstat.mtime.getTime() !== mtime) {
-        return false
+        if (!dstat || dstat.mtime.getTime() !== mtime) {
+          return false;
+        }
       }
     }
 
-    return true
+    return true;
   }
 
-  read () {
+  read() {
     if (this.entry in CACHE_STORE) {
-      let cache = CACHE_STORE[this.entry]
-      cache.readTimes++
+      const cache = CACHE_STORE[this.entry];
+      cache.readTimes++;
 
-      return cache.result
+      return cache.result;
     } else {
-      return false
+      return false;
     }
   }
 
-  getDependencies () {
+  getDependencies() {
     if (this.entry in CACHE_STORE) {
-      let cache = CACHE_STORE[this.entry]
+      const cache = CACHE_STORE[this.entry];
 
-      return Object.keys(cache.dependencies)
+      return Object.keys(cache.dependencies);
     } else {
-      return []
+      return [];
     }
   }
 
-  markInvalid () {
-    delete CACHE_STORE[this.entry]
+  markInvalid() {
+    delete CACHE_STORE[this.entry];
   }
 
-  write (dependencies, result) {
+  write(dependencies, result) {
     if (!fs.existsSync(this.entry)) {
-      return
+      return;
     }
 
-    let cache = CACHE_STORE[this.entry]
+    let cache = CACHE_STORE[this.entry];
 
     if (!cache) {
       CACHE_STORE[this.entry] = cache = {
@@ -108,22 +106,22 @@ class Cache {
         lastCompile: Date.now(),
         result: null,
         dependencies: {}
-      }
+      };
     }
 
-    cache.mtime = utils.fstat(this.entry).mtime.getTime()
-    cache.writeTimes++
-    cache.readTimes = 0
-    cache.result = result
-    cache.dependencies = {}
+    cache.mtime = utils.fstat(this.entry).mtime.getTime();
+    cache.writeTimes++;
+    cache.readTimes = 0;
+    cache.result = result;
+    cache.dependencies = {};
 
     for (let i = 0; i < dependencies.length; i++) {
-      let depFile = dependencies[i]
-      let dstat = utils.fstat(depFile)
+      const depFile = dependencies[i];
+      const dstat = utils.fstat(depFile);
 
-      cache.dependencies[depFile] = dstat ? dstat.mtime.getTime() : 0
+      cache.dependencies[depFile] = dstat ? dstat.mtime.getTime() : 0;
     }
   }
 }
 
-module.exports = Cache
+module.exports = Cache;
