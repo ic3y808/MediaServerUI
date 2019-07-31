@@ -18,7 +18,7 @@ steps:
     targetType: filePath
     filePath: ./version.ps1
 
-- task: NuGetToolInstaller@1
+- task: NuGetToolInstaller@0
   inputs:
     versionSpec: 
     checkLatest: true
