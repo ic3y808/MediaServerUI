@@ -18,6 +18,41 @@ steps:
     targetType: filePath
     filePath: ./version.ps1
 
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(agent.builddirectory)/alloydbandroid/Alloy.sln'
+    restoreDirectory: '$(agent.builddirectory)/packages'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Alloy-Android'
+  inputs:
+    projectFile: $(agent.builddirectory)/alloydbandroid/Alloy.csproj
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    configuration: '$(BuildConfiguration)'
+    clean: true
+
+- task: AndroidSigning@2
+  displayName: 'Signing and aligning APK file(s)'
+  inputs:
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+    jarsignerKeystoreFile: alloy.keystore
+    jarsignerKeystorePassword: 37a2447966364633bbed42866b87ad13
+    jarsignerKeystoreAlias: android
+    jarsignerKeyPassword: 37a2447966364633bbed42866b87ad13
+    jarsignerArguments: '-verbose -sigalg SHA1withRSA -digestalg SHA1'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    Contents: '**/*.apk'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 - task: NodeTool@0
   inputs:
     versionSpec: 11.2.0
@@ -38,40 +73,6 @@ steps:
     Contents: '**/*.exe'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-- task: NuGetToolInstaller@0
-  displayName: 'Use NuGet 4.4.1'
-  inputs:
-    versionSpec: 4.4.1
-
-- task: NuGetCommand@2
-  displayName: 'NuGet restore'
-  inputs:
-    restoreSolution: '$(agent.builddirectory)/alloydbandroid/Alloy.sln'
-    restoreDirectory: '$(agent.builddirectory)/packages'
-
-- task: XamarinAndroid@1
-  displayName: 'Build Alloy-Android'
-  inputs:
-    projectFile: android/Alloy.csproj
-    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
-    configuration: '$(BuildConfiguration)'
-    clean: true
-
-- task: AndroidSigning@2
-  displayName: 'Signing and aligning APK file(s)'
-  inputs:
-    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
-    jarsignerKeystoreFile: alloy.keystore
-    jarsignerKeystorePassword: 37a2447966364633bbed42866b87ad13
-    jarsignerKeystoreAlias: android
-    jarsignerKeyPassword: 37a2447966364633bbed42866b87ad13
-    jarsignerArguments: '-verbose -sigalg SHA1withRSA -digestalg SHA1'
-
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
-    Contents: '**/*.apk'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
 - task: GitHubRelease@0
   inputs:
