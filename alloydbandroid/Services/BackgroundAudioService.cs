@@ -14,7 +14,6 @@ using Alloy.Recievers;
 using Alloy.Providers;
 using Android.Util;
 using Java.IO;
-using Java.Lang;
 using Exception = System.Exception;
 
 namespace Alloy.Services
@@ -52,7 +51,6 @@ namespace Alloy.Services
 		private bool loading;
 		private PowerManager.WakeLock wakeLock;
 
-		private Song currentSong;
 		public Song CurrentSong
 		{
 			get
@@ -60,7 +58,6 @@ namespace Alloy.Services
 				if (MainQueue == null || MainQueue.Count == 0) return null;
 				return MainQueue[CurrentQueuePosition];
 			}
-			set { currentSong = value; }
 		}
 
 		public int CurrentPosition
@@ -96,7 +93,7 @@ namespace Alloy.Services
 			base.OnCreate();
 			MainQueue = null;
 			NotificationService1 = new NotificationService(this);
-			MainQueue = new Queue();
+			MainQueue = new List<Song>();
 			InitMediaPlayer();
 			GetWakeLock();
 			InitBluetoothReceiver();
@@ -243,7 +240,7 @@ namespace Alloy.Services
 			}
 
 			if (index < MainQueue.Count)
-				CurrentSong = MainQueue[index];
+				CurrentQueuePosition = index;
 
 			try
 			{
@@ -265,7 +262,6 @@ namespace Alloy.Services
 			Stop();
 			MainQueue = queue;
 			CurrentQueuePosition = index;
-			CurrentSong = MainQueue[CurrentQueuePosition];
 			Play(index);
 		}
 
@@ -283,8 +279,6 @@ namespace Alloy.Services
 				int index = MainQueue.IndexOf(CurrentSong);
 				index = index + 1 >= MainQueue.Count ? 0 : index + 1;
 				Stop();
-				CurrentQueuePosition = index;
-				CurrentSong = MainQueue[CurrentQueuePosition];
 				Play(index);
 
 			}
@@ -324,8 +318,6 @@ namespace Alloy.Services
 				int index = MainQueue.IndexOf(CurrentSong);
 				index = index - 1 < 0 ? MainQueue.Count - 1 : index - 1;
 				Stop();
-				CurrentQueuePosition = index;
-				CurrentSong = MainQueue[CurrentQueuePosition];
 				Play(index);
 
 			}

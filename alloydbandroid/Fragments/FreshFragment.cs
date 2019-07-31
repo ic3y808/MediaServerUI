@@ -1,7 +1,6 @@
 ﻿using Android.OS;
 using Android.Views;
 using Alloy.Adapters;
-using Alloy.Helpers;
 using Alloy.Providers;
 using Alloy.Services;
 using Alloy.Widgets;
@@ -13,23 +12,19 @@ namespace Alloy.Fragments
 {
 	public class FreshFragment : FragmentBase
 	{
-		private View root_view;
-		private FreshAdapter freshAdapter;
-		private PagerSlidingTabStrip tabs;
-		private ViewPager pager;
 		public override string Name => "Fresh";
 
 		public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
 		{
-			root_view = inflater.Inflate(Resource.Layout.pager_layout, container, false);
-			tabs = root_view.FindViewById<PagerSlidingTabStrip>(Resource.Id.tabs);
-			pager = root_view.FindViewById<ViewPager>(Resource.Id.pager);
+			View root_view = inflater.Inflate(Resource.Layout.pager_layout, container, false);
+			PagerSlidingTabStrip tabs = root_view.FindViewById<PagerSlidingTabStrip>(Resource.Id.tabs);
+			ViewPager pager = root_view.FindViewById<ViewPager>(Resource.Id.pager);
 			pager.LayoutParameters = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
 			pager.OffscreenPageLimit = 10;
-			freshAdapter = new FreshAdapter(ChildFragmentManager);
+			FreshAdapter freshAdapter = new FreshAdapter(ChildFragmentManager);
 			freshAdapter.TrackClick += (s, e) =>
 			{
-				 Play(e.Songs.ToQueue(), e.Position);
+				Play(e.Songs, e.Position);
 			};
 			freshAdapter.AlbumClick += (s, e) =>
 			{
@@ -72,5 +67,5 @@ namespace Alloy.Fragments
 		{
 			MusicProvider.RefreshFresh();
 		}
-	}	
+	}
 }

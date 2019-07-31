@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Alloy.Interfaces;
 using Newtonsoft.Json;
 
 namespace Alloy.Models

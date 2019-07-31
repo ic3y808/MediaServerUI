@@ -1,4 +1,5 @@
-﻿using Alloy.Interfaces;
+﻿using System.Collections.Generic;
+using Alloy.Models;
 using Android.App;
 using Android.Content;
 using Android.Views;
@@ -20,12 +21,12 @@ namespace Alloy.Recievers
 
 		public MediaButtonReciever() { }
 
-		public override async void OnReceive(Context context, Intent intent)
+		public override void OnReceive(Context context, Intent intent)
 		{
 			switch (intent.Action)
 			{
 				case BackgroundAudioService.ActionPlayNew:
-					Queue playlist = JsonConvert.DeserializeObject<Queue>(intent.GetStringExtra("playlist"));
+					List<Song> playlist = JsonConvert.DeserializeObject<List<Song>>(intent.GetStringExtra("playlist"));
 					int position = intent.GetIntExtra("position", 0);
 					service.Play(position, playlist);
 					break;

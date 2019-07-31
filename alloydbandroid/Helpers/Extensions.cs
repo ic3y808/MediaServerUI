@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
-using Alloy.Interfaces;
 using Android.App;
 using Android.Content;
 using Android.Database;
@@ -20,8 +17,6 @@ using Microsoft.AppCenter.Crashes;
 using Alloy.Models;
 using Alloy.Providers;
 using Android.Support.V7.Preferences;
-using FFImageLoading;
-using Java.Lang;
 using Exception = System.Exception;
 using Math = System.Math;
 using String = System.String;
@@ -550,17 +545,6 @@ namespace Alloy.Helpers
 					cursor.Close();
 				}
 			}
-		}
-
-		public static Queue ToQueue(this List<Song> songs)
-		{
-			Queue queue = new Queue();
-			foreach (Song song in songs)
-			{
-				queue.Add(song);
-			}
-
-			return queue;
 		}
 
 		public static void Toast(this string text)

@@ -128,7 +128,6 @@
     <Compile Include="Interfaces\ItemTouchHelperViewHolder.cs" />
     <Compile Include="Interfaces\OnFastScrollStateChangeListener.cs" />
     <Compile Include="Interfaces\OnStartDragListener.cs" />
-    <Compile Include="Interfaces\Queue.cs" />
     <Compile Include="Interfaces\ViewBehavior.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Models\Album.cs" />

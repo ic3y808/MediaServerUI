@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using Android.Annotation;
 using Android.App;
 using Android.Content.Res;
@@ -8,7 +7,6 @@ using Android.OS;
 using Android.Util;
 using Java.Lang;
 using Environment = Android.OS.Environment;
-using Exception = Com.Microsoft.Appcenter.Crashes.Ingestion.Models.Exception;
 using File = Java.IO.File;
 using LayoutDirection = Android.Views.LayoutDirection;
 using Math = System.Math;

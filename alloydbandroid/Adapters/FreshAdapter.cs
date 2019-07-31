@@ -20,16 +20,15 @@ namespace Alloy.Adapters
 	public class FreshCardFragment : Fragment
 	{
 		private SwipeRefreshLayout refreshLayout;
-		private RecyclerView recyclerView;
 		private MaterialRippleAdapter adapter;
 		private event EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick;
 		private event EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick;
 		private event EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> artistClick;
 		public int Position { get; set; }
 
-		public FreshCardFragment(EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackCLick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick, EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> artistClick)
+		public FreshCardFragment(EventHandler<MaterialRippleAdapter.TrackViewHolderEvent> trackClick, EventHandler<MaterialRippleAdapter.AlbumViewHolderEvent> albumClick, EventHandler<MaterialRippleAdapter.ArtistViewHolderEvent> artistClick)
 		{
-			this.trackClick = trackCLick;
+			this.trackClick = trackClick;
 			this.albumClick = albumClick;
 			this.artistClick = artistClick;
 		}
@@ -118,7 +117,7 @@ namespace Alloy.Adapters
 
 			refreshLayout = rootView.FindViewById<SwipeRefreshLayout>(Resource.Id.swipe_container);
 			refreshLayout.Refresh += RefreshLayout_Refresh;
-
+			RecyclerView recyclerView;
 			switch (Position)
 			{
 				case 0:
@@ -190,7 +189,7 @@ namespace Alloy.Adapters
 			return base.GetItemPosition(@object);
 		}
 
-		private ICharSequence[] TITLES = CharSequence.ArrayFromStringArray(new[] { "Tracks", "Albums", "Artists" });
+		private readonly ICharSequence[] TITLES = CharSequence.ArrayFromStringArray(new[] { "Tracks", "Albums", "Artists" });
 
 		public override ICharSequence GetPageTitleFormatted(int position)
 		{

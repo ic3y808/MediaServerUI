@@ -1,21 +1,21 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using Java.IO;
 using Java.Lang;
 using Java.Security;
+using Microsoft.AppCenter.Crashes;
 using StringBuilder = Java.Lang.StringBuilder;
 
 namespace Alloy.Helpers.DiskLRUCache
 {
 	public class DiskLruCache
 	{
-
-		public static int JOURNAL_FORMAT_VERSION = 1;
-		public static string HASH_ALGORITHM = "MD5";
-
-		private Journal journal;
-		private long cacheSize;
-		private FileManager fileManager;
+		public static int JOURNAL_FORMAT_VERSION => 1;
+		private static string HASH_ALGORITHM = "MD5";
+		private readonly Journal journal;
+		private readonly long cacheSize;
+		private readonly FileManager fileManager;
 
 		private DiskLruCache(FileManager fileManager, Journal journal, long cacheSize)
 		{
@@ -26,15 +26,15 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		public static DiskLruCache create(File cacheDir, long cacheSize)
 		{
-			FileManager fileManager = new SimpleFileManager(cacheDir);
-			return create(fileManager, cacheSize);
+			FileManager newFileManager = new SimpleFileManager(cacheDir);
+			return create(newFileManager, cacheSize);
 		}
 
 		public static DiskLruCache create(FileManager fileManager, long cacheSize)
 		{
 			fileManager.prepare();
-			Journal journal = Journal.readJournal(fileManager);
-			return new DiskLruCache(fileManager, journal, cacheSize);
+			Journal newJournal = Journal.readJournal(fileManager);
+			return new DiskLruCache(fileManager, newJournal, cacheSize);
 		}
 
 		public File put(string key, File file)
@@ -43,7 +43,7 @@ namespace Alloy.Helpers.DiskLRUCache
 			{
 				assertKeyValid(key);
 				string name = generateName(key, file);
-				long time = Java.Lang.JavaSystem.CurrentTimeMillis();
+				long time = JavaSystem.CurrentTimeMillis();
 				long fileSize = file.Length();
 				Record record = new Record(key, name, time, fileSize);
 				File cacheFile = fileManager.accept(file, name);
@@ -63,13 +63,11 @@ namespace Alloy.Helpers.DiskLRUCache
 				if (record != null)
 				{
 					File file = fileManager.get(record.getName());
-					if (!file.Exists())
-					{
-						journal.delete(key);
-						file = null;
-						journal.writeJournal();
-					}
-					
+					if (file.Exists()) return file;
+					journal.delete(key);
+					file = null;
+					journal.writeJournal();
+
 					return file;
 				}
 				else
@@ -117,8 +115,9 @@ namespace Alloy.Helpers.DiskLRUCache
 					{
 						delete(key, false);
 					}
-					catch (RecordNotFoundException ignored)
+					catch (RecordNotFoundException e)
 					{
+						Crashes.TrackError(e);
 					}
 				}
 				journal.writeJournal();
@@ -164,7 +163,7 @@ namespace Alloy.Helpers.DiskLRUCache
 
 		private static void assertKeyValid(string key)
 		{
-			if (key == null || key.Length == 0)
+			if (string.IsNullOrEmpty(key))
 			{
 				throw new IllegalArgumentException(string.Format("Invalid key value: '{0}'", key));
 			}
@@ -190,6 +189,7 @@ namespace Alloy.Helpers.DiskLRUCache
 			}
 			catch (NoSuchAlgorithmException ignored)
 			{
+				Crashes.TrackError(ignored);
 			}
 			throw new IllegalArgumentException("Unable to hash key");
 		}
@@ -202,13 +202,11 @@ namespace Alloy.Helpers.DiskLRUCache
 		private static string fileExtension(string path)
 		{
 			string suffix = "";
-			if (!string.IsNullOrEmpty(path))
+			if (string.IsNullOrEmpty(path)) return suffix;
+			int index = path.LastIndexOf(".", StringComparison.Ordinal);
+			if (index != -1)
 			{
-				int index = path.LastIndexOf(".");
-				if (index != -1)
-				{
-					suffix = path.Substring(index);
-				}
+				suffix = path.Substring(index);
 			}
 			return suffix;
 		}

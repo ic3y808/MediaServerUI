@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Content;
-using Android.Media;
 using Android.OS;
 using Android.Support.V4.Media.Session;
 using Alloy.Interfaces;
@@ -95,7 +94,6 @@ namespace Alloy.Services
 		public Song CurrentSong
 		{
 			get => Binder.CurrentSong;
-			set => Binder.CurrentSong = value;
 		}
 		
 		public List<Song> MainQueue

@@ -4,8 +4,6 @@ using Android.App;
 using Android.Graphics;
 using Android.Views;
 using Android.Widget;
-using Alloy.Helpers;
-using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Providers;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -24,13 +23,8 @@ using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Adapters;
-using Alloy.Interfaces;
 using Alloy.Models;
-
-using Alloy.Widgets;
 using Android.Runtime;
-using Java.IO;
-using Debug = System.Diagnostics.Debug;
 using Exception = System.Exception;
 using Fragment = Android.Support.V4.App.Fragment;
 using FragmentManager = Android.Support.V4.App.FragmentManager;
@@ -56,10 +50,8 @@ namespace Alloy
 		private ImageButton playPauseImageButton;
 		private ImageButton starImageButton;
 		private Drawable starred, notStarred, play, pause;
-		private MainPlaylistAdapter playlistAdapter;
-		private bool loadingBackground = false;
-
-		public class LogTraceListener : System.Diagnostics.TraceListener
+		
+		public class LogTraceListener : TraceListener
 		{
 			public override void Write(string message)
 			{
@@ -175,11 +167,6 @@ namespace Alloy
 			BindService();
 		}
 
-		protected override void OnPostResume()
-		{
-			base.OnPostResume();
-		}
-
 		protected override void OnDestroy()
 		{
 			base.OnDestroy();
@@ -250,7 +237,7 @@ namespace Alloy
 
 		private void ChangeFragment(int itemText, bool backstack = true)
 		{
-			Android.Support.V4.App.Fragment fragment = null;
+			Fragment fragment = null;
 
 			switch (itemText)
 			{

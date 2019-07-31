@@ -14,18 +14,7 @@ namespace Alloy.Adapters
 {
 	public class MaterialRippleAdapter : RecyclerView.Adapter
 	{
-		private List<Song> songs;
-
-		public List<Song> Songs
-		{
-			get => songs;
-			set
-			{
-				songs = value;
-
-			}
-		}
-
+		public List<Song> Songs { get; set; }
 		public List<Album> Albums { get; set; }
 		public List<Artist> Artists { get; set; }
 
@@ -115,7 +104,6 @@ namespace Alloy.Adapters
 			public List<Song> Songs { get; set; }
 			public List<Album> Albums { get; set; }
 			public List<Artist> Artists { get; set; }
-			private BackgroundAudioServiceConnection ServiceConnection { get; }
 
 			public event EventHandler<TrackViewHolderEvent> TrackClick;
 			public event EventHandler<AlbumViewHolderEvent> AlbumClick;
@@ -140,22 +128,24 @@ namespace Alloy.Adapters
 				Wave.setProgress(0);
 			}
 
+			//TODO fix selected background
+
 			public void SetSelected(int position)
 			{
 				if (Songs == null || Songs.Count == 0 || position < 0 || position >= Songs.Count) return;
 
-				bool selected = Songs[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
+				//bool selected = Songs[position].IsSelected || ServiceConnection?.CurrentSong != null && ServiceConnection.CurrentSong.Id.Equals(Songs[position].Id);
 
-				if (selected)
-				{
-					ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
-					SetWave(false);
-				}
-				else
-				{
-					SetWave(false);
-					ItemRoot.SetBackgroundColor(Color.Transparent);
-				}
+				//if (selected)
+				//{
+				//	ItemRoot.SetBackgroundResource(Resource.Color.menu_selection_color);
+				//	SetWave(false);
+				//}
+				//else
+				//{
+				//	SetWave(false);
+				//	ItemRoot.SetBackgroundColor(Color.Transparent);
+				//}
 			}
 
 			public void SetWave(bool on)
