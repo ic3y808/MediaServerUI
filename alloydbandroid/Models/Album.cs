@@ -5,7 +5,6 @@ using Alloy.Converters;
 using Android.Graphics;
 using Android.OS;
 using Java.Interop;
-using Alloy.Interfaces;
 using Newtonsoft.Json;
 using Object = Java.Lang.Object;
 
@@ -63,7 +62,7 @@ namespace Alloy.Models
 		public int TrackCount { get; set; }
 
 		[JsonProperty("tracks")]
-		public Queue Tracks { get; set; }
+		public List<Song> Tracks { get; set; }
 
 		public bool IsSelected { get; set; }
 		public bool IsLabel { get; set; }

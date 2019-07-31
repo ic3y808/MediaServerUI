@@ -11,14 +11,12 @@ using Android.Views;
 using Android.Widget;
 using Alloy.Compat;
 using Alloy.Helpers;
-using Alloy.Interfaces;
 using Alloy.Models;
 using Alloy.Providers;
 
 using Alloy.Services;
 using Alloy.Widgets;
 using Android.Database;
-using Android.Graphics;
 using Android.OS;
 using Android.Provider;
 using Android.Views.InputMethods;
@@ -355,7 +353,7 @@ namespace Alloy.Fragments
 		public virtual void ContextMenuItemSelected(IMenuItem item, AdapterView.AdapterContextMenuInfo info) { }
 		public virtual void ApiError() { }
 
-		public virtual void Play(Queue queue, int position)
+		public virtual void Play(List<Song> queue, int position)
 		{
 			if (!IsServiceConnected)
 			{

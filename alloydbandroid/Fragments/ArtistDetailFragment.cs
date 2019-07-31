@@ -60,7 +60,7 @@ namespace Alloy.Fragments
 
 		private void PlayArtist_Click(object sender, ArtistContainer e)
 		{
-			ServiceConnection.Play(0, e.Tracks.ToQueue());
+			ServiceConnection.Play(0, e.Tracks);
 		}
 
 		private void MusicProvider_ArtistStartRefresh(object sender, System.EventArgs e)
@@ -101,7 +101,7 @@ namespace Alloy.Fragments
 
 		private void Track_ItemClick(object sender, ArtistDetailTrackAdapter.ViewHolder.ViewHolderEvent e)
 		{
-			ServiceConnection?.Play(e.Position, e.Songs.ToQueue());
+			ServiceConnection?.Play(e.Position, e.Songs);
 		}
 	}
 }

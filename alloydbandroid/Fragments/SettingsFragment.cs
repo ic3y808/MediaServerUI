@@ -1,7 +1,6 @@
 ﻿
 
 using Android.OS;
-using Android.Preferences;
 using Android.Support.V7.Preferences;
 
 namespace Alloy.Fragments

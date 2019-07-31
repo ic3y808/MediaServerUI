@@ -2,7 +2,6 @@
 using Android.Support.V4.Widget;
 using Android.Views;
 using Alloy.Adapters;
-using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
 
@@ -80,7 +79,7 @@ namespace Alloy.Fragments
 
 		private void MaterialRippleAdapterTrackClick(object sender, MaterialRippleAdapter.TrackViewHolderEvent e)
 		{
-			Play(e.Songs.ToQueue(), e.Position);
+			Play(e.Songs, e.Position);
 		}
 
 		public override void OnRefreshed()

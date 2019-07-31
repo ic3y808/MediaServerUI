@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Alloy.Helpers;
-using Alloy.Interfaces;
 using Android.Views;
 using Android.Widget;
 using Alloy.Models;
@@ -9,7 +7,6 @@ using Alloy.Providers;
 
 using Alloy.Services;
 using Android.App;
-using Android.Content;
 using Android.Graphics;
 using Android.Support.V7.Widget;
 
