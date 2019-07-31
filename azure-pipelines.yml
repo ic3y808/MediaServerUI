@@ -29,15 +29,6 @@ steps:
     restoreSolution: '$(Build.SourcesDirectory)/alloydbandroid/Alloy.sln'
     restoreDirectory: '$(Build.SourcesDirectory)/packages'
 
-- task: MSBuild@1
-  inputs:
-    solution: '$(Build.SourcesDirectory)/alloydbandroid/Alloy.sln'
-    msbuildArchitecture: 'x64'
-    configuration: 'Release'
-    maximumCpuCount: true
-    restoreNugetPackages: true
-    
-
 - task: XamarinAndroid@1
   displayName: 'Build Alloy-Android'
   inputs:
@@ -45,59 +36,59 @@ steps:
     outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
     configuration: '$(BuildConfiguration)'
     clean: true
-#
-#- task: AndroidSigning@2
-#  displayName: 'Signing and aligning APK file(s)'
-#  inputs:
-#    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
-#    jarsignerKeystoreFile: alloy.keystore
-#    jarsignerKeystorePassword: 37a2447966364633bbed42866b87ad13
-#    jarsignerKeystoreAlias: android
-#    jarsignerKeyPassword: 37a2447966364633bbed42866b87ad13
-#    jarsignerArguments: '-verbose -sigalg SHA1withRSA -digestalg SHA1'
-#
-#- task: CopyFiles@2
-#  inputs:
-#    SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
-#    Contents: '**/*.apk'
-#    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-#
-#- task: NodeTool@0
-#  inputs:
-#    versionSpec: 11.2.0
-#    checkLatest: true
-#    platform: $(platform)
-#
-#- task: Npm@1
-#  displayName: 'npm install'
-#  inputs:
-#    command: install
-#
-#- script: |
-#    npm run build
-#
-#- task: CopyFiles@2
-#  inputs:
-#    SourceFolder: '$(Build.SourcesDirectory)/dist'
-#    Contents: '**/*.exe'
-#    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-#
-#
-#- task: GitHubRelease@0
-#  inputs:
-#    gitHubConnection: 'Github'
-#    repositoryName: '$(Build.Repository.Name)' 
-#    action: 'edit'
-#    target: '$(Build.SourceVersion)' 
-#    tagSource: 'manual' # Required when action == Create# Options: auto, manual
-#    tag: '$(NPM_VER)'
-#    title: 'Release - v$(NPM_VER)'
-#    assets: '$(Build.ArtifactStagingDirectory)/*'
-#    assetUploadMode: 'replace'
-#    isDraft: true # Optional
-#    isPreRelease: false # Optional
-#    addChangeLog: true # Optional
-#
+
+- task: AndroidSigning@2
+  displayName: 'Signing and aligning APK file(s)'
+  inputs:
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+    jarsignerKeystoreFile: alloy.keystore
+    jarsignerKeystorePassword: 37a2447966364633bbed42866b87ad13
+    jarsignerKeystoreAlias: android
+    jarsignerKeyPassword: 37a2447966364633bbed42866b87ad13
+    jarsignerArguments: '-verbose -sigalg SHA1withRSA -digestalg SHA1'
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    Contents: '**/*.apk'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: 11.2.0
+    checkLatest: true
+    platform: $(platform)
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- script: |
+    npm run build
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(Build.SourcesDirectory)/dist'
+    Contents: '**/*.exe'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+
+- task: GitHubRelease@0
+  inputs:
+    gitHubConnection: 'Github'
+    repositoryName: '$(Build.Repository.Name)' 
+    action: 'edit'
+    target: '$(Build.SourceVersion)' 
+    tagSource: 'manual' # Required when action == Create# Options: auto, manual
+    tag: '$(NPM_VER)'
+    title: 'Release - v$(NPM_VER)'
+    assets: '$(Build.ArtifactStagingDirectory)/*'
+    assetUploadMode: 'replace'
+    isDraft: true # Optional
+    isPreRelease: false # Optional
+    addChangeLog: true # Optional
+
 
 
     
