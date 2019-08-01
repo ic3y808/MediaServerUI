@@ -16,7 +16,7 @@ using Alloy.Common;
 [assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
 [assembly: UsesPermission(Name = "android.permission.WAKE_LOCK")]
-//[assembly: UsesPermission(Name = "android.permission.READ_EXTERNAL_STORAGE")]
+[assembly: UsesPermission(Name = "android.permission.READ_EXTERNAL_STORAGE")]
 //[assembly: UsesPermission(Name = "android.permission.WRITE_EXTERNAL_STORAGE")]
 [assembly: UsesPermission(Name = "android.permission.INTERNET")]
 [assembly: UsesPermission(Name = "android.permission.ACCESS_NETWORK_STATE")]

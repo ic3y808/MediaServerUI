@@ -11,6 +11,7 @@
     "build_fonts": "icon-font-generator ./common/icons/*.svg -n alloyicons --normalize --html false -j false -o alloydbweb/styles/fonts",
     "build_web": "cd alloydbweb && cross-env MODE=prod webpack .",
     "build": "npm run build_styles & npm run build_fonts & npm run build_web & npm run dist",
+    "build_dev": "npm run build_styles & npm run build_fonts & npm run build_web & npm run pack",
     "pack": "electron-builder --dir",
     "dist": "electron-builder"
   },

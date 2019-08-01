@@ -24,6 +24,7 @@ using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using Alloy.Adapters;
 using Alloy.Models;
+using Alloy.Widgets;
 using Android.Runtime;
 using Exception = System.Exception;
 using Fragment = Android.Support.V4.App.Fragment;
@@ -42,6 +43,7 @@ namespace Alloy
 		private BackgroundAudioServiceConnection serviceConnection;
 		private ImageView primaryBackground;
 		private ImageView secondaryBackground;
+		private ImageView albumArtImageView;
 		private CurrentBackground currentBackground;
 		private MenuAdapter mainMenuaAdapter;
 		private TextView titleTextView;
@@ -101,7 +103,7 @@ namespace Alloy
 			titleTextView.Selected = true;
 
 			subtitleTextView = FindViewById<TextView>(Resource.Id.artist);
-			ImageView albumArtImageView = FindViewById<ImageView>(Resource.Id.album_art);
+			albumArtImageView = FindViewById<ImageView>(Resource.Id.album_art);
 
 			if (albumArtImageView != null)
 			{
@@ -261,7 +263,8 @@ namespace Alloy
 				case Resource.String.charts_fragment_id:
 					fragment = new ChartsFragment();
 					break;
-
+				default:
+					break;
 			}
 
 			if (fragment != null)
@@ -441,8 +444,8 @@ namespace Alloy
 		{
 			//activeMenuItem?.SetChecked(false);
 			//activeMenuItem = null;
-			//	SettingsFragment fragment = new SettingsFragment();
-			//SupportFragmentManager.ChangeTo(fragment, true, "Settings", null);
+			SettingsFragment fragment = new SettingsFragment();
+			SupportFragmentManager.ChangeTo(fragment, true, "Settings", null);
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
 		}
@@ -455,12 +458,10 @@ namespace Alloy
 
 		public void SetMetaData()
 		{
-			if (serviceConnection?.CurrentSong != null)
-			{
-				//serviceConnection.CurrentSong.GetAlbumArt(albumArtImageView);
-				titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
-				subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
-			}
+			if (serviceConnection?.CurrentSong == null) return;
+			serviceConnection.CurrentSong.GetAlbumArt(albumArtImageView);
+			titleTextView?.SetText(serviceConnection.CurrentSong.Title, TextView.BufferType.Normal);
+			subtitleTextView?.SetText(serviceConnection.CurrentSong.Artist, TextView.BufferType.Normal);
 		}
 
 		public void UpdateMeta(bool setPlaying, bool setMetaData, bool checkFavorite, bool setBackground)

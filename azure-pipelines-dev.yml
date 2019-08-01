@@ -1,0 +1,62 @@
+pool:
+  name: Default
+  demands:
+  - MSBuild
+  - Xamarin.Android
+  - JDK
+
+variables:
+  BuildConfiguration: 'Release'
+  configuration: release
+  platform: x64
+  apkPath: '$(build.binariesdirectory)/$(BuildConfiguration)/com.d3bug.unity.apk'
+
+steps:
+- task: PowerShell@2
+  displayName: 'PowerShell Script'
+  inputs:
+    targetType: filePath
+    filePath: ./version.ps1
+
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
+
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(Build.SourcesDirectory)/alloydbandroid/Alloy.sln'
+    restoreDirectory: '$(Build.SourcesDirectory)/packages'
+
+- task: XamarinAndroid@1
+  displayName: 'Build Alloy-Android'
+  inputs:
+    projectFile: $(Build.SourcesDirectory)/alloydbandroid/Alloy.csproj
+    outputDirectory: '$(build.binariesdirectory)/$(BuildConfiguration)'
+    configuration: '$(BuildConfiguration)'
+    clean: true
+
+- task: AndroidSigning@2
+  displayName: 'Signing and aligning APK file(s)'
+  inputs:
+    apkFiles: '$(build.binariesdirectory)/$(BuildConfiguration)/*.apk'
+    jarsignerKeystoreFile: alloy.keystore
+    jarsignerKeystorePassword: 37a2447966364633bbed42866b87ad13
+    jarsignerKeystoreAlias: android
+    jarsignerKeyPassword: 37a2447966364633bbed42866b87ad13
+    jarsignerArguments: '-verbose -sigalg SHA1withRSA -digestalg SHA1'
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: 11.2.0
+    checkLatest: true
+    platform: $(platform)
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- script: |
+    npm run build_dev
