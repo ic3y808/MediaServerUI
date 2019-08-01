@@ -1,7 +1,7 @@
 # Alloy
 
-master [![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Alloy-API-CI?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=20&branchName=master)
-dev [![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Dev%20Build?branchName=develop)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=26&branchName=develop)
+[![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Master%20Build%20-%20Release?branchName=master)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=33&branchName=master)
+[![Build Status](https://jessenelson.visualstudio.com/Alloy/_apis/build/status/Dev%20Build?branchName=develop)](https://jessenelson.visualstudio.com/Alloy/_build/latest?definitionId=32&branchName=develop)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/2556a29183de4164bf35935058a85c4f)](https://app.codacy.com/app/ic3y808/Alloy?utm_source=github.com&utm_medium=referral&utm_content=ic3y808/Alloy&utm_campaign=Badge_Grade_Dashboard)
 
 ## Media Structure
