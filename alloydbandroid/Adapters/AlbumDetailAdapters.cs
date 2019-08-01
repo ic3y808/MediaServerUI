@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Alloy.Helpers;
 using Android.Views;
 using Android.Widget;
 using Alloy.Models;
 using Alloy.Providers;
-
 using Alloy.Services;
 using Android.App;
 using Android.Graphics;
@@ -39,7 +39,7 @@ namespace Alloy.Adapters
 						albumInfoHolder.AlbumSize.SetText(Album.Size, TextView.BufferType.Normal);
 						albumInfoHolder.ArtistName.SetText(Album.Album.Artist, TextView.BufferType.Normal);
 						albumInfoHolder.ItemClick += PlayAlbum;
-						//Album.Album.GetAlbumArt(albumInfoHolder.AlbumImage);
+						Album.Album.GetAlbumArt(albumInfoHolder.AlbumImage);
 						albumInfoHolder.CheckStarred();
 					}
 					break;
@@ -85,15 +85,12 @@ namespace Alloy.Adapters
 					return new AlbumMetricsViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_detail_album_metrics, parent, false));
 				case 2:
 					return new AlbumTracksViewHolder(LayoutInflater.From(parent.Context).Inflate(Resource.Layout.album_detail_album_tracks, parent, false));
-
+				default:
+					return null;
 			}
-			return null;
 		}
 
-		public override int ItemCount
-		{
-			get { return 3; }
-		}
+		public override int ItemCount => 3;
 
 		public event EventHandler<AlbumDetailTrackAdapter.ViewHolder.ViewHolderEvent> TrackClick;
 		public event EventHandler PlayAlbum;

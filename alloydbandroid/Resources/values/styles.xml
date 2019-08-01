@@ -56,12 +56,13 @@
 		<item name="android:background">@android:color/transparent</item>
 	</style>
 
+	<!-- General preferences style. -->
 	<style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
-		<item name="android:textColorPrimary">@color/white</item>
-		<item name="android:colorPrimaryDark">@color/white</item>
-		<item name="android:textColorSecondary">@color/white</item>
-		<item name="android:colorAccent">@color/white</item>
-		<item name="android:buttonTint">@color/white</item>
+		<item name="android:textColorPrimary">@color/textPrimary</item>
+		<item name="android:colorPrimaryDark">@color/textPrimary</item>
+		<item name="android:textColorSecondary">@color/textPrimary</item>
+		<item name="android:colorAccent">@color/textPrimary</item>
+		<item name="android:buttonTint">@color/textPrimary</item>
 		<item name="android:background">@color/playback_control_background</item>
 	</style>
 
@@ -91,12 +92,10 @@
 		<item name="android:textColor">@color/menu_title_color</item>
 		<item name="android:textSize">14sp</item>
 		<item name="android:textAllCaps">true</item>
-
 		<item name="android:gravity">center_vertical</item>
 		<item name="android:paddingLeft">16dp</item>
 		<item name="android:paddingStart">16dp</item>
 		<item name="android:background">@android:color/transparent</item>
-
 		<item name="android:singleLine">true</item>
 		<item name="android:ellipsize">end</item>
 	</style>
@@ -114,12 +113,6 @@
 		<item name="android:paddingBottom">8dp</item>
 		<item name="android:drawablePadding">16dp</item>
 		<item name="android:gravity">center_vertical</item>
-	</style>
-
-	<!-- Cloudy FabButton style. -->
-	<style name="Cloudy.ActionButton" parent="Theme.AppCompat.Light">
-		<item name="colorAccent">@color/cloudy_action_accent</item>
-		<item name="tint">@color/cloudy_action_tint</item>
 	</style>
 
 	<style name="TextView.ListHeader" parent="TextAppearance.AppCompat">
@@ -204,6 +197,4 @@
 		<item name="android:layout_marginTop">1dp</item>
 		<item name="android:layout_marginBottom">1dp</item>
 	</style>
-
-
 </resources>
