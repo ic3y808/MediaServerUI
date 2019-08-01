@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -54,6 +55,7 @@ namespace Alloy.Providers
 		public static event EventHandler<SearchResult> SearchResultsRecieved;
 
 		private static HttpClient httpClient = new HttpClient();
+		private static AuthFile auth;
 
 		static MusicProvider()
 		{
@@ -67,23 +69,39 @@ namespace Alloy.Providers
 			httpClient.Timeout = TimeSpan.FromSeconds(10);
 		}
 
+		// ReSharper disable once ClassNeverInstantiated.Local
+		private class AuthFile
+		{
+#pragma warning disable S3459 // Unassigned members should be removed
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public string Host { get; set; }
+			// ReSharper disable once UnusedAutoPropertyAccessor.Local
+			public string ApiKey { get; set; }
+#pragma warning restore S3459 // Unassigned members should be removed
+		}
+
+		private static AuthFile GetAuthFile()
+		{
+			if (auth != null) return auth;
+			string path = "/storage/emulated/0/.alloy";
+			if (!File.Exists(path)) return null;
+			string json = File.OpenText(path).ReadToEnd();
+			auth = JsonConvert.DeserializeObject<AuthFile>(json);
+			return auth;
+		}
+
 		public static string GetHost()
 		{
-			//return "http://127.0.0.1:4000";
-			return "http://71.56.197.213:4000";
-
-
-			//TODO change loading from preferences
+			AuthFile a = GetAuthFile();
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			return sp.GetString("alloydbhost", "");
+			return a != null ? a.Host : sp.GetString("alloydbhost", "");
 		}
 
 		public static string GetApiKey()
 		{
-			return "b1413ebe481e48880a466ffe8523060a";
-			//TODO change loading from preferences
+			AuthFile a = GetAuthFile();
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			return sp.GetString("alloydbapikey", "");
+			return a != null ? a.ApiKey : sp.GetString("alloydbapikey", "");
 		}
 
 		public static string ProcessApiRequest(ApiRequestType t)
@@ -169,7 +187,7 @@ namespace Alloy.Providers
 						break;
 					case RequestType.POST:
 						string postData = JsonConvert.SerializeObject(paramsDictionary);
-						byte[] buffer = System.Text.Encoding.UTF8.GetBytes(postData);
+						byte[] buffer = Encoding.UTF8.GetBytes(postData);
 						ByteArrayContent byteContent = new ByteArrayContent(buffer);
 						byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
 						Task<HttpResponseMessage> postTask = httpClient.PostAsync(uriBuilder.Uri, byteContent);

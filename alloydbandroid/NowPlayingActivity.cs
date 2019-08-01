@@ -16,7 +16,6 @@ using Alloy.Adapters;
 using Alloy.Helpers;
 using Alloy.Models;
 using Alloy.Providers;
-
 using Alloy.Services;
 
 namespace Alloy
@@ -37,7 +36,6 @@ namespace Alloy
 		private SeekBar seekBar;
 		private BackgroundAudioServiceConnection serviceConnection;
 		private TextView titleTextView;
-		private Timer updateTimer;
 		private CurrentBackground currentBackground;
 		private ImageView primaryBackground;
 		private ImageView secondaryBackground;
@@ -90,15 +88,10 @@ namespace Alloy
 			durationTextView = FindViewById<TextView>(Resource.Id.duration);
 
 			currentBackground = CurrentBackground.None;
-
-			updateTimer = new Timer(500);
-			updateTimer.Elapsed += UpdateTimer_Elapsed;
 		}
 
 		public override void OnBackPressed()
 		{
-			updateTimer.Stop();
-			updateTimer.Elapsed -= UpdateTimer_Elapsed;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			UnbindService();
 			Intent intent = new Intent(Application.Context, typeof(MainActivity));
@@ -114,8 +107,6 @@ namespace Alloy
 
 		protected override void OnPause()
 		{
-			updateTimer.Stop();
-			updateTimer.Elapsed -= UpdateTimer_Elapsed;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			UnbindService();
 			base.OnPause();
@@ -123,8 +114,6 @@ namespace Alloy
 
 		protected override void OnDestroy()
 		{
-			updateTimer.Stop();
-			updateTimer.Elapsed -= UpdateTimer_Elapsed;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			UnbindService();
 			base.OnDestroy();
@@ -132,8 +121,6 @@ namespace Alloy
 
 		protected override void OnStop()
 		{
-			updateTimer.Stop();
-			updateTimer.Elapsed -= UpdateTimer_Elapsed;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged -= BackgroundAudioServiceConnection_PlaybackStatusChanged;
 			UnbindService();
 			base.OnStop();
@@ -174,28 +161,22 @@ namespace Alloy
 
 		private void BackgroundAudioServiceConnection_PlaybackStatusChanged(object sender, StatusEventArg e)
 		{
-			ScrollToNowPlaying();
-			SetPlaying();
-			SetFavorite();
-			UpdateColors();
-			UpdateInfo();
+			//ScrollToNowPlaying();
+			//SetPlaying();
+			//SetFavorite();
+			//UpdateColors();
+			//UpdateInfo();
 		}
 
 		private void ServiceConnection_ServiceConnected(object sender, bool e)
 		{
 			if (!e) return;
 			BackgroundAudioServiceConnection.PlaybackStatusChanged += BackgroundAudioServiceConnection_PlaybackStatusChanged;
-
-			updateTimer = new Timer(500);
-			updateTimer.Elapsed += UpdateTimer_Elapsed;
-			updateTimer.Start();
-
-
-			SetPlaying();
-			SetFavorite();
-			ScrollToNowPlaying();
-			UpdateColors();
-			UpdateInfo();
+			//SetPlaying();
+			//SetFavorite();
+			//ScrollToNowPlaying();
+			//UpdateColors();
+			//UpdateInfo();
 		}
 
 		private void NowPlayingList_ScrollChange(object sender, View.ScrollChangeEventArgs e)
@@ -336,9 +317,9 @@ namespace Alloy
 				if (serviceConnection == null || !serviceConnection.IsConnected || serviceConnection.CurrentSong == null) return;
 				int index = serviceConnection.MainQueue.IndexOf(song);
 				if (index >= 0) nowPlayingLayoutManager.ScrollToPosition(index);
-				SetBackground(song);
-				UpdateColors(song);
-				UpdateInfo(song);
+				//SetBackground(song);
+				//UpdateColors(song);
+				//UpdateInfo(song);
 			}
 			catch (Exception ee) { Crashes.TrackError(ee); }
 		}
