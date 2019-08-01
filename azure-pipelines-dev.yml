@@ -59,4 +59,4 @@ steps:
     command: install
 
 - script: |
-    npm run build
+    npm run build_dev
