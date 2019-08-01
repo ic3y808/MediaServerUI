@@ -85,11 +85,9 @@
     <Compile Include="Adapters\NowPlayingAdapter.cs" />
     <Compile Include="Adapters\SearchAdapter.cs" />
     <Compile Include="Adapters\HistoryAdapter.cs" />
-    <Compile Include="Adapters\StarredAdapter - Copy.cs" />
     <Compile Include="Adapters\MaterialRippleAdapter.cs" />
     <Compile Include="App.cs" />
     <Compile Include="Common\PackageUtil.cs" />
-    <Compile Include="Common\ShortcutHelper.cs" />
     <Compile Include="Common\SupportedFormatAttribute.cs" />
     <Compile Include="Common\UiUtils.cs" />
     <Compile Include="Compat\ActionBarHelper.cs" />
@@ -138,7 +136,7 @@
     <Compile Include="Models\History.cs" />
     <Compile Include="Models\Charts.cs" />
     <Compile Include="Models\CurrentBackground.cs" />
-    <Compile Include="Models\CustomToggle.cs" />
+    <Compile Include="Widgets\CustomToggle.cs" />
     <Compile Include="Models\Fresh.cs" />
     <Compile Include="Models\Genre.cs" />
     <Compile Include="Models\HeadsetDeviceManager.cs" />
@@ -211,10 +209,6 @@
     <AndroidResource Include="Resources\layout\activity_main.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\all_music_layout.xml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\values\colors.xml" />
     <AndroidResource Include="Resources\values\dimens.xml" />
     <AndroidResource Include="Resources\values\drawables.xml" />
@@ -244,9 +238,6 @@
     <AndroidResource Include="Resources\layout\genres_layout.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\favorites_layout.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\splash.xml">
@@ -407,12 +398,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\artists_layout.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\folders_layout.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -585,12 +570,6 @@
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\list_divider.xml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\song_card2.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
@@ -858,24 +837,6 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\charts_top_tracks.axml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\charts_never_played_albums.axml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\layout\charts_never_played_tracks.axml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-v21\psts_background_tab.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -887,14 +848,14 @@
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\fragment_card.xml">
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\layout\artists_list_layout.axml">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\now_playing_card.xml">
+      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

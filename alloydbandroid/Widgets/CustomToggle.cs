@@ -8,7 +8,7 @@ using Android.Views;
 using Android.Views.Animations;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
-namespace Alloy.Models
+namespace Alloy.Widgets
 {
 	public class CustomToggle : ActionBarDrawerToggle
 	{
