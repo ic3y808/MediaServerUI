@@ -77,7 +77,7 @@ steps:
 - task: GitHubRelease@0
   inputs:
     gitHubConnection: 'Github'
-    repositoryName: 'ic3y808/Alloy'
+    repositoryName: '$(Build.Repository.Name)' 
     action: 'edit'
     target: '$(Build.SourceVersion)' 
     tagSource: 'manual' # Required when action == Create# Options: auto, manual
@@ -88,6 +88,8 @@ steps:
     isDraft: true # Optional
     isPreRelease: false # Optional
     addChangeLog: true # Optional
+
+
 
     
 #- task: Npm@1
