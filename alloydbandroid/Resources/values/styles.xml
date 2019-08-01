@@ -7,7 +7,7 @@
 		<item name="colorAccent">@color/colorAccent</item>
 		<item name="android:windowContentTransitions">true</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
-	
+		<item name="preferenceTheme">@style/AppTheme.Preference</item>
 	</style>
 
 	<!-- Activity theme. -->
@@ -19,14 +19,14 @@
 		<item name="android:actionBarTabTextStyle">@style/AppTheme.ActionBar.TabText</item>
 		<item name="android:actionMenuTextColor">@color/actionbar_foreground</item>
 		<item name="actionOverflowButtonStyle">@style/AppTheme.ActionBar.OverflowButtonStyle</item>
-		
+		<item name="preferenceTheme">@style/AppTheme.Preference</item>
 	</style>
 
 	<!-- Splashscreen theme. -->
 	<style name="AppTheme.Splash" parent="Theme.AppCompat.Light.NoActionBar.FullScreen">
 		<item name="android:windowBackground">@drawable/splash</item>
 		<item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
-		
+		<item name="preferenceTheme">@style/AppTheme.Preference</item>
 	</style>
 
 	<!-- General toolbar style. -->
@@ -43,7 +43,6 @@
 	<style name="AppTheme.ActionBar.Title"  parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
 		<item name="android:textColor">@color/actionbar_foreground</item>
 		<item name="android:textColorPrimary">@color/actionbar_foreground</item>
-
 	</style>
 
 	<style name="AppTheme.ActionBar.TabText" parent="@style/Widget.AppCompat.ActionBar.TabText">
@@ -55,6 +54,15 @@
 		<item name="android:colorBackground">@color/actionbar_background</item>
 		<item name="android:textColor">@color/actionbar_background</item>
 		<item name="android:background">@android:color/transparent</item>
+	</style>
+
+	<style name="AppTheme.Preference" parent="@style/PreferenceThemeOverlay">
+		<item name="android:textColorPrimary">@color/white</item>
+		<item name="android:colorPrimaryDark">@color/white</item>
+		<item name="android:textColorSecondary">@color/white</item>
+		<item name="android:colorAccent">@color/white</item>
+		<item name="android:buttonTint">@color/white</item>
+		<item name="android:background">@color/playback_control_background</item>
 	</style>
 
 

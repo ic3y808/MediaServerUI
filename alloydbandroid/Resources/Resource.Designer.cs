@@ -5076,6 +5076,9 @@ namespace Alloy
 			// aapt resource value: 0x7f0b0192
 			public const int AppTheme_NoActionBar = 2131427730;
 			
+			// aapt resource value: 0x7f0b0198
+			public const int AppTheme_Preference = 2131427736;
+			
 			// aapt resource value: 0x7f0b0193
 			public const int AppTheme_Splash = 2131427731;
 			
@@ -5580,23 +5583,23 @@ namespace Alloy
 			// aapt resource value: 0x7f0b0010
 			public const int CardView_Light = 2131427344;
 			
-			// aapt resource value: 0x7f0b019e
-			public const int Cloudy_ActionButton = 2131427742;
-			
-			// aapt resource value: 0x7f0b0199
-			public const int MenuDrawer = 2131427737;
+			// aapt resource value: 0x7f0b019f
+			public const int Cloudy_ActionButton = 2131427743;
 			
 			// aapt resource value: 0x7f0b019a
-			public const int MenuDrawer_Widget = 2131427738;
-			
-			// aapt resource value: 0x7f0b019c
-			public const int MenuDrawer_Widget_Category = 2131427740;
+			public const int MenuDrawer = 2131427738;
 			
 			// aapt resource value: 0x7f0b019b
-			public const int MenuDrawer_Widget_Divider = 2131427739;
+			public const int MenuDrawer_Widget = 2131427739;
 			
 			// aapt resource value: 0x7f0b019d
-			public const int MenuDrawer_Widget_Title = 2131427741;
+			public const int MenuDrawer_Widget_Category = 2131427741;
+			
+			// aapt resource value: 0x7f0b019c
+			public const int MenuDrawer_Widget_Divider = 2131427740;
+			
+			// aapt resource value: 0x7f0b019e
+			public const int MenuDrawer_Widget_Title = 2131427742;
 			
 			// aapt resource value: 0x7f0b002f
 			public const int Platform_AppCompat = 2131427375;
@@ -5925,32 +5928,32 @@ namespace Alloy
 			// aapt resource value: 0x7f0b0109
 			public const int TextAppearance_Widget_AppCompat_Toolbar_Title = 2131427593;
 			
-			// aapt resource value: 0x7f0b019f
-			public const int TextView_ListHeader = 2131427743;
-			
 			// aapt resource value: 0x7f0b01a0
-			public const int TextView_MarqueeText = 2131427744;
-			
-			// aapt resource value: 0x7f0b01a4
-			public const int TextView_Song_Album = 2131427748;
-			
-			// aapt resource value: 0x7f0b01a7
-			public const int TextView_Song_AlbumArt = 2131427751;
-			
-			// aapt resource value: 0x7f0b01a2
-			public const int TextView_Song_Artist = 2131427746;
-			
-			// aapt resource value: 0x7f0b01a3
-			public const int TextView_Song_Hyphen = 2131427747;
-			
-			// aapt resource value: 0x7f0b01a5
-			public const int TextView_Song_InfoLayout = 2131427749;
-			
-			// aapt resource value: 0x7f0b01a6
-			public const int TextView_Song_Layout = 2131427750;
+			public const int TextView_ListHeader = 2131427744;
 			
 			// aapt resource value: 0x7f0b01a1
-			public const int TextView_Song_Title = 2131427745;
+			public const int TextView_MarqueeText = 2131427745;
+			
+			// aapt resource value: 0x7f0b01a5
+			public const int TextView_Song_Album = 2131427749;
+			
+			// aapt resource value: 0x7f0b01a8
+			public const int TextView_Song_AlbumArt = 2131427752;
+			
+			// aapt resource value: 0x7f0b01a3
+			public const int TextView_Song_Artist = 2131427747;
+			
+			// aapt resource value: 0x7f0b01a4
+			public const int TextView_Song_Hyphen = 2131427748;
+			
+			// aapt resource value: 0x7f0b01a6
+			public const int TextView_Song_InfoLayout = 2131427750;
+			
+			// aapt resource value: 0x7f0b01a7
+			public const int TextView_Song_Layout = 2131427751;
+			
+			// aapt resource value: 0x7f0b01a2
+			public const int TextView_Song_Title = 2131427746;
 			
 			// aapt resource value: 0x7f0b010a
 			public const int Theme_AppCompat = 2131427594;
@@ -6012,8 +6015,8 @@ namespace Alloy
 			// aapt resource value: 0x7f0b0116
 			public const int Theme_AppCompat_Light_NoActionBar = 2131427606;
 			
-			// aapt resource value: 0x7f0b0198
-			public const int Theme_AppCompat_Light_NoActionBar_FullScreen = 2131427736;
+			// aapt resource value: 0x7f0b0199
+			public const int Theme_AppCompat_Light_NoActionBar_FullScreen = 2131427737;
 			
 			// aapt resource value: 0x7f0b0117
 			public const int Theme_AppCompat_NoActionBar = 2131427607;

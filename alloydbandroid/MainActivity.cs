@@ -441,8 +441,8 @@ namespace Alloy
 		{
 			//activeMenuItem?.SetChecked(false);
 			//activeMenuItem = null;
-			//	SettingsFragment fragment = new SettingsFragment();
-			//SupportFragmentManager.ChangeTo(fragment, true, "Settings", null);
+			SettingsFragment fragment = new SettingsFragment();
+			SupportFragmentManager.ChangeTo(fragment, true, "Settings", null);
 			DrawerLayout drawer = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			drawer.CloseDrawer(GravityCompat.Start);
 		}
