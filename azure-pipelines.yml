@@ -88,32 +88,3 @@ steps:
     isDraft: true # Optional
     isPreRelease: false # Optional
     addChangeLog: true # Optional
-
-
-
-    
-#- task: Npm@1
-#  displayName: 'npm test'
-#  inputs:
-#    command: custom
-#    customCommand: 'test'
-#
-#- task: PublishTestResults@2
-#  inputs:
-#    testResultsFiles: '**/TEST-RESULTS.xml'
-#    testRunTitle: 'Test results for JavaScript'
-#  condition: succeededOrFailed()
-#
-#- task: PublishCodeCoverageResults@1
-#  inputs: 
-#    codeCoverageTool: Cobertura
-#    summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
-#    reportDirectory: '$(System.DefaultWorkingDirectory)/**/coverage'
-#   
-#- task: ArchiveFiles@2
-#  inputs:
-#    rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-#    includeRootFolder: false
-
-#- task: PublishBuildArtifacts@1
-   

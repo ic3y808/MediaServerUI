@@ -1,0 +1,31 @@
+pool:
+  name: Default
+
+- task: NodeTool@0
+  inputs:
+    versionSpec: 11.2.0
+    checkLatest: true
+    platform: $(platform)
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    command: install
+
+- task: Npm@1
+  displayName: 'npm test'
+  inputs:
+    command: custom
+    customCommand: 'test'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: '**/TEST-RESULTS.xml'
+    testRunTitle: 'Test results for JavaScript'
+  condition: succeededOrFailed()
+
+- task: PublishCodeCoverageResults@1
+  inputs: 
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/**/*coverage.xml'
+    reportDirectory: '$(Build.SourcesDirectory)/**/coverage'

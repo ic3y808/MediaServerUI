@@ -1,0 +1,20 @@
+{
+  "extends": "@istanbuljs/nyc-config-babel",
+  "require": [
+    "@babel/register"
+  ],
+  "reporter": [
+    "lcov",
+    "cobertura",
+    "text",
+    "html"
+  ],
+  "reporter-options": {
+    "mochaFile": "TEST-RESULTS.xml"
+  },
+  "sourceMap": false,
+  "instrument": true,
+  "exclude": [
+    "**/test/**"
+  ]
+}
