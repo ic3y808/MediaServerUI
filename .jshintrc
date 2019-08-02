@@ -1,5 +1,5 @@
 {
-    "predef": [ "$", "jQuery", "text", "$p", "window", "document", "console", "parent", "angular", "describe", "it", "beforeEach", "afterEach" ],
+    "predef": [ "$", "jQuery", "text", "$p", "window", "document", "console", "parent", "angular", "describe", "it", "before", "beforeEach", "beforeAll", "after", "afterAll", "afterEach", "done" ],
     "esversion"     : 8,
     "passfail"      : false, 
     "maxerr"        : 100,    

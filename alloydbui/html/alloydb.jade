@@ -65,28 +65,28 @@ html(ng-app='alloydb', lang='en-us')
                 .nav-tabs-wrapper
                   ul.nav.nav-tabs(data-tabs='tabs')
                     li.nav-item
-                      a.nav-link.active(data-toggle='tab', href='#database')
+                      a#databaseNav.nav-link.active(data-toggle='tab', href='#database')
                         i.material-icons info
                         |  Database
                         .ripple-container
-                    li.nav-item
+                    li#uiServerNav.nav-item
                       a.nav-link(data-toggle='tab', href='#uiserver')
                         i.material-icons cloud_upload
                         |  UI Server
                         .ripple-container
-                    li.nav-item
+                    li#scheduleNav.nav-item
                       a.nav-link(data-toggle='tab', href='#scheduler')
                         i.material-icons schedule
                         |  Scheduler
                         .ripple-container
-                    li.nav-item
+                    li#mediaScannerNav.nav-item
                       a.nav-link(data-toggle='tab', href='#scanner')
                         i.material-icons loop
                         |  Scanner
                         .ripple-container
       
                     li.nav-item
-                      a.nav-link(data-toggle='tab', href='#logs')
+                      a#logsNav.nav-link(data-toggle='tab', href='#logs')
                         i.material-icons list
                         |  Logs
                         .ripple-container

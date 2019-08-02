@@ -2,5 +2,3 @@
 --timeout 20000
 --colors
 --recursive
---reporter mocha-junit-reporter 
---reporter-options mochaFile=TEST-RESULTS.xml

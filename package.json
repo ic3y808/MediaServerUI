@@ -14,11 +14,13 @@
     "build_dev": "npm run build_styles & npm run build_fonts & npm run build_web & npm run pack",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "test": "nyc ./node_modules/.bin/mocha --opts mocha.opts test/test.js && cross-env CODACY_PROJECT_TOKEN=0c34166541df4c81896f11278c081c60 codacy-coverage < ./coverage/lcov.info"
+    "test": "nyc ./node_modules/.bin/mocha --opts mocha.opts --reporter mocha-junit-reporter --reporter-options mochaFile=TEST-RESULTS.xml test/test.js && cross-env CODACY_PROJECT_TOKEN=0c34166541df4c81896f11278c081c60 codacy-coverage < ./coverage/lcov.info",
+    "test2": "./node_modules/.bin/mocha --opts mocha.opts test/test.js"
   },
   "nyc": {
     "all": true,
     "include": [
+      "config.js",
       "common/**/*.js",
       "migrations/**/*.js",
       "alloydbui/**/*.js",

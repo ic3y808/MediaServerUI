@@ -7,6 +7,7 @@ var { app } = electron;
 const dotenv = require("dotenv");
 var envPath = path.join(__dirname, ".env");
 var dev = process.mainModule.filename.indexOf("app.asar");
+var test = process.env.MODE === "test";
 if (dev === -1) { envPath = ".env"; }
 const result = dotenv.config({ path: envPath });
 if (result.error) {
@@ -16,6 +17,9 @@ console.log(result.parsed);
 
 process.env.APP_DIR = __dirname;
 process.env.BASE_DIR = app.getPath("userData");
+if (test) {
+  process.env.BASE_DIR = path.join(__dirname, "test_data");
+}
 process.env.MODE = process.env.MODE ? process.env.MODE : "prod";
 console.log("starting up on port " + process.env.API_UI_PORT);
 process.env.API_UI_PORT = process.env.API_UI_PORT ? process.env.API_UI_PORT : 6003;
@@ -57,19 +61,6 @@ if (!fs.existsSync(process.env.CONVERTED_STARRED_MEDIA_DIR)) { shell.mkdir("-p",
 if (!fs.existsSync(process.env.CONVERTED_PLAYLIST_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_PLAYLIST_MEDIA_DIR); }
 if (!fs.existsSync(process.env.COVER_ART_DIR)) { shell.mkdir("-p", process.env.COVER_ART_DIR); }
 
-if (process.env.MODE === "test") {
-  process.env.DATABASE = path.join(process.env.DATA_DIR, "test_database.db");
-  process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "test_database.db-wal");
-  process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "test_database.db-shm");
-  if (fs.existsSync(process.env.DATABASE)) { shell.rm(process.env.DATABASE); }
-  if (fs.existsSync(process.env.DATABASE_WAL)) { shell.rm(process.env.DATABASE_WAL); }
-  if (fs.existsSync(process.env.DATABASE_SHM)) { shell.rm(process.env.DATABASE_SHM); }
-}
-
-/// remove db debug
-//if (fs.existsSync(process.env.DATABASE)) shell.rm(process.env.DATABASE);
-//if (fs.existsSync(process.env.DATABASE_WAL)) shell.rm(process.env.DATABASE_WAL);
-//if (fs.existsSync(process.env.DATABASE_SHM)) shell.rm(process.env.DATABASE_SHM);
 
 module.exports.getConfig = function () {
 

@@ -611,8 +611,9 @@ app.on("window-all-closed", () => {
 
 app.on("ready", async () => {
   await createSplashScreen();
+  await createBaseServer();
   if (!isTest()) {
-    await createBaseServer();
+    
     await createServerWindow();
     await createSchedulerWindow();
     await createMediaScannerWindow();

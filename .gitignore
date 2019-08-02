@@ -95,6 +95,7 @@ typings/
 package-lock.json
 
 #test data
+test_data/
 TEST-RESULTS.xml
 .node*.*
 .node-xmlhttprequest-sync-*
