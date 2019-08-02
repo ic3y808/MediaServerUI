@@ -131,7 +131,16 @@ class Server {
 
     // development error handler
     // will print stacktrace
-    if (process.env.MODE === "dev") {
+    if (process.env.MODE === "dev" || process.env.MODE === "test") {
+      this.app.use((err, req, res, next) => {
+        res.status(err.status || 500);
+        var error = req.path + " - " + err.status + " - " + err.message;
+        logger.error("alloydb", error);
+      });
+    }
+    else {
+      // production error handler
+      // no stacktraces leaked to user
       this.app.use((err, req, res, next) => {
         res.status(err.status || 500);
         var error = req.path + " - " + err.status + " - " + err.message;
@@ -139,17 +148,7 @@ class Server {
       });
     }
 
-    // production error handler
-    // no stacktraces leaked to user
-    this.app.use((err, req, res, next) => {
-      res.status(err.status || 500);
-      var error = req.path + " - " + err.status + " - " + err.message;
-      logger.error("alloydb", error);
-    });
-
     this.app.set("port", process.env.API_PORT || 4000);
-
-
   }
 
   notify(title, message) {

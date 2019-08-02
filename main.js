@@ -49,6 +49,7 @@ process.on("SIGINT", () => process.exit(128 + 2));
 process.on("SIGTERM", () => process.exit(128 + 15));
 
 function isDev() { return process.env.MODE === "dev"; }
+function isTest() { return process.env.MODE === "test"; }
 function isWebpackEnabled() { return process.env.ENABLE_WEBPACK_REBUILD === "true"; }
 function isApiEnabled() { return process.env.API_ENABLED === "true"; }
 function isUiEnabled() { return process.env.UI_ENABLED === "true"; }
@@ -73,6 +74,7 @@ function getDirectoriesRecursive(srcpath) {
 }
 
 function onClose(e) {
+  if (isTest()) { return; }
   e.preventDefault();
   mainWindow.hide();
 }
@@ -455,7 +457,7 @@ function createBaseServer() {
       next(err);
     });
 
-    if (process.env.MODE === "dev") {
+    if (isDev()) {
       appServer.locals.pretty = true;
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
@@ -477,7 +479,7 @@ function createBaseServer() {
       });
     }
 
-    if (process.env.MODE === "dev" && isUiEnabled()) {
+    if (isDev() && isUiEnabled()) {
       process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
       var livereload = require("livereload").createServer({ exts: ["jade"], port: process.env.JADE_PORT });
       livereload.watch(path.join(__dirname, "alloydbweb"));
@@ -609,15 +611,23 @@ app.on("window-all-closed", () => {
 
 app.on("ready", async () => {
   await createSplashScreen();
-  await createBaseServer();
-  await createServerWindow();
-  await createSchedulerWindow();
-  await createMediaScannerWindow();
+  if (!isTest()) {
+    await createBaseServer();
+    await createServerWindow();
+    await createSchedulerWindow();
+    await createMediaScannerWindow();
+  }
+
+
   await createMainWindow();
-  await setupRoutes();
-  await createTrayMenu();
+  if (!isTest()) {
+    await setupRoutes();
+    await createTrayMenu();
+  }
   mainWindow.webContents.send("app-loaded");
   splashWindow.close();
   mainWindow.show();
-  setTimeout(createTasks, 250);
+  if (!isTest()) {
+    setTimeout(createTasks, 250);
+  }
 });
