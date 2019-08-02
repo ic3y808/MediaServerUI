@@ -1,6 +1,6 @@
 pool:
   name: Default
-
+steps:
 - task: NodeTool@0
   inputs:
     versionSpec: 11.2.0
