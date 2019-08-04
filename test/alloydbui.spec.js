@@ -46,7 +46,7 @@ describe("Application launch", function () {
   });
 
   it("main ui shows library count of 0", async function () {
-    await this.app.client.element("#libraryCountRow").getHTML(false).should.eventually.equal("0");
+    await this.app.client.element("#libraryTotalCountRow").getHTML(false).should.eventually.equal("0");
   });
 
   it("can view uiServer tab", async function () {
@@ -69,19 +69,50 @@ describe("Application launch", function () {
     await util.click(this.app, "#overviewNav");
   });
 
-  it("can open webui window", async function () {
-    await util.click(this.app, "#launchWebUiButton");
+  it("can rescan the library", function (done) {
+    util.click(this.app, "#rescanLibraryButton").then(() => {
+      setTimeout(() => {
+        done();
+      }, 500);
+    });
   });
 
-  it("webui window opened", async function (done) {
+  it("main ui shows ibrary albums count of 1", async function () {
+    await this.app.client.element("#libraryAlbumsCountRow").getHTML(false).should.eventually.equal("1");
+  });
+
+  it("main ui shows ibrary artists count of 1", async function () {
+    await this.app.client.element("#libraryArtistsCountRow").getHTML(false).should.eventually.equal("1");
+  });
+
+  it("main ui shows ibrary genres count of 1", async function () {
+    await this.app.client.element("#libraryGenreCountRow").getHTML(false).should.eventually.equal("1");
+  });
+
+  it("main ui shows ibrary total count of 1", async function () {
+    await this.app.client.element("#libraryTotalCountRow").getHTML(false).should.eventually.equal("1");
+  });
+
+
+  it("can open webui window", function (done) {
+    util.click(this.app, "#launchWebUiButton").then(() => {
+        setTimeout(() => {
+          done();
+        }, 1000);
+    });
+  });
+
+  it("webui window opened", function (done) {
     this.timeout(20000);
-    var count = await this.app.client.getWindowCount();
-    console.log("window count " + count);
-    assert.equal(count, 5);
-    await setTimeout(async () => {
-      await util.activateWindow(this.app, "Alloy (Preview)");
-      this.app.client.element("#loadedState").getHTML(false).should.eventually.equal("true");
-      done();
-    }, 5000);
+    this.app.client.getWindowCount().then((count) => {
+      console.log("window count " + count);
+      assert.equal(count, 5);
+      setTimeout(() => {
+        util.activateWindow(this.app, "Alloy (Preview)").then(() => {
+          this.app.client.element("#loadedState").getHTML(false).should.eventually.equal("true");
+          done();
+        });
+      }, 1000);
+    });
   });
 });

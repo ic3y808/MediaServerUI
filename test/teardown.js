@@ -9,7 +9,7 @@ global.after(function (done) {
       this.app.client.webContents.send("test-quit");
       setTimeout(() => {
         this.db.setState({});
-        //if (fs.existsSync(dataDir)) { shell.rm("-r", dataDir); }
+        if (fs.existsSync(dataDir)) { shell.rm("-r", dataDir); }
         done();
       }, 500);
     });

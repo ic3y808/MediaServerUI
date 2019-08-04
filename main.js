@@ -13,7 +13,7 @@ const express = require("express");
 const appServer = express();
 var server = require("http").Server(appServer);
 var io = require("socket.io")(server);
-
+const migrate = require("./common/migrate");
 var sr = require("screenres");
 const url = require("url");
 
@@ -256,9 +256,9 @@ function createWebUIWindow() {
         webUIWindow.icon = path.join(__dirname, "common", "icon.ico");
         webUIWindow.setMenu(null);
         //webUIWindow.setMinimumSize(min_width, min_height);
-        //if (isDev() === true) {
+        if (isDev() === true) {
           webUIWindow.webContents.openDevTools({ detach: false });
-        //}
+        }
         webUIWindow.loadURL("http://localhost:" + process.env.API_UI_PORT);
         webUIWindow.setTitle("Alloy");
         webUIWindow.on("close", (e) => {
@@ -454,9 +454,6 @@ function createBaseServer() {
             process.exit(0);
           });
         });
-
-        //sabnzbd.socketConnect(socket);
-        //musicbrainz.socketConnect(socket);
         logger.debug("alloyui", "WebUI Client connected");
         socket.on("log", function (data) {
           var obj = {};
@@ -510,12 +507,13 @@ function createBaseServer() {
     db = require("better-sqlite3")(process.env.DATABASE);
     db.pragma("journal_mode = WAL");
 
-    require("./common/migrate").migrate(db, path.join(__dirname, "/migrations"));
+    migrate.migrate(db, path.join(__dirname, "/migrations"));
 
 
-    //if (isTest()) {
-    //  require("./common/migrate").test(db, path.join(__dirname, "/migrations"));
-    //}
+    if (isTest()) {
+      migrate.insertTestData(db, path.join(__dirname, "/migrations"));
+      migrate.test(db, path.join(__dirname, "/migrations"));
+    }
 
     server.listen(process.env.API_UI_PORT);
     server.on("listening", function () {

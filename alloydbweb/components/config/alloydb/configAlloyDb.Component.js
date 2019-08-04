@@ -33,7 +33,7 @@ class ConfigAlloyDbController {
     };
 
     $scope.testSettings = () => {
-      if (this.$rootScope.socket) { this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd); }
+      if (this.$rootScope.socket) { this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.alloydb); }
     };
 
     $scope.startBackup = () => {

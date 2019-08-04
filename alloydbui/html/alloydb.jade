@@ -33,7 +33,7 @@ html(ng-app='alloydb', lang='en-us')
             li.nav-item
             if api_enabled
               li.nav-item
-                a.nav-link(ng-click='rescanLibrary();', href="#")
+                a#rescanLibraryButton.nav-link(ng-click='rescanLibrary();', href="#")
                   i.material-icons refresh
                   p Rescan Library
             if api_enabled
@@ -137,16 +137,16 @@ html(ng-app='alloydb', lang='en-us')
                             tbody
                               tr
                                 td Albums 
-                                td#libraryCountRow {{library_stats.album_count}}
+                                td#libraryAlbumsCountRow {{library_stats.album_count}}
                               tr
                                 td Artists 
-                                td {{library_stats.artist_count}}
+                                td#libraryArtistsCountRow {{library_stats.artist_count}}
                               tr
                                 td Genres 
-                                td {{library_stats.genre_count}}
+                                td#libraryGenreCountRow {{library_stats.genre_count}}
                               tr
                                 td Total Tracks 
-                                td {{library_stats.track_count}}
+                                td#libraryTotalCountRow {{library_stats.track_count}}
                               tr
                                 td Total Space 
                                 td {{library_stats.memory_used}}

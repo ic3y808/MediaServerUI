@@ -5,6 +5,7 @@ const watch = require("node-watch");
 const uuidv3 = require("uuid/v3");
 const parser = require("xml2json");
 const klawSync = require("klaw-sync");
+const escape = require("escape-string-regexp");
 const { ipcRenderer } = require("electron");
 var Queue = require("better-queue");
 var utils = {};
@@ -62,6 +63,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         this.cleanup();
         this.resetStatus();
         this.updateStatus("Scan Complete", false);
+        ipcRenderer.send("system-get-stats");
       });
     }
 
@@ -307,12 +309,12 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
             id: json.artist.musicbrainzartistid,
             name: utils.isStringValid(json.artist.title, ""),
             sort_name: utils.isStringValid(artistInfo.sortName, ""),
-            biography: utils.isStringValid(json.artist.biography, ""),
+            biography: escape(utils.isStringValid(json.artist.biography, "")),
             status: utils.isStringValid(artistInfo.status, ""),
             rating: artistInfo.rating.count,
             type: utils.isStringValid(artistInfo.type, ""),
             disambiguation: utils.isStringValid(artistInfo.disambiguation, ""),
-            overview: utils.isStringValid(artistInfo.overview, "")
+            overview: escape(utils.isStringValid(artistInfo.overview, ""))
           };
 
           Object.assign(artist, mappedArtist);

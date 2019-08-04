@@ -91,6 +91,7 @@ var confResult = module.exports.getConfig();
 
 if (confResult === null) {
   module.exports.config.api_key = md5(Math.random().toString());
+  module.exports.config.brainz_api_url = "https://api.lidarr.audio";
   module.exports.saveConfig().then((result) => {
     console.log("Created default config");
   }).catch((err) => {

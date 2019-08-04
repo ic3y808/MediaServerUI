@@ -20,9 +20,6 @@ var defaults = {
   alloydb_streaming_cache_starred: true
 };
 
-console.log("migration defaults");
-console.log(defaults);
-
 exports.up = function (db) {
   return {
     sql: true,
@@ -32,6 +29,10 @@ exports.up = function (db) {
 };
 
 exports.down = function (db) {
+  return null;
+};
+
+exports.testData = function () {
   return null;
 };
 

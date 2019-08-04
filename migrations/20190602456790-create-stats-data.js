@@ -14,6 +14,10 @@ exports.down = function (db) {
   return null;
 };
 
+exports.testData = function () {
+  return null;
+};
+
 exports.test = function () {
   return null;
 };
