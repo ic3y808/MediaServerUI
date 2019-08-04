@@ -13,12 +13,6 @@ steps:
     command: install
 
 - task: Npm@1
-  displayName: 'build'
-  inputs:
-    command: custom
-    customCommand: 'build_dev'
-
-- task: Npm@1
   displayName: 'npm test'
   inputs:
     command: custom
