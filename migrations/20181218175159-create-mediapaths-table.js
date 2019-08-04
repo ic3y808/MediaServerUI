@@ -1,3 +1,5 @@
+const path = require("path");
+
 exports.setup = function (options, seedLink) {
 
 };
@@ -15,6 +17,22 @@ exports.up = function (db) {
 
 exports.down = function () {
   return null;
+};
+
+exports.testData = function () {
+  console.log("adding test data");
+  return {
+    sql: true,
+    command: "INSERT OR IGNORE INTO `MediaPaths`(`display_name`,`path`) VALUES (?,?);",
+    values: ["Music Library", path.join(__dirname, "..", "test_data", "MediaRoot")]
+  };
+};
+
+exports.test = function () {
+  return {
+    sql: true,
+    command: "SELECT name FROM sqlite_master WHERE type='table' AND name='MediaPaths';"
+  };
 };
 
 exports._meta = {

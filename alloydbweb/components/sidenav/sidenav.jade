@@ -36,29 +36,6 @@ section.w-f-md.scrollable
           i.alloy-icon.icon-genres
           b.badge.bg-primary.dker.pull-right {{$root.genres.length}}
           span.font-bold Genres
-
-
-      li
-        a.auto(href='#')
-          span.pull-right.text-muted
-            i.fa.fa-angle-left.text
-            i.fa.fa-angle-down.text-active
-          i.alloy-icon.icon-sabnzbd.text-xs
-          span.font-bold SABnzbd
-        ul.nav.dk.text-sm
-          li(style="height:30px;")
-            a.auto(href='/activity/queue', title='Queue', style="height:30px;")
-              i.alloy-icon.icon-queue.text-xs
-              span.hidden-nav-xs.font-bold Queue
-          li(style="height:30px;")
-            a.auto(href='/activity/history', title='History', style="height:30px;")
-              i.alloy-icon.icon-history.text-xs
-              span.hidden-nav-xs.font-bold History
-          li(style="height:30px;")
-            a.auto(href='/activity/blacklist', title='Blacklist', style="height:30px;")
-              i.alloy-icon.icon-ban.text-xs
-              span.hidden-nav-xs.font-bold Blacklist
-
       li
         a(href='/status')
           i.alloy-icon.icon-status
@@ -68,7 +45,7 @@ section.w-f-md.scrollable
           span.pull-right.text-muted
             i.fa.fa-angle-left.text
             i.fa.fa-angle-down.text-active
-          i.alloy-icon.icon-sabnzbd.text-xs
+          i.alloy-icon.icon-settings.text-xs
           span Config
         ul.nav.dk.text-sm
           li(style="height:30px;")
@@ -83,10 +60,6 @@ section.w-f-md.scrollable
             a.auto(href='/config/scheduler', title='Scheduler', style="height:30px;")
               i.alloy-icon.icon-scheduler.text-xs
               span.hidden-nav-xs Scheduler
-          li(style="height:30px;")
-            a.auto(href='/config/sabnzbd', title='SABnzbd', style="height:30px;")
-              i.alloy-icon.icon-sabnzbd.text-xs
-              span.hidden-nav-xs SABnzbd
           
     ul.nav.text-sm
       li.hidden-nav-xs.padder.m-t.m-b-sm.text-xs.text-muted

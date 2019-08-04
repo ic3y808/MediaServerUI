@@ -9,7 +9,6 @@ class ConfigGeneralController {
     this.MediaPlayer = MediaPlayer;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
-    //this.sabnzbdService = sabnzbdService;
     this.Logger.debug("general-config-controller");
 
    

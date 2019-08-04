@@ -366,7 +366,6 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $timeout(function () {
     Logger.debug("loading settings");
     if ($rootScope) { $rootScope.socket.emit("load_settings", "alloydb_settings"); }
-    if ($rootScope) { $rootScope.socket.emit("load_settings", "sabnzbd_settings"); }
 
     setTimeout(() => {
       if (MediaPlayer.castStatus()) {
@@ -375,6 +374,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       }
     }, 1000);
   });
+  $rootScope.loaded = "true";
   Logger.info("Application Loaded");
 
 

@@ -33,7 +33,7 @@ class ConfigAlloyDbController {
     };
 
     $scope.testSettings = () => {
-      if (this.$rootScope.socket) { this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.sabnzbd); }
+      if (this.$rootScope.socket) { this.$rootScope.socket.emit("test_alloydb_settings", $rootScope.settings.alloydb); }
     };
 
     $scope.startBackup = () => {
@@ -160,10 +160,13 @@ class ConfigAlloyDbController {
     });
 
     $scope.refreshIntereval = setInterval(() => {
-      this.AlloyDbService.scanStatus().then((result) => {
-        this.$scope.scan_status = result.result;
-        this.AppUtilities.apply();
-      });
+      var status = this.AlloyDbService.scanStatus();
+      if (status) {
+        status.then((result) => {
+          this.$scope.scan_status = result.result;
+          this.AppUtilities.apply();
+        });
+      }
     }, 2000);
 
     $scope.$on("$destroy", () => {

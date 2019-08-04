@@ -30,15 +30,6 @@ section.vbox.stretch
                     div
                       a(href='#') AlloyDB Status
                     small.text-muted {{alloydb.status}}
-              li.list-group-item
-                .media
-                  span.pull-left.h2.text-muted.m-l S
-                  .pull-right.m-t-sm(ng-class='$root.sabnzbd_ping.status === "success" ? "text-success" : "text-danger"')
-                    i.fa.fa-circle
-                  .media-body
-                    div
-                      a(href='#') SABnzbd Status
-                    small.text-muted {{$root.sabnzbd_ping.status}} - {{$root.sabnzbd_ping.version}}
               
           section.panel.panel-success.portlet-item
             header.panel-heading  AlloyDB Media 

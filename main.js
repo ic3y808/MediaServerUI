@@ -13,7 +13,7 @@ const express = require("express");
 const appServer = express();
 var server = require("http").Server(appServer);
 var io = require("socket.io")(server);
-
+const migrate = require("./common/migrate");
 var sr = require("screenres");
 const url = require("url");
 
@@ -27,33 +27,40 @@ let tray = null;
 var timer = {};
 var db = {};
 
-/* Single Instance Check */
-const gotTheLock = app.requestSingleInstanceLock();
 
-if (!gotTheLock) {
-  app.quit();
-} else {
-  app.on("second-instance", (event, commandLine, workingDirectory) => {
-    // Someone tried to run a second instance, we should focus our window.
-    if (mainWindow) {
-      if (mainWindow.isMinimized()) { mainWindow.restore(); }
-      mainWindow.show();
-      mainWindow.focus();
-    }
-  });
+function isDev() { return process.env.MODE === "dev"; }
+function isTest() { return process.env.MODE === "test"; }
+function isDevToolsEnabled() { if (isDev() || isTest()) { return true; } return false; }
+function isApiEnabled() { return process.env.API_ENABLED === "true"; }
+function isUiEnabled() { return process.env.UI_ENABLED === "true"; }
+function isPacked() { return process.mainModule.filename.indexOf("app.asar") > -1; }
+
+/* Single Instance Check */
+if (!isTest()) {
+  const gotTheLock = app.requestSingleInstanceLock();
+
+  if (!gotTheLock) {
+    app.quit();
+  } else {
+    app.on("second-instance", (event, commandLine, workingDirectory) => {
+      // Someone tried to run a second instance, we should focus our window.
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) { mainWindow.restore(); }
+        mainWindow.show();
+        mainWindow.focus();
+      }
+    });
+  }
 }
 
-process.on("exit", () => db.close());
+process.on("exit", () => {
+  if (db) { db.close(); }
+  if (tray) { tray.destroy(); }
+});
 process.on("SIGHUP", () => process.exit(128 + 1));
 process.on("SIGINT", () => process.exit(128 + 2));
 process.on("SIGTERM", () => process.exit(128 + 15));
 
-function isDev() { return process.env.MODE === "dev"; }
-function isTest() { return process.env.MODE === "test"; }
-function isWebpackEnabled() { return process.env.ENABLE_WEBPACK_REBUILD === "true"; }
-function isApiEnabled() { return process.env.API_ENABLED === "true"; }
-function isUiEnabled() { return process.env.UI_ENABLED === "true"; }
-function isPacked() { return process.mainModule.filename.indexOf("app.asar") > -1; }
 
 function flatten(lists) {
   return lists.reduce((a, b) => a.concat(b), []);
@@ -73,10 +80,21 @@ function getDirectoriesRecursive(srcpath) {
   ];
 }
 
+function doClose() {
+  if (splashWindow) { splashWindow.close(); }
+  if (serverWindow) { serverWindow.close(); }
+  if (schedulerWindow) { schedulerWindow.close(); }
+  if (mediaScannerWindow) { mediaScannerWindow.close(); }
+  app.exit(0);
+}
+
 function onClose(e) {
-  if (isTest()) { return; }
-  e.preventDefault();
-  mainWindow.hide();
+  if (!isTest()) {
+    e.preventDefault();
+    mainWindow.hide();
+  } else {
+    doClose();
+  }
 }
 
 function doCheckpoint() {
@@ -177,9 +195,10 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
   win.setMenu(null);
   win.setMinimumSize(min_width, min_height);
   if (isDev() === true) {
-    win.webContents.openDevTools({ detach: false });
+    win.webContents.openDevTools({ detach: true });
   }
   win.loadURL("http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
+  console.log("http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
   win.setTitle(title);
   win.on("close", close);
   return win;
@@ -352,20 +371,47 @@ function createTasks() {
 
 function createBaseServer() {
   return new Promise((resolve, reject) => {
-
+    logger.callback = queryLog;
+    appServer.set("view engine", "jade");
+    appServer.use(bodyParser.json());
+    appServer.use(bodyParser.urlencoded({ extended: false }));
     appServer.use(favicon(path.join(__dirname, "common", "icon.ico")));
     appServer.use("/node_modules/", express.static(path.join(__dirname, "node_modules")));
     appServer.use("/alloydbui/js/", express.static(path.join(__dirname, "alloydbui", "js")));
     appServer.use("/alloydbui/css/", express.static(path.join(__dirname, "alloydbui", "css")));
     appServer.use("/alloydbui/img/", express.static(path.join(__dirname, "alloydbui", "img")));
 
+    appServer.use(function (req, res, next) {
+      res.io = io;
+      res.locals.jadeOptions = {
+        title: "Alloy (Preview)",
+        jade_port: process.env.JADE_PORT,
+        api_port: process.env.API_PORT,
+        web_ui_port: process.env.API_UI_PORT,
+        dev_mode: process.env.MODE === "dev",
+        api_enabled: isApiEnabled(),
+        web_ui_enabled: isUiEnabled()
+      };
+      next();
+    });
+
+    appServer.get("/template/:name", function (req, res) {
+      if (req.params && req.params.name.indexOf("jade") !== -1) { res.render(req.params.name, res.locals.jadeOptions); }
+    });
+
+    var views = [];
+    var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
+    views = views.concat(uiViews);
+
+    console.log("ui enabled: " + isUiEnabled());
     if (isUiEnabled()) {
       appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "content")));
-    }
+      var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "views"));
+      var componentdirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "components"));
+      var directivedirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "directives"));
+      views = views.concat(webViews, componentdirs, directivedirs);
 
-    appServer.set("view engine", "jade");
-    if (isUiEnabled()) {
-      if (isDev() && isWebpackEnabled()) {
+      if (isDev()) {
         logger.info("alloydb", "Running in DEV mode");
         logger.info("alloydb", "compiling webpack");
         const webpack = require("webpack");
@@ -377,23 +423,14 @@ function createBaseServer() {
         appServer.use(wpmw);
         const wphmw = webpackHotMiddleware(webpackCompiler);
         appServer.use(wphmw);
+        process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
+        var livereload = require("livereload").createServer({ exts: ["jade"], port: process.env.JADE_PORT });
+        livereload.watch(path.join(__dirname, "alloydbweb"));
       } else {
         appServer.use(express.static(path.join(__dirname, "alloydbweb", "dist")));
       }
-    }
+      appServer.use("/", require("./alloydbweb/routes/index"));
 
-    appServer.use(function (req, res, next) {
-      res.io = io;
-      next();
-    });
-
-    appServer.use(bodyParser.json());
-    appServer.use(bodyParser.urlencoded({ extended: false }));
-
-    var index = require("./alloydbweb/routes/index");
-    appServer.use("/", index);
-
-    if (isUiEnabled()) {
       io.on("connection", function (socket) {
 
         socket.on("load_settings", function (key) {
@@ -417,9 +454,6 @@ function createBaseServer() {
             process.exit(0);
           });
         });
-
-        //sabnzbd.socketConnect(socket);
-        //musicbrainz.socketConnect(socket);
         logger.debug("alloyui", "WebUI Client connected");
         socket.on("log", function (data) {
           var obj = {};
@@ -436,16 +470,6 @@ function createBaseServer() {
       }, 500);
     }
 
-    var views = [];
-    var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
-    views = views.concat(uiViews);
-    console.log("ui enabled: " + isUiEnabled());
-    if (isUiEnabled()) {
-      var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "views"));
-      var componentdirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "components"));
-      var directivedirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "directives"));
-      views = views.concat(webViews, componentdirs, directivedirs);
-    }
     appServer.set("views", views);
 
     // catch 404 and forward to error handler
@@ -479,23 +503,21 @@ function createBaseServer() {
       });
     }
 
-    if (isDev() && isUiEnabled()) {
-      process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
-      var livereload = require("livereload").createServer({ exts: ["jade"], port: process.env.JADE_PORT });
-      livereload.watch(path.join(__dirname, "alloydbweb"));
-    }
-
-    logger.callback = queryLog;
-
     logger.info("alloydb", "loading database " + process.env.DATABASE);
     db = require("better-sqlite3")(process.env.DATABASE);
     db.pragma("journal_mode = WAL");
 
-    require("./common/migrate")(db, path.join(__dirname, "/migrations"));
+    migrate.migrate(db, path.join(__dirname, "/migrations"));
+
+
+    if (isTest()) {
+      migrate.insertTestData(db, path.join(__dirname, "/migrations"));
+      migrate.test(db, path.join(__dirname, "/migrations"));
+    }
 
     server.listen(process.env.API_UI_PORT);
     server.on("listening", function () {
-      logger.info("alloydb", "Primary Server listening");
+      logger.info("alloydb", "Primary Server listening on port " + process.env.API_UI_PORT);
       resolve();
     });
   });
@@ -586,15 +608,24 @@ function setupRoutes() {
     ipcMain.on("error", (event, payload) => { logger.error(payload.source, payload.data); });
     ipcMain.on("debug", (event, payload) => { logger.debug(payload.source, payload.data); });
     ipcMain.on("info", (event, payload) => { logger.info(payload.source, payload.data); });
+    ipcMain.on("app-quit", (event, payload) => { doClose(); });
 
     ipcMain.on("open-dev", (event) => {
-      mainWindow.webContents.openDevTools({ detach: false });
-      serverWindow.webContents.openDevTools({ detach: true });
-      serverWindow.show();
-      mediaScannerWindow.webContents.openDevTools({ detach: true });
-      mediaScannerWindow.show();
-      schedulerWindow.webContents.openDevTools({ detach: true });
-      schedulerWindow.show();
+      if (mainWindow) {
+        mainWindow.webContents.openDevTools({ detach: false });
+      }
+      if (serverWindow) {
+        serverWindow.webContents.openDevTools({ detach: true });
+        serverWindow.show();
+      }
+      if (mediaScannerWindow) {
+        mediaScannerWindow.webContents.openDevTools({ detach: true });
+        mediaScannerWindow.show();
+      }
+      if (schedulerWindow) {
+        schedulerWindow.webContents.openDevTools({ detach: true });
+        schedulerWindow.show();
+      }
       if (webUIWindow) {
         webUIWindow.webContents.openDevTools({ detach: true });
         webUIWindow.show();
@@ -610,25 +641,16 @@ app.on("window-all-closed", () => {
 });
 
 app.on("ready", async () => {
-  await createSplashScreen();
+  if (isTest() === false) { await createSplashScreen(); }
   await createBaseServer();
-  if (!isTest()) {
-    
-    await createServerWindow();
-    await createSchedulerWindow();
-    await createMediaScannerWindow();
-  }
-
-
+  await createServerWindow();
+  await createSchedulerWindow();
+  await createMediaScannerWindow();
   await createMainWindow();
-  if (!isTest()) {
-    await setupRoutes();
-    await createTrayMenu();
-  }
+  await setupRoutes();
+  await createTrayMenu();
+  if (splashWindow) { splashWindow.close(); }
   mainWindow.webContents.send("app-loaded");
-  splashWindow.close();
   mainWindow.show();
-  if (!isTest()) {
-    setTimeout(createTasks, 250);
-  }
+  setTimeout(createTasks, 250);
 });

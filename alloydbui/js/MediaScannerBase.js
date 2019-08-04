@@ -494,7 +494,12 @@ module.exports = class MediaScannerBase {
 
       insert.run(values);
     } catch (err) {
-      if (err) { this.error(JSON.stringify(err)); }
+      if (err) {
+        console.log(err.message);
+        console.log(err.stack);
+        this.error(err.message);
+        this.error(err.stack);
+      }
       this.info(sql);
       this.info(values);
     }
@@ -553,7 +558,10 @@ module.exports = class MediaScannerBase {
       }
       this.writeDb(data, "ScanEvents");
     } catch (err) {
-      this.info(JSON.stringify(err));
+      console.log(err.message);
+      console.log(err.stack);
+      this.error(err.message);
+      this.error(err.stack);
     }
   }
 };

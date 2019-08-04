@@ -10,7 +10,7 @@ section.panel.panel-default
       .form-group
         label.col-sm-2.control-label Database Port
         .col-sm-10
-          input.form-control(ng-change="previewConnectionString()", ng-model='$root.settings.alloydb.alloydb_port', type='number', placeholder='4000')
+          input.form-control(ng-change="previewConnectionString()",  ng-model='$root.settings.alloydb.alloydb_port', type='number', placeholder='4000', string-to-number)
       .form-group
         label.col-sm-2.control-label Api Key
         .col-sm-10

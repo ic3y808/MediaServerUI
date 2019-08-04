@@ -75,17 +75,44 @@
         "-f"
       ]
     },
+     {
+      "type": "node",
+      "request": "launch",
+      "name": "Tests - Debug",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "MODE":"test",
+        "DEBUG":"music-metadata:parser:ID3",
+        "ELECTRON_ENABLE_LOGGING": "true",
+        "ELECTRON_ENABLE_STACK_DUMPING": "true",
+        "API_ENABLED": "true",
+        "UI_ENABLED": "true",
+        "API_PORT_TEST": "4000",
+        "API_UI_PORT_TEST": "5000",
+        "NODE_ENV": "test"
+      },
+      "runtimeArgs": [
+        "--remote-debugging-port=9223",
+        "."
+      ],
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "outputCapture": "std"
+    },
     {
       "name": "Tests",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
-      "args": ["test/**/*.js", "--no-timeouts", "--opts", "mocha.opts"],
+      "args": ["test/**/*.js", "--bail", "--opts", "mocha.opts"],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": null,
       "env": {}
-    }
+    },
     {
       "name": "LaunchChrome",
       "type": "chrome",

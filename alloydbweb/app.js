@@ -1,6 +1,6 @@
 import angular from "angular";
 import angularRoute from "angular-route";
-__webpack_public_path__ = "http://localhost:" + SERVER_PORT + "/";
+__webpack_public_path__ = "http://localhost:" + API_UI_PORT + "/";
 
 import "./styles/index";
 import "lodash";
