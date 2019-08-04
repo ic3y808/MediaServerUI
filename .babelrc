@@ -3,8 +3,12 @@
   "env": {
     "test": {
       "plugins": [
-        "istanbul"
+        "istanbul",
+        ["transform-runtime", {
+          "regenerator": true
+        }]
       ]
+      
     }
   }
  }

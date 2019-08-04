@@ -49,20 +49,20 @@ export default class AppUtilities {
 
     // While there are elements in the array
     while (counter > 0) {
-        // Pick a random index
-        const index = Math.floor(Math.random() * counter);
+      // Pick a random index
+      const index = Math.floor(Math.random() * counter);
 
-        // Decrease counter by 1
-        counter--;
+      // Decrease counter by 1
+      counter--;
 
-        // And swap the last element with it
-        const temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
+      // And swap the last element with it
+      const temp = array[counter];
+      array[counter] = array[index];
+      array[index] = temp;
     }
 
     return array;
-}
+  }
   showLoader() {
     $("#root.root").css("display", "none");
     $(".loader").css("display", "block");
@@ -192,17 +192,21 @@ export default class AppUtilities {
   }
 
   getRandom(arr, n) {
+    var len = arr.length;
     var index = n;
-    var result = new Array(index),
-      len = arr.length,
-      taken = new Array(len);
-    if (index > len) { throw new RangeError("getRandom: more elements taken than available"); }
-    while (index--) {
-      var x = Math.floor(Math.random() * len);
-      result[index] = arr[x in taken ? taken[x] : x];
-      taken[x] = --len in taken ? taken[len] : len;
+    if (index > len) {
+      return arr;
+    } else {
+      var result = new Array(index);
+      var taken = new Array(len);
+
+      while (index--) {
+        var x = Math.floor(Math.random() * len);
+        result[index] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+      }
+      return result;
     }
-    return result;
   }
 
   encryptPassword(pass) {

@@ -26,31 +26,36 @@ html(ng-app='alloydb', lang='en-us')
         .sidebar-wrapper
           ul.nav
             li.nav-item
-              a.nav-link(ng-click='launchWebUI();', href="#")
+              a.nav-link(ng-click='launchWebUIDesktop();', href="#")
                 i.material-icons launch
                 p Web UI
             
             li.nav-item
-            li.nav-item
-              a.nav-link(ng-click='rescanLibrary();', href="#")
-                i.material-icons refresh
-                p Rescan Library
-            li.nav-item
-              a.nav-link(ng-click='cleanupLibrary();', href="#")
-                i.material-icons clear_all
-                p Cleanup Library
-            li.nav-item
-              a.nav-link(ng-click='incCleanupLibrary();', href="#")
-                i.material-icons av_timer
-                p Inc. Cleanup
-            li.nav-item
-              a.nav-link(ng-click='backupDatabase();', href="#")
-                i.material-icons restore
-                p Backup
-            li.nav-item
-              a.nav-link(ng-click='restoreDatabase();', href="#")
-                i.material-icons refresh
-                p Restore
+            if api_enabled
+              li.nav-item
+                a#rescanLibraryButton.nav-link(ng-click='rescanLibrary();', href="#")
+                  i.material-icons refresh
+                  p Rescan Library
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='cleanupLibrary();', href="#")
+                  i.material-icons clear_all
+                  p Cleanup Library
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='incCleanupLibrary();', href="#")
+                  i.material-icons av_timer
+                  p Inc. Cleanup
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='backupDatabase();', href="#")
+                  i.material-icons restore
+                  p Backup
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='restoreDatabase();', href="#")
+                  i.material-icons refresh
+                  p Restore
     
             
           
@@ -65,31 +70,34 @@ html(ng-app='alloydb', lang='en-us')
                 .nav-tabs-wrapper
                   ul.nav.nav-tabs(data-tabs='tabs')
                     li.nav-item
-                      a#databaseNav.nav-link.active(data-toggle='tab', href='#database')
+                      a#overviewNav.nav-link.active(data-toggle='tab', href='#overview')
                         i.material-icons info
-                        |  Database
+                        |  Overview
                         .ripple-container
-                    li#uiServerNav.nav-item
-                      a.nav-link(data-toggle='tab', href='#uiserver')
-                        i.material-icons cloud_upload
-                        |  UI Server
-                        .ripple-container
-                    li#scheduleNav.nav-item
-                      a.nav-link(data-toggle='tab', href='#scheduler')
-                        i.material-icons schedule
-                        |  Scheduler
-                        .ripple-container
-                    li#mediaScannerNav.nav-item
-                      a.nav-link(data-toggle='tab', href='#scanner')
-                        i.material-icons loop
-                        |  Scanner
-                        .ripple-container
-      
-                    li.nav-item
-                      a#logsNav.nav-link(data-toggle='tab', href='#logs')
-                        i.material-icons list
-                        |  Logs
-                        .ripple-container
+                    if web_ui_enabled
+                      li#uiServerNav.nav-item
+                        a.nav-link(data-toggle='tab', href='#uiserver')
+                          i.material-icons cloud_upload
+                          |  UI Server
+                          .ripple-container
+                    if api_enabled
+                      li#scheduleNav.nav-item
+                        a.nav-link(data-toggle='tab', href='#scheduler')
+                          i.material-icons schedule
+                          |  Scheduler
+                          .ripple-container
+                    if api_enabled
+                      li#mediaScannerNav.nav-item
+                        a.nav-link(data-toggle='tab', href='#scanner')
+                          i.material-icons loop
+                          |  Scanner
+                          .ripple-container
+                    if api_enabled
+                      li.nav-item
+                        a#logsNav.nav-link(data-toggle='tab', href='#logs')
+                          i.material-icons list
+                          |  Logs
+                          .ripple-container
             
         // End Navbar
         .content
@@ -111,48 +119,49 @@ html(ng-app='alloydb', lang='en-us')
                         h3.text-muted(ng-if="scan_status.path", style="text-align: left;overflow:hidden;") 
                         |  {{scan_status.path}}
                       
-              #database.tab-pane.active
+              #overview.tab-pane.active
                 .row
                   .col-lg-8.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper
-                            span.nav-tabs-title Library Stats
-                      .card-body
-                        table.table
-                          thead
-                            tr
-                              th 
-                              th 
-                          tbody
-                            tr
-                              td Albums 
-                              td {{library_stats.album_count}}
-                            tr
-                              td Artists 
-                              td {{library_stats.artist_count}}
-                            tr
-                              td Genres 
-                              td {{library_stats.genre_count}}
-                            tr
-                              td Total Tracks 
-                              td {{library_stats.track_count}}
-                            tr
-                              td Total Space 
-                              td {{library_stats.memory_used}}
-                            tr
-                              td Total Tracks Served 
-                              td {{library_stats.total_requests}}
-                            tr
-                              td Total Data Sent 
-                              td {{library_stats.total_data_served}}
-                            tr
-                              td General Cache Size:
-                              td {{library_stats.total_cache_size}}
-                            tr
-                              td Starred Cache Size:
-                              td {{library_stats.total_starred_cache_size}}
+                    if api_enabled
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title Library Stats
+                        .card-body
+                          table.table
+                            thead
+                              tr
+                                th 
+                                th 
+                            tbody
+                              tr
+                                td Albums 
+                                td#libraryAlbumsCountRow {{library_stats.album_count}}
+                              tr
+                                td Artists 
+                                td#libraryArtistsCountRow {{library_stats.artist_count}}
+                              tr
+                                td Genres 
+                                td#libraryGenreCountRow {{library_stats.genre_count}}
+                              tr
+                                td Total Tracks 
+                                td#libraryTotalCountRow {{library_stats.track_count}}
+                              tr
+                                td Total Space 
+                                td {{library_stats.memory_used}}
+                              tr
+                                td Total Tracks Served 
+                                td {{library_stats.total_requests}}
+                              tr
+                                td Total Data Sent 
+                                td {{library_stats.total_data_served}}
+                              tr
+                                td General Cache Size:
+                                td {{library_stats.total_cache_size}}
+                              tr
+                                td Starred Cache Size:
+                                td {{library_stats.total_starred_cache_size}}
    
                   .col-lg-4.col-md-12
                     .card
@@ -163,99 +172,119 @@ html(ng-app='alloydb', lang='en-us')
                       .card-body
                         table.table
                           tbody
-                            tr
-                              td Restart API Server
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Restart API Server', type='button', title='', rel='tooltip')
-                                  i.material-icons play_arrow
-                            tr
-                              td Enable API Server
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Enable API autostart', type='button', title='', rel='tooltip', ng-click="enableApiServer()")
-                                  i.material-icons play_arrow
-                            tr
-                              td Disable API Server
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Disable API autostart', type='button', title='', rel='tooltip', ng-click="disableApiServer()")
-                                  i.material-icons play_arrow
-                            tr
-                              td Launch Web UI
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Open the Web UI', type='button', title='', rel='tooltip', ng-click="launchWebUI()")
-                                  i.material-icons launch
-
-                .row
-                  .col-lg-12.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper
-                            span.nav-tabs-title Media Paths
-                      .card-body
-                        table.table
-                          thead
-                            tr
-                              th Display Name
-                              th Path
-                              th.pull-right 
-                                a.nav-link(data-target='#addLibraryPathModal', data-toggle='modal', ng-click="addMediaPath()", href='#')
-                                  i.material-icons add
-                                  |  Add Path
-                                  .ripple-container
-                          tbody
-                            tr(ng-repeat="mediapath in media_paths track by $index")
-                              td {{mediapath.display_name}}
-                              td {{mediapath.path}}
-                              td.pull-right
-                                a.nav-link(ng-click="removeMediaPath(mediapath)", href='#')
-                                  i.material-icons close
-                                  .ripple-container
+                            if api_enabled
+                              tr
+                                td Restart API Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Restart API Server', type='button', title='', rel='tooltip')
+                                    i.material-icons play_arrow
+                            unless api_enabled
+                              tr
+                                td Enable API Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Enable API autostart', type='button', title='', rel='tooltip', ng-click="enableApiServer()")
+                                    i.material-icons play_arrow
+                            if api_enabled
+                              tr
+                                td Disable API Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Disable API autostart', type='button', title='', rel='tooltip', ng-click="disableApiServer()")
+                                    i.material-icons play_arrow
+                            unless web_ui_enabled
+                              tr
+                                td Enable UI Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="enableUiServer()")
+                                    i.material-icons play_arrow
+                            if web_ui_enabled 
+                              tr
+                                td Launch Web UI
+                                td.td-actions.text-right
+                                  button#launchWebUiButton.btn.btn-success.btn-link.btn-sm(data-original-title='Open the Web UI', type='button', title='', rel='tooltip', ng-click="launchWebUIDesktop()")
+                                    i.material-icons launch
+                if api_enabled
+                  .row
+                    .col-lg-12.col-md-12
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title Media Paths
+                        .card-body
+                          table.table
+                            thead
+                              tr
+                                th Display Name
+                                th Path
+                                th.pull-right 
+                                  a.nav-link(data-target='#addLibraryPathModal', data-toggle='modal', ng-click="addMediaPath()", href='#')
+                                    i.material-icons add
+                                    |  Add Path
+                                    .ripple-container
+                            tbody
+                              tr(ng-repeat="mediapath in media_paths track by $index")
+                                td {{mediapath.display_name}}
+                                td {{mediapath.path}}
+                                td.pull-right
+                                  a.nav-link(ng-click="removeMediaPath(mediapath)", href='#')
+                                    i.material-icons close
+                                    .ripple-container
               
-              #uiserver.tab-pane
-                .row
-                  .col-lg-8.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper
-                            span.nav-tabs-title UI Server
-                      .card-body
-                        table.table                       
-                          tbody
-                            tr
-                              td Status
-                              td OK
-                            tr
-                              td URL
-                              td
-                                a(href="", ng-click="launchWebUI()") http://localhost:3000
-   
+              if web_ui_enabled
+                #uiserver.tab-pane
+                  .row
+                    .col-lg-8.col-md-12
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title UI Server
+                        .card-body
+                          table.table                       
+                            tbody
+                              tr
+                                td Status
+                                td OK
+                              tr
+                                td Launch Desktop Player
+                                td
+                                  a(href="", ng-click="launchWebUIDesktop()") 
+                                    i.material-icons play_arrow
+                              tr
+                                td URL
+                                td
+                                  a(href="", ng-click="launchWebUI('http://localhost:#{web_ui_port}')") http://localhost:#{web_ui_port}
+                              
+    
 
-                  .col-lg-4.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper
-                            span.nav-tabs-title Tasks
-                      .card-body
-                        table.table
-                          tbody
-                            tr
-                              td Restart UI Server
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
-                                  i.material-icons play_arrow
-                            tr
-                              td Enable UI Server
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="enableUiServer()")
-                                  i.material-icons play_arrow
-                            tr
-                              td Disable UI Server
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="disableUiServer()")
-                                  i.material-icons play_arrow
-                           
+                    .col-lg-4.col-md-12
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title Tasks
+                        .card-body
+                          table.table
+                            tbody
+                              if web_ui_enabled
+                                tr
+                                  td Restart UI Server
+                                  td.td-actions.text-right
+                                    button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
+                                      i.material-icons play_arrow
+                              unless web_ui_enabled
+                                tr
+                                  td Enable UI Server
+                                  td.td-actions.text-right
+                                    button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="enableUiServer()")
+                                      i.material-icons play_arrow
+                              if web_ui_enabled
+                                tr
+                                  td Disable UI Server
+                                  td.td-actions.text-right
+                                    button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="disableUiServer()")
+                                      i.material-icons play_arrow
+                            
 
 
 
@@ -412,6 +441,7 @@ html(ng-app='alloydb', lang='en-us')
                 button.btn.btn-secondary(data-dismiss='modal', type='button') Close
                 button.btn.btn-danger(data-dismiss='modal', ng-click="addCurrentPath()", type='button') Add Current Path
 
+    div#loadedState(style="display:none;") {{$root.loaded}}
 
     // Core JS Files
 

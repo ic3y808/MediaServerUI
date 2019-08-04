@@ -158,10 +158,11 @@ class Server {
 
   startServer(cb) {
     this.server.listen(this.app.get("port"));
+    ipcRenderer.send("api-server-loaded-result", "success");
     this.server.on("listening", () => {
       logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.app.get("port"));
+     
       ipcRenderer.send("system-get-stats");
-
       if (cb) { cb(this.server); }
     });
   }

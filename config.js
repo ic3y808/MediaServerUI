@@ -13,16 +13,18 @@ const result = dotenv.config({ path: envPath });
 if (result.error) {
   throw result.error;
 }
-console.log(result.parsed);
 
+process.env.MODE = process.env.MODE ? process.env.MODE : "prod";
 process.env.APP_DIR = __dirname;
 process.env.BASE_DIR = app.getPath("userData");
+process.env.API_UI_PORT = process.env.API_UI_PORT ? process.env.API_UI_PORT : 6003;
+
 if (test) {
   process.env.BASE_DIR = path.join(__dirname, "test_data");
+  process.env.API_PORT = process.env.API_PORT_TEST ;
+  process.env.API_UI_PORT =  process.env.API_UI_PORT_TEST;
 }
-process.env.MODE = process.env.MODE ? process.env.MODE : "prod";
-console.log("starting up on port " + process.env.API_UI_PORT);
-process.env.API_UI_PORT = process.env.API_UI_PORT ? process.env.API_UI_PORT : 6003;
+
 process.env.FFMPEG_PATH = require("ffmpeg-static").path.replace("app.asar", "app.asar.unpacked");
 process.env.DATA_DIR = path.join(process.env.BASE_DIR, "data");
 process.env.BACKUP_DATA_DIR = path.join(process.env.DATA_DIR, "backup");
@@ -66,7 +68,6 @@ module.exports.getConfig = function () {
 
   if (fs.existsSync(process.env.CONFIG_FILE)) {
     var config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
-    console.log(config);
     return config;
   } else { return null; }
 
@@ -90,6 +91,7 @@ var confResult = module.exports.getConfig();
 
 if (confResult === null) {
   module.exports.config.api_key = md5(Math.random().toString());
+  module.exports.config.brainz_api_url = "https://api.lidarr.audio";
   module.exports.saveConfig().then((result) => {
     console.log("Created default config");
   }).catch((err) => {
@@ -97,11 +99,10 @@ if (confResult === null) {
   });
 } else {
   module.exports.config = confResult;
-  process.env.API_KEY = module.exports.config.api_key;
-  process.env.LASTFM_API_KEY = module.exports.config.lastfm_api_key;
-  process.env.LASTFM_API_SECRET = module.exports.config.lastfm_api_secret;
-  process.env.BRAINZ_API_URL = module.exports.config.brainz_api_url;
-  process.env.UI_ENABLED = module.exports.config.ui_enabled;
-  process.env.API_ENABLED = module.exports.config.api_enabled;
 }
-
+process.env.API_KEY = module.exports.config.api_key;
+process.env.LASTFM_API_KEY = module.exports.config.lastfm_api_key;
+process.env.LASTFM_API_SECRET = module.exports.config.lastfm_api_secret;
+process.env.BRAINZ_API_URL = module.exports.config.brainz_api_url;
+process.env.UI_ENABLED = module.exports.config.ui_enabled;
+process.env.API_ENABLED = module.exports.config.api_enabled;
