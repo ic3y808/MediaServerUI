@@ -375,6 +375,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       }
     }, 1000);
   });
+  $rootScope.loaded = "true";
   Logger.info("Application Loaded");
 
 

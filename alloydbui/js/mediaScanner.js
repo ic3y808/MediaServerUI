@@ -35,6 +35,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       process.on("SIGTERM", () => process.exit(128 + 15));
       this.configureQueue();
       this.configFileWatcher();
+      ipcRenderer.send("mediascanner-loaded-result", "success");
     }
 
     configureQueue() {

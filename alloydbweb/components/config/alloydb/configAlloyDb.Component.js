@@ -160,10 +160,13 @@ class ConfigAlloyDbController {
     });
 
     $scope.refreshIntereval = setInterval(() => {
-      this.AlloyDbService.scanStatus().then((result) => {
-        this.$scope.scan_status = result.result;
-        this.AppUtilities.apply();
-      });
+      var status = this.AlloyDbService.scanStatus();
+      if (status) {
+        status.then((result) => {
+          this.$scope.scan_status = result.result;
+          this.AppUtilities.apply();
+        });
+      }
     }, 2000);
 
     $scope.$on("$destroy", () => {

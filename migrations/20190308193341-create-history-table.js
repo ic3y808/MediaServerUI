@@ -27,6 +27,10 @@ exports.down = function (db) {
   return null;
 };
 
+exports.test = function () {
+  return null;
+};
+
 exports._meta = {
   "version": 1
 };

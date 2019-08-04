@@ -1,3 +1,4 @@
+const fs = require("fs");
 const path = require("path");
 
 function getType(key) {
@@ -7,9 +8,8 @@ function getType(key) {
   }
 }
 
-module.exports = function migrate(db, migrationDir) {
+module.exports.migrate = function migrate(db, migrationDir) {
   db.prepare("CREATE TABLE IF NOT EXISTS Migrations (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR (255) NOT NULL, `run_on` datetime NOT NULL)").run();
-  var fs = require("fs");
   var files = fs.readdirSync(migrationDir);
   files.forEach((file) => {
     var existingInDb = db.prepare("SELECT * FROM Migrations WHERE name=?").get(file);
@@ -17,7 +17,6 @@ module.exports = function migrate(db, migrationDir) {
       var req = require(path.join(migrationDir, file));
       var data = req.up(db);
       if (data.sql === true) {
-
         try {
           db.prepare(data.command).run(data.values);
         } catch (err) {
@@ -56,6 +55,28 @@ module.exports = function migrate(db, migrationDir) {
           console.log(sql);
           console.log(values);
         }
+      }
+    }
+  });
+};
+
+module.exports.getFileList = function getFileList(migrationDir) {
+  return fs.readdirSync(migrationDir);
+};
+
+module.exports.test = function test(db, migrationDir) {
+  var files = fs.readdirSync(migrationDir);
+  files.forEach((file) => {
+    var req = require(path.join(migrationDir, file));
+    var data = req.test(db);
+    if (data && data.sql === true) {
+      try {
+        var result = db.prepare(data.command).get();
+        console.log(result);
+      } catch (err) {
+        if (err) { console.log(JSON.stringify(err)); }
+        console.log(data.command);
+        console.log(data.values);
       }
     }
   });

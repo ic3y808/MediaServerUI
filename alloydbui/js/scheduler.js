@@ -12,7 +12,7 @@ class Scheduler {
     this.jobs = [];
     logger = require(path.join(process.env.APP_DIR, "common", "logger"));
     logger.info("scheduler", "scheduler started");
-    ipcRenderer.send("scheduler-started");
+    ipcRenderer.send("scheduler-load-result", "success");
   }
 
   getSchedule() {

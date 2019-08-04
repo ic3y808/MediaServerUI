@@ -17,6 +17,13 @@ exports.down = function () {
   return null;
 };
 
+exports.test = function () {
+  return {
+    sql: true,
+    command: "SELECT name FROM sqlite_master WHERE type='table' AND name='MediaPaths';"
+  };
+};
+
 exports._meta = {
   "version": 1
 };

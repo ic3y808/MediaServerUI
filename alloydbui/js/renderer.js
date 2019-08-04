@@ -1,5 +1,5 @@
 var electron = require("electron");
-var { ipcRenderer } = electron;
+var { ipcRenderer, shell } = electron;
 require("angular");
 var app = angular.module("alloydb", []);
 
@@ -103,7 +103,11 @@ app.run(function ($rootScope) {
     ipcRenderer.send("task-alloydb-toggle-ui", { enabled: false });
   };
 
-  $rootScope.launchWebUI = function () {
+  $rootScope.launchWebUI = function (url) {
+    shell.openExternal(url);
+  };
+
+  $rootScope.launchWebUIDesktop = function () {
     ipcRenderer.send("request-web-ui", { enabled: false });
   };
 
@@ -146,6 +150,12 @@ app.run(function ($rootScope) {
     ipcRenderer.send("config-get-media-paths");
     ipcRenderer.send("system-get-stats");
     ipcRenderer.send("logger-get-logs");
+    ipcRenderer.send("app-loaded-result", "success");
+    $rootScope.loaded = "true";
+  });
+
+  ipcRenderer.on("test-quit", (args, e) => {
+    ipcRenderer.send("app-quit");
   });
 
   ipcRenderer.send("update-data");

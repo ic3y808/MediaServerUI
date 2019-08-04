@@ -1,22 +1,11 @@
 {
-    "editor.fontSize": 14,
-    "editor.fontFamily": "Fira Code, 'Fira Code', Fira Code",
-    "editor.tabSize": 2,
-    "editor.insertSpaces": true,
-    "editor.detectIndentation": false,
-    "mocha.coverage": {
-
-      "enable": true,
-      "decoration": true,
-      "runWithInterval": false,
-      "autoUpdateInterval": 20000,
-      "activeOnStart": true,
-      "runAfterTest": false,
-      "reporters": []
-    },
-    "git.ignoreLimitWarning": true,
-    "eslint.autoFixOnSave": true,
-    "javascript.suggestionActions.enabled": false,
-    "telemetry.enableTelemetry":false,
-    
+  "editor.fontSize": 14,
+  "editor.fontFamily": "Fira Code, 'Fira Code', Fira Code",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+  "git.ignoreLimitWarning": true,
+  "eslint.autoFixOnSave": true,
+  "javascript.suggestionActions.enabled": false,
+  "telemetry.enableTelemetry": false
 }

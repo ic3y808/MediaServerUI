@@ -9,7 +9,7 @@
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "cwd": "${workspaceFolder}",
       "env": {
-        "MODE":"dev",
+        "MODE":"prod",
         "DEBUG":"music-metadata:parser:ID3"
       },
       "runtimeArgs": [
@@ -81,11 +81,11 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
-      "args": ["test/**/*.js", "--no-timeouts", "--opts", "mocha.opts"],
+      "args": ["test/**/*.js", "--bail", "--opts", "mocha.opts"],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": null,
       "env": {}
-    }
+    },
     {
       "name": "LaunchChrome",
       "type": "chrome",

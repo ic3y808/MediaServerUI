@@ -1,4 +1,5 @@
 import angular from "angular";
+import StringToNumber from "./string-to-number";
 import ToolbarButton from "./ui/toolbarbutton";
 import ToolbarSeperator from "./ui/toolbarseperator";
 import NavButton from "./ui/navbutton";
@@ -23,6 +24,7 @@ import VolumeSlider from "./ui/volumeslider";
 
 export default angular
   .module("app.directives", [])
+  .directive("stringToNumber", StringToNumber)
   .directive("toolbarbutton", ToolbarButton)
   .directive("toolbarseperator", ToolbarSeperator)
   .directive("navbutton", NavButton)
