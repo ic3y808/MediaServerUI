@@ -4,14 +4,20 @@
   padding-left: 300px;
 }
 
-.error-row{
-  color:$brand-danger;
+.log-table {
+  border-collapse: separate;
+  border-spacing: 1em 0em;
+}
+
+.error-row {
+  color: $brand-danger;
 }
 
 .nav-tabs .nav-item .nav-link {
   color: #ab47bc !important;
 }
-.nav-tabs .nav-item .nav-link.active{
+
+.nav-tabs .nav-item .nav-link.active {
   color: $brand-primary !important;
 }
 

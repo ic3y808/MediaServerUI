@@ -10,8 +10,15 @@ app.run(function ($rootScope) {
 
   $rootScope.currentSelectedPath = "";
   $rootScope.currentSelectedPathDisplayName = "";
-  $rootScope.logLevels = ["all", "info", "debug", "error"];
-  $rootScope.selectedLogLevel = "all";
+  $rootScope.logLevels = {
+    "type": "select", 
+    "name": "Log Levels",
+    "value": "all", 
+    "values": ["all", "info", "debug", "error"]
+  };
+  
+
+  $rootScope.selectedLogLevel = "All";
 
   $(document).on("contextmenu", function (event) {
     event.preventDefault();
@@ -113,8 +120,8 @@ app.run(function ($rootScope) {
 
   $rootScope.filterLogEntry = function () {
     return function (item) {
-      if ($rootScope.selectedLogLevel === "all") { return true; }
-      return item.level === $rootScope.selectedLogLevel;
+      if ($rootScope.logLevels.value === "all") { return true; }
+      return item.level === $rootScope.logLevels.value.toLowerCase();
     };
   };
 
