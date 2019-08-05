@@ -670,7 +670,6 @@ export default class AlloyDbService {
   }
 
   refreshPage(path) {
-    //var path = window.location.pathname;
     switch (path) {
       case "/": this.preload(); break;
       case "/fresh": this.refreshFresh(); this.refreshCharts(); break;
@@ -680,7 +679,6 @@ export default class AlloyDbService {
       case "/starred": this.refreshStarred(); break;
       default: this.preload();
     }
-    console.log(path);
   }
 
   starArtist(artist) {

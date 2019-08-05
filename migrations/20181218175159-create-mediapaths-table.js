@@ -20,7 +20,6 @@ exports.down = function () {
 };
 
 exports.testData = function () {
-  console.log("adding test data");
   return {
     sql: true,
     command: "INSERT OR IGNORE INTO `MediaPaths`(`display_name`,`path`) VALUES (?,?);",

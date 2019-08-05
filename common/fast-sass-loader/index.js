@@ -295,10 +295,10 @@ module.exports = function (content) {
 
         return css;
       } catch (err) {
-        console.log(preview(merged, err, {
-          offset: 10
-        }));
-        console.error(err.stack || err);
+        //console.log(preview(merged, err, {
+        //  offset: 10
+        //}));
+        //console.error(err.stack || err);
 
         throw err;
       }

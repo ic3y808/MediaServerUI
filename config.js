@@ -8,6 +8,7 @@ const dotenv = require("dotenv");
 var envPath = path.join(__dirname, ".env");
 var dev = process.mainModule.filename.indexOf("app.asar");
 var test = process.env.MODE === "test";
+
 if (dev === -1) { envPath = ".env"; }
 const result = dotenv.config({ path: envPath });
 if (result.error) {
@@ -21,8 +22,15 @@ process.env.API_UI_PORT = process.env.API_UI_PORT ? process.env.API_UI_PORT : 60
 
 if (test) {
   process.env.BASE_DIR = path.join(__dirname, "test_data");
-  process.env.API_PORT = process.env.API_PORT_TEST ;
-  process.env.API_UI_PORT =  process.env.API_UI_PORT_TEST;
+  process.env.API_PORT = process.env.API_PORT_TEST;
+  process.env.API_UI_PORT = process.env.API_UI_PORT_TEST;
+  //clear data
+  if (fs.existsSync(process.env.BASE_DIR)) { shell.rm("-r", process.env.BASE_DIR); }
+  shell.mkdir("-p", process.env.BASE_DIR);
+  const demoArtistDir = path.join(process.env.BASE_DIR, "..", "test", "test_media", "Spiritualized");
+  const testMediaDir = path.join(process.env.BASE_DIR, "MediaRoot");
+  shell.mkdir("-p", testMediaDir);
+  shell.cp("-r", demoArtistDir, testMediaDir);
 }
 
 process.env.FFMPEG_PATH = require("ffmpeg-static").path.replace("app.asar", "app.asar.unpacked");
@@ -36,6 +44,7 @@ process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json");
 process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
 process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "database.db-wal");
 process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "database.db-shm");
+process.env.LOGS_DATABASE = path.join(process.env.DATA_DIR, "logs.json");
 process.env.TEST_DATABASE = path.join(process.env.DATA_DIR, "testdb.db");
 process.env.COVER_ART_DIR = path.join(process.env.DATA_DIR, "images");
 process.env.COVER_ART_NO_ART = path.join(process.env.APP_DIR, "common", "no_art.jpg");
@@ -86,6 +95,8 @@ module.exports.saveConfig = function () {
   });
 };
 
+var logger = require("./common/logger");
+var loggerTag = "config";
 
 var confResult = module.exports.getConfig();
 
@@ -93,9 +104,9 @@ if (confResult === null) {
   module.exports.config.api_key = md5(Math.random().toString());
   module.exports.config.brainz_api_url = "https://api.lidarr.audio";
   module.exports.saveConfig().then((result) => {
-    console.log("Created default config");
+    logger.info(loggerTag, "Created default config");
   }).catch((err) => {
-    console.log(err);
+    logger.error(loggerTag, err);
   });
 } else {
   module.exports.config = confResult;

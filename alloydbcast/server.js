@@ -8,7 +8,6 @@ const webpackMiddleware = require("webpack-dev-middleware");
 const webpackHotMiddleware = require("webpack-hot-middleware");
 const app = express();
 var server = require("http").Server(app);
-var config = require("../common/config");
 var logger = require("../common/logger");
 
 function normalizePort(val) {
@@ -32,11 +31,11 @@ function onError(error) {
 
   switch (error.code) {
     case "EACCES":
-      logger.error("receiver", process.env.PORT + " requires elevated privileges");
+      logger.error("alloycast", process.env.PORT + " requires elevated privileges");
       process.exit(1);
       break;
     case "EADDRINUSE":
-      logger.error("receiver", process.env.PORT + " is already in use");
+      logger.error("alloycast", process.env.PORT + " is already in use");
       process.exit(1);
       break;
     default:
@@ -47,7 +46,7 @@ function onError(error) {
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
-  logger.info("receiver", "Listening on " + bind);
+  logger.info("alloycast", "Listening on " + bind);
 }
 
 app.get("/", function (req, res) {

@@ -1,5 +1,7 @@
 const fs = require("fs");
 const path = require("path");
+var logger = require("./logger");
+var loggerTag = "config";
 
 function getType(key) {
   switch (key) {
@@ -21,11 +23,10 @@ module.exports.migrate = function migrate(db, migrationDir) {
           db.prepare(data.command).run(data.values);
         } catch (err) {
           if (err) {
-            console.log(err.message);
-            console.log(err.stack);
+            logger.error(loggerTag, err);
           }
-          console.log(data.command);
-          console.log(data.values);
+          logger.error(loggerTag, data.command);
+          logger.error(loggerTag, data.values);
         }
       } else {
         var sql = "CREATE TABLE ";
@@ -55,11 +56,10 @@ module.exports.migrate = function migrate(db, migrationDir) {
           db.prepare("INSERT INTO Migrations (name,run_on) VALUES (?,?);").run(file, new Date().toISOString());
         } catch (err) {
           if (err) {
-            console.log(err.message);
-            console.log(err.stack);
+            logger.error(loggerTag, err);
           }
-          console.log(sql);
-          console.log(values);
+          logger.error(loggerTag, sql);
+          logger.error(loggerTag, values);
         }
       }
     }
@@ -80,11 +80,10 @@ module.exports.insertTestData = function insertTestData(db, migrationDir) {
         db.prepare(data.command).run(data.values);
       } catch (err) {
         if (err) {
-          console.log(err.message);
-          console.log(err.stack);
+          logger.error(loggerTag, err);
         }
-        console.log(data.command);
-        console.log(data.values);
+        logger.error(loggerTag, data.command);
+        logger.error(loggerTag, data.values);
       }
     }
   });
@@ -98,14 +97,13 @@ module.exports.test = function test(db, migrationDir) {
     if (data && data.sql === true) {
       try {
         var result = db.prepare(data.command).get();
-        console.log(result);
+        logger.debug(loggerTag, result);
       } catch (err) {
         if (err) {
-          console.log(err.message);
-          console.log(err.stack);
+          logger.error(loggerTag, err);
         }
-        console.log(data.command);
-        console.log(data.values);
+        logger.error(loggerTag, data.command);
+        logger.error(loggerTag, data.values);
       }
     }
   });

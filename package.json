@@ -11,7 +11,8 @@
     "build_fonts": "icon-font-generator ./common/icons/*.svg -n alloyicons --normalize --html false -j false -o alloydbweb/styles/fonts",
     "build_web": "cd alloydbweb && cross-env MODE=prod webpack .",
     "build": "npm run build_styles & npm run build_fonts & npm run build_web & npm run dist",
-    "build_dev": "npm run build_styles & npm run build_fonts & npm run build_web & npm run pack",
+    "build_dev": "npm run build_styles & npm run build_fonts & npm run build_web",
+    "build_dev_pack": "npm run build_styles & npm run build_fonts & npm run build_web & npm run pack",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "test": "nyc ./node_modules/.bin/mocha --opts mocha.opts --reporter mocha-junit-reporter --reporter-options mochaFile=TEST-RESULTS.xml && cross-env CODACY_PROJECT_TOKEN=0c34166541df4c81896f11278c081c60 codacy-coverage < ./coverage/lcov.info"
@@ -141,9 +142,6 @@
     "three": "^0.83.0",
     "triple-beam": "^1.3.0",
     "underscore": "^1.9.1",
-    "winston": "^3.2.1",
-    "winston-compat": "^0.1.4",
-    "winston-transport": "^4.3.0",
     "xml2js": "^0.4.19",
     "xml2json": "^0.11.2"
   },

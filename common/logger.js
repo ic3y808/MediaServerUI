@@ -1,108 +1,35 @@
-const path = require("path");
-const winston = require("winston");
-const rotater = require("./log-rotator");
+const logger = require("electron-log");
+const watch = require("node-watch");
 const electron = require("electron");
-const log = require("electron-log");
 const { ipcRenderer } = electron;
-log.catchErrors();
+logger.catchErrors();
+const low = require("lowdb");
+const FileSync = require("lowdb/adapters/FileSync");
+const adapter = new FileSync(process.env.LOGS_DATABASE);
+const db = low(adapter);
+
+db.defaults({ logs: [] }).write();
 
 module.exports.callback = {};
 
-var rotaterTransport = new (winston.transports.DailyRotateFile)({
-  filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
-  datePattern: "YYYY-MM-DD-HH",
-  zippedArchive: true,
-  json: true,
-  maxSize: "20m",
-  maxFiles: "14d"
-});
-
-
-const transports = {
-  log: new winston.transports.File({
-    filename: path.join(process.env.LOGS_DIR, "application-%DATE%.log"),
-    json: true,
-    timestamp: true,
-  }),
-  console: new winston.transports.Console({
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.metadata({ fillExcept: ["message", "level", "timestamp", "label"] }),
-      //winston.format.colorize(),
-      winston.format.printf((info) => {
-        let out = `${info.timestamp} [${info.level}]: ${info.message}`;
-        if (info.metadata.error) {
-          out = out + " " + info.metadata.error;
-          if (info.metadata.error.stack) {
-            out = out + " " + info.metadata.error.stack;
-          }
-        }
-        return out;
-      })
-    )
-  }),
-  DailyRotateFile: rotaterTransport
-};
-
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  defaultMeta: { service: "user-service" },
-  transports: [
-    transports.DailyRotateFile
-  ]
-});
-
-
-if (process.env.MODE === "dev" || process.env.MODE === "test") {
-  transports.log.level = "debug";
-  transports.console.level = "debug";
-}
-
-
-rotaterTransport.on("new", (newFilename) => {
-  transports.log.filename = newFilename;
-  logger.configure({
-    transports: [
-      transports.DailyRotateFile,
-      transports.log,
-      transports.console
-    ]
-  });
-});
-
-rotaterTransport.on("rotate", function (oldFilename, newFilename) {
-  transports.log.filename = newFilename;
-  logger.configure({
-    transports: [
-      transports.DailyRotateFile,
-      transports.log,
-      transports.console
-    ]
-  });
-});
-
-rotaterTransport.on("archive", function (newFilename) {
-  transports.log.filename = newFilename;
-  logger.configure({
-    transports: [
-      transports.DailyRotateFile,
-      transports.log,
-      transports.console
-    ]
-  });
-});
-
-module.exports.log = function (method, obj) {
-  if (typeof obj === "string" || obj instanceof String) { logger.log(method, "from client: " + obj); }
-  else {
-    if (obj) {
-      logger.log(obj);
-    }
+module.exports.log = function (obj) {
+  if (process.env.MODE === "dev" || process.env.MODE === "test") {
+    console.log(obj.level + ":" + obj.label + ":" + obj.message);
   }
+
+  try {
+    db.read();
+    db.get("logs")
+      .push({ timestamp: new Date().toISOString(), level: obj.level, label: obj.label, message: obj.message })
+      .write();
+  } catch (err) {
+    if (err) {
+      console.log(err.message);
+      console.log(err.stack);
+    }
+    console.log(JSON.stringify(obj));
+  }
+
   if (ipcRenderer) { ipcRenderer.send("log-update"); }
   if (typeof module.exports.callback === "function") { module.exports.callback(); }
 };
@@ -112,7 +39,7 @@ module.exports.debug = function (label, message) {
   obj.level = "debug";
   obj.label = label;
   obj.message = message;
-  module.exports.log("debug", obj);
+  module.exports.log(obj);
 };
 
 module.exports.info = function (label, message) {
@@ -120,32 +47,53 @@ module.exports.info = function (label, message) {
   obj.level = "info";
   obj.label = label;
   obj.message = message;
-  module.exports.log("info", obj);
+  module.exports.log(obj);
 };
 
-module.exports.error = function (label, message) {
-  var obj = {};
-  obj.level = "error";
-  obj.label = label;
-  obj.message = message;
-  module.exports.log("error", obj);
+module.exports.error = function (label, err) {
+  if (typeof (err) === "string") {
+    var obj = {};
+    obj.level = "error";
+    obj.label = label;
+    obj.message = err;
+    module.exports.log(obj);
+  } else {
+    var obj1 = {};
+    obj1.level = "error";
+    obj1.label = label;
+    obj1.message = err.message;
+    var obj2 = {};
+    obj2.level = "error";
+    obj2.label = label;
+    obj2.message = err.stack;
+    module.exports.log(obj1);
+    module.exports.log(obj2);
+  }
 };
 
-module.exports.query = function (cb) {
-
-  const options = {
-    from: new Date() - (24 * 60 * 60 * 1000),
-    until: new Date(),
-    limit: 100,
-    order: "desc",
-    fields: ["message", "level", "timestamp", "label"],
-    json: true
-  };
-  logger.query(options, function (err, results) {
-    if (err) {
-      cb(err);
-    } else {
-      cb(results.file);
-    }
+module.exports.watchLogs = function () {
+  watch(process.env.LOGS_DATABASE, (evt, name) => {
+    if (ipcRenderer) { ipcRenderer.send("log-update"); }
+    if (typeof module.exports.callback === "function") { module.exports.callback(); }
   });
+};
+
+module.exports.query = function (totalLimit, cb) {
+  var sql = "SELECT * FROM Logs ORDER BY timestamp DESC";
+  try {
+    db.read();
+    var results = db
+      .get("logs")
+      .sortBy("timestamp")
+      .reverse()
+      .take(100)
+      .value();
+    cb(results);
+  } catch (err) {
+    if (err) {
+      module.exports.error("Logger", err);
+    }
+    module.exports.error("Logger", sql);
+    cb(null);
+  }
 };

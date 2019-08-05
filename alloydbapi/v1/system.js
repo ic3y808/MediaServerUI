@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var structures = require("../../common/structures");
+var logger = require("../../common/logger");
 var { ipcRenderer } = require("electron");
 var fs = require("fs");
 var path = require("path");
@@ -107,7 +108,7 @@ router.get("/scan_status", function (req, res) {
 
 function calculateMemory(val) {
   var thresh = 1000;
-  if (val === undefined || val === null || val === 0) {return  "0 B";}
+  if (val === undefined || val === null || val === 0) { return "0 B"; }
   if (Math.abs(val) < thresh) {
     return val + " B";
   } else {
@@ -159,22 +160,22 @@ function getStats(db) {
   libraryStats.memory_used = calculateMemory(libraryStats.memory_used);
 
   var generalCacheFiles = fs.readdirSync(process.env.CONVERTED_MEDIA_DIR);
-  
+
   var generalCacheSize = 0;
   generalCacheFiles.forEach((fileName) => {
     const stats = fs.statSync(path.join(process.env.CONVERTED_MEDIA_DIR, fileName));
     generalCacheSize += stats.size;
   });
   var starredCacheFiles = fs.readdirSync(process.env.CONVERTED_STARRED_MEDIA_DIR);
-  
+
   var starredCacheSize = 0;
   starredCacheFiles.forEach((fileName) => {
     const stats = fs.statSync(path.join(process.env.CONVERTED_STARRED_MEDIA_DIR, fileName));
     starredCacheSize += stats.size;
   });
 
-  libraryStats.total_cache_size= calculateMemory(generalCacheSize);
-  libraryStats.total_starred_cache_size= calculateMemory(starredCacheSize);
+  libraryStats.total_cache_size = calculateMemory(generalCacheSize);
+  libraryStats.total_starred_cache_size = calculateMemory(starredCacheSize);
   var starredCache = fs.readdirSync(process.env.CONVERTED_STARRED_MEDIA_DIR);
 
 
@@ -211,10 +212,10 @@ router.get("/do_backup", function (req, res) {
 
   res.locals.notify("Starting Backup", "Backup requested");
   res.locals.backup.doBackup().then(() => {
-    console.log("Backup Complete");
+    logger.info("api/system/do_backup", "Backup Success");
     res.send(new structures.StatusResult("success"));
   }).catch((err) => {
-    console.log(JSON.stringify(err));
+    logger.error("api/system/do_backup", err);
     res.send(new structures.StatusResult("failed"));
   });
 });
@@ -229,7 +230,7 @@ router.get("/do_backup", function (req, res) {
 router.post("/do_restore", function (req, res) {
 
   res.locals.notify("Restoring backup", "Restore requested");
-  console.log("Restore requested");
+  logger.info("api/system/do_restore", "restore requested");
   res.locals.db.close();
   var dbPath = process.env.DATABASE;
   var dbWalPath = process.env.DATABASE_WAL;
@@ -245,8 +246,7 @@ router.post("/do_restore", function (req, res) {
       if (fs.existsSync(dbShmPath)) { fs.renameSync(dbShmPath, dbShmPath + ".old"); }
 
       fs.renameSync(restoreFile, dbPath);
-
-      console.log("shutting down.... restart server");
+      logger.info("api/system/do_restore", "shutting down.... restart server");
       setTimeout(() => {
         process.exit(0);
       }, 5000);
@@ -264,11 +264,8 @@ router.post("/do_restore", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/clear_cache", function (req, res) {
-
   res.locals.notify("Clearing Cache", "Clear Cache requested");
-  console.log("Clearing Cache");
-  
-
+  logger.info("api/system/clear_cache", "Clearing Cache");
 });
 
 /**
@@ -279,11 +276,8 @@ router.get("/clear_cache", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/clear_starred_cache", function (req, res) {
-
   res.locals.notify("Clearing Starred Cache", "Clear Starred Cache requested");
-  console.log("Clearing Starred Cache");
-  
-
+  logger.info("api/system/clear_starred_cache", "Clearing Starred Cache");
 });
 
 /**
@@ -296,7 +290,7 @@ router.get("/clear_starred_cache", function (req, res) {
 router.get("/start_recache", function (req, res) {
   if (ipcRenderer) { ipcRenderer.send("mediascanner-recache-start"); }
   res.locals.notify("Starting Recache", "Start Recache Requested");
-  console.log("Starting Recache");
+  logger.info("api/system/start_recache", "Starting Re-Cache");
   var status = new structures.StatusResult(res.locals.mediaScanner.startRecache());
   res.send(status);
 

@@ -4,12 +4,12 @@ const mime = require("mime-types");
 const fs = require("fs");
 const _ = require("lodash");
 const del = require("del");
-const klawSync = require("klaw-sync");
 const shell = require("shelljs");
-var http = require("http");
 var convert = require("../../common/convert");
+var logger = require("../../common/logger");
 const { ipcRenderer } = require("electron");
 const mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
+var loggerTag = "MediaScannerBase";
 
 module.exports = class MediaScannerBase {
 
@@ -20,12 +20,6 @@ module.exports = class MediaScannerBase {
     this.tickets = {};
   }
 
-
-  error(data) { ipcRenderer.send("error", { source: "MediaScanner", data: data }); }
-  debug(data) { ipcRenderer.send("debug", { source: "MediaScanner", data: data }); }
-  log(data) { ipcRenderer.send("log", { source: "MediaScanner", data: data }); }
-  info(data) { ipcRenderer.send("info", { source: "MediaScanner", data: data }); }
-
   shouldCancel() {
     return this.scanStatus.shouldCancel;
   }
@@ -33,7 +27,7 @@ module.exports = class MediaScannerBase {
   cancelScan() {
     if (this.isScanning()) {
       this.updateStatus("Cancelling scan", false);
-      this.info("Cancelling scan");
+      logger.info(loggerTag, "Cancelling scan");
       this.scanStatus.shouldCancel = true;
       setTimeout(() => {
         this.scanStatus.shouldCancel = false;
@@ -41,7 +35,7 @@ module.exports = class MediaScannerBase {
       this.tickets = {};
     } else {
       this.updateStatus("Cancelled scanning", false);
-      this.info("Cancelled scanning");
+      logger.info(loggerTag, "Cancelled scanning");
     }
   }
 
@@ -59,7 +53,6 @@ module.exports = class MediaScannerBase {
     this.checkQueue();
     Object.assign(opts, this.scanStatus);
     ipcRenderer.send("mediascanner-status", opts);
-    //this.info(JSON.stringify(opts));
   }
 
 
@@ -103,7 +96,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkCounts() {
-    this.info("checking counts");
+    logger.info(loggerTag, "checking counts");
     this.updateStatus("checking counts", true);
     var genres = this.db.prepare("SELECT * FROM Genres").all();
     genres.forEach((g) => {
@@ -127,7 +120,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkSortOrder() {
-    this.info("checking table sort orders");
+    logger.info(loggerTag, "checking table sort orders");
     this.updateStatus("checking base sort order", true);
     var allArtists = this.db.prepare("SELECT * FROM Artists ORDER BY name COLLATE NOCASE ASC").all();
     for (var i = 0; i < allArtists.length; ++i) {
@@ -136,7 +129,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyArtists() {
-    this.info("checking empty artists");
+    logger.info(loggerTag, "checking empty artists");
     this.updateStatus("checking missing media", true);
     var allMedia = this.db.prepare("SELECT * FROM Artists").all();
     allMedia.forEach((artist) => {
@@ -149,7 +142,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyAlbums() {
-    this.info("checking empty albums");
+    logger.info(loggerTag, "checking empty albums");
     this.updateStatus("checking missing albums", true);
     var allMedia = this.db.prepare("SELECT * FROM Albums").all();
     allMedia.forEach((album) => {
@@ -162,7 +155,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyGenres() {
-    this.info("checking empty genres");
+    logger.info(loggerTag, "checking empty genres");
     this.updateStatus("checking empty genres", true);
     var allMedia = this.db.prepare("SELECT * FROM Genres").all();
     allMedia.forEach((genre) => {
@@ -175,7 +168,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyPlaylists() {
-    this.info("checking empty playlists");
+    logger.info(loggerTag, "checking empty playlists");
     this.updateStatus("checking empty playlists", true);
     var allPlayslits = this.db.prepare("SELECT * FROM Playlists").all();
     allPlayslits.forEach((playlist) => {
@@ -188,7 +181,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkExtraAlbumArt() {
-    this.info("checking extra art");
+    logger.info(loggerTag, "checking extra art");
     this.updateStatus("checking extra art", true);
     if (!fs.existsSync(process.env.COVER_ART_DIR)) {
       fs.mkdirSync(process.env.COVER_ART_DIR);
@@ -203,7 +196,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkTracksExist() {
-    this.info("checking missing tracks");
+    logger.info(loggerTag, "checking missing tracks");
     var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
     allTracks.forEach((track) => {
       if (!fs.existsSync(track.path)) {
@@ -214,7 +207,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkHistory() {
-    this.info("checking history");
+    logger.info(loggerTag, "checking history");
     var allHistory = this.db.prepare("SELECT * FROM History").all();
     allHistory.forEach((item) => {
       var track = this.db.prepare("SELECT * FROM Tracks WHERE id=?").get(item.id);
@@ -231,8 +224,8 @@ module.exports = class MediaScannerBase {
           var insert = this.db.prepare(sql);
           insert.run(item);
         } catch (err) {
-          if (err) { this.error(JSON.stringify(err)); }
-          this.info(sql);
+          if (err) { logger.error(loggerTag, err); }
+          logger.info(loggerTag, sql);
         }
       }
     });
@@ -329,7 +322,7 @@ module.exports = class MediaScannerBase {
 
             fs.writeFile(coverFile, metadata.common.picture[0].data, (err) => {
               if (err) {
-                this.error(JSON.stringify(err));
+                logger.error(loggerTag, err);
               }
               this.db.prepare("UPDATE Tracks SET cover_art=? WHERE id=?").run(coverId, track.id);
             });
@@ -342,14 +335,14 @@ module.exports = class MediaScannerBase {
   }
 
   createAlbumArt() {
-    this.info("checking missing art");
+    logger.info(loggerTag, "checking missing art");
     this.updateStatus("checking missing art", true);
     var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
     return this.parseFiles(allTracks);
   }
 
   cleanup() {
-    this.info("Starting cleanup");
+    logger.info(loggerTag, "Starting cleanup");
     this.updateStatus("Cleanup", false);
     this.checkTracksExist();
     this.checkEmptyPlaylists();
@@ -359,19 +352,19 @@ module.exports = class MediaScannerBase {
     this.checkCounts();
     this.checkHistory();
     this.checkCache();
-    this.info("Cleanup complete");
+    logger.info(loggerTag, "Cleanup complete");
     this.updateStatus("Cleanup Complete", false);
   }
 
   incrementalCleanup() {
     if (this.isScanning()) {
-      this.debug("scan in progress");
+      logger.debug(loggerTag, "scan in progress");
     } else {
       this.updateStatus("incremental Cleanup", true);
-      this.info("incrementalCleanup");
+      logger.info(loggerTag, "incrementalCleanup");
       // this.cleanup();
       this.createAlbumArt().then(() => {
-        this.info("Incremental Cleanup complete");
+        logger.info(loggerTag, "Incremental Cleanup complete");
         this.updateStatus("Cleanup Complete", false);
       });
     }
@@ -388,17 +381,17 @@ module.exports = class MediaScannerBase {
         });
       } else { this.processCacheTrack(settings, tracks); }
     } else {
-      this.info("Caching tracks complete");
+      logger.info(loggerTag, "Caching tracks complete");
       this.updateStatus("Caching tracks complete", false);
     }
   }
 
   recache() {
     if (this.isScanning()) {
-      this.debug("scan in progress");
+      logger.debug(loggerTag, "scan in progress");
     } else {
       this.updateStatus("Recaching Starred", true);
-      this.info("Recache Starred");
+      logger.info(loggerTag, "Recache Starred");
 
       var settingsResult = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
       if (settingsResult && settingsResult.settings_value) {
@@ -407,7 +400,7 @@ module.exports = class MediaScannerBase {
 
           if (settings.alloydb_streaming_format === "Unchanged") {
             this.updateStatus("Recache Finished, Cannot use setting: Unchanged", false);
-            this.info("Recache Finished, Cannot use setting: Unchanged");
+            logger.info(loggerTag, "Recache Finished, Cannot use setting: Unchanged");
             return;
           }
           var tracksToCache = [];
@@ -495,13 +488,10 @@ module.exports = class MediaScannerBase {
       insert.run(values);
     } catch (err) {
       if (err) {
-        console.log(err.message);
-        console.log(err.stack);
-        this.error(err.message);
-        this.error(err.stack);
+        logger.error(loggerTag, err);
       }
-      this.info(sql);
-      this.info(values);
+      logger.error(loggerTag, sql);
+      logger.error(loggerTag, values);
     }
   }
 
@@ -558,10 +548,7 @@ module.exports = class MediaScannerBase {
       }
       this.writeDb(data, "ScanEvents");
     } catch (err) {
-      console.log(err.message);
-      console.log(err.stack);
-      this.error(err.message);
-      this.error(err.stack);
+      logger.error(loggerTag, err);
     }
   }
 };
