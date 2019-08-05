@@ -3,6 +3,7 @@ const { CronJob } = require("cron");
 const moment = require("moment");
 const path = require("path");
 var logger = {};
+var loggerTag = "Scheduler";
 if (module.hot) { module.hot.accept(); }
 var scheduler = {};
 
@@ -24,7 +25,7 @@ class Scheduler {
         var nextDate = job.nextDates().local().format("hh:mm:ss a MM/DD/YY");
         results.push({ name: job.name, running: job.running, callback: job.callback, source: job.cronTime.source, timezone: job.cronTime.zone, lastExecution: lastDate, nextExecution: nextDate });
       } catch (err) {
-        log.error(JSON.stringify(err));
+        logger.error(loggerTag, err);
       }
     });
     return results;

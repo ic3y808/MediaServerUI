@@ -8,7 +8,9 @@ const klawSync = require("klaw-sync");
 const escape = require("escape-string-regexp");
 const { ipcRenderer } = require("electron");
 var Queue = require("better-queue");
+var loggerTag = "MediaScanner";
 var utils = {};
+var logger = {};
 var structures = {};
 var MediaScannerBase = {};
 var mm = {};
@@ -18,6 +20,7 @@ var scanner = {};
 
 ipcRenderer.on("mediascanner-start", (args, env) => {
   process.env = env;
+  logger = require(path.join(process.env.APP_DIR, "common", "logger"));
   utils = require(path.join(process.env.APP_DIR, "common", "utils"));
   structures = require(path.join(process.env.APP_DIR, "common", "structures"));
   MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
@@ -73,7 +76,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       }
       if (this.isScanning()) {
         this.updateStatus("Scan in progress", true);
-        this.info("Scan in progress");
+        logger.info(loggerTag, "Scan in progress");
       } else {
         this.resetStatus();
         this.updateStatus("Start Full Scan", true);
@@ -198,7 +201,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           track.genre_id = existingGenre[0].id;
         }
       } catch (err) {
-        this.error(JSON.stringify(err));
+        logger.error(loggerTag, err);
       }
       return track;
     }
@@ -247,7 +250,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           if (data) {
             fs.writeFile(coverFile, data, function (err) {
               if (err) {
-                this.error(JSON.stringify(err));
+                logger.error(loggerTag, err);
               }
             });
           }
@@ -366,7 +369,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
 
                   }
                 } catch (err) {
-                  this.error(err.message);
+                  logger.error(loggerTag, err);
                   this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
                 }
               }
@@ -374,7 +377,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           }
         }
       } catch (err) {
-        this.error(JSON.stringify(err.message));
+        logger.error(loggerTag, err);
         this.updateStatus("Failed to fetch URL " + artistUrl, true);
       }
     }
@@ -392,7 +395,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           }
         }
       } catch (err) {
-        this.error(err.message);
+        logger.error(loggerTag, err);
       }
     }
 
@@ -407,7 +410,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
 
       if (mediaPaths.length === 0) {
-        this.info("No Media Path Defined ");
+        logger.info(loggerTag, "No Media Path Defined ");
         return;
       }
       mediaPaths.forEach((mediaPath) => {
@@ -432,31 +435,31 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
 });
 
 ipcRenderer.on("mediascanner-scan-start", () => {
-  scanner.info("starting scan");
+  logger.info(loggerTag, "starting scan");
   scanner.startScan();
 });
 
 ipcRenderer.on("mediascanner-scan-cancel", () => {
-  scanner.info("cancel scan");
+  logger.info(loggerTag, "cancel scan");
   scanner.cancelScan();
 });
 
 ipcRenderer.on("mediascanner-cleaup-start", () => {
-  scanner.info("cancel scan");
+  logger.info(loggerTag, "cancel scan");
   scanner.cleanup();
 });
 
 ipcRenderer.on("mediascanner-inc-cleaup-start", () => {
-  scanner.info("cancel scan");
+  logger.info(loggerTag, "cancel scan");
   scanner.incrementalCleanup();
 });
 
 ipcRenderer.on("mediascanner-watcher-configure", () => {
-  scanner.info("Reconfigure File Watcher");
+  logger.info(loggerTag, "Reconfigure File Watcher");
   scanner.configFileWatcher();
 });
 
 ipcRenderer.on("mediascanner-recache-start", () => {
-  scanner.info("Recache Media");
+  logger.info(loggerTag, "Recache Media");
   scanner.recache();
 });

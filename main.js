@@ -210,7 +210,6 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
 
 function createServerWindow() {
   return new Promise((resolve, reject) => {
-    logger.debug(loggerTag, "api enabled: " + isUiEnabled());
     if (!isApiEnabled()) { resolve(); }
     else {
       serverWindow = createWindow(1280, 610, 1024, 300, "Server", false, "server.jade", () => { });
@@ -411,7 +410,9 @@ function createBaseServer() {
     var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
     views = views.concat(uiViews);
 
+    logger.debug(loggerTag, "api enabled: " + isUiEnabled());
     logger.debug(loggerTag, "ui enabled: " + isUiEnabled());
+
     if (isUiEnabled()) {
       appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "content")));
       var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "views"));
@@ -468,7 +469,7 @@ function createBaseServer() {
           obj.level = data.method;
           obj.label = "clientui";
           obj.message = data.message;
-          logger.log(data.method, obj);
+          logger.log(obj);
         });
       });
 
@@ -485,7 +486,7 @@ function createBaseServer() {
       var err = new Error("Not Found");
       err.status = 404;
       err.url = req.path;
-      logger.error(loggerTag, JSON.stringify(err));
+      logger.error(loggerTag, err);
       next(err);
     });
 
@@ -494,7 +495,7 @@ function createBaseServer() {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
         err.url = req.path;
-        logger.error(loggerTag, JSON.stringify(err));
+        logger.error(loggerTag, err);
         res.render("error", {
           message: err.message,
           error: err
@@ -503,7 +504,7 @@ function createBaseServer() {
     } else {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        logger.error(loggerTag, JSON.stringify(err));
+        logger.error(loggerTag, err);
         res.render("error", {
           message: err.message,
           error: {}

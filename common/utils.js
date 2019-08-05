@@ -1,7 +1,8 @@
 var path = require("path");
 const log = require("electron-log");
 var supportedExtensions = [".mp3", ".wav", ".flac", ".ogg", ".aiff", ".aac"];
-
+var logger = require("./logger");
+var loggerTag = "utils";
 module.exports.normalizePort = function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -23,11 +24,11 @@ module.exports.onError = function onError(error) {
 
   switch (error.code) {
     case "EACCES":
-      log.error("requires elevated privileges");
+      logger.error(loggerTag, "requires elevated privileges");
       process.exit(1);
       break;
     case "EADDRINUSE":
-      log.error(module.exports.normalizePort(process.env.API_UI_PORT || "3000") + " is already in use");
+      logger.error(loggerTag, process.env.API_UI_PORT + " is already in use");
       process.exit(1);
       break;
     default:
@@ -145,9 +146,11 @@ module.exports.writeDb = function (data, table) {
 
     insert.run(values);
   } catch (err) {
-    if (err) { log.error(JSON.stringify(err)); }
-    log.info(sql);
-    log.info(values);
+    if (err) {
+      logger.error(loggerTag, err);
+    }
+    logger.error(loggerTag, sql);
+    logger.error(loggerTag, values);
   }
 
 };

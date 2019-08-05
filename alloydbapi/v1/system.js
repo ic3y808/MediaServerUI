@@ -239,7 +239,10 @@ router.post("/do_restore", function (req, res) {
   var restoreFile = path.join(process.env.BACKUP_DATA_DIR, sampleFile.name);
   setTimeout(() => {
     sampleFile.mv(restoreFile, function (err) {
-      if (err) { return res.status(500).send(err); }
+      if (err) {
+        logger.error("api/system/do_restore", err);
+        return res.status(500).send(err);
+      }
 
       if (fs.existsSync(dbPath)) { fs.renameSync(dbPath, dbPath + ".old"); }
       if (fs.existsSync(dbWalPath)) { fs.renameSync(dbWalPath, dbWalPath + ".old"); }

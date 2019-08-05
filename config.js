@@ -82,10 +82,14 @@ module.exports.getConfig = function () {
 
 };
 
+var logger = require("./common/logger");
+var loggerTag = "config";
+
 module.exports.saveConfig = function () {
   return new Promise((resolve, reject) => {
     fs.writeFileSync(process.env.CONFIG_FILE, JSON.stringify(module.exports.config, null, 2), function (err, data) {
       if (err) {
+        logger.error(loggerTag, err);
         reject(err);
       }
       else {
@@ -94,9 +98,6 @@ module.exports.saveConfig = function () {
     });
   });
 };
-
-var logger = require("./common/logger");
-var loggerTag = "config";
 
 var confResult = module.exports.getConfig();
 
