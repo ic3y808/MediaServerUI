@@ -5,7 +5,6 @@ const dist = path.resolve(__dirname, "dist");
 const nodePath = path.resolve(__dirname, "node_modules");
 var config = require("../common/config");
 var logger = require("../common/logger");
-
 var profile = {};
 profile.plugins = [];
 profile.module = {};
@@ -16,13 +15,13 @@ if (process.env.MODE === "dev") {
     app: ["./web/frontend/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
-  logger.info("receiver", "packing dev mode source");
+  logger.info("alloycast", "packing dev mode source");
 } else {
   profile.devtool = "cheap-module-source-map";
   profile.entry = {
     app: ["./web/frontend/app.js"]
   };
-  logger.info("receiver", "packing release mode source");
+  logger.info("alloycast", "packing release mode source");
 }
 
 // Required plugins 

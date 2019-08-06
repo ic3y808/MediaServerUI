@@ -6,6 +6,8 @@ var utils = require("../../common/utils");
 var _ = require("lodash");
 var moment = require("moment");
 var db = {};
+var logger = require("../../common/logger");
+
 
 /**
  * This function comment is parsed by doctrine
@@ -517,6 +519,7 @@ router.put("/history", function (req, res) {
 
     res.send(new structures.StatusResult("success"));
   } catch (err) {
+    logger.error("api/browse/history", err);
     res.send(new structures.StatusResult("failed"));
   }
 });

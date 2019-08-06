@@ -393,25 +393,21 @@ html(ng-app='alloydb', lang='en-us')
                             form.navbar-form(style="margin-left: auto;")
                               span.bmd-form-group
                                 .input-group.no-border
-                                  select.form-control.selectpicker(data-style="btn-info", ng-model="selectedLogLevel")
-                                    option(ng-repeat="level in logLevels", selected="level === selectedLogLevel" value="{{level}}") {{level}}
-                         
-
-
+                                  select.form-control.selectpicker(data-style="btn-info", ng-model="logLevels.value",ng-options="v for v in logLevels.values")
                       .card-body
-                        table.table
+                        table.table.table-nonfluid.log-table
                           thead
                             tr
-                              th Timestamp
-                              th Source
-                              th Level
-                              th Message
+                              th(style="width: 0px") Timestamp
+                              th(style="width: 0px") Level
+                              th(style="width: 0px") Source                              
+                              th(style="width: 100%") Message
                               
                           tbody
                             tr(ng-class="checkLogEntry(entry)", ng-repeat="entry in logs | filter:filterLogEntry()")
-                              td(style="min-width:150px;") {{formatTime(entry.timestamp)}}
-                              td {{entry.label}}
-                              td {{entry.level}}
+                              td(style="white-space: nowrap;") {{formatTime(entry.timestamp)}}
+                              td(style="white-space: nowrap;") {{entry.level}}
+                              td(style="white-space: nowrap;") {{entry.label}}                              
                               td {{entry.message}}
 
 

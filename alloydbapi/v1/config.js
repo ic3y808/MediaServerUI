@@ -7,6 +7,7 @@ var { ipcRenderer } = require("electron");
 var structures = require("../../common/structures");
 const drivelist = require("drivelist");
 var utils = require("../../common/utils");
+var logger = require("../../common/logger");
 /**
  * This function comment is parsed by doctrine
  * @route GET /config/mediapaths
@@ -40,6 +41,7 @@ var addMediaPath = function (db, displayName, mPath) {
       return new structures.StatusResult(info);
     }
   } catch (err) {
+    logger.error("api/config/addMediaPath", err);
     return new structures.StatusResult("failed");
   }
 };
@@ -82,6 +84,7 @@ var removeMediaPath = function (db, displayName, mPath) {
       return new structures.StatusResult("nochange");
     }
   } catch (err) {
+    logger.error("api/config/removeMediaPath", err);
     return new structures.StatusResult("Failed");
   }
 };
@@ -113,8 +116,7 @@ var getPath = function (query, cb) {
   if (!query) {
     drivelist.list().then((drives) => {
       drives.forEach((drive) => {
-        if(drive.mountpoints[0])
-          {drive.path = drive.mountpoints[0].path;}
+        if (drive.mountpoints[0]) { drive.path = drive.mountpoints[0].path; }
         drive.size = utils.toHumanReadable(drive.size);
       });
       cb(drives);
@@ -124,9 +126,8 @@ var getPath = function (query, cb) {
     var currentDir = path.normalize(query);
     fs.readdir(currentDir, function (err, files) {
       if (err) {
-        console.log(err);
+        logger.error("api/config/getPath", err);
         return;
-        //cb(new structures.StatusResult(err));
       }
       var data = [];
       files.forEach(function (file) {
@@ -140,10 +141,7 @@ var getPath = function (query, cb) {
             });
           }
         } catch (e) {
-          if (e) {
-            console.log(e);
-            //cb(new structures.StatusResult(e));
-          }
+          logger.error("api/config/getPath", e);
         }
       });
       data = _.sortBy(data, function (f) {
@@ -174,8 +172,7 @@ router.get("/file_list", function (req, res) {
 
   } catch (e) {
     if (e) {
-      console.log(e);
-      //res.json(new structures.StatusResult(JSON.stringify(e)));
+      logger.error("api/config/file_list", e);
     }
   }
 });
@@ -188,7 +185,7 @@ ipcRenderer.on("config-get-file-list", (args, data) => {
 
   } catch (e) {
     if (e) {
-      console.log(e);
+      logger.error("api/config/config-get-file-list", e);
       ipcRenderer.send("config-file-list", e.message);
     }
   }

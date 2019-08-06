@@ -27,7 +27,6 @@ class SidenavController {
       if (newPlaylist) {
         newPlaylist.then((result) => {
           this.AlloyDbService.refreshPlaylists();
-          console.log(result);
         });
       }
       $("#addPlaylistModal").modal("hide");

@@ -49,7 +49,6 @@ export default class Backend {
           if (settings.data.alloydb_lastfm_password) {
             $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
           }
-          console.log($rootScope.settings.alloydb);
           setup();
         }
         this.AppUtilities.apply();

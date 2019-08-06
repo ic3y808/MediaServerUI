@@ -2,8 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const dist = path.resolve(__dirname, "dist");
 const nodePath = path.resolve(__dirname, "node_modules");
-
-
+var logger = require("../common/logger");
+var loggerTag = "webpack";
 var profile = {};
 profile.plugins = [];
 profile.module = {};
@@ -14,13 +14,13 @@ if (process.env.MODE === "dev") {
     app: ["./alloydbweb/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
-  console.log("packing dev mode source");
+  logger.info(loggerTag, "packing dev mode source");
 } else {
   profile.devtool = "inline-source-map";
   profile.entry = {
     app: ["./app.js"]
   };
-  console.log("packing release mode source");
+  logger.info(loggerTag, "packing release mode source");
 }
 
 // Required plugins 

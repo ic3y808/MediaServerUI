@@ -11,7 +11,6 @@ export default function ($rootScope, $location, $timeout, $window) {
       var observer = new MutationObserver(function (mutations) {
         $timeout(function () {
           var pos = $rootScope.scrollPos[$location.path()];
-         // console.log($location.path() + " " + pos);
           $(".scrollsaver").scrollTop(pos);
           $rootScope.okSaveScroll = true;
         });

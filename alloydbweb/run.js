@@ -88,19 +88,11 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
               AlloyDbService.refreshPlaylists();
             });
           });
-
-
           break;
       }
-
-
-      console.log("adding id " + opts[1] + " to " + playlist);
-      //settings.menuSelected.call(this, $invokedOn, $selectedMenu);
     });
 
     $contextMenu.on("click", "a", function (e) {
-
-
       $contextMenu.hide();
     });
   };

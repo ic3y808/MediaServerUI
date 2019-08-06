@@ -16,6 +16,7 @@ var io = require("socket.io")(server);
 const migrate = require("./common/migrate");
 var sr = require("screenres");
 const url = require("url");
+var loggerTag = "alloydb";
 
 let mainWindow = null;
 let serverWindow = null;
@@ -27,6 +28,7 @@ let tray = null;
 var timer = {};
 var db = {};
 
+logger.info(loggerTag, "Starting Alloy"); 
 
 function isDev() { return process.env.MODE === "dev"; }
 function isTest() { return process.env.MODE === "test"; }
@@ -98,47 +100,47 @@ function onClose(e) {
 }
 
 function doCheckpoint() {
-  logger.info("alloydb", "Starting checkpoint");
+  logger.info(loggerTag, "Starting checkpoint");
   db.checkpoint();
-  logger.info("alloydb", "Checkpoint Complete");
+  logger.info(loggerTag, "Checkpoint Complete");
 }
 
 function doBackup() {
-  logger.info("alloydb", "Starting backup");
+  logger.info(loggerTag, "Starting backup");
   if (!fs.existsSync(process.env.BACKUP_DATA_DIR)) { shell.mkdir("-p", process.env.BACKUP_DATA_DIR); }
   db.backup(path.join(process.env.BACKUP_DATA_DIR, `backup-${Date.now()}.db`));
-  logger.info("alloydb", "Backup Complete");
+  logger.info(loggerTag, "Backup Complete");
 }
 
 function doCleanup() {
-  logger.info("alloydb", "Starting Cleanup");
+  logger.info(loggerTag, "Starting Cleanup");
   mediaScannerWindow.webContents.send("mediascanner-cleaup-start");
 }
 
 function doIncCleanup() {
-  logger.info("alloydb", "Starting Incremental Cleanup");
+  logger.info(loggerTag, "Starting Incremental Cleanup");
   mediaScannerWindow.webContents.send("mediascanner-inc-cleaup-start");
 }
 
 function doRescan() {
-  logger.info("alloydb", "Starting Rescan");
+  logger.info(loggerTag, "Starting Rescan");
   mediaScannerWindow.webContents.send("mediascanner-scan-start");
 }
 
 function doReache() {
-  logger.info("alloydb", "Starting Re-Cache of streamable media");
+  logger.info(loggerTag, "Starting Re-Cache of streamable media");
   mediaScannerWindow.webContents.send("mediascanner-recache-start");
 }
 
 function doToggleApiServer(e, data) {
-  logger.info("alloydb", "Changing API server settings to " + JSON.stringify(data));
+  logger.info(loggerTag, "Changing API server settings to " + JSON.stringify(data));
   if (data.enabled === true) { settings.config.api_enabled = "true"; }
   else { settings.config.api_enabled = "false"; }
   settings.saveConfig();
 }
 
 function doToggleUiServer(e, data) {
-  logger.info("alloydb", "Changing UI server settings to " + JSON.stringify(data));
+  logger.info(loggerTag, "Changing UI server settings to " + JSON.stringify(data));
   if (data.enabled === true) { settings.config.ui_enabled = "true"; }
   else { settings.config.ui_enabled = "false"; }
   settings.saveConfig();
@@ -164,7 +166,10 @@ function doLoadSettings(key, callback) {
         callback({ key: key, data: settings });
       } callback(null);
     } callback(null);
-  } catch (err) { callback(null); }
+  } catch (err) {
+    logger.error(loggerTag, err);
+    callback(null);
+  }
 }
 
 function doSaveSettings(key, value, callback) {
@@ -172,16 +177,16 @@ function doSaveSettings(key, value, callback) {
     const stmt = db.prepare("INSERT OR REPLACE INTO Settings (settings_key, settings_value) VALUES (?, ?) ON CONFLICT(settings_key) DO UPDATE SET settings_value=?");
     var obj = JSON.stringify(value);
     const info = stmt.run(key, obj, obj);
-  } catch (error) {
-    if (error) {
-      log.error("alloyui", JSON.stringify(error));
+  } catch (err) {
+    if (err) {
+      logger.error(loggerTag, err);
     }
   }
   callback();
 }
 
 function queryLog() {
-  logger.query((results) => {
+  logger.query(300, (results) => {
     if (mainWindow) { mainWindow.webContents.send("logger-logs", results); }
   });
 }
@@ -198,7 +203,7 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
     win.webContents.openDevTools({ detach: true });
   }
   win.loadURL("http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
-  console.log("http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
+  logger.debug(loggerTag, "loading page: http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
   win.setTitle(title);
   win.on("close", close);
   return win;
@@ -298,7 +303,10 @@ function createMainWindow() {
   return new Promise((resolve, reject) => {
     var res = sr.get();
     mainWindow = createWindow(res[0] * 0.6, res[1] * 0.7, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
-    mainWindow.webContents.once("dom-ready", () => { resolve(); });
+    mainWindow.webContents.once("dom-ready", () => {
+      logger.watchLogs();
+      resolve();
+    });
   });
 }
 
@@ -356,7 +364,7 @@ function createTrayMenu() {
 }
 
 function createTasks() {
-  logger.debug("alloydb", "creating tasks");
+  logger.debug(loggerTag, "creating tasks");
   if (isApiEnabled()) {
     schedulerWindow.webContents.send("scheduler-create-jobs", [
       { name: "DB Checkpoint", time: "0 */6 * * *", callback: "task-database-checkpoint" },
@@ -403,7 +411,9 @@ function createBaseServer() {
     var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
     views = views.concat(uiViews);
 
-    console.log("ui enabled: " + isUiEnabled());
+    logger.debug(loggerTag, "api enabled: " + isUiEnabled());
+    logger.debug(loggerTag, "ui enabled: " + isUiEnabled());
+
     if (isUiEnabled()) {
       appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "content")));
       var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "views"));
@@ -412,8 +422,8 @@ function createBaseServer() {
       views = views.concat(webViews, componentdirs, directivedirs);
 
       if (isDev()) {
-        logger.info("alloydb", "Running in DEV mode");
-        logger.info("alloydb", "compiling webpack");
+        logger.info(loggerTag, "Running in DEV mode");
+        logger.info(loggerTag, "compiling webpack");
         const webpack = require("webpack");
         const webpackconfig = require("./alloydbweb/webpack.config");
         const webpackMiddleware = require("webpack-dev-middleware");
@@ -460,7 +470,7 @@ function createBaseServer() {
           obj.level = data.method;
           obj.label = "clientui";
           obj.message = data.message;
-          logger.log(data.method, obj);
+          logger.log(obj);
         });
       });
 
@@ -477,7 +487,7 @@ function createBaseServer() {
       var err = new Error("Not Found");
       err.status = 404;
       err.url = req.path;
-      logger.error("alloydb", JSON.stringify(err));
+      logger.error(loggerTag, err);
       next(err);
     });
 
@@ -486,7 +496,7 @@ function createBaseServer() {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
         err.url = req.path;
-        logger.error("alloydb", JSON.stringify(err));
+        logger.error(loggerTag, err);
         res.render("error", {
           message: err.message,
           error: err
@@ -495,7 +505,7 @@ function createBaseServer() {
     } else {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        logger.error("alloydb", JSON.stringify(err));
+        logger.error(loggerTag, err);
         res.render("error", {
           message: err.message,
           error: {}
@@ -503,7 +513,7 @@ function createBaseServer() {
       });
     }
 
-    logger.info("alloydb", "loading database " + process.env.DATABASE);
+    logger.info(loggerTag, "loading database " + process.env.DATABASE);
     db = require("better-sqlite3")(process.env.DATABASE);
     db.pragma("journal_mode = WAL");
 
@@ -517,14 +527,14 @@ function createBaseServer() {
 
     server.listen(process.env.API_UI_PORT);
     server.on("listening", function () {
-      logger.info("alloydb", "Primary Server listening on port " + process.env.API_UI_PORT);
+      logger.info(loggerTag, "Primary Server listening on port " + process.env.API_UI_PORT);
       resolve();
     });
   });
 }
 
 function showWebUI(e, data) {
-  logger.info("alloydb", "requesting webUI window");
+  logger.info(loggerTag, "requesting webUI window");
   createWebUIWindow();
 }
 
@@ -572,7 +582,7 @@ function setupRoutes() {
       ipcMain.on("scheduler-current-schedule", (event, payload) => mainWindow.webContents.send("scheduler-current-schedule", payload));
       ipcMain.on("scheduler-run-task", (event, payload) => schedulerWindow.webContents.send("scheduler-run-task", payload));
       ipcMain.on("scheduler-job-created", (event, payload) => {
-        logger.debug("alloydb", "created job: " + payload.name + " - " + payload.callback);
+        logger.debug(loggerTag, "created job: " + payload.name + " - " + payload.callback);
       });
     }
 
@@ -604,10 +614,6 @@ function setupRoutes() {
       queryLog();
     });
 
-    ipcMain.on("log", (event, payload) => { logger.log(payload.source, payload.data); });
-    ipcMain.on("error", (event, payload) => { logger.error(payload.source, payload.data); });
-    ipcMain.on("debug", (event, payload) => { logger.debug(payload.source, payload.data); });
-    ipcMain.on("info", (event, payload) => { logger.info(payload.source, payload.data); });
     ipcMain.on("app-quit", (event, payload) => { doClose(); });
 
     ipcMain.on("open-dev", (event) => {
@@ -641,14 +647,14 @@ app.on("window-all-closed", () => {
 });
 
 app.on("ready", async () => {
-  if (isTest() === false) { await createSplashScreen(); }
+  if (!isTest() && !isDev()) { await createSplashScreen(); }
   await createBaseServer();
   await createServerWindow();
   await createSchedulerWindow();
   await createMediaScannerWindow();
   await createMainWindow();
   await setupRoutes();
-  await createTrayMenu();
+  if (!isTest()) { await createTrayMenu(); }
   if (splashWindow) { splashWindow.close(); }
   mainWindow.webContents.send("app-loaded");
   mainWindow.show();

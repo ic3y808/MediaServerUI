@@ -11,7 +11,6 @@ describe("Application launch", function () {
 
   it("loaded the correct number of windows", async function () {
     var count = await this.app.client.getWindowCount();
-    console.log("window count " + count);
     assert.equal(count, 4);
     await util.activateWindow(this.app, "Alloy");
     await this.app.client.element("#loadedState").getHTML(false).should.eventually.equal("true");
@@ -35,14 +34,14 @@ describe("Application launch", function () {
     this.db.read();
     await setTimeout(async () => {
       await this.db.get("mediascanner-loaded-result").value().should.equal("success");
-    }, 250);
+    }, 500);
   });
 
   it("renderer sent app-loaded-result to ipcMain", async function () {
     this.db.read();
     await setTimeout(async () => {
       await this.db.get("app-loaded-result").value().should.equal("success");
-    }, 250);
+    }, 500);
   });
 
   it("main ui shows library count of 0", async function () {
