@@ -28,6 +28,7 @@ let tray = null;
 var timer = {};
 var db = {};
 
+logger.info(loggerTag, "Starting Alloy"); 
 
 function isDev() { return process.env.MODE === "dev"; }
 function isTest() { return process.env.MODE === "test"; }

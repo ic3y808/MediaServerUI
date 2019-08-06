@@ -4,8 +4,10 @@ const low = require("lowdb");
 const path = require("path");
 const shell = require("shelljs");
 const dataDir = path.join(__dirname, "..", "test_data");
-
 const FileSync = require("lowdb/adapters/FileSync");
+
+if (fs.existsSync(dataDir)) { shell.rm("-r", dataDir); }
+if (!fs.existsSync(dataDir)) { shell.mkdir("-p", dataDir); }
 
 //load fresh db
 const adapter = new FileSync(path.join(dataDir, "db.json"));
