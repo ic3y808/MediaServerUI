@@ -1,7 +1,6 @@
 
 const fs = require("fs");
 const url = require("url");
-const md5 = require("js-md5");
 const path = require("path");
 const cron = require("cron").CronJob;
 const shell = require("shelljs");
@@ -15,6 +14,7 @@ const { app, net, BrowserWindow, ipcMain, Menu, Tray } = electron;
 
 const utils = require("./common/utils");
 const migrate = require("./common/migrate");
+const structures = require("./common/structures");
 
 const express = require("express");
 const appServer = express();
@@ -36,14 +36,7 @@ let tray = null;
 var timer = {};
 var db = {};
 var jobs = [];
-var config = {
-  api_key: "",
-  lastfm_api_key: "",
-  lastfm_api_secret: "",
-  brainz_api_url: "",
-  ui_enabled: true,
-  api_enabled: true
-};
+var config = new structures.Config();
 
 function isDev() { return process.env.MODE === "dev"; }
 function isTest() { return process.env.MODE === "test"; }
@@ -80,7 +73,7 @@ process.on("SIGINT", () => process.exit(128 + 2));
 process.on("SIGTERM", () => process.exit(128 + 15));
 
 function queryLog() {
-  var sql = "SELECT * FROM Logs ORDER BY timestamp DESC";
+  var sql = "SELECT * FROM Logs ORDER BY timestamp DESC LIMIT 1000";
   try {
     var results = logdb.prepare(sql).all();
     if (mainWindow) { mainWindow.webContents.send("logger-logs", results); }
@@ -117,8 +110,7 @@ function error(error) { log({ level: "error", label: loggerTag, message: error }
 
 function getConfig() {
   if (fs.existsSync(process.env.CONFIG_FILE)) {
-    var config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
-    return config;
+    return new structures.Config(JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8")));
   } else { return null; }
 }
 
@@ -136,11 +128,11 @@ function saveConfig() {
   });
 }
 
-function init() {
+function initConfig() {
   var confResult = getConfig();
   if (confResult === null) {
-    config.api_key = md5(Math.random().toString());
-    config.brainz_api_url = "https://api.lidarr.audio";
+    config = new structures.Config();
+
     saveConfig().then((result) => {
       info("Created default config");
     }).catch((err) => {
@@ -155,6 +147,7 @@ function init() {
   process.env.BRAINZ_API_URL = config.brainz_api_url;
   process.env.UI_ENABLED = config.ui_enabled;
   process.env.API_ENABLED = config.api_enabled;
+  process.env.LOG_LEVEL = config.log_level;
 }
 
 function flatten(lists) {
@@ -299,7 +292,6 @@ function doSaveSettings(key, value, callback) {
   }
   callback();
 }
-
 
 function createWindow(width, height, min_width, min_height, title, show, page, close) {
   const win = new BrowserWindow({
@@ -753,7 +745,7 @@ app.on("window-all-closed", () => {
 
 app.on("ready", async () => {
   info("Starting Alloy");
-  init();
+  initConfig();
   if (!isTest() && !isDev()) { await createSplashScreen(); }
   await createBaseServer();
   await createApiServerWindow();

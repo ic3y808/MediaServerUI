@@ -71,7 +71,6 @@ router.get("/license", function (req, res) {
 router.get("/scan_start", function (req, res) {
 
   if (ipcRenderer) { ipcRenderer.send("mediascanner-scan-start"); }
-  res.locals.notify("Rescan Requested", "Full recan requested through API");
   res.send(new structures.StatusResult(res.locals.mediaScanner.startScan()));
 });
 
@@ -206,7 +205,6 @@ if (ipcRenderer) {
  * @security ApiKeyAuth
  */
 router.get("/do_backup", function (req, res) {
-  res.locals.notify("Starting Backup", "Backup requested");
   res.locals.backup.doBackup().then(() => {
     res.locals.info("api/system/do_backup - Backup Success");
     res.send(new structures.StatusResult("success"));
@@ -225,7 +223,6 @@ router.get("/do_backup", function (req, res) {
  * @security ApiKeyAuth
  */
 router.post("/do_restore", function (req, res) {
-  res.locals.notify("Restoring backup", "Restore requested");
   res.locals.info("api/system/do_restore - restore requested");
   res.locals.db.close();
   var dbPath = process.env.DATABASE;
@@ -264,7 +261,6 @@ router.post("/do_restore", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/clear_cache", function (req, res) {
-  res.locals.notify("Clearing Cache", "Clear Cache requested");
   res.locals.info("api/system/clear_cache - Clearing Cache");
 });
 
@@ -276,7 +272,6 @@ router.get("/clear_cache", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/clear_starred_cache", function (req, res) {
-  res.locals.notify("Clearing Starred Cache", "Clear Starred Cache requested");
   res.locals.info("api/system/clear_starred_cache - Clearing Starred Cache");
 });
 
@@ -289,7 +284,6 @@ router.get("/clear_starred_cache", function (req, res) {
  */
 router.get("/start_recache", function (req, res) {
   if (ipcRenderer) { ipcRenderer.send("mediascanner-recache-start"); }
-  res.locals.notify("Starting Recache", "Start Recache Requested");
   res.locals.info("api/system/start_recache - Starting Re-Cache");
   var status = new structures.StatusResult(res.locals.mediaScanner.startRecache());
   res.send(status);

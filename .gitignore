@@ -16,12 +16,7 @@ alloydbweb/styles/fonts/alloyicons.ttf
 alloydbweb/styles/fonts/alloyicons.woff
 alloydbweb/styles/fonts/alloyicons.woff2
 
-alloydbui/css/material-dashboard/bootstrap/scss/bootstrap.css
-alloydbui/css/material-dashboard/bootstrap/scss/bootstrap.css.map
-alloydbui/css/main.css
-alloydbui/css/main.css.map
-alloydbui/css/material-dashboard.css
-alloydbui/css/material-dashboard.css.map
+alloydbui/css/
 
 # Runtime data
 pids

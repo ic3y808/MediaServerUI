@@ -31,7 +31,6 @@ class Server {
   error(error) { this.log({ level: "error", label: loggerTag, message: error }); }
 
   create() {
-    this.notify(null, null);
     this.app = express();
     this.server = require("http").Server(this.app);
     this.app.use(express.json());
@@ -162,11 +161,6 @@ class Server {
 
     this.app.set("port", process.env.API_PORT || 4000);
   }
-
-  notify(title, message) {
-
-  }
-
 
   startServer(cb) {
     this.server.listen(this.app.get("port"));
