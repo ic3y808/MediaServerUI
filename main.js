@@ -1,39 +1,54 @@
+
 const fs = require("fs");
+const url = require("url");
+const md5 = require("js-md5");
 const path = require("path");
-const moment = require("moment");
+const cron = require("cron").CronJob;
 const shell = require("shelljs");
-var electron = require("electron");
-var { app, net, BrowserWindow, ipcMain, Menu, Tray } = electron;
-var settings = require(path.join(__dirname, "config"));
-var logger = require("./common/logger");
-var utils = require("./common/utils");
+const moment = require("moment");
+const screenRes = require("screenres");
 const bodyParser = require("body-parser");
-const favicon = require("serve-favicon");
+const favoriteIcon = require("serve-favicon");
+
+const electron = require("electron");
+const { app, net, BrowserWindow, ipcMain, Menu, Tray } = electron;
+
+const utils = require("./common/utils");
+const migrate = require("./common/migrate");
+
 const express = require("express");
 const appServer = express();
-var server = require("http").Server(appServer);
-var io = require("socket.io")(server);
-const migrate = require("./common/migrate");
-var sr = require("screenres");
-const url = require("url");
-var loggerTag = "alloydb";
+const server = require("http").Server(appServer);
+const io = require("socket.io")(server);
 
+require(path.join(__dirname, "env"));
+
+var logdb = require("better-sqlite3")(process.env.LOGS_DATABASE);
+logdb.prepare("CREATE TABLE IF NOT EXISTS `Logs` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `timestamp` TEXT, `level` TEXT, `label` TEXT, `message` TEXT);").run();
+
+var loggerTag = "AlloyDB";
 let mainWindow = null;
-let serverWindow = null;
+let apiServerWindow = null;
 let mediaScannerWindow = null;
-let schedulerWindow = null;
 let webUIWindow = null;
 let splashWindow = null;
 let tray = null;
 var timer = {};
 var db = {};
-
-logger.info(loggerTag, "Starting Alloy"); 
+var jobs = [];
+var config = {
+  api_key: "",
+  lastfm_api_key: "",
+  lastfm_api_secret: "",
+  brainz_api_url: "",
+  ui_enabled: true,
+  api_enabled: true
+};
 
 function isDev() { return process.env.MODE === "dev"; }
 function isTest() { return process.env.MODE === "test"; }
 function isDevToolsEnabled() { if (isDev() || isTest()) { return true; } return false; }
-function isApiEnabled() { return process.env.API_ENABLED === "true"; }
+function isApiServerEnabled() { return process.env.API_ENABLED === "true"; }
 function isUiEnabled() { return process.env.UI_ENABLED === "true"; }
 function isPacked() { return process.mainModule.filename.indexOf("app.asar") > -1; }
 
@@ -57,12 +72,90 @@ if (!isTest()) {
 
 process.on("exit", () => {
   if (db) { db.close(); }
+  if (logdb) { logdb.close(); }
   if (tray) { tray.destroy(); }
 });
 process.on("SIGHUP", () => process.exit(128 + 1));
 process.on("SIGINT", () => process.exit(128 + 2));
 process.on("SIGTERM", () => process.exit(128 + 15));
 
+function queryLog() {
+  var sql = "SELECT * FROM Logs ORDER BY timestamp DESC";
+  try {
+    var results = logdb.prepare(sql).all();
+    if (mainWindow) { mainWindow.webContents.send("logger-logs", results); }
+  } catch (err) {
+    if (err) {
+      console.log(err.message);
+      console.log(err.stack);
+    }
+    console.log(sql);
+  }
+}
+
+function log(obj) {
+  if (process.env.MODE === "dev" || process.env.MODE === "test") {
+    console.log(obj.level + ":" + obj.label + ":" + obj.message);
+  }
+  var sql = "INSERT INTO Logs (timestamp, level, label, message) VALUES (?,?,?,?)";
+  try {
+    logdb.prepare(sql).run(new Date().toISOString(), obj.level, obj.label, obj.message);
+    queryLog();
+  } catch (err) {
+    if (err) {
+      console.log(err.message);
+      console.log(err.stack);
+    }
+    console.log(sql);
+    console.log(JSON.stringify(obj));
+  }
+}
+
+function info(messsage) { log({ level: "info", label: loggerTag, message: messsage }); }
+function debug(debug) { log({ level: "debug", label: loggerTag, message: debug }); }
+function error(error) { log({ level: "error", label: loggerTag, message: error }); }
+
+function getConfig() {
+  if (fs.existsSync(process.env.CONFIG_FILE)) {
+    var config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
+    return config;
+  } else { return null; }
+}
+
+function saveConfig() {
+  return new Promise((resolve, reject) => {
+    fs.writeFileSync(process.env.CONFIG_FILE, JSON.stringify(config, null, 2), function (err, data) {
+      if (err) {
+        debug(err);
+        reject(err);
+      }
+      else {
+        resolve();
+      }
+    });
+  });
+}
+
+function init() {
+  var confResult = getConfig();
+  if (confResult === null) {
+    config.api_key = md5(Math.random().toString());
+    config.brainz_api_url = "https://api.lidarr.audio";
+    saveConfig().then((result) => {
+      info("Created default config");
+    }).catch((err) => {
+      debug(err);
+    });
+  } else {
+    config = confResult;
+  }
+  process.env.API_KEY = config.api_key;
+  process.env.LASTFM_API_KEY = config.lastfm_api_key;
+  process.env.LASTFM_API_SECRET = config.lastfm_api_secret;
+  process.env.BRAINZ_API_URL = config.brainz_api_url;
+  process.env.UI_ENABLED = config.ui_enabled;
+  process.env.API_ENABLED = config.api_enabled;
+}
 
 function flatten(lists) {
   return lists.reduce((a, b) => a.concat(b), []);
@@ -82,10 +175,32 @@ function getDirectoriesRecursive(srcpath) {
   ];
 }
 
+function getSchedule() {
+  var results = [];
+  jobs.forEach((job) => {
+    try {
+      var lastDate = job.lastExecution === undefined ? "not yet run" : moment(job.lastExecution).local().format("hh:mm:ss a");
+      var nextDate = job.nextDates().local().format("hh:mm:ss a MM/DD/YY");
+      results.push({ name: job.name, running: job.running, callback: job.callback, source: job.cronTime.source, timezone: job.cronTime.zone, lastExecution: lastDate, nextExecution: nextDate });
+    } catch (err) {
+      debug(err);
+    }
+  });
+  return results;
+}
+
+function createJob(data, callback) {
+  debug("Adding Job " + data.name + " - " + data.callback);
+  var job = new cron(data.time, callback, null, true, moment.tz.guess());
+  job.name = data.name;
+  job.callback = data.callback;
+  jobs.push(job);
+  mainWindow.webContents.send("scheduler-current-schedule", getSchedule());
+}
+
 function doClose() {
   if (splashWindow) { splashWindow.close(); }
-  if (serverWindow) { serverWindow.close(); }
-  if (schedulerWindow) { schedulerWindow.close(); }
+  if (apiServerWindow) { apiServerWindow.close(); }
   if (mediaScannerWindow) { mediaScannerWindow.close(); }
   app.exit(0);
 }
@@ -100,58 +215,58 @@ function onClose(e) {
 }
 
 function doCheckpoint() {
-  logger.info(loggerTag, "Starting checkpoint");
+  info("Starting checkpoint");
   db.checkpoint();
-  logger.info(loggerTag, "Checkpoint Complete");
+  info("Checkpoint Complete");
 }
 
 function doBackup() {
-  logger.info(loggerTag, "Starting backup");
+  info("Starting backup");
   if (!fs.existsSync(process.env.BACKUP_DATA_DIR)) { shell.mkdir("-p", process.env.BACKUP_DATA_DIR); }
   db.backup(path.join(process.env.BACKUP_DATA_DIR, `backup-${Date.now()}.db`));
-  logger.info(loggerTag, "Backup Complete");
+  info("Backup Complete");
 }
 
 function doCleanup() {
-  logger.info(loggerTag, "Starting Cleanup");
+  info("Starting Cleanup");
   mediaScannerWindow.webContents.send("mediascanner-cleaup-start");
 }
 
 function doIncCleanup() {
-  logger.info(loggerTag, "Starting Incremental Cleanup");
+  info("Starting Incremental Cleanup");
   mediaScannerWindow.webContents.send("mediascanner-inc-cleaup-start");
 }
 
 function doRescan() {
-  logger.info(loggerTag, "Starting Rescan");
+  info("Starting Rescan");
   mediaScannerWindow.webContents.send("mediascanner-scan-start");
 }
 
 function doReache() {
-  logger.info(loggerTag, "Starting Re-Cache of streamable media");
+  info("Starting Re-Cache of streamable media");
   mediaScannerWindow.webContents.send("mediascanner-recache-start");
 }
 
 function doToggleApiServer(e, data) {
-  logger.info(loggerTag, "Changing API server settings to " + JSON.stringify(data));
-  if (data.enabled === true) { settings.config.api_enabled = "true"; }
-  else { settings.config.api_enabled = "false"; }
-  settings.saveConfig();
+  info("Changing API server settings to " + JSON.stringify(data));
+  if (data.enabled === true) { config.api_enabled = "true"; }
+  else { config.api_enabled = "false"; }
+  saveConfig();
 }
 
 function doToggleUiServer(e, data) {
-  logger.info(loggerTag, "Changing UI server settings to " + JSON.stringify(data));
-  if (data.enabled === true) { settings.config.ui_enabled = "true"; }
-  else { settings.config.ui_enabled = "false"; }
-  settings.saveConfig();
+  info("Changing UI server settings to " + JSON.stringify(data));
+  if (data.enabled === true) { config.ui_enabled = "true"; }
+  else { config.ui_enabled = "false"; }
+  saveConfig();
 }
 
 function doDisconnectDb(callback) {
   try {
     db.close();
-  } catch (error) {
-    if (error) {
-      logger.error("alloyui", JSON.stringify(error));
+  } catch (err) {
+    if (err) {
+      error(err);
     }
   }
   callback();
@@ -167,7 +282,7 @@ function doLoadSettings(key, callback) {
       } callback(null);
     } callback(null);
   } catch (err) {
-    logger.error(loggerTag, err);
+    debug(err);
     callback(null);
   }
 }
@@ -179,17 +294,12 @@ function doSaveSettings(key, value, callback) {
     const info = stmt.run(key, obj, obj);
   } catch (err) {
     if (err) {
-      logger.error(loggerTag, err);
+      debug(err);
     }
   }
   callback();
 }
 
-function queryLog() {
-  logger.query(300, (results) => {
-    if (mainWindow) { mainWindow.webContents.send("logger-logs", results); }
-  });
-}
 
 function createWindow(width, height, min_width, min_height, title, show, page, close) {
   const win = new BrowserWindow({
@@ -203,32 +313,19 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
     win.webContents.openDevTools({ detach: true });
   }
   win.loadURL("http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
-  logger.debug(loggerTag, "loading page: http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
+  debug("Loading Page: http://localhost:" + process.env.API_UI_PORT + "/template/" + page);
   win.setTitle(title);
   win.on("close", close);
   return win;
 }
 
-function createServerWindow() {
+function createApiServerWindow() {
   return new Promise((resolve, reject) => {
-    if (!isApiEnabled()) { resolve(); }
+    if (!isApiServerEnabled()) { resolve(); }
     else {
-      serverWindow = createWindow(1280, 610, 1024, 300, "Server", false, "server.jade", () => { });
-      serverWindow.webContents.once("dom-ready", () => {
-        serverWindow.webContents.send("server-start", process.env);
-        resolve();
-      });
-    }
-  });
-}
-
-function createSchedulerWindow() {
-  return new Promise((resolve, reject) => {
-    if (!isApiEnabled()) { resolve(); }
-    else {
-      schedulerWindow = createWindow(1280, 610, 1024, 300, "Scheduler", false, "scheduler.jade", () => { });
-      schedulerWindow.webContents.once("dom-ready", () => {
-        schedulerWindow.webContents.send("scheduler-start", process.env);
+      apiServerWindow = createWindow(1280, 610, 1024, 300, "Api Server", false, "apiServer.jade", () => { });
+      apiServerWindow.webContents.once("dom-ready", () => {
+        apiServerWindow.webContents.send("server-start", process.env);
         resolve();
       });
     }
@@ -237,7 +334,7 @@ function createSchedulerWindow() {
 
 function createMediaScannerWindow() {
   return new Promise((resolve, reject) => {
-    if (!isApiEnabled()) { resolve(); }
+    if (!isApiServerEnabled()) { resolve(); }
     else {
       mediaScannerWindow = createWindow(1280, 610, 1024, 300, "MediaScanner", false, "mediascanner.jade", () => { });
       mediaScannerWindow.webContents.once("dom-ready", () => {
@@ -256,7 +353,7 @@ function createWebUIWindow() {
         webUIWindow.show();
       }
       else {
-        var res = sr.get();
+        var res = screenRes.get();
         webUIWindow = new BrowserWindow({ width: res[0] * 0.8, height: res[1] * 0.8, webPreferences: { nodeIntegration: true } });
         webUIWindow.icon = path.join(__dirname, "common", "icon.ico");
         webUIWindow.setMenu(null);
@@ -282,7 +379,7 @@ function createWebUIWindow() {
 
 function createSplashScreen() {
   return new Promise((resolve, reject) => {
-    var res = sr.get();
+    var res = screenRes.get();
     splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
     splashWindow.icon = path.join(__dirname, "common", "icon.ico");
     splashWindow.setMenu(null);
@@ -301,10 +398,9 @@ function createSplashScreen() {
 
 function createMainWindow() {
   return new Promise((resolve, reject) => {
-    var res = sr.get();
+    var res = screenRes.get();
     mainWindow = createWindow(res[0] * 0.6, res[1] * 0.7, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
     mainWindow.webContents.once("dom-ready", () => {
-      logger.watchLogs();
       resolve();
     });
   });
@@ -364,26 +460,23 @@ function createTrayMenu() {
 }
 
 function createTasks() {
-  logger.debug(loggerTag, "creating tasks");
-  if (isApiEnabled()) {
-    schedulerWindow.webContents.send("scheduler-create-jobs", [
-      { name: "DB Checkpoint", time: "0 */6 * * *", callback: "task-database-checkpoint" },
-      { name: "DB Backup", time: "0 0 * * *", callback: "task-database-backup" },
-      { name: "Clean Database", time: "0 0 * * *", callback: "task-database-cleanup" },
-      { name: "Incremental Clean", time: "0 0 * * *", callback: "task-database-inc-cleanup" },
-      { name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" },
-      { name: "Cache Starred", time: "0 0 * * 0", callback: "task-database-cache-starred" }
-    ]);
+  debug("Creating Tasks");
+  if (isApiServerEnabled()) {
+    createJob({ name: "DB Checkpoint", time: "0 */6 * * *", callback: "task-database-checkpoint" }, doCheckpoint);
+    createJob({ name: "DB Backup", time: "0 0 * * *", callback: "task-database-backup" }, doBackup);
+    createJob({ name: "Clean Database", time: "0 0 * * *", callback: "task-database-cleanup" }, doCleanup);
+    createJob({ name: "Incremental Clean", time: "0 0 * * *", callback: "task-database-inc-cleanup" }, doIncCleanup);
+    createJob({ name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" }, doRescan);
+    createJob({ name: "Cache Starred", time: "0 0 * * 0", callback: "task-database-cache-starred" }, doReache);
   }
 }
 
 function createBaseServer() {
   return new Promise((resolve, reject) => {
-    logger.callback = queryLog;
     appServer.set("view engine", "jade");
     appServer.use(bodyParser.json());
     appServer.use(bodyParser.urlencoded({ extended: false }));
-    appServer.use(favicon(path.join(__dirname, "common", "icon.ico")));
+    appServer.use(favoriteIcon(path.join(__dirname, "common", "icon.ico")));
     appServer.use("/node_modules/", express.static(path.join(__dirname, "node_modules")));
     appServer.use("/alloydbui/js/", express.static(path.join(__dirname, "alloydbui", "js")));
     appServer.use("/alloydbui/css/", express.static(path.join(__dirname, "alloydbui", "css")));
@@ -397,9 +490,12 @@ function createBaseServer() {
         api_port: process.env.API_PORT,
         web_ui_port: process.env.API_UI_PORT,
         dev_mode: process.env.MODE === "dev",
-        api_enabled: isApiEnabled(),
+        api_enabled: isApiServerEnabled(),
         web_ui_enabled: isUiEnabled()
       };
+      if (isDev()) {
+        debug(req.method + "~" + req.protocol + "://" + req.host + req.path + "~" + JSON.stringify(req.params));
+      }
       next();
     });
 
@@ -411,8 +507,8 @@ function createBaseServer() {
     var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
     views = views.concat(uiViews);
 
-    logger.debug(loggerTag, "api enabled: " + isUiEnabled());
-    logger.debug(loggerTag, "ui enabled: " + isUiEnabled());
+    info("API Server Enabled: " + isUiEnabled());
+    info("WebUI Enabled: " + isUiEnabled());
 
     if (isUiEnabled()) {
       appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "content")));
@@ -422,8 +518,8 @@ function createBaseServer() {
       views = views.concat(webViews, componentdirs, directivedirs);
 
       if (isDev()) {
-        logger.info(loggerTag, "Running in DEV mode");
-        logger.info(loggerTag, "compiling webpack");
+        info("Running in DEV mode");
+        debug("compiling webpack");
         const webpack = require("webpack");
         const webpackconfig = require("./alloydbweb/webpack.config");
         const webpackMiddleware = require("webpack-dev-middleware");
@@ -442,35 +538,30 @@ function createBaseServer() {
       appServer.use("/", require("./alloydbweb/routes/index"));
 
       io.on("connection", function (socket) {
-
+        debug("Socket Client connected");
         socket.on("load_settings", function (key) {
-          logger.debug("alloyui", "Load settings requested for key: " + key);
+          debug("Load settings for key: " + key);
           doLoadSettings(key, function (result) {
-            logger.debug("alloyui", "Settings Loaded");
+            debug("Settings Loaded");
             socket.emit("settings_loaded_event", result);
           });
         });
         socket.on("save_settings", function (settings) {
-          logger.debug("alloyui", "Save settings requested for key: " + settings.key);
+          debug("Save settings for key: " + settings.key);
           doSaveSettings(settings.key, settings.data, function () {
-            logger.debug("alloyui", "Settings Saved");
+            debug("Settings Saved");
             socket.emit("settings_saved_event");
           });
         });
         socket.on("disconnect_db", function () {
-          logger.info("alloyui", "UI requested db to disconnect: ");
+          info("UI requested db to disconnect: ");
           doDisconnectDb(function () {
-            logger.info("alloyui", "shutting down.... restart server");
+            info("shutting down.... restart server");
             process.exit(0);
           });
         });
-        logger.debug("alloyui", "WebUI Client connected");
         socket.on("log", function (data) {
-          var obj = {};
-          obj.level = data.method;
-          obj.label = "clientui";
-          obj.message = data.message;
-          logger.log(obj);
+          log(data);
         });
       });
 
@@ -487,7 +578,7 @@ function createBaseServer() {
       var err = new Error("Not Found");
       err.status = 404;
       err.url = req.path;
-      logger.error(loggerTag, err);
+      debug(err);
       next(err);
     });
 
@@ -496,7 +587,7 @@ function createBaseServer() {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
         err.url = req.path;
-        logger.error(loggerTag, err);
+        debug(err);
         res.render("error", {
           message: err.message,
           error: err
@@ -505,7 +596,7 @@ function createBaseServer() {
     } else {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        logger.error(loggerTag, err);
+        debug(err);
         res.render("error", {
           message: err.message,
           error: {}
@@ -513,10 +604,10 @@ function createBaseServer() {
       });
     }
 
-    logger.info(loggerTag, "loading database " + process.env.DATABASE);
+    info("Loading Database " + process.env.DATABASE);
     db = require("better-sqlite3")(process.env.DATABASE);
     db.pragma("journal_mode = WAL");
-
+    migrate.log = log;
     migrate.migrate(db, path.join(__dirname, "/migrations"));
 
 
@@ -527,14 +618,14 @@ function createBaseServer() {
 
     server.listen(process.env.API_UI_PORT);
     server.on("listening", function () {
-      logger.info(loggerTag, "Primary Server listening on port " + process.env.API_UI_PORT);
+      info("UI Server listening on port " + process.env.API_UI_PORT);
       resolve();
     });
   });
 }
 
 function showWebUI(e, data) {
-  logger.info(loggerTag, "requesting webUI window");
+  info("requesting webUI window");
   createWebUIWindow();
 }
 
@@ -547,20 +638,29 @@ function setupRoutes() {
       ipcMain.on("url-info-result", (event, payload) => mainWindow.webContents.send("url-info-result", payload));
       ipcMain.on("search-result", (event, payload) => mainWindow.webContents.send("search-result", payload));
       ipcMain.on("print", (event, payload) => mainWindow.webContents.send("print", payload));
+      ipcMain.on("scheduler-run-task", (event, payload) => {
+        jobs.forEach((job) => {
+          if (job.callback === payload.callback) {
+            job.lastExecution = new Date();
+            job.fireOnTick();
+            mainWindow.webContents.send("scheduler-current-schedule", getSchedule());
+          }
+        });
+      });
     }
 
     //server ICP
-    if (serverWindow) {
-      ipcMain.on("server-start", (event, payload) => serverWindow.webContents.send("server-start", payload));
-      ipcMain.on("config-get-media-paths", (event, payload) => serverWindow.webContents.send("config-get-media-paths", payload));
+    if (apiServerWindow) {
+      ipcMain.on("server-start", (event, payload) => apiServerWindow.webContents.send("server-start", payload));
+      ipcMain.on("config-get-media-paths", (event, payload) => apiServerWindow.webContents.send("config-get-media-paths", payload));
       ipcMain.on("config-media-paths", (event, payload) => mainWindow.webContents.send("config-media-paths", payload));
-      ipcMain.on("config-add-media-path", (event, payload) => serverWindow.webContents.send("config-add-media-path", payload));
-      ipcMain.on("config-remove-media-path", (event, payload) => serverWindow.webContents.send("config-remove-media-path", payload));
-      ipcMain.on("config-get-file-list", (event, payload) => serverWindow.webContents.send("config-get-file-list", payload));
+      ipcMain.on("config-add-media-path", (event, payload) => apiServerWindow.webContents.send("config-add-media-path", payload));
+      ipcMain.on("config-remove-media-path", (event, payload) => apiServerWindow.webContents.send("config-remove-media-path", payload));
+      ipcMain.on("config-get-file-list", (event, payload) => apiServerWindow.webContents.send("config-get-file-list", payload));
       ipcMain.on("config-file-list", (event, payload) => mainWindow.webContents.send("config-file-list", payload));
-      ipcMain.on("config-get-file-parent", (event, payload) => serverWindow.webContents.send("config-get-file-parent", payload));
+      ipcMain.on("config-get-file-parent", (event, payload) => apiServerWindow.webContents.send("config-get-file-parent", payload));
       ipcMain.on("config-file-parent", (event, payload) => mainWindow.webContents.send("config-file-parent", payload));
-      ipcMain.on("system-get-stats", (event, payload) => serverWindow.webContents.send("system-get-stats", payload));
+      ipcMain.on("system-get-stats", (event, payload) => apiServerWindow.webContents.send("system-get-stats", payload));
       ipcMain.on("system-stats", (event, payload) => mainWindow.webContents.send("system-stats", payload));
     }
 
@@ -576,17 +676,19 @@ function setupRoutes() {
     }
 
     //scheduler ICP
-    if (schedulerWindow) {
-      ipcMain.on("scheduler-start", (event, payload) => schedulerWindow.webContents.send("scheduler-start", payload));
-      ipcMain.on("scheduler-create-job", (event, payload) => schedulerWindow.webContents.send("scheduler-create-job", payload));
-      ipcMain.on("scheduler-current-schedule", (event, payload) => mainWindow.webContents.send("scheduler-current-schedule", payload));
-      ipcMain.on("scheduler-run-task", (event, payload) => schedulerWindow.webContents.send("scheduler-run-task", payload));
-      ipcMain.on("scheduler-job-created", (event, payload) => {
-        logger.debug(loggerTag, "created job: " + payload.name + " - " + payload.callback);
-      });
-    }
+    //if (schedulerWindow) {
+    //  ipcMain.on("scheduler-start", (event, payload) => schedulerWindow.webContents.send("scheduler-start", payload));
+    //  ipcMain.on("scheduler-create-job", (event, payload) => schedulerWindow.webContents.send("scheduler-create-job", payload));
+    //  ipcMain.on("scheduler-current-schedule", (event, payload) => mainWindow.webContents.send("scheduler-current-schedule", payload));
+
+    //  ipcMain.on("scheduler-job-created", (event, payload) => {
+    //    debug("created job: " + payload.name + " - " + payload.callback);
+    //  });
+    //}
 
     //misc ICP
+    ipcMain.on("app-quit", doClose);
+    ipcMain.on("request-web-ui", showWebUI);
     ipcMain.on("task-database-checkpoint", doCheckpoint);
     ipcMain.on("task-database-backup", doBackup);
     ipcMain.on("task-database-cleanup", doCleanup);
@@ -595,7 +697,8 @@ function setupRoutes() {
     ipcMain.on("task-database-cache-starred", doReache);
     ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
     ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);
-    ipcMain.on("request-web-ui", showWebUI);
+
+
     ipcMain.on("web-request", (event, payload) => {
       const request = net.request({ method: payload.method, url: payload.url, });
       let body = "";
@@ -606,31 +709,33 @@ function setupRoutes() {
       request.end();
     });
 
+    ipcMain.on("log", (event, payload) => {
+      log(payload);
+    });
+
     ipcMain.on("log-update", (event) => {
       queryLog();
+    });
+
+    ipcMain.on("scheduler-get-schedule", (event) => {
+      event.returnValue = JSON.stringify(getSchedule());
     });
 
     ipcMain.on("logger-get-logs", (event) => {
       queryLog();
     });
 
-    ipcMain.on("app-quit", (event, payload) => { doClose(); });
-
     ipcMain.on("open-dev", (event) => {
       if (mainWindow) {
         mainWindow.webContents.openDevTools({ detach: false });
       }
-      if (serverWindow) {
-        serverWindow.webContents.openDevTools({ detach: true });
-        serverWindow.show();
+      if (apiServerWindow) {
+        apiServerWindow.webContents.openDevTools({ detach: true });
+        apiServerWindow.show();
       }
       if (mediaScannerWindow) {
         mediaScannerWindow.webContents.openDevTools({ detach: true });
         mediaScannerWindow.show();
-      }
-      if (schedulerWindow) {
-        schedulerWindow.webContents.openDevTools({ detach: true });
-        schedulerWindow.show();
       }
       if (webUIWindow) {
         webUIWindow.webContents.openDevTools({ detach: true });
@@ -647,10 +752,11 @@ app.on("window-all-closed", () => {
 });
 
 app.on("ready", async () => {
+  info("Starting Alloy");
+  init();
   if (!isTest() && !isDev()) { await createSplashScreen(); }
   await createBaseServer();
-  await createServerWindow();
-  await createSchedulerWindow();
+  await createApiServerWindow();
   await createMediaScannerWindow();
   await createMainWindow();
   await setupRoutes();

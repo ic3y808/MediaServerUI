@@ -3,25 +3,24 @@ const path = require("path");
 const webpack = require("webpack");
 const dist = path.resolve(__dirname, "dist");
 const nodePath = path.resolve(__dirname, "node_modules");
-var config = require("../common/config");
-var logger = require("../common/logger");
+
 var profile = {};
 profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
+
+console.log("packing " + process.env.MODE + " source");
 
 if (process.env.MODE === "dev") {
   profile.entry = {
     app: ["./web/frontend/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
-  logger.info("alloycast", "packing dev mode source");
 } else {
   profile.devtool = "cheap-module-source-map";
   profile.entry = {
     app: ["./web/frontend/app.js"]
   };
-  logger.info("alloycast", "packing release mode source");
 }
 
 // Required plugins 

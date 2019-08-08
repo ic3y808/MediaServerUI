@@ -4,13 +4,14 @@ const path = require("path");
 const fileUpload = require("express-fileupload");
 const express = require("express");
 var bodyParser = require("body-parser");
+var loggerTag = "alloydb";
 process.env.DEBUG = "*";
-var logger = {};
+
 class Server {
   constructor(env) {
     process.env = env;
-    logger = require(path.join(process.env.APP_DIR, "common", "logger"));
-    logger.info("alloydb", "WEB UI Started");
+
+    this.info("Starting API Server");
     this.db = window.require("better-sqlite3")(process.env.DATABASE);
     this.db.pragma("journal_mode = WAL");
     process.on("exit", () => {
@@ -22,6 +23,12 @@ class Server {
     this.create();
     this.startServer();
   }
+  isDev() { return process.env.MODE === "dev"; }
+  isTest() { return process.env.MODE === "test"; }
+  log(obj) { ipcRenderer.send("log", obj); }
+  info(messsage) { this.log({ level: "info", label: loggerTag, message: messsage }); }
+  debug(debug) { this.log({ level: "debug", label: loggerTag, message: debug }); }
+  error(error) { this.log({ level: "error", label: loggerTag, message: error }); }
 
   create() {
     this.notify(null, null);
@@ -42,7 +49,9 @@ class Server {
         "Access-Control-Allow-Methods",
         "PUT, POST, GET, DELETE, OPTIONS"
       );
-
+      if (this.isDev()) {
+        this.debug(req.method + "~" + req.protocol + "://" + req.host + req.path + "~" + JSON.stringify(req.params));
+      }
       if (req.method === "OPTIONS") {
         res.send(200);
       } else {
@@ -51,8 +60,11 @@ class Server {
     });
 
     this.app.use((req, res, next) => {
-      res.locals.ipc = ipcRenderer;
+      res.locals.ipcRenderer = ipcRenderer;
       res.locals.db = this.db;
+      res.locals.info = (obj) => { this.info(obj); };
+      res.locals.debug = (obj) => { this.debug(obj); };
+      res.locals.error = (obj) => { this.error(obj); };
       next();
     });
 
@@ -123,7 +135,7 @@ class Server {
       var err = new Error("Not Found");
       err.status = 404;
       var error = req.path + " - " + err.status + " - " + err.message;
-      logger.error("alloydb", error);
+      this.error(error);
       next(err);
     });
 
@@ -135,7 +147,7 @@ class Server {
       this.app.use((err, req, res, next) => {
         res.status(err.status || 500);
         var error = req.path + " - " + err.status + " - " + err.message;
-        logger.error("alloydb", error);
+        this.error(error);
       });
     }
     else {
@@ -144,7 +156,7 @@ class Server {
       this.app.use((err, req, res, next) => {
         res.status(err.status || 500);
         var error = req.path + " - " + err.status + " - " + err.message;
-        logger.error("alloydb", error);
+        this.error(error);
       });
     }
 
@@ -160,8 +172,8 @@ class Server {
     this.server.listen(this.app.get("port"));
     ipcRenderer.send("api-server-loaded-result", "success");
     this.server.on("listening", () => {
-      logger.info("alloydb", "AlloyDB Started, AlloyDB is Listening on port " + this.app.get("port"));
-     
+      this.info("AlloyDB Started, AlloyDB is Listening on port " + this.app.get("port"));
+
       ipcRenderer.send("system-get-stats");
       if (cb) { cb(this.server); }
     });

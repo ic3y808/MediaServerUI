@@ -1,7 +1,6 @@
 var express = require("express");
 var router = express.Router();
 var structures = require("../../common/structures");
-var db = {};
 
 /**
 

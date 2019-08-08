@@ -3,7 +3,6 @@ var router = express.Router();
 var structures = require("../../common/structures");
 var Lastfm = require("./simple-lastfm");
 var CryptoJS = require("crypto-js");
-var db = {};
 
 var getLastFm = function (res, isPublic) {
   if (res.locals.lastfm) {

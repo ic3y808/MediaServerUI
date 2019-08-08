@@ -3,7 +3,7 @@ import _ from "lodash";
 export default class AlloyDbService {
   constructor($rootScope, Logger, AppUtilities, $window) {
     "ngInject";
-    this.isLoggingIn = true;
+    this.isLoggingIn = false;
     this.isLoggedIn = false;
     this.$rootScope = $rootScope;
     this.Logger = Logger;
@@ -13,33 +13,41 @@ export default class AlloyDbService {
     this.$rootScope.starArtist = this.starArtist;
   }
 
+  updateStatus(){
+    this.AppUtilities.broadcast("loginStatusChange", {
+      service: "alloydb",
+      isLoggedIn: this.isLoggedIn
+    });
+  }
+
   doLogin() {
     if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
-      if (!this.isLoggedIn) {
+      if (!this.isLoggedIn && !this.isLoggingIn) {
         this.Logger.info("logging into alloydb");
-
+       
         this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
 
-        this.alloydb.ping().then((result) => {
-          if (result) {
-            if (result.status === "success") {
-              this.isLoggedIn = true;
-              this.isLoggingIn = false;
-              this.preload();
-            } else {
-              this.isLoggingIn = false;
-              this.isLoggedIn = false;
+        var ping = this.alloydb.ping();
+        if (ping) {
+          ping.then((result) => {
+            if (result) {
+              if (result.status === "success") {
+                this.isLoggedIn = true;
+                this.isLoggingIn = false;
+                this.Logger.info("Connected to alloydb");
+                this.preload();
+              } else {
+                this.isLoggingIn = false;
+                this.isLoggedIn = false;
+                this.Logger.info("Failed to connect to alloydb");
+              }
             }
-            this.Logger.info("logging into alloydb is " + JSON.stringify(result));
-          }
-
-          this.AppUtilities.broadcast("loginStatusChange", {
-            service: "alloydb",
-            isLoggedIn: this.isLoggedIn
+            this.updateStatus();
+          }).catch((err) => {
+            this.isLoggingIn = false;
+            this.updateStatus();
           });
-        });
-
-
+        }
       }
     }
   }

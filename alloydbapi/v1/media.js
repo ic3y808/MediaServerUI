@@ -5,10 +5,7 @@ var fs = require("fs");
 const sharp = require("sharp");
 var convert = require("../../common/convert");
 var structures = require("../../common/structures");
-var logger = require("../../common/logger");
 var { ipcRenderer } = require("electron");
-var db = {};
-var fs = require("fs");
 
 function sendFile(res, req, fileToSend, content_type) {
   const stat = fs.statSync(fileToSend);
@@ -31,7 +28,8 @@ function sendFile(res, req, fileToSend, content_type) {
         //res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(req.hostname === "localhost" ? 0 : total);
         res.locals.db.prepare("UPDATE Stats SET tracks_served = tracks_served + 1, data_sent = data_sent + ?").run(total);
       } catch (err) {
-        logger.error("api/media/sendFile", err);
+        res.locals.error("api/media/sendFile");
+        res.locals.error(err);
       }
 
       res.writeHead(206, {
@@ -43,7 +41,7 @@ function sendFile(res, req, fileToSend, content_type) {
       rstream.pipe(res);
 
     } else {
-      logger.error("api/media/sendFile", "Error - 404");
+      res.locals.error("api/media/sendFile Error - 404");
       res.send("Error - 404");
       res.end();
     }
@@ -95,7 +93,15 @@ router.get("/stream", function (req, res) {
             var baseDir = process.env.CONVERTED_MEDIA_DIR;
             if (settings.alloydb_streaming_cache_starred === true && track.starred === "true") { baseDir = process.env.CONVERTED_STARRED_MEDIA_DIR; }
             var outputPath = path.join(baseDir, path.basename(track.path, path.extname(track.path)) + "." + format.toLowerCase());
-            convert(res.locals.db, track, bitrate, format, outputPath, () => {
+            convert(res.locals.db, track, bitrate, format, outputPath,
+               () => {
+              res.locals.debug("Starting conversion of track: " + track.path);
+            }, (progress) => {
+              res.locals.debug("Processing: " + progress.timemark + " done " + progress.targetSize + " kilobytes");
+            }, (err) => {
+              res.locals.error(err);
+            }, (returnPath) => {
+              res.locals.debug("Finished Conversion - " + returnPath);
               sendFile(res, req, outputPath, track.content_type);
             });
           }
@@ -243,7 +249,8 @@ router.get("/cover_art", function (req, res) {
       res.end(data);
     })
       .catch((err) => {
-        logger.error("api/media/cover_art", err);
+        res.locals.error("api/media/cover_art");
+        res.locals.error(err);
         res.send(err);
       });
   } else {

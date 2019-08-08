@@ -321,17 +321,17 @@ export default class MediaPlayer {
 
   scrobble(instance, source) {
     instance.AlloyDbService.scrobble(source.id).then((scrobbleResult) => {
-      if (scrobbleResult) { instance.Logger.info("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
+      if (scrobbleResult) { instance.Logger.debug("scrobble result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
     });
     instance.AlloyDbService.scrobbleNowPlaying(source.id).then((scrobbleResult) => {
-      if (scrobbleResult) { instance.Logger.info("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
+      if (scrobbleResult) { instance.Logger.debug("scrobbleNowPlaying result: " + JSON.stringify(scrobbleResult.result) + " : " + source.artist + " - " + source.title); }
     });
   }
 
   addPlay(instance, source) {
     instance.AlloyDbService.addPlay(source.id).then((result) => {
       if (result) {
-        instance.Logger.info("addPlay resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
+        instance.Logger.debug("addPlay resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         source.play_count++;
         instance.AppUtilities.broadcast("trackChangedEvent", source);
         instance.AppUtilities.apply();
@@ -339,7 +339,7 @@ export default class MediaPlayer {
     });
     instance.AlloyDbService.addHistory({ type: "track", action: "played", id: source.id, title: source.title, artist: source.artist, artist_id: source.artist_id, album: source.album, album_id: source.album_id, genre: source.genre, genre_id: source.genre_id }).then((result) => {
       if (result) {
-        instance.Logger.info("addHistory resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
+        instance.Logger.debug("addHistory resut: " + JSON.stringify(result.result) + " : " + source.artist + " - " + source.title);
         instance.AlloyDbService.refreshHistory();
       }
     });
@@ -348,12 +348,11 @@ export default class MediaPlayer {
   loadTrack(index) {
 
     this.selectedIndex = index;
-    this.Logger.debug("load track");
     $("#mainTimeDisplay").html("Loading...");
 
     var source = this.selectedTrack();
     this.$rootScope.currentTrack = source;
-    this.Logger.debug(source.artist + " - " + source.title);
+    this.Logger.debug("loading track " + source.artist + " - " + source.title);
     source.artistUrl = "/artist/" + source.artist_id;
     source.albumUrl = "/album/" + source.album_id;
     if (source && source.id) {

@@ -12,7 +12,7 @@ div
           th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') Pick a Drive and Path
           th.TableHeaderCell-headerCell
       tbody
-        tr(style="cursor:pointer;").TableRow-row(ng-repeat='drive in driveList')
+        tr.TableRow-row(ng-repeat='drive in driveList', style="cursor:pointer;")
           td.TableRowCell-cell
             span.Link-link.ng-binding(ng-click="navigateToPath(drive.path)") {{drive.path}}
           td.TableRowCell-cell

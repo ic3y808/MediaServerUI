@@ -13,12 +13,9 @@ app.run(function ($rootScope) {
   $rootScope.logLevels = {
     "type": "select", 
     "name": "Log Levels",
-    "value": "all", 
+    "value": "info", 
     "values": ["all", "info", "debug", "error"]
   };
-  
-
-  $rootScope.selectedLogLevel = "All";
 
   $(document).on("contextmenu", function (event) {
     event.preventDefault();

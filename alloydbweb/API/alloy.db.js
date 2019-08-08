@@ -39,15 +39,18 @@ export default class AlloyApi {
 
   _xhr(url, dataType) {
     var _this2 = this;
-
     return new Promise((resolve, reject) => {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
-      xhr.responseType = dataType || "json";
-      xhr.onload = resolve;
-      xhr.onerror = reject;
-      xhr.send();
-      _this2._lastXhr = xhr;
+      try {
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", url, true);
+        xhr.responseType = dataType || "json";
+        xhr.onload = resolve;
+        xhr.onerror = reject;
+        xhr.send();
+        _this2._lastXhr = xhr;
+      } catch (err) {
+        console.log(err);
+      }
     });
   }
 
@@ -164,11 +167,11 @@ export default class AlloyApi {
     return this._get("system/ping");
   }
 
-  clearCache(){
+  clearCache() {
     return this._get("system/clear_cache");
   }
 
-  clearStarredCache(){
+  clearStarredCache() {
     return this._get("system/clear_starred_cache");
   }
 

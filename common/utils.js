@@ -1,8 +1,5 @@
 var path = require("path");
-const log = require("electron-log");
 var supportedExtensions = [".mp3", ".wav", ".flac", ".ogg", ".aiff", ".aac"];
-var logger = require("./logger");
-var loggerTag = "utils";
 module.exports.normalizePort = function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -15,25 +12,6 @@ module.exports.normalizePort = function normalizePort(val) {
   }
 
   return false;
-};
-
-module.exports.onError = function onError(error) {
-  if (error.syscall !== "listen") {
-    throw error;
-  }
-
-  switch (error.code) {
-    case "EACCES":
-      logger.error(loggerTag, "requires elevated privileges");
-      process.exit(1);
-      break;
-    case "EADDRINUSE":
-      logger.error(loggerTag, process.env.API_UI_PORT + " is already in use");
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
 };
 
 module.exports.toHumanReadable = function toHumanReadable(val) {
@@ -115,42 +93,4 @@ module.exports.createIndex = function createIndex(items) {
     });
   }
   return finalResult;
-};
-
-module.exports.writeDb = function (data, table) {
-  var sql = "INSERT OR REPLACE INTO " + table + " (";
-  var values = {};
-  Object.keys(data).forEach(function (key, index) {
-    if (index === Object.keys(data).length - 1) { sql += key; }
-    else { sql += key + ", "; }
-  });
-
-
-  sql += ") VALUES (";
-
-  Object.keys(data).forEach(function (key, index) {
-    if (index === Object.keys(data).length - 1) { sql += "@" + key; }
-    else { sql += "@" + key + ", "; }
-  });
-
-  sql += ")";
-
-  try {
-    var insert = this.db.prepare(sql);
-
-    Object.keys(data).forEach(function (key, index) {
-      var a = {};
-      a[key] = data[key];
-      Object.assign(values, a);
-    });
-
-    insert.run(values);
-  } catch (err) {
-    if (err) {
-      logger.error(loggerTag, err);
-    }
-    logger.error(loggerTag, sql);
-    logger.error(loggerTag, values);
-  }
-
 };

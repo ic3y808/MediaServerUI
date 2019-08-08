@@ -2,7 +2,7 @@ import AlloyDbService from "./services/alloyDbService.service";
 
 export default function ApplicationRun($window, $rootScope, $location, $timeout, Logger, Backend, MediaPlayer, AppUtilities, AlloyDbService) {
   "ngInject";
-  Logger.info("starting application");
+  Logger.info("Starting WebUI");
   $rootScope.settings = [];
   $rootScope.scrollPos = {};
 
@@ -367,7 +367,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     }, 1000);
   });
   $rootScope.loaded = "true";
-  Logger.info("Application Loaded");
+  Logger.info("Web UI Loaded");
 
 
 }

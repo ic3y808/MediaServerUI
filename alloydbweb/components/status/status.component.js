@@ -17,7 +17,7 @@ class StatusController {
     $scope.ping = () => {
       var ping = this.AlloyDbService.ping();
       if (ping) {
-        ping.then( (data) => {
+        ping.then((data) => {
           $scope.alloydb = data;
           this.AppUtilities.apply();
         });
@@ -99,35 +99,45 @@ class StatusController {
       }
     };
 
-    $rootScope.$on("loginStatusChange", (event, data) =>  {
-      $scope.ping();
-      $scope.getLibraryInfo();
-      $scope.getMediaPaths();
-      $scope.getScanStatus();
-    });
+    $scope.setIntervals = () => {
+      if (!this.AlloyDbService.isLoggedIn) { return; }
+      $scope.refreshIntereval = setInterval(() => {
+        if (this.AlloyDbService.isLoggedIn !== true) {
+          $scope.clearIntervals();
+          return;
+        }
+        $scope.ping();
+        $scope.getLibraryInfo();
+        $scope.getMediaPaths();
+      }, 5000);
+    };
 
-    $scope.refreshIntereval = setInterval(() => {
-      $scope.ping();
-      $scope.getLibraryInfo();
-      $scope.getMediaPaths();
-    }, 5000);
+    $scope.clearIntervals = () => {
+      clearInterval($scope.refreshIntereval);
+      clearInterval($scope.rescanInterval);
+    };
+
+    $rootScope.$on("loginStatusChange", (event, isLoggedIn) => {
+      if (isLoggedIn === true) {
+        $scope.ping();
+        $scope.getLibraryInfo();
+        $scope.getMediaPaths();
+        $scope.getScanStatus();
+      } else {
+        $scope.clearIntervals();
+      }
+    });
 
     $scope.uiRefreshIntereval = setInterval(() => {
       AppUtilities.apply();
     }, 1000);
 
     $scope.$on("$destroy", () => {
-      clearInterval($scope.refreshIntereval);
       clearInterval($scope.uiRefreshIntereval);
-      clearInterval($scope.rescanInterval);
+      $scope.clearIntervals();
     });
 
-    $timeout(() => {
-      $scope.ping();
-      $scope.getLibraryInfo();
-      $scope.getMediaPaths();
-      $scope.getScanStatus();
-    }, 500);
+    $scope.setIntervals();
     AppUtilities.hideLoader();
   }
 

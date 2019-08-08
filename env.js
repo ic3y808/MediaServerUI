@@ -1,13 +1,14 @@
-const md5 = require("js-md5");
-const fs = require("fs");
-const path = require("path");
-const shell = require("shelljs");
+
 var electron = require("electron");
 var { app } = electron;
 const dotenv = require("dotenv");
+const shell = require("shelljs");
+const fs = require("fs");
+const path = require("path");
 var envPath = path.join(__dirname, ".env");
 var dev = process.mainModule.filename.indexOf("app.asar");
 var test = process.env.MODE === "test";
+
 
 if (dev === -1) { envPath = ".env"; }
 const result = dotenv.config({ path: envPath });
@@ -44,7 +45,7 @@ process.env.CONFIG_FILE = path.join(process.env.DATA_DIR, "config.json");
 process.env.DATABASE = path.join(process.env.DATA_DIR, "database.db");
 process.env.DATABASE_WAL = path.join(process.env.DATA_DIR, "database.db-wal");
 process.env.DATABASE_SHM = path.join(process.env.DATA_DIR, "database.db-shm");
-process.env.LOGS_DATABASE = path.join(process.env.DATA_DIR, "logs.json");
+process.env.LOGS_DATABASE = path.join(process.env.DATA_DIR, "logs.db");
 process.env.TEST_DATABASE = path.join(process.env.DATA_DIR, "testdb.db");
 process.env.COVER_ART_DIR = path.join(process.env.DATA_DIR, "images");
 process.env.COVER_ART_NO_ART = path.join(process.env.APP_DIR, "common", "no_art.jpg");
@@ -56,65 +57,9 @@ process.env.COVERART_IMAGE = "Cover.jpg";
 process.env.FOLDER_IMAGE = "folder.jpg";
 process.env.LOGO_IMAGE = "logo.png";
 
-module.exports.config = {
-  api_key: "",
-  lastfm_api_key: "",
-  lastfm_api_secret: "",
-  brainz_api_url: "",
-  ui_enabled: true,
-  api_enabled: true
-};
-
 if (!fs.existsSync(process.env.DATA_DIR)) { shell.mkdir("-p", process.env.DATA_DIR); }
 if (!fs.existsSync(process.env.LOGS_DIR)) { shell.mkdir("-p", process.env.LOGS_DIR); }
 if (!fs.existsSync(process.env.CONVERTED_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_MEDIA_DIR); }
 if (!fs.existsSync(process.env.CONVERTED_STARRED_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_STARRED_MEDIA_DIR); }
 if (!fs.existsSync(process.env.CONVERTED_PLAYLIST_MEDIA_DIR)) { shell.mkdir("-p", process.env.CONVERTED_PLAYLIST_MEDIA_DIR); }
 if (!fs.existsSync(process.env.COVER_ART_DIR)) { shell.mkdir("-p", process.env.COVER_ART_DIR); }
-
-
-module.exports.getConfig = function () {
-
-  if (fs.existsSync(process.env.CONFIG_FILE)) {
-    var config = JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8"));
-    return config;
-  } else { return null; }
-
-};
-
-var logger = require("./common/logger");
-var loggerTag = "config";
-
-module.exports.saveConfig = function () {
-  return new Promise((resolve, reject) => {
-    fs.writeFileSync(process.env.CONFIG_FILE, JSON.stringify(module.exports.config, null, 2), function (err, data) {
-      if (err) {
-        logger.error(loggerTag, err);
-        reject(err);
-      }
-      else {
-        resolve();
-      }
-    });
-  });
-};
-
-var confResult = module.exports.getConfig();
-
-if (confResult === null) {
-  module.exports.config.api_key = md5(Math.random().toString());
-  module.exports.config.brainz_api_url = "https://api.lidarr.audio";
-  module.exports.saveConfig().then((result) => {
-    logger.info(loggerTag, "Created default config");
-  }).catch((err) => {
-    logger.error(loggerTag, err);
-  });
-} else {
-  module.exports.config = confResult;
-}
-process.env.API_KEY = module.exports.config.api_key;
-process.env.LASTFM_API_KEY = module.exports.config.lastfm_api_key;
-process.env.LASTFM_API_SECRET = module.exports.config.lastfm_api_secret;
-process.env.BRAINZ_API_URL = module.exports.config.brainz_api_url;
-process.env.UI_ENABLED = module.exports.config.ui_enabled;
-process.env.API_ENABLED = module.exports.config.api_enabled;

@@ -5,10 +5,7 @@ const fs = require("fs");
 const _ = require("lodash");
 const del = require("del");
 const shell = require("shelljs");
-var convert = require("../../common/convert");
-var logger = require("../../common/logger");
 const { ipcRenderer } = require("electron");
-const mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
 var loggerTag = "MediaScannerBase";
 
 module.exports = class MediaScannerBase {
@@ -18,7 +15,14 @@ module.exports = class MediaScannerBase {
     this.resetStatus();
     this.queue = {};
     this.tickets = {};
+    this.convert = require(path.join(process.env.APP_DIR, "common", "convert"));
+    this.mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
   }
+
+  log(obj) { ipcRenderer.send("log", obj); }
+  info(messsage) { this.log({ level: "info", label: loggerTag, message: messsage }); }
+  debug(debug) { this.log({ level: "debug", label: loggerTag, message: debug }); }
+  error(error) { this.log({ level: "error", label: loggerTag, message: error }); }
 
   shouldCancel() {
     return this.scanStatus.shouldCancel;
@@ -27,7 +31,7 @@ module.exports = class MediaScannerBase {
   cancelScan() {
     if (this.isScanning()) {
       this.updateStatus("Cancelling scan", false);
-      logger.info(loggerTag, "Cancelling scan");
+      this.info("Cancelling scan");
       this.scanStatus.shouldCancel = true;
       setTimeout(() => {
         this.scanStatus.shouldCancel = false;
@@ -35,7 +39,7 @@ module.exports = class MediaScannerBase {
       this.tickets = {};
     } else {
       this.updateStatus("Cancelled scanning", false);
-      logger.info(loggerTag, "Cancelled scanning");
+      this.info("Cancelled scanning");
     }
   }
 
@@ -54,7 +58,6 @@ module.exports = class MediaScannerBase {
     Object.assign(opts, this.scanStatus);
     ipcRenderer.send("mediascanner-status", opts);
   }
-
 
   checkQueue() {
     if (this.queue) {
@@ -96,7 +99,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkCounts() {
-    logger.info(loggerTag, "checking counts");
+    this.info("checking counts");
     this.updateStatus("checking counts", true);
     var genres = this.db.prepare("SELECT * FROM Genres").all();
     genres.forEach((g) => {
@@ -120,7 +123,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkSortOrder() {
-    logger.info(loggerTag, "checking table sort orders");
+    this.info("checking table sort orders");
     this.updateStatus("checking base sort order", true);
     var allArtists = this.db.prepare("SELECT * FROM Artists ORDER BY name COLLATE NOCASE ASC").all();
     for (var i = 0; i < allArtists.length; ++i) {
@@ -129,7 +132,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyArtists() {
-    logger.info(loggerTag, "checking empty artists");
+    this.info("checking empty artists");
     this.updateStatus("checking missing media", true);
     var allMedia = this.db.prepare("SELECT * FROM Artists").all();
     allMedia.forEach((artist) => {
@@ -142,7 +145,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyAlbums() {
-    logger.info(loggerTag, "checking empty albums");
+    this.info("checking empty albums");
     this.updateStatus("checking missing albums", true);
     var allMedia = this.db.prepare("SELECT * FROM Albums").all();
     allMedia.forEach((album) => {
@@ -155,7 +158,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyGenres() {
-    logger.info(loggerTag, "checking empty genres");
+    this.info("checking empty genres");
     this.updateStatus("checking empty genres", true);
     var allMedia = this.db.prepare("SELECT * FROM Genres").all();
     allMedia.forEach((genre) => {
@@ -168,7 +171,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkEmptyPlaylists() {
-    logger.info(loggerTag, "checking empty playlists");
+    this.info("checking empty playlists");
     this.updateStatus("checking empty playlists", true);
     var allPlayslits = this.db.prepare("SELECT * FROM Playlists").all();
     allPlayslits.forEach((playlist) => {
@@ -181,7 +184,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkExtraAlbumArt() {
-    logger.info(loggerTag, "checking extra art");
+    this.info("checking extra art");
     this.updateStatus("checking extra art", true);
     if (!fs.existsSync(process.env.COVER_ART_DIR)) {
       fs.mkdirSync(process.env.COVER_ART_DIR);
@@ -196,7 +199,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkTracksExist() {
-    logger.info(loggerTag, "checking missing tracks");
+    this.info("checking missing tracks");
     var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
     allTracks.forEach((track) => {
       if (!fs.existsSync(track.path)) {
@@ -207,7 +210,7 @@ module.exports = class MediaScannerBase {
   }
 
   checkHistory() {
-    logger.info(loggerTag, "checking history");
+    this.info("checking history");
     var allHistory = this.db.prepare("SELECT * FROM History").all();
     allHistory.forEach((item) => {
       var track = this.db.prepare("SELECT * FROM Tracks WHERE id=?").get(item.id);
@@ -224,8 +227,8 @@ module.exports = class MediaScannerBase {
           var insert = this.db.prepare(sql);
           insert.run(item);
         } catch (err) {
-          if (err) { logger.error(loggerTag, err); }
-          logger.info(loggerTag, sql);
+          if (err) { this.error(err); }
+          this.info(sql);
         }
       }
     });
@@ -313,7 +316,7 @@ module.exports = class MediaScannerBase {
       var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
       var existingCover = stmt.all(coverId);
       if (!fs.existsSync(coverFile)) {
-        return mm.parseFile(track.path).then((metadata) => {
+        return this.mm.parseFile(track.path).then((metadata) => {
           if (existingCover.length === 0) {
             this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
           }
@@ -322,7 +325,7 @@ module.exports = class MediaScannerBase {
 
             fs.writeFile(coverFile, metadata.common.picture[0].data, (err) => {
               if (err) {
-                logger.error(loggerTag, err);
+                this.error(err);
               }
               this.db.prepare("UPDATE Tracks SET cover_art=? WHERE id=?").run(coverId, track.id);
             });
@@ -335,14 +338,14 @@ module.exports = class MediaScannerBase {
   }
 
   createAlbumArt() {
-    logger.info(loggerTag, "checking missing art");
+    this.info("checking missing art");
     this.updateStatus("checking missing art", true);
     var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
     return this.parseFiles(allTracks);
   }
 
   cleanup() {
-    logger.info(loggerTag, "Starting cleanup");
+    this.info("Starting cleanup");
     this.updateStatus("Cleanup", false);
     this.checkTracksExist();
     this.checkEmptyPlaylists();
@@ -352,19 +355,19 @@ module.exports = class MediaScannerBase {
     this.checkCounts();
     this.checkHistory();
     this.checkCache();
-    logger.info(loggerTag, "Cleanup complete");
+    this.info("Cleanup complete");
     this.updateStatus("Cleanup Complete", false);
   }
 
   incrementalCleanup() {
     if (this.isScanning()) {
-      logger.debug(loggerTag, "scan in progress");
+      this.debug("scan in progress");
     } else {
       this.updateStatus("incremental Cleanup", true);
-      logger.info(loggerTag, "incrementalCleanup");
+      this.info("incrementalCleanup");
       // this.cleanup();
       this.createAlbumArt().then(() => {
-        logger.info(loggerTag, "Incremental Cleanup complete");
+        this.info("Incremental Cleanup complete");
         this.updateStatus("Cleanup Complete", false);
       });
     }
@@ -376,22 +379,29 @@ module.exports = class MediaScannerBase {
     if (track && !this.shouldCancel()) {
       var outputPath = path.join(process.env.CONVERTED_STARRED_MEDIA_DIR, path.basename(track.path, path.extname(track.path)) + "." + settings.alloydb_streaming_format.toLowerCase());
       if (!fs.existsSync(outputPath)) {
-        convert(this.db, track, settings.alloydb_streaming_bitrate, settings.alloydb_streaming_format, outputPath, () => {
+        this.convert(this.db, track, settings.alloydb_streaming_bitrate, settings.alloydb_streaming_format, outputPath, (command) => {
+          this.debug(command);
+        }, (progress) => {
+          this.debug("Processing: " + progress.timemark + " done " + progress.targetSize + " kilobytes");
+        }, (err) => {
+          this.error(err);
+        }, (returnPath) => {
+          this.debug("Finished Conversion - " + returnPath);
           this.processCacheTrack(settings, tracks);
         });
       } else { this.processCacheTrack(settings, tracks); }
     } else {
-      logger.info(loggerTag, "Caching tracks complete");
+      this.info("Caching tracks complete");
       this.updateStatus("Caching tracks complete", false);
     }
   }
 
   recache() {
     if (this.isScanning()) {
-      logger.debug(loggerTag, "scan in progress");
+      this.debug("scan in progress");
     } else {
       this.updateStatus("Recaching Starred", true);
-      logger.info(loggerTag, "Recache Starred");
+      this.info("Recache Starred");
 
       var settingsResult = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
       if (settingsResult && settingsResult.settings_value) {
@@ -400,7 +410,7 @@ module.exports = class MediaScannerBase {
 
           if (settings.alloydb_streaming_format === "Unchanged") {
             this.updateStatus("Recache Finished, Cannot use setting: Unchanged", false);
-            logger.info(loggerTag, "Recache Finished, Cannot use setting: Unchanged");
+            this.info("Recache Finished, Cannot use setting: Unchanged");
             return;
           }
           var tracksToCache = [];
@@ -488,10 +498,10 @@ module.exports = class MediaScannerBase {
       insert.run(values);
     } catch (err) {
       if (err) {
-        logger.error(loggerTag, err);
+        this.error(err);
       }
-      logger.error(loggerTag, sql);
-      logger.error(loggerTag, values);
+      this.error(sql);
+      this.error(values);
     }
   }
 
@@ -548,8 +558,7 @@ module.exports = class MediaScannerBase {
       }
       this.writeDb(data, "ScanEvents");
     } catch (err) {
-      logger.error(loggerTag, err);
+      this.error(err);
     }
   }
 };
-

@@ -1,12 +1,10 @@
+var fs = require("fs");
+var path = require("path");
 var express = require("express");
 var router = express.Router();
 var structures = require("../../common/structures");
-var logger = require("../../common/logger");
 var { ipcRenderer } = require("electron");
-var fs = require("fs");
-var path = require("path");
-var shell = require("shelljs");
-var klawSync = require("klaw-sync");
+
 // eslint-disable-next-line prefer-const
 
 /**
@@ -24,7 +22,7 @@ var klawSync = require("klaw-sync");
 router.get("/ping", function (req, res) {
 
   // if (req.query.api_key !== process.env.API_KEY) return res.sendStatus(401);
-  res.locals.ipc.send("api-test", "test from api");
+  res.locals.ipcRenderer.send("api-test", "test from api");
   var ping = new structures.Ping("success");
   res.send(ping);
 });
@@ -39,8 +37,7 @@ router.get("/ping", function (req, res) {
  * @security ApiKeyAuth
  */
 router.get("/scheduler", function (req, res) {
-
-  res.json(res.locals.scheduler.getSchedule());
+  res.json(JSON.parse(res.locals.ipcRenderer.sendSync("scheduler-get-schedule")));
 });
 
 /**
@@ -209,13 +206,13 @@ if (ipcRenderer) {
  * @security ApiKeyAuth
  */
 router.get("/do_backup", function (req, res) {
-
   res.locals.notify("Starting Backup", "Backup requested");
   res.locals.backup.doBackup().then(() => {
-    logger.info("api/system/do_backup", "Backup Success");
+    res.locals.info("api/system/do_backup - Backup Success");
     res.send(new structures.StatusResult("success"));
   }).catch((err) => {
-    logger.error("api/system/do_backup", err);
+    res.locals.error("api/system/do_backup");
+    res.locals.error(err);
     res.send(new structures.StatusResult("failed"));
   });
 });
@@ -228,9 +225,8 @@ router.get("/do_backup", function (req, res) {
  * @security ApiKeyAuth
  */
 router.post("/do_restore", function (req, res) {
-
   res.locals.notify("Restoring backup", "Restore requested");
-  logger.info("api/system/do_restore", "restore requested");
+  res.locals.info("api/system/do_restore - restore requested");
   res.locals.db.close();
   var dbPath = process.env.DATABASE;
   var dbWalPath = process.env.DATABASE_WAL;
@@ -240,7 +236,8 @@ router.post("/do_restore", function (req, res) {
   setTimeout(() => {
     sampleFile.mv(restoreFile, function (err) {
       if (err) {
-        logger.error("api/system/do_restore", err);
+        res.locals.error("api/system/do_restore");
+        res.locals.error(err);
         return res.status(500).send(err);
       }
 
@@ -249,7 +246,7 @@ router.post("/do_restore", function (req, res) {
       if (fs.existsSync(dbShmPath)) { fs.renameSync(dbShmPath, dbShmPath + ".old"); }
 
       fs.renameSync(restoreFile, dbPath);
-      logger.info("api/system/do_restore", "shutting down.... restart server");
+      res.locals.info("api/system/do_restore - shutting down.... restart server");
       setTimeout(() => {
         process.exit(0);
       }, 5000);
@@ -268,7 +265,7 @@ router.post("/do_restore", function (req, res) {
  */
 router.get("/clear_cache", function (req, res) {
   res.locals.notify("Clearing Cache", "Clear Cache requested");
-  logger.info("api/system/clear_cache", "Clearing Cache");
+  res.locals.info("api/system/clear_cache - Clearing Cache");
 });
 
 /**
@@ -280,7 +277,7 @@ router.get("/clear_cache", function (req, res) {
  */
 router.get("/clear_starred_cache", function (req, res) {
   res.locals.notify("Clearing Starred Cache", "Clear Starred Cache requested");
-  logger.info("api/system/clear_starred_cache", "Clearing Starred Cache");
+  res.locals.info("api/system/clear_starred_cache - Clearing Starred Cache");
 });
 
 /**
@@ -293,7 +290,7 @@ router.get("/clear_starred_cache", function (req, res) {
 router.get("/start_recache", function (req, res) {
   if (ipcRenderer) { ipcRenderer.send("mediascanner-recache-start"); }
   res.locals.notify("Starting Recache", "Start Recache Requested");
-  logger.info("api/system/start_recache", "Starting Re-Cache");
+  res.locals.info("api/system/start_recache - Starting Re-Cache");
   var status = new structures.StatusResult(res.locals.mediaScanner.startRecache());
   res.send(status);
 

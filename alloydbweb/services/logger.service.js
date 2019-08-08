@@ -12,7 +12,7 @@ export default class Logger {
     if (data) {
       console.log(data);
       if (this.$rootScope.socket) {
-        this.$rootScope.socket.emit("log", { message: data, method: type });
+        this.$rootScope.socket.emit("log", { level: type, label: "WebUI", message: data });
       }
     }
   }

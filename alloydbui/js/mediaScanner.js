@@ -8,9 +8,7 @@ const klawSync = require("klaw-sync");
 const escape = require("escape-string-regexp");
 const { ipcRenderer } = require("electron");
 var Queue = require("better-queue");
-var loggerTag = "MediaScanner";
 var utils = {};
-var logger = {};
 var structures = {};
 var MediaScannerBase = {};
 var mm = {};
@@ -20,12 +18,10 @@ var scanner = {};
 
 ipcRenderer.on("mediascanner-start", (args, env) => {
   process.env = env;
-  logger = require(path.join(process.env.APP_DIR, "common", "logger"));
   utils = require(path.join(process.env.APP_DIR, "common", "utils"));
   structures = require(path.join(process.env.APP_DIR, "common", "structures"));
   MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
   mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
-
 
   class MediaScanner extends MediaScannerBase {
     constructor() {
@@ -40,6 +36,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       this.configureQueue();
       this.configFileWatcher();
       ipcRenderer.send("mediascanner-loaded-result", "success");
+      this.info("Mediascanner Started");
     }
 
     configureQueue() {
@@ -76,7 +73,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       }
       if (this.isScanning()) {
         this.updateStatus("Scan in progress", true);
-        logger.info(loggerTag, "Scan in progress");
+        this.info("Scan in progress");
       } else {
         this.resetStatus();
         this.updateStatus("Start Full Scan", true);
@@ -201,7 +198,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           track.genre_id = existingGenre[0].id;
         }
       } catch (err) {
-        logger.error(loggerTag, err);
+        this.error(err);
       }
       return track;
     }
@@ -250,7 +247,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           if (data) {
             fs.writeFile(coverFile, data, function (err) {
               if (err) {
-                logger.error(loggerTag, err);
+                this.error(err);
               }
             });
           }
@@ -369,7 +366,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
 
                   }
                 } catch (err) {
-                  logger.error(loggerTag, err);
+                  this.error(err);
                   this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
                 }
               }
@@ -377,7 +374,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           }
         }
       } catch (err) {
-        logger.error(loggerTag, err);
+        this.error(err);
         this.updateStatus("Failed to fetch URL " + artistUrl, true);
       }
     }
@@ -395,7 +392,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
           }
         }
       } catch (err) {
-        logger.error(loggerTag, err);
+        this.error(err);
       }
     }
 
@@ -410,7 +407,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
       var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
 
       if (mediaPaths.length === 0) {
-        logger.info(loggerTag, "No Media Path Defined ");
+        this.info("No Media Path Defined ");
         return;
       }
       mediaPaths.forEach((mediaPath) => {
@@ -435,31 +432,25 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
 });
 
 ipcRenderer.on("mediascanner-scan-start", () => {
-  logger.info(loggerTag, "starting scan");
   scanner.startScan();
 });
 
 ipcRenderer.on("mediascanner-scan-cancel", () => {
-  logger.info(loggerTag, "cancel scan");
   scanner.cancelScan();
 });
 
 ipcRenderer.on("mediascanner-cleaup-start", () => {
-  logger.info(loggerTag, "cancel scan");
   scanner.cleanup();
 });
 
 ipcRenderer.on("mediascanner-inc-cleaup-start", () => {
-  logger.info(loggerTag, "cancel scan");
   scanner.incrementalCleanup();
 });
 
 ipcRenderer.on("mediascanner-watcher-configure", () => {
-  logger.info(loggerTag, "Reconfigure File Watcher");
   scanner.configFileWatcher();
 });
 
 ipcRenderer.on("mediascanner-recache-start", () => {
-  logger.info(loggerTag, "Recache Media");
   scanner.recache();
 });

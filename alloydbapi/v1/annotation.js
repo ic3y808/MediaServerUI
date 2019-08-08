@@ -2,7 +2,6 @@ var express = require("express");
 var router = express.Router();
 var structures = require("../../common/structures");
 var moment = require("moment");
-var db = {};
 
 /**
  * This function comment is parsed by doctrine

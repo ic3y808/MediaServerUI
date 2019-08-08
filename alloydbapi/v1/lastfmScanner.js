@@ -1,5 +1,4 @@
 var Lastfm = require("./simple-lastfm");
-var db = {};
 
 function LastFMScanner(db) {
   this.db = db;

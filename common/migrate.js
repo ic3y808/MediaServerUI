@@ -1,7 +1,13 @@
 const fs = require("fs");
 const path = require("path");
-var logger = require("./logger");
-var loggerTag = "config";
+var loggerTag = "Migrate";
+module.exports.log = {};
+
+
+function info(messsage) { module.exports.log({ level: "info", label: loggerTag, message: messsage }); }
+function debug(debug) { module.exports.log({ level: "debug", label: loggerTag, message: debug }); }
+function error(error) { module.exports.log({ level: "error", label: loggerTag, message: error }); }
+
 
 function getType(key) {
   switch (key) {
@@ -11,9 +17,11 @@ function getType(key) {
 }
 
 module.exports.migrate = function migrate(db, migrationDir) {
+  debug("Starting DB Migration");
   db.prepare("CREATE TABLE IF NOT EXISTS Migrations (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR (255) NOT NULL, `run_on` datetime NOT NULL)").run();
   var files = fs.readdirSync(migrationDir);
   files.forEach((file) => {
+    debug("Processing Migration: " + file);
     var existingInDb = db.prepare("SELECT * FROM Migrations WHERE name=?").get(file);
     if (!existingInDb) {
       var req = require(path.join(migrationDir, file));
@@ -23,10 +31,10 @@ module.exports.migrate = function migrate(db, migrationDir) {
           db.prepare(data.command).run(data.values);
         } catch (err) {
           if (err) {
-            logger.error(loggerTag, err);
+            error(err);
           }
-          logger.error(loggerTag, data.command);
-          logger.error(loggerTag, data.values);
+          error(data.command);
+          error(data.values);
         }
       } else {
         var sql = "CREATE TABLE ";
@@ -56,14 +64,16 @@ module.exports.migrate = function migrate(db, migrationDir) {
           db.prepare("INSERT INTO Migrations (name,run_on) VALUES (?,?);").run(file, new Date().toISOString());
         } catch (err) {
           if (err) {
-            logger.error(loggerTag, err);
+            error(err);
           }
-          logger.error(loggerTag, sql);
-          logger.error(loggerTag, values);
+          error(sql);
+          error(values);
         }
       }
     }
   });
+
+  debug("Finished DB Migration");
 };
 
 module.exports.getFileList = function getFileList(migrationDir) {
@@ -80,10 +90,10 @@ module.exports.insertTestData = function insertTestData(db, migrationDir) {
         db.prepare(data.command).run(data.values);
       } catch (err) {
         if (err) {
-          logger.error(loggerTag, err);
+          error(err);
         }
-        logger.error(loggerTag, data.command);
-        logger.error(loggerTag, data.values);
+        error(data.command);
+        error(data.values);
       }
     }
   });
@@ -97,13 +107,13 @@ module.exports.test = function test(db, migrationDir) {
     if (data && data.sql === true) {
       try {
         var result = db.prepare(data.command).get();
-        logger.debug(loggerTag, result);
+        debug(result);
       } catch (err) {
         if (err) {
-          logger.error(loggerTag, err);
+          error(err);
         }
-        logger.error(loggerTag, data.command);
-        logger.error(loggerTag, data.values);
+        error(data.command);
+        error(data.values);
       }
     }
   });

@@ -1,37 +1,21 @@
-const logger = require("electron-log");
-const watch = require("node-watch");
-const electron = require("electron");
-const { ipcRenderer } = electron;
-logger.catchErrors();
-const low = require("lowdb");
-const FileSync = require("lowdb/adapters/FileSync");
-const adapter = new FileSync(process.env.LOGS_DATABASE);
-const db = low(adapter);
+var socket = null;
 
-db.defaults({ logs: [] }).write();
+module.exports.connect = function (host) {
+  socket = require("socket.io-client")(host);
+  socket.on("connect", function () {
+    console.log("connected to host");
+  });
+  socket.on("event", function (data) { });
+  socket.on("disconnect", function () { });
+};
+
 
 module.exports.callback = {};
 
 module.exports.log = function (obj) {
-  if (process.env.MODE === "dev" || process.env.MODE === "test") {
-    console.log(obj.level + ":" + obj.label + ":" + obj.message);
+  if(socket){
+    socket.emit("log", obj);
   }
-
-  try {
-    db.read();
-    db.get("logs")
-      .push({ timestamp: new Date().toISOString(), level: obj.level, label: obj.label, message: obj.message })
-      .write();
-  } catch (err) {
-    if (err) {
-      console.log(err.message);
-      console.log(err.stack);
-    }
-    console.log(JSON.stringify(obj));
-  }
-
-  if (ipcRenderer) { ipcRenderer.send("log-update"); }
-  if (typeof module.exports.callback === "function") { module.exports.callback(); }
 };
 
 module.exports.debug = function (label, message) {
@@ -68,32 +52,5 @@ module.exports.error = function (label, err) {
     obj2.message = err.stack;
     module.exports.log(obj1);
     module.exports.log(obj2);
-  }
-};
-
-module.exports.watchLogs = function () {
-  watch(process.env.LOGS_DATABASE, (evt, name) => {
-    if (ipcRenderer) { ipcRenderer.send("log-update"); }
-    if (typeof module.exports.callback === "function") { module.exports.callback(); }
-  });
-};
-
-module.exports.query = function (totalLimit, cb) {
-  var sql = "SELECT * FROM Logs ORDER BY timestamp DESC";
-  try {
-    db.read();
-    var results = db
-      .get("logs")
-      .sortBy("timestamp")
-      .reverse()
-      .take(100)
-      .value();
-    cb(results);
-  } catch (err) {
-    if (err) {
-      module.exports.error("Logger", err);
-    }
-    module.exports.error("Logger", sql);
-    cb(null);
   }
 };

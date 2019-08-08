@@ -8,19 +8,18 @@ var profile = {};
 profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
+logger.debug(loggerTag, "packing " + process.env.MODE + " source");
 
 if (process.env.MODE === "dev") {
   profile.entry = {
     app: ["./alloydbweb/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
-  logger.info(loggerTag, "packing dev mode source");
 } else {
   profile.devtool = "inline-source-map";
   profile.entry = {
     app: ["./app.js"]
   };
-  logger.info(loggerTag, "packing release mode source");
 }
 
 // Required plugins 
