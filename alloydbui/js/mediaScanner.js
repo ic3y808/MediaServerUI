@@ -79,6 +79,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         this.updateStatus("Start Full Scan", true);
         var collectedArtistFolders = this.collectArtists();
         this.updateStatus("found mapped artists " + collectedArtistFolders.mappedArtists.length + " and unmapped artists " + collectedArtistFolders.unmappedArtists.length, true);
+        this.debug("found mapped artists " + collectedArtistFolders.mappedArtists.length + " and unmapped artists " + collectedArtistFolders.unmappedArtists.length);
         collectedArtistFolders.mappedArtists.forEach((artist) => {
           this.tickets[artist.path] = this.queue.push(artist.path);
         });
@@ -124,6 +125,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         var promises = [];
         albumDirs.forEach((dir) => {
           if (fs.existsSync(path.join(dir.path, process.env.ALBUM_NFO))) {
+            this.debug("Scanning Album " + dir.path);
             var json = JSON.parse(parser.toJson(fs.readFileSync(path.join(dir.path, process.env.ALBUM_NFO))));
             var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.4/album/" + json.album.musicbrainzalbumid;
             const albumTracks = klawSync(dir.path, { nodir: true });
@@ -264,6 +266,7 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
         return null;
       }
       this.updateStatus("Collecting mapped and unmapped artist folders", true);
+      this.debug("Collecting mapped and unmapped artist folders");
 
       var mappedArtistDirectories = [];
       var unmappedArtistDirectories = [];
@@ -293,7 +296,8 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
     async scanArtist(artist) {
 
       if (this.shouldCancel()) { return; }
-      this.updateStatus("Scanning artist ", true, { path: artist.path });
+      this.updateStatus("Scanning Artist ", true, { path: artist.path });
+      this.debug("Scanning Artist " + artist.path);
       if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) { return; }
       var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
       var json = JSON.parse(parser.toJson(data));

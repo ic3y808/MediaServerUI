@@ -132,7 +132,6 @@ function initConfig() {
   var confResult = getConfig();
   if (confResult === null) {
     config = new structures.Config();
-
     saveConfig().then((result) => {
       info("Created default config");
     }).catch((err) => {
@@ -391,7 +390,7 @@ function createSplashScreen() {
 function createMainWindow() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
-    mainWindow = createWindow(res[0] * 0.6, res[1] * 0.7, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
+    mainWindow = createWindow(res[0] * 0.65, res[1] * 0.75, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
     mainWindow.webContents.once("dom-ready", () => {
       resolve();
     });
@@ -605,7 +604,7 @@ function createBaseServer() {
 
     if (isTest()) {
       migrate.insertTestData(db, path.join(__dirname, "/migrations"));
-      migrate.test(db, path.join(__dirname, "/migrations"));
+      //migrate.test(db, path.join(__dirname, "/migrations"));
     }
 
     server.listen(process.env.API_UI_PORT);

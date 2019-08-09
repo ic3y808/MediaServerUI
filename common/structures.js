@@ -23,7 +23,6 @@ module.exports.Config = class Config {
       this.brainz_api_url = "https://api.lidarr.audio";
       this.lastfm_api_key = "";
       this.lastfm_api_secret = "";
-      this.brainz_api_url = "";
       this.ui_enabled = true;
       this.api_enabled = true;
     } else {

@@ -11,7 +11,7 @@ describe("Application launch", function () {
 
   it("loaded the correct number of windows", async function () {
     var count = await this.app.client.getWindowCount();
-    assert.equal(count, 4);
+    assert.equal(count, 3);
     await util.activateWindow(this.app, "Alloy");
     await this.app.client.element("#loadedState").getHTML(false).should.eventually.equal("true");
   });
@@ -20,13 +20,6 @@ describe("Application launch", function () {
     this.db.read();
     await setTimeout(async () => {
       await this.db.get("api-server-loaded-result").value().should.equal("success");
-    }, 250);
-  });
-
-  it("scheduler sent scheduler-load-result to ipcMain", async function () {
-    this.db.read();
-    await setTimeout(async () => {
-      await this.db.get("scheduler-load-result").value().should.equal("success");
     }, 250);
   });
 
@@ -95,9 +88,9 @@ describe("Application launch", function () {
 
   it("can open webui window", function (done) {
     util.click(this.app, "#launchWebUiButton").then(() => {
-        setTimeout(() => {
-          done();
-        }, 1000);
+      setTimeout(() => {
+        done();
+      }, 1000);
     });
   });
 
