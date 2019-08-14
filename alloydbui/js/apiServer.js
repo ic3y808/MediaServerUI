@@ -1,16 +1,17 @@
-const { ipcRenderer } = require("electron");
+const { ipcRenderer, remote } = require("electron");
 const fs = require("fs");
 const path = require("path");
 const fileUpload = require("express-fileupload");
 const express = require("express");
 var bodyParser = require("body-parser");
 var loggerTag = "alloydb";
+var server = {};
+
+process.env = remote.getGlobal("process").env;
 process.env.DEBUG = "*";
 
 class Server {
-  constructor(env) {
-    process.env = env;
-
+  constructor() {
     this.info("Starting API Server");
     this.db = window.require("better-sqlite3")(process.env.DATABASE);
     this.db.pragma("journal_mode = WAL");
@@ -180,6 +181,4 @@ class Server {
 
 }
 
-ipcRenderer.on("server-start", (args, data) => {
-  var s = new Server(data);
-});
+server = new Server();

@@ -1,0 +1,29 @@
+.row
+  .col-lg-12.col-md-12
+    .card
+      .card-header.card-header-tabs.card-header-primary
+        .nav-tabs-navigation
+          .nav-tabs-wrapper
+            span.nav-tabs-title Scheduler
+      .card-body
+        table.table
+          thead
+            tr
+              th Name
+              th Last Execution
+              th Next Execution
+              th Running
+              th Source
+              th Timezone
+              th 
+          tbody
+            tr(ng-repeat="task in schedule")
+              td {{task.name}}
+              td {{task.lastExecution}}
+              td {{task.nextExecution}}
+              td {{task.running}}
+              td {{task.source}}
+              td {{task.timezone}}
+              td.td-actions.text-right
+                button.btn.btn-success.btn-link.btn-sm(ng-click="runTask(task)", type='button', title='Run Task', rel='tooltip')
+                  i.material-icons play_arrow

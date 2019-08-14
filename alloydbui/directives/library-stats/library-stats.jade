@@ -1,0 +1,41 @@
+.col-lg-8.col-md-12
+  if api_enabled
+    .card
+      .card-header.card-header-tabs.card-header-primary
+        .nav-tabs-navigation
+          .nav-tabs-wrapper
+            span.nav-tabs-title Library Stats
+      .card-body
+        table.table
+          thead
+            tr
+              th 
+              th 
+          tbody
+            tr
+              td Albums 
+              td#libraryAlbumsCountRow {{library_stats.album_count}}
+            tr
+              td Artists 
+              td#libraryArtistsCountRow {{library_stats.artist_count}}
+            tr
+              td Genres 
+              td#libraryGenreCountRow {{library_stats.genre_count}}
+            tr
+              td Total Tracks 
+              td#libraryTotalCountRow {{library_stats.track_count}}
+            tr
+              td Total Space 
+              td {{library_stats.memory_used}}
+            tr
+              td Total Tracks Served 
+              td {{library_stats.total_requests}}
+            tr
+              td Total Data Sent 
+              td {{library_stats.total_data_served}}
+            tr
+              td General Cache Size:
+              td {{library_stats.total_cache_size}}
+            tr
+              td Starred Cache Size:
+              td {{library_stats.total_starred_cache_size}}

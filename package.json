@@ -2,6 +2,8 @@
   "name": "alloy",
   "version": "1.0.0",
   "description": "",
+  "author": "Jesse Nelson",
+  "license": "ISC",
   "main": "main.js",
   "scripts": {
     "start": "cross-env MODE=prod electron .",
@@ -50,6 +52,16 @@
         "!node_modules/ffprobe-static/bin/linux${/*}"
       ]
     },
+    "linux": {
+      "target": "deb",
+      "desktop":"linux.desktop",
+      "files": [
+        "!node_modules/ffmpeg-static/bin/darwin${/*}",
+        "!node_modules/ffmpeg-static/bin/win${/*}",
+        "!node_modules/ffprobe-static/bin/darwin${/*}",
+        "!node_modules/ffprobe-static/bin/win${/*}"
+      ]
+    },
     "mac": {
       "category": "public.app-category.productivity",
       "files": [
@@ -63,6 +75,7 @@
       "config.js",
       "main.js",
       "package.json",
+      "linux.desktop",
       "migrations/*.js",
       "css/**/*",
       "alloydbapi/**/*",
@@ -87,13 +100,10 @@
       "node_modules/ffprobe-static/package.json"
     ]
   },
-  "author": "Jesse Nelson",
-  "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.1.2",
     "angular": "^1.6.6",
-    "angular-datatables": "^8.0.0",
     "better-queue": "^3.8.10",
     "better-sqlite3": "^5.4.0",
     "body-parser": "^1.15.0",

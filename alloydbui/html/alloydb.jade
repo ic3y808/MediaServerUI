@@ -104,64 +104,11 @@ html(ng-app='alloydb', lang='en-us')
           .container-fluid
    
             .tab-content
-              .row(ng-if="scan_status.isScanning === true")
-                .col-lg-12.col-md-12
-                  .card
-                    .card-header.card-header-tabs.card-header-primary
-                      .nav-tabs-navigation
-                        .nav-tabs-wrapper
-                          span.nav-tabs-title Scan in progress
-                          button.btn.btn-danger.pull-right(ng-click="cancelScan()", type="button", style="margin-left: auto;") Abort
-                    .card-body(style="text-align: left;overflow:hidden;") 
-                      p.card-category(style="text-align: left;overflow:hidden;") 
-                        h1.text-success(style="text-align: left;overflow:hidden;") 
-                        |  {{scan_status.status}}
-                        h3.text-muted(ng-if="scan_status.path", style="text-align: left;overflow:hidden;") 
-                        |  {{scan_status.path}}
+              scan-status
                       
               #overview.tab-pane.active
                 .row
-                  .col-lg-8.col-md-12
-                    if api_enabled
-                      .card
-                        .card-header.card-header-tabs.card-header-primary
-                          .nav-tabs-navigation
-                            .nav-tabs-wrapper
-                              span.nav-tabs-title Library Stats
-                        .card-body
-                          table.table
-                            thead
-                              tr
-                                th 
-                                th 
-                            tbody
-                              tr
-                                td Albums 
-                                td#libraryAlbumsCountRow {{library_stats.album_count}}
-                              tr
-                                td Artists 
-                                td#libraryArtistsCountRow {{library_stats.artist_count}}
-                              tr
-                                td Genres 
-                                td#libraryGenreCountRow {{library_stats.genre_count}}
-                              tr
-                                td Total Tracks 
-                                td#libraryTotalCountRow {{library_stats.track_count}}
-                              tr
-                                td Total Space 
-                                td {{library_stats.memory_used}}
-                              tr
-                                td Total Tracks Served 
-                                td {{library_stats.total_requests}}
-                              tr
-                                td Total Data Sent 
-                                td {{library_stats.total_data_served}}
-                              tr
-                                td General Cache Size:
-                                td {{library_stats.total_cache_size}}
-                              tr
-                                td Starred Cache Size:
-                                td {{library_stats.total_starred_cache_size}}
+                  library-stats
    
                   .col-lg-4.col-md-12
                     .card
@@ -202,33 +149,7 @@ html(ng-app='alloydb', lang='en-us')
                                 td.td-actions.text-right
                                   button#launchWebUiButton.btn.btn-success.btn-link.btn-sm(data-original-title='Open the Web UI', type='button', title='', rel='tooltip', ng-click="launchWebUIDesktop()")
                                     i.material-icons launch
-                if api_enabled
-                  .row
-                    .col-lg-12.col-md-12
-                      .card
-                        .card-header.card-header-tabs.card-header-primary
-                          .nav-tabs-navigation
-                            .nav-tabs-wrapper
-                              span.nav-tabs-title Media Paths
-                        .card-body
-                          table.table
-                            thead
-                              tr
-                                th Display Name
-                                th Path
-                                th.pull-right 
-                                  a.nav-link(data-target='#addLibraryPathModal', data-toggle='modal', ng-click="addMediaPath()", href='#')
-                                    i.material-icons add
-                                    |  Add Path
-                                    .ripple-container
-                            tbody
-                              tr(ng-repeat="mediapath in media_paths track by $index")
-                                td {{mediapath.display_name}}
-                                td {{mediapath.path}}
-                                td.pull-right
-                                  a.nav-link(ng-click="removeMediaPath(mediapath)", href='#')
-                                    i.material-icons close
-                                    .ripple-container
+                media-path-picker
               
               if web_ui_enabled
                 #uiserver.tab-pane
@@ -286,38 +207,8 @@ html(ng-app='alloydb', lang='en-us')
                                       i.material-icons play_arrow
                             
 
-
-
               #scheduler.tab-pane
-                .row
-                  .col-lg-12.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper
-                            span.nav-tabs-title Scheduler
-                      .card-body
-                        table.table
-                          thead
-                            tr
-                              th Name
-                              th Last Execution
-                              th Next Execution
-                              th Running
-                              th Source
-                              th Timezone
-                              th 
-                          tbody
-                            tr(ng-repeat="task in schedule")
-                              td {{task.name}}
-                              td {{task.lastExecution}}
-                              td {{task.nextExecution}}
-                              td {{task.running}}
-                              td {{task.source}}
-                              td {{task.timezone}}
-                              td.td-actions.text-right
-                                button.btn.btn-success.btn-link.btn-sm(ng-click="runTask(task)", type='button', title='Run Task', rel='tooltip')
-                                  i.material-icons play_arrow
+                schedule-viewer
 
               #scanner.tab-pane
                 .row
@@ -359,83 +250,11 @@ html(ng-app='alloydb', lang='en-us')
                               td.td-actions.text-right
                                 button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
                                   i.material-icons play_arrow
-
-                .row(ng-if="scan_status.isScanning === true")
-                  .col-lg-12.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper
-                            span.nav-tabs-title Scan Queue
-                            button.btn.btn-danger.pull-right(ng-click="cancelScan()", type="button", style="margin-left: auto;") Abort
-                      .card-body(style="text-align: left;overflow:hidden;") 
-                        table.table
-                          thead
-                            tr
-                              th Path
-                              th status
-                          tbody
-                            tr(ng-repeat="(key, value) in scan_status.queue")
-                              td {{key}} 
-                              td {{value.status}}
-                           
-                      
-                     
+                media-path-picker
+                scan-status(showQueue="true")
 
               #logs.tab-pane
-                .row
-                  .col-lg-12.col-md-12
-                    .card
-                      .card-header.card-header-tabs.card-header-primary
-                        .nav-tabs-navigation
-                          .nav-tabs-wrapper(style="display:flex;")
-                            span.nav-tabs-title Logs
-                            form.navbar-form(style="margin-left: auto;")
-                              span.bmd-form-group
-                                .input-group.no-border
-                                  select.form-control.selectpicker(data-style="btn-info", ng-model="logLevels.value",ng-options="v for v in logLevels.values")
-                      .card-body
-                        table.table.log-table
-                          thead
-                            tr
-                              th(style="width: 0px") Timestamp
-                              th(style="width: 0px") Level
-                              th(style="width: 0px") Source                              
-                              th(style="width: 100%") Message
-                              
-                          tbody
-                            tr(ng-class="checkLogEntry(entry)", ng-repeat="entry in logs | filter:filterLogEntry()")
-                              td(style="white-space: nowrap;") {{formatTime(entry.timestamp)}}
-                              td(style="white-space: nowrap;") {{entry.level}}
-                              td(style="white-space: nowrap;") {{entry.label}}                              
-                              td {{entry.message}}
-
-
-        #addLibraryPathModal.modal.fade(role='dialog', aria-hidden='true', aria-labelledby='addLibraryPathModalLabel', tabindex='-1')
-          .modal-dialog(role='document')
-            .modal-content
-              .modal-body
-                .content
-                  .container-fluid
-                    .row
-                      .col-md-12
-                        .card
-                          .card-header.card-header-danger
-                            h4.card-title Add Media Search Path
-                          .card-body
-                            form
-                              .row
-                                .col-md-12
-                                  .form-group
-                                    label.bmd-label-floating Display Name
-                                    input.form-control(ng-model='currentSelectedPathDisplayName', type='text')
-                              .row
-                                .col-md-12
-                                  .form-group
-                                    folderlist#mediaPathFolderList(currentpath='currentSelectedPath')
-              .modal-footer
-                button.btn.btn-secondary(data-dismiss='modal', type='button') Close
-                button.btn.btn-danger(data-dismiss='modal', ng-click="addCurrentPath()", type='button') Add Current Path
+                log-viewer
 
     div#loadedState(style="display:none;") {{$root.loaded}}
 
@@ -453,6 +272,5 @@ html(ng-app='alloydb', lang='en-us')
     script(src='/alloydbui/js/material-dashboard.js', type='text/javascript')
  
     script(src="/alloydbui/js/renderer.js", type='text/javascript')
-    script(src="/alloydbui/js/folderlist.js", type='text/javascript')
 
     

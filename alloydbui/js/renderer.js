@@ -1,19 +1,23 @@
+var path = require("path");
 var electron = require("electron");
-var { ipcRenderer, shell } = electron;
-require("angular");
-var app = angular.module("alloydb", []);
+var { ipcRenderer, shell, remote } = electron;
 
 if (module.hot) { module.hot.accept(); }
 
-app.run(function ($rootScope) {
-  "ngInject";
+process.env = remote.getGlobal("process").env;
+require("angular");
+var factories = require(path.join(process.env.APP_DIR, "alloydbui", "factories"));
+var directives = require(path.join(process.env.APP_DIR, "alloydbui", "directives"));
 
+var app = angular.module("alloydb", [factories.name, directives.name]);
+
+app.run(function ($rootScope) {
   $rootScope.currentSelectedPath = "";
   $rootScope.currentSelectedPathDisplayName = "";
   $rootScope.logLevels = {
-    "type": "select", 
+    "type": "select",
     "name": "Log Levels",
-    "value": "info", 
+    "value": "info",
     "values": ["all", "info", "debug", "error"]
   };
 

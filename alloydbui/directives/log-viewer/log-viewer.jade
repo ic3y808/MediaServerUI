@@ -1,0 +1,33 @@
+.row
+  .col-lg-12.col-md-12
+    .card
+      .card-header.card-header-tabs.card-header-primary
+        .nav-tabs-navigation
+          .nav-tabs-wrapper(style="display:flex;")
+            span.nav-tabs-title Logs
+            form.navbar-form(style="margin-left: auto;")
+              span.bmd-form-group
+                .input-group.no-border
+                
+                  select.selectpicker(data-style='btn btn-primary btn-round', title='Log Level', tabindex='-98', ng-model="logLevels.value", ng-options="v for v in logLevels.values")
+
+                    .dropdown-menu(role='combobox')
+                      .inner.show(role='listbox', aria-expanded='false', tabindex='-1')
+                        ul.dropdown-menu.inner.show
+
+                
+      .card-body
+        table.table.log-table
+          thead
+            tr
+              th(style="width: 0px") Timestamp
+              th(style="width: 0px") Level
+              th(style="width: 0px") Source                              
+              th(style="width: 100%") Message
+              
+          tbody
+            tr(ng-class="checkLogEntry(entry)", ng-repeat="entry in logs | filter:filterLogEntry()")
+              td(style="white-space: nowrap;") {{formatTime(entry.timestamp)}}
+              td(style="white-space: nowrap;") {{entry.level}}
+              td(style="white-space: nowrap;") {{entry.label}}                              
+              td {{entry.message}}

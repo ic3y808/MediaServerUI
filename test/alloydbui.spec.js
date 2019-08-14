@@ -11,7 +11,7 @@ describe("Application launch", function () {
 
   it("loaded the correct number of windows", async function () {
     var count = await this.app.client.getWindowCount();
-    assert.equal(count, 3);
+    assert.equal(count, 2);
     await util.activateWindow(this.app, "Alloy");
     await this.app.client.element("#loadedState").getHTML(false).should.eventually.equal("true");
   });

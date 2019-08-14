@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="161fb733-e5f4-4db0-b895-b42112980db7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.vscode/settings.json" beforeDir="false" afterPath="$PROJECT_DIR$/../.vscode/settings.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Alloy.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/Alloy.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/drawable/Splash.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbapi/v1/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../alloydbapi/v1/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbui/html/alloydb.jade" beforeDir="false" afterPath="$PROJECT_DIR$/../alloydbui/html/alloydb.jade" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbui/html/folderlist.jade" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbui/js/apiServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../alloydbui/js/apiServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbui/js/folderlist.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbui/js/mediaScanner.js" beforeDir="false" afterPath="$PROJECT_DIR$/../alloydbui/js/mediaScanner.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../alloydbui/js/renderer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../alloydbui/js/renderer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../common/art/TestIcon/icon.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test/alloydbui.spec.js" beforeDir="false" afterPath="$PROJECT_DIR$/../test/alloydbui.spec.js" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-855208293">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="2" />
+          <entry key="project.open.time.2" value="1" />
+          <entry key="project.open.time.3" value="2" />
+          <entry key="project.opened" value="3" />
+        </counts>
+      </usages-collector>
+    </session>
+    <session id="746359554">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="4" />
+          <entry key="project.open.time.3" value="3" />
+          <entry key="project.open.time.5" value="1" />
+          <entry key="project.opened" value="4" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="cs" value="3" />
+          <entry key="csproj" value="1" />
+          <entry key="log" value="1" />
+          <entry key="targets" value="1" />
+          <entry key="xml" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="C#" value="3" />
+          <entry key="Csproj" value="1" />
+          <entry key="MsBuild targets file" value="1" />
+          <entry key="PLAIN_TEXT" value="1" />
+          <entry key="XML" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="csproj" value="6" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Csproj" value="6" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Fragments/FreshFragment.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+              <folding>
+                <marker date="1564606254320" expanded="false" signature="6:199" ph="..." />
+                <marker date="1564606254320" expanded="true" signature="226:1970" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="271:1968" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="426:1502" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="964:1005" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1046:1093" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1135:1184" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1547:1594" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1661:1745" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1788:1886" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1838:1882" ph="{...}" />
+                <marker date="1564606254320" expanded="true" signature="1924:1965" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>arm</find>
+      <find>AndroidSupportedAbis</find>
+      <find>splash</find>
+      <find>fail</find>
+    </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/Adapters/Adapters.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Widgets/PagerSlidingTabStrip.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Fragments/FreshFragment.cs" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/Alloy.csproj" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="293" />
+    <option name="y" value="53" />
+    <option name="width" value="1400" />
+    <option name="height" value="1000" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator currentView="SolutionExplorer" proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="SolutionExplorer">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Project" type="784c90a0:SolutionExplorerRootNode" />
+              <item name="Alloy" type="24d0babc:SolutionExplorerModelNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+        <option name="show-all-files" value="false" />
+      </pane>
+      <pane id="FileSystemExplorer" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="Rider.DefaultBreakpoints.AreToggled" value="true" />
+    <property name="Rider.ProjectViewActivator.IsNotFirstRun" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.import" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Android Default" type="XamarinAndroidProject" factoryName="Xamarin.Android">
+      <option name="PROJECT_PATH" value="$PROJECT_DIR$/Alloy.csproj" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="DEPLOY_BEHAVIOUR_NAME" value="Default" />
+      <option name="DEPLOY_TARGET_BEHAVIOUR_NAME" value="ConnectedDevice" />
+      <option name="DEFAULT_EMULATOR_TO_RUN" value="" />
+      <option name="DEFAULT_DEVICE_TO_RUN" value="" />
+      <method v="2">
+        <option name="Build" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="161fb733-e5f4-4db0-b895-b42112980db7" name="Default Changelist" comment="" />
+      <created>1565565162301</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1565565162301</updated>
+      <workItem from="1565565164838" duration="360000" />
+      <workItem from="1565566041924" duration="45000" />
+      <workItem from="1565566355921" duration="620000" />
+      <workItem from="1565785258181" duration="877000" />
+      <workItem from="1565786737466" duration="157000" />
+      <workItem from="1565787038475" duration="285000" />
+      <workItem from="1565787337475" duration="3070000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="5414000" />
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="67" y="27" width="1853" height="1053" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12285556" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.2117904" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="NuGet" order="7" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Database Changes" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Unit Tests" order="11" sideWeight="0.4997233" weight="0.32969433" />
+      <window_info anchor="bottom" id="Terminal" order="12" sideWeight="0.4997233" weight="0.32969433" />
+      <window_info anchor="bottom" id="Event Log" order="13" sideWeight="0.56059766" side_tool="true" weight="0.31986898" />
+      <window_info anchor="bottom" id="Build" order="14" sideWeight="0.4394023" weight="0.31986898" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Errors In Solution" order="3" weight="0.32982844" />
+      <window_info anchor="right" id="Database" order="4" />
+    </layout>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="UnityProjectConfiguration" hasMinimizedUI="false" />
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" suspend="NONE" type="DotNet Exception Breakpoints">
+          <properties exception="System.Threading.ThreadAbortException" displayValue="System.Threading.ThreadAbortException" />
+          <option name="timeStamp" value="1" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Resources/values/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="177">
+          <caret line="24" column="15" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/mono/xbuild/Xamarin/Android/Xamarin.Android.Common.targets">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="1682" selection-start-line="1682" selection-end-line="1683" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Alloy.csproj">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="76">
+          <caret line="842" column="14" selection-start-line="842" selection-start-column="14" selection-end-line="842" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Adapters/Adapters.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-499">
+          <folding>
+            <marker date="1564606254173" expanded="false" signature="6:320" ph="..." />
+            <marker date="1564606254173" expanded="true" signature="346:4573" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="378:4571" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="878:1003" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="1114:1143" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="1241:1410" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="1505:1660" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="1756:1915" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="2012:2175" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="2271:2430" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="2533:2700" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="2732:3761" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="2743:3707" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="2782:2924" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="3790:4399" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="3801:4345" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="4438:4568" ph="{...}" />
+            <marker date="1564606254173" expanded="true" signature="4511:4564" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.Rider2018.2/system/log/SolutionBuilder/JetBrainsLog.ReSharperBuild_2019_08_14_13_35_33_7996.log">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="208">
+          <caret line="160" column="223" selection-start-line="160" selection-start-column="108" selection-end-line="160" selection-end-column="223" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Widgets/PagerSlidingTabStrip.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="84" selection-start-line="84" selection-end-line="84" />
+          <folding>
+            <marker date="1564606255462" expanded="false" signature="6:328" ph="..." />
+            <marker date="1564606255462" expanded="true" signature="353:24298" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="420:24296" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="524:703" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="2244:2253" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="2348:2356" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="2472:7558" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="4337:4395" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="6736:6904" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="6909:7194" ph="/* Tab text typeface and style ... */" />
+            <marker date="1564606255462" expanded="true" signature="7611:7785" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="7830:8265" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="7883:7975" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="8303:8637" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="8419:8610" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="8702:9320" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="8814:8870" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="8962:9250" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="9007:9146" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="9354:10235" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="9397:10231" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="9676:10226" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="9863:9981" ph="/* setAllCaps() is only available from API 14, so the upper case is made manually if we are on a ... */" />
+            <marker date="1564606255462" expanded="true" signature="10008:10220" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10085:10136" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10147:10213" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10291:10912" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10318:10340" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10447:10802" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10457:10674" ph="/* Half screen offset. ... */" />
+            <marker date="1564606255462" expanded="true" signature="10838:10908" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="10954:11727" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="11315:11670" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="11806:13012" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="11867:12084" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="12150:12627" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="12195:12227" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="12236:12384" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="12726:12782" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="12806:12859" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="13057:14009" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="13122:13144" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="13214:13516" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="13351:13511" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="13567:13738" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="13794:14005" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14098:14157" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14238:14283" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14355:16384" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14488:14552" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14603:14907" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14652:14749" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="14809:14902" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="15000:15558" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="15429:15553" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="15603:16380" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="15859:15998" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16089:16228" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16289:16375" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16430:16653" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16473:16649" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16575:16604" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16613:16644" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16688:16866" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16712:16862" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16899:17076" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="16923:17072" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17124:17351" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17181:17347" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17226:17342" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17401:17632" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17460:17628" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17504:17623" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17701:18039" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="17904:18015" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18095:18275" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18312:19064" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18397:18446" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18500:18511" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18591:18674" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18737:18932" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18792:18841" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="18881:18927" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19015:19060" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19098:19133" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19168:19204" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19238:19273" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19305:19338" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19370:19403" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19438:19474" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19508:19543" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19575:19608" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19641:19673" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19701:19733" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19764:19800" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19840:19873" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19906:19945" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="19984:20015" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20057:20091" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20119:20148" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20183:20219" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20262:20304" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20359:20421" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20473:20570" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20631:20701" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20756:20818" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="20870:20967" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21018:21076" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21126:21221" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21272:21332" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21389:21455" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21510:21574" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21625:21685" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21735:21829" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21794:21825" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21873:21916" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="21959:22019" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22066:22131" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22174:22232" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22288:22362" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22421:22486" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22558:22704" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22607:22641" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22652:22694" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22827:23144" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="22876:23038" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23049:23134" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23211:23307" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23350:23390" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23443:23501" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23539:23671" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23715:23762" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23818:24293" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="23959:24023" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="24088:24147" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="24192:24229" ph="{...}" />
+            <marker date="1564606255462" expanded="true" signature="24258:24289" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Fragments/FreshFragment.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="18" column="12" selection-start-line="18" selection-start-column="12" selection-end-line="18" selection-end-column="12" />
+          <folding>
+            <marker date="1564606254320" expanded="false" signature="6:199" ph="..." />
+            <marker date="1564606254320" expanded="true" signature="226:1970" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="271:1968" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="426:1502" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="964:1005" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1046:1093" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1135:1184" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1547:1594" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1661:1745" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1788:1886" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1838:1882" ph="{...}" />
+            <marker date="1564606254320" expanded="true" signature="1924:1965" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

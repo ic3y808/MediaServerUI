@@ -10,7 +10,7 @@ const bodyParser = require("body-parser");
 const favoriteIcon = require("serve-favicon");
 
 const electron = require("electron");
-const { app, net, BrowserWindow, ipcMain, Menu, Tray } = electron;
+const { app, net, BrowserWindow, ipcMain, Menu, Tray, nativeImage } = electron;
 
 const utils = require("./common/utils");
 const migrate = require("./common/migrate");
@@ -21,7 +21,7 @@ const appServer = express();
 const server = require("http").Server(appServer);
 const io = require("socket.io")(server);
 
-require(path.join(__dirname, "env"));
+require("./env");
 
 var logdb = require("better-sqlite3")(process.env.LOGS_DATABASE);
 logdb.prepare("CREATE TABLE IF NOT EXISTS `Logs` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `timestamp` TEXT, `level` TEXT, `label` TEXT, `message` TEXT);").run();
@@ -88,11 +88,15 @@ function queryLog() {
 
 function log(obj) {
   if (process.env.MODE === "dev" || process.env.MODE === "test") {
-    console.log(obj.level + ":" + obj.label + ":" + obj.message);
+    console.log("[" + obj.level + "]\t[" + obj.label + "] \t" + obj.message);
   }
   var sql = "INSERT INTO Logs (timestamp, level, label, message) VALUES (?,?,?,?)";
   try {
-    logdb.prepare(sql).run(new Date().toISOString(), obj.level, obj.label, obj.message);
+    if (obj === undefined || obj.level === undefined || obj.label === undefined || obj.message === undefined) {
+      console.log("Errror: Log message is invalid or is not an objet");
+      console.log(JSON.stringify(obj));
+    }
+    logdb.prepare(sql).run(new Date().toISOString(), obj.level, obj.label, obj.message.toString());
     queryLog();
   } catch (err) {
     if (err) {
@@ -316,7 +320,6 @@ function createApiServerWindow() {
     else {
       apiServerWindow = createWindow(1280, 610, 1024, 300, "Api Server", false, "apiServer.jade", () => { });
       apiServerWindow.webContents.once("dom-ready", () => {
-        apiServerWindow.webContents.send("server-start", process.env);
         resolve();
       });
     }
@@ -329,7 +332,6 @@ function createMediaScannerWindow() {
     else {
       mediaScannerWindow = createWindow(1280, 610, 1024, 300, "MediaScanner", false, "mediascanner.jade", () => { });
       mediaScannerWindow.webContents.once("dom-ready", () => {
-        mediaScannerWindow.webContents.send("mediascanner-start", process.env);
         resolve();
       });
     }
@@ -391,7 +393,9 @@ function createMainWindow() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
     mainWindow = createWindow(res[0] * 0.65, res[1] * 0.75, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
+
     mainWindow.webContents.once("dom-ready", () => {
+      mainWindow.webContents.send("setup-env", process.env);
       resolve();
     });
   });
@@ -400,8 +404,8 @@ function createMainWindow() {
 function createTrayMenu() {
   return new Promise((resolve, reject) => {
     var icon = path.join(__dirname, "common", "icon.ico");
-    tray = new Tray(icon);
-
+    const nimage = nativeImage.createFromPath(icon);
+    tray = new Tray(nimage);
     const contextMenu = Menu.buildFromTemplate([
       {
         label: "Show Web UI",
@@ -434,9 +438,6 @@ function createTrayMenu() {
         }
       }
     ]);
-    tray.setToolTip("Alloy");
-    tray.setContextMenu(contextMenu);
-
     tray.on("click", () => {
       mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
     });
@@ -446,6 +447,9 @@ function createTrayMenu() {
     mainWindow.on("hide", () => {
       tray.setHighlightMode("never");
     });
+
+    tray.setToolTip("Alloy");
+    tray.setContextMenu(contextMenu);
     resolve();
   });
 }
@@ -495,7 +499,8 @@ function createBaseServer() {
     });
 
     var views = [];
-    var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui", "html"));
+    var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui"));
+
     views = views.concat(uiViews);
 
     info("API Server Enabled: " + isUiEnabled());
@@ -569,7 +574,7 @@ function createBaseServer() {
       var err = new Error("Not Found");
       err.status = 404;
       err.url = req.path;
-      debug(err);
+      debug(err.status + " - " + req.path);
       next(err);
     });
 
@@ -578,7 +583,7 @@ function createBaseServer() {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
         err.url = req.path;
-        debug(err);
+        debug(err.status + " - " + req.path);
         res.render("error", {
           message: err.message,
           error: err
@@ -587,7 +592,7 @@ function createBaseServer() {
     } else {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        debug(err);
+        debug(err.status + " - " + req.path);
         res.render("error", {
           message: err.message,
           error: {}
@@ -670,7 +675,7 @@ function setupRoutes() {
     //if (schedulerWindow) {
     //  ipcMain.on("scheduler-start", (event, payload) => schedulerWindow.webContents.send("scheduler-start", payload));
     //  ipcMain.on("scheduler-create-job", (event, payload) => schedulerWindow.webContents.send("scheduler-create-job", payload));
-    //  ipcMain.on("scheduler-current-schedule", (event, payload) => mainWindow.webContents.send("scheduler-current-schedule", payload));
+
 
     //  ipcMain.on("scheduler-job-created", (event, payload) => {
     //    debug("created job: " + payload.name + " - " + payload.callback);
@@ -709,7 +714,9 @@ function setupRoutes() {
     });
 
     ipcMain.on("scheduler-get-schedule", (event) => {
-      event.returnValue = JSON.stringify(getSchedule());
+      var schedule = getSchedule();
+      event.returnValue = JSON.stringify(schedule);
+      mainWindow.webContents.send("scheduler-current-schedule", schedule);
     });
 
     ipcMain.on("logger-get-logs", (event) => {

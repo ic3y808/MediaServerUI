@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="$USER_HOME$/.Rider2018.2/system/extResources" t="IncludeRecursive" />
+    <e p="$USER_HOME$/.Rider2018.2/system/resharper-host/local/Transient/ReSharperHost/v182/SolutionCaches/_Alloy.1034809799.00" t="ExcludeRecursive" />
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.arch.lifecycle.runtime/1.0.3.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.animated.vector.drawable/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.core.ui/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.design/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.media.compat/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.transition/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.v7.preference/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$USER_HOME$/.nuget/packages/xamarin.android.support.v7.recyclerview/27.0.2.1/proguard" t="Include">
+      <e p="proguard.txt" t="Include" />
+    </e>
+    <e p="$PROJECT_DIR$" t="IncludeRecursive">
+      <e p="Adapters" t="Include">
+        <e p="Adapters.cs" t="Include" />
+        <e p="AlbumDetailAdapters.cs" t="Include" />
+        <e p="AlbumsAdapter.cs" t="Include" />
+        <e p="ArtistDetailAdapters.cs" t="Include" />
+        <e p="ArtistsAdapter.cs" t="Include" />
+        <e p="ChartsAdapter.cs" t="Include" />
+        <e p="FreshAdapter.cs" t="Include" />
+        <e p="GenreDetailAdapter.cs" t="Include" />
+        <e p="GenresAdapter.cs" t="Include" />
+        <e p="HistoryAdapter.cs" t="Include" />
+        <e p="MainPlaylistAdapter.cs" t="Include" />
+        <e p="MaterialRippleAdapter.cs" t="Include" />
+        <e p="MenuAdapter.cs" t="Include" />
+        <e p="NowPlayingAdapter.cs" t="Include" />
+        <e p="SearchAdapter.cs" t="Include" />
+      </e>
+      <e p="Alloy.csproj" t="IncludeRecursive" />
+      <e p="Alloy.sln" t="IncludeFlat" />
+      <e p="App.cs" t="Include" />
+      <e p="Assets" t="Include">
+        <e p="AboutAssets.txt" t="Include" />
+      </e>
+      <e p="Common" t="Include">
+        <e p="PackageUtil.cs" t="Include" />
+        <e p="SupportedFormatAttribute.cs" t="Include" />
+        <e p="UiUtils.cs" t="Include" />
+      </e>
+      <e p="Compat" t="Include">
+        <e p="ActionBarHelper.cs" t="Include" />
+        <e p="ActionBarHelperCompat.cs" t="Include" />
+        <e p="ActionBarHelperNative.cs" t="Include" />
+      </e>
+      <e p="Converters" t="Include">
+        <e p="MinDateTimeConverter.cs" t="Include" />
+        <e p="NullIntConverter.cs" t="Include" />
+        <e p="StringToBooleanConverter.cs" t="Include" />
+      </e>
+      <e p="Fragments" t="Include">
+        <e p="AlbumDetailFragment.cs" t="Include" />
+        <e p="AlbumsFragment.cs" t="Include" />
+        <e p="ArtistDetailFragment.cs" t="Include" />
+        <e p="ArtistsFragment.cs" t="Include" />
+        <e p="ChartsFragment.cs" t="Include" />
+        <e p="FragmentBase.cs" t="Include" />
+        <e p="FreshFragment.cs" t="Include" />
+        <e p="GenreDetailFragment.cs" t="Include" />
+        <e p="GenresFragment.cs" t="Include" />
+        <e p="HistoryFragment.cs" t="Include" />
+        <e p="SettingsFragment.cs" t="Include" />
+        <e p="StarredFragment.cs" t="Include" />
+      </e>
+      <e p="Helpers" t="Include">
+        <e p="DiskLRUCache" t="Include">
+          <e p="DiskLruCache.cs" t="Include" />
+          <e p="FileManager.cs" t="Include" />
+          <e p="Journal.cs" t="Include" />
+          <e p="Record.cs" t="Include" />
+          <e p="RecordComparator.cs" t="Include" />
+          <e p="RecordNotFoundException.cs" t="Include" />
+          <e p="SimpleFileManager.cs" t="Include" />
+        </e>
+        <e p="Extensions.cs" t="Include" />
+        <e p="ImageLoader.cs" t="Include" />
+        <e p="NowPlayingSnapHelper.cs" t="Include" />
+        <e p="StorageUtil.cs" t="Include" />
+        <e p="Utils.cs" t="Include" />
+      </e>
+      <e p="Interfaces" t="Include">
+        <e p="IMediaController.cs" t="Include" />
+        <e p="IMenuListener.cs" t="Include" />
+        <e p="ItemTouchHelperAdapter.cs" t="Include" />
+        <e p="ItemTouchHelperViewHolder.cs" t="Include" />
+        <e p="OnFastScrollStateChangeListener.cs" t="Include" />
+        <e p="OnStartDragListener.cs" t="Include" />
+        <e p="ViewBehavior.cs" t="Include" />
+      </e>
+      <e p="MainActivity.cs" t="Include" />
+      <e p="Models" t="Include">
+        <e p="Album.cs" t="Include" />
+        <e p="ApiRequestType.cs" t="Include" />
+        <e p="Artist.cs" t="Include" />
+        <e p="BackgroundAudioStatus.cs" t="Include" />
+        <e p="Category.cs" t="Include" />
+        <e p="Charts.cs" t="Include" />
+        <e p="CurrentBackground.cs" t="Include" />
+        <e p="Fresh.cs" t="Include" />
+        <e p="Genre.cs" t="Include" />
+        <e p="HeadsetDeviceManager.cs" t="Include" />
+        <e p="History.cs" t="Include" />
+        <e p="Item.cs" t="Include" />
+        <e p="ItemClickEventArgs.cs" t="Include" />
+        <e p="Link.cs" t="Include" />
+        <e p="RequestType.cs" t="Include" />
+        <e p="SearchResult.cs" t="Include" />
+        <e p="Song.cs" t="Include" />
+        <e p="Starred.cs" t="Include" />
+        <e p="Tag.cs" t="Include" />
+      </e>
+      <e p="NowPlayingActivity.cs" t="Include" />
+      <e p="Properties" t="Include">
+        <e p="AndroidManifest.xml" t="Include" />
+        <e p="AssemblyInfo.cs" t="Include" />
+      </e>
+      <e p="Providers" t="Include">
+        <e p="MusicProvider.cs" t="Include" />
+      </e>
+      <e p="Recievers" t="Include">
+        <e p="BluetoothIntentReceiver.cs" t="Include" />
+        <e p="HeadsetPlugReceiver.cs" t="Include" />
+        <e p="MediaButtonReciever.cs" t="Include" />
+        <e p="NoisyAudioReciever.cs" t="Include" />
+      </e>
+      <e p="Resources" t="Include">
+        <e p="AboutResources.txt" t="Include" />
+        <e p="Resource.designer.cs" t="Include" />
+        <e p="anim" t="Include">
+          <e p="fade_in.xml" t="Include" />
+          <e p="fade_out.xml" t="Include" />
+          <e p="slide_down.xml" t="Include" />
+        </e>
+        <e p="animator" t="Include">
+          <e p="slide_in_from_bottom.xml" t="Include" />
+          <e p="slide_in_from_left.xml" t="Include" />
+          <e p="slide_in_from_right.xml" t="Include" />
+          <e p="slide_out_to_bottom.xml" t="Include" />
+          <e p="slide_out_to_left.xml" t="Include" />
+          <e p="slide_out_to_right.xml" t="Include" />
+        </e>
+        <e p="animator-v21" t="Include">
+          <e p="slide_in_from_bottom.xml" t="Include" />
+          <e p="slide_in_from_left.xml" t="Include" />
+          <e p="slide_in_from_right.xml" t="Include" />
+          <e p="slide_out_to_bottom.xml" t="Include" />
+          <e p="slide_out_to_left.xml" t="Include" />
+        </e>
+        <e p="color" t="Include">
+          <e p="menu_text_color.xml" t="Include" />
+        </e>
+        <e p="drawable" t="Include">
+          <e p="abc_background.xml" t="Include" />
+          <e p="above_shadow.xml" t="Include" />
+          <e p="background.xml" t="Include" />
+          <e p="below_shadow.xml" t="Include" />
+          <e p="bottom_background.9.png" t="Include" />
+          <e p="bottom_left.9.png" t="Include" />
+          <e p="bottom_right.9.png" t="Include" />
+          <e p="circle.xml" t="Include" />
+          <e p="circle_border.xml" t="Include" />
+          <e p="favorite.png" t="Include" />
+          <e p="general_background.png" t="Include" />
+          <e p="grab.png" t="Include" />
+          <e p="grad.axml" t="Include" />
+          <e p="gradient_card_background.xml" t="Include" />
+          <e p="gripper.png" t="Include" />
+          <e p="heart.png" t="Include" />
+          <e p="ic_cast1_white_24dp.png" t="Include" />
+          <e p="ic_cast_connected_white_24dp.png" t="Include" />
+          <e p="ic_drawer.png" t="Include" />
+          <e p="ic_favorite.png" t="Include" />
+          <e p="ic_favorite_border.png" t="Include" />
+          <e p="ic_plus.xml" t="Include" />
+          <e p="list_divider.xml" t="Include" />
+          <e p="menu_background_color.xml" t="Include" />
+          <e p="menu_list_selector_background_transition_holo_dark.xml" t="Include" />
+          <e p="menu_list_selector_holo_dark.xml" t="Include" />
+          <e p="next.png" t="Include" />
+          <e p="no_art.jpg" t="Include" />
+          <e p="pause.png" t="Include" />
+          <e p="play.png" t="Include" />
+          <e p="previous.png" t="Include" />
+          <e p="psts_background_tab.xml" t="Include" />
+          <e p="rectangle_border.xml" t="Include" />
+          <e p="rounded_button.xml" t="Include" />
+          <e p="side_nav_bar.xml" t="Include" />
+          <e p="splash.xml" t="Include" />
+          <e p="star.png" t="Include" />
+          <e p="star_g.png" t="Include" />
+          <e p="star_o.png" t="Include" />
+          <e p="stations.png" t="Include" />
+          <e p="text_background.9.png" t="Include" />
+          <e p="top_background.9.png" t="Include" />
+          <e p="top_left.9.png" t="Include" />
+          <e p="top_right.9.png" t="Include" />
+          <e p="wave.png" t="Include" />
+        </e>
+        <e p="drawable-hdpi" t="Include">
+          <e p="albums.png" t="Include" />
+          <e p="all_music.png" t="Include" />
+          <e p="artists.png" t="Include" />
+          <e p="cast_connected.png" t="Include" />
+          <e p="cast_default.png" t="Include" />
+          <e p="charts.png" t="Include" />
+          <e p="cloudy.png" t="Include" />
+          <e p="folder.png" t="Include" />
+          <e p="fresh.png" t="Include" />
+          <e p="genres.png" t="Include" />
+          <e p="history.png" t="Include" />
+          <e p="ic_drawer.png" t="Include" />
+          <e p="magnifier.png" t="Include" />
+          <e p="menu_category_background.9.png" t="Include" />
+          <e p="menu_list_focused_holo.9.png" t="Include" />
+          <e p="menu_list_longpressed_holo.9.png" t="Include" />
+          <e p="menu_list_pressed_holo_dark.9.png" t="Include" />
+          <e p="menu_list_selector_disabled_holo_dark.9.png" t="Include" />
+          <e p="star.png" t="Include" />
+          <e p="starred.png" t="Include" />
+          <e p="trash.png" t="Include" />
+        </e>
+        <e p="drawable-nodpi" t="Include">
+          <e p="logo.png" t="Include" />
+          <e p="logo_text.png" t="Include" />
+        </e>
+        <e p="drawable-v21" t="Include">
+          <e p="ic_menu_camera.xml" t="Include" />
+          <e p="ic_menu_gallery.xml" t="Include" />
+          <e p="ic_menu_manage.xml" t="Include" />
+          <e p="ic_menu_send.xml" t="Include" />
+          <e p="ic_menu_share.xml" t="Include" />
+          <e p="ic_menu_slideshow.xml" t="Include" />
+          <e p="psts_background_tab.xml" t="Include" />
+        </e>
+        <e p="drawable-xxhdpi" t="Include">
+          <e p="ic_launcher.png" t="Include" />
+          <e p="ic_launcher_foreground.png" t="Include" />
+          <e p="ic_launcher_round.png" t="Include" />
+        </e>
+        <e p="layout" t="Include">
+          <e p="activity_main.axml" t="Include" />
+          <e p="album_detail_album_info.axml" t="Include" />
+          <e p="album_detail_album_metrics.axml" t="Include" />
+          <e p="album_detail_album_tracks.axml" t="Include" />
+          <e p="album_detail_layout.axml" t="Include" />
+          <e p="album_detail_song_item.axml" t="Include" />
+          <e p="album_item.axml" t="Include" />
+          <e p="album_list_layout.axml" t="Include" />
+          <e p="album_row.axml" t="Include" />
+          <e p="albums_layout.xml" t="Include" />
+          <e p="artist_detail_album_item.axml" t="Include" />
+          <e p="artist_detail_artist_albums.axml" t="Include" />
+          <e p="artist_detail_artist_all.axml" t="Include" />
+          <e p="artist_detail_artist_eps.axml" t="Include" />
+          <e p="artist_detail_artist_info.axml" t="Include" />
+          <e p="artist_detail_artist_metrics.axml" t="Include" />
+          <e p="artist_detail_artist_singles.axml" t="Include" />
+          <e p="artist_detail_artist_top.axml" t="Include" />
+          <e p="artist_detail_layout.axml" t="Include" />
+          <e p="artist_detail_song_item.axml" t="Include" />
+          <e p="artist_row.xml" t="Include" />
+          <e p="artists_layout.xml" t="Include" />
+          <e p="artists_list_layout.axml" t="Include" />
+          <e p="general_list_row.xml" t="Include" />
+          <e p="genre_detail_genre_info.axml" t="Include" />
+          <e p="genre_detail_genre_metrics.axml" t="Include" />
+          <e p="genre_detail_genre_tracks.axml" t="Include" />
+          <e p="genre_detail_layout.axml" t="Include" />
+          <e p="genre_detail_song_item.axml" t="Include" />
+          <e p="genre_row.xml" t="Include" />
+          <e p="genres_layout.xml" t="Include" />
+          <e p="history_layout.axml" t="Include" />
+          <e p="history_song_item.axml" t="Include" />
+          <e p="history_tracks.axml" t="Include" />
+          <e p="material_ripple_item.axml" t="Include" />
+          <e p="menu_row_category.xml" t="Include" />
+          <e p="menu_row_divider.xml" t="Include" />
+          <e p="menu_row_item.xml" t="Include" />
+          <e p="now_playing_card.xml" t="Include" />
+          <e p="now_playing_layout.axml" t="Include" />
+          <e p="now_playing_row.xml" t="Include" />
+          <e p="pager_layout.axml" t="Include" />
+          <e p="playback_controls.axml" t="Include" />
+          <e p="psts_tab.xml" t="Include" />
+          <e p="search_row.axml" t="Include" />
+          <e p="starred_layout.axml" t="Include" />
+          <e p="starred_tracks.axml" t="Include" />
+          <e p="track_list_layout.axml" t="Include" />
+        </e>
+        <e p="menu" t="Include">
+          <e p="general_toolbar.xml" t="Include" />
+          <e p="menu_main.xml" t="Include" />
+          <e p="multi_context_menu.xml" t="Include" />
+          <e p="song_context_menu.xml" t="Include" />
+        </e>
+        <e p="mipmap-anydpi-v26" t="Include">
+          <e p="ic_launcher.xml" t="Include" />
+          <e p="ic_launcher_round.xml" t="Include" />
+        </e>
+        <e p="mipmap-hdpi" t="Include">
+          <e p="ic_launcher.png" t="Include" />
+          <e p="ic_launcher_foreground.png" t="Include" />
+          <e p="ic_launcher_round.png" t="Include" />
+        </e>
+        <e p="mipmap-mdpi" t="Include">
+          <e p="ic_launcher.png" t="Include" />
+          <e p="ic_launcher_foreground.png" t="Include" />
+          <e p="ic_launcher_round.png" t="Include" />
+        </e>
+        <e p="mipmap-xhdpi" t="Include">
+          <e p="ic_launcher.png" t="Include" />
+          <e p="ic_launcher_foreground.png" t="Include" />
+          <e p="ic_launcher_round.png" t="Include" />
+        </e>
+        <e p="mipmap-xxhdpi" t="Include">
+          <e p="ic_launcher.png" t="Include" />
+          <e p="ic_launcher_foreground.png" t="Include" />
+          <e p="ic_launcher_round.png" t="Include" />
+        </e>
+        <e p="mipmap-xxxhdpi" t="Include">
+          <e p="ic_launcher.png" t="Include" />
+          <e p="ic_launcher_foreground.png" t="Include" />
+          <e p="ic_launcher_round.png" t="Include" />
+        </e>
+        <e p="transition" t="Include">
+          <e p="change_image_trans.xml" t="Include" />
+        </e>
+        <e p="values" t="Include">
+          <e p="array.xml" t="Include" />
+          <e p="attrs.xml" t="Include" />
+          <e p="colors.xml" t="Include" />
+          <e p="dimens.xml" t="Include" />
+          <e p="drawables.xml" t="Include" />
+          <e p="ic_launcher_background.xml" t="Include" />
+          <e p="strings.xml" t="Include" />
+          <e p="styles.xml" t="Include" />
+        </e>
+        <e p="values-v21" t="Include">
+          <e p="styles.xml" t="Include" />
+        </e>
+        <e p="xml" t="Include">
+          <e p="preferences.xml" t="Include" />
+        </e>
+      </e>
+      <e p="Services" t="Include">
+        <e p="BackgroundAudioService - Copy.cs" t="Include" />
+        <e p="BackgroundAudioService.cs" t="Include" />
+        <e p="BackgroundAudioServiceBinder.cs" t="Include" />
+        <e p="BackgroundAudioServiceConnection.cs" t="Include" />
+        <e p="NotificationService.cs" t="Include" />
+        <e p="StatusEventArg.cs" t="Include" />
+      </e>
+      <e p="SplashScreen.cs" t="Include" />
+      <e p="Tests" t="IncludeRecursive">
+        <e p=".runsettings" t="Include" />
+        <e p="AppInitializer.cs" t="Include" />
+        <e p="Tests.cs" t="Include" />
+        <e p="Tests.csproj" t="IncludeRecursive" />
+        <e p="obj" t="ExcludeRecursive" />
+      </e>
+      <e p="Widgets" t="Include">
+        <e p="CircleImageView.cs" t="Include" />
+        <e p="CustomToggle.cs" t="Include" />
+        <e p="FastScrollPopup.cs" t="Include" />
+        <e p="FastScrollRecyclerView.cs" t="Include" />
+        <e p="FastScroller.cs" t="Include" />
+        <e p="IndexFastScrollRecyclerSection.cs" t="Include" />
+        <e p="IndexFastScrollRecyclerView.cs" t="Include" />
+        <e p="MaterialRipple.cs" t="Include" />
+        <e p="PagerSlidingTabStrip.cs" t="Include" />
+        <e p="ScrollableViewHelper.cs" t="Include" />
+        <e p="SlideDrawable.cs" t="Include" />
+        <e p="Solid.cs" t="Include" />
+        <e p="Wave.cs" t="Include" />
+        <e p="WaveView.cs" t="Include" />
+      </e>
+      <e p="bin" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>

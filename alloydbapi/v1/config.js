@@ -148,7 +148,7 @@ var getPath = function (query) {
               });
             }
           } catch (e) {
-            reject(e);
+            
           }
         });
         data = _.sortBy(data, function (f) {

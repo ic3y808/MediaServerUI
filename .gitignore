@@ -47,6 +47,8 @@ build/Release
 
 # Dependency directories
 node_modules/
+node_modules.win/
+node_modules.lin/
 jspm_packages/
 bower_components/
 

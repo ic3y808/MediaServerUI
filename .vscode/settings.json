@@ -1,6 +1,8 @@
 {
   "editor.fontSize": 14,
   "editor.fontFamily": "Fira Code, 'Fira Code', Fira Code",
+  "terminal.integrated.fontFamily": "monospace",
+  "terminal.integrated.fontSize": 12,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,

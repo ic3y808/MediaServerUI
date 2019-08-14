@@ -1,0 +1,84 @@
+if api_enabled
+  .row
+    .col-lg-12.col-md-12
+      .card
+        .card-header.card-header-tabs.card-header-primary
+          .nav-tabs-navigation
+            .nav-tabs-wrapper
+              span.nav-tabs-title Media Paths
+        .card-body
+          table.table
+            thead
+              tr
+                th Display Name
+                th Path
+                th.pull-right 
+                  a.nav-link(data-target='#addLibraryPathModal', data-toggle='modal', ng-click="addMediaPath()", href='#')
+                    i.material-icons add
+                    |  Add Path
+                    .ripple-container
+            tbody
+              tr(ng-repeat="mediapath in media_paths track by $index")
+                td {{mediapath.display_name}}
+                td {{mediapath.path}}
+                td.pull-right
+                  a.nav-link(ng-click="removeMediaPath(mediapath)", href='#')
+                    i.material-icons close
+                    .ripple-container
+
+    #addLibraryPathModal.modal.fade(role='dialog', aria-hidden='true', aria-labelledby='addLibraryPathModalLabel', tabindex='-1')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-body
+            .content
+              .container-fluid
+                .row
+                  .col-md-12
+                    .card
+                      .card-header.card-header-danger
+                        h4.card-title Add Media Search Path
+                      .card-body
+                        form
+                          .row
+                            .col-md-12
+                              .form-group
+                                label.bmd-label-floating Display Name
+                                input.form-control(ng-model='currentSelectedPathDisplayName', type='text')
+                          .row
+                            .col-md-12
+                              .form-group
+                                div
+                                .Table-tableContainer(ng-show="!folderlist && !driveList")
+                                  table.Table-table
+                                    thead
+                                      tr
+                                        th.TableHeaderCell-headerCell.Link-link(label='Album') | Loading...
+
+                                .Table-tableContainer(ng-show="driveList")
+                                  table.Table-table
+                                    thead
+                                      tr
+                                        th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') Pick a Drive and Path
+                                        th.TableHeaderCell-headerCell
+                                    tbody
+                                      tr.TableRow-row(ng-repeat='drive in driveList', style="cursor:pointer;")
+                                        td.TableRowCell-cell
+                                          span.Link-link.ng-binding(ng-click="navigateToPath(drive.path)") {{drive.path}}
+                                        td.TableRowCell-cell
+                                          span.Link-link {{drive.size}}
+                                .Table-tableContainer(ng-show="folderlist")
+                                  table.Table-table
+                                    thead
+                                      tr
+                                        th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') {{currentSelectedPath}}
+                                    tbody
+                                      tr.TableRow-row(ng-repeat='folder in folderlist', style="cursor:pointer;")
+                                        td.TableRowCell-cell
+                                          span.Link-link.ng-binding(ng-click="navigateToPath(folder.Path)") {{folder.Name}}
+
+
+
+                                
+          .modal-footer
+            button.btn.btn-secondary(data-dismiss='modal', type='button') Close
+            button.btn.btn-danger(data-dismiss='modal', ng-click="addCurrentPath()", type='button') Add Current Path
