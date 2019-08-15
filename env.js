@@ -16,6 +16,8 @@ if (result.error) {
   throw result.error;
 }
 
+process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
+process.env.ELECTRON_ENABLE_LOGGING = true;
 process.env.MODE = process.env.MODE ? process.env.MODE : "prod";
 process.env.APP_DIR = __dirname;
 process.env.BASE_DIR = app.getPath("userData");

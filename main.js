@@ -243,6 +243,24 @@ function doReache() {
   mediaScannerWindow.webContents.send("mediascanner-recache-start");
 }
 
+function doDebug() {
+  if (mainWindow) {
+    mainWindow.webContents.openDevTools({ detach: false });
+  }
+  if (apiServerWindow) {
+    apiServerWindow.webContents.openDevTools({ detach: true });
+    apiServerWindow.show();
+  }
+  if (mediaScannerWindow) {
+    mediaScannerWindow.webContents.openDevTools({ detach: true });
+    mediaScannerWindow.show();
+  }
+  if (webUIWindow) {
+    webUIWindow.webContents.openDevTools({ detach: true });
+    webUIWindow.show();
+  }
+}
+
 function doToggleApiServer(e, data) {
   info("Changing API server settings to " + JSON.stringify(data));
   if (data.enabled === true) { config.api_enabled = "true"; }
@@ -393,7 +411,12 @@ function createMainWindow() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
     mainWindow = createWindow(res[0] * 0.65, res[1] * 0.75, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
-
+    mainWindow.on("show", () => {
+      tray.setHighlightMode("always");
+    });
+    mainWindow.on("hide", () => {
+      tray.setHighlightMode("never");
+    });
     mainWindow.webContents.once("dom-ready", () => {
       mainWindow.webContents.send("setup-env", process.env);
       resolve();
@@ -404,8 +427,10 @@ function createMainWindow() {
 function createTrayMenu() {
   return new Promise((resolve, reject) => {
     var icon = path.join(__dirname, "common", "icon.ico");
-    const nimage = nativeImage.createFromPath(icon);
-    tray = new Tray(nimage);
+    if (process.platform === "linux") {
+      icon = path.join(__dirname, "common", "icon.png");
+    }
+    tray = new Tray(icon);
     const contextMenu = Menu.buildFromTemplate([
       {
         label: "Show Web UI",
@@ -432,6 +457,10 @@ function createTrayMenu() {
         click: doBackup
       },
       {
+        label: "Debug",
+        click: doDebug
+      },
+      {
         label: "Exit",
         click: function () {
           app.exit(0);
@@ -440,12 +469,6 @@ function createTrayMenu() {
     ]);
     tray.on("click", () => {
       mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
-    });
-    mainWindow.on("show", () => {
-      tray.setHighlightMode("always");
-    });
-    mainWindow.on("hide", () => {
-      tray.setHighlightMode("never");
     });
 
     tray.setToolTip("Alloy");
@@ -489,7 +512,9 @@ function createBaseServer() {
         web_ui_enabled: isUiEnabled()
       };
       if (isDev()) {
-        debug(req.method + "~" + req.protocol + "://" + req.host + req.path + "~" + JSON.stringify(req.params));
+        if (req.path.indexOf(".map") === -1) {
+          debug(req.method + "~" + req.protocol + "://" + req.hostname + req.path);
+        }
       }
       next();
     });
@@ -574,7 +599,7 @@ function createBaseServer() {
       var err = new Error("Not Found");
       err.status = 404;
       err.url = req.path;
-      debug(err.status + " - " + req.path);
+      if (req.path.indexOf(".map") === -1) { error(err.status + " - " + req.path); }
       next(err);
     });
 
@@ -583,7 +608,7 @@ function createBaseServer() {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
         err.url = req.path;
-        debug(err.status + " - " + req.path);
+        if (req.path.indexOf(".map") === -1) { error(err.status + " - " + req.path); }
         res.render("error", {
           message: err.message,
           error: err
@@ -592,7 +617,7 @@ function createBaseServer() {
     } else {
       appServer.use(function (err, req, res, next) {
         res.status(err.status || 500);
-        debug(err.status + " - " + req.path);
+        if (req.path.indexOf(".map") === -1) { error(err.status + " - " + req.path); }
         res.render("error", {
           message: err.message,
           error: {}
@@ -724,22 +749,7 @@ function setupRoutes() {
     });
 
     ipcMain.on("open-dev", (event) => {
-      if (mainWindow) {
-        mainWindow.webContents.openDevTools({ detach: false });
-      }
-      if (apiServerWindow) {
-        apiServerWindow.webContents.openDevTools({ detach: true });
-        apiServerWindow.show();
-      }
-      if (mediaScannerWindow) {
-        mediaScannerWindow.webContents.openDevTools({ detach: true });
-        mediaScannerWindow.show();
-      }
-      if (webUIWindow) {
-        webUIWindow.webContents.openDevTools({ detach: true });
-        webUIWindow.show();
-      }
-
+      doDebug();
     });
     resolve();
   });
@@ -752,15 +762,16 @@ app.on("window-all-closed", () => {
 app.on("ready", async () => {
   info("Starting Alloy");
   initConfig();
+  if (!isTest()) { await createTrayMenu(); }
   if (!isTest() && !isDev()) { await createSplashScreen(); }
   await createBaseServer();
   await createApiServerWindow();
   await createMediaScannerWindow();
   await createMainWindow();
   await setupRoutes();
-  if (!isTest()) { await createTrayMenu(); }
-  if (splashWindow) { splashWindow.close(); }
+
+  if (splashWindow) { splashWindow.hide(); }
   mainWindow.webContents.send("app-loaded");
   mainWindow.show();
-  setTimeout(createTasks, 250);
+  //setTimeout(createTasks, 250);
 });

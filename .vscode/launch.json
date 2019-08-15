@@ -22,6 +22,26 @@
       "outputCapture": "std"
     },
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Electron: Main - Prod",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "MODE": "prod",
+        "DEBUG": "music-metadata:parser:ID3"
+      },
+      "runtimeArgs": [
+        "--remote-debugging-port=9223",
+        "."
+      ],
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "outputCapture": "std"
+    },
+    {
       "name": "Electron: Renderer",
       "type": "chrome",
       "request": "attach",

@@ -2,10 +2,21 @@ var express = require("express");
 var router = express.Router();
 var path = require("path");
 var fs = require("fs");
-const sharp = require("sharp");
+
 var convert = require("../../common/convert");
 var structures = require("../../common/structures");
 var { ipcRenderer } = require("electron");
+var Jimp = require("jimp");
+//var sharp = {};
+//try {
+//  sharp = require("sharp");
+//} catch (err) {
+//  if (err) {
+//
+//    console.log(err.message);
+//    console.log(err.stack);
+//  }
+//}
 
 function sendFile(res, req, fileToSend, content_type) {
   const stat = fs.statSync(fileToSend);
@@ -94,16 +105,16 @@ router.get("/stream", function (req, res) {
             if (settings.alloydb_streaming_cache_starred === true && track.starred === "true") { baseDir = process.env.CONVERTED_STARRED_MEDIA_DIR; }
             var outputPath = path.join(baseDir, path.basename(track.path, path.extname(track.path)) + "." + format.toLowerCase());
             convert(res.locals.db, track, bitrate, format, outputPath,
-               () => {
-              res.locals.debug("Starting conversion of track: " + track.path);
-            }, (progress) => {
-              res.locals.debug("Processing: " + progress.timemark + " done " + progress.targetSize + " kilobytes");
-            }, (err) => {
-              res.locals.error(err);
-            }, (returnPath) => {
-              res.locals.debug("Finished Conversion - " + returnPath);
-              sendFile(res, req, outputPath, track.content_type);
-            });
+              () => {
+                res.locals.debug("Starting conversion of track: " + track.path);
+              }, (progress) => {
+                res.locals.debug("Processing: " + progress.timemark + " done " + progress.targetSize + " kilobytes");
+              }, (err) => {
+                res.locals.error(err);
+              }, (returnPath) => {
+                res.locals.debug("Finished Conversion - " + returnPath);
+                sendFile(res, req, outputPath, track.content_type);
+              });
           }
         }
       }
@@ -237,22 +248,42 @@ router.get("/cover_art", function (req, res) {
   }
 
   if (!original) {
-    var img = sharp(input).jpeg({ quality: quality });
+
+
+    //var img = sharp(input).jpeg({ quality: quality });
     var width = req.query.width;
     var height = req.query.height;
-    if (width && height) {
-      img = img.resize({
-        width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
-      });
-    }
-    img.toBuffer().then((data) => {
-      res.end(data);
-    })
-      .catch((err) => {
-        res.locals.error("api/media/cover_art");
-        res.locals.error(err);
-        res.send(err);
-      });
+
+
+    Jimp.read(input).then((image) => {
+      if (width && height) {
+        image.resize(width, height);
+      }
+      image
+        .quality(quality)
+        .getBufferAsync(Jimp.MIME_JPEG).then((data) => {
+          res.end(data);
+        });
+    }).catch((err) => {
+      res.locals.error("api/media/cover_art");
+      res.locals.error(err);
+      res.send(err);
+    });
+
+
+    // if (width && height) {
+    //   img = img.resize({
+    //     width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
+    //   });
+    // }
+    // img.toBuffer().then((data) => {
+    //   res.end(data);
+    // })
+    //   .catch((err) => {
+    //     res.locals.error("api/media/cover_art");
+    //     res.locals.error(err);
+    //     res.send(err);
+    //   });
   } else {
     res.sendFile(input);
   }

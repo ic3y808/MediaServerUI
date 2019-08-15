@@ -35,7 +35,7 @@ class Server {
     this.app = express();
     this.server = require("http").Server(this.app);
     this.app.use(express.json());
-    this.app.use(express.urlencoded());
+    //this.app.use(express.urlencoded());
     this.app.use(fileUpload({
       limits: { fileSize: 1024 * 1024 * 1024 }
     }));
@@ -50,10 +50,10 @@ class Server {
         "PUT, POST, GET, DELETE, OPTIONS"
       );
       if (this.isDev()) {
-        this.debug(req.method + "~" + req.protocol + "://" + req.host + req.path + "~" + JSON.stringify(req.params));
+        this.debug(req.method + "~" + req.protocol + "://" + req.hostname + req.path + "~" + JSON.stringify(req.params));
       }
       if (req.method === "OPTIONS") {
-        res.send(200);
+        res.sendStatus(200);
       } else {
         next();
       }

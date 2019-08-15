@@ -33,3 +33,13 @@ A streaming media platform
 
 ### Server Interface
 ![Alt Text](/common/media/server.png?raw=true "Server interface")
+
+### Checking for problems
+* open tray and enable debug mode. 
+* If dev tools in a window is not loaded, reload the window and see error
+
+### Linux 
+* libvips-cpp.so.42: cannot open shared object file: No such file or directory
+```
+  sudo apt-get install libvips-tools libvips42
+```
