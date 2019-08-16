@@ -67,9 +67,15 @@
       "alloydbapi/**/*",
       "!alloydbcast/",
       "alloydbui/**/*",
-      "alloydbweb/**/*",
+      "alloydbweb/dist/",
+      "alloydbweb/routes/",
+      "alloydbweb/views/",
+      "alloydbweb/content/",
+      "alloydbweb/components/",
+      "alloydbweb/directives/",
+      "alloydbweb/factories/",
+      "alloydbweb/services/",
       "common/**/*",
-      "dist/**/*",
       "migrations/*.js",
       "!test/*",
       "!.codacy.yml",
@@ -100,6 +106,8 @@
           "**/*.env"
         ]
       },
+      "!node_modules/ffmpeg-static/bin",
+      "!node_modules/ffprobe-static/bin",
       "node_modules/ffmpeg-static/bin/${os}/${arch}/ffmpeg",
       "node_modules/ffmpeg-static/index.js",
       "node_modules/ffmpeg-static/package.json",
@@ -117,7 +125,6 @@
     },
     "linux": {
       "target": "deb",
-      "icon": "common/icon.png",
       "category": "Audio",
       "desktop": "linux.desktop",
       "maintainer": "Jesse Nelson"
@@ -153,7 +160,6 @@
     "fs-extra": "^8.0.1",
     "image-js": "^0.21.7",
     "jade": "^1.11.0",
-    "jimp": "^0.6.4",
     "jquery": "^3.4.1",
     "js-md5": "^0.7.3",
     "klaw-sync": "^6.0.0",

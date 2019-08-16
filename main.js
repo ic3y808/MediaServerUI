@@ -45,23 +45,6 @@ function isApiServerEnabled() { return process.env.API_ENABLED === "true"; }
 function isUiEnabled() { return process.env.UI_ENABLED === "true"; }
 function isPacked() { return process.mainModule.filename.indexOf("app.asar") > -1; }
 
-/* Single Instance Check */
-if (!isTest()) {
-  const gotTheLock = app.requestSingleInstanceLock();
-
-  if (!gotTheLock) {
-    app.quit();
-  } else {
-    app.on("second-instance", (event, commandLine, workingDirectory) => {
-      // Someone tried to run a second instance, we should focus our window.
-      if (mainWindow) {
-        if (mainWindow.isMinimized()) { mainWindow.restore(); }
-        mainWindow.show();
-        mainWindow.focus();
-      }
-    });
-  }
-}
 
 process.on("exit", () => {
   if (db) { db.close(); }
@@ -112,6 +95,27 @@ function info(messsage) { log({ level: "info", label: loggerTag, message: messsa
 function debug(debug) { log({ level: "debug", label: loggerTag, message: debug }); }
 function error(error) { log({ level: "error", label: loggerTag, message: error }); }
 
+function getInstance() {
+  /* Single Instance Check */
+  if (!isTest()) {
+    const gotTheLock = app.requestSingleInstanceLock();
+
+    if (!gotTheLock) {
+      info("Couldnt get lock, exiting");
+      app.quit();
+    } else {
+      app.on("second-instance", (event, commandLine, workingDirectory) => {
+        // Someone tried to run a second instance, we should focus our window.
+        info("Alloy already open, showing instance");
+        if (mainWindow) {
+          if (mainWindow.isMinimized()) { mainWindow.restore(); }
+          mainWindow.show();
+          mainWindow.focus();
+        }
+      });
+    }
+  }
+}
 function getConfig() {
   if (fs.existsSync(process.env.CONFIG_FILE)) {
     return new structures.Config(JSON.parse(fs.readFileSync(process.env.CONFIG_FILE, "utf8")));
@@ -261,6 +265,10 @@ function doDebug() {
   }
 }
 
+function doShowAdminUi() {
+  mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+}
+
 function doToggleApiServer(e, data) {
   info("Changing API server settings to " + JSON.stringify(data));
   if (data.enabled === true) { config.api_enabled = "true"; }
@@ -319,7 +327,7 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
     width: width, height: height, min_width: min_width, min_height: min_height,
     webPreferences: { nodeIntegration: true }, show: isDev()
   });
-  win.icon = path.join(__dirname, "common", "icon.ico");
+  win.icon = path.join(__dirname, "common", "icons", "icon.ico");
   win.setMenu(null);
   win.setMinimumSize(min_width, min_height);
   if (isDev() === true) {
@@ -366,7 +374,7 @@ function createWebUIWindow() {
       else {
         var res = screenRes.get();
         webUIWindow = new BrowserWindow({ width: res[0] * 0.8, height: res[1] * 0.8, webPreferences: { nodeIntegration: true } });
-        webUIWindow.icon = path.join(__dirname, "common", "icon.ico");
+        webUIWindow.icon = path.join(__dirname, "common", "icons", "icon.ico");
         webUIWindow.setMenu(null);
         //webUIWindow.setMinimumSize(min_width, min_height);
         if (isDev() === true) {
@@ -392,7 +400,7 @@ function createSplashScreen() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
     splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
-    splashWindow.icon = path.join(__dirname, "common", "icon.ico");
+    splashWindow.icon = path.join(__dirname, "common", "icons", "icon.ico");
     splashWindow.setMenu(null);
     splashWindow.loadURL(url.format({
       pathname: path.join(__dirname, "alloydbui", "html", "splash.html"),
@@ -426,9 +434,9 @@ function createMainWindow() {
 
 function createTrayMenu() {
   return new Promise((resolve, reject) => {
-    var icon = path.join(__dirname, "common", "icon.ico");
+    var icon = path.join(__dirname, "common", "icons", "icon.ico");
     if (process.platform === "linux") {
-      icon = path.join(__dirname, "common", "icon.png");
+      icon = path.join(__dirname, "common", "icons", "icon.png");
     }
     tray = new Tray(icon);
     const contextMenu = Menu.buildFromTemplate([
@@ -437,28 +445,18 @@ function createTrayMenu() {
         click: createWebUIWindow
       },
       {
-        label: "Rescan",
-        click: doRescan
+        label: "Admin Panel",
+        click: doShowAdminUi
       },
       {
-        label: "Recache",
-        click: doReache
-      },
-      {
-        label: "Cleanup",
-        click: doCleanup
-      },
-      {
-        label: "Inc. Cleanup",
-        click: doIncCleanup
-      },
-      {
-        label: "Backup",
-        click: doBackup
+        type: "separator"
       },
       {
         label: "Debug",
         click: doDebug
+      },
+      {
+        type: "separator"
       },
       {
         label: "Exit",
@@ -468,7 +466,7 @@ function createTrayMenu() {
       }
     ]);
     tray.on("click", () => {
-      mainWindow.isVisible() ? mainWindow.hide() : mainWindow.show();
+      doShowAdminUi();
     });
 
     tray.setToolTip("Alloy");
@@ -494,7 +492,7 @@ function createBaseServer() {
     appServer.set("view engine", "jade");
     appServer.use(bodyParser.json());
     appServer.use(bodyParser.urlencoded({ extended: false }));
-    appServer.use(favoriteIcon(path.join(__dirname, "common", "icon.ico")));
+    appServer.use(favoriteIcon(path.join(__dirname, "common", "icons", "icon.ico")));
     appServer.use("/node_modules/", express.static(path.join(__dirname, "node_modules")));
     appServer.use("/alloydbui/js/", express.static(path.join(__dirname, "alloydbui", "js")));
     appServer.use("/alloydbui/css/", express.static(path.join(__dirname, "alloydbui", "css")));
@@ -761,6 +759,7 @@ app.on("window-all-closed", () => {
 
 app.on("ready", async () => {
   info("Starting Alloy");
+  getInstance();
   initConfig();
   if (!isTest()) { await createTrayMenu(); }
   if (!isTest() && !isDev()) { await createSplashScreen(); }
