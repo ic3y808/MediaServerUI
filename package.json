@@ -24,7 +24,7 @@
   "nyc": {
     "all": true,
     "include": [
-      "config.js",
+      "alloy/**/*.js",
       "common/**/*.js",
       "migrations/**/*.js",
       "alloydbui/**/*.js",
@@ -35,68 +35,63 @@
       "**/*.spec.js"
     ]
   },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "env": {
+      "test": {
+        "plugins": [
+          "istanbul",
+          [
+            "transform-runtime",
+            {
+              "regenerator": true
+            }
+          ]
+        ]
+      }
+    }
+  },
   "build": {
     "buildDependenciesFromSource": false,
-    "npmRebuild": false,
+    "npmRebuild": true,
+    "asar": true,
     "directories": {
       "buildResources": "./common"
     },
-    "electronVersion": "4.1.5",
-    "electronDownload": {
-      "version": "4.1.5"
-    },
-    "appId": "com.d3bug.alloy",
-    "win": {
-      "target": "nsis",
-      "files": [
-        "!node_modules/ffmpeg-static/bin/darwin${/*}",
-        "!node_modules/ffmpeg-static/bin/linux${/*}",
-        "!node_modules/ffprobe-static/bin/darwin${/*}",
-        "!node_modules/ffprobe-static/bin/linux${/*}"
-      ]
-    },
-    "linux": {
-      "target": "deb",
-      "icon": "common/icon.png",
-      "category": "Audio",
-      "desktop": "linux.desktop",
-      "maintainer": "Jesse Nelson",
-      "files": [
-        "!node_modules/ffmpeg-static/bin/darwin${/*}",
-        "!node_modules/ffmpeg-static/bin/win${/*}",
-        "!node_modules/ffprobe-static/bin/darwin${/*}",
-        "!node_modules/ffprobe-static/bin/win${/*}"
-      ]
-    },
-    "mac": {
-      "category": "public.app-category.productivity",
-      "files": [
-        "!node_modules/ffmpeg-static/bin/win${/*}",
-        "!node_modules/ffmpeg-static/bin/linux${/*}",
-        "!node_modules/ffprobe-static/bin/win${/*}",
-        "!node_modules/ffprobe-static/bin/linux${/*}"
-      ]
-    },
     "files": [
-      "env.js",
-      "main.js",
-      "package.json",
-      "linux.desktop",
-      "migrations/*.js",
-      "css/**/*",
-      "!alloydbandroid/*",
-      "!alloydbcast/*",
-      "!test/*",
       "!.vscode/*",
-      "!.vscode/*",
+      "!alloydbandroid/",
       "alloydbapi/**/*",
+      "!alloydbcast/",
       "alloydbui/**/*",
       "alloydbweb/**/*",
       "common/**/*",
       "dist/**/*",
-      "js/**/*",
-      "html/**/*",
-      "img/**/*",
+      "migrations/*.js",
+      "!test/*",
+      "!.codacy.yml",
+      "!.eslintrc.json",
+      "!.gitignore",
+      "!.jshintrc",
+      "!.nycrc.json",
+      "!.nycrc.json",
+      "!alloy.keystore",
+      "!azure-pipelines-dev.yml",
+      "!azure-pipelines-test.yml",
+      "!azure-pipelines.yml",
+      "!babel-register.js",
+      "!CONTRIBUTING.md",
+      "env.js",
+      "!FEATURE_TRACKING.md",
+      "!gulpfile.js",
+      "LICENSE",
+      "!linux.desktop",
+      "main.js",
+      "package.json",
+      "README.md",
+      "!version.ps1",
       {
         "from": "./",
         "to": "./",
@@ -110,7 +105,25 @@
       "node_modules/ffprobe-static/bin/${os}/${arch}/ffmpeg",
       "node_modules/ffprobe-static/index.js",
       "node_modules/ffprobe-static/package.json"
-    ]
+    ],
+    "electronVersion": "4.1.5",
+    "electronDownload": {
+      "version": "4.1.5"
+    },
+    "appId": "com.d3bug.alloy",
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "deb",
+      "icon": "common/icon.png",
+      "category": "Audio",
+      "desktop": "linux.desktop",
+      "maintainer": "Jesse Nelson"
+    },
+    "mac": {
+      "category": "public.app-category.productivity"
+    }
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
@@ -185,7 +198,7 @@
     "css-loader": "^0.28.11",
     "dart-sass": "^1.20.1",
     "electron": "^4.1.5",
-    "electron-builder": "^20.40.2",
+    "electron-builder": "^21.2.0",
     "electron-chromedriver": "^4.0.0",
     "exports-loader": "^0.7.0",
     "file-loader": "^1.1.11",
