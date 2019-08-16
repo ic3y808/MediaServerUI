@@ -769,7 +769,7 @@ app.on("ready", async () => {
   await createMediaScannerWindow();
   await createMainWindow();
   await setupRoutes();
- // if (splashWindow) { splashWindow.hide(); }
+  if (splashWindow) { splashWindow.hide(); }
   mainWindow.webContents.send("app-loaded");
   mainWindow.show();
   setTimeout(createTasks, 250);

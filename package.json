@@ -57,6 +57,7 @@
     "buildDependenciesFromSource": false,
     "npmRebuild": true,
     "asar": true,
+    "compression": "store",
     "directories": {
       "buildResources": "./common"
     },
@@ -150,6 +151,7 @@
     "file-type": "^11.0.0",
     "fluent-ffmpeg": "^2.1.2",
     "fs-extra": "^8.0.1",
+    "image-js": "^0.21.7",
     "jade": "^1.11.0",
     "jimp": "^0.6.4",
     "jquery": "^3.4.1",

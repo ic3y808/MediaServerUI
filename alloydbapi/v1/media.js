@@ -6,7 +6,7 @@ var fs = require("fs");
 var convert = require("../../common/convert");
 var structures = require("../../common/structures");
 var { ipcRenderer } = require("electron");
-var Jimp = require("jimp");
+const { Image } = require("image-js");
 //var sharp = {};
 //try {
 //  sharp = require("sharp");
@@ -248,42 +248,16 @@ router.get("/cover_art", function (req, res) {
   }
 
   if (!original) {
-
-
-    //var img = sharp(input).jpeg({ quality: quality });
     var width = req.query.width;
     var height = req.query.height;
 
-
-    Jimp.read(input).then((image) => {
+    Image.load(input).then((image) => {
       if (width && height) {
-        image.resize(width, height);
+        image.resize({ width: width, height: height });
       }
-      image
-        .quality(quality)
-        .getBufferAsync(Jimp.MIME_JPEG).then((data) => {
-          res.end(data);
-        });
-    }).catch((err) => {
-      res.locals.error("api/media/cover_art");
-      res.locals.error(err);
-      res.send(err);
+      var data = image.toBuffer({ format: "jpg" });
+      res.end(data);
     });
-
-
-    // if (width && height) {
-    //   img = img.resize({
-    //     width: width, height: height, fit: sharp.fit.cover, position: sharp.strategy.entropy
-    //   });
-    // }
-    // img.toBuffer().then((data) => {
-    //   res.end(data);
-    // })
-    //   .catch((err) => {
-    //     res.locals.error("api/media/cover_art");
-    //     res.locals.error(err);
-    //     res.send(err);
-    //   });
   } else {
     res.sendFile(input);
   }
