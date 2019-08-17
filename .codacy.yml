@@ -12,7 +12,7 @@ exclude_paths:
  - 'common/export_assets_to_android_ios.jsx'
  - 'common/log-rotator/**'
  - 'common/fast-sass-loader/**'
- - 'alloydbandroid/Tests/**.*'
+ - 'alloydroid/Tests/**.*'
  - 'alloy/js/material-dashboard.js'
  - '.vscode/**.*'
  - '*.md'

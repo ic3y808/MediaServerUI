@@ -79,7 +79,7 @@
     },
     "files": [
       "!.vscode/*",
-      "!alloydbandroid/",
+      "!alloydroid/",
       "alloyapi/**/*",
       "!alloycast/",
       "alloy/**/*",
