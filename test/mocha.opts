@@ -1,0 +1,11 @@
+--u bdd
+--timeout 20000
+--no-timeouts
+--colors
+--recursive
+--require @babel/register
+--require babel-polyfill
+--file ./test/startup.js
+--file ./test/teardown.js
+--file ./test/alloy.spec.js
+--exit

@@ -9,19 +9,14 @@ alloydbandroid.old/
 alloy.keystore
 
 #icons
-alloydbweb/styles/fonts/alloyicons.css
-alloydbweb/styles/fonts/alloyicons.eot
-alloydbweb/styles/fonts/alloyicons.svg
-alloydbweb/styles/fonts/alloyicons.ttf
-alloydbweb/styles/fonts/alloyicons.woff
-alloydbweb/styles/fonts/alloyicons.woff2
+alloyweb/styles/fonts/alloyicons.css
+alloyweb/styles/fonts/alloyicons.eot
+alloyweb/styles/fonts/alloyicons.svg
+alloyweb/styles/fonts/alloyicons.ttf
+alloyweb/styles/fonts/alloyicons.woff
+alloyweb/styles/fonts/alloyicons.woff2
 
-alloydbui/css/material-dashboard/bootstrap/scss/bootstrap.css
-alloydbui/css/material-dashboard/bootstrap/scss/bootstrap.css.map
-alloydbui/css/main.css
-alloydbui/css/main.css.map
-alloydbui/css/material-dashboard.css
-alloydbui/css/material-dashboard.css.map
+alloy/css/
 
 # Runtime data
 pids
@@ -47,11 +42,16 @@ bower_components
 # node-waf configuration
 .lock-wscript
 
+#idea projects
+.idea
+
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
 # Dependency directories
 node_modules/
+node_modules.win/
+node_modules.lin/
 jspm_packages/
 bower_components/
 

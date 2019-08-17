@@ -1,7 +1,41 @@
 const fs = require("fs");
+const md5 = require("js-md5");
 const mime = require("mime-types");
 const ffprobe = require("ffprobe-static");
 const execSync = require("child_process").execSync;
+
+/**
+ * @typedef Config
+ * @property {string} api_key
+ * @property {string} brainz_api_url
+ * @property {string} lastfm_api_key
+ * @property {string} lastfm_api_secret
+ * @property {string} brainz_api_url
+ * @property {boolean} ui_enabled
+ * @property {boolean} api_enabled
+ * @property {string} log_level
+ */
+module.exports.Config = class Config {
+
+  constructor(obj) {
+    if (!arguments.length) {
+      this.api_key = md5(Math.random().toString());
+      this.brainz_api_url = "https://api.lidarr.audio";
+      this.lastfm_api_key = "";
+      this.lastfm_api_secret = "";
+      this.ui_enabled = true;
+      this.api_enabled = true;
+    } else {
+      this.api_key = obj.api_key;
+      this.brainz_api_url = obj.brainz_api_url;
+      this.lastfm_api_key = obj.lastfm_api_key;
+      this.lastfm_api_secret = obj.lastfm_api_secret;
+      this.brainz_api_url = obj.brainz_api_url;
+      this.ui_enabled = obj.ui_enabled;
+      this.api_enabled = obj.api_enabled;
+    }
+  }
+};
 
 /**
  * @typedef MediaPath

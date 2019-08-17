@@ -1,0 +1,276 @@
+doctype html
+html(ng-app='alloydb', lang='en-us')
+  head
+    meta(charset='utf-8')
+    link(href='/img/apple-icon.png', rel='apple-touch-icon', sizes='76x76')
+    link(type='image/png', href='/img/favicon.png', rel='icon')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    title
+      | Alloy
+    meta(name='viewport', content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no')
+    // Fonts and icons
+    link(href='https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons', rel="stylesheet", type="text/css")
+    // CSS Files
+
+
+    link(href='/alloy/css/material-dashboard.css', rel="stylesheet", type="text/css")
+    link(href='/node_modules/bootstrap-select/dist/css/bootstrap-select.min.css', rel="stylesheet", type="text/css")
+    link(href='/alloy/css/main.css', rel="stylesheet", type="text/css")
+    
+  body
+    .wrapper
+      .sidebar(data-background-color='white', data-color='red', data-image='/alloy/img/sidebar-1.jpg')
+        .logo
+          a.simple-text.logo-normal
+            | Alloy
+        .sidebar-wrapper
+          ul.nav
+            li.nav-item
+              a.nav-link(ng-click='launchWebUIDesktop();', href="#")
+                i.material-icons launch
+                p Web UI
+            
+            li.nav-item
+            if api_enabled
+              li.nav-item
+                a#rescanLibraryButton.nav-link(ng-click='rescanLibrary();', href="#")
+                  i.material-icons refresh
+                  p Rescan Library
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='cleanupLibrary();', href="#")
+                  i.material-icons clear_all
+                  p Cleanup Library
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='incCleanupLibrary();', href="#")
+                  i.material-icons av_timer
+                  p Inc. Cleanup
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='backupDatabase();', href="#")
+                  i.material-icons restore
+                  p Backup
+            if api_enabled
+              li.nav-item
+                a.nav-link(ng-click='restoreDatabase();', href="#")
+                  i.material-icons refresh
+                  p Restore
+    
+            
+          
+
+
+      .main-panel.ps-container.ps-theme-default.ps-active-y(data-ps-id='c0ac7b1e-d2c8-6697-b8b8-643f29ac084f')
+        // Navbar
+        nav.navbar.navbar-expand-lg.navbar-transparent.navbar-absolute.fixed-top
+          .container-fluid
+            .navbar-wrapper
+              .nav-tabs-navigation
+                .nav-tabs-wrapper
+                  ul.nav.nav-tabs(data-tabs='tabs')
+                    li.nav-item
+                      a#overviewNav.nav-link.active(data-toggle='tab', href='#overview')
+                        i.material-icons info
+                        |  Overview
+                        .ripple-container
+                    if web_ui_enabled
+                      li#uiServerNav.nav-item
+                        a.nav-link(data-toggle='tab', href='#uiserver')
+                          i.material-icons cloud_upload
+                          |  UI Server
+                          .ripple-container
+                    if api_enabled
+                      li#scheduleNav.nav-item
+                        a.nav-link(data-toggle='tab', href='#scheduler')
+                          i.material-icons schedule
+                          |  Scheduler
+                          .ripple-container
+                    if api_enabled
+                      li#mediaScannerNav.nav-item
+                        a.nav-link(data-toggle='tab', href='#scanner')
+                          i.material-icons loop
+                          |  Scanner
+                          .ripple-container
+                    if api_enabled
+                      li.nav-item
+                        a#logsNav.nav-link(data-toggle='tab', href='#logs')
+                          i.material-icons list
+                          |  Logs
+                          .ripple-container
+            
+        // End Navbar
+        .content
+          .container-fluid
+   
+            .tab-content
+              scan-status
+                      
+              #overview.tab-pane.active
+                .row
+                  library-stats
+   
+                  .col-lg-4.col-md-12
+                    .card
+                      .card-header.card-header-tabs.card-header-primary
+                        .nav-tabs-navigation
+                          .nav-tabs-wrapper
+                            span.nav-tabs-title Quick Tasks
+                      .card-body
+                        table.table
+                          tbody
+                            if api_enabled
+                              tr
+                                td Restart API Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Restart API Server', type='button', title='', rel='tooltip')
+                                    i.material-icons play_arrow
+                            unless api_enabled
+                              tr
+                                td Enable API Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Enable API autostart', type='button', title='', rel='tooltip', ng-click="enableApiServer()")
+                                    i.material-icons play_arrow
+                            if api_enabled
+                              tr
+                                td Disable API Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Disable API autostart', type='button', title='', rel='tooltip', ng-click="disableApiServer()")
+                                    i.material-icons play_arrow
+                            unless web_ui_enabled
+                              tr
+                                td Enable UI Server
+                                td.td-actions.text-right
+                                  button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="enableUiServer()")
+                                    i.material-icons play_arrow
+                            if web_ui_enabled 
+                              tr
+                                td Launch Web UI
+                                td.td-actions.text-right
+                                  button#launchWebUiButton.btn.btn-success.btn-link.btn-sm(data-original-title='Open the Web UI', type='button', title='', rel='tooltip', ng-click="launchWebUIDesktop()")
+                                    i.material-icons launch
+                media-path-picker
+              
+              if web_ui_enabled
+                #uiserver.tab-pane
+                  .row
+                    .col-lg-8.col-md-12
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title UI Server
+                        .card-body
+                          table.table                       
+                            tbody
+                              tr
+                                td Status
+                                td OK
+                              tr
+                                td Launch Desktop Player
+                                td
+                                  a(href="", ng-click="launchWebUIDesktop()") 
+                                    i.material-icons play_arrow
+                              tr
+                                td URL
+                                td
+                                  a(href="", ng-click="launchWebUI('http://localhost:#{web_ui_port}')") http://localhost:#{web_ui_port}
+                              
+    
+
+                    .col-lg-4.col-md-12
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title Tasks
+                        .card-body
+                          table.table
+                            tbody
+                              if web_ui_enabled
+                                tr
+                                  td Restart UI Server
+                                  td.td-actions.text-right
+                                    button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
+                                      i.material-icons play_arrow
+                              unless web_ui_enabled
+                                tr
+                                  td Enable UI Server
+                                  td.td-actions.text-right
+                                    button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="enableUiServer()")
+                                      i.material-icons play_arrow
+                              if web_ui_enabled
+                                tr
+                                  td Disable UI Server
+                                  td.td-actions.text-right
+                                    button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip', ng-click="disableUiServer()")
+                                      i.material-icons play_arrow
+                            
+
+              #scheduler.tab-pane
+                schedule-viewer
+
+              #scanner.tab-pane
+                .row
+                  .col-lg-8.col-md-12
+                    .card
+                      .card-header.card-header-tabs.card-header-primary
+                        .nav-tabs-navigation
+                          .nav-tabs-wrapper
+                            span.nav-tabs-title Media Scanner
+                      .card-body
+                        table.table                       
+                          tbody
+                            tr
+                              td Status
+                              td OK
+   
+
+                  .col-lg-4.col-md-12
+                    .card
+                      .card-header.card-header-tabs.card-header-primary
+                        .nav-tabs-navigation
+                          .nav-tabs-wrapper
+                            span.nav-tabs-title Tasks
+                      .card-body
+                        table.table
+                          tbody
+                            tr
+                              td Restart Process
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', ng-click="mediaScannerRestart()", type='button', title='', rel='tooltip')
+                                  i.material-icons play_arrow
+                            tr
+                              td Start Rescan
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
+                                  i.material-icons play_arrow
+                            tr
+                              td Start Rescan
+                              td.td-actions.text-right
+                                button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
+                                  i.material-icons play_arrow
+                media-path-picker
+                scan-status(showQueue="true")
+
+              #logs.tab-pane
+                log-viewer
+
+    div#loadedState(style="display:none;") {{$root.loaded}}
+
+    // Core JS Files
+
+    script(src='http://code.jquery.com/jquery.min.js', type='text/javascript')
+    script.
+      window.jQuery = window.$ = require('jquery');
+    script(src='/node_modules/popper.js/dist/umd/popper.min.js', type='text/javascript')
+    //script(src='/node_modules/bootstrap/dist/js/bootstrap.min.js', type='text/javascript')
+    script(src='/node_modules/bootstrap-material-design/dist/js/bootstrap-material-design.js', type='text/javascript')
+    script(src='/node_modules/bootstrap-select/dist/js/bootstrap-select.min.js', type='text/javascript')
+
+    script(src='/node_modules/moment/min/moment.min.js', type='text/javascript')
+    script(src='/alloy/js/material-dashboard.js', type='text/javascript')
+ 
+    script(src="/alloy/js/renderer.js", type='text/javascript')
+
+    

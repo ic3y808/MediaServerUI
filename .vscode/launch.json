@@ -9,8 +9,28 @@
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "cwd": "${workspaceFolder}",
       "env": {
-        "MODE":"dev",
-        "DEBUG":"music-metadata:parser:ID3"
+        "MODE": "dev",
+        "DEBUG": "music-metadata:parser:ID3"
+      },
+      "runtimeArgs": [
+        "--remote-debugging-port=9223",
+        "."
+      ],
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
+      },
+      "outputCapture": "std"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Electron: Main - Prod",
+      "protocol": "inspector",
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "MODE": "prod",
+        "DEBUG": "music-metadata:parser:ID3"
       },
       "runtimeArgs": [
         "--remote-debugging-port=9223",
@@ -40,29 +60,19 @@
       "url": "http://localhost:3000/template/mediascanner.jade"
     },
     {
-      "name": "Electron: Scheduler",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9223,
-      "webRoot": "${workspaceFolder}",
-      "timeout": 30000,
-      "url": "http://localhost:3000/template/scheduler.jade"
-    },
-    {
       "name": "Electron: Server",
       "type": "chrome",
       "request": "attach",
       "port": 9223,
       "webRoot": "${workspaceFolder}",
       "timeout": 30000,
-      "url": "http://localhost:3000/template/server.jade"
+      "url": "http://localhost:3000/template/apiServer.jade"
     },
     {
       "name": "Web UI",
       "type": "chrome",
       "request": "attach",
       "port": 9223,
-      
       "timeout": 5000,
       "url": "http://localhost:3000"
     },
@@ -75,7 +85,7 @@
         "-f"
       ]
     },
-     {
+    {
       "type": "node",
       "request": "launch",
       "name": "Tests - Debug",
@@ -83,8 +93,8 @@
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "cwd": "${workspaceFolder}",
       "env": {
-        "MODE":"test",
-        "DEBUG":"music-metadata:parser:ID3",
+        "MODE": "test",
+        "DEBUG": "music-metadata:parser:ID3",
         "ELECTRON_ENABLE_LOGGING": "true",
         "ELECTRON_ENABLE_STACK_DUMPING": "true",
         "API_ENABLED": "true",
@@ -108,7 +118,12 @@
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
       "stopOnEntry": false,
-      "args": ["test/**/*.js", "--bail", "--opts", "mocha.opts"],
+      "args": [
+        "test/**/*.js",
+        "--bail",
+        "--opts",
+        "test/mocha.opts"
+      ],
       "cwd": "${workspaceRoot}",
       "runtimeExecutable": null,
       "env": {}

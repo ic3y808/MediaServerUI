@@ -1,11 +1,19 @@
 {
   "editor.fontSize": 14,
   "editor.fontFamily": "Fira Code, 'Fira Code', Fira Code",
+  "terminal.integrated.fontFamily": "monospace",
+  "terminal.integrated.fontSize": 12,
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "editor.detectIndentation": false,
   "git.ignoreLimitWarning": true,
   "eslint.autoFixOnSave": true,
   "javascript.suggestionActions.enabled": false,
-  "telemetry.enableTelemetry": false
+  "telemetry.enableTelemetry": false,
+  "eslint.options": {
+    "configFile": "common/.eslintrc.json"
+  },
+  "jshint.options":{
+    "config" : "common/.jshintrc"
+  }
 }
