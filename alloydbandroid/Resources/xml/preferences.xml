@@ -7,7 +7,7 @@
 							android:summary="Host for AlloyDB including port"
 		                    android:persistent="true"/>
 		<EditTextPreference android:title="ApiKey"
-							android:key="alloydbapikey"
+							android:key="alloyapikey"
 							android:summary="APIKey for AlloyDB"
 		                    android:persistent="true"/>
 	</PreferenceCategory>

@@ -12,16 +12,16 @@ const favoriteIcon = require("serve-favicon");
 const electron = require("electron");
 const { app, net, BrowserWindow, ipcMain, Menu, Tray, nativeImage } = electron;
 
-const utils = require("./common/utils");
-const migrate = require("./common/migrate");
-const structures = require("./common/structures");
-
 const express = require("express");
 const appServer = express();
 const server = require("http").Server(appServer);
 const io = require("socket.io")(server);
 
 require("./env");
+
+const utils = require(path.join(process.env.APP_DIR, "common", "utils"));
+const migrate = require(path.join(process.env.APP_DIR, "common", "migrate"));
+const structures = require(path.join(process.env.APP_DIR, "common", "structures"));
 
 var logdb = require("better-sqlite3")(process.env.LOGS_DATABASE);
 logdb.prepare("CREATE TABLE IF NOT EXISTS `Logs` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `timestamp` TEXT, `level` TEXT, `label` TEXT, `message` TEXT);").run();
@@ -327,7 +327,7 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
     width: width, height: height, min_width: min_width, min_height: min_height,
     webPreferences: { nodeIntegration: true }, show: isDev()
   });
-  win.icon = path.join(__dirname, "common", "icons", "icon.ico");
+  win.icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
   win.setMenu(null);
   win.setMinimumSize(min_width, min_height);
   if (isDev() === true) {
@@ -374,7 +374,7 @@ function createWebUIWindow() {
       else {
         var res = screenRes.get();
         webUIWindow = new BrowserWindow({ width: res[0] * 0.8, height: res[1] * 0.8, webPreferences: { nodeIntegration: true } });
-        webUIWindow.icon = path.join(__dirname, "common", "icons", "icon.ico");
+        webUIWindow.icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
         webUIWindow.setMenu(null);
         //webUIWindow.setMinimumSize(min_width, min_height);
         if (isDev() === true) {
@@ -400,10 +400,10 @@ function createSplashScreen() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
     splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
-    splashWindow.icon = path.join(__dirname, "common", "icons", "icon.ico");
+    splashWindow.icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
     splashWindow.setMenu(null);
     splashWindow.loadURL(url.format({
-      pathname: path.join(__dirname, "alloydbui", "html", "splash.html"),
+      pathname: path.join(process.env.APP_DIR, "alloy", "html", "splash.html"),
       protocol: "file:",
       slashes: true
     }));
@@ -419,12 +419,14 @@ function createMainWindow() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
     mainWindow = createWindow(res[0] * 0.65, res[1] * 0.75, 1024, 300, "Alloy", false, "alloydb.jade", onClose);
-    mainWindow.on("show", () => {
-      tray.setHighlightMode("always");
-    });
-    mainWindow.on("hide", () => {
-      tray.setHighlightMode("never");
-    });
+    if (tray) {
+      mainWindow.on("show", () => {
+        tray.setHighlightMode("always");
+      });
+      mainWindow.on("hide", () => {
+        tray.setHighlightMode("never");
+      });
+    }
     mainWindow.webContents.once("dom-ready", () => {
       mainWindow.webContents.send("setup-env", process.env);
       resolve();
@@ -434,9 +436,9 @@ function createMainWindow() {
 
 function createTrayMenu() {
   return new Promise((resolve, reject) => {
-    var icon = path.join(__dirname, "common", "icons", "icon.ico");
+    var icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
     if (process.platform === "linux") {
-      icon = path.join(__dirname, "common", "icons", "icon.png");
+      icon = path.join(process.env.APP_DIR, "common", "icons", "icon.png");
     }
     tray = new Tray(icon);
     const contextMenu = Menu.buildFromTemplate([
@@ -492,11 +494,11 @@ function createBaseServer() {
     appServer.set("view engine", "jade");
     appServer.use(bodyParser.json());
     appServer.use(bodyParser.urlencoded({ extended: false }));
-    appServer.use(favoriteIcon(path.join(__dirname, "common", "icons", "icon.ico")));
-    appServer.use("/node_modules/", express.static(path.join(__dirname, "node_modules")));
-    appServer.use("/alloydbui/js/", express.static(path.join(__dirname, "alloydbui", "js")));
-    appServer.use("/alloydbui/css/", express.static(path.join(__dirname, "alloydbui", "css")));
-    appServer.use("/alloydbui/img/", express.static(path.join(__dirname, "alloydbui", "img")));
+    appServer.use(favoriteIcon(path.join(process.env.APP_DIR, "common", "icons", "icon.ico")));
+    appServer.use("/node_modules/", express.static(path.join(process.env.APP_DIR, "node_modules")));
+    appServer.use("/alloy/js/", express.static(path.join(process.env.APP_DIR, "alloy", "js")));
+    appServer.use("/alloy/css/", express.static(path.join(process.env.APP_DIR, "alloy", "css")));
+    appServer.use("/alloy/img/", express.static(path.join(process.env.APP_DIR, "alloy", "img")));
 
     appServer.use(function (req, res, next) {
       res.io = io;
@@ -522,7 +524,7 @@ function createBaseServer() {
     });
 
     var views = [];
-    var uiViews = getDirectoriesRecursive(path.join(__dirname, "alloydbui"));
+    var uiViews = getDirectoriesRecursive(path.join(process.env.APP_DIR, "alloy"));
 
     views = views.concat(uiViews);
 
@@ -530,17 +532,17 @@ function createBaseServer() {
     info("WebUI Enabled: " + isUiEnabled());
 
     if (isUiEnabled()) {
-      appServer.use("/content", express.static(path.join(__dirname, "alloydbweb", "content")));
-      var webViews = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "views"));
-      var componentdirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "components"));
-      var directivedirs = getDirectoriesRecursive(path.join(__dirname, "alloydbweb", "directives"));
+      appServer.use("/content", express.static(path.join(process.env.APP_DIR, "alloyweb", "content")));
+      var webViews = getDirectoriesRecursive(path.join(process.env.APP_DIR, "alloyweb", "views"));
+      var componentdirs = getDirectoriesRecursive(path.join(process.env.APP_DIR, "alloyweb", "components"));
+      var directivedirs = getDirectoriesRecursive(path.join(process.env.APP_DIR, "alloyweb", "directives"));
       views = views.concat(webViews, componentdirs, directivedirs);
 
       if (isDev()) {
         info("Running in DEV mode");
         debug("compiling webpack");
         const webpack = require("webpack");
-        const webpackconfig = require("./alloydbweb/webpack.config");
+        const webpackconfig = require(path.join(process.env.APP_DIR, "alloyweb", "webpack.config"));
         const webpackMiddleware = require("webpack-dev-middleware");
         const webpackHotMiddleware = require("webpack-hot-middleware");
         const webpackCompiler = webpack(webpackconfig);
@@ -550,11 +552,11 @@ function createBaseServer() {
         appServer.use(wphmw);
         process.env.JADE_PORT = utils.normalizePort(process.env.JADE_PORT || "4567");
         var livereload = require("livereload").createServer({ exts: ["jade"], port: process.env.JADE_PORT });
-        livereload.watch(path.join(__dirname, "alloydbweb"));
+        livereload.watch(path.join(process.env.APP_DIR, "alloyweb"));
       } else {
-        appServer.use(express.static(path.join(__dirname, "alloydbweb", "dist")));
+        appServer.use(express.static(path.join(process.env.APP_DIR, "alloyweb", "dist")));
       }
-      appServer.use("/", require("./alloydbweb/routes/index"));
+      appServer.use("/", require(path.join(process.env.APP_DIR, "alloyweb", "routes", "index")));
 
       io.on("connection", function (socket) {
         debug("Socket Client connected");
@@ -627,12 +629,12 @@ function createBaseServer() {
     db = require("better-sqlite3")(process.env.DATABASE);
     db.pragma("journal_mode = WAL");
     migrate.log = log;
-    migrate.migrate(db, path.join(__dirname, "/migrations"));
+    migrate.migrate(db, path.join(process.env.APP_DIR, "/migrations"));
 
 
     if (isTest()) {
-      migrate.insertTestData(db, path.join(__dirname, "/migrations"));
-      //migrate.test(db, path.join(__dirname, "/migrations"));
+      migrate.insertTestData(db, path.join(process.env.APP_DIR, "/migrations"));
+      //migrate.test(db, path.join(process.env.APP_DIR, "/migrations"));
     }
 
     server.listen(process.env.API_UI_PORT);

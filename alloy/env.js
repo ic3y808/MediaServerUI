@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 const shell = require("shelljs");
 const fs = require("fs");
 const path = require("path");
-var envPath = path.join(__dirname, ".env");
+var envPath = path.join(__dirname, "..", ".env");
 var dev = process.mainModule.filename.indexOf("app.asar");
 var test = process.env.MODE === "test";
 
@@ -19,7 +19,7 @@ if (result.error) {
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
 process.env.ELECTRON_ENABLE_LOGGING = true;
 process.env.MODE = process.env.MODE ? process.env.MODE : "prod";
-process.env.APP_DIR = __dirname;
+process.env.APP_DIR = path.join(__dirname, "..");
 process.env.BASE_DIR = app.getPath("userData");
 process.env.API_UI_PORT = process.env.API_UI_PORT ? process.env.API_UI_PORT : 6003;
 

@@ -6,20 +6,20 @@
   "description": "A crossplatform media player, api and web UI",
   "author": "Jesse Nelson",
   "license": "ISC",
-  "main": "main.js",
+  "main": "alloy/main.js",
   "scripts": {
     "start": "cross-env MODE=prod electron .",
-    "postinstall": "electron-builder install-app-deps && cd alloydbweb && npm install",
+    "postinstall": "electron-builder install-app-deps && cd alloyweb && npm install",
     "rebuild": "electron-builder install-app-deps",
     "build_styles": "gulp scss:alloydb",
-    "build_fonts": "icon-font-generator ./common/icons/*.svg -n alloyicons --normalize --html false -j false -o alloydbweb/styles/fonts",
-    "build_web": "cd alloydbweb && cross-env MODE=prod webpack .",
+    "build_fonts": "icon-font-generator ./common/icons/*.svg -n alloyicons --normalize --html false -j false -o alloyweb/styles/fonts",
+    "build_web": "cd alloyweb && cross-env MODE=prod webpack .",
     "build": "npm run build_styles & npm run build_fonts & npm run build_web & npm run dist",
     "build_dev": "npm run build_styles & npm run build_fonts & npm run build_web",
     "build_dev_pack": "npm run build_styles & npm run build_fonts & npm run build_web & npm run pack",
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
-    "test": "nyc ./node_modules/.bin/mocha --opts mocha.opts --reporter mocha-junit-reporter --reporter-options mochaFile=TEST-RESULTS.xml && cross-env CODACY_PROJECT_TOKEN=0c34166541df4c81896f11278c081c60 codacy-coverage < ./coverage/lcov.info"
+    "test": "nyc ./node_modules/.bin/mocha --opts test/mocha.opts --reporter mocha-junit-reporter --reporter-options mochaFile=TEST-RESULTS.xml && cross-env CODACY_PROJECT_TOKEN=0c34166541df4c81896f11278c081c60 codacy-coverage < ./coverage/lcov.info"
   },
   "nyc": {
     "all": true,
@@ -27,13 +27,29 @@
       "alloy/**/*.js",
       "common/**/*.js",
       "migrations/**/*.js",
-      "alloydbui/**/*.js",
-      "alloydbapi/**.*.js",
-      "alloydbweb/**.*.js"
+      "alloy/**/*.js",
+      "alloyapi/**.*.js",
+      "alloyweb/**.*.js"
     ],
     "exclude": [
+      "**/test/**",
       "**/*.spec.js"
-    ]
+    ],
+    "extends": "@istanbuljs/nyc-config-babel",
+    "require": [
+      "@babel/register"
+    ],
+    "reporter": [
+      "lcov",
+      "cobertura",
+      "text",
+      "html"
+    ],
+    "reporter-options": {
+      "mochaFile": "TEST-RESULTS.xml"
+    },
+    "sourceMap": false,
+    "instrument": true
   },
   "babel": {
     "presets": [
@@ -64,17 +80,17 @@
     "files": [
       "!.vscode/*",
       "!alloydbandroid/",
-      "alloydbapi/**/*",
-      "!alloydbcast/",
-      "alloydbui/**/*",
-      "alloydbweb/dist/",
-      "alloydbweb/routes/",
-      "alloydbweb/views/",
-      "alloydbweb/content/",
-      "alloydbweb/components/",
-      "alloydbweb/directives/",
-      "alloydbweb/factories/",
-      "alloydbweb/services/",
+      "alloyapi/**/*",
+      "!alloycast/",
+      "alloy/**/*",
+      "alloyweb/dist/",
+      "alloyweb/routes/",
+      "alloyweb/views/",
+      "alloyweb/content/",
+      "alloyweb/components/",
+      "alloyweb/directives/",
+      "alloyweb/factories/",
+      "alloyweb/services/",
       "common/**/*",
       "migrations/*.js",
       "!test/*",
@@ -88,13 +104,11 @@
       "!azure-pipelines-dev.yml",
       "!azure-pipelines-test.yml",
       "!azure-pipelines.yml",
-      "!babel-register.js",
       "!CONTRIBUTING.md",
       "env.js",
       "!FEATURE_TRACKING.md",
       "!gulpfile.js",
       "LICENSE",
-      "!linux.desktop",
       "main.js",
       "package.json",
       "README.md",

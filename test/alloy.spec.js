@@ -11,7 +11,7 @@ describe("Application launch", function () {
 
   it("loaded the correct number of windows", async function () {
     var count = await this.app.client.getWindowCount();
-    assert.equal(count, 2);
+    assert.equal(count, 3);
     await util.activateWindow(this.app, "Alloy");
     await this.app.client.element("#loadedState").getHTML(false).should.eventually.equal("true");
   });
@@ -34,7 +34,7 @@ describe("Application launch", function () {
     this.db.read();
     await setTimeout(async () => {
       await this.db.get("app-loaded-result").value().should.equal("success");
-    }, 500);
+    }, 3000);
   });
 
   it("main ui shows library count of 0", async function () {
@@ -65,7 +65,7 @@ describe("Application launch", function () {
     util.click(this.app, "#rescanLibraryButton").then(() => {
       setTimeout(() => {
         done();
-      }, 500);
+      }, 5000);
     });
   });
 

@@ -19,8 +19,8 @@ var scanner = {};
 process.env = remote.getGlobal("process").env;
 utils = require(path.join(process.env.APP_DIR, "common", "utils"));
 structures = require(path.join(process.env.APP_DIR, "common", "structures"));
-MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
-mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
+MediaScannerBase = require(path.join(process.env.APP_DIR, "alloy", "js", "MediaScannerBase"));
+mm = require(path.join(process.env.APP_DIR, "alloyapi", "music-metadata"));
 
 class MediaScanner extends MediaScannerBase {
   constructor() {

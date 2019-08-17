@@ -7,5 +7,5 @@
 --require babel-polyfill
 --file ./test/startup.js
 --file ./test/teardown.js
---file ./test/alloydbui.spec.js
+--file ./test/alloy.spec.js
 --exit

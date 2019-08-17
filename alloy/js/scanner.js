@@ -54,8 +54,8 @@ ipcRenderer.on("mediascanner-start", (args, env) => {
   process.env = env;
   utils = require(path.join(process.env.APP_DIR, "common", "utils"));
   structures = require(path.join(process.env.APP_DIR, "common", "structures"));
-  MediaScannerBase = require(path.join(process.env.APP_DIR, "alloydbui", "js", "MediaScannerBase"));
-  mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
+  MediaScannerBase = require(path.join(process.env.APP_DIR, "alloy", "js", "MediaScannerBase"));
+  mm = require(path.join(process.env.APP_DIR, "alloyapi", "music-metadata"));
   scanner = new MediaScanner();
 });
 

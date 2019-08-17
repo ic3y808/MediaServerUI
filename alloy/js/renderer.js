@@ -6,8 +6,8 @@ if (module.hot) { module.hot.accept(); }
 
 process.env = remote.getGlobal("process").env;
 require("angular");
-var factories = require(path.join(process.env.APP_DIR, "alloydbui", "factories"));
-var directives = require(path.join(process.env.APP_DIR, "alloydbui", "directives"));
+var factories = require(path.join(process.env.APP_DIR, "alloy", "factories"));
+var directives = require(path.join(process.env.APP_DIR, "alloy", "directives"));
 
 var app = angular.module("alloydb", [factories.name, directives.name]);
 

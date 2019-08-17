@@ -106,7 +106,7 @@ class Server {
           }
         }
       },
-      basedir: path.join(process.env.APP_DIR, "alloydbapi"), //app absolute path
+      basedir: path.join(process.env.APP_DIR, "alloyapi"), //app absolute path
       files: ["./v1/**/*.js"] //Path to the API handle folder
     };
 
@@ -120,15 +120,15 @@ class Server {
     };
     // V1 API
 
-    this.app.use("/api/v1/system", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "system")));
-    this.app.use("/api/v1/media", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "media")));
-    this.app.use("/api/v1/browse", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "browse")));
-    this.app.use("/api/v1/search", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "search")));
-    this.app.use("/api/v1/playlist", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "playlist")));
-    this.app.use("/api/v1/config", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "config")));
-    this.app.use("/api/v1/share", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "share")));
-    this.app.use("/api/v1/annotation", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "annotation")));
-    this.app.use("/api/v1/lastfm", setupRoute(path.join(process.env.APP_DIR, "alloydbapi", "v1", "lastfm")));
+    this.app.use("/api/v1/system", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "system")));
+    this.app.use("/api/v1/media", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "media")));
+    this.app.use("/api/v1/browse", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "browse")));
+    this.app.use("/api/v1/search", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "search")));
+    this.app.use("/api/v1/playlist", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "playlist")));
+    this.app.use("/api/v1/config", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "config")));
+    this.app.use("/api/v1/share", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "share")));
+    this.app.use("/api/v1/annotation", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "annotation")));
+    this.app.use("/api/v1/lastfm", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "lastfm")));
 
     // catch 404 and forward to error handler
     this.app.use((req, res, next) => {

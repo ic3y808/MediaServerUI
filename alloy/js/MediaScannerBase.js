@@ -16,7 +16,7 @@ module.exports = class MediaScannerBase {
     this.queue = {};
     this.tickets = {};
     this.convert = require(path.join(process.env.APP_DIR, "common", "convert"));
-    this.mm = require(path.join(process.env.APP_DIR, "alloydbapi", "music-metadata"));
+    this.mm = require(path.join(process.env.APP_DIR, "alloyapi", "music-metadata"));
   }
 
   log(obj) { ipcRenderer.send("log", obj); }

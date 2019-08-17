@@ -101,7 +101,7 @@ namespace Alloy.Providers
 		{
 			AuthFile a = GetAuthFile();
 			ISharedPreferences sp = PreferenceManager.GetDefaultSharedPreferences(Application.Context);
-			return a != null ? a.ApiKey : sp.GetString("alloydbapikey", "");
+			return a != null ? a.ApiKey : sp.GetString("alloyapikey", "");
 		}
 
 		public static string ProcessApiRequest(ApiRequestType t)

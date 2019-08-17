@@ -15,7 +15,7 @@ global.before(function () {
     args: [
       "--require",
       path.join(__dirname, "..", "common", "preload.js"),
-      path.join(__dirname, "..", "main.js")
+      path.join(__dirname, "..", "alloy", "main.js")
     ],
     env: {
       SPECTRON: true,

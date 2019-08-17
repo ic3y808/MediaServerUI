@@ -12,7 +12,7 @@ logger.debug(loggerTag, "packing " + process.env.MODE + " source");
 
 if (process.env.MODE === "dev") {
   profile.entry = {
-    app: ["./alloydbweb/app.js", "webpack-hot-middleware/client"]
+    app: ["./alloyweb/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
 } else {
