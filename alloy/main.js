@@ -428,7 +428,6 @@ function createMainWindow() {
       });
     }
     mainWindow.webContents.once("dom-ready", () => {
-      mainWindow.webContents.send("setup-env", process.env);
       resolve();
     });
   });
@@ -754,6 +753,11 @@ function setupRoutes() {
     resolve();
   });
 }
+
+app.on("browser-window-created", function(e, window) {
+  window.setMenuBarVisibility(false); 
+  window.setMenu(null);
+});
 
 app.on("window-all-closed", () => {
 

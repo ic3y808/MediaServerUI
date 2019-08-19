@@ -1,4 +1,5 @@
 import angular from "angular";
+import LazyLoad from "./lazy-load";
 import StringToNumber from "./string-to-number";
 import ToolbarButton from "./ui/toolbarbutton";
 import ToolbarSeperator from "./ui/toolbarseperator";
@@ -22,6 +23,7 @@ import VolumeSlider from "./ui/volumeslider";
 export default angular
   .module("app.directives", [])
   .directive("stringToNumber", StringToNumber)
+  .directive("lazyLoad", LazyLoad)
   .directive("toolbarbutton", ToolbarButton)
   .directive("toolbarseperator", ToolbarSeperator)
   .directive("navbutton", NavButton)

@@ -2,14 +2,14 @@ section.scrollable.padder-lg.w-f-md
   .row(ng-show="title").bg-normal
     h2(ng-hide="showviewmore").clear.font-thin {{title}}
     
-    a(href="{{viewmorelink}}", ng-if="showviewmore").h2.clear.font-thin {{title}}
+    a(ng-if="showviewmore", href="{{viewmorelink}}").h2.clear.font-thin {{title}}
   .row 
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'tracks'")
       li.list-group-item.clearfix.pointer(data-value="track;{{track.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", ng-click="$root.MediaPlayer.playTrack(track, data)", ng-repeat="track in data | limitTo:itemLimit")
         span.pull-right.text-muted.m-l(ng-if="isPlaying !== true || currentTrack.id !== track.id") {{$index + 1}}
         PlayingStatusBars.pull-right(ng-if="currentTrack.id === track.id && isPlaying === true")
         span.pull-left.thumb-sm.avatar.m-r
-          img.img-thumbnail(ng-src='{{track.image}}', alt='{{track.album}}')
+          img.img-thumbnail(alt='{{track.album}}', lazy-load, tempData="{{track.image}}")
         span.clear
           span {{track.title}}
           small.text-muted.clear.text-ellipsis by {{track.artist}}    
@@ -18,7 +18,7 @@ section.scrollable.padder-lg.w-f-md
         span.pull-right.text-muted.m-l(ng-if="$root.MediaPlayer.checkIfNowPlaying('album', album.id) != true") {{$index + 1}}
         PlayingStatusBars.pull-right(ng-if="$root.MediaPlayer.checkIfNowPlaying('album', album.id) == true")
         span.pull-left.thumb-sm.avatar.m-r
-          img.img-thumbnail(ng-src='{{album.image}}', alt='{{album.name}}')
+          img.img-thumbnail(alt='{{album.name}}', lazy-load, tempData="{{album.image}}")
         span.clear
           span {{album.name}}
           small.text-muted.clear.text-ellipsis by {{album.artist}}    
@@ -27,6 +27,6 @@ section.scrollable.padder-lg.w-f-md
         span.pull-right.text-muted.m-l(ng-if="$root.MediaPlayer.checkIfNowPlaying('artist', artist.id) != true") {{$index + 1}}
         PlayingStatusBars.pull-right(ng-if="$root.MediaPlayer.checkIfNowPlaying('artist', artist.id) == true")
         span.pull-left.thumb-sm.avatar.m-r
-          img.img-thumbnail(ng-src='{{artist.image}}', alt='{{artist.nane}}')
+          img.img-thumbnail(alt='{{artist.nane}}', lazy-load, tempData="{{artist.image}}")
         span.clear
           span {{artist.name}}

@@ -9,11 +9,5 @@
   "git.ignoreLimitWarning": true,
   "eslint.autoFixOnSave": true,
   "javascript.suggestionActions.enabled": false,
-  "telemetry.enableTelemetry": false,
-  "eslint.options": {
-    "configFile": "common/.eslintrc.json"
-  },
-  "jshint.options":{
-    "config" : "common/.jshintrc"
-  }
+  "telemetry.enableTelemetry": false
 }

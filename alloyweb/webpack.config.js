@@ -2,13 +2,13 @@ const path = require("path");
 const webpack = require("webpack");
 const dist = path.resolve(__dirname, "dist");
 const nodePath = path.resolve(__dirname, "node_modules");
-var logger = require("../common/logger");
+
 var loggerTag = "webpack";
 var profile = {};
 profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
-logger.debug(loggerTag, "packing " + process.env.MODE + " source");
+console.log("packing " + process.env.MODE + " source");
 
 if (process.env.MODE === "dev") {
   profile.entry = {
@@ -87,7 +87,7 @@ profile.module.rules.push({
     }
   },
   {
-    loader: path.resolve(__dirname, "..", "common", "fast-sass-loader"),
+    loader: path.resolve(__dirname, "API", "fast-sass-loader"),
     options: {
       implementation: "dart-sass",
       includePaths: [path.join(nodePath, "compass-mixins", "lib")]
