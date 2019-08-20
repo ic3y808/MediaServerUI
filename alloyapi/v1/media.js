@@ -247,20 +247,20 @@ router.get("/cover_art", function (req, res) {
     }
   }
 
-  if (!original) {
-    var width = req.query.width;
-    var height = req.query.height;
-
-    Image.load(input).then((image) => {
-      if (width && height) {
-        image.resize({ width: width, height: height });
-      }
-      var data = image.toBuffer({ format: "jpg" });
-      res.end(data);
-    });
-  } else {
+  //if (!original) {
+  //  var width = req.query.width;
+  //  var height = req.query.height;
+//
+  //  Image.load(input).then((image) => {
+  //    if (width && height) {
+  //      image.resize({ width: width, height: height });
+  //    }
+  //    var data = image.toBuffer({ format: "jpg" });
+  //    res.end(data);
+  //  });
+  //} else {
     res.sendFile(input);
-  }
+  //}
 });
 
 module.exports = router;

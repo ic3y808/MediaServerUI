@@ -13,7 +13,7 @@ export default class AlloyDbService {
     this.$rootScope.starArtist = this.starArtist;
   }
 
-  updateStatus(){
+  updateStatus() {
     this.AppUtilities.broadcast("loginStatusChange", {
       service: "alloydb",
       isLoggedIn: this.isLoggedIn
@@ -24,7 +24,7 @@ export default class AlloyDbService {
     if (this.$rootScope.settings && this.$rootScope.settings.alloydb && this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
       if (!this.isLoggedIn && !this.isLoggingIn) {
         this.Logger.info("logging into alloydb");
-       
+
         this.alloydb = new AlloyApi(this.$rootScope.settings.alloydb);
 
         var ping = this.alloydb.ping();
@@ -370,7 +370,14 @@ export default class AlloyDbService {
       data.forEach((info) => {
         if (info.fresh) {
           var albumTracks = [];
-          this.$rootScope.fresh_albums = this.AppUtilities.getRandom(info.fresh.albums, info.fresh.albums.length);
+          this.$rootScope.recently_added = info.fresh.recently_added;
+          this.$rootScope.recently_added.forEach((album) => {
+            album.image = this.getCoverArt({ album_id: album.id });
+            album.tracks.forEach((track) => {
+              track.image = this.getCoverArt({ track_id: track.cover_art });
+            });
+          });
+          this.$rootScope.fresh_albums = info.fresh.albums;
           this.$rootScope.fresh_albums.forEach((album) => {
             album.image = this.getCoverArt({ album_id: album.id });
             album.tracks.forEach((track) => {
@@ -378,11 +385,11 @@ export default class AlloyDbService {
               albumTracks.push(track);
             });
           });
-          this.$rootScope.quick_picks = this.AppUtilities.getRandom(albumTracks, 10);
+          this.$rootScope.quick_picks = info.fresh.quick_picks;
           this.$rootScope.quick_picks.forEach((track) => {
             track.image = this.getCoverArt({ track_id: track.id });
           });
-          this.$rootScope.fresh_artists = this.AppUtilities.getRandom(info.fresh.artists, info.fresh.artists.length);
+          this.$rootScope.fresh_artists = info.fresh.artists;
           this.$rootScope.fresh_artists.forEach((artist) => {
             artist.image = this.getCoverArt({ artist_id: artist.id });
             artist.tracks.forEach((track) => {

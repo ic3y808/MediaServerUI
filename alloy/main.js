@@ -327,7 +327,7 @@ function createWindow(width, height, min_width, min_height, title, show, page, c
     width: width, height: height, min_width: min_width, min_height: min_height,
     webPreferences: { nodeIntegration: true }, show: isDev()
   });
-  win.icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
+  win.icon = path.join(process.env.APP_DIR, "common", "icon.ico");
   win.setMenu(null);
   win.setMinimumSize(min_width, min_height);
   if (isDev() === true) {
@@ -374,7 +374,7 @@ function createWebUIWindow() {
       else {
         var res = screenRes.get();
         webUIWindow = new BrowserWindow({ width: res[0] * 0.8, height: res[1] * 0.8, webPreferences: { nodeIntegration: true } });
-        webUIWindow.icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
+        webUIWindow.icon = path.join(process.env.APP_DIR, "common", "icon.ico");
         webUIWindow.setMenu(null);
         //webUIWindow.setMinimumSize(min_width, min_height);
         if (isDev() === true) {
@@ -400,7 +400,7 @@ function createSplashScreen() {
   return new Promise((resolve, reject) => {
     var res = screenRes.get();
     splashWindow = new BrowserWindow({ width: res[0] * 0.1, height: Math.min(Math.max(res[1] * 0.4, 375), 375), alwaysOnTop: !isDev(), webPreferences: { nodeIntegration: true }, frame: isDev() });
-    splashWindow.icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
+    splashWindow.icon = path.join(process.env.APP_DIR, "common", "icon.ico");
     splashWindow.setMenu(null);
     splashWindow.loadURL(url.format({
       pathname: path.join(process.env.APP_DIR, "alloy", "html", "splash.html"),
@@ -435,7 +435,7 @@ function createMainWindow() {
 
 function createTrayMenu() {
   return new Promise((resolve, reject) => {
-    var icon = path.join(process.env.APP_DIR, "common", "icons", "icon.ico");
+    var icon = path.join(process.env.APP_DIR, "common", "icon.ico");
     if (process.platform === "linux") {
       icon = path.join(process.env.APP_DIR, "common", "icons", "icon.png");
     }
@@ -493,7 +493,7 @@ function createBaseServer() {
     appServer.set("view engine", "jade");
     appServer.use(bodyParser.json());
     appServer.use(bodyParser.urlencoded({ extended: false }));
-    appServer.use(favoriteIcon(path.join(process.env.APP_DIR, "common", "icons", "icon.ico")));
+    appServer.use(favoriteIcon(path.join(process.env.APP_DIR, "common", "icon.ico")));
     appServer.use("/node_modules/", express.static(path.join(process.env.APP_DIR, "node_modules")));
     appServer.use("/alloy/js/", express.static(path.join(process.env.APP_DIR, "alloy", "js")));
     appServer.use("/alloy/css/", express.static(path.join(process.env.APP_DIR, "alloy", "css")));
@@ -754,8 +754,8 @@ function setupRoutes() {
   });
 }
 
-app.on("browser-window-created", function(e, window) {
-  window.setMenuBarVisibility(false); 
+app.on("browser-window-created", function (e, window) {
+  window.setMenuBarVisibility(false);
   window.setMenu(null);
 });
 

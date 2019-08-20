@@ -14,10 +14,10 @@ section.scrollable.padder-lg.w-f-md
               th Length
               th 
           tbody(ng-repeat="track in data | limitTo:limit")
-            tr(title='{{track.title}}', data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}")
+            tr(data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", title='{{track.title}}')
               td 
                 span.pull-left.thumb-sm.avatar.m-r
-                  img.img-thumbnail(ng-src='{{track.image}}', alt='{{track.title}}')
+                  img.img-thumbnail(alt='{{track.title}}', lazy-load, tempData="{{track.image}}")
               td 
                 a(ng-click="$root.MediaPlayer.playTrack(track, data)")
                   span.clear
@@ -32,7 +32,7 @@ section.scrollable.padder-lg.w-f-md
                     span {{track.artist}}
               td {{$root.formatTime(track.duration)}}
               td
-                a.centered-anchor(href="", style="height:30px;", ng-click="starTrack(track)")
+                a.centered-anchor(ng-click="starTrack(track)", href="", style="height:30px;")
                   i.alloy-icon.icon(ng-class="isStarred(track)")
 
     .table-responsives(ng-if="type === 'albums'")
@@ -45,10 +45,10 @@ section.scrollable.padder-lg.w-f-md
               th Created
               th Tracks
           tbody(ng-repeat="album in data | limitTo:limit")
-            tr(title='{{album.name}}', data-value="album;{{album.id}}")
+            tr(data-value="album;{{album.id}}", title='{{album.name}}')
               td(style="width:1px;")
                 span.pull-left.thumb-sm.avatar.m-r
-                  img.img-thumbnail(ng-src='{{album.image}}', alt='{{album.name}}')
+                  img.img-thumbnail(alt='{{album.name}}', lazy-load, tempData="{{album.image}}")
               td 
                 a(href="/album/{{album.id}}")
                   span.clear

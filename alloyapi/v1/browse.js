@@ -326,6 +326,8 @@ router.get("/fresh", function (req, res) {
   var result = {
     fresh: {
       albums: [],
+      recently_added: [],
+      quick_picks: [],
       artists: [],
       tracks: []
     }
@@ -335,20 +337,24 @@ router.get("/fresh", function (req, res) {
   var artistsIds = res.locals.db.prepare("SELECT DISTINCT artist_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit);
   result.fresh.tracks = [];
 
-
   artistsIds.forEach((id) => {
     var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(id.artist_id);
     artist.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
     result.fresh.artists.push(artist);
   });
+
   albumIds.forEach((id) => {
     var album = res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id.album_id);
     album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
+    result.fresh.recently_added.push(album);
     result.fresh.albums.push(album);
     album.tracks.forEach((track) => {
       result.fresh.tracks.push(track);
     });
   });
+  result.quick_picks = _.shuffle(result.fresh.tracks).slice(0, 15);
+  result.fresh.artists = _.shuffle(result.fresh.artists);
+  result.fresh.albums = _.shuffle(result.fresh.albums);
   result.fresh.tracks = _.shuffle(result.fresh.tracks).slice(0, limit);
   res.json(result);
 });
