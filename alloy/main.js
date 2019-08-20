@@ -776,6 +776,12 @@ app.on("ready", async () => {
   await setupRoutes();
   if (splashWindow) { splashWindow.hide(); }
   mainWindow.webContents.send("app-loaded");
-  mainWindow.show();
+
+  if (isApiServerEnabled()) {
+    mainWindow.show();
+  } else {
+    showWebUI();
+  }
+
   setTimeout(createTasks, 250);
 });

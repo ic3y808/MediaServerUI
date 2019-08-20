@@ -7,7 +7,7 @@ section.tracklist-container.w-f-md(style="height:100vh;")
     ul.list-group-lg.list-group-sp.no-bg.auto.sortable
       li.list-group-item.list-group-item-track.clearfix.pointer(draggable='true', data-value="track;{{track.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", ng-click="$root.MediaPlayer.playTrack(track, data)", ng-repeat="track in data | limitTo:itemLimit")
         span.item-number.pull-left.thumb-sm.avatar.m-r.text-muted(ng-if="isPlaying === false || $root.MediaPlayer.checkIfNowPlaying('track', track.id) != true") {{$index + 1}}
-        PlayingStatusBars.pull-left.thumb-sm.avatar.text-muted(ng-if="currentTrack.id === track.id && isPlaying === true")
+        PlayingStatusBars.pull-left.thumb-sm.avatar.m-r.text-muted(ng-if="currentTrack.id === track.id && isPlaying === true")
         span {{track.title}}
         span.pull-right {{trackTime(track)}}
 
