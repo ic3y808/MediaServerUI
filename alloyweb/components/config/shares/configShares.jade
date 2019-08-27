@@ -5,28 +5,31 @@ section.scrollable.padder
       table.table.table-striped.b-t.b-light
         thead
           tr
-            th Type
-            th URL
+            th(style="width:1px;") Type
+            th(style="width:1px;") URL
             th Description
-            th Created
-            th Expires
-            th Visit Count
-            th 
+            th(style="width:1px;white-space: nowrap;") Expires
+            th(style="width:1px;white-space: nowrap;") Created
+            th(style="width:1px;white-space: nowrap;") Last Visit
+            th(style="width:1px;white-space: nowrap;") Visit Count
+            th(style="width:1px;") 
+            th(style="width:1px;") 
         tbody(ng-repeat='share in shares')
           tr
-            td {{share.type}}
-            td(ng-if="share.url") 
+            td(style="width:1px;") {{share.type}}
+            td(ng-if="share.url", style="width:1px;") 
               a(href="/share/{{share.url}}") {{share.url}}
-            td(ng-if="share.url === ''") 
+            td(ng-if="share.url === ''", style="width:1px;") 
               a(href="/share/{{share.id}}") {{share.id}}
             td {{share.description}}
-            td {{share.created}}
-            td {{share.expires}}
-            td {{share.visit_count}}
-            td
-              a.active(href='#', data-toggle='class', ng-click="copyShare(share.id)")
+            td(style="width:1px;white-space: nowrap;") {{share.expires}}
+            td(style="width:1px;white-space: nowrap;") {{share.created}}
+            td(style="width:1px;white-space: nowrap;") {{share.last_visited}}
+            td(style="width:1px;text-align: right;")  {{share.visit_count}}
+            td(style="width:1px;") 
+              a.active(data-toggle='class', ng-click="copyShare(share.id)", href='#')
                 i.alloy-icon.icon-clipboard
-            td
-              a.active(href='#', data-toggle='class', ng-click="deleteShare(share.id)")
+            td(style="width:1px;") 
+              a.active(data-toggle='class', ng-click="deleteShare(share.id)", href='#')
                 i.alloy-icon.icon-minus
           

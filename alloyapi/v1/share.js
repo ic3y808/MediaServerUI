@@ -104,6 +104,7 @@ router.get("/", function (req, res) {
       break;
   }
 
+  res.locals.db.prepare("UPDATE Shares SET visit_count = visit_count + 1, last_visited = ? WHERE id=?").run(new Date().toISOString(), id);
 
   res.json(result);
 });

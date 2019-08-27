@@ -43,17 +43,27 @@ module.exports.migrate = function migrate(db, migrationDir) {
 
         var values = {};
         Object.keys(data.columns).forEach((key, index) => {
-          if (index === Object.keys(data.columns).length - 1) { sql += key; }
-          else {
-            sql += key;
-            sql += " ";
-            sql += getType(data.columns[key].type);
-            if (data.columns[key].primaryKey === true) { sql += " PRIMARY KEY"; }
-            if (data.columns[key].unique === true) { sql += " UNIQUE"; }
-            if (data.columns[key].autoIncrement === true) { sql += " AUTOINCREMENT"; }
-            if (data.columns[key].defaultValue) { sql += " DEFAULT '" + data.columns[key].defaultValue + "'"; }
-            sql += ", ";
+
+          sql += key;
+          sql += " ";
+
+
+          sql += getType(data.columns[key].type);
+          if (data.columns[key].primaryKey === true) { sql += " PRIMARY KEY"; }
+          if (data.columns[key].unique === true) { sql += " UNIQUE"; }
+          if (data.columns[key].autoIncrement === true) { sql += " AUTOINCREMENT"; }
+          var def = data.columns[key].defaultValue;
+          if (data.columns[key].defaultValue !== undefined) {
+            var t = typeof (data.columns[key].defaultValue);
+            if (typeof (data.columns[key].defaultValue) === "string") {
+              sql += " DEFAULT '" + data.columns[key].defaultValue + "'";
+            } else {
+              sql += " DEFAULT " + data.columns[key].defaultValue;
+            }
           }
+          if (index !== Object.keys(data.columns).length - 1) { sql += ", "; }
+
+
         });
 
         sql += ")";

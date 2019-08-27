@@ -247,6 +247,24 @@ function doReache() {
   mediaScannerWindow.webContents.send("mediascanner-recache-start");
 }
 
+function doShareCleanup() {
+  info("Starting Share Cleanup");
+  var shares = db.prepare("SELECT * from Shares").all();
+  var now = new Date();
+  shares.forEach((share) => {
+    var expires = new Date(share.expires);
+    if (now > expires) {
+      var shareItems = db.prepare("SELECT * from SharesItems WHERE id=?").all(share.id);
+      shareItems.forEach((item) => {
+        db.prepare("DELETE FROM SharesItems WHERE id=?").run(item.id);
+      });
+      db.prepare("DELETE FROM Shares WHERE id=?").run(share.id);
+      info("Share " + share.id + " has been expired");
+    }
+  });
+  info("Finished Share Cleanup");
+}
+
 function doDebug() {
   if (mainWindow) {
     mainWindow.webContents.openDevTools({ detach: false });
@@ -484,6 +502,7 @@ function createTasks() {
     createJob({ name: "Incremental Clean", time: "0 0 * * *", callback: "task-database-inc-cleanup" }, doIncCleanup);
     createJob({ name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" }, doRescan);
     createJob({ name: "Cache Starred", time: "0 0 * * 0", callback: "task-database-cache-starred" }, doReache);
+    createJob({ name: "Share Cleanup", time: "0 */12 * * *", callback: "task-database-share-cleanup" }, doShareCleanup);
   }
 }
 
@@ -714,6 +733,7 @@ function setupRoutes() {
     ipcMain.on("task-database-inc-cleanup", doIncCleanup);
     ipcMain.on("task-database-scan", doRescan);
     ipcMain.on("task-database-cache-starred", doReache);
+    ipcMain.on("task-database-share-cleanup", doShareCleanup);
     ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
     ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);
 
