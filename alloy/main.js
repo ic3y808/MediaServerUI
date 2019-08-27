@@ -325,7 +325,7 @@ function doSaveSettings(key, value, callback) {
 function createWindow(width, height, min_width, min_height, title, show, page, close) {
   const win = new BrowserWindow({
     width: width, height: height, min_width: min_width, min_height: min_height,
-    webPreferences: { nodeIntegration: true }, show: isDev()
+    webPreferences: { nodeIntegration: true }, show: false
   });
   win.icon = path.join(process.env.APP_DIR, "common", "icon.ico");
   win.setMenu(null);
@@ -409,7 +409,6 @@ function createSplashScreen() {
     }));
     splashWindow.setTitle("Alloy");
     splashWindow.webContents.once("dom-ready", () => {
-      splashWindow.webContents.send("webui-start", process.env);
       resolve();
     });
   });

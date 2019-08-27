@@ -1,6 +1,7 @@
 {
   "version": "0.2.0",
   "configurations": [
+
     {
       "type": "node",
       "request": "launch",
@@ -8,6 +9,7 @@
       "protocol": "inspector",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "cwd": "${workspaceFolder}",
+      "timeout": 5000000,
       "env": {
         "MODE": "dev",
         "DEBUG": "music-metadata:parser:ID3"
@@ -28,6 +30,7 @@
       "protocol": "inspector",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
       "cwd": "${workspaceFolder}",
+      "timeout": 5000000,
       "env": {
         "MODE": "prod",
         "DEBUG": "music-metadata:parser:ID3"
@@ -47,7 +50,7 @@
       "request": "attach",
       "port": 9223,
       "webRoot": "${workspaceFolder}",
-      "timeout": 30000,
+      "timeout": 5000000,
       "url": "http://localhost:3000/template/alloydb.jade"
     },
     {
@@ -56,7 +59,7 @@
       "request": "attach",
       "port": 9223,
       "webRoot": "${workspaceFolder}",
-      "timeout": 60000,
+      "timeout": 5000000,
       "url": "http://localhost:3000/template/mediascanner.jade"
     },
     {
@@ -65,7 +68,7 @@
       "request": "attach",
       "port": 9223,
       "webRoot": "${workspaceFolder}",
-      "timeout": 30000,
+      "timeout": 5000000,
       "url": "http://localhost:3000/template/apiServer.jade"
     },
     {
@@ -73,7 +76,7 @@
       "type": "chrome",
       "request": "attach",
       "port": 9223,
-      "timeout": 5000,
+      "timeout": 5000000,
       "url": "http://localhost:3000"
     },
     {
@@ -160,18 +163,7 @@
         "Electron: Main",
         "Electron: Renderer",
         "Electron: MediaScanner",
-        "Electron: Scheduler",
         "Electron: Server"
-      ]
-    },
-    {
-      "name": "Electron: All Release",
-      "configurations": [
-        "Electron: Main",
-        "Electron: Renderer",
-        "Electron: MediaScanner",
-        "Electron: Scheduler",
-        "Electron: Server",
       ]
     },
     {
@@ -180,7 +172,6 @@
         "Electron: Main",
         "Electron: Renderer",
         "Electron: MediaScanner",
-        "Electron: Scheduler",
         "Electron: Server",
         "LaunchChrome"
       ]
@@ -188,10 +179,9 @@
     {
       "name": "Release All",
       "configurations": [
-        "Electron: Main",
+        "Electron: Main - Prod",
         "Electron: Renderer",
         "Electron: MediaScanner",
-        "Electron: Scheduler",
         "Electron: Server",
         "LaunchChrome"
       ]

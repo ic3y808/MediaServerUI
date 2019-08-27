@@ -8,6 +8,7 @@ exports.up = function (db) {
     columns: {
       id: { type: "string", unique: true },
       url: { type: "string", defaultValue: "" },
+      type: { type: "string", defaultValue: "" },
       description: { type: "string", defaultValue: "" },
       created: { type: "string", defaultValue: "" },
       lastVisited: { type: "string", defaultValue: "" },

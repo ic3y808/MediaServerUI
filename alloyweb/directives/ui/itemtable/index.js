@@ -9,7 +9,8 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       type: "@",
       refreshclick: "&",
       showviewmore: "@",
-      viewmorelink: "@"
+      viewmorelink: "@",
+      showimages: "@"
     },
     templateUrl: "/template/itemtable.jade",
     replace: true,

@@ -19,7 +19,7 @@ class SidenavController {
       var $this = $(this)
         , $remote = $this.data("remote") || $this.attr("href")
         , $modal = $("#addPlaylistModal");
-      $("#primary-content").append($modal);
+      //$("#primary-content").append($modal);
       $modal.modal();
     };
     $scope.createNewPlaylist = () => {

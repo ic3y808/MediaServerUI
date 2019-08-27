@@ -7,7 +7,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
       .header-buttons
         starratinglabel(artist="artist")
       .header-buttons
-        button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starArtist()") {{info.artist.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+        button.spotify-btn.btn-black.btn--narrow(ng-click="starArtist()", title='Save to Your Library') {{info.artist.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
 
       nav.tab-nav-list
         ul.selection-tabs
@@ -46,7 +46,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                           .media-object
                             div
                               .react-contextmenu-wrapper
-                                a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{album.id}}', style='width: auto; height: auto;')
+                                a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{album.id}}", href='/album/{{album.id}}', aria-hidden='true', style='width: auto; height: auto;')
                                   div
                                     .icon
                                       svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
@@ -55,10 +55,10 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                                     .cover-art-image.cover-art-image-loaded(style='background-image: url("{{album.image}}");')
                               .mo-info
                                 .react-contextmenu-wrapper
-                                  a.mo-info-name(title='Holograms', dir='auto', href='/album/{{album.id}}') {{album.name}}
+                                  a.mo-info-name(href='/album/{{album.id}}', title='Holograms', dir='auto') {{album.name}}
                             .mo-meta.ellipsis-one-line
                               .react-contextmenu-wrapper
-                                a(dir='auto', href='/artist/{{album.artist_id}}') {{album.artist}}
+                                a(href='/artist/{{album.artist_id}}', dir='auto') {{album.artist}}
                   
           section.artist-singles.artist-albums(ng-if="info.EPs.length > 0")
             .contentSpacing
@@ -71,7 +71,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                         .media-object
                           div
                             .react-contextmenu-wrapper
-                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{ep.id}}', style='width: auto; height: auto;')
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{ep.id}}", href='/album/{{ep.id}}', aria-hidden='true', style='width: auto; height: auto;')
                                 div
                                   .icon
                                     svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
@@ -80,10 +80,10 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                                   .cover-art-image.cover-art-image-loaded(style='background-image: url("{{ep.image}}");')
                             .mo-info
                               .react-contextmenu-wrapper
-                                a.mo-info-name(title='Bass Real Big', dir='auto', href='/album/{{ep.id}}') {{ep.name}}
+                                a.mo-info-name(href='/album/{{ep.id}}', title='Bass Real Big', dir='auto') {{ep.name}}
                           .mo-meta.ellipsis-one-line
                             .react-contextmenu-wrapper
-                              a(dir='auto', href='/artist/{{ep.artist_id}}') {{ep.artist}}
+                              a(href='/artist/{{ep.artist_id}}', dir='auto') {{ep.artist}}
                 
           section.artist-appears-on.artist-albums(ng-if="info.singles.length > 0")
             .contentSpacing
@@ -96,7 +96,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                         .media-object
                           div
                             .react-contextmenu-wrapper
-                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{single.id}}', style='width: auto; height: auto;')
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{single.id}}", href='/album/{{single.id}}', aria-hidden='true', style='width: auto; height: auto;')
                                 div
                                   .icon
                                     svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
@@ -105,10 +105,10 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                                   .cover-art-image.cover-art-image-loaded(style='background-image: url("{{single.image}}");')
                             .mo-info
                               .react-contextmenu-wrapper
-                                a.mo-info-name(title='Firepower 200', dir='auto', href='/album/{{single.id}}') {{single.name}}
+                                a.mo-info-name(href='/album/{{single.id}}', title='Firepower 200', dir='auto') {{single.name}}
                           .mo-meta.ellipsis-one-line
                             .react-contextmenu-wrapper
-                              a(dir='auto', href='/artist/{{single.artist_id}}') {{single.artist}}
+                              a(href='/artist/{{single.artist_id}}', dir='auto') {{single.artist}}
           
           section.artist-appears-on.artist-albums(ng-if="info.other.length > 0")
             .contentSpacing
@@ -121,7 +121,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                         .media-object
                           div
                             .react-contextmenu-wrapper
-                              a.cover-art.shadow.cover-art--with-auto-height.linking(aria-hidden='true', href='/album/{{other.id}}', style='width: auto; height: auto;')
+                              a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{other.id}}", href='/album/{{other.id}}', aria-hidden='true', style='width: auto; height: auto;')
                                 div
                                   .icon
                                     svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
@@ -130,10 +130,10 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                                   .cover-art-image.cover-art-image-loaded(style='background-image: url("{{other.image}}");')
                             .mo-info
                               .react-contextmenu-wrapper
-                                a.mo-info-name(title='Firepower 200', dir='auto', href='/album/{{other.id}}') {{other.name}}
+                                a.mo-info-name(href='/album/{{other.id}}', title='Firepower 200', dir='auto') {{other.name}}
                           .mo-meta.ellipsis-one-line
                             .react-contextmenu-wrapper
-                              a(dir='auto', href='/artist/{{other.artist_id}}') {{other.artist}}
+                              a(href='/artist/{{other.artist_id}}', dir='auto') {{other.artist}}
 
         #all.tab-pane
           section.artist-music.container-fluid(ng-if="info.tracks.length > 0")
@@ -141,7 +141,7 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
               .contentSpacing
                 section.artist-toptracks
                   section.tracklist-container.full-width
-                    itemtable(data="info.tracks", title="Tracks", limit="info.tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="")
+                    itemtable(type="tracks", title="Tracks", data="info.tracks", limit="info.tracks.length", refreshclick="refresh()", viewmorelink="", showimages="true")
 
         #related.tab-pane
           section.artist-music.container-fluid
@@ -171,5 +171,5 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
                   .line
                   small.text-uc.text-xs.text-muted 
                   p.m-t-sm 
-                    a.btn.btn-rounded.btn-twitter.btn-icon(href='{{link.target}}', target="_blank", ng-repeat="link in info.links")
+                    a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in info.links", href='{{link.target}}', target="_blank")
                       i.alloy-icon.icon(ng-class="$parent.getLinkIcon(link)")

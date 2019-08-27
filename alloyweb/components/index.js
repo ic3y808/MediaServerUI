@@ -14,6 +14,7 @@ import GenresComponent from "./genres/genres.component";
 import HistoryComponent from "./history/history.component";
 import HomeComponent from "./home/home.component";
 import IndexComponent from "./index/index.component";
+import LoginComponent from "./login/login.component";
 import NavbarComponent from "./navbar/navbar.component";
 import NeverPlayed from "./neverPlayed/neverPlayed.component";
 import PlayingComponent from "./playing/playing.component";
@@ -26,6 +27,9 @@ import ConfigGeneralComponent from "./config/general/configGeneral.component";
 import ConfigAlloyDbComponent from "./config/alloydb/configAlloyDb.Component";
 import ConfigMediaPathsComponent from "./config/mediapaths/configMediaPaths.component";
 import ConfigSchedulerComponent from "./config/scheduler/configScheduler.component";
+import ConfigSharesComponent from "./config/shares/configShares.component";
+import RegisterComponent from "./register/register.component";
+import ShareComponent from "./share/share.component";
 import StarredComponent from "./starred/starred.component";
 import StatusComponent from "./status/status.component";
 
@@ -44,6 +48,7 @@ export default angular
   .component("home", HomeComponent)
   .component("history", HistoryComponent)
   .component("index", IndexComponent)
+  .component("login", LoginComponent)
   .component("navbar", NavbarComponent)
   .component("neverplayed", NeverPlayed)
   .component("playing", PlayingComponent)
@@ -56,6 +61,9 @@ export default angular
   .component("configalloydb", ConfigAlloyDbComponent)
   .component("configmediapaths", ConfigMediaPathsComponent)
   .component("configscheduler", ConfigSchedulerComponent)
+  .component("configshares", ConfigSharesComponent)
+  .component("register", RegisterComponent)
+  .component("share", ShareComponent)
   .component("starred", StarredComponent)
   .component("status", StatusComponent)
   ;

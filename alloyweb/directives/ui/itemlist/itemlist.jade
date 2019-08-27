@@ -11,7 +11,7 @@ section.scrollable.padder-lg.w-f-md
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{track.album}}', lazy-load, tempData="{{track.image}}")
         span.clear
-          span {{track.title}}
+          span(data-value="track;{{track.id}}") {{track.title}}
           small.text-muted.clear.text-ellipsis by {{track.artist}}    
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'albums'")
       li.list-group-item.clearfix.pointer(data-value="album;{{album.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('album', album.id) == true}", ng-click="$root.MediaPlayer.PlayAlbum(album)", ng-repeat="album in data | limitTo:itemLimit")
@@ -20,7 +20,7 @@ section.scrollable.padder-lg.w-f-md
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{album.name}}', lazy-load, tempData="{{album.image}}")
         span.clear
-          span {{album.name}}
+          span(data-value="album;{{album.id}}") {{album.name}}
           small.text-muted.clear.text-ellipsis by {{album.artist}}    
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'artists'")
       li.list-group-item.clearfix.pointer(data-value="artist;{{artist.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('artist', artist.id) == true}", ng-click="$root.MediaPlayer.playArtist(artist)", ng-repeat="artist in data | limitTo:itemLimit")
@@ -29,4 +29,4 @@ section.scrollable.padder-lg.w-f-md
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{artist.nane}}', lazy-load, tempData="{{artist.image}}")
         span.clear
-          span {{artist.name}}
+          span(data-value="artist;{{artist.id}}") {{artist.name}}

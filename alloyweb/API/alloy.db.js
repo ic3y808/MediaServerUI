@@ -211,6 +211,18 @@ export default class AlloyApi {
     return this._get("browse/random_songs");
   }
 
+  getShare(id) {
+    return this._get("share", { id: id });
+  }
+
+  deleteShare(id) {
+    return this._delete("share", { id: id });
+  }
+
+  getShareLink(id) {
+    return this._get("share/link", { id: id });
+  }
+
   getFresh(limit) {
     return this._get("browse/fresh", { limit });
   }
@@ -297,6 +309,14 @@ export default class AlloyApi {
 
   addHistory(data) {
     return this._put("browse/history", data);
+  }
+
+  share(data) {
+    return this._put("share", data);
+  }
+
+  getShares() {
+    return this._get("share/shares");
   }
 
   getPlaylist(id) {

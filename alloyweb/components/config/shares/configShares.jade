@@ -1,0 +1,32 @@
+section.scrollable.padder
+  section.panel.panel-default
+    header.panel-heading  Shares
+    .table-responsive
+      table.table.table-striped.b-t.b-light
+        thead
+          tr
+            th Type
+            th URL
+            th Description
+            th Created
+            th Expires
+            th Visit Count
+            th 
+        tbody(ng-repeat='share in shares')
+          tr
+            td {{share.type}}
+            td(ng-if="share.url") 
+              a(href="/share/{{share.url}}") {{share.url}}
+            td(ng-if="share.url === ''") 
+              a(href="/share/{{share.id}}") {{share.id}}
+            td {{share.description}}
+            td {{share.created}}
+            td {{share.expires}}
+            td {{share.visit_count}}
+            td
+              a.active(href='#', data-toggle='class', ng-click="copyShare(share.id)")
+                i.alloy-icon.icon-clipboard
+            td
+              a.active(href='#', data-toggle='class', ng-click="deleteShare(share.id)")
+                i.alloy-icon.icon-minus
+          

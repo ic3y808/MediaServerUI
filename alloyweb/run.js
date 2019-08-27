@@ -1,10 +1,39 @@
 import AlloyDbService from "./services/alloyDbService.service";
 
-export default function ApplicationRun($window, $rootScope, $location, $timeout, Logger, Backend, MediaPlayer, AppUtilities, AlloyDbService) {
+export default function ApplicationRun($window, $rootScope, $location, $timeout, $cookies, $http, AuthenticationService, Logger, Backend, MediaPlayer, AppUtilities, AlloyDbService) {
   "ngInject";
   Logger.info("Starting WebUI");
   $rootScope.settings = [];
   $rootScope.scrollPos = {};
+  $rootScope.contextMenu = $("#contextMenu");
+  $rootScope.globals = $cookies.getObject("globals") || {};
+  if ($rootScope.globals.currentUser) {
+    $http.defaults.headers.common["Authorization"] = "Basic " + $rootScope.globals.currentUser.authdata;
+  }
+
+  $rootScope.publicPaths = ["/login", "/register", "/status", "/charts"];
+  $rootScope.newShare = {
+    type: "",
+    id: "",
+    description: "",
+    expires: "",
+    url: ""
+  };
+
+  $rootScope.$on("$locationChangeStart", function (event, next, current) {
+    var host = $location.host();
+    if (host === "localhost") {
+      AuthenticationService.SetCredentials("logged in", "logged in");
+      return;
+    }
+    var currentPath = $location.path();
+    var restrictedPage = $.inArray(currentPath, $rootScope.publicPaths) === -1;
+    if (currentPath.indexOf("/share") > -1) { restrictedPage = false; }
+    var loggedIn = $rootScope.globals.currentUser;
+    if (restrictedPage && !loggedIn) {
+      $location.path("/login");
+    }
+  });
 
   var windowResized = AppUtilities.debounce(function () {
     AppUtilities.broadcast("windowResized");
@@ -27,73 +56,125 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     }
   }
 
-  $rootScope.setupContext = function () {
-
-    var $contextMenu = $("#contextMenu");
-
-    $("body").on("contextmenu", "ul li", function (e) {
-      $contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
-      return false;
+  $rootScope.doShare = function () {
+    AlloyDbService.share().then(() => {
+      $("#shareModal").modal("toggle");
+      $rootScope.newShare = {
+        type: "",
+        id: "",
+        description: "",
+        expires: "",
+        url: ""
+      };
     });
+  };
 
-    $("body").on("contextmenu", ".item", function (e) {
-      $contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
-      return false;
-    });
+  $rootScope.CheckContext = function (e) {
+    $rootScope.contextMenu.hide();
 
-    $("body").on("contextmenu", "table tr", function (e) {
-      $contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
-      return false;
-    });
-
-    $("body").on("click", function (e) {
-      $contextMenu.hide();
-    });
-
-    $contextMenu.off("click").on("click", "a", (e) => {
-      $contextMenu.hide();
-
-      var $invokedOn = $contextMenu.data("invokedOn");
-
+    var $invokedOn = $rootScope.contextMenu.data("invokedOn");
+    if ($invokedOn) {
       var opts = $invokedOn.split(";");
       var method = opts[0];
       var id = opts[1];
       var $selectedMenu = $(e.target);
-      var playlist = $selectedMenu[0].getAttribute("playlist-id");
 
-      switch (method) {
-        case "track":
-          AlloyDbService.updatePlaylist({ id: playlist, songId: id }).then(() => {
-            AlloyDbService.refreshPlaylists();
-          });
+      switch ($selectedMenu[0].type) {
+        case "Share":
+          switch (method) {
+            case "track":
+              AlloyDbService.shareTrack(id).then((result) => {
+                Logger.info("Share created " + result);
+              });
+              break;
+            case "album":
+              AlloyDbService.shareAlbum(id).then((result) => {
+                Logger.info("Share created " + result);
+              });
+              break;
+            case "artist":
+              AlloyDbService.shareArtist(id).then((result) => {
+                Logger.info("Share created " + result);
+              });
+              break;
+            case "genre":
+              AlloyDbService.shareGenre(id).then((result) => {
+                Logger.info("Share created " + result);
+              });
+              break;
+          }
           break;
-        case "artist":
-          AlloyDbService.getArtist(id).then((result) => {
-            var ids = [];
-            result.tracks.forEach((track) => {
-              ids.push(track.id);
-            });
-            AlloyDbService.updatePlaylist({ id: playlist, songIds: ids, replace: false }).then(() => {
-              AlloyDbService.refreshPlaylists();
-            });
-          });
+        case "Play":
+
           break;
-        case "album":
-          AlloyDbService.getAlbum(id).then((result) => {
-            var ids = [];
-            result.tracks.forEach((track) => {
-              ids.push(track.id);
-            });
-            AlloyDbService.updatePlaylist({ id: playlist, songIds: ids, replace: false }).then(() => {
-              AlloyDbService.refreshPlaylists();
-            });
-          });
+        case "AddToPlaylist":
+          var playlist = $selectedMenu[0].getAttribute("playlist-id");
+
+          switch (method) {
+            case "track":
+              AlloyDbService.updatePlaylist({ id: playlist, songId: id }).then(() => {
+                AlloyDbService.refreshPlaylists();
+              });
+              break;
+            case "artist":
+              AlloyDbService.getArtist(id).then((result) => {
+                var ids = [];
+                result.tracks.forEach((track) => {
+                  ids.push(track.id);
+                });
+                AlloyDbService.updatePlaylist({ id: playlist, songIds: ids, replace: false }).then(() => {
+                  AlloyDbService.refreshPlaylists();
+                });
+              });
+              break;
+            case "album":
+              AlloyDbService.getAlbum(id).then((result) => {
+                var ids = [];
+                result.tracks.forEach((track) => {
+                  ids.push(track.id);
+                });
+                AlloyDbService.updatePlaylist({ id: playlist, songIds: ids, replace: false }).then(() => {
+                  AlloyDbService.refreshPlaylists();
+                });
+              });
+              break;
+          }
           break;
       }
+    }
+  };
+
+  $rootScope.setupContext = function () {
+    $("body").on("contextmenu", "ul li", function (e) {
+      $rootScope.contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
     });
 
-    $contextMenu.on("click", "a", function (e) {
-      $contextMenu.hide();
+    $("body").on("contextmenu", ".item", function (e) {
+      $rootScope.contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
+    });
+
+    $("body").on("contextmenu", "tr", function (e) {
+      $rootScope.contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
+    });
+
+    $("body").on("contextmenu", "a", function (e) {
+      $rootScope.contextMenu.css({ display: "block", left: e.pageX, top: e.pageY }).data("invokedOn", this.getAttribute("data-value"));
+      return false;
+    });
+
+    $("body").on("click", function (e) {
+      $rootScope.contextMenu.hide();
+    });
+
+    $rootScope.contextMenu.off("click").on("click", "a", (e) => {
+      $rootScope.CheckContext(e);
+    });
+
+    $rootScope.contextMenu.on("click", "a", function (e) {
+      $rootScope.contextMenu.hide();
     });
   };
 
@@ -349,7 +430,10 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     $(".selection-tab-title").removeClass("selection-tab-title-selected");
     $(this).addClass("selection-tab-title-selected");
   });
-
+  $(".datepicker").datepicker({
+    format: "mm/dd/yyyy",
+    startDate: "-3d"
+  });
 
   //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";

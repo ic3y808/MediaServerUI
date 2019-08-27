@@ -70,6 +70,10 @@ router.get("/index", function (req, res) {
   res.render("index", res.locals.jadeOptions);
 });
 
+router.get("/login", function (req, res) {
+  res.render("index", res.locals.jadeOptions);
+});
+
 router.get("/neverplayed", function (req, res) {
   res.render("index", res.locals.jadeOptions);
 });
@@ -83,6 +87,14 @@ router.get("/playlist/:id", function (req, res) {
 });
 
 router.get("/playlists", function (req, res) {
+  res.render("index", res.locals.jadeOptions);
+});
+
+router.get("/register", function (req, res) {
+  res.render("index", res.locals.jadeOptions);
+});
+
+router.get("/share/:id", function (req, res) {
   res.render("index", res.locals.jadeOptions);
 });
 

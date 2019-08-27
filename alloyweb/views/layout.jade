@@ -20,23 +20,48 @@ html.app(ng-app='alloy',lang='en')
               section.vbox
                 ng-view#primary-content.vbox
                 ul#autoComplete_results_list
-                a.hide.nav-off-screen-block(href='#', data-toggle='class:nav-off-screen,open', data-target='#nav,html')
+                a.hide.nav-off-screen-block(data-target='#nav,html', data-toggle='class:nav-off-screen,open', href='#')
                 footer.footer.bg-dark
                   footbar
 
     #contextMenu.dropdown.clearfix
       ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu', style='display:block;position:static;margin-bottom:5px;')
         li
-          a(tabindex='-1', href='#') Play
+          a(type="Play", href='#') Play
+        li
+          a(type="Share", href='#') Share
+        li
+          a(type="Star", href='#') Star
         li.divider
           li.dropdown-submenu
-            a(tabindex='-1', href='#') Add to Playlist
+            a(href='#') Add to Playlist
             ul.dropdown-menu
               li(ng-repeat="playlist in $root.playlists")
-                a(playlist-id="{{playlist.id}}") {{playlist.name}}
+                a(type="AddToPlaylist", playlist-id="{{playlist.id}}") {{playlist.name}}
 
 
+    #shareModal.modal.fade.clearfix(role='dialog')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5#addMediaPathModalLabel.modal-title Create new Share
+            button.Link-link.close(data-dismiss='modal', type='button', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    input.Naming-namingInput.TextInput-input.Input-input(ng-model='$root.newShare.description', type='text', placeholder='Share Title Name')
+                    input.Naming-namingInput.TextInput-input.Input-input(ng-model='$root.newShare.url', type='text', placeholder='Custom URL?')
+                    .input-group.date(data-provide='datepicker')
+                      input.form-control(type='text', ng-model='$root.newShare.expires')
+                      .input-group-addon
+                        span.glyphicon.glyphicon-th
 
+          .modal-footer
+            button.btn.btn-secondary(data-dismiss='modal', type='button') Cancel
+            button.btn.btn-primary(ng-click='$root.doShare()', type='button') Share
 
 
         video#media-player(preload='true', controls='hidden', style="display:none;")

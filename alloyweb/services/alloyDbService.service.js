@@ -128,6 +128,12 @@ export default class AlloyDbService {
     else { return false; }
   }
 
+  getShare(id) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.getShare(id); }
+    else { return false; }
+  }
+
   getFresh(limit) {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.getFresh(limit); }
@@ -257,6 +263,87 @@ export default class AlloyDbService {
   addHistory(data) {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.addHistory(data); }
+    else { return false; }
+  }
+
+  getShareLink(id) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.getShareLink(id); }
+    else { return false; }
+  }
+
+  deleteShare(id) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.deleteShare(id); }
+    else { return false; }
+  }
+
+  share() {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.share(this.$rootScope.newShare); }
+    else { return false; }
+  }
+
+  createShare(type, id, description = "", expires = "", url = "") {
+
+
+    var that = this;
+    this.$rootScope.newShare.type = type;
+    this.$rootScope.newShare.id = id;
+    this.$rootScope.newShare.description = description;
+    this.$rootScope.newShare.expires = expires;
+    this.$rootScope.newShare.url = url;
+    return new Promise((resolve, reject) => {
+
+      $("#shareModal").on("hidden.bs.modal", function () {
+        $(this).data("bs.modal", null);
+        that.$rootScope.newShare = {
+          type: "",
+          id: "",
+          description: "",
+          expires: "",
+          url: ""
+        };
+        that.AppUtilities.apply();
+      });
+      var $this = $(this)
+        , $remote = $this.data("remote") || $this.attr("href")
+        , $modal = $("#shareModal");
+      $modal.modal();
+    });
+
+    //this.doLogin();
+    //if (this.isLoggedIn) { return this.alloydb.createShare(type, id, description, expires, url); }
+    //else { return false; }
+  }
+
+  shareTrack(id) {
+    this.Logger.debug("shareButton");
+    return this.createShare("track", id).then((result) => {
+    });
+  }
+
+  shareAlbum(id) {
+    this.Logger.debug("shareButton");
+    return this.createShare("album", id).then((result) => {
+    });
+  }
+
+  shareArtist(id) {
+    this.Logger.debug("shareButton");
+    return this.createShare("artist", id).then((result) => {
+    });
+  }
+
+  shareGenre(id) {
+    this.Logger.debug("shareButton");
+    return this.createShare("genre", id).then((result) => {
+    });
+  }
+
+  getShares() {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.getShares(); }
     else { return false; }
   }
 

@@ -1,0 +1,80 @@
+section.scrollable.no-padder.w-f-md(style="padding:0px;")
+  div(ng-if="info.share.type==='track'")
+    .contentSpacing.no-padder
+      section.content.album-content
+        .container-fluid
+          .album-container
+            .col-xs-12.col-lg-3.col-xl-4
+              .album-header-container
+                header.TrackListHeader
+                  .media-object
+                    .row
+                      .react-contextmenu-wrapper.col-xs-12
+                        .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
+                    .row
+                      .mo-info
+                        .react-contextmenu-wrapper.col-xs-12
+                          .mo-info-name(title='{{info.share.description}}')
+                            span(dir='auto') {{info.share.description}}
+                      
+
+                    .mo-meta.ellipsis-one-line
+                      .react-contextmenu-wrapper
+                        a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
+                  .TrackListHeader__button.TrackListHeader__button--top
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
+
+              
+            .col-xs-12.col-lg-9.col-xl-8
+              tracklist(data="info.tracks")
+
+  div(ng-if="info.share.type==='album'")
+    .contentSpacing.no-padder
+      section.content.album-content
+        .container-fluid
+          .album-container
+            .col-xs-12.col-lg-3.col-xl-4
+              .album-header-container
+                header.TrackListHeader
+                  .media-object
+                    .row
+                      .react-contextmenu-wrapper.col-xs-12
+                        .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
+                    .row
+                      .mo-info
+                        .react-contextmenu-wrapper.col-xs-12
+                          .mo-info-name(title='{{info.share.description}}')
+                            span(dir='auto') {{info.share.description}}
+                      
+
+                    .mo-meta.ellipsis-one-line
+                      .react-contextmenu-wrapper
+                        a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
+                  .TrackListHeader__button.TrackListHeader__button--top
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
+
+              
+            .col-xs-12.col-lg-9.col-xl-8
+              tracklist(data="info.tracks")
+
+
+  section.content.artist(ng-if="info.share.type==='artist'")
+    header.artist-header(style='background-image: url({{info.image}});')
+      h1.monthly-listeners.large(dir='auto') {{info.artist.name}}
+
+    section.scrollable
+
+      section.artist-music.container-fluid(ng-if="info.tracks.length > 0")
+        .row
+          .contentSpacing
+            section.artist-toptracks
+              section.tracklist-container.full-width
+                itemtable(data="info.tracks", title="Tracks", limit="info.tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="", showimages="true")
+
+   

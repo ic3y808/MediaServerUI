@@ -65,7 +65,7 @@ class ConfigAlloyDbController {
       var $this = $(this)
         , $remote = $this.data("remote") || $this.attr("href")
         , $modal = $("#addMediaPathModal");
-      $("#primary-content").append($modal);
+      //$("#primary-content").append($modal);
       $modal.modal();
       // $modal.load($remote);
 

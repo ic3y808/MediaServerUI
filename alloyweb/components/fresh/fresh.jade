@@ -5,21 +5,21 @@ section.scrollable.padder-lg.w-f-md.scrollsaver
           | Discover What's New
   .row 
     .col-md-7(ng-if="$root.fresh_tracks.length > 0")
-      thumblist(data="$root.fresh_tracks", title="New Songs", limit="36", type="tracks", refreshclick="refresh()", origin="fresh", viewmorelink="/fresh")
+      thumblist(type="tracks", title="New Songs", data="$root.fresh_tracks", limit="36", refreshclick="refresh()", origin="fresh", viewmorelink="/fresh")
     .col-md-5(ng-if="$root.charts.never_played.length > 0")
-      itemlist(data="$root.charts.never_played", title="Never Played", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/neverplayed", showviewmore="true")
+      itemlist(type="tracks", title="Never Played", data="$root.charts.never_played", limit="10", refreshclick="refresh()", viewmorelink="/neverplayed", showviewmore="true")
   .row
     .col-md-7(ng-if="$root.fresh_albums.length > 0")
-      thumblist(data="$root.fresh_albums", title="New Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
+      thumblist(type="albums", title="New Albums", data="$root.fresh_albums", limit="36", refreshclick="refresh()", viewmorelink="/fresh")
     .col-md-5(ng-if="$root.quick_picks.length > 0")
-      itemlist(data="$root.quick_picks", title="Quick Picks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/quickpicks")  
+      itemlist(type="tracks", title="Quick Picks", data="$root.quick_picks", limit="10", refreshclick="refresh()", viewmorelink="/quickpicks")  
   .row
     .col-md-7(ng-if="$root.fresh_artists.length > 0")
-      thumblist(data="$root.fresh_artists", title="New Artists", limit="36", type="artists", refreshclick="refresh()", viewmorelink="/new/artists")             
+      thumblist(type="artists", title="New Artists", data="$root.fresh_artists", limit="36", refreshclick="refresh()", viewmorelink="/new/artists")             
     .col-md-5(ng-if="$root.charts.top_tracks.length > 0")
-      itemlist(data="$root.charts.top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/charts")
+      itemlist(type="tracks", title="Top Tracks", data="$root.charts.top_tracks", limit="10", refreshclick="refresh()", viewmorelink="/charts")
   .row
     .col-md-12(ng-if="$root.fresh_albums.length > 0")
       
-      itemtable(data="$root.recently_added", title="Recently Added", limit="$root.recently_added.length", type="albums", refreshclick="refresh()", viewmorelink="/charts")
+      itemtable(type="albums", title="Recently Added", data="$root.recently_added", limit="$root.recently_added.length", refreshclick="refresh()", viewmorelink="/charts", showimages="true")
       

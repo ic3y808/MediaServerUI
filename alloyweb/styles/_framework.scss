@@ -1,9 +1,24 @@
 @import "./variables";
 
-h1, h2, h3, h4, h5, h6,
-.h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   margin-bottom: 0.5rem;
   font-family: inherit;
   font-weight: 300;
   line-height: 1.2;
-  color: inherit; }
+  color: inherit;
+}
+
+ul {
+  padding: 0 !important;
+}

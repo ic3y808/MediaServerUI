@@ -1,7 +1,7 @@
 import angular from "angular";
 import angularRoute from "angular-route";
 __webpack_public_path__ = "http://localhost:" + API_UI_PORT + "/";
-
+var env = process.env;
 import "./styles/index";
 import "lodash";
 import "popper.js";
@@ -9,7 +9,9 @@ import "tooltip.js";
 import "angular-bootstrap-contextmenu/contextMenu";
 import "moment";
 import "typeface-roboto";
+import "angular-cookies";
 import "angular-sanitize";
+import "bootstrap-datepicker";
 import "bootstrap/dist/js/bootstrap.min";
 import "highcharts/highcharts";
 
@@ -31,7 +33,7 @@ var controllers = angular
   .module("app.controllers", []).controller("DashboardIndexCtrl", function ($scope, $log) {
   });
 
-angular.module("alloy", [angularRoute, "ngSanitize", "autoCompleteModule", "ui.bootstrap.contextMenu", controllers.name, Directives.name, Components.name, Factories.name, Services.name])
+angular.module("alloy", [angularRoute, "ngCookies", "ngSanitize", "autoCompleteModule", "ui.bootstrap.contextMenu", controllers.name, Directives.name, Components.name, Factories.name, Services.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);
 

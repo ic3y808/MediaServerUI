@@ -9,5 +9,9 @@
   "git.ignoreLimitWarning": true,
   "eslint.autoFixOnSave": true,
   "javascript.suggestionActions.enabled": false,
-  "telemetry.enableTelemetry": false
+  "telemetry.enableTelemetry": false,
+  "files.watcherExclude": {
+    "**/.git/*/**": true,
+    "**/node_modules/*/**": true
+  }
 }

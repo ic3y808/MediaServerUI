@@ -217,25 +217,4 @@ export default class AppUtilities {
   decryptPassword(pass) {
     return CryptoJS.AES.decrypt(pass, "12345").toString(CryptoJS.enc.Utf8);
   }
-
-  //shuffle(array) {
-  //  var currentIndex = array.length, temporaryValue, randomIndex;
-  //  while (0 !== currentIndex) {
-  //    randomIndex = Math.floor(Math.random() * currentIndex);
-  //    var existing = array[currentIndex];
-  //    var existing2 = array[randomIndex];
-  //    if (existing && existing2) {
-  //      while (true) {
-  //        if (array[randomIndex].artist === array[currentIndex].artist)
-  //          randomIndex = Math.floor(Math.random() * currentIndex);
-  //        else break;
-  //      }
-  //    }
-  //    currentIndex -= 1;
-  //    temporaryValue = array[currentIndex];
-  //    array[currentIndex] = array[randomIndex];
-  //    array[randomIndex] = temporaryValue;
-  //  }
-  //  return array;
-  //}
 }

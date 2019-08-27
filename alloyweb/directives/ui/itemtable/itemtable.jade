@@ -7,53 +7,90 @@ section.scrollable.padder-lg.w-f-md
         table.table.table-striped.b-t.b-light
           thead
             tr
-              th
+              th(ng-if="showimages")
               th Title
               th Album
               th Artist
               th Length
-              th 
+              th(ng-if="$root.globals.currentUser")
           tbody(ng-repeat="track in data | limitTo:limit")
-            tr(data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", title='{{track.title}}')
+            tr(data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", ng-if="showimages", title='{{track.title}}')
               td 
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(alt='{{track.title}}', lazy-load, tempData="{{track.image}}")
               td 
-                a(ng-click="$root.MediaPlayer.playTrack(track, data)")
+                a(data-value="track;{{track.id}}", ng-click="$root.MediaPlayer.playTrack(track, data)")
                   span.clear
                     span {{track.title}}
               td(ng-click="$root.MediaPlayer.playTrack(track, data)") 
-                a(href="/album/{{track.album_id}}")
+                a(data-value="track;{{track.id}}", href="/album/{{track.album_id}}")
                   span.clear
                     span {{track.album}}
               td 
-                a(href="/artist/{{track.artist_id}}") 
+                a(data-value="track;{{track.id}}", href="/artist/{{track.artist_id}}") 
                   span.clear
                     span {{track.artist}}
               td {{$root.formatTime(track.duration)}}
-              td
-                a.centered-anchor(ng-click="starTrack(track)", href="", style="height:30px;")
+              td(ng-if="$root.globals.currentUser")
+                a.centered-anchor(data-value="track;{{track.id}}", ng-click="starTrack(track)", href="", style="height:30px;")
                   i.alloy-icon.icon(ng-class="isStarred(track)")
 
     .table-responsives(ng-if="type === 'albums'")
         table.table.table-striped.b-t.b-light
           thead
             tr
-              th(style="width:1px;")
+              th(ng-if="showimages", style="width:1px;")
               th Album
               th Artist
               th Created
               th Tracks
           tbody(ng-repeat="album in data | limitTo:limit")
             tr(data-value="album;{{album.id}}", title='{{album.name}}')
-              td(style="width:1px;")
+              td(ng-if="showimages", style="width:1px;")
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(alt='{{album.name}}', lazy-load, tempData="{{album.image}}")
               td 
-                a(href="/album/{{album.id}}")
+                a(data-value="album;{{album.id}}", href="/album/{{album.id}}")
                   span.clear
                     span {{album.name}}
               td 
-                a(href="/artist/{{album.artist_id}}") {{album.artist}}
+                a(href="/artist/{{album.artist_id}}", data-value="album;{{album.id}}") {{album.artist}}
               td {{album.created}}
               td {{album.track_count}}
+
+    .table-responsives(ng-if="type === 'artists'")
+        table.table.table-striped.b-t.b-light
+          thead
+            tr
+              th(ng-if="showimages", style="width:1px;")
+
+              th Artist
+              th Tracks
+          tbody(ng-repeat="artist in data | limitTo:limit")
+            tr(data-value="artist;{{artist.id}}", title='{{artist.name}}')
+              td(ng-if="showimages", style="width:1px;")
+                span.pull-left.thumb-sm.avatar.m-r
+                  img.img-thumbnail(alt='{{artist.name}}', lazy-load, tempData="{{artist.image}}")
+              td 
+                a(href="/artist/{{artist.id}}", data-value="artist;{{artist.id}}") {{artist.name}}
+              td {{artist.track_count}}
+
+    .table-responsives(ng-if="type === 'genres'")
+        table.table.table-striped.b-t.b-light
+          thead
+            tr
+              th(ng-if="showimages", style="width:1px;")
+              th Genre
+              th Artists
+              th Albums
+              th Tracks
+          tbody(ng-repeat="genre in data | limitTo:limit")
+            tr(data-value="genre;{{genre.id}}", title='{{genre.name}}')
+              td(ng-if="showimages", style="width:1px;")
+                span.pull-left.thumb-sm.avatar.m-r
+                  img.img-thumbnail(alt='{{genre.name}}', lazy-load, tempData="{{genre.image}}")
+              td 
+                a(href="/genre/{{genre.id}}", data-value="genre;{{genre.id}}") {{genre.name}}
+              td {{genre.artist_count}}
+              td {{genre.album_count}}
+              td {{genre.track_count}}
