@@ -19,24 +19,18 @@ class AlbumController {
       return this.AlloyDbService.getCoverArt(id);
     };
 
-    //$scope.getArtistInfo = data => {
+    //$scope.refreshInfo = (data) => {
     //  if (data) {
-    //    data.forEach(info => {
-    //      if (info.artistInfo) {
-    //        $scope.album.artistInfo = info.artistInfo;
-    //        if ($scope.album.artistInfo.bio) {
-    //          $scope.artistBio = $scope.album.artistInfo.bio.summary.replace(/<a\b[^>]*>(.*?)<\/a>/i, "");
-    //        }
-    //        if ($scope.album.artistInfo.similar) {
-    //          $scope.similarArtists = $scope.album.artistInfo.similar.artist.slice(0, 5);
-    //        }
-    //        if ($scope.album.artistInfo.image) {
-    //          $scope.album.artistInfo.image.forEach(image => {
+    //    data.forEach((info) => {
+    //      if (info.albumInfo) {
+    //        $scope.album.albumInfo = info.albumInfo;
+    //        if ($scope.albumInfo.image) {
+    //          $scope.album.artistInfo.image.forEach((image) => {
     //            if (image["@"].size === "large") {
-    //              $scope.artistImage = image["#"];
+    //              $scope.albumImage = image["#"];
     //            }
     //            if (image["@"].size === "extralarge") {
-    //              $scope.artistImage = image["#"];
+    //              $scope.albumImage = image["#"];
     //            }
     //          });
     //        }
@@ -45,74 +39,13 @@ class AlbumController {
     //  }
     //};
 
-    $scope.getAlbumInfo = (data) => {
-      if (data) {
-        data.forEach((info) => {
-          if (info.albumInfo) {
-            $scope.album.albumInfo = info.albumInfo;
-            if ($scope.albumInfo.image) {
-              $scope.album.artistInfo.image.forEach((image) => {
-                if (image["@"].size === "large") {
-                  $scope.albumImage = image["#"];
-                }
-                if (image["@"].size === "extralarge") {
-                  $scope.albumImage = image["#"];
-                }
-              });
-            }
-          }
-        });
-      }
-    };
-
-    $scope.getAlbum = () => {
-
-
-      var alb = AlloyDbService.getAlbum($routeParams.id);
-      if (alb) {
-        alb.then((info) => {
-          if (info) {
-            $scope.info = info;
-
-            var coverArt = this.AlloyDbService.getCoverArt({
-              album_id: $routeParams.id
-            });
-
-
-            if (coverArt) {
-              $scope.info.album.image = coverArt;
-              this.AppUtilities.apply();
-            }
-
-            if ($scope.info.tracks && $scope.info.tracks.length > 0) {
-              if ($routeParams.trackid) {
-                $scope.info.tracks.forEach(function (track) {
-                  if (track.id === $routeParams.trackid) {
-                    track.selected = true;
-                    AppUtilities.apply();
-                  }
-                });
-              }
-            }
-
-
-            this.AppUtilities.apply();
-
-            this.AppUtilities.hideLoader();
-          }
-        });
-      }
-
-    };
-
     $scope.goToArtist = (id) => {
       window.location.href = "/artist/" + id;
     };
 
     $scope.refresh = () => {
       this.Logger.debug("refresh album");
-      Cache.put($routeParams.id, null);
-      $scope.getAlbum();
+      this.AlloyDbService.refreshAlbum($routeParams.id);
     };
 
     $scope.shuffle = () => {
@@ -190,7 +123,7 @@ class AlbumController {
       $scope.refresh();
     });
 
-    $scope.getAlbum();
+    $scope.refresh();
   }
 
   $onInit() {

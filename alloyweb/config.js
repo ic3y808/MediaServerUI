@@ -26,16 +26,19 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   buildRoute("/genre/:id/trackid", "<genre/>");
   buildRoute("/history", "<history/>");
   buildRoute("/index", "<index/>");
+  buildRoute("/login", "<login/>");
   buildRoute("/neverplayed", "<neverplayed/>");
   buildRoute("/playing", "<playing/>");
   buildRoute("/playlists", "<playlists/>");
   buildRoute("/playlist/:id", "<playlist/>");
   buildRoute("/playlist/:id/trackid", "<playlist/>");
+  buildRoute("/register", "<register/>");
+  buildRoute("/share/:id", "<share/>");
   buildRoute("/starred", "<starred/>");
   buildRoute("/status", "<status/>");
 
   $routeProvider.otherwise({
-    templateUrl: "/template/fourofour.jade",
+    templateUrl: "/login",
   });
 
   $locationProvider.html5Mode({

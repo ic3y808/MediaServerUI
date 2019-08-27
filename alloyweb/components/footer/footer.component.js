@@ -99,26 +99,6 @@ class FooterController {
       }
     };
 
-    $scope.shareTrack = () => {
-      this.Logger.debug("shareButton");
-      this.AlloyDbService.createShare(this.MediaPlayer.selectedTrack().id, "Shared from Alloy").then((result) => {
-        $("#shareButton").popover({
-          animation: true,
-          content: "Success! Url Copied to Clipboard.",
-          delay: {
-            "show": 0,
-            "hide": 5000
-          },
-          placement: "top"
-        }).popover("show");
-        var url = result.url.toString();
-        this.AppUtilities.copyTextToClipboard(url);
-        setTimeout(() => {
-          $("#shareButton").popover("hide");
-        }, 5000);
-      });
-    };
-
     $scope.isStarred = () => {
       if (this.MediaPlayer) {
         var selected = this.MediaPlayer.selectedTrack();

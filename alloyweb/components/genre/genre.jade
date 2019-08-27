@@ -1,13 +1,13 @@
 section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style="padding:0px;")
   section.content.artist
-    header.genre-header(style='background-image: url({{info.image}});')
-      h1.monthly-listeners.large(dir='auto') {{info.genre.name}}
+    header.genre-header(style='background-image: url({{$root.genre.image}});')
+      h1.monthly-listeners.large(dir='auto') {{$root.genre.genre.name}}
       .genre-header-buttons
         button.spotify-btn.btn-black.btn--narrow(ng-click="shuffle()") PLAY
       .genre-header-buttons
         starratinglabel(genre="genre")
       .genre-header-buttons
-        button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starGenre()") {{info.genre.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+        button.spotify-btn.btn-black.btn--narrow(ng-click="starGenre()", title='Save to Your Library') {{$root.genre.genre.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
 
       nav.tab-nav-list
         ul.selection-tabs
@@ -29,35 +29,35 @@ section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style=
     section.scrollable
       .tab-content
         #popular.tab-pane.active
-          section.genre-music.container-fluid(ng-if="info.popular_tracks.length > 0")
+          section.genre-music.container-fluid(ng-if="$root.genre.popular_tracks.length > 0")
             .row
               .contentSpacing
                 section.artist-toptracks
-                  tracklist(data="info.popular_tracks", canaddplaylist="true", title="Popular")
+                  tracklist(title="Popular", data="$root.genre.popular_tracks", canaddplaylist="true")
          
         #artists.tab-pane
-          section.artist-music.container-fluid(ng-if="info.artists.length > 0")
+          section.artist-music.container-fluid(ng-if="$root.genre.artists.length > 0")
             .row
               .contentSpacing
                 section.genre-toptracks
-                  thumblist(data="info.artists", title="Artists", limit="info.artists.length", type="artists", refreshclick="refresh()", viewmorelink="")     
+                  thumblist(type="artists", title="Artists", data="$root.genre.artists", limit="$root.genre.artists.length", refreshclick="refresh()", viewmorelink="")     
         #albums.tab-pane
-          section.artist-music.container-fluid(ng-if="info.artists.length > 0")
+          section.artist-music.container-fluid(ng-if="$root.genre.artists.length > 0")
             .row
               .contentSpacing
                 section.genre-toptracks
-                  itemtable(data="info.albums", title="Albums", limit="info.albums.length", type="albums", refreshclick="refresh()", viewmorelink="")
+                  itemtable(type="albums", title="Albums", data="$root.genre.albums", limit="$root.genre.albums.length", refreshclick="refresh()", viewmorelink="", showimages="true")
         #neverPlayed.tab-pane
-          section.artist-music.container-fluid(ng-if="info.artists.length > 0")
+          section.artist-music.container-fluid(ng-if="$root.genre.artists.length > 0")
             .row
               .contentSpacing
                 section.genre-toptracks
-                  itemtable(data="info.never_played", title="Never Played", limit="info.never_played.length", type="tracks", refreshclick="refresh()", viewmorelink="")
+                  itemtable(type="tracks", title="Never Played", data="$root.genre.never_played", limit="$root.genre.never_played.length", refreshclick="refresh()", viewmorelink="", showimages="true")
 
         #all.tab-pane
-          section.genre-music.container-fluid(ng-if="info.tracks.length > 0")
+          section.genre-music.container-fluid(ng-if="$root.genre.tracks.length > 0")
             .row
               .contentSpacing
                 section.genre-toptracks
                   section.tracklist-container.full-width
-                    itemtable(data="info.tracks", title="All Tracks", limit="info.tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="")
+                    itemtable(type="tracks", title="All Tracks", data="$root.genre.tracks", limit="$root.genre.tracks.length", refreshclick="refresh()", viewmorelink="", showimages="true")

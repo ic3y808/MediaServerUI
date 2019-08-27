@@ -16,6 +16,10 @@ class NavbarController {
     this.$scope.refreshCurrentView = function () {
       AlloyDbService.refreshPage(window.location.pathname);
     };
+    this.$scope.logout = () => {
+      this.$location.path("/login");
+      this.$location.replace();
+    };
   }
 
   $onInit() {

@@ -18,70 +18,10 @@ class ArtistController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("artist-controller");
     this.AppUtilities.showLoader();
-    $scope.artistName = "";
-    $scope.artist = {};
-    $scope.artist = {};
-    $scope.albums = [];
-    $scope.artist.tracks = [];
-    $scope.all_expanded = false;
-    $scope.albums_expanded = true;
-    $scope.tracks_expanded = false;
-    $("#trackListContainer").hide();
-
-    $scope.getArtist = () => {
-      var cache = Cache.get($routeParams.id);
-
-      if (cache) {
-        $scope.info = cache;
-        this.AppUtilities.apply();
-        this.AppUtilities.hideLoader();
-      } else {
-        var artist = this.AlloyDbService.getArtist($routeParams.id);
-        if (artist) {
-          artist.then((info) => {
-
-            $scope.info = info;
-            var coverArt = this.AlloyDbService.getCoverArt({
-              artist_id: $routeParams.id
-            });
-
-            $scope.info.tracks.forEach((track) => {
-              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
-            });
-
-            $scope.info.albums.forEach((album) => {
-              album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
-            });
-
-            $scope.info.singles.forEach((single) => {
-              single.image = this.AlloyDbService.getCoverArt({ album_id: single.id });
-            });
-
-            $scope.info.EPs.forEach((ep) => {
-              ep.image = this.AlloyDbService.getCoverArt({ album_id: ep.id });
-            });
-
-            $scope.info.popular_tracks.forEach((track) => {
-              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
-            });
-
-            if (coverArt) {
-              $scope.info.image = coverArt;
-              this.AppUtilities.apply();
-            }
-
-            Cache.put($routeParams.id, $scope.info);
-            this.AppUtilities.apply();
-            this.AppUtilities.hideLoader();
-          });
-        }
-      }
-    };
 
     $scope.refresh = () => {
       this.Logger.debug("refresh artist");
-      Cache.put($routeParams.id, null);
-      $scope.getArtist();
+      AlloyDbService.refreshArtist($routeParams.id);
     };
 
     $scope.startRadio = () => {
@@ -133,7 +73,6 @@ class ArtistController {
         case "beatport": { return base + link.type; }
         case "youtube": { return base + link.type; }
         case "bbc": { return base + link.type; }
-
         case "soundcloud": { return base + link.type; }
         case "bandcamp": { return base + link.type; }
         default: { return base + "external-link"; }
@@ -161,13 +100,12 @@ class ArtistController {
       }
     };
 
-
     $rootScope.$on("loginStatusChange", (event, data) => {
       this.Logger.debug("Artist reload on loginsatuschange");
-      $scope.getArtist();
+      $scope.refresh();
     });
 
-    $scope.getArtist();
+    $scope.refresh();
   }
 
   $onInit() {

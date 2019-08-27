@@ -1,3 +1,4 @@
+import styles from "./tracklist.scss";
 export default function ($rootScope, $timeout, $location, Logger, MediaPlayer, Backend, AlloyDbService, AppUtilities) {
   "ngInject";
   return {

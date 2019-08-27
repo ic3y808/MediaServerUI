@@ -1,0 +1,23 @@
+.col-md-6.col-md-offset-3
+  h2 Register
+  form(name='form' ng-submit='register()' role='form')
+    .form-group(ng-class="{ 'has-error': form.firstName.$dirty && form.firstName.$error.required }")
+      label(for='username') First name
+      input#firstName.form-control(type='text' name='firstName' ng-model='user.firstName' required='')
+      span.help-block(ng-show='form.firstName.$dirty && form.firstName.$error.required') First name is required
+    .form-group(ng-class="{ 'has-error': form.lastName.$dirty && form.lastName.$error.required }")
+      label(for='username') Last name
+      input#Text1.form-control(type='text' name='lastName' ng-model='user.lastName' required='')
+      span.help-block(ng-show='form.lastName.$dirty && form.lastName.$error.required') Last name is required
+    .form-group(ng-class="{ 'has-error': form.username.$dirty && form.username.$error.required }")
+      label(for='username') Username
+      input#username.form-control(type='text' name='username' ng-model='user.username' required='')
+      span.help-block(ng-show='form.username.$dirty && form.username.$error.required') Username is required
+    .form-group(ng-class="{ 'has-error': form.password.$dirty && form.password.$error.required }")
+      label(for='password') Password
+      input#password.form-control(type='password' name='password' ng-model='user.password' required='')
+      span.help-block(ng-show='form.password.$dirty && form.password.$error.required') Password is required
+    .form-actions
+      button.btn.btn-primary(type='submit' ng-disabled='form.$invalid || dataLoading') Register
+      img(ng-if='dataLoading' src='data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==')
+      a.btn.btn-link(href='#!/login') Cancel

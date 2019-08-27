@@ -1,31 +1,6 @@
 
 section.scrollable.padder-lg.w-f-md.animated.fadeInRight.scrollsaver
-  a.pull-right.text-muted.m-t-lg(href='#', data-toggle='class:fa-spin')
-    i#refresh.icon-refresh.i-lg.inline
-  h2.font-thin.m-b
-    | Albums 
-    span.musicbar.inline.m-l-sm(style='width:20px;height:20px')
-      span.bar1.a1.bg-primary.lter
-      span.bar2.a2.bg-info.lt
-      span.bar3.a3.bg-success
-      span.bar4.a4.bg-warning.dk
-      span.bar5.a5.bg-danger.dker
-
   .row
     .col-md-12
       h3.font-thin
-      .row.row-sm
-        .table-responsive
-          table#DataTables_Table_0.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
-            thead
-              tr(role='row')
-                th.sorting_asc(style='width: 350px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-sort='ascending', aria-label='Rendering engine: activate to sort column descending') Album Name
-                th.sorting(style='width: 220px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Browser: activate to sort column ascending') Artist
-                th.sorting(style='width: 100px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1', aria-label='Platform(s): activate to sort column ascending') Track(s)
-            tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat="album in $root.albums")
-              tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                td.sorting_1
-                  a(href="/album/{{album.id}}") {{album.name}}
-                td
-                  a(href="/artist/{{album.artist_id}}") {{album.artist}}
-                td {{album.track_count}}
+      itemtable(data="$root.albums", title="Albums", limit="$root.albums.length", type="albums", refreshclick="refresh()")
