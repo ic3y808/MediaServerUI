@@ -11,25 +11,25 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                     .row
                       .react-contextmenu-wrapper.col-xs-12
                         .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
-                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.album.image}}");')
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{$root.album.album.image}}");')
                     .row
                       .mo-info
                         .react-contextmenu-wrapper.col-xs-12
-                          .mo-info-name(title='{{info.album.name}}')
-                            span(dir='auto') {{info.album.name}}
+                          .mo-info-name(title='{{$root.album.album.name}}')
+                            span(dir='auto') {{$root.album.album.name}}
                       
 
                     .mo-meta.ellipsis-one-line
                       .react-contextmenu-wrapper
-                        a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
-                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
-                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
+                        a(dir='auto', href='/artist/{{$root.album.artist.id}}') {{$root.album.artist.name}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="$root.album.album.created") Released {{$root.album.album.created}}{{$root.album.tracks.length}}
+                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="$root.album.tracks.length > 0") {{$root.album.tracks.length}} {{$root.album.tracks.length > 1 ? "Tracks" : "Track"}} - {{$root.album.size}}
                   .TrackListHeader__button.TrackListHeader__button--top
                     button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-block.btn-black.btn--narrow(title='Save to Your Library', ng-click="starAlbum()") {{info.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(title='Save to Your Library', ng-click="starAlbum()") {{$root.album.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    starratinglabel(album="info.album", extrastyles="btn-block")
+                    starratinglabel(album="$root.album.album", extrastyles="btn-block")
               
             .col-xs-12.col-lg-9.col-xl-8
-              tracklist(data="info.tracks", canaddplaylist="true")
+              tracklist(data="$root.album.tracks", canaddplaylist="true")

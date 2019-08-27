@@ -17,44 +17,9 @@ class GenreController {
     this.AppUtilities.showLoader();
     $scope.genre = this.$routeParams.id;
 
-    $scope.getGenre = () => {
-      var cache = Cache.get($routeParams.id);
-
-      if (cache) {
-        $scope.genre = cache;
-        this.AppUtilities.apply();
-        this.AppUtilities.hideLoader();
-      } else {
-        if (AlloyDbService.isLoggedIn) {
-          this.AlloyDbService.getGenre(this.$routeParams.id).then((result) => {
-            $scope.info = result;
-            $scope.info.tracks.forEach((track) => {
-              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
-            });
-            $scope.info.never_played.forEach((track) => {
-              track.image = this.AlloyDbService.getCoverArt({ track_id: track.id });
-            });
-            $scope.info.artists.forEach((artist) => {
-              artist.image = this.AlloyDbService.getCoverArt({ artist_id: artist.id });
-            });
-            $scope.info.albums.forEach((album) => {
-              album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
-            });
-            var randomTrack = $scope.info.tracks[Math.floor(Math.random() * $scope.info.tracks.length)];
-            if (randomTrack) {
-              $scope.info.image = this.AlloyDbService.getCoverArt({ track_id: randomTrack.id });
-            }
-            this.AppUtilities.apply();
-            this.AppUtilities.hideLoader();
-          });
-        }
-      }
-    };
-
     $scope.refresh = () => {
       this.Logger.debug("refresh genre");
-      Cache.put($routeParams.id, null);
-      $scope.getGenre();
+     this.AlloyDbService.refreshGenre(this.$routeParams.id);
     };
 
     $scope.shuffle = () => {
@@ -68,7 +33,7 @@ class GenreController {
       $scope.refresh();
     });
 
-    $scope.getGenre();
+    $scope.refresh();
   }
 
   $onInit() {

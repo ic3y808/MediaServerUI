@@ -1,13 +1,13 @@
 import AlloyApi from "../API/alloy.db";
 import _ from "lodash";
 export default class AlloyDbService {
-  constructor($rootScope, Logger, AppUtilities, $window) {
+  constructor($rootScope, AppUtilities, Logger, $window) {
     "ngInject";
     this.isLoggingIn = false;
     this.isLoggedIn = false;
     this.$rootScope = $rootScope;
-    this.Logger = Logger;
     this.AppUtilities = AppUtilities;
+    this.Logger = Logger;
     this.$window = $window;
     this.$rootScope.refreshPage = this.refreshPage;
     this.$rootScope.starArtist = this.starArtist;
@@ -451,6 +451,44 @@ export default class AlloyDbService {
     }
   }
 
+  loadArtist(data) {
+    if (data) {
+      data.forEach((info) => {
+        if (info) {
+          this.$rootScope.artist = info;
+          var coverArt = this.getCoverArt({
+            artist_id: info.id
+          });
+
+          this.$rootScope.artist.tracks.forEach((track) => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+
+          this.$rootScope.artist.albums.forEach((album) => {
+            album.image = this.getCoverArt({ album_id: album.id });
+          });
+
+          this.$rootScope.artist.singles.forEach((single) => {
+            single.image = this.getCoverArt({ album_id: single.id });
+          });
+
+          this.$rootScope.artist.EPs.forEach((ep) => {
+            ep.image = this.getCoverArt({ album_id: ep.id });
+          });
+
+          this.$rootScope.artist.popular_tracks.forEach((track) => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+
+          if (coverArt) {
+            this.$rootScope.artist.image = coverArt;
+          }
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
   loadFresh(data) {
 
     if (data) {
@@ -510,6 +548,26 @@ export default class AlloyDbService {
     }
   }
 
+  loadAlbum(data) {
+    if (data) {
+      data.forEach((info) => {
+        if (info) {
+          this.$rootScope.album = info;
+
+            var coverArt = this.getCoverArt({
+              album_id: this.$rootScope.album.id
+            });
+
+            if (coverArt) {
+              this.$rootScope.album.album.image = coverArt;
+              this.AppUtilities.apply();
+            }
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
   loadAlbums(data) {
     if (data) {
       data.forEach((info) => {
@@ -518,6 +576,33 @@ export default class AlloyDbService {
           this.$rootScope.albums.forEach((album) => {
             album.image = this.getCoverArt({ album_id: album.id });
           });
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
+  loadGenre(data) {
+    if (data) {
+      data.forEach((info) => {
+        if (info) {
+          this.$rootScope.genre = info;
+          this.$rootScope.genre.tracks.forEach((track) => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+          this.$rootScope.genre.never_played.forEach((track) => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+          this.$rootScope.genre.artists.forEach((artist) => {
+            artist.image = this.getCoverArt({ artist_id: artist.id });
+          });
+          this.$rootScope.genre.albums.forEach((album) => {
+            album.image = this.getCoverArt({ album_id: album.id });
+          });
+          var randomTrack = this.$rootScope.genre.tracks[Math.floor(Math.random() * this.$rootScope.genre.tracks.length)];
+          if (randomTrack) {
+            this.$rootScope.genre.image = this.getCoverArt({ track_id: randomTrack.id });
+          }
           this.AppUtilities.apply();
         }
       });
@@ -641,6 +726,16 @@ export default class AlloyDbService {
     }
   }
 
+  refreshArtist(id) {
+
+    var artist = this.getArtist(id);
+    if (artist) {
+      artist.then((info) => {
+        this.loadArtist([info]);
+      });
+    }
+  }
+
   refreshArtists() {
 
     var artists = this.getArtists();
@@ -671,12 +766,30 @@ export default class AlloyDbService {
     }
   }
 
-  refreshAlbums() {
+  refreshAlbum(id) {
+    var album = this.getAlbum(id);
+    if (album) {
+      album.then((info) => {
+        this.loadAlbum([info]);
+      });
+    }
+  }
 
+  refreshAlbums() {
     var albums = this.getAlbums();
     if (albums) {
       albums.then((info) => {
         this.loadAlbums([info]);
+      });
+    }
+  }
+
+  refreshGenre(id) {
+
+    var genre = this.getGenre(id);
+    if (genre) {
+      genre.then((info) => {
+        this.loadGenre([info]);
       });
     }
   }
@@ -772,14 +885,31 @@ export default class AlloyDbService {
   }
 
   refreshPage(path) {
-    switch (path) {
-      case "/": this.preload(); break;
-      case "/fresh": this.refreshFresh(); this.refreshCharts(); break;
-      case "/artists": this.refreshArtists(); break;
-      case "/albums": this.refreshAlbums(); break;
-      case "/genres": this.refreshGenres(); break;
-      case "/starred": this.refreshStarred(); break;
-      default: this.preload();
+    if (path.indexOf("/artist/") !== -1 || path.indexOf("/album/") !== -1 || path.indexOf("/genre/") !== -1) {
+      var parts = path.split("/");
+      var type = parts[1];
+      var id = parts[2];
+      switch (type) {
+        case "artist":
+          this.refreshArtist(id);
+          break;
+        case "album":
+          this.refreshAlbum(id);
+          break;
+        case "genre":
+          this.refreshGenre(id);
+          break;
+      }
+    } else {
+      switch (path) {
+        case "/": this.preload(); break;
+        case "/fresh": this.refreshFresh(); this.refreshCharts(); break;
+        case "/artists": this.refreshArtists(); break;
+        case "/albums": this.refreshAlbums(); break;
+        case "/genres": this.refreshGenres(); break;
+        case "/starred": this.refreshStarred(); break;
+        default: this.preload();
+      }
     }
   }
 
