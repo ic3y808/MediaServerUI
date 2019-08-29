@@ -16,21 +16,9 @@ class ConfigSharesController {
     this.MediaPlayer = MediaPlayer;
     this.Logger.debug("config-shares-controller");
 
-    $scope.getShares = () => {
-
-      var shares = this.AlloyDbService.getShares($routeParams.id);
-      if (shares) {
-        shares.then((info) => {
-          $scope.shares = info.shares;
-          this.AppUtilities.apply();
-          this.AppUtilities.hideLoader();
-        });
-      }
-    };
-
     $scope.refresh = () => {
       this.Logger.debug("refresh shares");
-      $scope.getShares();
+      this.AlloyDbService.refreshShares();
     };
 
     $scope.copyShare = (id) => {
@@ -54,10 +42,10 @@ class ConfigSharesController {
 
     $rootScope.$on("loginStatusChange", (event, data) => {
       this.Logger.debug("Shares reload on loginsatuschange");
-      $scope.getShares();
+      $scope.refresh();
     });
 
-    $scope.getShares();
+    $scope.refresh();
 
   }
 }

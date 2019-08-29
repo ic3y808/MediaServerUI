@@ -1,6 +1,4 @@
 import "./artist.scss";
-import Glide from "@glidejs/glide";
-
 
 class ArtistController {
   constructor($scope, $rootScope, $routeParams, $compile, $element, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {

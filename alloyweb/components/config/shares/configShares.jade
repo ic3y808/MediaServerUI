@@ -14,7 +14,7 @@ section.scrollable.padder
             th(style="width:1px;white-space: nowrap;") Visit Count
             th(style="width:1px;") 
             th(style="width:1px;") 
-        tbody(ng-repeat='share in shares')
+        tbody(ng-repeat='share in $root.shares')
           tr
             td(style="width:1px;") {{share.type}}
             td(ng-if="share.url", style="width:1px;") 

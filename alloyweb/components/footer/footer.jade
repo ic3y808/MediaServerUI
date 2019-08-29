@@ -32,9 +32,13 @@
 
           .hidden-xs.hidden-sm.jp-volume
             volumeslider(direction='horizontal')
+          
           div
-            a.jp-shuffle(ng-click="toggleShuffle()", title='shuffle')
+            a(ng-click="toggleShuffle()", title='shuffle')
               i.alloy-icon.icon.icon-shuffle.text-muted
           div
-            a.jp-repeat(ng-click="toggleRepeat()", title='repeat')
+            a(ng-click="toggleRepeat()", title='repeat')
               i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
+          div
+            a
+              google-cast-launcher.alloy-icon.icon

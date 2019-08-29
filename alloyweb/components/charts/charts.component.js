@@ -1,6 +1,5 @@
 import Highcharts from "highcharts";
 import "./charts.scss";
-import _ from "lodash";
 
 var CLR_SCARLET = "#B90000";
 var CLR_TANGERINE = "#E63900";

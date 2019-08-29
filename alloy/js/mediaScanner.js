@@ -1,6 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const _ = require("lodash");
 const watch = require("node-watch");
 const uuidv3 = require("uuid/v3");
 const parser = require("xml2json");

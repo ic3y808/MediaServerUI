@@ -1,5 +1,3 @@
-import AlloyDbService from "./services/alloyDbService.service";
-
 export default function ApplicationRun($window, $rootScope, $location, $timeout, $cookies, $http, AuthenticationService, Logger, Backend, MediaPlayer, AppUtilities, AlloyDbService) {
   "ngInject";
   Logger.info("Starting WebUI");
@@ -442,15 +440,9 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   $timeout(function () {
     Logger.debug("loading settings");
     if ($rootScope) { $rootScope.socket.emit("load_settings", "alloydb_settings"); }
-
-    setTimeout(() => {
-      if (MediaPlayer.castStatus()) {
-        Logger.debug("cast status true, initialize cast");
-        MediaPlayer.initializeCast();
-      }
-    }, 1000);
   });
   $rootScope.loaded = "true";
+  $("body").toggle();
   Logger.info("Web UI Loaded");
 
 

@@ -1,4 +1,3 @@
-import angular from "angular";
 
 //Page Components
 import ArtistComponent from "./artist/artist.component";

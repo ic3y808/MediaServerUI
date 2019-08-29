@@ -83,15 +83,12 @@ $break-height-maximum: 2200px;
 //@media screen and (max-width:$break-xxxhuge) { } //1440px;
 //@media screen and (max-width:$break-maximum) { } //1600px;
 //typography
-$main-font: 'circular',
+$main-font: 'Source Sans Pro',
 sans-serif;
 $main-font-size: 1em;
 $sub-font: 'Source Sans Pro',
 sans-serif;
 $sub-font-size: 0.85em;
-$extra-font: 'Helvetica Neue',
-sans-serif;
-$extra-font-size: 0.85em;
 
 
 //buttons
@@ -130,7 +127,7 @@ $sidebar-collapsed-width: 50px;
 $sidebar-font-color: #e1e2e3;
 $sidebar-line-height: .8;
 $sidebar-font-size: .7em;
-$sidebar-font: 'Roboto',
+$sidebar-font: 'Source Sans Pro',
 sans-serif;
 $sidebar-font-weight: bold;
 //slider

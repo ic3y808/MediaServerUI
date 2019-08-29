@@ -172,9 +172,13 @@ html(ng-app='alloydb', lang='en-us')
                                   a(href="", ng-click="launchWebUIDesktop()") 
                                     i.material-icons play_arrow
                               tr
-                                td URL
+                                td Local URL
                                 td
                                   a(href="", ng-click="launchWebUI('http://localhost:#{web_ui_port}')") http://localhost:#{web_ui_port}
+                              tr
+                                td Public URL
+                                td
+                                  a(href="", ng-click="launchWebUI('#{web_ui_public_url}')") #{web_ui_public_url}
                               
     
 

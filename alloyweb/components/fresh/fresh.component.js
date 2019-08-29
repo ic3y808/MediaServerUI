@@ -26,10 +26,6 @@ class FreshController {
       $scope.continousPlay = !$scope.continousPlay;
     };
 
-    $scope.getCoverArt = (id) => {
-      return this.AlloyDbService.getCoverArt(id);
-    };
-
     $scope.findNowPlaying = (fid) => {
       $rootScope.fresh_albums.forEach((album) => { });
     };
@@ -92,13 +88,22 @@ class FreshController {
       });
     };
 
+    $rootScope.$on("loginStatusChange", (event, data) => {
+      this.Logger.debug("Artist reload on loginsatuschange");
+      $scope.refresh();
+    });
+
     $rootScope.$on("playlistBeginEvent", (event, data) => {
-     
+
     });
 
     $rootScope.$on("playlistEndEvent", (event, data) => {
-     
+
     });
+
+    if ($rootScope.fresh_albums === undefined || $rootScope.fresh_albums.length === 0) {
+      $scope.refresh();
+    }
   }
 
   $onInit() {

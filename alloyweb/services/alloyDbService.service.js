@@ -1,5 +1,4 @@
 import AlloyApi from "../API/alloy.db";
-import _ from "lodash";
 export default class AlloyDbService {
   constructor($rootScope, AppUtilities, Logger, $window) {
     "ngInject";
@@ -35,7 +34,9 @@ export default class AlloyDbService {
                 this.isLoggedIn = true;
                 this.isLoggingIn = false;
                 this.Logger.info("Connected to alloydb");
-                this.preload();
+                setTimeout(() => {
+                  this.preload();
+                }, 2000);
               } else {
                 this.isLoggingIn = false;
                 this.isLoggedIn = false;
@@ -420,7 +421,9 @@ export default class AlloyDbService {
 
   getCoverArt(params) {
     this.doLogin();
-    if (this.isLoggedIn) { return this.alloydb.getCoverArt(params); }
+    if (this.isLoggedIn) {
+      return this.alloydb.getCoverArt(params);
+    }
     else { return false; }
   }
 
@@ -517,9 +520,9 @@ export default class AlloyDbService {
           this.$rootScope.fresh_artists = info.fresh.artists;
           this.$rootScope.fresh_artists.forEach((artist) => {
             artist.image = this.getCoverArt({ artist_id: artist.id });
-            artist.tracks.forEach((track) => {
-              track.image = this.getCoverArt({ track_id: track.cover_art });
-            });
+            //artist.tracks.forEach((track) => {
+            //  track.image = this.getCoverArt({ track_id: track.cover_art });
+            //});
           });
           // var t = _.uniq(info.fresh.tracks, "album");
 
@@ -554,14 +557,14 @@ export default class AlloyDbService {
         if (info) {
           this.$rootScope.album = info;
 
-            var coverArt = this.getCoverArt({
-              album_id: this.$rootScope.album.id
-            });
+          var coverArt = this.getCoverArt({
+            album_id: this.$rootScope.album.id
+          });
 
-            if (coverArt) {
-              this.$rootScope.album.album.image = coverArt;
-              this.AppUtilities.apply();
-            }
+          if (coverArt) {
+            this.$rootScope.album.album.image = coverArt;
+            this.AppUtilities.apply();
+          }
           this.AppUtilities.apply();
         }
       });
@@ -709,6 +712,17 @@ export default class AlloyDbService {
     }
   }
 
+  loadShares(data) {
+    if (data) {
+      data.forEach((info) => {
+        if (info.shares) {
+          this.$rootScope.shares = info.shares;
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
   loadPlaylists(data) {
     if (data) {
       data.forEach((info) => {
@@ -748,7 +762,7 @@ export default class AlloyDbService {
 
   refreshFresh() {
 
-    var fresh = this.getFresh(100);
+    var fresh = this.getFresh(20);
     if (fresh) {
       fresh.then((info) => {
         this.loadFresh([info]);
@@ -854,20 +868,31 @@ export default class AlloyDbService {
     }
   }
 
+  refreshShares() {
+
+    var shares = this.getShares();
+    if (shares) {
+      shares.then((info) => {
+        this.loadShares([info]);
+      });
+    }
+  }
+
   preload() {
 
     var index = this.getArtistsIndex();
     var history = this.getHistory();
     var artists = this.getArtists();
-    var fresh = this.getFresh(100);
+    var fresh = this.getFresh(10);
     var albums = this.getAlbums();
     var genres = this.getGenres();
     var starred = this.getStarred();
     var random = this.getRandomSongs();
     var charts = this.getCharts();
     var playlists = this.getPlaylists();
+    var shares = this.getShares();
 
-    Promise.all([index, history, artists, fresh, albums, genres, starred, random, charts, playlists]).then((info) => {
+    Promise.all([index, history, artists, fresh, albums, genres, starred, random, charts, playlists, shares]).then((info) => {
       if (info) {
         this.loadIndex(info);
         this.loadHistory(info);
@@ -879,6 +904,7 @@ export default class AlloyDbService {
         this.loadRandom(info);
         this.loadCharts(info);
         this.loadPlaylists(info);
+        this.loadShares(info);
         this.AppUtilities.apply();
       }
     });
@@ -908,6 +934,7 @@ export default class AlloyDbService {
         case "/albums": this.refreshAlbums(); break;
         case "/genres": this.refreshGenres(); break;
         case "/starred": this.refreshStarred(); break;
+        case "/shares": this.refreshShares(); break;
         default: this.preload();
       }
     }

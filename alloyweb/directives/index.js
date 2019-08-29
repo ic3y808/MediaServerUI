@@ -1,4 +1,3 @@
-import angular from "angular";
 import LazyLoad from "./lazy-load";
 import StringToNumber from "./string-to-number";
 import ToolbarButton from "./ui/toolbarbutton";
@@ -6,6 +5,7 @@ import ToolbarSeperator from "./ui/toolbarseperator";
 import NavButton from "./ui/navbutton";
 import ItemTable from "./ui/itemtable";
 import ThumbList from "./ui/thumblist";
+import CacheImg from "./cacheimg";
 import ItemList from "./ui/itemlist";
 import TrackList from "./ui/tracklist";
 import FolderList from "./ui/folderlist";
@@ -22,13 +22,14 @@ import VolumeSlider from "./ui/volumeslider";
 
 export default angular
   .module("app.directives", [])
+  .directive("cacheimg", CacheImg)
   .directive("stringToNumber", StringToNumber)
   .directive("lazyLoad", LazyLoad)
   .directive("toolbarbutton", ToolbarButton)
   .directive("toolbarseperator", ToolbarSeperator)
   .directive("navbutton", NavButton)
   .directive("itemtable", ItemTable)
-  .directive("thumblist", ThumbList)
+  .directive("thumblist", ThumbList)  
   .directive("itemlist", ItemList)
   .directive("tracklist", TrackList)
   .directive("folderlist", FolderList)

@@ -1,34 +1,82 @@
 const path = require("path");
 const webpack = require("webpack");
 const dist = path.resolve(__dirname, "dist");
+const BrotliPlugin = require("brotli-webpack-plugin");
+const LiveReloadPlugin = require("webpack-livereload-plugin");
+const CompressionPlugin = require("compression-webpack-plugin");
+const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const nodePath = path.resolve(__dirname, "node_modules");
 
-var loggerTag = "webpack";
 var profile = {};
 profile.plugins = [];
 profile.module = {};
 profile.module.rules = [];
 console.log("packing " + process.env.MODE + " source");
 
+// Output
+profile.output = {
+  filename: "[name].js",
+  path: path.resolve(__dirname, dist),
+  //publicPath: "http://localhost:" + process.env.API_UI_PORT + "/"
+};
+
+profile.devServer = {
+  publicPath:"/",
+  contentBase: __dirname,
+  hot: true,
+  watchContentBase: true,    
+  compress: true,
+  port: 9001
+};
+
 if (process.env.MODE === "dev") {
+  profile.mode = "development";
   profile.entry = {
     app: ["./alloyweb/app.js", "webpack-hot-middleware/client"]
   };
   profile.devtool = "inline-source-map";
 } else {
-  profile.devtool = "inline-source-map";
+  profile.mode = "production";
+  profile.devtool = "";
   profile.entry = {
-    app: ["./app.js"]
+    app: ["./alloyweb/app.js"]
   };
+ 
 }
+
+profile.entry.vendor = [path.join(__dirname, "API", "cast.framework.js"), path.join(__dirname, "API", "cast.v1.js")];
+
+profile.optimization = {
+  splitChunks: {
+    chunks: "async",
+    cacheGroups: {
+      commons: {
+        name: "app",
+        chunks: "initial",
+        minChunks: 2,
+        maxInitialRequests: 5, // The default limit is too small to showcase the effect
+        minSize: 0 // This is example is too small to create commons chunks
+      },
+      vendor: {
+        test: /node_modules/,
+        chunks: "initial",
+        name: "vendor",
+        priority: 10,
+        enforce: true
+      }
+    }
+  }
+};
+
+if (process.env.MODE === "dev") { profile.optimization.minimize = false; } else { profile.optimization.minimize = true; }
 
 // Required plugins 
 profile.plugins.push(new webpack.ProvidePlugin({
   $: "jquery",
   jQuery: "jquery",
+  lodash: "lodash/core",
+  _: "lodash/core",
   "window.jQuery": "jquery",
-  lodash: "lodash",
-  _: "lodash",
   Popper: ["popper.js", "default"]
 }));
 
@@ -41,6 +89,37 @@ profile.plugins.push(new webpack.DefinePlugin({
   "JADE_PORT": process.env.JADE_PORT
 }));
 
+if (process.env.MODE === "dev") {
+
+  if (process.env.USE_ANALYZER === "true") {
+    profile.plugins.push(new BundleAnalyzerPlugin());
+  }
+
+  profile.plugins.push(new LiveReloadPlugin({
+    port: 1908
+  }));
+  
+  profile.plugins.push(new webpack.HotModuleReplacementPlugin());
+
+} else {
+  const CleanWebpackPlugin = require("clean-webpack-plugin");
+  profile.plugins.push(new CleanWebpackPlugin([dist]));
+
+  profile.plugins.push(new webpack.optimize.ModuleConcatenationPlugin());
+
+  profile.plugins.push(new CompressionPlugin({
+    algorithm: "gzip",
+    test: /\.js$|\.css$|\.html$|\.jade$/,
+    compressionOptions: { level: 9 }
+  }));
+
+  profile.plugins.push(new BrotliPlugin({
+    asset: "[path].br[query]",
+    test: /\.(js|css|html|svg)$/,
+    threshold: 10240,
+    minRatio: 0.8
+  }));
+}
 
 // Rules and loaders
 profile.module.rules.push({
@@ -111,83 +190,35 @@ profile.module.rules.push({
 
 });
 
-// Output
-profile.output = {
-  filename: "[name].js",
-  chunkFilename: "[name]-[chunkhash].js",
-  path: path.resolve(__dirname, dist)
-};
-
-
-// Dev - Production specific
-
-if (process.env.MODE === "dev") {
-
-  if (process.env.USE_ANALYZER === "true") {
-    const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-    profile.plugins.push(new BundleAnalyzerPlugin());
-  }
-
-  const LiveReloadPlugin = require("webpack-livereload-plugin");
-  profile.plugins.push(new LiveReloadPlugin({
-    port: 1908
-  }));
-  profile.plugins.push(new webpack.HotModuleReplacementPlugin());
-
-} else {
-  const CleanWebpackPlugin = require("clean-webpack-plugin");
-  profile.plugins.push(new CleanWebpackPlugin([dist]));
-
+if (process.env.MODE === "prod") {
   profile.module.rules.push({
     test: /\.js$/,
-    use: [{
-      loader: "strip-loader?strip[]=debug"
-    },
-    {
-      loader: "babel-loader",
-      options: {
-        plugins: [
-          "@babel/plugin-transform-runtime",
-          [
-            "@babel/plugin-proposal-decorators",
-            {
-              "legacy": true,
-            }
+    use: [
+      {
+        loader: "strip-loader?strip[]=debug"
+      },
+      {
+        loader: "babel-loader",
+        options: {
+          plugins: [
+            "@babel/plugin-transform-runtime",
+            [
+              "@babel/plugin-proposal-decorators",
+              {
+                "legacy": true,
+              }
+            ],
+            "@babel/plugin-proposal-class-properties",
+            ["angularjs-annotate", {
+              explicitOnly: false
+            }]
           ],
-          "@babel/plugin-proposal-class-properties",
-          ["angularjs-annotate", {
-            explicitOnly: false
-          }]
-        ],
-        presets: ["@babel/preset-env"]
+          presets: ["@babel/preset-env"]
+        }
       }
-    }
     ],
     exclude: /(node_modules|bower_components)/
   });
-
-  profile.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-    name: "vendor",
-    minChunks: ({
-      resource
-    }) => /node_modules/.test(resource),
-  }));
-
-  //profile.plugins.push(new webpack.optimize.UglifyJsPlugin({
-  //  mangle: true,
-  //  compress: {
-  //    warnings: false, // Suppress uglification warnings
-  //    pure_getters: false,
-  //    unsafe: false,
-  //    unsafe_comps: false,
-  //    screw_ie8: false
-  //  },
-  //  output: {
-  //    comments: false,
-  //  },
-  //  exclude: [/\.min\.js$/gi] // skip pre-minified libs
-  //}));
-
 }
 
 module.exports = profile;

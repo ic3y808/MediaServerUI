@@ -23,7 +23,7 @@ router.get("/artists_index", function (req, res) {
     index: finalResult
   };
 
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -57,7 +57,7 @@ router.get("/artists", function (req, res) {
   }
 
 
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -118,7 +118,7 @@ router.get("/artist", function (req, res) {
 
   result.size = utils.toHumanReadable(totalSize);
 
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -140,11 +140,11 @@ router.get("/albums", function (req, res) {
   if (req.query.size) { size = req.query.size; }
   var result = {};
   if (genre) {
-    result.albums = res.locals.db.prepare("SELECT * FROM Albums WHERE genre=? COLLATE NOCASE ASC").all(genre);
+    result.albums = res.locals.db.prepare("SELECT id, name, created, artist, artist_id, genre, genre_id, starred, type, track_count FROM Albums WHERE genre=? COLLATE NOCASE ASC").all(genre);
   } else {
-    result.albums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY name ASC, artist ASC").all();
+    result.albums = res.locals.db.prepare("SELECT id, name, created, artist, artist_id, genre, genre_id, starred, type, track_count FROM Albums ORDER BY name ASC, artist ASC").all();
   }
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -173,7 +173,7 @@ router.get("/album", function (req, res) {
   });
   result.size = utils.toHumanReadable(totalSize);
 
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -188,7 +188,7 @@ router.get("/album", function (req, res) {
 router.get("/genres", function (req, res) {
   var result = {};
   result.genres = res.locals.db.prepare("SELECT * FROM Genres ORDER BY artist_count DESC, album_count DESC, track_count DESC").all();
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -241,7 +241,7 @@ router.get("/genre", function (req, res) {
 
   result.size = utils.toHumanReadable(totalSize);
 
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -308,7 +308,7 @@ router.get("/charts", function (req, res) {
   result.charts.top_tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT ?").all(limit);
   result.charts.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
 
-  res.json(result);
+  res.json(result).end();
 });
 
 /**
@@ -339,7 +339,7 @@ router.get("/fresh", function (req, res) {
 
   artistsIds.forEach((id) => {
     var artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(id.artist_id);
-    artist.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
+    //artist.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
     result.fresh.artists.push(artist);
   });
 
@@ -356,7 +356,7 @@ router.get("/fresh", function (req, res) {
   result.fresh.artists = _.shuffle(result.fresh.artists);
   result.fresh.albums = _.shuffle(result.fresh.albums);
   result.fresh.tracks = _.shuffle(result.fresh.tracks).slice(0, limit);
-  res.json(result);
+  res.json(result).end();
 });
 
 
@@ -391,7 +391,7 @@ router.get("/random_songs", function (req, res) {
   } else {
     random.random = res.locals.db.prepare("SELECT * FROM Tracks WHERE year >= ? AND year <= ? ORDER BY RANDOM() LIMIT ?").all(fromYear, toYear, size);
   }
-  res.json(random);
+  res.json(random).end();
 });
 
 /**
@@ -449,7 +449,7 @@ router.get("/starred", function (req, res) {
       top_tracks: topTracks,
       top_albums: topStarredAlbums
     }
-  });
+  }).end();
 });
 
 /**
@@ -466,7 +466,7 @@ router.get("/history", function (req, res) {
   var limit = req.query.limit === undefined ? 50 : req.query.limit;
   var totalCount = res.locals.db.prepare("SELECT count(*) FROM  History;").all()[0]["count(*)"];
   var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time DESC LIMIT ?").all(limit);
-  res.json({ history: history, count: totalCount });
+  res.json({ history: history, count: totalCount }).end();
 });
 
 /**
@@ -520,10 +520,10 @@ router.put("/history", function (req, res) {
       d.genre_id
     );
 
-    res.send(new structures.StatusResult("success"));
+    res.send(new structures.StatusResult("success")).end();
   } catch (err) {
     res.locals.error("api/browse/history", err);
-    res.send(new structures.StatusResult("failed"));
+    res.send(new structures.StatusResult("failed")).end();
   }
 });
 

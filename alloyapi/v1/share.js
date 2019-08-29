@@ -2,7 +2,7 @@ var uuidv3 = require("uuid/v3");
 var express = require("express");
 var router = express.Router();
 var structures = require("../../common/structures");
-var externalIp = require("../extip")();
+var externalIp = require("../../common/extip")();
 
 /**
  * This function comment is parsed by doctrine
