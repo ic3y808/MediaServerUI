@@ -498,7 +498,7 @@ function createTrayMenu() {
       }
     ]);
     tray.on("click", () => {
-      doShowAdminUi();
+      createWebUIWindow();
     });
 
     tray.setToolTip("Alloy");

@@ -13,7 +13,7 @@ html.app(ng-app='alloy',lang='en')
           navbar
         section
           section.hbox.stretch
-            aside#nav.bg-dark.dk.aside.hidden-print.collapse
+            aside#nav.bg-dark.dk.aside.hidden-print.collapse(ng-if="$root.globals.currentUser")
               section.vbox
                 sidenav
             section#content

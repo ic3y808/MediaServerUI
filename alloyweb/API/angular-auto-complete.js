@@ -1,4 +1,5 @@
 
+import { each, isEmpty, map, filter, isFunction } from "lodash";
 function HelperService() {
   var that = this;
   var plugins = [];
@@ -31,7 +32,7 @@ function HelperService() {
   this.deregisterOnDestroy = function (scope, deregisterWatchesFn) {
     // cleanup on destroy
     var destroyFn = scope.$on("$destroy", function () {
-      _.each(deregisterWatchesFn, function (deregisterFn) {
+      each(deregisterWatchesFn, function (deregisterFn) {
         deregisterFn();
       });
 
@@ -566,7 +567,7 @@ function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, 
     }
 
     // do we have results to render?
-    if (!_.isEmpty(result)) {
+    if (!isEmpty(result)) {
       return false;
     }
 
@@ -584,7 +585,7 @@ function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, 
 
   function _renderList(params, result) {
     return _getRenderFn().then(function (renderFn) {
-      if (_.isEmpty(result)) {
+      if (isEmpty(result)) {
         return;
       }
 
@@ -594,7 +595,7 @@ function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, 
 
   function _renderPagedList(params, result) {
     return _getRenderFn().then(function (renderFn) {
-      if (_.isEmpty(result)) {
+      if (isEmpty(result)) {
         return;
       }
 
@@ -614,7 +615,7 @@ function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, 
     // limit number of items rendered in the dropdown
     var dataItemsToRender = dataItems.slice(0, that.options.maxItemsToRender);
 
-    var itemsToRender = _.map(dataItemsToRender, function (data, index) {
+    var itemsToRender = map(dataItemsToRender, function (data, index) {
       // invoke render callback with the data as parameter
       // this should return an object with a "label" and "value" property where
       // "label" is the template for display and "value" is the text for the textbox
@@ -633,7 +634,7 @@ function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, 
       return item;
     });
 
-    return _.filter(itemsToRender, function (item) {
+    return filter(itemsToRender, function (item) {
       return (item !== null);
     });
   }
@@ -690,7 +691,7 @@ function MainCtrl($q, $window, $document, $timeout, $templateRequest, $compile, 
   }
 
   function _setOptions(options) {
-    if (_.isEmpty(options)) {
+    if (isEmpty(options)) {
       return;
     }
 
@@ -1063,7 +1064,7 @@ function autoCompleteItemDirective($compile, $rootScope, $sce, $controller) {
     controller: function () { },
     link: function (scope, element) {
       var linkFn = null;
-      if (_.isFunction(scope.ctrl.itemTemplateLinkFn)) {
+      if (isFunction(scope.ctrl.itemTemplateLinkFn)) {
         linkFn = scope.ctrl.itemTemplateLinkFn;
       }
       else {
@@ -1089,7 +1090,7 @@ function autoCompleteItemDirective($compile, $rootScope, $sce, $controller) {
     // for now its an empty controller. Additional logic can be added to this controller if needed
     var entry = entryScope.entry = $controller(angular.noop);
 
-    var deregisterWatchesFn = _.map(["index", "renderItem", "searchText"], function (key) {
+    var deregisterWatchesFn = map(["index", "renderItem", "searchText"], function (key) {
       return directiveScope.$watch(("ctrl." + key), function (newVal) {
         switch (key) {
           case "renderItem":

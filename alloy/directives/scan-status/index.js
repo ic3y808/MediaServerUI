@@ -5,7 +5,7 @@ module.exports = function ($rootScope) {
     restrict: "E",
     scope: {
       scan_status: "@",
-      showQueue: "@"
+      show_queue: "="
     },
     templateUrl: "scan-status.jade",
     replace: true,

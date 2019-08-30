@@ -1,4 +1,5 @@
 
+import { findIndex } from "lodash";
 class HistoryController {
   constructor($scope, $rootScope, $element, Logger, AppUtilities, AlloyDbService) {
     "ngInject";
@@ -17,7 +18,7 @@ class HistoryController {
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");
       $rootScope.tracks = playlist;
-      var index = _.findIndex($rootScope.tracks, function (track) {
+      var index = findIndex($rootScope.tracks, function (track) {
         return track.id === song.id;
       });
       this.MediaPlayer.loadTrack(index);

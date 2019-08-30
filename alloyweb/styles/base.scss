@@ -1706,7 +1706,8 @@ a.text-info:hover {
 }
 
 #primary-content {
-  margin-bottom: 60px;
+  //margin-bottom: 60px;
+  height: calc(100vh - 60px);
 }
 
 .spaced {

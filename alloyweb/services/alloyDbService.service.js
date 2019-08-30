@@ -524,9 +524,6 @@ export default class AlloyDbService {
             //  track.image = this.getCoverArt({ track_id: track.cover_art });
             //});
           });
-          // var t = _.uniq(info.fresh.tracks, "album");
-
-
           this.$rootScope.fresh_tracks = info.fresh.tracks;
           this.$rootScope.fresh_tracks.forEach((track) => {
             track.image = this.getCoverArt({ track_id: track.id });

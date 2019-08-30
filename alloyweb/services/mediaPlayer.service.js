@@ -1,3 +1,4 @@
+import { findIndex } from "lodash";
 export default class MediaPlayer {
   constructor($rootScope, Title, Logger, MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -183,7 +184,7 @@ export default class MediaPlayer {
   playTrack(song, playlist) {
     this.Logger.debug("Play Track");
     this.$rootScope.tracks = playlist;
-    var index = _.findIndex(this.$rootScope.tracks, function (track) {
+    var index = findIndex(this.$rootScope.tracks, function (track) {
       return track.id === song.id;
     });
     this.loadTrack(index);

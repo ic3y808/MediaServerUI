@@ -2,6 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const dist = path.resolve(__dirname, "dist");
 const BrotliPlugin = require("brotli-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const LiveReloadPlugin = require("webpack-livereload-plugin");
 const CompressionPlugin = require("compression-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -21,10 +22,10 @@ profile.output = {
 };
 
 profile.devServer = {
-  publicPath:"/",
+  publicPath: "/",
   contentBase: __dirname,
   hot: true,
-  watchContentBase: true,    
+  watchContentBase: true,
   compress: true,
   port: 9001
 };
@@ -41,7 +42,7 @@ if (process.env.MODE === "dev") {
   profile.entry = {
     app: ["./alloyweb/app.js"]
   };
- 
+
 }
 
 profile.entry.vendor = [path.join(__dirname, "API", "cast.framework.js"), path.join(__dirname, "API", "cast.v1.js")];
@@ -68,7 +69,22 @@ profile.optimization = {
   }
 };
 
-if (process.env.MODE === "dev") { profile.optimization.minimize = false; } else { profile.optimization.minimize = true; }
+if (process.env.MODE === "dev") { profile.optimization.minimize = false; } else {
+  profile.optimization.minimize = true;
+  profile.optimization.minimizer = [
+    // we specify a custom UglifyJsPlugin here to get source maps in production
+    new UglifyJsPlugin({
+      cache: true,
+      parallel: true,
+      uglifyOptions: {
+        compress: true,
+        ecma: 6
+        
+      },
+      sourceMap: true
+    })
+  ];
+}
 
 // Required plugins 
 profile.plugins.push(new webpack.ProvidePlugin({
@@ -98,7 +114,7 @@ if (process.env.MODE === "dev") {
   profile.plugins.push(new LiveReloadPlugin({
     port: 1908
   }));
-  
+
   profile.plugins.push(new webpack.HotModuleReplacementPlugin());
 
 } else {

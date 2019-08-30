@@ -1,4 +1,5 @@
 import Highcharts from "highcharts";
+import { uniq, extend, reject, flatten, isEmpty, isUndefined, pluck } from "lodash";
 import "./charts.scss";
 
 var CLR_SCARLET = "#B90000";
@@ -157,7 +158,7 @@ class ChartsController {
   }
 
   formatSeries(entries) {
-    var uniqueTags = _.uniq(_.reject(_.flatten(entries, "tags"), _.isEmpty));
+    var uniqueTags = uniq(reject(flatten(entries, "tags"), isEmpty));
 
     // Create a series for each tag, with it"s ranking for each entry as
     // y and x respectively
@@ -217,8 +218,8 @@ class ChartsController {
       var newdata = [];
       tag.data.forEach(function (point) {
         newdata.push(
-          _.extend({}, point, { x: point.x - 0.25 }),
-          _.extend({}, point, { x: point.x + 0.25 })
+          extend({}, point, { x: point.x - 0.25 }),
+          extend({}, point, { x: point.x + 0.25 })
         );
       });
       tag.data = newdata;
@@ -242,8 +243,8 @@ class ChartsController {
         return {};
       });
 
-      zones = _.flatten(zones);
-      zones = _.reject(zones, _.isUndefined);
+      zones = flatten(zones);
+      zones = reject(zones, isUndefined);
 
       if (!zones.length) {
         return {};
@@ -336,7 +337,7 @@ class ChartsController {
     this.addMarkers(series);
     this.addColours(series);
 
-    var categories = _.pluck(entries, "date");
+    var categories = pluck(entries, "date");
 
     var vPadding = 1 / 4;
 
