@@ -2,7 +2,6 @@ const moment = require("moment");
 const path = require("path");
 const mime = require("mime-types");
 const fs = require("fs");
-const _ = require("lodash");
 const del = require("del");
 const shell = require("shelljs");
 const { ipcRenderer } = require("electron");

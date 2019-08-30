@@ -1,4 +1,5 @@
 import "./album.scss";
+import { findIndex } from "lodash";
 class AlbumController {
   constructor($scope, $rootScope, $routeParams, $element, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
@@ -105,7 +106,7 @@ class AlbumController {
     $scope.playTrack = (song) => {
       this.Logger.debug("Play Track");
       $rootScope.tracks = $scope.info.tracks;
-      var index = _.findIndex($rootScope.tracks, function (track) {
+      var index = findIndex($rootScope.tracks, function (track) {
         return track.id === song.id;
       });
       this.MediaPlayer.loadTrack(index);

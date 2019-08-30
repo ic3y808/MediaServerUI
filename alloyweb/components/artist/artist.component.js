@@ -1,6 +1,5 @@
 import "./artist.scss";
-import Glide from "@glidejs/glide";
-
+import { findIndex } from "lodash";
 
 class ArtistController {
   constructor($scope, $rootScope, $routeParams, $compile, $element, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
@@ -33,15 +32,15 @@ class ArtistController {
     };
 
     $scope.shuffle = () => {
-      this.Logger.debug("shuffle play artist " + $scope.info.artist.name);
-      this.$rootScope.tracks = $scope.info.tracks;
-      this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
+      this.Logger.debug("shuffle play artist " + this.$rootScope.artist.artist.name);
+      this.$rootScope.tracks = this.$rootScope.artist.tracks;
+      this.MediaPlayer.loadTrack(~~(this.$rootScope.artist.tracks.length * Math.random()));
     };
 
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");
       $rootScope.tracks = playlist;
-      var index = _.findIndex($rootScope.tracks, function (track) {
+      var index = findIndex($rootScope.tracks, function (track) {
         return track.id === song.id;
       });
       this.MediaPlayer.loadTrack(index);
@@ -80,21 +79,21 @@ class ArtistController {
     };
 
     $scope.starArtist = () => {
-      this.Logger.info("Trying to star artist: " + $scope.info.artist.name);
-      if ($scope.info.artist.starred === "true") {
+      this.Logger.info("Trying to star artist: " + this.$rootScope.artist.artist.name);
+      if (this.$rootScope.artist.artist.starred === "true") {
         this.AlloyDbService.unstar({
           artist: this.$routeParams.id
         }).then((result) => {
-          this.Logger.info("UnStarred " + $scope.info.artist.name + " " + JSON.stringify(result));
-          this.$scope.info.artist.starred = "false";
+          this.Logger.info("UnStarred " + this.$rootScope.artist.artist.name + " " + JSON.stringify(result));
+          this.this.$rootScope.artist.artist.starred = "false";
           this.AppUtilities.apply();
         });
       } else {
         this.AlloyDbService.star({
           artist: this.$routeParams.id
         }).then((result) => {
-          this.Logger.info("Starred " + $scope.info.artist.name + " " + JSON.stringify(result));
-          this.$scope.info.artist.starred = "true";
+          this.Logger.info("Starred " + this.$rootScope.artist.artist.name + " " + JSON.stringify(result));
+          this.this.$rootScope.artist.artist.starred = "true";
           this.AppUtilities.apply();
         });
       }

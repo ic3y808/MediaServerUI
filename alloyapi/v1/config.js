@@ -1,6 +1,6 @@
 var fs = require("fs");
 var path = require("path");
-var _ = require("underscore");
+var _ = require("lodash");
 var express = require("express");
 var router = express.Router();
 var { ipcRenderer } = require("electron");

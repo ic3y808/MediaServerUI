@@ -1,11 +1,4 @@
-import AppUtilities from "./appUtilities.service";
-import "../API/cast.framework";
-import "../API/cast.v1";
-var isCastAvailable = false;
-window.__onGCastApiAvailable = function (isAvailable) {
-  isCastAvailable = isAvailable;
-};
-
+import { findIndex } from "lodash";
 export default class MediaPlayer {
   constructor($rootScope, Title, Logger, MediaElement, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -98,34 +91,57 @@ export default class MediaPlayer {
         this.AppUtilities.apply();
       }
     });
+    var castCheck = setInterval(() => {
+      if (this.castStatus() === true) {
+        Logger.debug("cast status " + this.castStatus());
+        this.initializeCast();
+        clearInterval(castCheck);
+      }
+    }, 10000);
   }
 
   castStatus() {
-    return isCastAvailable;
+    return window.isCastAvailable;
+  }
+
+  castConnectionChanged() {
+    this.Logger.debug("switchPlayer");
+    if (cast && cast.framework) {
+      if (this.remotePlayerConnected()) {
+
+        this.setupRemotePlayer();
+        return;
+      }
+    }
+    this.setupLocalPlayer();
   }
 
   initializeCast() {
     if (isCastAvailable) {
       var options = {};
-      options.receiverApplicationId = "DAB06F7C";
+      // options.receiverApplicationId = "DAB06F7C";
+      options.receiverApplicationId = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
       options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
       cast.framework.CastContext.getInstance().setOptions(options);
       this.remotePlayer = new cast.framework.RemotePlayer();
       this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
-      this.remotePlayerController.addEventListener(
-        cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED,
-        () => {
-          this.Logger.debug("switchPlayer");
-          if (cast && cast.framework) {
-            if (this.remotePlayerConnected()) {
 
-              this.setupRemotePlayer();
-              return;
-            }
-          }
-          this.setupLocalPlayer();
-        }
-      );
+      this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.VOLUME_LEVEL_CHANGED, (e) => {
+        this.Logger.debug("volume changed");
+        this.Logger.debug(e);
+      });
+      this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.DURATION_CHANGED, (e) => {
+        this.currentDuration = e.value;//this.AppUtilities.formatTime(e.value);
+      });
+      this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.CURRENT_TIME_CHANGED, (e) => {
+        this.currentTime = this.AppUtilities.formatTime(e.value);
+        var playPercent = 100 * (e.value / this.currentDuration);
+        this.currentProgressPercent = playPercent;
+        this.AppUtilities.apply();
+      });
+      this.remotePlayerController.addEventListener(cast.framework.RemotePlayerEventType.IS_CONNECTED_CHANGED, (e) => {
+        this.Logger.debug("switch to cast");
+      });
 
       this.castSession = cast.framework.CastContext.getInstance().getCurrentSession();
     }
@@ -168,7 +184,7 @@ export default class MediaPlayer {
   playTrack(song, playlist) {
     this.Logger.debug("Play Track");
     this.$rootScope.tracks = playlist;
-    var index = _.findIndex(this.$rootScope.tracks, function (track) {
+    var index = findIndex(this.$rootScope.tracks, function (track) {
       return track.id === song.id;
     });
     this.loadTrack(index);
@@ -260,31 +276,27 @@ export default class MediaPlayer {
       if (!source) {
         throw new Error("source required");
       }
-      if (!source.artistId) {
+      if (!source.artist_id) {
         throw new Error("no artist id");
       }
-      //this.AlloyDbService.getArtistInfo(source.artistId).then(function (result) {
-      //  var mediaInfo = new chrome.cast.media.MediaInfo(source.url, "audio/mp3" /*source.transcodedContentType*/);
-      //  mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.GENERIC;
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MOVIE;
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.TV_SHOW;
-      //  //mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.PHOTO;
-      //  mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
-      //  mediaInfo.metadata.customData = JSON.stringify(source);
-      //  mediaInfo.metadata.albumArtist = source.albumArtist;
-      //  mediaInfo.metadata.albumName = source.album;
-      //  mediaInfo.metadata.artist = source.artist;
-      //  mediaInfo.metadata.artistName = source.artist;
-      //  mediaInfo.metadata.composer = source.artist;
-      //  mediaInfo.metadata.discNumber = source.track;
-      //  mediaInfo.metadata.songName = source.title;
-      //  mediaInfo.metadata.title = source.title;
-      //  mediaInfo.metadata.images = [{
-      //    "url": result.largeImageUrl.replace("300x300", "1280x400")
-      //  }];
-      //  resolve(mediaInfo);
-      //});
+
+      var mediaInfo = new chrome.cast.media.MediaInfo(source.url, "audio/mp3" /*source.transcodedContentType*/);
+      mediaInfo.metadata = new chrome.cast.media.MusicTrackMediaMetadata();
+      mediaInfo.metadata.metadataType = chrome.cast.media.MetadataType.MUSIC_TRACK;
+      mediaInfo.metadata.customData = JSON.stringify(source);
+      mediaInfo.metadata.albumArtist = source.artist;
+      mediaInfo.metadata.albumName = source.album;
+      mediaInfo.metadata.artist = source.artist;
+      mediaInfo.metadata.artistName = source.artist;
+      mediaInfo.metadata.composer = source.artist;
+      mediaInfo.metadata.discNumber = source.track;
+      mediaInfo.metadata.songName = source.title;
+      mediaInfo.metadata.title = source.title;
+      mediaInfo.metadata.images = [{
+        "url": this.AlloyDbService.getCoverArt({ track_id: source.id })
+      }];
+      resolve(mediaInfo);
+
     });
   }
 
@@ -367,9 +379,9 @@ export default class MediaPlayer {
         this.generateRemoteMetadata(source).then((mediaInfo) => {
           var request = new chrome.cast.media.LoadRequest(mediaInfo);
           cast.framework.CastContext.getInstance().getCurrentSession().loadMedia(request);
-          this.scrobble(t, source);
+          this.scrobble(this, source);
+          this.addPlay(this, source);
           this.togglePlayPause();
-          this.startProgressTimer();
         });
       } else {
 
@@ -477,29 +489,6 @@ export default class MediaPlayer {
     $("#trackTitle").attr("href", source.albumUrl);
   }
 
-  startProgressTimer() {
-    this.stopProgressTimer();
-    this.timer = setInterval(() => {
-      if (this.remotePlayerConnected()) {
-        var currentMediaTime = this.remotePlayer.currentTime;
-        var currentMediaDuration = this.remotePlayer.duration;
-        var playPercent = 100 * (currentMediaTime / currentMediaDuration);
-        if (!isNaN(playPercent)) {
-          $("#subProgress").attr("aria-valuenow", "100").css("width", "100%");
-          this.currentProgressPercent = playPercent;
-          $("#mainTimeDisplay").html(this.AppUtilities.formatTime(currentMediaTime) + " / " + this.AppUtilities.formatTime(currentMediaDuration));
-        }
-      }
-    }, 250);
-  }
-
-  stopProgressTimer() {
-    if (this.timer) {
-      clearInterval(this.timer);
-      this.timer = null;
-    }
-  }
-
   setupRemotePlayer() {
 
     if (!this.remoteConfigured) {
@@ -566,6 +555,9 @@ export default class MediaPlayer {
               this.next();
             }
           }
+          if (this.remotePlayer.playerState === "IDLE") {
+            this.next();
+          }
           if (this.remotePlayer.playerState === "BUFFERING") {
             $("#mainTimeDisplay").html("Buffering...");
           }
@@ -628,7 +620,6 @@ export default class MediaPlayer {
           }
         }
       );
-      this.startProgressTimer();
       this.remoteConfigured = true;
     }
     if (this.remotePlayerConnected()) {
@@ -643,7 +634,6 @@ export default class MediaPlayer {
   }
 
   setupLocalPlayer() {
-    this.stopProgressTimer();
     this.remoteConfigured = false;
   }
 

@@ -1,5 +1,3 @@
-import angular from "angular";
-
 import CacheService from "./cache.service";
 import TitleService from "./title.service";
 import LoggerService from "./logger.service";

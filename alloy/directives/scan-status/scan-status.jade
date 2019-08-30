@@ -1,27 +1,19 @@
 .row(ng-if="scan_status.isScanning === true")
-  .col-lg-12.col-md-12(ng-if="showQueue !== 'true'")
+  .col-lg-12.col-md-12(ng-if="show_queue !== 'true'")
     .card
       .card-header.card-header-tabs.card-header-primary
         .nav-tabs-navigation
           .nav-tabs-wrapper
             span.nav-tabs-title Scan in progress
             button.btn.btn-danger.pull-right(ng-click="cancelScan()", type="button", style="margin-left: auto;") Abort
-      .card-body(style="text-align: left;overflow:hidden;") 
+      .card-body(style="text-align: left;max-height:250px;overflow:auto;")
         p.card-category(style="text-align: left;overflow:hidden;") 
-          h1.text-success(style="text-align: left;overflow:hidden;") 
+          h3.text-success(style="text-align: left;overflow:hidden;") 
           |  {{scan_status.status}}
           h3.text-muted(ng-if="scan_status.path", style="text-align: left;overflow:hidden;") 
           |  {{scan_status.path}}
 
 
-  .col-lg-12.col-md-12(ng-if="showQueue === 'true'")
-    .card
-      .card-header.card-header-tabs.card-header-primary
-        .nav-tabs-navigation
-          .nav-tabs-wrapper
-            span.nav-tabs-title Scan Queue
-            button.btn.btn-danger.pull-right(ng-click="cancelScan()", type="button", style="margin-left: auto;") Abort
-      .card-body
         table.table
           thead
             tr

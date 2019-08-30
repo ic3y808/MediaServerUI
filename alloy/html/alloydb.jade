@@ -103,9 +103,7 @@ html(ng-app='alloydb', lang='en-us')
         .content
           .container-fluid
    
-            .tab-content
-              scan-status
-                      
+            .tab-content                      
               #overview.tab-pane.active
                 .row
                   library-stats
@@ -172,9 +170,13 @@ html(ng-app='alloydb', lang='en-us')
                                   a(href="", ng-click="launchWebUIDesktop()") 
                                     i.material-icons play_arrow
                               tr
-                                td URL
+                                td Local URL
                                 td
                                   a(href="", ng-click="launchWebUI('http://localhost:#{web_ui_port}')") http://localhost:#{web_ui_port}
+                              tr
+                                td Public URL
+                                td
+                                  a(href="", ng-click="launchWebUI('#{web_ui_public_url}')") #{web_ui_public_url}
                               
     
 
@@ -251,7 +253,7 @@ html(ng-app='alloydb', lang='en-us')
                                 button.btn.btn-success.btn-link.btn-sm(data-original-title='Run action', type='button', title='', rel='tooltip')
                                   i.material-icons play_arrow
                 media-path-picker
-                scan-status(showQueue="true")
+                scan-status(show_queue="true")
 
               #logs.tab-pane
                 log-viewer

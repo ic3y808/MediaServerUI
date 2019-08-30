@@ -30,7 +30,9 @@ class ArtistsController {
       }
     });
 
-    
+    if ($rootScope.artists === undefined || $rootScope.artists.length === 0) {
+      $scope.refresh();
+    }
   }
 
   $onInit() {

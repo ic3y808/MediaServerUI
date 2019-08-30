@@ -7,8 +7,9 @@ const shell = require("shelljs");
 const moment = require("moment");
 const screenRes = require("screenres");
 const bodyParser = require("body-parser");
+const compression = require("compression");
 const favoriteIcon = require("serve-favicon");
-
+const cacheControl = require("express-cache-controller");
 const electron = require("electron");
 const { app, net, BrowserWindow, ipcMain, Menu, Tray, nativeImage } = electron;
 
@@ -22,7 +23,7 @@ require("./env");
 const utils = require(path.join(process.env.APP_DIR, "common", "utils"));
 const migrate = require(path.join(process.env.APP_DIR, "common", "migrate"));
 const structures = require(path.join(process.env.APP_DIR, "common", "structures"));
-
+const externalIp = require(path.join(process.env.APP_DIR, "common", "extip"))();
 var logdb = require("better-sqlite3")(process.env.LOGS_DATABASE);
 logdb.prepare("CREATE TABLE IF NOT EXISTS `Logs` (`id`	INTEGER PRIMARY KEY AUTOINCREMENT, `timestamp` TEXT, `level` TEXT, `label` TEXT, `message` TEXT);").run();
 
@@ -196,6 +197,19 @@ function createJob(data, callback) {
   job.callback = data.callback;
   jobs.push(job);
   mainWindow.webContents.send("scheduler-current-schedule", getSchedule());
+}
+
+function getIp() {
+  return new Promise((resolve, reject) => {
+    externalIp((err, ip) => {
+      if (err) {
+        error(err);
+        reject();
+      }
+      process.env.EXTERNAL_IP = ip;
+      resolve();
+    });
+  });
 }
 
 function doClose() {
@@ -484,7 +498,7 @@ function createTrayMenu() {
       }
     ]);
     tray.on("click", () => {
-      doShowAdminUi();
+      createWebUIWindow();
     });
 
     tray.setToolTip("Alloy");
@@ -508,6 +522,7 @@ function createTasks() {
 
 function createBaseServer() {
   return new Promise((resolve, reject) => {
+
     appServer.set("view engine", "jade");
     appServer.use(bodyParser.json());
     appServer.use(bodyParser.urlencoded({ extended: false }));
@@ -516,18 +531,27 @@ function createBaseServer() {
     appServer.use("/alloy/js/", express.static(path.join(process.env.APP_DIR, "alloy", "js")));
     appServer.use("/alloy/css/", express.static(path.join(process.env.APP_DIR, "alloy", "css")));
     appServer.use("/alloy/img/", express.static(path.join(process.env.APP_DIR, "alloy", "img")));
-
+    if (!isDev()) {
+      appServer.use(compression());
+      appServer.use(cacheControl({ maxAge: 5 }));
+    }
     appServer.use(function (req, res, next) {
       res.io = io;
+      if (!isDev()) {
+        res.socket.setNoDelay();
+      }
+
       res.locals.jadeOptions = {
         title: "Alloy (Preview)",
         jade_port: process.env.JADE_PORT,
         api_port: process.env.API_PORT,
         web_ui_port: process.env.API_UI_PORT,
+        web_ui_public_url: "http://" + process.env.EXTERNAL_IP + ":" + process.env.API_UI_PORT,
         dev_mode: process.env.MODE === "dev",
         api_enabled: isApiServerEnabled(),
         web_ui_enabled: isUiEnabled()
       };
+
       if (isDev()) {
         if (req.path.indexOf(".map") === -1) {
           debug(req.method + "~" + req.protocol + "://" + req.hostname + req.path);
@@ -603,10 +627,10 @@ function createBaseServer() {
         });
       });
 
-      clearInterval(timer);
-      timer = setInterval(function () {
-        io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
-      }, 500);
+      //clearInterval(timer);
+      //timer = setInterval(function () {
+      //  io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
+      //}, 500);
     }
 
     appServer.set("views", views);
@@ -788,6 +812,7 @@ app.on("ready", async () => {
   initConfig();
   if (!isTest()) { await createTrayMenu(); }
   if (!isTest() && !isDev()) { await createSplashScreen(); }
+  await getIp();
   await createBaseServer();
   await createApiServerWindow();
   await createMediaScannerWindow();

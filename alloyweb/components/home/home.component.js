@@ -1,4 +1,5 @@
 import styles from "./home.scss";
+import { findIndex } from "lodash";
 class HomeController {
   constructor($scope, $rootScope, $timeout, $element, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService) {
     "ngInject";
@@ -28,7 +29,7 @@ class HomeController {
     $scope.playTrack = (song, playlist) => {
       this.Logger.debug("Play Track");
       $rootScope.tracks = playlist;
-      var index = _.findIndex($rootScope.tracks, function (track) {
+      var index = findIndex($rootScope.tracks, function (track) {
         return track.id === song.id;
       });
       this.MediaPlayer.loadTrack(index);
