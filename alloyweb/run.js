@@ -35,6 +35,12 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   var windowResized = AppUtilities.debounce(function () {
     AppUtilities.broadcast("windowResized");
+    if ($(window).width() < 960) {
+      $(".nav").removeClass("nav-off-screen");
+    }
+    else {
+      $(".nav").addClass("nav-off-screen");
+    }
   }, 25);
 
   $(window).on("resize", windowResized);
@@ -432,6 +438,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     format: "mm/dd/yyyy",
     startDate: "-3d"
   });
+
 
   //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";
