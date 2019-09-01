@@ -32,31 +32,6 @@ class AlbumController {
       else { return true; }
     };
 
-    $scope.shareAlbum = () => {
-      this.Logger.debug("shareButton");
-      this.AlloyDbService.createShare(
-        $scope.album.id,
-        "Shared from Alloy"
-      ).then((result) => {
-        $("#shareAlbumButton")
-          .popover({
-            animation: true,
-            content: "Success! Url Copied to Clipboard.",
-            delay: {
-              show: 0,
-              hide: 5000
-            },
-            placement: "top"
-          })
-          .popover("show");
-        var url = result.url.toString();
-        this.AppUtilities.copyTextToClipboard(url);
-        setTimeout(() => {
-          $("#shareAlbumButton").popover("hide");
-        }, 5000);
-      });
-    };
-
     $scope.starAlbum = () => {
       this.Logger.info("liking album: " + this.$scope.album.name);
       if ($scope.album.starred === "true") {

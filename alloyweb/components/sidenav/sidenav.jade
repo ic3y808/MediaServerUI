@@ -64,6 +64,10 @@ section.w-f-md.scrollable(ng-if="$root.globals.currentUser")
             a.auto(href='/config/shares', title='Shares', style="height:30px;")
               i.alloy-icon.icon-external-link.text-xs
               span.hidden-nav-xs Shares
+          li(style="height:30px;")
+            a.auto(href='/config/users', title='Users', style="height:30px;")
+              i.alloy-icon.icon-users.text-xs
+              span.hidden-nav-xs Users
           
     ul.nav.text-sm(ng-if="$root.globals.currentUser")
       li.hidden-nav-xs.padder.m-t.m-b-sm.text-xs.text-muted

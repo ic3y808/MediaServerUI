@@ -32,6 +32,8 @@ section.vbox
       .input-group 
         searchbar
         span.input-group-btn
-          button.btn.btn-sm.btn-icon.rounded.mainNavButton(ng-click="logout()")
+          button.btn.btn-sm.btn-icon.rounded.mainNavButton(ng-click="logout()", ng-if="$root.globals.currentUser.username !== 'localhost_user'")
             i.alloy-icon.icon-logout
+          button.btn.btn-sm.btn-icon.rounded.mainNavButton(ng-click="logout()", ng-if="!$root.globals.currentUser.username || $root.globals.currentUser.username === 'localhost_user'")
+            i.alloy-icon.icon-login
    

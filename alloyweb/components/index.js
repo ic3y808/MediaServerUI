@@ -27,6 +27,7 @@ import ConfigAlloyDbComponent from "./config/alloydb/configAlloyDb.Component";
 import ConfigMediaPathsComponent from "./config/mediapaths/configMediaPaths.component";
 import ConfigSchedulerComponent from "./config/scheduler/configScheduler.component";
 import ConfigSharesComponent from "./config/shares/configShares.component";
+import ConfigUsersComponent from "./config/users/configUsers.component";
 import RegisterComponent from "./register/register.component";
 import ShareComponent from "./share/share.component";
 import StarredComponent from "./starred/starred.component";
@@ -61,6 +62,7 @@ export default angular
   .component("configmediapaths", ConfigMediaPathsComponent)
   .component("configscheduler", ConfigSchedulerComponent)
   .component("configshares", ConfigSharesComponent)
+  .component("configusers", ConfigUsersComponent)
   .component("register", RegisterComponent)
   .component("share", ShareComponent)
   .component("starred", StarredComponent)

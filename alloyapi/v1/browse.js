@@ -354,7 +354,7 @@ router.get("/fresh", function (req, res) {
       result.fresh.tracks.push(track);
     });
   });
-  result.quick_picks = _.shuffle(result.fresh.tracks).slice(0, 15);
+  result.fresh.quick_picks = _.shuffle(result.fresh.tracks).slice(0, 15);
   result.fresh.artists = _.shuffle(result.fresh.artists);
   result.fresh.albums = _.shuffle(result.fresh.albums);
   result.fresh.tracks = _.shuffle(result.fresh.tracks).slice(0, limit);

@@ -35,6 +35,10 @@ export default class AlloyDbService {
                 this.isLoggedIn = true;
                 this.isLoggingIn = false;
                 this.Logger.info("Connected to alloydb");
+                var loggedInUser = this.$rootScope.globals.currentUser;
+                if (loggedInUser) {
+                  this.checkinUser(loggedInUser.username);
+                }
                 if (!this.isPreloaded) { this.preload(); }
               } else {
                 this.isLoggingIn = false;
@@ -285,8 +289,6 @@ export default class AlloyDbService {
   }
 
   createShare(type, id, description = "", expires = "", url = "") {
-
-
     var that = this;
     this.$rootScope.newShare.type = type;
     this.$rootScope.newShare.id = id;
@@ -311,10 +313,6 @@ export default class AlloyDbService {
         , $modal = $("#shareModal");
       $modal.modal();
     });
-
-    //this.doLogin();
-    //if (this.isLoggedIn) { return this.alloydb.createShare(type, id, description, expires, url); }
-    //else { return false; }
   }
 
   shareTrack(id) {
@@ -374,6 +372,71 @@ export default class AlloyDbService {
   removePlaylist(data) {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.removePlaylist(data); }
+    else { return false; }
+  }
+
+  getUsers() {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.getUsers(); }
+    else { return false; }
+  }
+
+  newUser() {
+    this.doLogin();
+    var newUser = {};
+    Object.assign(newUser, this.$rootScope.newUser);  
+    newUser.username = this.AppUtilities.encryptPassword(this.$rootScope.newUser.username);
+    newUser.password = this.AppUtilities.encryptPassword(this.$rootScope.newUser.password);
+    if (this.isLoggedIn) { return this.alloydb.createUser(newUser); }
+    else { return false; }
+  }
+
+  createUser() {
+    var that = this;
+    $("#createUserModal").on("hidden.bs.modal", function () {
+      $(this).data("bs.modal", null);
+      that.$rootScope.newUser = {
+        type: "",
+        username: "",
+        password: ""
+      };
+      that.AppUtilities.apply();
+    });
+
+    var $this = $(this)
+      , $remote = $this.data("remote") || $this.attr("href")
+      , $modal = $("#createUserModal");
+    $modal.modal();
+    $("#createUserForm").parsley().on("field:validated", () => {
+      var ok = $(".parsley-error").length === 0;
+      $(".bs-callout-info").toggleClass("hidden", !ok);
+      $(".bs-callout-warning").toggleClass("hidden", ok);
+    })
+      .on("form:submit", () => {
+        var ok = $(".parsley-error").length === 0;
+        if (ok) {
+          that.$rootScope.createUser();
+        }
+      });
+
+
+  }
+
+  deleteUser(id) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.deleteUser(id); }
+    else { return false; }
+  }
+
+  loginUser(params) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.loginUser(params); }
+    else { return false; }
+  }
+
+  checkinUser(username) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.checkinUser(username); }
     else { return false; }
   }
 
@@ -711,6 +774,23 @@ export default class AlloyDbService {
     }
   }
 
+  loadUsers(data) {
+    if (data) {
+      data.forEach((info) => {
+        if (info.users) {
+          this.$rootScope.users = info.users;
+          this.$rootScope.users.forEach((user) => {
+            if (user.username) { user.username = this.AppUtilities.decryptPassword(user.username); }
+            if (user.password) { user.password = this.AppUtilities.decryptPassword(user.password); }
+            if (user.lastfm_username) { user.lastfm_username = this.AppUtilities.decryptPassword(user.lastfm_username); }
+            if (user.lastfm_password) { user.lastfm_password = this.AppUtilities.decryptPassword(user.lastfm_password); }
+          });
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
   loadPlaylists(data) {
     if (data) {
       data.forEach((info) => {
@@ -861,11 +941,19 @@ export default class AlloyDbService {
   }
 
   refreshShares() {
-
     var shares = this.getShares();
     if (shares) {
       shares.then((info) => {
         this.loadShares([info]);
+      });
+    }
+  }
+
+  refreshUsers() {
+    var users = this.getUsers();
+    if (users) {
+      users.then((info) => {
+        this.loadUsers([info]);
       });
     }
   }
@@ -883,8 +971,9 @@ export default class AlloyDbService {
     var charts = this.getCharts();
     var playlists = this.getPlaylists();
     var shares = this.getShares();
+    var users = this.getUsers();
 
-    Promise.all([index, history, artists, fresh, albums, genres, starred, random, charts, playlists, shares]).then((info) => {
+    Promise.all([index, history, artists, fresh, albums, genres, starred, random, charts, playlists, shares, users]).then((info) => {
       if (info) {
         this.loadIndex(info);
         this.loadHistory(info);
@@ -897,6 +986,7 @@ export default class AlloyDbService {
         this.loadCharts(info);
         this.loadPlaylists(info);
         this.loadShares(info);
+        this.loadUsers(info);
         this.isPreloaded = true;
         this.AppUtilities.apply();
       }
@@ -928,6 +1018,7 @@ export default class AlloyDbService {
         case "/genres": this.refreshGenres(); break;
         case "/starred": this.refreshStarred(); break;
         case "/shares": this.refreshShares(); break;
+        case "/users": this.refreshUsers(); break;
         default: this.preload();
       }
     }

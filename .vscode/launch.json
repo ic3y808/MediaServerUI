@@ -72,23 +72,6 @@
       "url": "http://localhost:3000/template/apiServer.jade"
     },
     {
-      "name": "Web UI",
-      "type": "chrome",
-      "request": "attach",
-      "port": 9223,
-      "timeout": 5000000,
-      "url": "http://localhost:3000"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Rebuild Icons",
-      "program": "${workspaceFolder}/setup.js",
-      "args": [
-        "-f"
-      ]
-    },
-    {
       "type": "node",
       "request": "launch",
       "name": "Tests - Debug",
@@ -170,16 +153,6 @@
       "name": "Debug All",
       "configurations": [
         "Electron: Main",
-        "Electron: Renderer",
-        "Electron: MediaScanner",
-        "Electron: Server",
-        "LaunchChrome"
-      ]
-    },
-    {
-      "name": "Release All",
-      "configurations": [
-        "Electron: Main - Prod",
         "Electron: Renderer",
         "Electron: MediaScanner",
         "Electron: Server",

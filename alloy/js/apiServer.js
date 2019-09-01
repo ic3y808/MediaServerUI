@@ -129,6 +129,7 @@ class Server {
     this.app.use("/api/v1/share", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "share")));
     this.app.use("/api/v1/annotation", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "annotation")));
     this.app.use("/api/v1/lastfm", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "lastfm")));
+    this.app.use("/api/v1/user", setupRoute(path.join(process.env.APP_DIR, "alloyapi", "v1", "user")));
 
     // catch 404 and forward to error handler
     this.app.use((req, res, next) => {

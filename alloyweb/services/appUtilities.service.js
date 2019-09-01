@@ -4,6 +4,7 @@ import moment from "moment";
 export default class AppUtilities {
   constructor($rootScope, $timeout, Logger) {
     "ngInject";
+    this.keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.Logger = Logger;
@@ -15,6 +16,7 @@ export default class AppUtilities {
     this.$rootScope.updateGridRows = this.updateGridRows;
     this.$rootScope.decryptPassword = this.decryptPassword;
     this.$rootScope.formatTime = this.formatTime;
+    this.$rootScope.formatIsoTime = this.formatIsoTime;
     this.$rootScope.formatUnixTime = this.formatUnixTime;
     this.$rootScope.humanFileSize = this.humanFileSize;
   }
@@ -64,6 +66,7 @@ export default class AppUtilities {
 
     return array;
   }
+
   showLoader() {
     $("#root.root").css("display", "none");
     $(".loader").css("display", "block");
@@ -150,6 +153,12 @@ export default class AppUtilities {
     );
   }
 
+  formatIsoTime(isoDate) {
+    var time = moment(isoDate).format("LLLL");
+    if (time.indexOf("Invalid date") !== -1) { time = "Never"; }
+    return time;
+  }
+
   formatTime(seconds) {
     var minutes = Math.floor(seconds / 60);
     minutes = (minutes >= 10) ? minutes : "0" + minutes;
@@ -210,13 +219,79 @@ export default class AppUtilities {
     }
   }
 
-  encryptPassword(pass) {
-    return CryptoJS.AES.encrypt(pass, "12345").toString();
+  encryptPassword(input) {
+    var output = "";
+    var chr1, chr2, chr3 = "";
+    var enc1, enc2, enc3, enc4 = "";
+    var i = 0;
+
+    do {
+      chr1 = input.charCodeAt(i++);
+      chr2 = input.charCodeAt(i++);
+      chr3 = input.charCodeAt(i++);
+
+      enc1 = chr1 >> 2;
+      enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+      enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+      enc4 = chr3 & 63;
+
+      if (isNaN(chr2)) {
+        enc3 = enc4 = 64;
+      } else if (isNaN(chr3)) {
+        enc4 = 64;
+      }
+
+      output = output +
+        this.keyStr.charAt(enc1) +
+        this.keyStr.charAt(enc2) +
+        this.keyStr.charAt(enc3) +
+        this.keyStr.charAt(enc4);
+      chr1 = chr2 = chr3 = "";
+      enc1 = enc2 = enc3 = enc4 = "";
+    } while (i < input.length);
+
+    return output;
 
   }
 
-  decryptPassword(pass) {
-    return CryptoJS.AES.decrypt(pass, "12345").toString(CryptoJS.enc.Utf8);
+  decryptPassword(input) {
+    var output = "";
+    var chr1, chr2, chr3 = "";
+    var enc1, enc2, enc3, enc4 = "";
+    var i = 0;
+
+    // remove all characters that are not A-Z, a-z, 0-9, +, /, or =
+    var base64test = /[^A-Za-z0-9\+\/\=]/g;
+    if (base64test.exec(input)) {
+      this.Logger.error("There were invalid base64 characters in the input text.\nValid base64 characters are A-Z, a-z, 0-9, '+', '/',and '='\nExpect errors in decoding.");
+    }
+    input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+    do {
+      enc1 = this.keyStr.indexOf(input.charAt(i++));
+      enc2 = this.keyStr.indexOf(input.charAt(i++));
+      enc3 = this.keyStr.indexOf(input.charAt(i++));
+      enc4 = this.keyStr.indexOf(input.charAt(i++));
+
+      chr1 = (enc1 << 2) | (enc2 >> 4);
+      chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+      chr3 = ((enc3 & 3) << 6) | enc4;
+
+      output = output + String.fromCharCode(chr1);
+
+      if (enc3 != 64) {
+        output = output + String.fromCharCode(chr2);
+      }
+      if (enc4 != 64) {
+        output = output + String.fromCharCode(chr3);
+      }
+
+      chr1 = chr2 = chr3 = "";
+      enc1 = enc2 = enc3 = enc4 = "";
+
+    } while (i < input.length);
+
+    return output;
   }
 
   getLinkIcon(link) {
@@ -239,3 +314,50 @@ export default class AppUtilities {
     }
   }
 }
+
+window.Parsley.addValidator("uppercase", {
+  requirementType: "number",
+  validateString: function (value, requirement) {
+    var uppercases = value.match(/[A-Z]/g) || [];
+    return uppercases.length >= requirement;
+  },
+  messages: {
+    en: "Your password must contain at least (%s) uppercase letter."
+  }
+});
+
+//has lowercase
+window.Parsley.addValidator("lowercase", {
+  requirementType: "number",
+  validateString: function (value, requirement) {
+    var lowecases = value.match(/[a-z]/g) || [];
+    return lowecases.length >= requirement;
+  },
+  messages: {
+    en: "Your password must contain at least (%s) lowercase letter."
+  }
+});
+
+//has number
+window.Parsley.addValidator("number", {
+  requirementType: "number",
+  validateString: function (value, requirement) {
+    var numbers = value.match(/[0-9]/g) || [];
+    return numbers.length >= requirement;
+  },
+  messages: {
+    en: "Your password must contain at least (%s) number."
+  }
+});
+
+//has special char
+window.Parsley.addValidator("special", {
+  requirementType: "number",
+  validateString: function (value, requirement) {
+    var specials = value.match(/[^a-zA-Z0-9]/g) || [];
+    return specials.length >= requirement;
+  },
+  messages: {
+    en: "Your password must contain at least (%s) special characters."
+  }
+});

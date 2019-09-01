@@ -1,13 +1,15 @@
 import "./navbar.scss";
 class NavbarController {
-  constructor($scope, $rootScope, $location, Logger, MediaElement, MediaPlayer, AppUtilities, Backend, AlloyDbService, $http) {
+  constructor($scope, $rootScope, $location, $window, Logger, MediaElement, MediaPlayer, AuthenticationService, AppUtilities, Backend, AlloyDbService, $http) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$location = $location;
+    this.$window = $window;
     this.Logger = Logger;
     this.MediaElement = MediaElement;
     this.MediaPlayer = MediaPlayer;
+    this.AuthenticationService = AuthenticationService;
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
@@ -16,7 +18,9 @@ class NavbarController {
     this.$scope.refreshCurrentView = function () {
       AlloyDbService.refreshPage(window.location.pathname);
     };
+    
     this.$scope.logout = () => {
+      this.AuthenticationService.ClearCredentials();
       this.$location.path("/login");
       this.$location.replace();
     };

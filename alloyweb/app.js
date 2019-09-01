@@ -14,6 +14,7 @@ import "angular-sanitize";
 import "bootstrap-datepicker";
 import "bootstrap/dist/js/bootstrap.min";
 import "highcharts/highcharts";
+import "parsleyjs";
 
 import "./API/alloy.db";
 import "./API/angular-auto-complete";
