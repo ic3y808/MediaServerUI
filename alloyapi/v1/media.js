@@ -6,7 +6,7 @@ var fs = require("fs");
 var convert = require("../../common/convert");
 var structures = require("../../common/structures");
 var { ipcRenderer } = require("electron");
-const { Image } = require("image-js");
+
 //var sharp = {};
 //try {
 //  sharp = require("sharp");

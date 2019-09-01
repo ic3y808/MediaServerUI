@@ -61,7 +61,7 @@ class ShareController {
     };
 
     $rootScope.$on("loginStatusChange", (event, data) => {
-      this.Logger.debug("Artist reload on loginsatuschange");
+      this.Logger.debug("Shares reload on loginsatuschange");
       $scope.getShare();
     });
 

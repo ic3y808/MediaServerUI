@@ -35,6 +35,12 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
 
   var windowResized = AppUtilities.debounce(function () {
     AppUtilities.broadcast("windowResized");
+    if ($(window).width() < 960) {
+      $(".nav").removeClass("nav-off-screen");
+    }
+    else {
+      $(".nav").addClass("nav-off-screen");
+    }
   }, 25);
 
   $(window).on("resize", windowResized);
@@ -436,15 +442,9 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   //$window.onbeforeunload = function () {
   //  return "Are you sure to leave this page?";
   //}
-
-  $timeout(function () {
-    Logger.debug("loading settings");
-    if ($rootScope) { $rootScope.socket.emit("load_settings", "alloydb_settings"); }
-  });
+  Logger.debug("loading settings");
+  $rootScope.socket.emit("load_settings", "alloydb_settings");
   $rootScope.loaded = "true";
   $("body").toggle();
   Logger.info("Web UI Loaded");
-
-
 }
-

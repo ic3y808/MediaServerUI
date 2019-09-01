@@ -44,7 +44,7 @@ section.scrollable.padder-lg.w-f-md
               th Artist
               th Created
               th Tracks
-          tbody(ng-repeat="album in data | limitTo:limit")
+          tbody(ng-repeat="album in data | limitTo:limit", style="max-height:400px;overflow:auto;")
             tr(data-value="album;{{album.id}}", title='{{album.name}}')
               td(ng-if="showimages", style="width:1px;")
                 span.pull-left.thumb-sm.avatar.m-r

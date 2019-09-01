@@ -9,18 +9,18 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                 header.TrackListHeader
                   .media-object
                     .row
-                      .react-contextmenu-wrapper.col-xs-12
+                      .col-xs-12
                         .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
                           .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
                     .row
                       .mo-info
-                        .react-contextmenu-wrapper.col-xs-12
+                        .col-xs-12
                           .mo-info-name(title='{{info.share.description}}')
                             span(dir='auto') {{info.share.description}}
                       
 
                     .mo-meta.ellipsis-one-line
-                      .react-contextmenu-wrapper
+                      
                         a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
@@ -41,18 +41,18 @@ section.scrollable.no-padder.w-f-md(style="padding:0px;")
                 header.TrackListHeader
                   .media-object
                     .row
-                      .react-contextmenu-wrapper.col-xs-12
+                      .col-xs-12
                         .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
                           .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
                     .row
                       .mo-info
-                        .react-contextmenu-wrapper.col-xs-12
+                        .col-xs-12
                           .mo-info-name(title='{{info.share.description}}')
                             span(dir='auto') {{info.share.description}}
                       
 
                     .mo-meta.ellipsis-one-line
-                      .react-contextmenu-wrapper
+                      
                         a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}

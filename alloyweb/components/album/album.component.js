@@ -12,47 +12,24 @@ class AlbumController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
-    this.Logger.debug("artist-controller");
+    this.Logger.debug("album-controller");
     this.AppUtilities.showLoader();
 
-
-    $scope.getCoverArt = (id) => {
-      return this.AlloyDbService.getCoverArt(id);
-    };
-
-    //$scope.refreshInfo = (data) => {
-    //  if (data) {
-    //    data.forEach((info) => {
-    //      if (info.albumInfo) {
-    //        $scope.album.albumInfo = info.albumInfo;
-    //        if ($scope.albumInfo.image) {
-    //          $scope.album.artistInfo.image.forEach((image) => {
-    //            if (image["@"].size === "large") {
-    //              $scope.albumImage = image["#"];
-    //            }
-    //            if (image["@"].size === "extralarge") {
-    //              $scope.albumImage = image["#"];
-    //            }
-    //          });
-    //        }
-    //      }
-    //    });
-    //  }
-    //};
-
-    $scope.goToArtist = (id) => {
-      window.location.href = "/artist/" + id;
-    };
-
     $scope.refresh = () => {
+      if ($rootScope.album && $rootScope.album.album && $routeParams.id === $rootScope.album.album.id) { return; }
       this.Logger.debug("refresh album");
       this.AlloyDbService.refreshAlbum($routeParams.id);
     };
 
     $scope.shuffle = () => {
-      this.Logger.debug("shuffle play album " + $scope.info.album.name);
-      this.$rootScope.tracks = $scope.info.tracks;
-      this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
+      this.Logger.debug("shuffle play album " + $rootScope.album.album.name);
+      this.$rootScope.tracks = $rootScope.album.tracks;
+      this.MediaPlayer.loadTrack(~~($rootScope.album.tracks.length * Math.random()));
+    };
+
+    $scope.isDisabled = () => {
+      if ($rootScope.album.tracks) { return false; }
+      else { return true; }
     };
 
     $scope.shareAlbum = () => {
@@ -105,7 +82,7 @@ class AlbumController {
 
     $scope.playTrack = (song) => {
       this.Logger.debug("Play Track");
-      $rootScope.tracks = $scope.info.tracks;
+      $rootScope.tracks = $rootScope.album.tracks;
       var index = findIndex($rootScope.tracks, function (track) {
         return track.id === song.id;
       });
@@ -114,7 +91,7 @@ class AlbumController {
 
     $scope.playAlbum = () => {
       this.Logger.debug("Play Album");
-      $rootScope.tracks = $scope.info.tracks;
+      $rootScope.tracks = $rootScope.album.tracks;
       this.MediaPlayer.loadTrack(0);
     };
 

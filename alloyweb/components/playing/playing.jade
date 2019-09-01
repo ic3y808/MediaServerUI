@@ -1,41 +1,54 @@
-section.scrollable.w-f-md
-  .row(ng-show="info") 
-    .contentSpacing.no-padder
-      section.content.album-content
-        .container-fluid
-
-          .album-container
-            .col-xs-12.col-lg-3.col-xl-4
-              .album-header-container
-                header.TrackListHeader
+section.scrollable.no-padder.w-f-md.scrollsaver(style="padding:0px;")
+  section.content
+    .container-fluid(ng-show="selectedTrack") 
+      div.padder.m-t-sm
+        .col-xs-12.col-lg-3.col-xl-4
+          div
+            header.TrackListHeader
+              div
+                div(draggable='true')
                   .media-object
-                    .row
-                      .react-contextmenu-wrapper.col-xs-12
-                        .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true', style='width: auto; height: auto;')
-                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{info.image}}");')
-
-                      
-
-                    .mo-meta.ellipsis-one-line
-                      .react-contextmenu-wrapper
-                        a(dir='auto', href='/album/{{info.album_id}}') {{info.album}}
-                    .mo-meta.ellipsis-one-line
-                      .react-contextmenu-wrapper
-                        a(dir='auto', href='/artist/{{info.artist_id}}') {{info.artist}}
-                  .TrackListHeader__button.TrackListHeader__button--top
-                    p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.created}}
-                    p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.duration") {{$root.formatTime(info.duration)}}
-                    p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.content_type") {{info.content_type}}
-                    p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.size") {{$root.humanFileSize(info.size)}}
-                  .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-black.btn--narrow(title='Save to Your Library', ng-click="starTrack()") {{info.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
-                  .TrackListHeader__button.TrackListHeader__button--top
-                    starratinglabel(album="info", extrastyles="")
+                    div
+                      .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true' style='width: auto; height: auto;')
+                        div
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{selectedTrack.image}}");')
+                      a.h3(dir='auto', href="#")
+                        span.h3.block {{selectedTrack.title}}
+                      a(dir='auto', href='/album/{{album.album.id}}') 
+                        span.text-muted.text-xs.block {{album.album.name}} 
+                      a(dir='auto', href='/artist/{{artist.artist.id}}') 
+                        span.text-muted.text-xs.block {{artist.artist.name}}
               
-            .col-xs-12.col-lg-9.col-xl-8
-              h2.font-thin(ng-if="info.title") {{info.title}} -  {{info.artist}}
-              .row
-                span.text-muted(ng-if="artist.artist.biography")
-                  | {{artist.artist.biography}}
+              
+              .TrackListHeader__body
+                .TrackListHeader__entity-name
+                  a.h2(dir='auto', href="#")
+                    span.block {{selectedTrack.title}}
+                  a(dir='auto', href='/album/{{album.album.id}}') 
+                    span.truncate.text-muted.text-xs.block {{album.album.name}} 
+                  a(dir='auto', href='/artist/{{artist.artist.id}}') 
+                    span.truncate.text-muted.text-xs.block {{artist.artist.name}}
 
-  h1(ng-hide="info").font-thin.centered-anchor-text Nothing Playing          
+                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info {{album.tracks.length}} {{album.tracks.length > 1 ? "Tracks" : "Track"}} - {{album.size}}
+                .TrackListHeader__children
+                  .TrackListHeader__button.TrackListHeader__button--bottom
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
+              .TrackListHeader__button.TrackListHeader__button--top
+                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
+              .TrackListHeader__button.TrackListHeader__button--top
+                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="starTrack()", ng-disabled="isDisabled()", title='Save to Your Library') {{selectedTrack.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+              .TrackListHeader__button.TrackListHeader__button--top
+                starratinglabel(ng-disabled="isDisabled()", album="artist.artist", extrastyles="btn-block")
+        .col-xs-12.col-lg-8.col-xl-12
+          .row
+          
+            span.text-muted(ng-if="artist.biography")
+            p
+            | {{artist.biography}}  
+          .row
+            a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in artist.links", href='{{link.target}}', target="_blank")
+              i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")
+
+
+
+  h1(ng-hide="selectedTrack").font-thin.centered-anchor-text Nothing Playing

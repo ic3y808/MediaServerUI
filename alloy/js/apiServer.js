@@ -49,7 +49,7 @@ class Server {
         "Access-Control-Allow-Methods",
         "PUT, POST, GET, DELETE, OPTIONS"
       );
-      if (this.isDev()) {
+      if (this.isDev() && process.env.LOG_WEB_TRAFFIC === "true") {
         this.debug(req.method + "~" + req.protocol + "://" + req.hostname + req.path + "~" + JSON.stringify(req.params));
       }
       if (req.method === "OPTIONS") {

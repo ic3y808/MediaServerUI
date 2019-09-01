@@ -89,7 +89,7 @@ class FreshController {
     };
 
     $rootScope.$on("loginStatusChange", (event, data) => {
-      this.Logger.debug("Artist reload on loginsatuschange");
+      this.Logger.debug("Fresh reload on loginsatuschange");
       $scope.refresh();
     });
 

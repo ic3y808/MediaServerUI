@@ -117,7 +117,7 @@ export default class MediaPlayer {
   }
 
   initializeCast() {
-    if (isCastAvailable) {
+    if (this.castStatus()) {
       var options = {};
       // options.receiverApplicationId = "DAB06F7C";
       options.receiverApplicationId = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
@@ -192,14 +192,18 @@ export default class MediaPlayer {
 
   playAlbum(album) {
     this.Logger.debug("Play Album");
-    this.$rootScope.tracks = album.tracks;
-    this.loadTrack(0);
+    this.AlloyDbService.getAlbum(album.id).then((info) => {
+      this.$rootScope.tracks = this.AppUtilities.shuffle(info.tracks);
+      this.loadTrack(0);
+    });
   }
 
   playArtist(artist) {
-    this.Logger.debug("Play Album");
-    this.$rootScope.tracks = this.AppUtilities.shuffle(artist.tracks);
-    this.loadTrack(0);
+    this.Logger.debug("Play Artist");
+    this.AlloyDbService.getArtist(artist.id).then((info) => {
+      this.$rootScope.tracks = this.AppUtilities.shuffle(info.tracks);
+      this.loadTrack(0);
+    });
   }
 
   upcomingTracks(count) {
@@ -271,7 +275,6 @@ export default class MediaPlayer {
   }
 
   generateRemoteMetadata(source) {
-
     return new Promise((resolve, reject) => {
       if (!source) {
         throw new Error("source required");
@@ -358,7 +361,6 @@ export default class MediaPlayer {
   }
 
   loadTrack(index) {
-
     this.selectedIndex = index;
     $("#mainTimeDisplay").html("Loading...");
 
@@ -394,7 +396,7 @@ export default class MediaPlayer {
         var playPromise = this.MediaElement.play();
 
         if (playPromise !== undefined) {
-          playPromise.then((_) => {
+          playPromise.then(() => {
             this.scrobble(this, source);
             this.addPlay(this, source);
             this.Title.setTitle(source.artist + " " + source.title, source.artist + " " + source.title);
@@ -405,15 +407,8 @@ export default class MediaPlayer {
             this.Logger.error("playing failed " + error.name + " " + error.message);
             //this.next();
           });
-        } else {
-          //next();
         }
       }
-      //} else {
-      //  next();
-      //}
-    } else {
-      //next();
     }
   }
 
@@ -504,10 +499,9 @@ export default class MediaPlayer {
         () => {
           this.isMuted = this.remotePlayer.isMuted;
           if (this.isMuted) {
-            vol = 0;
-            $("#volumeSlider").val(vol);
+            $("#volumeSlider").val(0);
           } else {
-            vol = this.remotePlayer.volumeLevel;
+            var vol = this.remotePlayer.volumeLevel;
             $("#volumeSlider").val(vol * 100);
           }
         }
@@ -637,9 +631,7 @@ export default class MediaPlayer {
     this.remoteConfigured = false;
   }
 
-
   checkIfNowPlaying(type, id) {
-
     var selected = this.selectedTrack();
 
     if (selected && type && id) {

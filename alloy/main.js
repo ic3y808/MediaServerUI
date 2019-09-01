@@ -93,8 +93,8 @@ function log(obj) {
 }
 
 function info(messsage) { log({ level: "info", label: loggerTag, message: messsage }); }
-function debug(debug) { log({ level: "debug", label: loggerTag, message: debug }); }
 function error(error) { log({ level: "error", label: loggerTag, message: error }); }
+function debug(debug) { if (isDev()) { log({ level: "debug", label: loggerTag, message: debug }); } }
 
 function getInstance() {
   /* Single Instance Check */
@@ -333,8 +333,12 @@ function doLoadSettings(key, callback) {
       var settings = JSON.parse(settingsResult.settings_value);
       if (settings) {
         callback({ key: key, data: settings });
-      } callback(null);
-    } callback(null);
+      } else {
+        callback(null);
+      }
+    } else {
+      callback(null);
+    }
   } catch (err) {
     debug(err);
     callback(null);
@@ -553,7 +557,7 @@ function createBaseServer() {
       };
 
       if (isDev()) {
-        if (req.path.indexOf(".map") === -1) {
+        if (req.path.indexOf(".map") === -1 && process.env.LOG_WEB_TRAFFIC === "true") {
           debug(req.method + "~" + req.protocol + "://" + req.hostname + req.path);
         }
       }
