@@ -21,6 +21,10 @@
   margin: 0;
 }
 
+.playing-title{
+  text-align: center;
+}
+
 .playing-artist-name{
   text-align: center;
   font-size: 1.4em;
@@ -57,7 +61,6 @@
   font-weight: 500;
   overflow-y: auto;
 }
-
 
 .FlexContainer{
   display: flex;

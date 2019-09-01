@@ -16,30 +16,24 @@ class PlayingController {
 
     $scope.getSong = () => {
 
-      $scope.info = this.MediaPlayer.selectedTrack();
+      $scope.selectedTrack = this.MediaPlayer.selectedTrack();
 
-      if ($scope.info) {
+      if ($scope.selectedTrack) {
 
-        var artist = this.AlloyDbService.getArtist($scope.info.artist_id);
+        var artist = this.AlloyDbService.getArtist($scope.selectedTrack.artist_id);
         if (artist) {
           artist.then((info) => {
             $scope.artist = info;
-
           });
         }
 
-        var album = this.AlloyDbService.getAlbum($scope.info.album_id);
+        var album = this.AlloyDbService.getAlbum($scope.selectedTrack.album_id);
         if (album) {
           album.then((info) => {
             $scope.album = info;
-
+            $scope.album.image = this.AlloyDbService.getCoverArt({ album_id: album.id });
           });
-        }
-
-        var coverArt = this.AlloyDbService.getCoverArt({ track_id: $scope.info.id });
-        if (coverArt) {
-          $scope.info.image = coverArt;
-          this.AppUtilities.apply();
+          
         }
 
         Promise.all([artist, album], (result) => {

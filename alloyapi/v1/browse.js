@@ -82,7 +82,8 @@ router.get("/artist", function (req, res) {
     EPs: [],
     singles: [],
     other: [],
-    total_plays: 0
+    total_plays: 0,
+    total_tracks: 0
   };
 
   all_albums.forEach((album) => {
@@ -92,6 +93,7 @@ router.get("/artist", function (req, res) {
       album.play_count += track.play_count;
     });
     result.total_plays += album.play_count;
+    result.total_tracks += album.tracks.length;
     switch (album.type) {
       case "EP":
         result.EPs.push(album);

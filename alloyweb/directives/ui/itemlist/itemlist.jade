@@ -6,8 +6,7 @@ section.scrollable.padder-lg.w-f-md
   .row 
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'tracks'")
       li.list-group-item.clearfix.pointer(data-value="track;{{track.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", ng-click="$root.MediaPlayer.playTrack(track, data)", ng-repeat="track in data | limitTo:itemLimit")
-        span.pull-right.text-muted.m-l(ng-if="isPlaying !== true || currentTrack.id !== track.id") {{$index + 1}}
-        PlayingStatusBars.pull-right(ng-if="currentTrack.id === track.id && isPlaying === true")
+        span.pull-right.text-muted.m-l {{$index + 1}}
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{track.album}}', lazy-load, tempData="{{track.image}}")
         span.clear
@@ -15,8 +14,8 @@ section.scrollable.padder-lg.w-f-md
           small.text-muted.clear.text-ellipsis by {{track.artist}}    
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'albums'")
       li.list-group-item.clearfix.pointer(data-value="album;{{album.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('album', album.id) == true}", ng-click="$root.MediaPlayer.PlayAlbum(album)", ng-repeat="album in data | limitTo:itemLimit")
-        span.pull-right.text-muted.m-l(ng-if="$root.MediaPlayer.checkIfNowPlaying('album', album.id) != true") {{$index + 1}}
-        PlayingStatusBars.pull-right(ng-if="$root.MediaPlayer.checkIfNowPlaying('album', album.id) == true")
+        span.pull-right.text-muted.m-l {{$index + 1}}
+
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{album.name}}', lazy-load, tempData="{{album.image}}")
         span.clear
@@ -24,8 +23,8 @@ section.scrollable.padder-lg.w-f-md
           small.text-muted.clear.text-ellipsis by {{album.artist}}    
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'artists'")
       li.list-group-item.clearfix.pointer(data-value="artist;{{artist.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('artist', artist.id) == true}", ng-click="$root.MediaPlayer.playArtist(artist)", ng-repeat="artist in data | limitTo:itemLimit")
-        span.pull-right.text-muted.m-l(ng-if="$root.MediaPlayer.checkIfNowPlaying('artist', artist.id) != true") {{$index + 1}}
-        PlayingStatusBars.pull-right(ng-if="$root.MediaPlayer.checkIfNowPlaying('artist', artist.id) == true")
+        span.pull-right.text-muted.m-l {{$index + 1}}
+
         span.pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{artist.nane}}', lazy-load, tempData="{{artist.image}}")
         span.clear

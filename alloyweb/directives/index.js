@@ -17,7 +17,6 @@ import PlaylistSelector from "./ui/playlistselector";
 import StarRatingLabel from "./ui/starratinglabel";
 import SearchBar from "./ui/searchbar";
 import ScrollSaver from "./ui/scrollsaver";
-import PlayingStatusBars from "./ui/playingstatusbars";
 import VolumeSlider from "./ui/volumeslider";
 
 export default angular
@@ -41,6 +40,5 @@ export default angular
   .directive("volumeslider", VolumeSlider)
   .directive("searchbar", SearchBar)
   .directive("scrollsaver", ScrollSaver)
-  .directive("playingstatusbars", PlayingStatusBars)
   .directive("playlistselector", PlaylistSelector)
 ;

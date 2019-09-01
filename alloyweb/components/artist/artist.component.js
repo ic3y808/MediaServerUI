@@ -19,6 +19,7 @@ class ArtistController {
     this.AppUtilities.showLoader();
 
     $scope.refresh = () => {
+      if ($rootScope.artist && $rootScope.artist.artist && $routeParams.id === $rootScope.artist.artist.id) { return; }
       this.Logger.debug("refresh artist");
       AlloyDbService.refreshArtist($routeParams.id);
     };
@@ -58,25 +59,11 @@ class ArtistController {
       this.MediaPlayer.loadTrack(0);
     };
 
-    $scope.getLinkIcon = function (link) {
-      var base = "icon-";
-      switch (link.type) {
-        case "discogs": { return base + link.type; }
-        case "wikipedia": { return base + link.type; }
-        case "myspace": { return base + link.type; }
-        case "last": { return base + link.type; }
-        case "wikidata": { return base + link.type; }
-        case "allmusic": { return base + link.type; }
-        case "facebook": { return base + link.type; }
-        case "twitter": { return base + link.type; }
-        case "beatport": { return base + link.type; }
-        case "youtube": { return base + link.type; }
-        case "bbc": { return base + link.type; }
-        case "soundcloud": { return base + link.type; }
-        case "bandcamp": { return base + link.type; }
-        default: { return base + "external-link"; }
-      }
+    $scope.isDisabled = () => {
+      if ($rootScope.artist.albums || $rootScope.artist.EPs || $rootScope.artist.singles) { return false; }
+      else { return true; }
     };
+    
 
     $scope.starArtist = () => {
       this.Logger.info("Trying to star artist: " + this.$rootScope.artist.artist.name);

@@ -4,6 +4,7 @@ const mime = require("mime-types");
 const fs = require("fs");
 const del = require("del");
 const shell = require("shelljs");
+const jimp = require("jimp");
 const { ipcRenderer } = require("electron");
 var loggerTag = "MediaScannerBase";
 
@@ -310,25 +311,35 @@ module.exports = class MediaScannerBase {
     if (track) {
       //this.updateStatus("Collecting album art ", true, track.path);
       var coverId = "cvr_" + track.album_id;
-      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
+      var coverFileOrig = path.join(process.env.COVER_ART_DIR, coverId + ".orig.jpg");
+      var coverFileThumb = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
 
-      var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
-      var existingCover = stmt.all(coverId);
-      if (!fs.existsSync(coverFile)) {
+
+      if (!fs.existsSync(coverFileThumb) || !fs.existsSync(coverFileOrig)) {
         return this.mm.parseFile(track.path).then((metadata) => {
+          var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
+          var existingCover = stmt.all(coverId);
+
           if (existingCover.length === 0) {
             this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
           }
 
           if (metadata.common.picture) {
 
-            fs.writeFile(coverFile, metadata.common.picture[0].data, (err) => {
+            fs.writeFile(coverFileOrig, metadata.common.picture[0].data, (err) => {
               if (err) {
                 this.error(err);
               }
+
+              jimp.read(coverFileOrig).then((image) => {
+
+                image.resize(150, jimp.AUTO);
+                image.writeAsync(coverFileThumb);
+              });
+
+
               this.db.prepare("UPDATE Tracks SET cover_art=? WHERE id=?").run(coverId, track.id);
             });
-
           }
           return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
         });

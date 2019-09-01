@@ -1,175 +1,51 @@
-section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style="padding:0px;")
-  section.content.artist
-    header.artist-header(style='background-image: url({{$root.artist.image}});')
-      h1.monthly-listeners.large(dir='auto') {{$root.artist.artist.name}}
-      .header-buttons
-        button.spotify-btn.btn-black.btn--narrow(ng-click="shuffle()") PLAY
-      .header-buttons
-        starratinglabel(artist="artist")
-      .header-buttons
-        button.spotify-btn.btn-black.btn--narrow(ng-click="starArtist()", title='Save to Your Library') {{$root.artist.artist.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.artist", style="padding:0px;")
+  section.content
+    .container-fluid
+      div.padder.m-t-sm
+        .col-xs-12.col-lg-3.col-xl-4
+          div
+            header.TrackListHeader
+              div
+                div(draggable='true')
+                  .media-object
+                    div
+                      .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true' style='width: auto; height: auto;')
+                        div
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{$root.artist.image}}");')
+                      .mo-info
+                        .mo-info-name(title='{{$root.artist.artist.name}}')
+                          span(dir='auto') {{$root.artist.artist.name}}
+              
+              
+              .TrackListHeader__body
+                .TrackListHeader__entity-name
+                  h2
+                    span(dir='auto') {{$root.artist.artist.name}}
 
-      nav.tab-nav-list
-        ul.selection-tabs
-          li.selection-tab.active
-            div
-              a.selection-tab-title.selection-tab-title-selected(data-target='#overview', data-toggle='tab') Overview
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#all', data-toggle='tab') All Tracks
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#related', data-toggle='tab') Related Artists
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#about', data-toggle='tab') Artist Info
-    section.scrollable
-      .tab-content
-        #overview.tab-pane.active
-          section.artist-music.container-fluid(ng-if="$root.artist.popular_tracks.length > 0")
-            .row
-              .contentSpacing
-                section.artist-toptracks
-                  h1.section-title(dir='auto') Popular
-                  section.tracklist-container.full-width
-                    tracklist(data="$root.artist.popular_tracks", canaddplaylist="true")
-                    
-          section.artist-albums(ng-if="$root.artist.albums.length > 0")
-            .contentSpacing
-              h1.section-title(dir='auto') Albums
-              .row
-                .container-fluid.container-fluid--noSpaceAround
-                  .section-row.row
-                    .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="album in $root.artist.albums")
-                      div
-                        div(draggable='true')
-                          .media-object
-                            div
-                              .react-contextmenu-wrapper
-                                a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{album.id}}", href='/album/{{album.id}}', aria-hidden='true', style='width: auto; height: auto;')
-                                  div
-                                    .icon
-                                      svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
-                                        title Album
-                                        path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
-                                    .cover-art-image.cover-art-image-loaded(style='background-image: url("{{album.image}}");')
-                              .mo-info
-                                .react-contextmenu-wrapper
-                                  a.mo-info-name(href='/album/{{album.id}}', title='Holograms', dir='auto') {{album.name}}
-                            .mo-meta.ellipsis-one-line
-                              .react-contextmenu-wrapper
-                                a(href='/artist/{{album.artist_id}}', dir='auto') {{album.artist}}
-                  
-          section.artist-singles.artist-albums(ng-if="$root.artist.EPs.length > 0")
-            .contentSpacing
-              h1.section-title(dir='auto') EPs
-              .container-fluid.container-fluid--noSpaceAround
-                .section-row.grid--limit.row
-                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="ep in $root.artist.EPs")
-                    div
-                      div(draggable='true')
-                        .media-object
-                          div
-                            .react-contextmenu-wrapper
-                              a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{ep.id}}", href='/album/{{ep.id}}', aria-hidden='true', style='width: auto; height: auto;')
-                                div
-                                  .icon
-                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
-                                      title Album
-                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
-                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{ep.image}}");')
-                            .mo-info
-                              .react-contextmenu-wrapper
-                                a.mo-info-name(href='/album/{{ep.id}}', title='Bass Real Big', dir='auto') {{ep.name}}
-                          .mo-meta.ellipsis-one-line
-                            .react-contextmenu-wrapper
-                              a(href='/artist/{{ep.artist_id}}', dir='auto') {{ep.artist}}
-                
-          section.artist-appears-on.artist-albums(ng-if="$root.artist.singles.length > 0")
-            .contentSpacing
-              h1.section-title(dir='auto') Singles
-              .container-fluid.container-fluid--noSpaceAround
-                .section-row.grid--limit.row
-                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="single in $root.artist.singles")
-                    div
-                      div(draggable='true')
-                        .media-object
-                          div
-                            .react-contextmenu-wrapper
-                              a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{single.id}}", href='/album/{{single.id}}', aria-hidden='true', style='width: auto; height: auto;')
-                                div
-                                  .icon
-                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
-                                      title Album
-                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
-                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{single.image}}");')
-                            .mo-info
-                              .react-contextmenu-wrapper
-                                a.mo-info-name(href='/album/{{single.id}}', title='Firepower 200', dir='auto') {{single.name}}
-                          .mo-meta.ellipsis-one-line
-                            .react-contextmenu-wrapper
-                              a(href='/artist/{{single.artist_id}}', dir='auto') {{single.artist}}
+                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info {{$root.artist.total_tracks}} {{$root.artist.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.artist.size}}
+                .TrackListHeader__children
+                  .TrackListHeader__button.TrackListHeader__button--bottom
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
+              .TrackListHeader__button.TrackListHeader__button--top
+                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
+              .TrackListHeader__button.TrackListHeader__button--top
+                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="starArtist()", ng-disabled="isDisabled()", title='Save to Your Library') {{$root.album.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+              .TrackListHeader__button.TrackListHeader__button--top
+                starratinglabel(ng-disabled="isDisabled()", album="$root.artist.artist", extrastyles="btn-block")
+        .col-xs-12.col-lg-8.col-xl-12
+          .row
           
-          section.artist-appears-on.artist-albums(ng-if="$root.artist.other.length > 0")
-            .contentSpacing
-              h1.section-title(dir='auto') Other
-              .container-fluid.container-fluid--noSpaceAround
-                .section-row.grid--limit.row
-                  .col-xs-6.col-sm-4.col-md-3.col-lg-2.col-xl-2(ng-repeat="other in $root.artist.other")
-                    div
-                      div(draggable='true')
-                        .media-object
-                          div
-                            .react-contextmenu-wrapper
-                              a.cover-art.shadow.cover-art--with-auto-height.linking(data-value="album;{{other.id}}", href='/album/{{other.id}}', aria-hidden='true', style='width: auto; height: auto;')
-                                div
-                                  .icon
-                                    svg(width='80', height='79', viewBox='0 0 80 79', xmlns='http://www.w3.org/2000/svg')
-                                      title Album
-                                      path(d='M76.8 3.138v72.126H3.2V3.138h73.6zM80 0H0v78.398h80V0zM40 20.8c-9.72 0-17.6 7.88-17.6 17.6C22.4 48.12 30.28 56 40 56c9.72 0 17.6-7.88 17.6-17.6 0-9.72-7.88-17.6-17.6-17.6zm0 3.2c7.94 0 14.4 6.46 14.4 14.4S47.94 52.8 40 52.8s-14.4-6.46-14.4-14.4S32.06 24 40 24z', fill='currentColor', fill-rule='evenodd')
-                                  .cover-art-image.cover-art-image-loaded(style='background-image: url("{{other.image}}");')
-                            .mo-info
-                              .react-contextmenu-wrapper
-                                a.mo-info-name(href='/album/{{other.id}}', title='Firepower 200', dir='auto') {{other.name}}
-                          .mo-meta.ellipsis-one-line
-                            .react-contextmenu-wrapper
-                              a(href='/artist/{{other.artist_id}}', dir='auto') {{other.artist}}
+            span.text-muted(ng-if="$root.artist.artist.biography")
+            p
+            | {{$root.artist.artist.biography}}  
+          .row
+            a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in $root.artist.links", href='{{link.target}}', target="_blank")
+              i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")
 
-        #all.tab-pane
-          section.artist-music.container-fluid(ng-if="$root.artist.tracks.length > 0")
-            .row
-              .contentSpacing
-                section.artist-toptracks
-                  section.tracklist-container.full-width
-                    itemtable(type="tracks", title="Tracks", data="$root.artist.tracks", limit="$root.artist.tracks.length", refreshclick="refresh()", viewmorelink="", showimages="true")
 
-        #related.tab-pane
-          section.artist-music.container-fluid
-            .row
-              .contentSpacing
-                section.artist-toptracks
-                  h1.section-title(dir='auto') Related
-                  .vbox.stretch
-
-        #about.tab-pane
-           section.artist-appears-on.artist-albums(ng-if="$root.artist.singles.length > 0")
-            .contentSpacing
-              h1.section-title(dir='auto') Info
-              .container-fluid.container-fluid--noSpaceAround
-            
-                div
-                  small.text-uc.text-xs.text-muted Path
-                  p {{$root.artist.artist.path}}
-                  small.text-uc.text-xs.text-muted Size
-                  p {{$root.artist.size}}
-                  small.text-uc.text-xs.text-muted Type
-                  p {{$root.artist.artist.type}}
-                  small.text-uc.text-xs.text-muted Status
-                  p {{$root.artist.artist.status}}
-                  small.text-uc.text-xs.text-muted info
-                  p {{$root.artist.artist.biography}}
-                  .line
-                  small.text-uc.text-xs.text-muted 
-                  p.m-t-sm 
-                    a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in $root.artist.links", href='{{link.target}}', target="_blank")
-                      i.alloy-icon.icon(ng-class="$parent.getLinkIcon(link)")
+        .col-xs-12.col-lg-4.col-xl-12
+          itemtable(ng-if="$root.artist.albums.length > 0", type="albums", title="Albums", data="$root.artist.albums", limit="$root.artist.albums", showimages="true")           
+        .col-xs-12.col-lg-4.col-xl-12
+          itemtable(ng-if="$root.artist.EPs.length > 0", type="albums", title="EPS", data="$root.artist.EPs", limit="$root.artist.EPs", showimages="true")           
+        .col-xs-12.col-lg-4.col-xl-12
+          itemtable(ng-if="$root.artist.singles.length > 0", type="albums", title="Singles", data="$root.artist.singles", limit="$root.artist.singles", showimages="true")           

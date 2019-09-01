@@ -68,6 +68,11 @@ google-cast-launcher:hover {
   padding-bottom: 5px !important;
 }
 
+.centered-span{
+  text-align: center;
+  width:100%;
+}
+
 .autocomplete-container {
   max-height: 70vh;
   overflow-y: auto;
@@ -2303,7 +2308,7 @@ a.text-info:hover {
   min-width: 65px;
 }
 
-.tracklist-row .more .react-contextmenu-wrapper {
+.tracklist-row .more  {
   display: none;
 }
 
@@ -2345,8 +2350,8 @@ a.text-info:hover {
   display: none;
 }
 
-.tracklist-row:focus .more .react-contextmenu-wrapper,
-.tracklist-row:hover .more .react-contextmenu-wrapper {
+.tracklist-row:focus .more ,
+.tracklist-row:hover .more  {
   display: block;
 }
 
@@ -2474,6 +2479,7 @@ a.text-info:hover {
   outline: 0;
   position: relative;
   background-color: #282828;
+  
 }
 
 .cover-art.shadow {
@@ -2495,6 +2501,7 @@ a.text-info:hover {
   background-size: cover !important;
   background-position: 50%;
   opacity: 0;
+  
 }
 
 .cover-art .cover-art-image-loaded {
@@ -2614,16 +2621,14 @@ a.text-info:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
-  display: block;
+  display: none;
 }
-
-
 
 .mo-meta {
   text-align: center;
 }
 
-.mo-meta .react-contextmenu-wrapper {
+.mo-meta  {
   display: inline;
 }
 
@@ -2640,17 +2645,6 @@ a.text-info:hover {
 .mo-meta a:active,
 .mo-meta a:hover {
   opacity: 1;
-}
-
-.react-contextmenu-wrapper {
-  display: inline;
-}
-
-.react-contextmenu-wrapper>button {
-  min-width: 30px !important;
-  width: 30px !important;
-  max-width: 30px !important;
-  height: 100%;
 }
 
 .tab-nav-list {
@@ -3065,6 +3059,7 @@ div.jp-progress {
 }
 
 @media (min-width: 768px) {
+  
   .navbar {
     border-radius: 4px;
   }

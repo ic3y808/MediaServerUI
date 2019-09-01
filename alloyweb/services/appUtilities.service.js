@@ -10,6 +10,7 @@ export default class AppUtilities {
     this.$rootScope.goBack = this.goBack;
     this.$rootScope.goForward = this.goForward;
     this.$rootScope.getBackgroundStyle = this.getBackgroundStyle;
+    this.$rootScope.getLinkIcon = this.getLinkIcon;
     this.$rootScope.apply = this.apply;
     this.$rootScope.updateGridRows = this.updateGridRows;
     this.$rootScope.decryptPassword = this.decryptPassword;
@@ -216,5 +217,25 @@ export default class AppUtilities {
 
   decryptPassword(pass) {
     return CryptoJS.AES.decrypt(pass, "12345").toString(CryptoJS.enc.Utf8);
+  }
+
+  getLinkIcon(link) {
+    var base = "icon-";
+    switch (link.type) {
+      case "discogs": { return base + link.type; }
+      case "wikipedia": { return base + link.type; }
+      case "myspace": { return base + link.type; }
+      case "last": { return base + link.type; }
+      case "wikidata": { return base + link.type; }
+      case "allmusic": { return base + link.type; }
+      case "facebook": { return base + link.type; }
+      case "twitter": { return base + link.type; }
+      case "beatport": { return base + link.type; }
+      case "youtube": { return base + link.type; }
+      case "bbc": { return base + link.type; }
+      case "soundcloud": { return base + link.type; }
+      case "bandcamp": { return base + link.type; }
+      default: { return base + "external-link"; }
+    }
   }
 }
