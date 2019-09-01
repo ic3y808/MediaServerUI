@@ -16,28 +16,6 @@ export default class AuthenticationService {
       if (status.result === "success") { callback({ success: true }); }
       else { callback({ success: false, message: "Username or password is incorrect" }); }
     });
-    /* Dummy authentication for testing, uses $timeout to simulate api call
-     ----------------------------------------------*/
-    //this.$timeout(() => {
-    //  var response = null;
-    //  this.UserService.GetByUsername(username)
-    //    .then(function (user) {
-    //      if (user !== null && user.password === password) {
-    //        response = { success: true };
-    //      } else {
-    //        response = { success: false, message: "Username or password is incorrect" };
-    //      }
-    //      callback(response);
-    //    });
-    //}, 1000);
-
-    /* Use this for real authentication
-     ----------------------------------------------*/
-    //$http.post('/api/authenticate', { username: username, password: password })
-    //    .success(function (response) {
-    //        callback(response);
-    //    });
-
   }
 
   SetCredentials(username, password) {

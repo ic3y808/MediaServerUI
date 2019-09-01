@@ -355,6 +355,10 @@ export default class AlloyApi {
     return this._get("user/login", data);
   }
 
+  checkinUser(username) {
+    return this._put("user/checkin", { username });
+  }
+
   love(params) {
     return this._put("lastfm/love", params);
   }

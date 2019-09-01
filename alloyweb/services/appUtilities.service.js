@@ -66,7 +66,7 @@ export default class AppUtilities {
 
     return array;
   }
-  
+
   showLoader() {
     $("#root.root").css("display", "none");
     $(".loader").css("display", "block");
@@ -153,8 +153,10 @@ export default class AppUtilities {
     );
   }
 
-  formatIsoTime(isoDate){
-    return moment(isoDate).format("LLLL"); 
+  formatIsoTime(isoDate) {
+    var time = moment(isoDate).format("LLLL");
+    if (time.indexOf("Invalid date") !== -1) { time = "Never"; }
+    return time;
   }
 
   formatTime(seconds) {
@@ -315,7 +317,7 @@ export default class AppUtilities {
 
 window.Parsley.addValidator("uppercase", {
   requirementType: "number",
-  validateString: function(value, requirement) {
+  validateString: function (value, requirement) {
     var uppercases = value.match(/[A-Z]/g) || [];
     return uppercases.length >= requirement;
   },
@@ -327,7 +329,7 @@ window.Parsley.addValidator("uppercase", {
 //has lowercase
 window.Parsley.addValidator("lowercase", {
   requirementType: "number",
-  validateString: function(value, requirement) {
+  validateString: function (value, requirement) {
     var lowecases = value.match(/[a-z]/g) || [];
     return lowecases.length >= requirement;
   },
@@ -339,7 +341,7 @@ window.Parsley.addValidator("lowercase", {
 //has number
 window.Parsley.addValidator("number", {
   requirementType: "number",
-  validateString: function(value, requirement) {
+  validateString: function (value, requirement) {
     var numbers = value.match(/[0-9]/g) || [];
     return numbers.length >= requirement;
   },
@@ -351,7 +353,7 @@ window.Parsley.addValidator("number", {
 //has special char
 window.Parsley.addValidator("special", {
   requirementType: "number",
-  validateString: function(value, requirement) {
+  validateString: function (value, requirement) {
     var specials = value.match(/[^a-zA-Z0-9]/g) || [];
     return specials.length >= requirement;
   },

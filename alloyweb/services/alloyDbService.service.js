@@ -35,6 +35,10 @@ export default class AlloyDbService {
                 this.isLoggedIn = true;
                 this.isLoggingIn = false;
                 this.Logger.info("Connected to alloydb");
+                var loggedInUser = this.$rootScope.globals.currentUser;
+                if (loggedInUser) {
+                  this.checkinUser(loggedInUser.username);
+                }
                 if (!this.isPreloaded) { this.preload(); }
               } else {
                 this.isLoggingIn = false;
@@ -427,6 +431,12 @@ export default class AlloyDbService {
   loginUser(params) {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.loginUser(params); }
+    else { return false; }
+  }
+
+  checkinUser(username) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.checkinUser(username); }
     else { return false; }
   }
 

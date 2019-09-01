@@ -1,4 +1,4 @@
-export default function ApplicationRun($window, $rootScope, $location, $timeout, $cookies, $http, AuthenticationService, Logger, Backend, MediaPlayer, AppUtilities, AlloyDbService) {
+export default function ApplicationRun($window, $rootScope, $location, $timeout, $cookies, $http, AuthenticationService, Logger, MediaPlayer, AppUtilities, AlloyDbService) {
   "ngInject";
   Logger.info("Starting WebUI");
   $rootScope.settings = [];
@@ -24,15 +24,20 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
   };
 
   $rootScope.$on("$locationChangeStart", function (event, next, current) {
-    var host = $location.host();
-    if (host === "localhost") {
-      AuthenticationService.SetCredentials("logged in", "logged in");
-      return;
-    }
+
     var currentPath = $location.path();
     var restrictedPage = $.inArray(currentPath, $rootScope.publicPaths) === -1;
     if (currentPath.indexOf("/share") > -1) { restrictedPage = false; }
     var loggedIn = $rootScope.globals.currentUser;
+
+    var host = $location.host();
+    if ((host === "localhost" || host === "127.0.0.1") && loggedIn) {
+      return;
+    } else if (host === "localhost" || host === "127.0.0.1") {
+      AuthenticationService.SetCredentials("localhost_user", "localhost_user");
+      return;
+    }
+
     if (restrictedPage && !loggedIn) {
       $location.path("/login");
     }
@@ -87,7 +92,7 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
           type: "",
           username: "",
           password: ""
-        };        
+        };
       }
     }).catch((err) => {
       this.error(err);

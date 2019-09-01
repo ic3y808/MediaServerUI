@@ -38,7 +38,6 @@ router.get("/login", function (req, res) {
 });
 
 /**
-
  * @route PUT /user/create
  * @produces application/json 
  * @consumes application/json 
@@ -63,6 +62,26 @@ router.put("/create", function (req, res) {
       res.send(new structures.StatusResult("error")).end();
     }
   } else { return res.sendStatus(401); }
+});
+
+/**
+ * @route PUT /user/checkin
+ * @produces application/json 
+ * @consumes application/json 
+ * @group user - User API
+ * @param {string} username.query required username of user.
+ * @returns {string} 200 - a message for success
+ * @security ApiKeyAuth
+ */
+router.put("/checkin", function (req, res) {
+  var username = req.query.username;
+  try {
+    res.locals.db.prepare("UPDATE Users SET last_login=? WHERE username=?").run(new Date().toISOString(), username);
+    res.send(new structures.StatusResult("success")).end();
+  } catch (err) {
+    res.locals.error(err);
+    res.send(new structures.StatusResult("error")).end();
+  }
 });
 
 /**
