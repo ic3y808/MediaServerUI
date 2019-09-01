@@ -17,6 +17,11 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     expires: "",
     url: ""
   };
+  $rootScope.newUser = {
+    type: "",
+    username: "",
+    password: ""
+  };
 
   $rootScope.$on("$locationChangeStart", function (event, next, current) {
     var host = $location.host();
@@ -70,6 +75,22 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
         expires: "",
         url: ""
       };
+    });
+  };
+
+  $rootScope.createUser = function () {
+    AlloyDbService.newUser().then((status) => {
+      if (status.result === "success") {
+        AlloyDbService.refreshUsers();
+        $("#createUserModal").modal("toggle");
+        $rootScope.newUser = {
+          type: "",
+          username: "",
+          password: ""
+        };        
+      }
+    }).catch((err) => {
+      this.error(err);
     });
   };
 

@@ -339,6 +339,22 @@ export default class AlloyApi {
     return this._delete("playlist/playlists", data);
   }
 
+  getUsers() {
+    return this._get("user/users");
+  }
+
+  createUser(data) {
+    return this._put("user/create", data);
+  }
+
+  deleteUser(id) {
+    return this._delete("user", { id });
+  }
+
+  loginUser(data) {
+    return this._get("user/login", data);
+  }
+
   love(params) {
     return this._put("lastfm/love", params);
   }

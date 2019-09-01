@@ -387,3 +387,34 @@ module.exports.LibraryStats = class LibraryStats {
     this.memory_used = 0;
   }
 };
+
+/**
+ * @typedef User
+ * @property {integer} id
+ * @property {string} type
+ * @property {string} username
+ * @property {string} password
+ * @property {string} lastfm_username
+ * @property {string} lastfm_password
+ * @property {string} registered
+ * @property {string} last_login
+ * @property {string} now_playing
+ */
+module.exports.User = class User {
+
+  constructor(obj) {
+    if (!arguments.length) {
+      this.id = -1;
+      this.type = "";
+      this.username = "";
+      this.password = "";
+      this.lastfm_username = "";
+      this.lastfm_password = "";
+      this.registered = "";
+      this.last_login = "";
+      this.now_playing = "";
+    } else {
+      Object.assign(this, obj);
+    }
+  }
+};
