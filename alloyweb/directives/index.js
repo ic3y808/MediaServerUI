@@ -18,6 +18,7 @@ import StarRatingLabel from "./ui/starratinglabel";
 import SearchBar from "./ui/searchbar";
 import ScrollSaver from "./ui/scrollsaver";
 import VolumeSlider from "./ui/volumeslider";
+import TopPlayedGenres from "./charts/top-played-genres";
 
 export default angular
   .module("app.directives", [])
@@ -41,4 +42,5 @@ export default angular
   .directive("searchbar", SearchBar)
   .directive("scrollsaver", ScrollSaver)
   .directive("playlistselector", PlaylistSelector)
+  .directive("topPlayedGenres", TopPlayedGenres)
 ;

@@ -1,11 +1,34 @@
 
 
 section.scrollable.padder-lg.w-f-md
-  .row
-    a.u.pull-right.h6.text-muted.m-l(ng-click="refresh()")
-      i#refresh.icon-refresh.i-lg.inline
-    a(href="{{viewmorelink}}").u.pull-right.h6.text-muted.m-l View More
-    h2.clear.font-thin Tags
-  .row 
-    .js-tube-tags-target(data-highcharts-chart='1')
+  .chartWrapper
+    #cont.container-fluid
+      .row
+        #bar-chart.col-sm-12.col-md-12.col-lg-12
+          .panel.panel-default
+            .panel-heading
+              .btn-group.pull-right
+                a.btn.btn-default.btn-sm(ng-click='decreaseSmaPeriod()') -
+                a.btn.btn-default.btn-sm(href='#', disabled) {{smaPeriod}}
+                a.btn.btn-default.btn-sm(ng-click='increaseSmaPeriod()') +
+              h4 Plays per day
+            .panel-body
+              canvas#bar.chart.chart-bar(chart-data='plays_over_time_data' chart-labels='plays_over_time_labels' chart-series='plays_over_time_series' chart-options='plays_over_time_options' chart-colors="colors" chart-dataset-override="datasetOverride" width='523' height='261' style='display: block; width: 523px; height: 261px;')
+
+
+        #bar-chart.col-sm-12.col-md-12.col-lg-12
+          .panel.panel-default
+            .panel-heading Top Genres
+            .panel-body
+              canvas#bar.chart.chart-bar(chart-data='data' chart-labels='labels' chart-series='series' chart-options='options' width='523' height='261' style='display: block; width: 523px; height: 261px;')
+
+        #bar-chart.col-sm-12.col-md-12.col-lg-12
+          .panel.panel-default
+            .panel-heading Plays Per Hour
+            .panel-body
+              canvas#bar.chart.chart-radar(chart-data='plays_by_hour' chart-labels='plays_by_hour_labels' chart-series='series' chart-options='options' width='523' height='261' style='display: block; width: 523px; height: 261px;')
+
+
+   
+
       

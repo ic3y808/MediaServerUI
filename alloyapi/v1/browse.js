@@ -246,6 +246,38 @@ router.get("/genre", function (req, res) {
   res.json(result).end();
 });
 
+var getDefaultHours = function () {
+  var h = {};
+  for (var i = 0; i < 25; i++) { h[i] = 0; }
+  return h;
+
+};
+
+var calculatePlaysByHour = function (result, history) {
+  result.charts.plays_by_hour = [];
+
+  history.forEach((item) => {
+    var dateString = moment.unix(item.time).format("MM/DD/YYYY");
+    var timeString = moment.unix(item.time).format("H");
+    var existingDay = _.find(result.charts.plays_by_hour, { date: dateString });
+    if (existingDay) {
+      Object.keys(existingDay.hours).forEach((key) => {
+        if (timeString === key) {
+          existingDay.hours[key] += 1;
+        }
+      });
+    }
+    else {
+      result.charts.plays_by_hour.push({
+        date: dateString,
+        hours: getDefaultHours()
+      });
+    }
+
+  });
+};
+
+
 /**
  * This function comment is parsed by doctrine
  * @route GET /browse/charts
@@ -263,14 +295,30 @@ router.get("/charts", function (req, res) {
 
   var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time ASC").all();
   var tags = [];
+  var genres = [];
+  var plays_by_hour = [];
+
+
+  calculatePlaysByHour(result, history);
+
   history.forEach((item) => {
-    var plays = 0;
-    var t = res.locals.db.prepare("SELECT play_count FROM Tracks WHERE id=?").get(item.id);
-    if (t) { plays = t.play_count; }
+    //if (item.genre !== "No Genre") {
+
+
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
-    if (existing) { existing.tags.push({ genre: item.genre, play_count: plays }); }
-    else { tags.push({ date: dateString, tags: [{ genre: item.genre, play_count: plays }] }); }
+    if (existing) {
+      existing.tags.push({ genre: item.genre, play_count: 1 });
+      existing.plays += 1;
+    }
+    else { tags.push({ date: dateString, plays: 1, tags: [{ genre: item.genre, play_count: 1 }] }); }
+
+
+    var existingGenre = _.find(genres, { genre: item.genre });
+    if (existingGenre) { existingGenre.play_count += 1; }
+    else { genres.push({ genre: item.genre, play_count: 1 }); }
+    // }
+
   });
 
   tags.forEach((tag) => {
@@ -280,7 +328,7 @@ router.get("/charts", function (req, res) {
       return 0;
     }
 
-    var tempTags = _.uniq(tag.tags.sort(compare), "genre").slice(0, 10);
+    var tempTags = _.uniq(tag.tags.sort(compare), "genre").slice(0, 100);
     tag.tags = [];
     tempTags.forEach((newTag) => {
       tag.tags.push(newTag.genre);
@@ -288,6 +336,7 @@ router.get("/charts", function (req, res) {
   });
 
   result.charts.tags = tags;
+  result.charts.genres = genres;
 
   var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
   result.charts.never_played_albums = [];
@@ -306,7 +355,6 @@ router.get("/charts", function (req, res) {
   });
 
   result.charts.never_played_albums = _.shuffle(result.charts.never_played_albums);
-
   result.charts.top_tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT ?").all(limit);
   result.charts.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
 
