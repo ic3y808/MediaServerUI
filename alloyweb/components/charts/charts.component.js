@@ -51,6 +51,17 @@ class ChartsController {
       }
     };
 
+    this.$scope.reloadPlaysByHour = () => {
+      var dates = _.map(this.$rootScope.charts.plays_by_hour, "date");
+
+      this.$scope.plays_by_hour_dates = [];
+      dates.forEach((date) => {
+        this.$scope.plays_by_hour_dates.push({ label: date });
+      });
+      this.$scope.plays_by_hour_selection = this.$scope.plays_by_hour_dates[this.$scope.plays_by_hour_dates.length - 1].label;
+      this.$scope.dateChanged();
+    };
+
     this.$scope.$watch("smaPeriod", (n, o) => {
       if (n !== o) {
         this.redraw();
@@ -59,16 +70,13 @@ class ChartsController {
 
     $rootScope.$watch("charts", (n, o) => {
       if (!o && n) {
-        var dates = _.map(this.$rootScope.charts.plays_by_hour, "date");
-
-        this.$scope.plays_by_hour_dates = [];
-        dates.forEach((date) => {
-          this.$scope.plays_by_hour_dates.push({ label: date });
-        });
-        this.$scope.plays_by_hour_selection = this.$scope.plays_by_hour_dates[this.$scope.plays_by_hour_dates.length - 1].label;
-        this.$scope.dateChanged();
+        this.$scope.reloadPlaysByHour();
       }
     });
+
+    if (this.$rootScope.charts && this.$rootScope.charts.plays_by_hour) {
+      this.$scope.reloadPlaysByHour();
+    }
 
   }
 
