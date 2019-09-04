@@ -4,16 +4,27 @@ section.scrollable.padder-lg.w-f-md
   .chartWrapper
     #cont.container-fluid
       .row
+
         #bar-chart.col-sm-12.col-md-12.col-lg-12
           .panel.panel-default
             .panel-heading
               .btn-group.pull-right
-                a.btn.btn-default.btn-sm(ng-click='decreaseSmaPeriod()') -
-                a.btn.btn-default.btn-sm(href='#', disabled) {{smaPeriod}}
-                a.btn.btn-default.btn-sm(ng-click='increaseSmaPeriod()') +
+                stepper.stepper(ng-model="smaPeriod" min="0" ngChanged="dateChanged" )
               h4 Plays per day
             .panel-body
-              canvas#bar.chart.chart-bar(chart-data='plays_over_time_data' chart-labels='plays_over_time_labels' chart-series='plays_over_time_series' chart-options='plays_over_time_options' chart-colors="colors" chart-dataset-override="datasetOverride" width='523' height='261' style='display: block; width: 523px; height: 261px;')
+              canvas#bar.chart.chart-bar(chart-data='plays_over_time_data' chart-labels='plays_over_time_labels' chart-series='plays_over_time_series' chart-options='plays_over_time_options'  chart-colors="colors" chart-dataset-override="datasetOverride" width='523' height='261' style='display: block; width: 523px; height: 261px;')
+
+        #bar-chart.col-sm-12.col-md-12.col-lg-12
+          .panel.panel-default
+            .panel-heading
+              .btn-group.pull-right
+                select.form-control(ng-model='plays_by_hour_selection' ng-change="dateChanged()")
+                  option(ng-selected='{{item.label == plays_by_hour_selection.label}}' ng-repeat='item in plays_by_hour_dates' value='{{item.label}}')
+                    | {{item.label}}
+
+              h4 Plays Each Hour
+            .panel-body
+              canvas#bar.chart.chart-radar(chart-data='plays_by_hour_data' chart-labels='plays_by_hour_labels' chart-series='plays_by_hour_series' chart-options='plays_by_hour_options' chart-dataset-override="datasetOverride")
 
 
         #bar-chart.col-sm-12.col-md-12.col-lg-12
@@ -21,12 +32,6 @@ section.scrollable.padder-lg.w-f-md
             .panel-heading Top Genres
             .panel-body
               canvas#bar.chart.chart-bar(chart-data='data' chart-labels='labels' chart-series='series' chart-options='options' width='523' height='261' style='display: block; width: 523px; height: 261px;')
-
-        #bar-chart.col-sm-12.col-md-12.col-lg-12
-          .panel.panel-default
-            .panel-heading Plays Per Hour
-            .panel-body
-              canvas#bar.chart.chart-radar(chart-data='plays_by_hour' chart-labels='plays_by_hour_labels' chart-series='series' chart-options='options' width='523' height='261' style='display: block; width: 523px; height: 261px;')
 
 
    

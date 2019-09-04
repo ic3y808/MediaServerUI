@@ -277,34 +277,9 @@ var calculatePlaysByHour = function (result, history) {
   });
 };
 
-
-/**
- * This function comment is parsed by doctrine
- * @route GET /browse/charts
- * @produces application/json 
- * @consumes application/json 
- * @group browse - Browse API
- * @param {int} limit.query Max number of songs to return.
- * @security ApiKeyAuth
- */
-router.get("/charts", function (req, res) {
-  var limit = req.query.limit ? req.query.limit : 40;
-  var result = {
-    charts: {}
-  };
-
-  var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time ASC").all();
+var calculateTags = function (result, history) {
   var tags = [];
-  var genres = [];
-  var plays_by_hour = [];
-
-
-  calculatePlaysByHour(result, history);
-
   history.forEach((item) => {
-    //if (item.genre !== "No Genre") {
-
-
     var dateString = moment.unix(item.time).format("MM/DD/YYYY");
     var existing = _.find(tags, { date: dateString });
     if (existing) {
@@ -312,13 +287,6 @@ router.get("/charts", function (req, res) {
       existing.plays += 1;
     }
     else { tags.push({ date: dateString, plays: 1, tags: [{ genre: item.genre, play_count: 1 }] }); }
-
-
-    var existingGenre = _.find(genres, { genre: item.genre });
-    if (existingGenre) { existingGenre.play_count += 1; }
-    else { genres.push({ genre: item.genre, play_count: 1 }); }
-    // }
-
   });
 
   tags.forEach((tag) => {
@@ -336,13 +304,24 @@ router.get("/charts", function (req, res) {
   });
 
   result.charts.tags = tags;
-  result.charts.genres = genres;
+};
 
-  var allAlbums = res.locals.db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
+var calculateGenres = function (result, history) {
+  var genres = [];
+  history.forEach((item) => {
+    var existingGenre = _.find(genres, { genre: item.genre });
+    if (existingGenre) { existingGenre.play_count += 1; }
+    else { genres.push({ genre: item.genre, play_count: 1 }); }
+  });
+  result.charts.genres = genres;
+};
+
+var calculateNeverPlayed = function (result, db, limit) {
+  var allAlbums = db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
   result.charts.never_played_albums = [];
   allAlbums.forEach((album) => {
     if (result.charts.never_played_albums.length >= limit) { return; }
-    var allTracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
+    var allTracks = db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
     if (allTracks.length > 0) {
       var anyPlays = allTracks.every((obj) => {
         return obj.play_count === 0;
@@ -355,9 +334,33 @@ router.get("/charts", function (req, res) {
   });
 
   result.charts.never_played_albums = _.shuffle(result.charts.never_played_albums);
-  result.charts.top_tracks = res.locals.db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT ?").all(limit);
-  result.charts.never_played = res.locals.db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
+  result.charts.never_played = db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
+};
 
+var calculateTop = function (result, db, limit) {
+  result.charts.top_tracks = db.prepare("SELECT * FROM Tracks ORDER BY play_count DESC LIMIT ?").all(limit);
+};
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /browse/charts
+ * @produces application/json 
+ * @consumes application/json 
+ * @group browse - Browse API
+ * @param {int} limit.query Max number of songs to return.
+ * @security ApiKeyAuth
+ */
+router.get("/charts", function (req, res) {
+  var limit = req.query.limit ? req.query.limit : 40;
+  var result = {
+    charts: {}
+  };
+
+  var history = res.locals.db.prepare("SELECT * FROM History ORDER BY time ASC").all();
+  calculatePlaysByHour(result, history);
+  calculateTags(result, history);
+  calculateGenres(result, history);
+  calculateNeverPlayed(result, res.locals.db, limit);
+  calculateTop(result, res.locals.db, limit);
   res.json(result).end();
 });
 
