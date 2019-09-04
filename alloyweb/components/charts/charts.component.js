@@ -69,9 +69,7 @@ class ChartsController {
     });
 
     $rootScope.$watch("charts", (n, o) => {
-      if (!o && n) {
-        this.$scope.reloadPlaysByHour();
-      }
+      this.$scope.reloadPlaysByHour();
     });
 
     if (this.$rootScope.charts && this.$rootScope.charts.plays_by_hour) {
