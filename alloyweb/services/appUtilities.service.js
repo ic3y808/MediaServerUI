@@ -1,10 +1,10 @@
 import CryptoJS from "crypto-js";
 import moment from "moment";
+var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
 
 export default class AppUtilities {
   constructor($rootScope, $timeout, Logger) {
     "ngInject";
-    this.keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=";
     this.$rootScope = $rootScope;
     this.$timeout = $timeout;
     this.Logger = Logger;
@@ -242,10 +242,10 @@ export default class AppUtilities {
       }
 
       output = output +
-        this.keyStr.charAt(enc1) +
-        this.keyStr.charAt(enc2) +
-        this.keyStr.charAt(enc3) +
-        this.keyStr.charAt(enc4);
+        keyStr.charAt(enc1) +
+        keyStr.charAt(enc2) +
+        keyStr.charAt(enc3) +
+        keyStr.charAt(enc4);
       chr1 = chr2 = chr3 = "";
       enc1 = enc2 = enc3 = enc4 = "";
     } while (i < input.length);
@@ -268,10 +268,10 @@ export default class AppUtilities {
     input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
 
     do {
-      enc1 = this.keyStr.indexOf(input.charAt(i++));
-      enc2 = this.keyStr.indexOf(input.charAt(i++));
-      enc3 = this.keyStr.indexOf(input.charAt(i++));
-      enc4 = this.keyStr.indexOf(input.charAt(i++));
+      enc1 = keyStr.indexOf(input.charAt(i++));
+      enc2 = keyStr.indexOf(input.charAt(i++));
+      enc3 = keyStr.indexOf(input.charAt(i++));
+      enc4 = keyStr.indexOf(input.charAt(i++));
 
       chr1 = (enc1 << 2) | (enc2 >> 4);
       chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
@@ -279,10 +279,10 @@ export default class AppUtilities {
 
       output = output + String.fromCharCode(chr1);
 
-      if (enc3 != 64) {
+      if (enc3 !== 64) {
         output = output + String.fromCharCode(chr2);
       }
-      if (enc4 != 64) {
+      if (enc4 !== 64) {
         output = output + String.fromCharCode(chr3);
       }
 

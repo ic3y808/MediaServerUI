@@ -40,18 +40,20 @@ class ChartsController {
     };
 
     this.$scope.dateChanged = () => {
-      if ($rootScope.charts) {
+      if (this.$rootScope.charts && this.$rootScope.charts.plays_by_hour) {
         var index = _.findIndex(this.$rootScope.charts.plays_by_hour, (item) => { return item.date === this.$scope.plays_by_hour_selection; });
-        this.$scope.plays_by_hour_data = _.values(this.$rootScope.charts.plays_by_hour[index].hours);
-        this.$scope.plays_by_hour_labels = Object.keys(this.$rootScope.charts.plays_by_hour[index].hours);
-        this.$scope.plays_by_hour_series = Object.keys(this.$rootScope.charts.plays_by_hour[index].hours);
-        this.redraw();
+        if (index > 0 && index < this.$rootScope.charts.plays_by_hour.length) {
+          this.$scope.plays_by_hour_data = _.values(this.$rootScope.charts.plays_by_hour[index].hours);
+          this.$scope.plays_by_hour_labels = Object.keys(this.$rootScope.charts.plays_by_hour[index].hours);
+          this.$scope.plays_by_hour_series = Object.keys(this.$rootScope.charts.plays_by_hour[index].hours);
+          this.redraw();
+        }
       }
     };
 
     this.$scope.$watch("smaPeriod", (n, o) => {
       if (n !== o) {
-        this.$scope.dateChanged();
+        this.redraw();
       }
     });
 
