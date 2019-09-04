@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var structures = require("../../common/structures");
 var Lastfm = require("./simple-lastfm");
-var CryptoJS = require("crypto-js");
+var crypto = require("../../common/crypto");
 
 var getLastFm = function (res, isPublic) {
   if (res.locals.lastfm) {
@@ -13,17 +13,16 @@ var getLastFm = function (res, isPublic) {
       var settings = JSON.parse(lastfmSettings.settings_value);
       if (settings) {
         if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
-           res.locals.lastfm = new Lastfm({
+          res.locals.lastfm = new Lastfm({
             api_key: process.env.LASTFM_API_KEY,
             api_secret: process.env.LASTFM_API_SECRET,
             username: settings.alloydb_lastfm_username,
-            password: CryptoJS.AES.decrypt(settings.alloydb_lastfm_password, "12345").toString(CryptoJS.enc.Utf8)
+            password: crypto.decryptPassword(settings.alloydb_lastfm_password)
           });
-          return res.locals.lastfm ;
+          return res.locals.lastfm;
         } else {
           res.send(new structures.StatusResult("No username or password."));
         }
-
       } else {
         res.send(new structures.StatusResult("Could not parse settings."));
       }
@@ -31,15 +30,13 @@ var getLastFm = function (res, isPublic) {
       res.send(new structures.StatusResult("Could not load lastfm settings."));
     }
   }
-
 };
 
 var getLastfmSession = function (res, cb) {
   var lsfm = getLastFm(res);
-  if (lsfm)
-    {lsfm.getSessionKey(cb);}
+  if (lsfm) { lsfm.getSessionKey(cb); }
   else {
-    cb({result:{failure:"failed"}});
+    cb({ result: { failure: "failed" } });
   }
 };
 
