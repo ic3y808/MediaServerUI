@@ -15,9 +15,11 @@ import PopoverButton from "./ui/popoverbutton";
 import LinkButton from "./ui/linkbutton";
 import PlaylistSelector from "./ui/playlistselector";
 import StarRatingLabel from "./ui/starratinglabel";
+import Stepper from "./ui/stepper";
 import SearchBar from "./ui/searchbar";
 import ScrollSaver from "./ui/scrollsaver";
 import VolumeSlider from "./ui/volumeslider";
+
 
 export default angular
   .module("app.directives", [])
@@ -40,5 +42,6 @@ export default angular
   .directive("volumeslider", VolumeSlider)
   .directive("searchbar", SearchBar)
   .directive("scrollsaver", ScrollSaver)
+  .directive("stepper", Stepper)
   .directive("playlistselector", PlaylistSelector)
 ;
