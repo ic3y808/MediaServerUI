@@ -455,4 +455,8 @@ ipcRenderer.on("mediascanner-recache-start", () => {
   scanner.recache();
 });
 
+ipcRenderer.on("mediascanner-lastfm-scan-start", () => {
+  scanner.lastFmScan();
+});
+
 scanner = new MediaScanner();

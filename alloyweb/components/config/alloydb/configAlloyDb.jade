@@ -1,6 +1,6 @@
 
 section.panel.panel-default
-  header.panel-heading.font-bold  AlloyDB Configuration 
+  header.panel-heading.font-bold  Alloy Configuration 
   .panel-body
     form.form-horizontal(method='get')
       .form-group
@@ -42,14 +42,14 @@ section.panel.panel-default
       .form-group
         label.col-sm-2.control-label Preferred audio format
         .col-sm-10
-          select#databaseHost.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_format')
+          select.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_format')
             option(value="Unchanged") Unchanged
             option(value="MP3") MP3
             
       .form-group
         label.col-sm-2.control-label Bitrate
         .col-sm-10
-          select#databaseHost.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_bitrate')
+          select.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_bitrate')
             option(value="128") 128
             option(value="256") 256
             option(value="320") 320
@@ -58,7 +58,7 @@ section.panel.panel-default
       .form-group
         label.col-sm-2.control-label Cache Strategy
         .col-sm-10
-          select#databaseHost.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_cache_strat')
+          select.form-control(ng-model='$root.settings.alloydb.alloydb_streaming_cache_strat')
             option(value="trackcount") Keep Last X Tracks
             option(value="days") Keep Tracks For Past X Days
             option(value="memory") Keep Max XGB of Data
@@ -83,85 +83,6 @@ section.panel.panel-default
             label
               input(type='checkbox', ng-model='$root.settings.alloydb.alloydb_streaming_cache_starred', ng-change="cachePlaylistChanged()")
               |  Starred Tracks will converted to a streamable quality ahead of time, they will also be held outside the general cache
-
-  header.panel-heading.font-bold  AlloyDB Actions 
-  .panel-body
-    form.form-horizontal(method='get')
-      .form-group
-        .col-sm-6
-          button.form-control(type='button', ng-click="startBackup()") Backup Database
-        .col-sm-6
-          input.file-upload-input(type="file", onchange="angular.element(this).scope().backupFileAdded(this)", style="display:none;")
-          button.form-control(type='button', ng-click="addBackup()") Restore Database
-      .form-group(ng-if="backup_results")
-        .col-sm-12
-          span.font-bold {{backup_results}}
-      .form-group(ng-if="restore_results")
-        .col-sm-12
-          span.font-bold {{restore_results}}
-      .form-group
-        .col-sm-12
-          button.form-control(type='button', ng-click="clearCache()") Clear General Cache
-      .form-group
-        .col-sm-12
-          button.form-control(type='button', ng-click="clearStarredCache()") Clear Starred Cache
-      .form-group(ng-if="cache_status")
-        .col-sm-12
-          span.font-bold {{cache_status.status}}
-      .form-group(ng-if="!scan_status || !scan_status.isScanning")
-        .col-sm-12
-          button.form-control(type='button', ng-click="scanStart()") Rescan Database
-      .form-group(ng-if="scan_status && scan_status.isScanning")
-        .col-sm-12
-          button.form-control.btn-danger(type='button', ng-click="scanCancel()") Cancel Scan
-      .form-group(ng-if="scan_status && scan_status.isScanning")
-        .col-sm-12
-          span.font-bold {{scan_status.status}}
-
-
-  header.panel-heading.font-bold  Media Paths
-    a.pull-right(type='button', ng-click='browsePaths()') Add
-  .panel-body
-    form.form-horizontal(method='get')
-
-      .table-responsive
-        #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
-
-          table.table.table-striped
-            thead
-              tr(role='row')
-                th(style='width: 100px;', tabindex='0', rowspan='1', colspan='1') Display Name
-                th(style='width: 220px;', tabindex='0', rowspan='1', colspan='1') Path
-                th(style='width: 20px;max-width:20px', tabindex='0', rowspan='1', colspan='1') 
-            tbody(ng-repeat='mediaPath in mediaPaths')
-              tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                td
-                  span {{mediaPath.display_name}}
-                td
-                  span {{mediaPath.path}}
-                td(style='width: 20px;max-width:20px')
-                  a.pull-right(ng-click='removePath(mediaPath)', title="Remove")
-                    i.alloy-icon.icon-ban.icon
-              
-
-
-        #addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')
-          .modal-dialog(role='document')
-            .modal-content
-              .modal-header
-                h5#addMediaPathModalLabel.modal-title Choose a Media Location
-                button.Link-link.close(type='button', data-dismiss='modal', aria-label='Close')
-                  span(aria-hidden='true') ×
-              .modal-body
-                .FormGroup-group.FormGroup-large
-                  .FormInputGroup-inputGroupContainer
-                    .FormInputGroup-inputGroup
-                      .FormInputGroup-inputContainer
-                        input.Naming-namingInput.TextInput-input.Input-input(type='text', placeholder='Display Name', ng-model='display_name')
-                folderlist#mediaPathFolderList(currentpath='currentpath')
-              .modal-footer
-                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                button.btn.btn-primary(type='button', ng-click='addCurrentPath()') Add
 
 
   header.panel-heading.font-bold  Last.FM

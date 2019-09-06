@@ -5,7 +5,6 @@ import ArtistsComponent from "./artists/artists.component";
 import AlbumComponent from "./album/album.component";
 import AlbumsComponent from "./albums/albums.component";
 import ChartsComponent from "./charts/charts.component";
-import DatabaseComponent from "./database/database.component";
 import FreshComponent from "./fresh/fresh.component";
 import FooterComponent from "./footer/footer.component";
 import GenreComponent from "./genre/genre.component";
@@ -24,6 +23,7 @@ import SideNavComponent from "./sidenav/sidenav.component";
 import ConfigComponent from "./config/config.component";
 import ConfigGeneralComponent from "./config/general/configGeneral.component";
 import ConfigAlloyDbComponent from "./config/alloydb/configAlloyDb.Component";
+import ConfigDatabaseComponent from "./config/database/database.component";
 import ConfigMediaPathsComponent from "./config/mediapaths/configMediaPaths.component";
 import ConfigSchedulerComponent from "./config/scheduler/configScheduler.component";
 import ConfigSharesComponent from "./config/shares/configShares.component";
@@ -40,7 +40,6 @@ export default angular
   .component("album", AlbumComponent)
   .component("albums", AlbumsComponent)
   .component("charts", ChartsComponent)
-  .component("database", DatabaseComponent)
   .component("fresh", FreshComponent)
   .component("footbar", FooterComponent)
   .component("genre", GenreComponent)
@@ -59,6 +58,7 @@ export default angular
   .component("config", ConfigComponent)
   .component("configgeneral", ConfigGeneralComponent)
   .component("configalloydb", ConfigAlloyDbComponent)
+  .component("configdatabase", ConfigDatabaseComponent)
   .component("configmediapaths", ConfigMediaPathsComponent)
   .component("configscheduler", ConfigSchedulerComponent)
   .component("configshares", ConfigSharesComponent)

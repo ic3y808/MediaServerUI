@@ -8,6 +8,7 @@ const shell = require("shelljs");
 const jimp = require("jimp");
 const { ipcRenderer } = require("electron");
 var loggerTag = "MediaScannerBase";
+var LastFM = require(path.join(process.env.APP_DIR, "common", "simple-lastfm"));
 
 module.exports = class MediaScannerBase {
 
@@ -18,6 +19,9 @@ module.exports = class MediaScannerBase {
     this.tickets = {};
     this.convert = require(path.join(process.env.APP_DIR, "common", "convert"));
     this.mm = require(path.join(process.env.APP_DIR, "alloyapi", "music-metadata"));
+    this.cryptoFuncs = window.require(path.join(process.env.APP_DIR, "common", "crypto"));
+    this.lastfm = new LastFM();
+    this.lastfm.login(this.getLastFmOptions());
   }
 
   log(obj) { ipcRenderer.send("log", obj); }
@@ -102,11 +106,11 @@ module.exports = class MediaScannerBase {
   checkCounts() {
     this.info("checking counts");
     this.updateStatus("checking counts", true);
-    var genres = this.db.prepare("SELECT * FROM Genres").all();
+    var genres = this.db.prepare("SELECT id FROM Genres").all();
     genres.forEach((g) => {
       var albums = [];
       var artists = [];
-      var tracks = this.db.prepare("SELECT * FROM Tracks WHERE genre_id=?").all(g.id);
+      var tracks = this.db.prepare("SELECT artist_id, album_id FROM Tracks WHERE genre_id=?").all(g.id);
       tracks.forEach((track) => {
         artists.push(track.artist_id);
         albums.push(track.album_id);
@@ -305,6 +309,76 @@ module.exports = class MediaScannerBase {
     }
   }
 
+  checkLastFmStep() {
+
+    //if (this.scanStatus.shouldCancel) return;
+    var track = this.filteredFiles.shift();
+    if (!track || !track.path) {
+      this.updateStatus("Scanning Complete", false);
+    } else {
+      try {
+        this.getLastfmSession(() => {
+          this.lastfm.getTrackInfo({
+            artist: track.artist === "No Artist" ? track.base_path : track.artist,
+            track: track.title,
+            mbid: track.musicbrainz_artistid,
+            callback: (result) => {
+              var data = JSON.stringify(result.trackInfo);
+              var entry = { id: track.id, type: "track", data: data };
+              this.writeDb(entry, "LastFM");
+              if (this.filteredFiles.length > 0) { this.checkLastFmStep(); }
+              else {
+                this.updateStatus("Scanning Complete", false);
+                setTimeout(() => {
+                  this.resetStatus();
+                }, 5000);
+              }
+            }
+          });
+        });
+      } catch (err) {
+        this.updateStatus("Scanning Error " + err.message, false);
+        if (this.filteredFiles.length > 0) { this.step(); }
+        else {
+          this.updateStatus("Scanning Complete", false);
+        }
+      }
+    }
+  }
+
+  getLastFmOptions() {
+    var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+    if (lastfmSettings && lastfmSettings.settings_value) {
+      var settings = JSON.parse(lastfmSettings.settings_value);
+      if (settings) {
+        if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
+
+          return {
+            api_key: process.env.LASTFM_API_KEY,
+            api_secret: process.env.LASTFM_API_SECRET,
+            username: settings.alloydb_lastfm_username,
+            password: this.cryptoFuncs.decryptPassword(settings.alloydb_lastfm_password)
+          };
+        } else {
+          this.error("No lastfm username or password.");
+        }
+      } else {
+        this.error("Could not parse settings.");
+      }
+    } else {
+      this.error("Could not load lastfm settings.");
+    }
+    return null;
+  }
+
+  getLastfmSession(cb) {
+    var lsfm = this.lastfm;
+    if (lsfm) { lsfm.getSessionKey(cb); }
+    else {
+      cb({ result: { failure: "failed" } });
+    }
+  }
+
   parseFiles(audioFiles) {
     if (this.shouldCancel()) { return Promise.resolve(); }
     const track = audioFiles.shift();
@@ -382,6 +456,14 @@ module.exports = class MediaScannerBase {
         this.updateStatus("Cleanup Complete", false);
       });
     }
+  }
+
+  lastFmScan() {
+    this.lastfm.login(this.getLastFmOptions());
+    this.filteredFiles = [];
+    this.filteredFiles = this.db.prepare("SELECT * FROM Tracks WHERE id NOT IN (SELECT id FROM LastFM)").all();
+    this.totalFiles = this.filteredFiles.length;
+    this.checkLastFmStep();
   }
 
   processCacheTrack(settings, tracks) {

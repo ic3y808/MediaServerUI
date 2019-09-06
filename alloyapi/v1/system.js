@@ -205,14 +205,8 @@ if (ipcRenderer) {
  * @security ApiKeyAuth
  */
 router.get("/do_backup", function (req, res) {
-  res.locals.backup.doBackup().then(() => {
-    res.locals.info("api/system/do_backup - Backup Success");
-    res.send(new structures.StatusResult("success"));
-  }).catch((err) => {
-    res.locals.error("api/system/do_backup");
-    res.locals.error(err);
-    res.send(new structures.StatusResult("failed"));
-  });
+  ipcRenderer.send("task-database-backup");
+  res.send(new structures.StatusResult("success"));
 });
 
 /**
