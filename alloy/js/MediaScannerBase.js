@@ -318,6 +318,7 @@ module.exports = class MediaScannerBase {
     } else {
       try {
         this.getLastfmSession(() => {
+          this.updateStatus("Scanning Track " + track.path, true);
           this.lastfm.getTrackInfo({
             artist: track.artist === "No Artist" ? track.base_path : track.artist,
             track: track.title,
@@ -326,6 +327,22 @@ module.exports = class MediaScannerBase {
               var data = JSON.stringify(result.trackInfo);
               var entry = { id: track.id, type: "track", data: data };
               this.writeDb(entry, "LastFM");
+              var updateTrack = false;
+
+              if (result.trackInfo.userloved === "1") {
+                track.starred = "true";
+                updateTrack = true;
+              }
+
+              if (result.trackInfo.userplaycount !== "0") {
+                track.play_count = parseInt(result.trackInfo.userplaycount, 10);
+                updateTrack = true;
+              }
+
+              if (updateTrack) {
+                this.writeDb(track, "Tracks");
+              }
+
               if (this.filteredFiles.length > 0) { this.checkLastFmStep(); }
               else {
                 this.updateStatus("Scanning Complete", false);

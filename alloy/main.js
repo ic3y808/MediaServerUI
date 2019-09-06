@@ -524,7 +524,7 @@ function createTasks() {
     createJob({ name: "Clean Database", time: "0 0 * * *", callback: "task-database-cleanup" }, doCleanup);
     createJob({ name: "Incremental Clean", time: "0 0 * * *", callback: "task-database-inc-cleanup" }, doIncCleanup);
     createJob({ name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" }, doRescan);
-    createJob({ name: "Last.FM Rescan Library", time: "0 0 * * 0", callback: "task-database-lastfm-rescan" }, doLastfmRescan);
+    createJob({ name: "Last.FM Rescan Library", time: "0 0 */30 * *", callback: "task-database-lastfm-rescan" }, doLastfmRescan);
     createJob({ name: "Cache Starred", time: "0 0 * * 0", callback: "task-database-cache-starred" }, doReache);
     createJob({ name: "Share Cleanup", time: "0 */12 * * *", callback: "task-database-share-cleanup" }, doShareCleanup);
   }
