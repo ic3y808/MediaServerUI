@@ -31,6 +31,7 @@ class LastFM {
         http.get({
           host: "ws.audioscrobbler.com",
           port: 80,
+          timeout: 3000,
           path: "/2.0/?method=" + method + ".getinfo&api_key=" + this.api_key + "&autocorrect=1&username=" + this.username + "&artist=" + encodeURIComponent(opt.artist) + params
         }, function (res) {
           var body = "";
@@ -55,7 +56,7 @@ class LastFM {
   now() {
     return new Date().getTime();
   }
-  
+
   md5(string) {
     return crypto.createHash("md5").update(string, "utf8").digest("hex");
   }
@@ -241,16 +242,24 @@ class LastFM {
       Object.assign(opt || {}, {
         callback: function (result) {
           this._isTheMethodCaller = false;
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             the_callback({
               success: true,
               trackInfo: result.track
             });
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
+
           }
         }
       });

@@ -22,30 +22,29 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.artist", style="pad
                   h2
                     span(dir='auto') {{$root.artist.artist.name}}
 
-                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info {{$root.artist.total_tracks}} {{$root.artist.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.artist.size}}
+                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(ng-if="$root.artist.tracks") {{$root.artist.total_tracks}} {{$root.artist.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.artist.size}}
                 .TrackListHeader__children
-                  .TrackListHeader__button.TrackListHeader__button--bottom
+                  .TrackListHeader__button.TrackListHeader__button--bottom(ng-if="$root.artist.tracks")
                     button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
-              .TrackListHeader__button.TrackListHeader__button--top
+              .TrackListHeader__button.TrackListHeader__button--top(ng-if="$root.artist.tracks")
                 button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
-              .TrackListHeader__button.TrackListHeader__button--top
-                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="starArtist()", ng-disabled="isDisabled()", title='Save to Your Library') {{$root.album.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
-              .TrackListHeader__button.TrackListHeader__button--top
-                starratinglabel(ng-disabled="isDisabled()", album="$root.artist.artist", extrastyles="btn-block")
+
         .col-xs-12.col-lg-8.col-xl-12
-          .row
-          
-            span.text-muted(ng-if="$root.artist.artist.biography")
-            p
-            | {{$root.artist.artist.biography}}  
+          .row(style="overflow:auto; max-height:250px;")
+            p(ng-bind-html="$root.artist.artist.biography")  
           .row
             a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in $root.artist.links", href='{{link.target}}', target="_blank")
               i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")
 
 
-        .col-xs-12.col-lg-4.col-xl-12
-          itemtable(ng-if="$root.artist.albums.length > 0", type="albums", title="Albums", data="$root.artist.albums", limit="$root.artist.albums", showimages="true")           
-        .col-xs-12.col-lg-4.col-xl-12
-          itemtable(ng-if="$root.artist.EPs.length > 0", type="albums", title="EPS", data="$root.artist.EPs", limit="$root.artist.EPs", showimages="true")           
-        .col-xs-12.col-lg-4.col-xl-12
-          itemtable(ng-if="$root.artist.singles.length > 0", type="albums", title="Singles", data="$root.artist.singles", limit="$root.artist.singles", showimages="true")           
+      .row
+        .col-xs-12.col-lg-12.col-xl-12(ng-if="$root.artist.albums.length > 0")
+          itemtable(type="albums", title="Albums", data="$root.artist.albums", limit="$root.artist.albums", showimages="true")           
+        .col-xs-12.col-lg-12.col-xl-12(ng-if="$root.artist.EPs.length > 0")
+          itemtable(type="albums", title="EPS", data="$root.artist.EPs", limit="$root.artist.EPs", showimages="true")           
+        .col-xs-12.col-lg-12.col-xl-12(ng-if="$root.artist.singles.length > 0")
+          itemtable(type="albums", title="Singles", data="$root.artist.singles", limit="$root.artist.singles", showimages="true")           
+      .row
+        .col-md-12(ng-if="$root.artist.tracks.length > 0")
+          itemtable(type="tracks", title="All Tracks", data="$root.artist.tracks", limit="$root.artist.tracks.length", refreshclick="refresh()")
+      

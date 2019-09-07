@@ -24,7 +24,6 @@ section.scrollable.padder
             td {{task.timezone}}
             td {{task.source}}
             td
-              a.active(href='#', data-toggle='class')
-                i.fa.fa-check.text-success.text-active
-                i.fa.fa-times.text-danger.text
+              a.active(data-toggle='class', ng-click="executeTask(task.callback)", href='#')
+                i.alloy-icon.icon-start
           

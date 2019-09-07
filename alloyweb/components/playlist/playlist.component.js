@@ -28,7 +28,6 @@ class PlaylistController {
             }
 
             this.AppUtilities.apply();
-            this.AppUtilities.hideLoader();
             $(".sortable").sortable({ items: "li" });
 
 

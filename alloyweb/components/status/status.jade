@@ -1,53 +1,38 @@
-section.vbox.stretch
-  section.hbox.stretch
-    section.vbox.scrollable
-      section.vbox.scrollable
-      p
-        strong Portlet
-        |  (support on touch screen)
-      .row
-        .col-sm-6.portlet.ui-sortable
-         
-        .col-sm-6.portlet.ui-sortable
-          section.panel.panel-success.portlet-item
-            header.panel-heading  Connection 
-            ul.list-group.alt
-              li.list-group-item
-                .media
-                  span.pull-left.h2.text-muted.m-l B
-                  .pull-right.m-t-sm(ng-class='$root.backend_ping.status === "success" ? "text-success" : "text-danger"')
-                    i.fa.fa-circle
-                  .media-body
-                    div
-                      a(href='#') Backend Status
-                    small.text-muted {{$root.backend_ping.status}} - {{$root.backend_ping.server_time}}
-              li.list-group-item
-                .media
-                  span.pull-left.h2.text-muted.m-l A  
-                  .pull-right.m-t-sm(ng-class='alloydb.status === "success" ? "text-success" : "text-danger"')
-                    i.fa.fa-circle
-                  .media-body
-                    div
-                      a(href='#') AlloyDB Status
-                    small.text-muted {{alloydb.status}}
+section.scrollable.scrollsaver.padder-lg.w-f-md.animated.fadeInRight
+  .row
+    .col-md-12
+      section.panel.panel-default.portlet-item
+        header.panel-heading  Connection 
+        ul.list-group.alt
+          li.list-group-item
+            .media
+              span.pull-left.h2.text-muted.m-l B
+              .pull-right.m-t-sm(ng-class='$root.backend_ping.status === "success" ? "text-success" : "text-danger"')
+                i.fa.fa-circle
+              .media-body
+                div
+                  h2 Backend Status
+                pre.text-muted {{$root.backend_ping.status}} - {{$root.backend_ping.server_time}}
+          li.list-group-item
+            .media  
+              span.pull-left.h2.text-muted.m-l A  
+              .pull-right.m-t-sm(ng-class='alloydb.status === "success" ? "text-success" : "text-danger"')
+                i.fa.fa-circle
+              .media-body
+                div
+                  h2 AlloyDB Status
+                pre.text-muted {{alloydb.status}}
               
           section.panel.panel-success.portlet-item
             header.panel-heading  AlloyDB Media 
-            .table-responsive
-              #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
-
-
-                table#DataTables_Table_0.table.table-striped.m-b-none.dataTable(data-ride='datatables', aria-describedby='DataTables_Table_0_info')
-                  thead
-                    tr(role='row')
-                      th(style='width: 350px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1')
-                      th(style='width: 220px;', role='columnheader', tabindex='0', aria-controls='DataTables_Table_0', rowspan='1', colspan='1')
-                  tbody(role='alert', aria-live='polite', aria-relevant='all', ng-repeat='(key, value) in libraryInfo')
-                    tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                      td.sorting_1
-                        a(href="/album/{{album.id}}") {{key}}
-                      td
-                        a(href="/artist/{{album.artist_id}}") {{value}}
+            h2.noLibraryData(ng-show="!libraryInfo") Loading Library Info...
+            .table-responsive(ng-show="libraryInfo")
+              table.table.table-striped.b-t.b-light
+                tbody(ng-repeat='(key, value) in libraryInfo')
+                  tr
+                    td.col-sm-12.col-md-6.col-lg-6 {{key}}
+                    td.col-sm-12.col-md-6.col-lg-6 {{value}}
+                    
 
           section.panel.panel-success.portlet-item(ng-if="scanStatus.result.isScanning")
             header.panel-heading  AlloyDB Scan Status  
@@ -61,5 +46,3 @@ section.vbox.stretch
                       a(href='#') Currently Scanning
                     small.text-muted {{scanStatus.result.status}}
 
-
-       

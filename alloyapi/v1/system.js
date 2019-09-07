@@ -42,6 +42,22 @@ router.get("/scheduler", function (req, res) {
 
 /**
  * This function comment is parsed by doctrine
+ * @route PUT /system/start_task
+ * @produces application/json
+ * @consumes application/json
+ * @group system - System API 
+ * @param {string} task.query required task name to start
+ * @returns {Error}  default - Unexpected error
+ * @security ApiKeyAuth
+ */
+router.put("/start_task", function (req, res) {
+  var task = req.query.task;
+  res.locals.ipcRenderer.send("scheduler-run-task", { task: task });
+  res.send(new structures.StatusResult("success"));
+});
+
+/**
+ * This function comment is parsed by doctrine
  * @route GET /system/license
  * @produces application/json
  * @consumes application/json

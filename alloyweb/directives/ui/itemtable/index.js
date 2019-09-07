@@ -1,3 +1,4 @@
+import styles from "./itemtable.scss";
 export default function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   "ngInject";
   return {
@@ -10,6 +11,7 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       refreshclick: "&",
       showviewmore: "@",
       viewmorelink: "@",
+      showartist: "@",
       showimages: "@"
     },
     templateUrl: "/template/itemtable.jade",
@@ -20,6 +22,10 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
           if (track.starred === "true") { return "icon-star"; }
         }
         return "icon-star-o";
+      };
+
+      scope.navTo = (type, url) => {
+        $location.path(type + "/" + url);
       };
 
       scope.starTrack = (track) => {

@@ -18,6 +18,7 @@ exports.up = function (db) {
       starred_date: { type: "string", defaultValue: "" },
       rating: { type: "int", defaultValue: 0 },
       type: { type: "string", defaultValue: "" },
+      play_count: { type: "int", defaultValue: 0 },
       track_count: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true

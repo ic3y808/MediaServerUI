@@ -1,4 +1,4 @@
-section.scrollable.no-padder.w-f-md.scrollsaver(style="padding:0px;")
+section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
   section.content
     .container-fluid(ng-show="selectedTrack") 
       div.padder.m-t-sm
@@ -42,9 +42,9 @@ section.scrollable.no-padder.w-f-md.scrollsaver(style="padding:0px;")
         .col-xs-12.col-lg-8.col-xl-12
           .row
           
-            span.text-muted(ng-if="artist.biography")
+            span.text-muted(ng-if="artist.artist.biography")
             p
-            | {{artist.biography}}  
+            | {{artist.artist.biography}}  
           .row
             a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in artist.links", href='{{link.target}}', target="_blank")
               i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")

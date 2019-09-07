@@ -179,6 +179,10 @@ export default class AlloyApi {
     return this._get("system/scheduler");
   }
 
+  startTask(task) {
+    return this._put("system/start_task", { task: task });
+  }
+
   getLibraryInfo() {
     return this._get("system/stats");
   }

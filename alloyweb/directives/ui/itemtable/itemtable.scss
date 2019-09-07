@@ -1,0 +1,19 @@
+.itemtable {
+  table-layout: auto;
+  width: 100%;
+}
+.itemtable tbody>tr>td{
+  text-align: left;
+  align-content: flex-start;
+
+}
+.itemtable thead>tr>td {
+  width: 1px !important;
+  text-align: left;
+  table-layout: fixed;
+}
+
+.image-cell-container {
+  text-align: left;
+  width:50px;
+}

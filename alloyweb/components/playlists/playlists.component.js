@@ -10,7 +10,6 @@ class PlaylistsController {
     this.AppUtilities = AppUtilities;
     this.Backend = Backend;
     this.Logger.debug("playlists-controller");
-    AppUtilities.hideLoader();
   }
 }
 

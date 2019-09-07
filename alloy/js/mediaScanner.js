@@ -311,12 +311,12 @@ class MediaScanner extends MediaScannerBase {
           id: json.artist.musicbrainzartistid,
           name: utils.isStringValid(json.artist.title, ""),
           sort_name: utils.isStringValid(artistInfo.sortName, ""),
-          biography: escape(utils.isStringValid(json.artist.biography, "")),
+          biography: JSON.parse(JSON.stringify((utils.isStringValid(json.artist.biography, "")))),
           status: utils.isStringValid(artistInfo.status, ""),
           rating: artistInfo.rating.count,
           type: utils.isStringValid(artistInfo.type, ""),
           disambiguation: utils.isStringValid(artistInfo.disambiguation, ""),
-          overview: escape(utils.isStringValid(artistInfo.overview, ""))
+          overview: JSON.parse(JSON.stringify((utils.isStringValid(artistInfo.overview, ""))))
         };
 
         Object.assign(artist, mappedArtist);

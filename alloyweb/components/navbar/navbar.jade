@@ -26,6 +26,12 @@ section.vbox
         span.input-group-btn(ng-if="$root.globals.currentUser")
           button.btn.btn-sm.btn-icon.rounded.mainNavButton(ng-click="refreshCurrentView()")
             i.alloy-icon.icon-refresh
+    
+        .nav-divider(ng-if="$root.globals.currentUser", ng-show="$root.showSaveButton")
+
+        span.input-group-btn(ng-if="$root.globals.currentUser", ng-show="$root.showSaveButton")
+          button.btn.btn-sm.btn-icon.rounded.mainNavButton(ng-click="$root.saveSettings()")
+            i.alloy-icon.icon-save
  
   form.navbar-form.navbar-right.hidden-xs(ng-if="$root.globals.currentUser", role='search')
     #mainNavGroup.form-group

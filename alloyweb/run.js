@@ -1,4 +1,4 @@
-export default function ApplicationRun($window, $rootScope, $location, $timeout, $cookies, $http, AuthenticationService, Logger, MediaPlayer, AppUtilities, AlloyDbService) {
+export default function ApplicationRun($window, $rootScope, $location, $cookies, $http, AuthenticationService, Logger, MediaPlayer, AppUtilities, AlloyDbService) {
   "ngInject";
   Logger.info("Starting WebUI");
   $rootScope.settings = [];
@@ -232,15 +232,36 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
     });
   };
 
+  jQuery.fn.scrollTo = function (elem) {
+    this.scrollTop(0);
+    var el = $(elem);
+    var elOffset = el.offset().top;
+    var elHeight = el.height();
+    var windowHeight = $("#primary-content").height();
+    var offset;
+
+    if (elHeight < windowHeight) {
+      offset = elOffset - ((windowHeight / 2) - (elHeight / 2));
+    }
+    else {
+      offset = elOffset;
+    }
+    if (offset != 0) {   this.scrollTop(offset); }
+  };
+
   $window.onkeyup = function (e) {
     var key = e.keyCode ? e.keyCode : e.which;
     var focus = $("input").is(":focus");
     if (!focus) {
-      if (key === 32) {
+      if (key === 9) { // tab
+        e.preventDefault();
+        AppUtilities.broadcast("GotoNowPlaying");
+      }
+      if (key === 32) { // space
         e.preventDefault();
         MediaPlayer.toggleCurrentStatus();
       }
-      if (key === 122) {
+      if (key === 122) { // F11
         toggleFullScreen();
       }
     }
@@ -253,6 +274,9 @@ export default function ApplicationRun($window, $rootScope, $location, $timeout,
       if (key === 32) {
         e.preventDefault();
       }
+    }
+    if (key === 9) { // tab
+      e.preventDefault();
     }
   };
 

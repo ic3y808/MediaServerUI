@@ -35,30 +35,24 @@ section.panel.panel-default
           span.font-bold {{scan_status.status}}
 
 
-  header.panel-heading.font-bold  Media Paths
-    a.btn.btn-sm.btn-info.pull-right(type='button', ng-click='browsePaths()') Add
-  .panel-body
-    form.form-horizontal(method='get')
 
-      .table-responsive
-        #DataTables_Table_0_wrapper.dataTables_wrapper(role='grid')
-
-          table.table.table-striped
-            thead
-              tr(role='row')
-                th(style='width: 100px;', tabindex='0', rowspan='1', colspan='1') Display Name
-                th(style='width: 220px;', tabindex='0', rowspan='1', colspan='1') Path
-                th(style='width: 20px;max-width:20px', tabindex='0', rowspan='1', colspan='1') 
-            tbody(ng-repeat='mediaPath in mediaPaths')
-              tr(ng-class-odd="'odd'" ng-class-even="'even'")
-                td
-                  span {{mediaPath.display_name}}
-                td
-                  span {{mediaPath.path}}
-                td(style='width: 20px;max-width:20px')
-                  a.pull-right(ng-click='removePath(mediaPath)', title="Remove")
-                    i.alloy-icon.icon-ban.icon
-              
+  header.panel-heading Media Paths
+    button.Button-button.Link-link.Button-primary.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='browsePaths()') Add
+  .table-responsive
+    table.table.table-striped.b-t.b-light
+      thead
+        tr
+          th(style="width:15%;") Display Name
+          th Path
+          th.text-right(style="width:1px !important;text-align:end !important;")
+      tbody(ng-repeat='mediaPath in mediaPaths')
+        tr
+          td(style="width:15%;") {{mediaPath.display_name}}
+          td(style="width:1px;") {{mediaPath.path}}
+          td.text-right(style="width:1px !important;text-align:end !important;")
+            a.active(data-toggle='class', ng-click="removePath(mediaPath)", href='#')
+              i.alloy-icon.icon-minus
+            
 
 
         #addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')

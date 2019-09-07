@@ -15,19 +15,15 @@ class HistoryController {
       AlloyDbService.refreshHistory();
     };
 
-    $scope.playTrack = (song, playlist) => {
-      this.Logger.debug("Play Track");
-      $rootScope.tracks = playlist;
-      var index = findIndex($rootScope.tracks, function (track) {
-        return track.id === song.id;
-      });
-      this.MediaPlayer.loadTrack(index);
-    };
-
     $rootScope.$watch("history", function (newVal, oldVal) {
       if ($rootScope.history) {
         AppUtilities.apply();
-        AppUtilities.hideLoader();
+      }
+    });
+
+    $rootScope.$on("GotoNowPlaying", (event, data) => {
+      if ($rootScope.currentTrack) {
+        $(".scrollable").scrollTo("#" + $rootScope.currentTrack.id);
       }
     });
   }

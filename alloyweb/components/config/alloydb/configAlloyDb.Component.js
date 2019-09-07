@@ -10,9 +10,7 @@ class ConfigAlloyDbController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("config-alloydb-controller");
-
-    $scope.settings = {};
-
+    this.$rootScope.showSaveButton = true;
     $scope.generateConnectionString = () => {
       var url = "http://";
       if ($rootScope.settings.alloydb) {
@@ -35,7 +33,13 @@ class ConfigAlloyDbController {
       $scope.previewConnectionString();
     });
 
-    if (this.$rootScope.socket) { this.$rootScope.socket.emit("load_settings", "alloydb_settings"); }
+    $scope.$on("$destroy", () => {
+      this.$rootScope.showSaveButton = false;
+    });
+
+    if (this.$rootScope.socket) {
+      this.$rootScope.socket.emit("load_settings", "alloydb_settings");
+    }
   }
 }
 

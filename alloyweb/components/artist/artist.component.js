@@ -16,7 +16,6 @@ class ArtistController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("artist-controller");
-    this.AppUtilities.showLoader();
 
     $scope.refresh = () => {
       if ($rootScope.artist && $rootScope.artist.artist && $routeParams.id === $rootScope.artist.artist.id) { return; }

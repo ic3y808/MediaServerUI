@@ -637,10 +637,10 @@ function createBaseServer() {
         });
       });
 
-      //clearInterval(timer);
-      //timer = setInterval(function () {
-      //  io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
-      //}, 500);
+      clearInterval(timer);
+      timer = setInterval(function () {
+        io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
+      }, 1000);
     }
 
     appServer.set("views", views);
@@ -712,7 +712,7 @@ function setupRoutes() {
       ipcMain.on("print", (event, payload) => mainWindow.webContents.send("print", payload));
       ipcMain.on("scheduler-run-task", (event, payload) => {
         jobs.forEach((job) => {
-          if (job.callback === payload.callback) {
+          if (job.callback === payload.task) {
             job.lastExecution = new Date();
             job.fireOnTick();
             mainWindow.webContents.send("scheduler-current-schedule", getSchedule());

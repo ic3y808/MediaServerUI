@@ -642,6 +642,8 @@ export default class MediaPlayer {
           return id === selected.artist_id;
         } else if (type === "album") {
           return id === selected.album_id;
+        } else if (type === "genre") {
+          return id === selected.genre_id;
         }
       }
 

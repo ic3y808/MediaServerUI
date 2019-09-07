@@ -78,6 +78,12 @@ export default class AlloyDbService {
     else { return false; }
   }
 
+  startTask(task) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.startTask(task); }
+    else { return false; }
+  }
+
   getSchedulerStatus() {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.getSchedulerStatus(); }
@@ -384,7 +390,7 @@ export default class AlloyDbService {
   newUser() {
     this.doLogin();
     var newUser = {};
-    Object.assign(newUser, this.$rootScope.newUser);  
+    Object.assign(newUser, this.$rootScope.newUser);
     newUser.username = this.AppUtilities.encryptPassword(this.$rootScope.newUser.username);
     newUser.password = this.AppUtilities.encryptPassword(this.$rootScope.newUser.password);
     if (this.isLoggedIn) { return this.alloydb.createUser(newUser); }
@@ -521,6 +527,7 @@ export default class AlloyDbService {
         if (info) {
           this.$rootScope.artist = info;
           this.$rootScope.artist.image = this.getCoverArt({ artist_id: this.$rootScope.artist.artist.id });
+          this.$rootScope.artist.artist.biography = JSON.parse(JSON.stringify(this.$rootScope.artist.artist.biography));
 
           this.$rootScope.artist.tracks.forEach((track) => {
             track.image = this.getCoverArt({ track_id: track.id });
@@ -645,6 +652,9 @@ export default class AlloyDbService {
             track.image = this.getCoverArt({ track_id: track.id });
           });
           this.$rootScope.genre.never_played.forEach((track) => {
+            track.image = this.getCoverArt({ track_id: track.id });
+          });
+          this.$rootScope.genre.popular_tracks.forEach((track) => {
             track.image = this.getCoverArt({ track_id: track.id });
           });
           this.$rootScope.genre.artists.forEach((artist) => {
@@ -963,7 +973,7 @@ export default class AlloyDbService {
     var index = this.getArtistsIndex();
     var history = this.getHistory();
     var artists = this.getArtists();
-    var fresh = this.getFresh(10);
+    var fresh = this.getFresh(20);
     var albums = this.getAlbums();
     var genres = this.getGenres();
     var starred = this.getStarred();
@@ -1011,11 +1021,12 @@ export default class AlloyDbService {
       }
     } else {
       switch (path) {
-        case "/": this.preload(); break;
+        case "/": this.refreshCharts(); break;
         case "/fresh": this.refreshFresh(); this.refreshCharts(); break;
         case "/artists": this.refreshArtists(); break;
         case "/albums": this.refreshAlbums(); break;
         case "/genres": this.refreshGenres(); break;
+        case "/history": this.refreshHistory(); break;
         case "/starred": this.refreshStarred(); break;
         case "/shares": this.refreshShares(); break;
         case "/users": this.refreshUsers(); break;

@@ -67,16 +67,6 @@ export default class AppUtilities {
     return array;
   }
 
-  showLoader() {
-    $("#root.root").css("display", "none");
-    $(".loader").css("display", "block");
-  }
-
-  hideLoader() {
-    $(".loader").css("display", "none");
-    $("#root.root").css("display", "initial");
-  }
-
   setContentBackground(img) {
     if (img) {
       var bgUrl = img.replace("300x300", Math.round($(".art-backdrop").width()) + "x" + Math.round($(".art-backdrop").height()));

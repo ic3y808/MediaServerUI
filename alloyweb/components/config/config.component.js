@@ -13,7 +13,6 @@ class ConfigController {
     this.Backend = Backend;
     this.MediaPlayer = MediaPlayer;
     this.Logger.debug("config-controller");
-    this.AppUtilities.showLoader();
 
 
     this.$scope.jumpTo = (to) => {
@@ -67,7 +66,6 @@ class ConfigController {
 
 
     AppUtilities.apply();
-    AppUtilities.hideLoader();
   }
 
   $onInit() {

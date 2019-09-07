@@ -10,10 +10,10 @@ class ConfigSchedulerController {
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("scheduler-controller");
 
-    $scope.settings = {};
+    this.$scope.settings = {};
 
 
-    $scope.getSchedule = () => {
+    this.$scope.getSchedule = () => {
       var schedule = this.AlloyDbService.getSchedulerStatus();
       if (schedule) {
         schedule.then((data) => {
@@ -24,34 +24,40 @@ class ConfigSchedulerController {
       }
     };
 
+    this.$scope.executeTask = (task) => {
+      this.AlloyDbService.startTask(task).then(() => {
+        this.$scope.getSchedule();
+      });
+    };
 
-    $rootScope.$on("menuSizeChange", (event, currentState) => {
+
+    this.$rootScope.$on("menuSizeChange", (event, currentState) => {
 
     });
 
-    $rootScope.$on("windowResized", (event, data) => {
+    this.$rootScope.$on("windowResized", (event, data) => {
 
     });
 
 
-    $rootScope.$on("loginStatusChange", (event, data) => {
+    this.$rootScope.$on("loginStatusChange", (event, data) => {
       $scope.getSchedule();
     });
 
-    $scope.refreshIntereval = setInterval(() => {
+    this.$scope.refreshIntereval = setInterval(() => {
       $scope.getSchedule();
     }, 20000);
 
-    $scope.uiRefreshIntereval = setInterval(() => {
+    this.$scope.uiRefreshIntereval = setInterval(() => {
       AppUtilities.apply();
     }, 1000);
 
-    $scope.$on("$destroy", () => {
+    this.$scope.$on("$destroy", () => {
       clearInterval($scope.refreshIntereval);
       clearInterval($scope.uiRefreshIntereval);
     });
 
-    $scope.getSchedule();
+    this.$scope.getSchedule();
 
 
   }

@@ -6,9 +6,12 @@ const fs = require("fs");
 const del = require("del");
 const shell = require("shelljs");
 const jimp = require("jimp");
+//const escape = require("escape-string-regexp");
+
 const { ipcRenderer } = require("electron");
 var loggerTag = "MediaScannerBase";
 var LastFM = require(path.join(process.env.APP_DIR, "common", "simple-lastfm"));
+var utils = require(path.join(process.env.APP_DIR, "common", "utils"));
 
 module.exports = class MediaScannerBase {
 
@@ -16,6 +19,7 @@ module.exports = class MediaScannerBase {
     this.db = database;
     this.resetStatus();
     this.queue = {};
+    this.lastfm_queue = {};
     this.tickets = {};
     this.convert = require(path.join(process.env.APP_DIR, "common", "convert"));
     this.mm = require(path.join(process.env.APP_DIR, "alloyapi", "music-metadata"));
@@ -75,7 +79,7 @@ module.exports = class MediaScannerBase {
         });
       }
 
-      if (this.tickets) {
+      if (this.tickets && Object.keys(this.tickets).length > 0) {
         var ticketKeys = Object.keys(this.tickets);
 
         ticketKeys.forEach((key) => {
@@ -85,7 +89,6 @@ module.exports = class MediaScannerBase {
         });
         this.scanStatus.queue = this.tickets;
       }
-      //this.scanStatus.queue.stats = this.queue.getStats(); 
     }
   }
 
@@ -309,58 +312,222 @@ module.exports = class MediaScannerBase {
     }
   }
 
-  checkLastFmStep() {
+  parseAlbumArt(audioFiles) {
+    if (this.shouldCancel()) { return Promise.resolve(); }
+    const track = audioFiles.shift();
 
-    //if (this.scanStatus.shouldCancel) return;
-    var track = this.filteredFiles.shift();
-    if (!track || !track.path) {
+    if (track) {
+      //this.updateStatus("Collecting album art ", true, track.path);
+      var coverId = "cvr_" + track.album_id;
+      var coverFileOrig = path.join(process.env.COVER_ART_DIR, coverId + ".orig.jpg");
+      var coverFileThumb = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
+
+      if (!fs.existsSync(coverFileThumb) || !fs.existsSync(coverFileOrig)) {
+        return this.mm.parseFile(track.path).then((metadata) => {
+          var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
+          var existingCover = stmt.all(coverId);
+
+          if (existingCover.length === 0) {
+            this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
+          }
+
+          if (metadata.common.picture) {
+
+            fs.writeFile(coverFileOrig, metadata.common.picture[0].data, (err) => {
+              if (err) {
+                this.error(err);
+              }
+
+              jimp.read(coverFileOrig).then((image) => {
+
+                image.resize(150, jimp.AUTO);
+                image.writeAsync(coverFileThumb);
+              });
+
+
+              this.db.prepare("UPDATE Tracks SET cover_art=? WHERE id=?").run(coverId, track.id);
+            });
+          }
+          return this.parseAlbumArt(audioFiles); // process rest of the files AFTER we are finished
+        });
+      } return this.parseAlbumArt(audioFiles);
+    } else { return Promise.resolve(); }
+  }
+
+  createAlbumArt() {
+    this.info("checking missing art");
+    this.updateStatus("checking missing art", true);
+    var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
+    return this.parseAlbumArt(allTracks);
+  }
+
+  cleanup() {
+    this.info("Starting cleanup");
+    this.updateStatus("Cleanup", false);
+    this.checkTracksExist();
+    this.checkEmptyPlaylists();
+    this.checkEmptyArtists();
+    this.checkEmptyGenres();
+    this.checkSortOrder();
+    this.checkCounts();
+    this.checkHistory();
+    this.checkCache();
+    this.info("Cleanup complete");
+    this.updateStatus("Cleanup Complete", false);
+  }
+
+  incrementalCleanup() {
+    if (this.isScanning()) {
+      this.debug("scan in progress");
+    } else {
+      this.updateStatus("incremental Cleanup", true);
+      this.info("incrementalCleanup");
+      // this.cleanup();
+      this.createAlbumArt().then(() => {
+        this.info("Incremental Cleanup complete");
+        this.updateStatus("Cleanup Complete", false);
+      });
+    }
+  }
+
+  checkLastFmStep() {
+    if (this.scanStatus.shouldCancel) {
+      this.updateStatus("Scanning Cancelled", false);
+      setTimeout(() => {
+        this.resetStatus();
+      }, 5000);
+      return;
+    }
+
+    if (Object.keys(this.lastfm_queue).length === 0) {
+      this.updateStatus("Scanning Complete", false);
+      setTimeout(() => {
+        this.resetStatus();
+      }, 5000);
+      return;
+    }
+
+    var item = this.lastfm_queue.shift();
+    if (!item || !item.type) {
       this.updateStatus("Scanning Complete", false);
     } else {
       try {
         this.getLastfmSession(() => {
-          this.updateStatus("Scanning Track " + track.path, true);
-          this.lastfm.getTrackInfo({
-            artist: track.artist === "No Artist" ? track.base_path : track.artist,
-            track: track.title,
-            mbid: track.musicbrainz_artistid,
-            callback: (result) => {
-              var data = JSON.stringify(result.trackInfo);
-              var entry = { id: track.id, type: "track", data: data };
-              this.writeDb(entry, "LastFM");
-              var updateTrack = false;
 
-              if (result.trackInfo.userloved === "1") {
-                track.starred = "true";
-                updateTrack = true;
-              }
+          switch (item.type) {
+            case "artist":
+              var artist = item.data;
+              this.updateStatus("Scanning Artist " + artist.name, true);
+              this.lastfm.getArtistInfo({
+                artist: artist.name,
+                mbid: artist.musicbrainz_artistid,
+                callback: (result) => {
+                  if (result && result.artistInfo) {
+                    var data = JSON.stringify(result.artistInfo);
+                    var entry = { id: artist.id, type: "artist", data: data };
 
-              if (result.trackInfo.userplaycount !== "0") {
-                track.play_count = parseInt(result.trackInfo.userplaycount, 10);
-                updateTrack = true;
-              }
+                    this.writeDb(entry, "LastFM");
 
-              if (updateTrack) {
-                this.writeDb(track, "Tracks");
-              }
+                    var updateArtist = false;
+                    if (result.artistInfo.bio) {
+                      if (result.artistInfo.bio.summary) {
+                        artist.overview = JSON.parse(JSON.stringify(utils.isStringValid(result.artistInfo.bio.summary.replace(/\<.*apply\./gi, ""), "")));
+                        updateArtist = true;
+                      }
+                      if (result.artistInfo.bio.content) {
+                        artist.biography = JSON.parse(JSON.stringify(utils.isStringValid(result.artistInfo.bio.content, "").replace(/\<.*apply\./gi, "")));
+                        updateArtist = true;
+                      }
+                    }
+                    if (result.artistInfo.stats) {
+                      if (result.artistInfo.stats.userplaycount !== "0") {
+                        artist.play_count = parseInt(result.artistInfo.stats.userplaycount, 10);
+                        updateArtist = true;
+                      }
+                    }
+                    if (updateArtist) {
+                      this.writeDb(artist, "Artists");
+                    }
+                  }
+                  this.checkLastFmStep();
+                }
+              });
+              break;
+            case "album":
+              var album = item.data;
+              this.updateStatus("Scanning Album " + album.name, true);
+              this.lastfm.getAlbumInfo({
+                artist: album.artist,
+                album: album.name,
+                mbid: album.musicbrainz_artistid,
+                callback: (result) => {
+                  if (result && result.albumInfo) {
+                    var data = JSON.stringify(result.albumInfo);
+                    var entry = { id: album.id, type: "album", data: data };
 
-              if (this.filteredFiles.length > 0) { this.checkLastFmStep(); }
-              else {
-                this.updateStatus("Scanning Complete", false);
-                setTimeout(() => {
-                  this.resetStatus();
-                }, 5000);
-              }
-            }
-          });
+                    this.writeDb(entry, "LastFM");
+
+                    var updateAlbum = false;
+
+
+                    if (result.albumInfo.userplaycount !== "0") {
+                      album.play_count = parseInt(result.albumInfo.userplaycount, 10);
+                      updateAlbum = true;
+                    }
+
+                    if (updateAlbum) {
+                      this.writeDb(album, "Albums");
+                    }
+                  }
+                  this.checkLastFmStep();
+                }
+              });
+              break;
+            case "track":
+              var track = item.data;
+              this.updateStatus("Scanning Track " + track.path, true);
+              this.lastfm.getTrackInfo({
+                artist: track.artist === "No Artist" ? track.base_path : track.artist,
+                track: track.title,
+                mbid: track.musicbrainz_artistid,
+                callback: (result) => {
+                  if (result && result.trackInfo) {
+                    var data = JSON.stringify(result.trackInfo);
+                    var entry = { id: track.id, type: "track", data: data };
+
+                    this.writeDb(entry, "LastFM");
+
+                    var updateTrack = false;
+                    if (result.trackInfo.userloved === "1") {
+                      track.starred = "true";
+                      updateTrack = true;
+                    }
+
+                    if (result.trackInfo.userplaycount !== "0") {
+                      track.play_count = parseInt(result.trackInfo.userplaycount, 10);
+                      updateTrack = true;
+                    }
+                    if (updateTrack) {
+                      this.writeDb(track, "Tracks");
+                    }
+                  }
+                  this.checkLastFmStep();
+                }
+              });
+              break;
+          }
+
+
         });
       } catch (err) {
         this.updateStatus("Scanning Error " + err.message, false);
-        if (this.filteredFiles.length > 0) { this.step(); }
+        if (Object.keys(this.lastfm_queue).length > 0) { this.step(); }
         else {
           this.updateStatus("Scanning Complete", false);
         }
       }
     }
+
   }
 
   getLastFmOptions() {
@@ -396,91 +563,30 @@ module.exports = class MediaScannerBase {
     }
   }
 
-  parseFiles(audioFiles) {
-    if (this.shouldCancel()) { return Promise.resolve(); }
-    const track = audioFiles.shift();
-
-    if (track) {
-      //this.updateStatus("Collecting album art ", true, track.path);
-      var coverId = "cvr_" + track.album_id;
-      var coverFileOrig = path.join(process.env.COVER_ART_DIR, coverId + ".orig.jpg");
-      var coverFileThumb = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
-
-
-      if (!fs.existsSync(coverFileThumb) || !fs.existsSync(coverFileOrig)) {
-        return this.mm.parseFile(track.path).then((metadata) => {
-          var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
-          var existingCover = stmt.all(coverId);
-
-          if (existingCover.length === 0) {
-            this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
-          }
-
-          if (metadata.common.picture) {
-
-            fs.writeFile(coverFileOrig, metadata.common.picture[0].data, (err) => {
-              if (err) {
-                this.error(err);
-              }
-
-              jimp.read(coverFileOrig).then((image) => {
-
-                image.resize(150, jimp.AUTO);
-                image.writeAsync(coverFileThumb);
-              });
-
-
-              this.db.prepare("UPDATE Tracks SET cover_art=? WHERE id=?").run(coverId, track.id);
-            });
-          }
-          return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
-        });
-      } return this.parseFiles(audioFiles);
-    } else { return Promise.resolve(); }
-  }
-
-  createAlbumArt() {
-    this.info("checking missing art");
-    this.updateStatus("checking missing art", true);
-    var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
-    return this.parseFiles(allTracks);
-  }
-
-  cleanup() {
-    this.info("Starting cleanup");
-    this.updateStatus("Cleanup", false);
-    this.checkTracksExist();
-    this.checkEmptyPlaylists();
-    this.checkEmptyArtists();
-    this.checkEmptyGenres();
-    this.checkSortOrder();
-    this.checkCounts();
-    this.checkHistory();
-    this.checkCache();
-    this.info("Cleanup complete");
-    this.updateStatus("Cleanup Complete", false);
-  }
-
-  incrementalCleanup() {
+  lastFmScan() {
     if (this.isScanning()) {
       this.debug("scan in progress");
     } else {
-      this.updateStatus("incremental Cleanup", true);
-      this.info("incrementalCleanup");
-      // this.cleanup();
-      this.createAlbumArt().then(() => {
-        this.info("Incremental Cleanup complete");
-        this.updateStatus("Cleanup Complete", false);
-      });
-    }
-  }
+      this.lastfm.login(this.getLastFmOptions());
+      this.lastfm_queue = [];
 
-  lastFmScan() {
-    this.lastfm.login(this.getLastFmOptions());
-    this.filteredFiles = [];
-    this.filteredFiles = this.db.prepare("SELECT * FROM Tracks WHERE id NOT IN (SELECT id FROM LastFM)").all();
-    this.totalFiles = this.filteredFiles.length;
-    this.checkLastFmStep();
+      var artists = this.db.prepare("SELECT * FROM Artists WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY name ASC").all();
+      artists.forEach((artist) => {
+        this.lastfm_queue.push({ type: "artist", data: artist });
+      });
+
+      var albums = this.db.prepare("SELECT * FROM Albums WHERE id NOT IN (SELECT id FROM LastFM)").all();
+      albums.forEach((album) => {
+        this.lastfm_queue.push({ type: "album", data: album });
+      });
+
+      var tracks = this.db.prepare("SELECT * FROM Tracks WHERE id NOT IN (SELECT id FROM LastFM)").all();
+      tracks.forEach((track) => {
+        this.lastfm_queue.push({ type: "track", data: track });
+      });
+
+      this.checkLastFmStep();
+    }
   }
 
   processCacheTrack(settings, tracks) {

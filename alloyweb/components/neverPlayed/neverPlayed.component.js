@@ -7,7 +7,6 @@ class NeverPlayedController {
     this.AppUtilities = AppUtilities;
     this.Logger = Logger;
     this.Logger.debug("never-played-controller");
-    this.AppUtilities.showLoader();
   }
 
   $onInit() {

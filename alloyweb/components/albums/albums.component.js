@@ -11,7 +11,6 @@ class AlbumsController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("albums-controller");
-    this.AppUtilities.showLoader();
 
     $scope.refresh = function () {
       AlloyDbService.refreshAlbums();
@@ -20,7 +19,12 @@ class AlbumsController {
     $rootScope.$watch("albums", function (newVal, oldVal) {
       if ($rootScope.albums) {
         AppUtilities.apply();
-        AppUtilities.hideLoader();
+      }
+    });
+
+    $rootScope.$on("GotoNowPlaying", (event, data) => {
+      if ($rootScope.currentTrack) {
+        $(".scrollable").scrollTo("#" + $rootScope.currentTrack.album_id);
       }
     });
   }

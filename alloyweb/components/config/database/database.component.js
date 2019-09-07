@@ -111,7 +111,6 @@ class DatabaseController {
           mediaPaths.then((paths) => {
             $scope.mediaPaths = paths;
             AppUtilities.apply();
-            AppUtilities.hideLoader();
           });
         }
       }
@@ -142,5 +141,5 @@ class DatabaseController {
 export default {
   bindings: {},
   controller: DatabaseController,
-  templateUrl: "/template/database.jade"
+  templateUrl: "/template/configDatabase.jade"
 };

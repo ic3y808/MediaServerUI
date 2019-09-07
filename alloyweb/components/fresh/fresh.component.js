@@ -14,7 +14,6 @@ class FreshController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("fresh-controller");
-    this.AppUtilities.showLoader();
 
     $scope.refreshing = false;
 
