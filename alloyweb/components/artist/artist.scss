@@ -1,4 +1,4 @@
-
+@import "../../styles/variables";
 
 header.artist-header {
   position: relative;
@@ -127,4 +127,8 @@ header.artist-header h1.large {
 
 .panel-body:after {
   clear: both;
+}
+
+.btn-link {
+  color: $light-color;
 }

@@ -1081,13 +1081,13 @@ export default class AlloyDbService {
   starTrack(track) {
     this.Logger.info("Trying to star track: " + track.title);
     if (track.starred === "true") {
-      this.AlloyDbService.unstar({ id: track.id }).then((result) => {
+      this.unstar({ id: track.id }).then((result) => {
         this.Logger.info("UnStarred " + track.title + " " + JSON.stringify(result));
         track.starred = "false";
         this.refreshStarred();
       });
     } else {
-      this.AlloyDbService.star({ id: track.id }).then((result) => {
+      this.star({ id: track.id }).then((result) => {
         this.Logger.info("Starred " + track.title + " " + JSON.stringify(result));
         track.starred = "true";
         this.refreshStarred();
