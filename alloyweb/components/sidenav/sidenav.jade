@@ -9,13 +9,8 @@ section.w-f-md.scrollable(ng-if="$root.globals.currentUser")
       li
         a(href='/starred', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-starred
-          b.badge.bg-primary.dker.pull-right {{$root.starred.length}}
+          b.badge.bg-primary.dker.pull-right {{$root.starred_tracks.length}}
           span.font-bold Starred
-      li
-        a(href='/charts')
-          i.alloy-icon.icon-charts
-          b.badge.bg-primary.dker.pull-right {{$root.rated.length}}
-          span.font-bold Charts
       li
         a(href='/history', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-history
@@ -36,6 +31,11 @@ section.w-f-md.scrollable(ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-genres
           b.badge.bg-primary.dker.pull-right {{$root.genres.length}}
           span.font-bold Genres
+      li
+        a(href='/charts')
+          i.alloy-icon.icon-charts
+          b.badge.bg-primary.dker.pull-right {{$root.rated.length}}
+          span.font-bold Charts
       li
         a(href='/status')
           i.alloy-icon.icon-status

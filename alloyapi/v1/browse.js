@@ -89,6 +89,12 @@ router.get("/artist", function (req, res) {
   var artist_info = res.locals.db.prepare("SELECT * FROM LastFM WHERE id=? AND type=?").get(id, "artist");
   if (artist_info) {
     result.artist_info = JSON.parse(artist_info.data);
+    result.artist_info.similar.artist.forEach((artist) => {
+      var similarLocalArtist = res.locals.db.prepare("SELECT * FROM Artists WHERE instr(UPPER(name), ?) > 0 LIMIT 1").get(artist.name.toUpperCase());
+      if (similarLocalArtist) {
+        artist = Object.assign(artist, similarLocalArtist);
+      }
+    });
   }
 
   all_albums.forEach((album) => {
@@ -328,7 +334,7 @@ var calculateGenres = function (result, history) {
 var calculateNeverPlayed = function (result, db, limit) {
   result.charts.never_played = [];
   result.charts.never_played_albums = [];
-   
+
   var allTracks = db.prepare("SELECT * FROM Tracks WHERE play_count=? ORDER BY RANDOM() LIMIT ?").all(0, 300);
   allTracks = _.uniqBy(allTracks, "artist");
   allTracks = _.shuffle(allTracks);

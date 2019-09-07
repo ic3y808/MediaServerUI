@@ -139,21 +139,25 @@ export default function ApplicationRun($window, $rootScope, $location, $cookies,
             case "track":
               AlloyDbService.star({ id: id }).then((status) => {
                 Logger.info("starred " + status.result);
+                AlloyDbService.refreshStarred();
               });
               break;
             case "album":
               AlloyDbService.star({ album: id }).then((status) => {
                 Logger.info("Share created " + status.result);
+                AlloyDbService.refreshStarred();
               });
               break;
             case "artist":
               AlloyDbService.star({ artist: id }).then((status) => {
                 Logger.info("Share created " + status.result);
+                AlloyDbService.refreshStarred();
               });
               break;
             case "genre":
               AlloyDbService.star({ genre: id }).then((status) => {
                 Logger.info("Share created " + status.result);
+                AlloyDbService.refreshStarred();
               });
               break;
           }

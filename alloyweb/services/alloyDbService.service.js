@@ -10,6 +10,7 @@ export default class AlloyDbService {
     this.Logger = Logger;
     this.$window = $window;
     this.$rootScope.refreshPage = this.refreshPage;
+    this.$rootScope.starTrack = this.starTrack;
     this.$rootScope.starArtist = this.starArtist;
   }
 
@@ -469,6 +470,7 @@ export default class AlloyDbService {
     if (this.isLoggedIn) { return this.alloydb.unstar(params); }
     else { return false; }
   }
+
 
   setRating(params) {
     this.doLogin();
@@ -1042,14 +1044,53 @@ export default class AlloyDbService {
         artist: artist.id
       }).then((result) => {
         artist.starred = "false";
-        this.AppUtilities.apply();
+        this.Logger.info("UnStarred " + artist.name + " " + JSON.stringify(result));
+        this.refreshStarred();
       });
     } else {
       this.star({
         artist: artist.id
       }).then((result) => {
         artist.starred = "true";
-        this.AppUtilities.apply();
+        this.Logger.info("UnStarred " + artist.name + " " + JSON.stringify(result));
+        this.refreshStarred();
+      });
+    }
+  }
+
+  starAlbum(album) {
+    if (album.starred === "true") {
+      this.unstar({
+        artist: album.id
+      }).then((result) => {
+        album.starred = "false";
+        this.Logger.info("UnStarred " + album.name + " " + JSON.stringify(result));
+        this.refreshStarred();
+      });
+    } else {
+      this.star({
+        album: album.id
+      }).then((result) => {
+        this.Logger.info("UnStarred " + album.name + " " + JSON.stringify(result));
+        album.starred = "true";
+        this.refreshStarred();
+      });
+    }
+  }
+
+  starTrack(track) {
+    this.Logger.info("Trying to star track: " + track.title);
+    if (track.starred === "true") {
+      this.AlloyDbService.unstar({ id: track.id }).then((result) => {
+        this.Logger.info("UnStarred " + track.title + " " + JSON.stringify(result));
+        track.starred = "false";
+        this.refreshStarred();
+      });
+    } else {
+      this.AlloyDbService.star({ id: track.id }).then((result) => {
+        this.Logger.info("Starred " + track.title + " " + JSON.stringify(result));
+        track.starred = "true";
+        this.refreshStarred();
       });
     }
   }

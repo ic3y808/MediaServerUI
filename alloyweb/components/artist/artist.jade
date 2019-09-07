@@ -32,7 +32,13 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.artist", style="pad
         .col-xs-12.col-lg-8.col-xl-12
           .row(style="overflow:auto; max-height:250px;")
             p(ng-bind-html="$root.artist.artist.biography")  
-          .row
+        .col-xs-12.col-lg-8.col-xl-12
+          .row(ng-if="$root.artist.artist_info.similar.artist", style="overflow:auto; max-height:100px;")
+            h3.text-faded Related
+            .btn-group(role='group' aria-label='Basic example')
+              button.btn.btn-secondary(ng-click="navToSimilar(similar)", ng-repeat="similar in $root.artist.artist_info.similar.artist", type='button') {{similar.name}}
+                 
+          .row(ng-if="$root.artist.links")
             a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in $root.artist.links", href='{{link.target}}', target="_blank")
               i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")
 

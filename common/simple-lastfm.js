@@ -96,7 +96,7 @@ class LastFM {
           var parser = new xml2js.Parser(xml2js.defaults["0.1"]);
           parser.parseString(body, function (err, result) {
             var ret = {
-              success: result["@"].status === "ok"
+              success: result && result["@"].status === "ok"
             };
             if (ret.success) {
               ret.session_key = result.session.key;
@@ -199,7 +199,7 @@ class LastFM {
         var parser = new xml2js.Parser(xml2js.defaults["0.1"]);
         parser.parseString(chunk, function (err, result) {
           try {
-            if (result["@"].status === "ok") {
+            if (result && result["@"].status === "ok") {
               //						console.log("Track scrobbled (" + options.method + " )");
               if (typeof options.callback === "function") {
                 options.callback({
@@ -254,10 +254,17 @@ class LastFM {
                 error: result.error["#"]
               });
             } else {
-              the_callback({
-                success: false,
-                error: "error"
-              });
+              if (result && result.error) {
+                the_callback({
+                  success: false,
+                  error: result.error["#"]
+                });
+              } else {
+                the_callback({
+                  success: false,
+                  error: "error"
+                });
+              }
             }
 
           }
@@ -281,16 +288,23 @@ class LastFM {
       Object.assign(opt || {}, {
         callback: function (result) {
           this._isTheMethodCaller = false;
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             the_callback({
               success: true,
               artistInfo: result.artist
             });
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       });
@@ -312,16 +326,23 @@ class LastFM {
       Object.assign(opt || {}, {
         callback: function (result) {
           this._isTheMethodCaller = false;
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             the_callback({
               success: true,
               albumInfo: result.album
             });
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       });
@@ -343,16 +364,23 @@ class LastFM {
       Object.assign(opt || {}, {
         callback: function (result) {
           this._isTheMethodCaller = false;
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             the_callback({
               success: true,
               genreInfo: result.tag
             });
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       });
@@ -368,7 +396,7 @@ class LastFM {
         this._isTheMethodCaller = false;
         //			console.log("result: ", result);
         if (typeof the_callback === "function") {
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             var tags = opt.track !== undefined && opt.track !== "" ? result.track.toptags.tag : result.artist.tags.tag;
             if (typeof tags === "object" && !tags.length) { tags = [tags]; }
             var args = {
@@ -379,10 +407,17 @@ class LastFM {
             if (opt.track !== undefined && opt.track !== "") { args.track = result.track.name; }
             the_callback(args);
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       }
@@ -397,7 +432,7 @@ class LastFM {
       callback: function (result) {
         this._isTheMethodCaller = false;
         if (typeof the_callback === "function") {
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             var ret = {
               success: true,
               plays: opt.track !== undefined && opt.track !== "" ? result.track.userplaycount : result.artist.stats.userplaycount,
@@ -407,10 +442,17 @@ class LastFM {
             if (opt.track !== undefined && opt.track !== "") { ret.track = result.track.name; }
             the_callback(ret);
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       }
@@ -446,7 +488,7 @@ class LastFM {
     var the_callback = opt.callback;
     var tracks = [];
     opt.callback = function (result) {
-      if (result["@"].status === "failed") {
+      if (result && result["@"].status === "failed") {
         the_callback({
           success: false,
           reason: result.error["#"]
@@ -477,16 +519,23 @@ class LastFM {
       args: opt,
       callback: function (result) {
         if (typeof the_callback === "function") {
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             the_callback({
               success: true,
               topArtists: result.topartists.artist
             });
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       }
@@ -502,16 +551,23 @@ class LastFM {
       args: opt,
       callback: function (result) {
         if (typeof the_callback === "function") {
-          if (result["@"].status === "ok") {
+          if (result && result["@"].status === "ok") {
             the_callback({
               success: true,
               similarArtists: result.similarartists.artist
             });
           } else {
-            the_callback({
-              success: false,
-              error: result.error["#"]
-            });
+            if (result && result.error) {
+              the_callback({
+                success: false,
+                error: result.error["#"]
+              });
+            } else {
+              the_callback({
+                success: false,
+                error: "error"
+              });
+            }
           }
         }
       }

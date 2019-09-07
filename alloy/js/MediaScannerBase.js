@@ -570,17 +570,32 @@ module.exports = class MediaScannerBase {
       this.lastfm.login(this.getLastFmOptions());
       this.lastfm_queue = [];
 
+      var starred = this.db.prepare("SELECT * FROM Tracks WHERE starred=?").all("true");
+      starred.forEach((track) => {
+        this.getLastfmSession(() => {
+          this.lastfm.loveTrack({
+            artist: track.artist,
+            track: track.title,
+            callback: (result) => {
+              if (!result.error) {
+                //this.debug("lastfm love track " + track.title + " - " + track.artist);
+              }
+            }
+          });
+        });
+      });
+
       var artists = this.db.prepare("SELECT * FROM Artists WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY name ASC").all();
       artists.forEach((artist) => {
         this.lastfm_queue.push({ type: "artist", data: artist });
       });
 
-      var albums = this.db.prepare("SELECT * FROM Albums WHERE id NOT IN (SELECT id FROM LastFM)").all();
+      var albums = this.db.prepare("SELECT * FROM Albums WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY artist ASC").all();
       albums.forEach((album) => {
         this.lastfm_queue.push({ type: "album", data: album });
       });
 
-      var tracks = this.db.prepare("SELECT * FROM Tracks WHERE id NOT IN (SELECT id FROM LastFM)").all();
+      var tracks = this.db.prepare("SELECT * FROM Tracks WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY artist ASC").all();
       tracks.forEach((track) => {
         this.lastfm_queue.push({ type: "track", data: track });
       });

@@ -32,7 +32,7 @@ section.scrollable.padder-lg.w-f-md
                     span {{track.artist}}
               td.col-sm-2.col-md-6.col-lg-6 {{$root.formatTime(track.duration)}}
               td(ng-if="$root.globals.currentUser")
-                a.centered-anchor(data-value="track;{{track.id}}", ng-click="starTrack(track)", href="", style="height:30px;")
+                a.centered-anchor(data-value="track;{{track.id}}", ng-click="$root.starTrack(track)", href="", style="height:30px;")
                   i.alloy-icon.icon(ng-class="isStarred(track)")
 
     .table-responsives(ng-if="type === 'albums'")

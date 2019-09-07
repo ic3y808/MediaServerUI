@@ -10,9 +10,9 @@ module.exports = function ($rootScope) {
     replace: true,
     link: ($scope, elm, attrs) => {
       $scope.runTask = function (task) {
-        ipcRenderer.send("scheduler-run-task", task);
+        ipcRenderer.send("scheduler-run-task", { task: task.callback });
       };
-      
+
       ipcRenderer.on("scheduler-current-schedule", (args, e) => {
         $scope.schedule = e;
         $rootScope.update();

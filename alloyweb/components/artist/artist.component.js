@@ -2,13 +2,15 @@ import "./artist.scss";
 import { findIndex } from "lodash";
 
 class ArtistController {
-  constructor($scope, $rootScope, $routeParams, $compile, $element, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
+  constructor($scope, $rootScope, $routeParams, $location, $compile, $element, $window, Cache, Logger, AppUtilities, Backend, MediaPlayer, AlloyDbService) {
     "ngInject";
     this.$scope = $scope;
     this.$rootScope = $rootScope;
     this.$routeParams = $routeParams;
+    this.$location = $location;
     this.$compile = $compile;
     this.$element = $element;
+    this.$window = $window;
     this.Cache = Cache;
     this.Logger = Logger;
     this.AppUtilities = AppUtilities;
@@ -62,7 +64,12 @@ class ArtistController {
       if ($rootScope.artist.albums || $rootScope.artist.EPs || $rootScope.artist.singles) { return false; }
       else { return true; }
     };
-    
+
+    $scope.navToSimilar = (similar) => {
+      if (similar.id) { this.$location.path("/artist/" + similar.id); }
+      else if (similar.url) { this.$window.open(similar.url); }
+    };
+
 
     $scope.starArtist = () => {
       this.Logger.info("Trying to star artist: " + this.$rootScope.artist.artist.name);

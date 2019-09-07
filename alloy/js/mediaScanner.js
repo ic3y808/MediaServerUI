@@ -85,11 +85,11 @@ class MediaScanner extends MediaScannerBase {
   }
 
   checkDBLinks(artist) {
-    if (artist && artist.Links) {
-      artist.Links.forEach((link) => {
-        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.Id);
+    if (artist && artist.links) {
+      artist.links.forEach((link) => {
+        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.id);
         if (existingLink.length === 0) {
-          link.artist_id = artist.Id;
+          link.artist_id = artist.id;
           this.writeDb(link, "Links");
         }
       });

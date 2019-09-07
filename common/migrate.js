@@ -21,9 +21,9 @@ module.exports.migrate = function migrate(db, migrationDir) {
   db.prepare("CREATE TABLE IF NOT EXISTS Migrations (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `name` VARCHAR (255) NOT NULL, `run_on` datetime NOT NULL)").run();
   var files = fs.readdirSync(migrationDir);
   files.forEach((file) => {
-    debug("Processing Migration: " + file);
     var existingInDb = db.prepare("SELECT * FROM Migrations WHERE name=?").get(file);
     if (!existingInDb) {
+      debug("Processing Migration: " + file);
       var req = require(path.join(migrationDir, file));
       var data = req.up(db);
       if (data.sql === true) {

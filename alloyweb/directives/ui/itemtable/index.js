@@ -27,25 +27,6 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       scope.navTo = (type, url) => {
         $location.path(type + "/" + url);
       };
-
-      scope.starTrack = (track) => {
-        if (track) {
-          Logger.info("Trying to star track: " + track.title);
-          if (track.starred === "true") {
-            AlloyDbService.unstar({ id: track.id }).then((result) => {
-              Logger.info("UnStarred " + track.title + " " + JSON.stringify(result));
-              track.starred = "false";
-              AppUtilities.apply();
-            });
-          } else {
-            AlloyDbService.star({ id: track.id }).then((result) => {
-              Logger.info("Starred " + track.title + " " + JSON.stringify(result));
-              track.starred = "true";
-              AppUtilities.apply();
-            });
-          }
-        }
-      };
     }
   };
 }
