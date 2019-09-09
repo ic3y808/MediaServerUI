@@ -5,12 +5,13 @@
 .itemtable tbody>tr>td{
   text-align: left;
   align-content: flex-start;
-
+  white-space: nowrap;
 }
 .itemtable thead>tr>td {
   width: 1px !important;
   text-align: left;
   table-layout: fixed;
+  white-space: nowrap;
 }
 
 .image-cell-container {

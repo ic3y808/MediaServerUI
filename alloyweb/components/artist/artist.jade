@@ -22,25 +22,33 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.artist", style="pad
                   h2
                     span(dir='auto') {{$root.artist.artist.name}}
 
-                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(ng-if="$root.artist.tracks") {{$root.artist.total_tracks}} {{$root.artist.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.artist.size}}
                 .TrackListHeader__children
                   .TrackListHeader__button.TrackListHeader__button--bottom(ng-if="$root.artist.tracks")
-                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
+                    button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
               .TrackListHeader__button.TrackListHeader__button--top(ng-if="$root.artist.tracks")
-                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
+                button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
 
         .col-xs-12.col-lg-8.col-xl-12
           .row(style="overflow:auto; max-height:250px;")
             p(ng-bind-html="$root.artist.artist.biography")  
         .col-xs-12.col-lg-8.col-xl-12
-          .row(ng-if="$root.artist.artist_info.similar.artist", style="overflow:auto; max-height:100px;")
-            h3.text-faded Related
-            .btn-group(role='group' aria-label='Basic example')
-              button.btn.btn-secondary(ng-click="navToSimilar(similar)", ng-repeat="similar in $root.artist.artist_info.similar.artist", type='button') {{similar.name}}
-                 
           .row(ng-if="$root.artist.links")
-            a.btn.btn-rounded.btn-icon.btn-link(ng-repeat="link in $root.artist.links", href='{{link.target}}', target="_blank")
-              i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")
+            
+            span.ArtistDetails-detailsLabel.Label-label.Label-default.Label-large
+              span {{$root.artist.artist.path}} 
+            span.ArtistDetails-detailsLabel.Label-label.Label-default.Label-large(title='31 track files') 
+              span {{$root.artist.total_tracks}} {{$root.artist.total_tracks > 1 ? "Tracks" : "Track"}}
+            span.ArtistDetails-detailsLabel.Label-label.Label-default.Label-large(title='31 track files', ng-if="$root.artist.tracks")
+              span {{$root.artist.size}}
+            linkbutton(buttontext="Links", data="$root.artist.links")
+                      
+          .row(ng-if="$root.artist.artist_info.similar.artist", style="overflow:auto; max-height:100px;")
+            h4.text-faded Related
+            .btn-group(role='group' aria-label='Basic example')
+              span.ArtistDetails-detailsLabel.Label-label.Label-default.Label-large(ng-click="navToSimilar(similar)", ng-repeat="similar in $root.artist.artist_info.similar.artist")
+                span {{similar.name}}
+
+          
 
 
       .row

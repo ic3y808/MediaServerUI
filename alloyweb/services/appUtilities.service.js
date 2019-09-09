@@ -287,18 +287,17 @@ export default class AppUtilities {
   getLinkIcon(link) {
     var base = "icon-";
     switch (link.type) {
-      case "discogs": { return base + link.type; }
-      case "wikipedia": { return base + link.type; }
-      case "myspace": { return base + link.type; }
-      case "last": { return base + link.type; }
-      case "wikidata": { return base + link.type; }
-      case "allmusic": { return base + link.type; }
-      case "facebook": { return base + link.type; }
-      case "twitter": { return base + link.type; }
-      case "beatport": { return base + link.type; }
-      case "youtube": { return base + link.type; }
-      case "bbc": { return base + link.type; }
-      case "soundcloud": { return base + link.type; }
+      case "discogs":
+      case "wikipedia":
+      case "myspace":
+      case "last":
+      case "wikidata":
+      case "facebook":
+      case "twitter":
+      case "beatport":
+      case "youtube":
+      case "bbc":
+      case "soundcloud":
       case "bandcamp": { return base + link.type; }
       default: { return base + "external-link"; }
     }

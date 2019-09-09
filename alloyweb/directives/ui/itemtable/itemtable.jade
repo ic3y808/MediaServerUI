@@ -10,7 +10,7 @@ section.scrollable.padder-lg.w-f-md
               th(ng-if="showimages")
               th.col-sm-2.col-md-6.col-lg-6 Title
               th.col-sm-2.col-md-6.col-lg-6 Album
-              th.col-sm-2.col-md-6.col-lg-6 Artist
+              th(ng-if="showartist").col-sm-2.col-md-6.col-lg-6 Artist
               th.col-sm-2.col-md-6.col-lg-6 Length
               th(ng-if="$root.globals.currentUser")
           tbody(ng-repeat="track in data | limitTo:limit")
@@ -26,7 +26,7 @@ section.scrollable.padder-lg.w-f-md
                 a(data-value="track;{{track.id}}", href="/album/{{track.album_id}}")
                   span.clear
                     span {{track.album}}
-              td.col-sm-2.col-md-6.col-lg-6 
+              td.col-sm-2.col-md-6.col-lg-6(ng-if="showartist")
                 a(data-value="track;{{track.id}}", href="/artist/{{track.artist_id}}") 
                   span.clear
                     span {{track.artist}}

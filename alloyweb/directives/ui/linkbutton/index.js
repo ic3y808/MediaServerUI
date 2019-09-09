@@ -30,16 +30,18 @@ export default function ($window) {
             "</div>";
           $scope.content = [];
           $scope.data.forEach((tag) => {
-            $scope.content.push("<div class=\"Details-Label Label-label Label-default Label-large\" ng-click=\"linkClick(\"" + tag.target + "\")" > " + tag.type + \"</div>");
+            var html = "<span class='ArtistDetails-detailsLabel Label-label Label-default Label-large' ng-click='linkClick(\"" + tag.target + "\")' ><span>" + tag.type + "</span></span>";
+            $scope.content.push(html);
           });
+
           $element.popover({
-            template: $scope.template,
+            // template: $scope.template,
             content: function () {
               return $compile($scope.content.join(""))($scope);
             },
             html: true,
             trigger: "manual",
-            container: ".PageContentBody-contentBody",
+            container: "#primary-content",
             placement: "bottom",
           });
 
