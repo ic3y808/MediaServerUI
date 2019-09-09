@@ -303,6 +303,19 @@ button:active {
   transform: scale(.99);
 }
 
+.spotify-btn.btn-primary {
+  padding: 11px 44px;
+  background: $primary-color;
+  color: #fff;
+  -webkit-box-shadow: inset 0 0 0 2px $border-color;
+  box-shadow: inset 0 0 0 2px $border-color;
+}
+
+.spotify-btn.btn-primary:hover {
+  -webkit-box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
+  box-shadow: inset 0 0 0 2px #fff, 0 0 0 1px rgba(0, 0, 0, 0);
+}
+
 .spotify-btn.btn-black {
   padding: 11px 44px;
   background: rgba(24, 24, 24, .7);

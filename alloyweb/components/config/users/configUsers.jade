@@ -1,33 +1,24 @@
-fieldset.FieldSet-fieldSet
-  legend.FieldSet-legend User Settings
-  div
-    div
-    .FormGroup-group.FormGroup-large
-      .FormInputGroup-inputGroupContainer
-        .FormInputGroup-inputGroup
-          .FormInputGroup-inputContainer
-            button.Button-button.Link-link.Button-primary.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='createUser()') Create
-    div
-    .FormGroup-group.FormGroup-large
-      label.FormLabel-label.FormLabel-large Users
-      .FormInputGroup-inputGroupContainer
-        .FormInputGroup-inputGroup
-          .FormInputGroup-inputContainer
-              .Table-tableContainer
-                table.table.table-striped.b-t.b-light
-                  thead
-                    tr
-                      th(style="width:1px;") Type
-                      th(style="width:1px;") Username
-                      th(style="width:1px;white-space: nowrap;") Registered
-                      th(style="width:1px;white-space: nowrap;") Last Login
-                      th(style="width:1px;") 
-                  tbody(ng-repeat='user in $root.users')
-                    tr
-                      td(style="width:1px;") {{user.type}}
-                      td(style="width:1px;") {{user.username}}
-                      td(style="width:1px;white-space: nowrap;") {{$root.formatIsoTime(user.registered)}}
-                      td(style="width:1px;white-space: nowrap;") {{$root.formatIsoTime(user.last_login)}}
-                      td(style="width:1px;") 
-                        a.active(data-toggle='class', ng-click="deleteUser(user.id)", href='#')
-                          i.alloy-icon.icon-minus
+
+section.scrollable.padder
+  section.panel.panel-default
+    header.panel-heading Users
+      button.Button-button.Link-link.Button-primary.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='createUser()') Create
+    .table-responsive
+      table.table.table-striped.b-t.b-light
+        thead
+          tr
+            th(style="width:1px;") Type
+            th(style="width:1px;") Username
+            th(style="width:1px;white-space: nowrap;") Registered
+            th(style="width:1px;white-space: nowrap;") Last Login
+            th(style="width:1px;") 
+        tbody(ng-repeat='user in $root.users')
+          tr
+            td(style="width:1px;") {{user.type}}
+            td(style="width:1px;") {{user.username}}
+            td(style="width:1px;white-space: nowrap;") {{$root.formatIsoTime(user.registered)}}
+            td(style="width:1px;white-space: nowrap;") {{$root.formatIsoTime(user.last_login)}}
+            td(style="width:1px;") 
+              a.active(data-toggle='class', ng-click="deleteUser(user.id)", href='#')
+                i.alloy-icon.icon-minus
+          

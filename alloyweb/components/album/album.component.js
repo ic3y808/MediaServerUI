@@ -13,7 +13,6 @@ class AlbumController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("album-controller");
-    this.AppUtilities.showLoader();
 
     $scope.refresh = () => {
       if ($rootScope.album && $rootScope.album.album && $routeParams.id === $rootScope.album.album.id) { return; }

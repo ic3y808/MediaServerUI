@@ -110,25 +110,7 @@ class FooterController {
     };
 
     $scope.starTrack = () => {
-      if (this.MediaPlayer) {
-        var selected = this.MediaPlayer.selectedTrack();
-        if (selected) {
-          this.Logger.info("Trying to star track: " + selected.title);
-          if (selected.starred === "true") {
-            this.AlloyDbService.unstar({ id: selected.id }).then((result) => {
-              this.Logger.info("UnStarred " + selected.title + " " + JSON.stringify(result));
-              selected.starred = "false";
-              this.AppUtilities.apply();
-            });
-          } else {
-            this.AlloyDbService.star({ id: selected.id }).then((result) => {
-              this.Logger.info("Starred " + selected.title + " " + JSON.stringify(result));
-              selected.starred = "true";
-              this.AppUtilities.apply();
-            });
-          }
-        }
-      }
+      this.AlloyDbService.starTrack(this.$rootScope.currentTrack);
     };
 
     $rootScope.$watch("MediaPlayer", (o, n) => {

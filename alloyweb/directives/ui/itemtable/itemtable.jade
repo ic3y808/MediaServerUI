@@ -4,93 +4,123 @@ section.scrollable.padder-lg.w-f-md
       a(ng-show="showviewmore", href="{{viewmorelink}}").u.h6.text-muted.m-l View More
   .row 
     .table-responsives(ng-if="type === 'tracks'", style="overflow:hidden;")
-        table.table.table-striped.b-t.b-light
+        table.itemtable.table.table-striped.b-t.b-light
           thead
             tr
               th(ng-if="showimages")
-              th Title
-              th Album
-              th Artist
-              th Length
+              th.col-sm-2.col-md-6.col-lg-6 Title
+              th.col-sm-2.col-md-6.col-lg-6 Album
+              th(ng-if="showartist").col-sm-2.col-md-6.col-lg-6 Artist
+              th.col-sm-2.col-md-6.col-lg-6 Length
               th(ng-if="$root.globals.currentUser")
           tbody(ng-repeat="track in data | limitTo:limit")
-            tr(data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", ng-if="showimages", title='{{track.title}}')
-              td 
+            tr(id="{{track.id}}", data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", title='{{track.title}}')
+              td(ng-if="showimages") 
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(alt='{{track.title}}', lazy-load, tempData="{{track.image}}")
-              td 
+              td.col-sm-2.col-md-6.col-lg-6 
                 a(data-value="track;{{track.id}}", ng-click="$root.MediaPlayer.playTrack(track, data)")
                   span.clear
                     span {{track.title}}
-              td(ng-click="$root.MediaPlayer.playTrack(track, data)") 
+              td.col-sm-2.col-md-6.col-lg-6(ng-click="$root.MediaPlayer.playTrack(track, data)") 
                 a(data-value="track;{{track.id}}", href="/album/{{track.album_id}}")
                   span.clear
                     span {{track.album}}
-              td 
+              td.col-sm-2.col-md-6.col-lg-6(ng-if="showartist")
                 a(data-value="track;{{track.id}}", href="/artist/{{track.artist_id}}") 
                   span.clear
                     span {{track.artist}}
-              td {{$root.formatTime(track.duration)}}
+              td.col-sm-2.col-md-6.col-lg-6 {{$root.formatTime(track.duration)}}
               td(ng-if="$root.globals.currentUser")
-                a.centered-anchor(data-value="track;{{track.id}}", ng-click="starTrack(track)", href="", style="height:30px;")
+                a.centered-anchor(data-value="track;{{track.id}}", ng-click="$root.starTrack(track)", href="", style="height:30px;")
                   i.alloy-icon.icon(ng-class="isStarred(track)")
 
     .table-responsives(ng-if="type === 'albums'")
-        table.table.table-striped.b-t.b-light
+        table.itemtable.table.table-striped.b-t.b-light
           thead
             tr
-              th(ng-if="showimages", style="width:1px;")
-              th Album
-              th Artist
-              th Created
-              th Tracks
+              th(ng-if="showimages")
+              th.col-sm-12.col-md-12.col-lg-12 Album
+              th(ng-if="showartist").col-sm-2.col-md-6.col-lg-6 Artist
+              th.text-right(style="width:1px !important;text-align:end !important;") Created
+              th.text-right(style="width:1px !important;text-align:end !important;") Tracks
           tbody(ng-repeat="album in data | limitTo:limit", style="max-height:400px;overflow:auto;")
-            tr(data-value="album;{{album.id}}", title='{{album.name}}')
-              td(ng-if="showimages", style="width:1px;")
+            tr(id="{{album.id}}", data-value="album;{{album.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('album', album.id) == true}", ng-click="navTo('album', album.id)", title='{{album.name}}')
+              td(ng-if="showimages") 
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(alt='{{album.name}}', lazy-load, tempData="{{album.image}}")
-              td 
+              td.col-sm-2.col-md-6.col-lg-6
                 a(data-value="album;{{album.id}}", href="/album/{{album.id}}")
                   span.clear
                     span {{album.name}}
-              td 
-                a(href="/artist/{{album.artist_id}}", data-value="album;{{album.id}}") {{album.artist}}
-              td {{album.created}}
-              td {{album.track_count}}
+              td(ng-if="showartist").col-sm-2.col-md-6.col-lg-6 
+                a(data-value="album;{{album.id}}", href="/artist/{{album.artist_id}}") {{album.artist}}
+              td.text-right(style="width:1px !important;text-align:end !important;") {{album.created}}
+              td.text-right(style="width:1px !important;text-align:end !important;") {{album.track_count}}
 
     .table-responsives(ng-if="type === 'artists'")
-        table.table.table-striped.b-t.b-light
+        table.itemtable.table.table-striped.b-t.b-light
           thead
             tr
-              th(ng-if="showimages", style="width:1px;")
+              th(ng-if="showimages", style="width:1px !important;")
 
-              th Artist
-              th Tracks
+              th.col-sm-2.col-md-6.col-lg-6 Artist
+              th.col-sm-2.col-md-6.col-lg-6.text-right Tracks
           tbody(ng-repeat="artist in data | limitTo:limit")
-            tr(data-value="artist;{{artist.id}}", title='{{artist.name}}')
-              td(ng-if="showimages", style="width:1px;")
+            tr(id="{{artist.id}}", data-value="artist;{{artist.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('artist', artist.id) == true}", ng-click="navTo('artist', artist.id)", title='{{artist.name}}')
+              td(ng-if="showimages", style="width:1px !important;")
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(alt='{{artist.name}}', lazy-load, tempData="{{artist.image}}")
-              td 
-                a(href="/artist/{{artist.id}}", data-value="artist;{{artist.id}}") {{artist.name}}
-              td {{artist.track_count}}
+              td.col-sm-2.col-md-6.col-lg-6 
+                a(data-value="artist;{{artist.id}}", href="/artist/{{artist.id}}") {{artist.name}}
+              td.text-right(style="width:1px !important;text-align:end !important;") {{artist.track_count}}
 
     .table-responsives(ng-if="type === 'genres'")
-        table.table.table-striped.b-t.b-light
+        table.itemtable.table.table-striped.b-t.b-light
           thead
             tr
-              th(ng-if="showimages", style="width:1px;")
-              th Genre
-              th Artists
-              th Albums
-              th Tracks
+              th(ng-if="showimages", style="width:1px !important;")
+              th.col-sm-2.col-md-6.col-lg-6 Genre
+              th.col-sm-2.col-md-6.col-lg-6 Artists
+              th.col-sm-2.col-md-6.col-lg-6 Albums
+              th.col-sm-2.col-md-6.col-lg-6 Tracks
           tbody(ng-repeat="genre in data | limitTo:limit")
-            tr(data-value="genre;{{genre.id}}", title='{{genre.name}}')
-              td(ng-if="showimages", style="width:1px;")
+            tr(id="{{genre.id}}", data-value="genre;{{genre.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('genre', genre.id) == true}", ng-click="navTo('genre', genre.id)", title='{{genre.name}}')
+              td(ng-if="showimages", style="width:1px !important;")
                 span.pull-left.thumb-sm.avatar.m-r
                   img.img-thumbnail(alt='{{genre.name}}', lazy-load, tempData="{{genre.image}}")
-              td 
-                a(href="/genre/{{genre.id}}", data-value="genre;{{genre.id}}") {{genre.name}}
-              td {{genre.artist_count}}
-              td {{genre.album_count}}
-              td {{genre.track_count}}
+              td.col-sm-2.col-md-6.col-lg-6 
+                a(data-value="genre;{{genre.id}}", href="/genre/{{genre.id}}") {{genre.name}}
+              td.col-sm-2.col-md-6.col-lg-6 {{genre.artist_count}}
+              td.col-sm-2.col-md-6.col-lg-6 {{genre.album_count}}
+              td.col-sm-2.col-md-6.col-lg-6 {{genre.track_count}}
+
+    .table-responsives(ng-if="type === 'history'", style="overflow:hidden;")
+        table.itemtable.table.table-striped.b-t.b-light
+          thead
+            tr
+              th.col-sm-2.col-md-6.col-lg-6 Title
+              th.col-sm-2.col-md-6.col-lg-6 Album
+              th.col-sm-2.col-md-6.col-lg-6 Artist
+              th.col-sm-2.col-md-6.col-lg-6 Genre
+              th.col-sm-2.col-md-6.col-lg-6 Date
+          tbody(ng-repeat="track in data | limitTo:limit")
+            tr(id="{{track.id}}", data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", title='{{track.title}}')
+              td.col-sm-2.col-md-6.col-lg-6(ng-click="$root.MediaPlayer.playTrack(track, data)") 
+                a(data-value="track;{{track.id}}" )
+                  span.clear
+                    span {{track.title}}
+              td.col-sm-2.col-md-6.col-lg-6 
+                a(data-value="track;{{track.id}}", href="/album/{{track.album_id}}", onclick="event.preventDefault()")
+                  span.clear
+                    span {{track.album}}
+              td.col-sm-2.col-md-6.col-lg-6 
+                a(data-value="track;{{track.id}}", href="/artist/{{track.artist_id}}") 
+                  span.clear
+                    span {{track.artist}}
+              td.col-sm-2.col-md-6.col-lg-6 
+                a(data-value="track;{{track.id}}", href="/artist/{{track.artist_id}}") 
+                  span.clear
+                    span {{track.genre}}
+              td.col-sm-2.col-md-6.col-lg-6(ng-click="$root.MediaPlayer.playTrack(track, data)") {{$root.formatUnixTime(track.time)}}
+

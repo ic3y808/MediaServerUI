@@ -6,8 +6,12 @@ const fs = require("fs");
 const del = require("del");
 const shell = require("shelljs");
 const jimp = require("jimp");
+//const escape = require("escape-string-regexp");
+
 const { ipcRenderer } = require("electron");
 var loggerTag = "MediaScannerBase";
+var LastFM = require(path.join(process.env.APP_DIR, "common", "simple-lastfm"));
+var utils = require(path.join(process.env.APP_DIR, "common", "utils"));
 
 module.exports = class MediaScannerBase {
 
@@ -15,9 +19,13 @@ module.exports = class MediaScannerBase {
     this.db = database;
     this.resetStatus();
     this.queue = {};
+    this.lastfm_queue = {};
     this.tickets = {};
     this.convert = require(path.join(process.env.APP_DIR, "common", "convert"));
     this.mm = require(path.join(process.env.APP_DIR, "alloyapi", "music-metadata"));
+    this.cryptoFuncs = window.require(path.join(process.env.APP_DIR, "common", "crypto"));
+    this.lastfm = new LastFM();
+    this.lastfm.login(this.getLastFmOptions());
   }
 
   log(obj) { ipcRenderer.send("log", obj); }
@@ -71,7 +79,7 @@ module.exports = class MediaScannerBase {
         });
       }
 
-      if (this.tickets) {
+      if (this.tickets && Object.keys(this.tickets).length > 0) {
         var ticketKeys = Object.keys(this.tickets);
 
         ticketKeys.forEach((key) => {
@@ -81,7 +89,6 @@ module.exports = class MediaScannerBase {
         });
         this.scanStatus.queue = this.tickets;
       }
-      //this.scanStatus.queue.stats = this.queue.getStats(); 
     }
   }
 
@@ -102,11 +109,11 @@ module.exports = class MediaScannerBase {
   checkCounts() {
     this.info("checking counts");
     this.updateStatus("checking counts", true);
-    var genres = this.db.prepare("SELECT * FROM Genres").all();
+    var genres = this.db.prepare("SELECT id FROM Genres").all();
     genres.forEach((g) => {
       var albums = [];
       var artists = [];
-      var tracks = this.db.prepare("SELECT * FROM Tracks WHERE genre_id=?").all(g.id);
+      var tracks = this.db.prepare("SELECT artist_id, album_id FROM Tracks WHERE genre_id=?").all(g.id);
       tracks.forEach((track) => {
         artists.push(track.artist_id);
         albums.push(track.album_id);
@@ -305,7 +312,7 @@ module.exports = class MediaScannerBase {
     }
   }
 
-  parseFiles(audioFiles) {
+  parseAlbumArt(audioFiles) {
     if (this.shouldCancel()) { return Promise.resolve(); }
     const track = audioFiles.shift();
 
@@ -314,7 +321,6 @@ module.exports = class MediaScannerBase {
       var coverId = "cvr_" + track.album_id;
       var coverFileOrig = path.join(process.env.COVER_ART_DIR, coverId + ".orig.jpg");
       var coverFileThumb = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
-
 
       if (!fs.existsSync(coverFileThumb) || !fs.existsSync(coverFileOrig)) {
         return this.mm.parseFile(track.path).then((metadata) => {
@@ -342,9 +348,9 @@ module.exports = class MediaScannerBase {
               this.db.prepare("UPDATE Tracks SET cover_art=? WHERE id=?").run(coverId, track.id);
             });
           }
-          return this.parseFiles(audioFiles); // process rest of the files AFTER we are finished
+          return this.parseAlbumArt(audioFiles); // process rest of the files AFTER we are finished
         });
-      } return this.parseFiles(audioFiles);
+      } return this.parseAlbumArt(audioFiles);
     } else { return Promise.resolve(); }
   }
 
@@ -352,7 +358,7 @@ module.exports = class MediaScannerBase {
     this.info("checking missing art");
     this.updateStatus("checking missing art", true);
     var allTracks = this.db.prepare("SELECT * FROM Tracks").all();
-    return this.parseFiles(allTracks);
+    return this.parseAlbumArt(allTracks);
   }
 
   cleanup() {
@@ -381,6 +387,220 @@ module.exports = class MediaScannerBase {
         this.info("Incremental Cleanup complete");
         this.updateStatus("Cleanup Complete", false);
       });
+    }
+  }
+
+  checkLastFmStep() {
+    if (this.scanStatus.shouldCancel) {
+      this.updateStatus("Scanning Cancelled", false);
+      setTimeout(() => {
+        this.resetStatus();
+      }, 5000);
+      return;
+    }
+
+    if (Object.keys(this.lastfm_queue).length === 0) {
+      this.updateStatus("Scanning Complete", false);
+      setTimeout(() => {
+        this.resetStatus();
+      }, 5000);
+      return;
+    }
+
+    var item = this.lastfm_queue.shift();
+    if (!item || !item.type) {
+      this.updateStatus("Scanning Complete", false);
+    } else {
+      try {
+        this.getLastfmSession(() => {
+
+          switch (item.type) {
+            case "artist":
+              var artist = item.data;
+              this.updateStatus("Scanning Artist " + artist.name, true);
+              this.lastfm.getArtistInfo({
+                artist: artist.name,
+                mbid: artist.musicbrainz_artistid,
+                callback: (result) => {
+                  if (result && result.artistInfo) {
+                    var data = JSON.stringify(result.artistInfo);
+                    var entry = { id: artist.id, type: "artist", data: data };
+
+                    this.writeDb(entry, "LastFM");
+
+                    var updateArtist = false;
+                    if (result.artistInfo.bio) {
+                      if (result.artistInfo.bio.summary) {
+                        artist.overview = JSON.parse(JSON.stringify(utils.isStringValid(result.artistInfo.bio.summary.replace(/\<.*apply\./gi, ""), "")));
+                        updateArtist = true;
+                      }
+                      if (result.artistInfo.bio.content) {
+                        artist.biography = JSON.parse(JSON.stringify(utils.isStringValid(result.artistInfo.bio.content, "").replace(/\<.*apply\./gi, "")));
+                        updateArtist = true;
+                      }
+                    }
+                    if (result.artistInfo.stats) {
+                      if (result.artistInfo.stats.userplaycount !== "0") {
+                        artist.play_count = parseInt(result.artistInfo.stats.userplaycount, 10);
+                        updateArtist = true;
+                      }
+                    }
+                    if (updateArtist) {
+                      this.writeDb(artist, "Artists");
+                    }
+                  }
+                  this.checkLastFmStep();
+                }
+              });
+              break;
+            case "album":
+              var album = item.data;
+              this.updateStatus("Scanning Album " + album.name, true);
+              this.lastfm.getAlbumInfo({
+                artist: album.artist,
+                album: album.name,
+                mbid: album.musicbrainz_artistid,
+                callback: (result) => {
+                  if (result && result.albumInfo) {
+                    var data = JSON.stringify(result.albumInfo);
+                    var entry = { id: album.id, type: "album", data: data };
+
+                    this.writeDb(entry, "LastFM");
+
+                    var updateAlbum = false;
+
+
+                    if (result.albumInfo.userplaycount !== "0") {
+                      album.play_count = parseInt(result.albumInfo.userplaycount, 10);
+                      updateAlbum = true;
+                    }
+
+                    if (updateAlbum) {
+                      this.writeDb(album, "Albums");
+                    }
+                  }
+                  this.checkLastFmStep();
+                }
+              });
+              break;
+            case "track":
+              var track = item.data;
+              this.updateStatus("Scanning Track " + track.path, true);
+              this.lastfm.getTrackInfo({
+                artist: track.artist === "No Artist" ? track.base_path : track.artist,
+                track: track.title,
+                mbid: track.musicbrainz_artistid,
+                callback: (result) => {
+                  if (result && result.trackInfo) {
+                    var data = JSON.stringify(result.trackInfo);
+                    var entry = { id: track.id, type: "track", data: data };
+
+                    this.writeDb(entry, "LastFM");
+
+                    var updateTrack = false;
+                    if (result.trackInfo.userloved === "1") {
+                      track.starred = "true";
+                      updateTrack = true;
+                    }
+
+                    if (result.trackInfo.userplaycount !== "0") {
+                      track.play_count = parseInt(result.trackInfo.userplaycount, 10);
+                      updateTrack = true;
+                    }
+                    if (updateTrack) {
+                      this.writeDb(track, "Tracks");
+                    }
+                  }
+                  this.checkLastFmStep();
+                }
+              });
+              break;
+          }
+
+
+        });
+      } catch (err) {
+        this.updateStatus("Scanning Error " + err.message, false);
+        if (Object.keys(this.lastfm_queue).length > 0) { this.step(); }
+        else {
+          this.updateStatus("Scanning Complete", false);
+        }
+      }
+    }
+
+  }
+
+  getLastFmOptions() {
+    var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+    if (lastfmSettings && lastfmSettings.settings_value) {
+      var settings = JSON.parse(lastfmSettings.settings_value);
+      if (settings) {
+        if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
+
+          return {
+            api_key: process.env.LASTFM_API_KEY,
+            api_secret: process.env.LASTFM_API_SECRET,
+            username: settings.alloydb_lastfm_username,
+            password: this.cryptoFuncs.decryptPassword(settings.alloydb_lastfm_password)
+          };
+        } else {
+          this.error("No lastfm username or password.");
+        }
+      } else {
+        this.error("Could not parse settings.");
+      }
+    } else {
+      this.error("Could not load lastfm settings.");
+    }
+    return null;
+  }
+
+  getLastfmSession(cb) {
+    var lsfm = this.lastfm;
+    if (lsfm) { lsfm.getSessionKey(cb); }
+    else {
+      cb({ result: { failure: "failed" } });
+    }
+  }
+
+  lastFmScan() {
+    if (this.isScanning()) {
+      this.debug("scan in progress");
+    } else {
+      this.lastfm.login(this.getLastFmOptions());
+      this.lastfm_queue = [];
+
+      var starred = this.db.prepare("SELECT * FROM Tracks WHERE starred=?").all("true");
+      starred.forEach((track) => {
+        this.getLastfmSession(() => {
+          this.lastfm.loveTrack({
+            artist: track.artist,
+            track: track.title,
+            callback: (result) => {
+              if (!result.error) {
+                //this.debug("lastfm love track " + track.title + " - " + track.artist);
+              }
+            }
+          });
+        });
+      });
+
+      var artists = this.db.prepare("SELECT * FROM Artists WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY name ASC").all();
+      artists.forEach((artist) => {
+        this.lastfm_queue.push({ type: "artist", data: artist });
+      });
+
+      var albums = this.db.prepare("SELECT * FROM Albums WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY artist ASC").all();
+      albums.forEach((album) => {
+        this.lastfm_queue.push({ type: "album", data: album });
+      });
+
+      var tracks = this.db.prepare("SELECT * FROM Tracks WHERE id NOT IN (SELECT id FROM LastFM) ORDER BY artist ASC").all();
+      tracks.forEach((track) => {
+        this.lastfm_queue.push({ type: "track", data: track });
+      });
+
+      this.checkLastFmStep();
     }
   }
 

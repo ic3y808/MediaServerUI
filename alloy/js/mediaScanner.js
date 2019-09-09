@@ -85,11 +85,11 @@ class MediaScanner extends MediaScannerBase {
   }
 
   checkDBLinks(artist) {
-    if (artist && artist.Links) {
-      artist.Links.forEach((link) => {
-        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.Id);
+    if (artist && artist.links) {
+      artist.links.forEach((link) => {
+        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.id);
         if (existingLink.length === 0) {
-          link.artist_id = artist.Id;
+          link.artist_id = artist.id;
           this.writeDb(link, "Links");
         }
       });
@@ -311,12 +311,12 @@ class MediaScanner extends MediaScannerBase {
           id: json.artist.musicbrainzartistid,
           name: utils.isStringValid(json.artist.title, ""),
           sort_name: utils.isStringValid(artistInfo.sortName, ""),
-          biography: escape(utils.isStringValid(json.artist.biography, "")),
+          biography: JSON.parse(JSON.stringify((utils.isStringValid(json.artist.biography, "")))),
           status: utils.isStringValid(artistInfo.status, ""),
           rating: artistInfo.rating.count,
           type: utils.isStringValid(artistInfo.type, ""),
           disambiguation: utils.isStringValid(artistInfo.disambiguation, ""),
-          overview: escape(utils.isStringValid(artistInfo.overview, ""))
+          overview: JSON.parse(JSON.stringify((utils.isStringValid(artistInfo.overview, ""))))
         };
 
         Object.assign(artist, mappedArtist);
@@ -453,6 +453,10 @@ ipcRenderer.on("mediascanner-watcher-configure", () => {
 
 ipcRenderer.on("mediascanner-recache-start", () => {
   scanner.recache();
+});
+
+ipcRenderer.on("mediascanner-lastfm-scan-start", () => {
+  scanner.lastFmScan();
 });
 
 scanner = new MediaScanner();

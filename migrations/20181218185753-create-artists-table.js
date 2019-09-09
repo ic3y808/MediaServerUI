@@ -19,6 +19,7 @@ exports.up = function (db) {
       rating: { type: "int", defaultValue: 0 },
       type: { type: "string", defaultValue: "" },
       path: { type: "string", defaultValue: "" },
+      play_count: { type: "int", defaultValue: 0 },
       track_count: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true

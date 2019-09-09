@@ -6,16 +6,17 @@ export default class Backend {
     this.$rootScope = $rootScope;
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
+    this.settingsChangeListener = null;
+    $rootScope.settings = { advanced_mode: false };
+    $rootScope.settings.alloydb = {};
+
     $rootScope.socket = io("//" + document.location.hostname + ":" + document.location.port);
 
     $rootScope.socket.on("ping", (data) => {
       if (data) { $rootScope.backend_ping = data; }
     });
-    $rootScope.settings = { advanced_mode: false };
-    $rootScope.settings.alloydb = {};
 
     $rootScope.saveSettings = () => {
-
       if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
         $rootScope.settings.alloydb.alloydb_lastfm_password = AppUtilities.encryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
       }
@@ -27,12 +28,7 @@ export default class Backend {
       $rootScope.triggerConfigAlert("Saved!", "success");
     };
 
-    $rootScope.loadSettings = () => {
-
-    };
-
     var setup = () => {
-
       if (this.$rootScope.settings.alloydb.alloydb_host && this.$rootScope.settings.alloydb.alloydb_apikey) {
         this.AlloyDbService.login();
       }
@@ -46,8 +42,8 @@ export default class Backend {
       if (settings) {
         if (settings.key === "alloydb_settings") {
           $rootScope.settings.alloydb = settings.data;
-          if (settings.data.alloydb_lastfm_password) {
-            //$rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword(settings.data.alloydb_lastfm_password);
+          if ($rootScope.settings.alloydb.alloydb_lastfm_password) {
+            $rootScope.settings.alloydb.alloydb_lastfm_password = $rootScope.decryptPassword($rootScope.settings.alloydb.alloydb_lastfm_password);
           }
           setup();
         }

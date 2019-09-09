@@ -137,20 +137,23 @@ var getPath = function (query) {
           reject(err);
         }
         var data = [];
-        files.forEach(function (file) {
-          try {
-            var isDirectory = fs.statSync(path.join(currentDir, file)).isDirectory();
-            if (isDirectory) {
-              data.push({
-                Name: file,
-                IsDirectory: true,
-                Path: path.join(query, file)
-              });
+        if(files){
+          files.forEach(function (file) {
+            try {
+              var isDirectory = fs.statSync(path.join(currentDir, file)).isDirectory();
+              if (isDirectory) {
+                data.push({
+                  Name: file,
+                  IsDirectory: true,
+                  Path: path.join(query, file)
+                });
+              }
+            } catch (e) {
+              
             }
-          } catch (e) {
-            
-          }
-        });
+          });
+        }
+        
         data = _.sortBy(data, function (f) {
           return f.Name;
         });
@@ -177,7 +180,7 @@ router.get("/file_list", function (req, res) {
     getPath(query).then((result) => {
       res.json(result);
     }).catch((err) => {
-      res.locals.error(err);
+      //res.locals.error(err);
     });
   } catch (e) {
     if (e) {

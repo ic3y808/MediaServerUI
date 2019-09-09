@@ -1,63 +1,57 @@
-section.scrollable.padder-lg.w-f-mdsection.scrollable.padder-lg.w-f-md.dk(style="padding:0px;")
-  section.content.artist
-    header.genre-header(style='background-image: url({{$root.genre.image}});')
-      h1.monthly-listeners.large(dir='auto') {{$root.genre.genre.name}}
-      .genre-header-buttons
-        button.spotify-btn.btn-black.btn--narrow(ng-click="shuffle()") PLAY
-      .genre-header-buttons
-        starratinglabel(genre="genre")
-      .genre-header-buttons
-        button.spotify-btn.btn-black.btn--narrow(ng-click="starGenre()", title='Save to Your Library') {{$root.genre.genre.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.genre", style="padding:0px;")
+  section.content
+    .container-fluid
+      div.padder.m-t-sm
+        .col-xs-12.col-lg-3.col-xl-4
+          div
+            header.TrackListHeader
+              div
+                div(draggable='true')
+                  .media-object
+                    div
+                      .cover-art.shadow.cover-art--with-auto-height(aria-hidden='true' style='width: auto; height: auto;')
+                        div
+                          .cover-art-image.cover-art-image-loaded(style='background-image: url("{{$root.genre.image}}");')
+                      .mo-info
+                        .mo-info-name(title='{{$root.genre.genre.name}}')
+                          span(dir='auto') {{$root.genre.genre.name}}
+              
+              
+              .TrackListHeader__body
+                .TrackListHeader__entity-name
+                  h2
+                    span(dir='auto') {{$root.genre.genre.name}}
 
-      nav.tab-nav-list
-        ul.selection-tabs
-          li.selection-tab.active
-            div
-              a.selection-tab-title.selection-tab-title-selected(data-target='#popular', data-toggle='tab') Popular
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#artists', data-toggle='tab') Artists
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#albums', data-toggle='tab') Albums
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#neverPlayed', data-toggle='tab') Never Played
-          li.selection-tab
-            div
-              a.selection-tab-title(data-target='#all', data-toggle='tab') All Tracks
-    section.scrollable
-      .tab-content
-        #popular.tab-pane.active
-          section.genre-music.container-fluid(ng-if="$root.genre.popular_tracks.length > 0")
-            .row
-              .contentSpacing
-                section.artist-toptracks
-                  tracklist(title="Popular", data="$root.genre.popular_tracks", canaddplaylist="true")
-         
-        #artists.tab-pane
-          section.artist-music.container-fluid(ng-if="$root.genre.artists.length > 0")
-            .row
-              .contentSpacing
-                section.genre-toptracks
-                  thumblist(type="artists", title="Artists", data="$root.genre.artists", limit="$root.genre.artists.length", refreshclick="refresh()", viewmorelink="")     
-        #albums.tab-pane
-          section.artist-music.container-fluid(ng-if="$root.genre.artists.length > 0")
-            .row
-              .contentSpacing
-                section.genre-toptracks
-                  itemtable(type="albums", title="Albums", data="$root.genre.albums", limit="$root.genre.albums.length", refreshclick="refresh()", viewmorelink="", showimages="true")
-        #neverPlayed.tab-pane
-          section.artist-music.container-fluid(ng-if="$root.genre.artists.length > 0")
-            .row
-              .contentSpacing
-                section.genre-toptracks
-                  itemtable(type="tracks", title="Never Played", data="$root.genre.never_played", limit="$root.genre.never_played.length", refreshclick="refresh()", viewmorelink="", showimages="true")
-
-        #all.tab-pane
-          section.genre-music.container-fluid(ng-if="$root.genre.tracks.length > 0")
-            .row
-              .contentSpacing
-                section.genre-toptracks
-                  section.tracklist-container.full-width
-                    itemtable(type="tracks", title="All Tracks", data="$root.genre.tracks", limit="$root.genre.tracks.length", refreshclick="refresh()", viewmorelink="", showimages="true")
+                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info {{$root.genre.total_tracks}} {{$root.genre.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.genre.size}}
+                .TrackListHeader__children
+                  .TrackListHeader__button.TrackListHeader__button--bottom
+                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
+              .TrackListHeader__button.TrackListHeader__button--top
+                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
+              .TrackListHeader__button.TrackListHeader__button--top
+                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="starArtist()", ng-disabled="isDisabled()", title='Save to Your Library') {{$root.genre.genre.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+              .TrackListHeader__button.TrackListHeader__button--top
+                starratinglabel(ng-disabled="isDisabled()", album="$root.genre.genre", extrastyles="btn-block")
+        .col-xs-12.col-lg-8.col-xl-12
+          .row
+          
+            span.text-muted(ng-if="$root.genre.genre.biography")
+            p(ng-bind-html="$root.genre.genre.biography")  
+          .row
+            a.btn.btn-rounded.btn-twitter.btn-icon(ng-repeat="link in $root.artist.links", href='{{link.target}}', target="_blank")
+              i.alloy-icon.icon(ng-class="$root.getLinkIcon(link)")
+        .col-xs-12.col-lg-8.col-xl-12
+          .row 
+            .col-md-7(ng-if="$root.genre.artists.length > 0")
+              thumblist(type="artists", title="Artists", data="$root.genre.artists", limit="36", refreshclick="refresh()", origin="genre", viewmorelink="/genres")
+            .col-md-5(ng-if="$root.genre.popular_tracks.length > 0")
+              itemlist(type="tracks", title="Popular", data="$root.genre.popular_tracks", limit="9", refreshclick="refresh()", viewmorelink="/", showviewmore="true")
+          .row
+            .col-md-7(ng-if="$root.genre.albums.length > 0")
+              thumblist(type="albums", title="Albums", data="$root.genre.albums", limit="36", refreshclick="refresh()", viewmorelink="/")
+            .col-md-5(ng-if="$root.genre.never_played.length > 0")
+              itemlist(type="tracks", title="Never Played", data="$root.genre.never_played", limit="9", refreshclick="refresh()", viewmorelink="/")  
+          .row
+            .col-md-12(ng-if="$root.genre.tracks.length > 0")
+              itemtable(type="tracks", title="Tracks", data="$root.genre.tracks", limit="$root.genre.tracks.length", refreshclick="refresh()", viewmorelink="/", showartist="true")
+      

@@ -13,7 +13,6 @@ class StarredController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("starred-controller");
-    this.AppUtilities.showLoader();
    
     $scope.refresh = () => {
       AlloyDbService.refreshStarred();
@@ -22,14 +21,12 @@ class StarredController {
     $rootScope.$watch("starred_tracks", (newVal, oldVal) =>  {
       if ($rootScope.starred_tracks) {
         this.AppUtilities.apply();
-        this.AppUtilities.hideLoader();
       }
     });
 
     $rootScope.$watch("starred_albums", (newVal, oldVal) =>  {
       if ($rootScope.starred_albums) {
         this.AppUtilities.apply();
-        this.AppUtilities.hideLoader();
       }
     });
   }

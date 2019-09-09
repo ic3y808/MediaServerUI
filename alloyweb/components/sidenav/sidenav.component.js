@@ -23,9 +23,10 @@ class SidenavController {
       $modal.modal();
     };
     $scope.createNewPlaylist = () => {
-      var newPlaylist = this.AlloyDbService.addPlaylist({ name: $scope.newPlaylistName });
+      var newPlaylist = this.AlloyDbService.addPlaylist({ name: $rootScope.newPlaylistName });
       if (newPlaylist) {
         newPlaylist.then((result) => {
+          $rootScope.newPlaylistName = "";
           this.AlloyDbService.refreshPlaylists();
         });
       }

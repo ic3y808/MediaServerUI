@@ -21,7 +21,6 @@ class ShareController {
       if (cache) {
         $scope.info = cache;
         this.AppUtilities.apply();
-        this.AppUtilities.hideLoader();
       } else {
         var share = this.AlloyDbService.getShare($routeParams.id);
         if (share) {
@@ -48,7 +47,6 @@ class ShareController {
             }
             Cache.put($routeParams.id, $scope.info);
             this.AppUtilities.apply();
-            this.AppUtilities.hideLoader();
           });
         }
       }

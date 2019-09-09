@@ -39,6 +39,23 @@ html.app(ng-app='alloy',lang='en')
               li(ng-repeat="playlist in $root.playlists")
                 a(type="AddToPlaylist", playlist-id="{{playlist.id}}") {{playlist.name}}
 
+    #addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header
+            h5#addMediaPathModalLabel.modal-title Choose a Media Location
+            button.Link-link.close(type='button', data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .FormGroup-group.FormGroup-large
+              .FormInputGroup-inputGroupContainer
+                .FormInputGroup-inputGroup
+                  .FormInputGroup-inputContainer
+                    input.Naming-namingInput.TextInput-input.Input-input(type='text', placeholder='Display Name', ng-model='display_name')
+            folderlist#mediaPathFolderList(currentpath='currentpath')
+          .modal-footer
+            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+            button.btn.btn-primary(type='button', ng-click='addCurrentPath()') Add
 
     #shareModal.modal.fade.clearfix(role='dialog')
       .modal-dialog(role='document')

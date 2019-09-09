@@ -1,0 +1,75 @@
+
+section.panel.panel-default
+  header.panel-heading.font-bold  AlloyDB Actions 
+  .panel-body
+    form.form-horizontal(method='get')
+      .form-group
+        .col-sm-6
+          button.form-control(type='button', ng-click="startBackup()") Backup Database
+        .col-sm-6
+          input.file-upload-input(type="file", onchange="angular.element(this).scope().backupFileAdded(this)", style="display:none;")
+          button.form-control(type='button', ng-click="addBackup()") Restore Database
+      .form-group(ng-if="backup_results")
+        .col-sm-12
+          span.font-bold {{backup_results}}
+      .form-group(ng-if="restore_results")
+        .col-sm-12
+          span.font-bold {{restore_results}}
+      .form-group
+        .col-sm-12
+          button.form-control(type='button', ng-click="clearCache()") Clear General Cache
+      .form-group
+        .col-sm-12
+          button.form-control(type='button', ng-click="clearStarredCache()") Clear Starred Cache
+      .form-group(ng-if="cache_status")
+        .col-sm-12
+          span.font-bold {{cache_status.status}}
+      .form-group(ng-if="!scan_status || !scan_status.isScanning")
+        .col-sm-12
+          button.form-control(type='button', ng-click="scanStart()") Rescan Database
+      .form-group(ng-if="scan_status && scan_status.isScanning")
+        .col-sm-12
+          button.form-control.btn-danger(type='button', ng-click="scanCancel()") Cancel Scan
+      .form-group(ng-if="scan_status && scan_status.isScanning")
+        .col-sm-12
+          span.font-bold {{scan_status.status}}
+
+
+
+  header.panel-heading Media Paths
+    button.Button-button.Link-link.Button-primary.Button-medium.Link-link.Page-Body-Button(type='button', ng-click='browsePaths()') Add
+  .table-responsive
+    table.table.table-striped.b-t.b-light
+      thead
+        tr
+          th(style="width:15%;") Display Name
+          th Path
+          th.text-right(style="width:1px !important;text-align:end !important;")
+      tbody(ng-repeat='mediaPath in mediaPaths')
+        tr
+          td(style="width:15%;") {{mediaPath.display_name}}
+          td(style="width:1px;") {{mediaPath.path}}
+          td.text-right(style="width:1px !important;text-align:end !important;")
+            a.active(data-toggle='class', ng-click="removePath(mediaPath)", href='#')
+              i.alloy-icon.icon-minus
+            
+
+
+        #addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')
+          .modal-dialog(role='document')
+            .modal-content
+              .modal-header
+                h5#addMediaPathModalLabel.modal-title Choose a Media Location
+                button.Link-link.close(type='button', data-dismiss='modal', aria-label='Close')
+                  span(aria-hidden='true') ×
+              .modal-body
+                .FormGroup-group.FormGroup-large
+                  .FormInputGroup-inputGroupContainer
+                    .FormInputGroup-inputGroup
+                      .FormInputGroup-inputContainer
+                        input.Naming-namingInput.TextInput-input.Input-input(type='text', placeholder='Display Name', ng-model='display_name')
+                folderlist#mediaPathFolderList(currentpath='currentpath')
+              .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                button.btn.btn-primary(type='button', ng-click='addCurrentPath()') Add
+

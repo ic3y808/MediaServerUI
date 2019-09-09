@@ -261,6 +261,11 @@ function doReache() {
   mediaScannerWindow.webContents.send("mediascanner-recache-start");
 }
 
+function doLastfmRescan() {
+  info("Starting Last.FM Rescan");
+  mediaScannerWindow.webContents.send("mediascanner-lastfm-scan-start");
+}
+
 function doShareCleanup() {
   info("Starting Share Cleanup");
   var shares = db.prepare("SELECT * from Shares").all();
@@ -519,6 +524,7 @@ function createTasks() {
     createJob({ name: "Clean Database", time: "0 0 * * *", callback: "task-database-cleanup" }, doCleanup);
     createJob({ name: "Incremental Clean", time: "0 0 * * *", callback: "task-database-inc-cleanup" }, doIncCleanup);
     createJob({ name: "Rescan Library", time: "0 0 * * 0", callback: "task-database-scan" }, doRescan);
+    createJob({ name: "Last.FM Rescan Library", time: "0 0 */30 * *", callback: "task-database-lastfm-rescan" }, doLastfmRescan);
     createJob({ name: "Cache Starred", time: "0 0 * * 0", callback: "task-database-cache-starred" }, doReache);
     createJob({ name: "Share Cleanup", time: "0 */12 * * *", callback: "task-database-share-cleanup" }, doShareCleanup);
   }
@@ -631,10 +637,10 @@ function createBaseServer() {
         });
       });
 
-      //clearInterval(timer);
-      //timer = setInterval(function () {
-      //  io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
-      //}, 500);
+      clearInterval(timer);
+      timer = setInterval(function () {
+        io.emit("ping", { status: "success", server_time: moment().format("hh:mm:ss a") });
+      }, 1000);
     }
 
     appServer.set("views", views);
@@ -706,7 +712,7 @@ function setupRoutes() {
       ipcMain.on("print", (event, payload) => mainWindow.webContents.send("print", payload));
       ipcMain.on("scheduler-run-task", (event, payload) => {
         jobs.forEach((job) => {
-          if (job.callback === payload.callback) {
+          if (job.callback === payload.task) {
             job.lastExecution = new Date();
             job.fireOnTick();
             mainWindow.webContents.send("scheduler-current-schedule", getSchedule());
@@ -761,6 +767,7 @@ function setupRoutes() {
     ipcMain.on("task-database-inc-cleanup", doIncCleanup);
     ipcMain.on("task-database-scan", doRescan);
     ipcMain.on("task-database-cache-starred", doReache);
+    ipcMain.on("task-database-lastfm-rescan", doLastfmRescan);
     ipcMain.on("task-database-share-cleanup", doShareCleanup);
     ipcMain.on("task-alloydb-toggle-api", doToggleApiServer);
     ipcMain.on("task-alloydb-toggle-ui", doToggleUiServer);

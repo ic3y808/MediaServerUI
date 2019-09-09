@@ -13,31 +13,26 @@ class ArtistsController {
     this.MediaPlayer = MediaPlayer;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("artists-controller");
-    this.AppUtilities.showLoader();
 
     $scope.refresh = function () {
       AlloyDbService.refreshArtists();
     };
 
-    $scope.jumpBarClick = function () {
-
-    };
-
     $rootScope.$watch("artists", function (newVal, oldVal) {
       if ($rootScope.artists) {
         AppUtilities.apply();
-        AppUtilities.hideLoader();
       }
     });
 
-    if ($rootScope.artists === undefined || $rootScope.artists.length === 0) {
-      $scope.refresh();
-    }
+    $rootScope.$on("GotoNowPlaying", (event, data) => {
+      if ($rootScope.currentTrack) {
+        $(".scrollable").scrollTo("#" + $rootScope.currentTrack.artist_id);
+      }
+    });
   }
 
   $onInit() {
     this.$element.addClass("vbox");
-    this.$element.addClass("scrollable");
   }
 }
 

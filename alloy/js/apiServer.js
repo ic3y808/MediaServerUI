@@ -5,7 +5,7 @@ const fileUpload = require("express-fileupload");
 const express = require("express");
 var bodyParser = require("body-parser");
 var loggerTag = "alloydb";
-var server = {};
+var lastfm = {};
 
 process.env = remote.getGlobal("process").env;
 process.env.DEBUG = "*";
@@ -21,6 +21,10 @@ class Server {
     process.on("SIGHUP", () => process.exit(128 + 1));
     process.on("SIGINT", () => process.exit(128 + 2));
     process.on("SIGTERM", () => process.exit(128 + 15));
+    this.cryptoFuncs = window.require(path.join(process.env.APP_DIR, "common", "crypto"));
+    var LastFM = require(path.join(process.env.APP_DIR, "common", "simple-lastfm"));
+    lastfm = new LastFM();
+    lastfm.login(this.getLastFmOptions());
     this.create();
     this.startServer();
   }
@@ -62,11 +66,15 @@ class Server {
     this.app.use((req, res, next) => {
       res.locals.ipcRenderer = ipcRenderer;
       res.locals.db = this.db;
+      res.locals.lastFM = lastfm;
+      res.locals.getLastfmSession = this.getLastfmSession;
+
       res.locals.info = (obj) => { this.info(obj); };
       res.locals.debug = (obj) => { this.debug(obj); };
       res.locals.error = (obj) => { this.error(obj); };
       next();
     });
+
 
     // view engine setup
     this.app.set("views", path.join(__dirname, "views"));
@@ -180,6 +188,38 @@ class Server {
     process.exit(0);
   }
 
+  getLastFmOptions() {
+    var lastfmSettings = this.db.prepare("SELECT * from Settings WHERE settings_key=?").get("alloydb_settings");
+    if (lastfmSettings && lastfmSettings.settings_value) {
+      var settings = JSON.parse(lastfmSettings.settings_value);
+      if (settings) {
+        if (settings.alloydb_lastfm_username && settings.alloydb_lastfm_password) {
+
+          return {
+            api_key: process.env.LASTFM_API_KEY,
+            api_secret: process.env.LASTFM_API_SECRET,
+            username: settings.alloydb_lastfm_username,
+            password: this.cryptoFuncs.decryptPassword(settings.alloydb_lastfm_password)
+          };
+        } else {
+          this.error("No lastfm username or password.");
+        }
+      } else {
+        this.error("Could not parse settings.");
+      }
+    } else {
+      this.error("Could not load lastfm settings.");
+    }
+    return null;
+  }
+
+  getLastfmSession(cb) {
+    var lsfm = lastfm;
+    if (lsfm) { lsfm.getSessionKey(cb); }
+    else {
+      cb({ result: { failure: "failed" } });
+    }
+  }
 }
 
 server = new Server();

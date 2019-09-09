@@ -86,6 +86,17 @@ router.get("/artist", function (req, res) {
     total_tracks: 0
   };
 
+  var artist_info = res.locals.db.prepare("SELECT * FROM LastFM WHERE id=? AND type=?").get(id, "artist");
+  if (artist_info) {
+    result.artist_info = JSON.parse(artist_info.data);
+    result.artist_info.similar.artist.forEach((artist) => {
+      var similarLocalArtist = res.locals.db.prepare("SELECT * FROM Artists WHERE instr(UPPER(name), ?) > 0 LIMIT 1").get(artist.name.toUpperCase());
+      if (similarLocalArtist) {
+        artist = Object.assign(artist, similarLocalArtist);
+      }
+    });
+  }
+
   all_albums.forEach((album) => {
     album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=? ORDER BY album ASC, no ASC, of ASC").all(album.id);
     album.play_count = 0;
@@ -167,6 +178,10 @@ router.get("/album", function (req, res) {
   };
   if (result.album && result.album.artist_id) {
     result.artist = res.locals.db.prepare("SELECT * FROM Artists WHERE id=?").get(result.album.artist_id);
+    var album_info = res.locals.db.prepare("SELECT * FROM LastFM WHERE id=? AND type=?").get(id, "album");
+    if (album_info) {
+      result.album_info = JSON.parse(album_info.data);
+    }
   }
 
   var totalSize = 0;
@@ -317,24 +332,21 @@ var calculateGenres = function (result, history) {
 };
 
 var calculateNeverPlayed = function (result, db, limit) {
-  var allAlbums = db.prepare("SELECT * FROM Albums ORDER BY RANDOM() LIMIT 50").all();
+  result.charts.never_played = [];
   result.charts.never_played_albums = [];
-  allAlbums.forEach((album) => {
-    if (result.charts.never_played_albums.length >= limit) { return; }
-    var allTracks = db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
-    if (allTracks.length > 0) {
-      var anyPlays = allTracks.every((obj) => {
-        return obj.play_count === 0;
-      });
-      if (anyPlays === false) {
-        album.tracks = allTracks;
-        result.charts.never_played_albums.push(album);
-      }
-    }
-  });
 
-  result.charts.never_played_albums = _.shuffle(result.charts.never_played_albums);
-  result.charts.never_played = db.prepare("SELECT * FROM Tracks WHERE play_count=0 ORDER BY RANDOM() LIMIT ?").all(limit);
+  var allTracks = db.prepare("SELECT * FROM Tracks WHERE play_count=? ORDER BY RANDOM() LIMIT ?").all(0, 300);
+  allTracks = _.uniqBy(allTracks, "artist");
+  allTracks = _.shuffle(allTracks);
+  allTracks = _.take(allTracks, 50);
+  allTracks.forEach((track) => {
+    if (result.charts.never_played_albums.length >= limit) { return; }
+    result.charts.never_played.push(track);
+    var allTracks = db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(track.album_id);
+    var album = db.prepare("SELECT * FROM Albums WHERE id=?").get(track.album_id);
+    album.tracks = allTracks;
+    result.charts.never_played_albums.push(album);
+  });
 };
 
 var calculateTop = function (result, db, limit) {

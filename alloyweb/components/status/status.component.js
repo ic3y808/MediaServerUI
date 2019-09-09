@@ -13,7 +13,7 @@ class StatusController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("status-controller");
-
+    $scope.alloydb = { status: "Checking..." };
     $scope.ping = () => {
       var ping = this.AlloyDbService.ping();
       if (ping) {
@@ -117,8 +117,8 @@ class StatusController {
       clearInterval($scope.rescanInterval);
     };
 
-    $rootScope.$on("loginStatusChange", (event, isLoggedIn) => {
-      if (isLoggedIn === true) {
+    $rootScope.$on("loginStatusChange", (event, data) => {
+      if (data.isLoggedIn === true) {
         $scope.ping();
         $scope.getLibraryInfo();
         $scope.getMediaPaths();
@@ -138,7 +138,6 @@ class StatusController {
     });
 
     $scope.setIntervals();
-    AppUtilities.hideLoader();
   }
 
   $onInit() {

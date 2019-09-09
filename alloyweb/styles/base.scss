@@ -140,6 +140,29 @@ google-cast-launcher:hover {
   border-radius: 6px 0 6px 6px;
 }
 
+.Label-label {
+  display: inline-block;
+  margin: 2px;
+  border: 1px solid;
+  border-radius: 2px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1;
+  cursor: default;
+}
+
+.Label-default {
+  border-color:$primary-color;
+  background-color: $primary-color;
+}
+
+.Label-large {
+  padding: 3px 7px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
 .jp-controls {
   display: table;
   table-layout: fixed;
@@ -2094,7 +2117,8 @@ a.text-info:hover {
 }
 
 .panel-default .panel-heading {
-  background-color: #f7fafa;
+  background-color: $lighter-color;
+  color: $main-link-color;
 }
 
 .m-b-md {

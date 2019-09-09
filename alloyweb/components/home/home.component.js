@@ -16,7 +16,6 @@ class HomeController {
     this.Logger.debug("home-controller");
 
     $scope.refreshing = false;
-    AppUtilities.showLoader();
 
     $scope.refresh = () => {
       AlloyDbService.refreshCharts();
@@ -51,7 +50,6 @@ class HomeController {
   }
   $onInit() {
     this.$element.addClass("vbox");
-    this.$element.addClass("scrollable");
   }
 }
 

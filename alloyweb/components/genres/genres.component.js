@@ -10,8 +10,7 @@ class GenresController {
     this.AppUtilities = AppUtilities;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("genres-controller");
-    this.AppUtilities.showLoader();
-    
+
     $scope.refresh = function () {
       AlloyDbService.refreshGenres();
     };
@@ -19,7 +18,12 @@ class GenresController {
     $rootScope.$watch("genres", function (newVal, oldVal) {
       if ($rootScope.genres) {
         AppUtilities.apply();
-        AppUtilities.hideLoader();
+      }
+    });
+
+    $rootScope.$on("GotoNowPlaying", (event, data) => {
+      if ($rootScope.currentTrack) {
+        $(".scrollable").scrollTo("#" + $rootScope.currentTrack.genre_id);
       }
     });
   }

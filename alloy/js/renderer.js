@@ -71,10 +71,6 @@ app.run(function ($rootScope) {
     ipcRenderer.send("config-remove-media-path", { display_name: mediaPath.display_name, path: mediaPath.path });
   };
 
-  $rootScope.runTask = function (task) {
-    ipcRenderer.send("scheduler-run-task", task);
-  };
-
   $rootScope.cancelScan = function () {
     ipcRenderer.send("mediascanner-scan-cancel");
   };

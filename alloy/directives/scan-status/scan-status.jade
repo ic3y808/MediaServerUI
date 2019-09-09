@@ -20,6 +20,6 @@
               th Path
               th status
           tbody
-            tr(ng-repeat="(key, value) in scan_status.queue")
+            tr(ng-repeat="(key, value) in scan_status.queue | limitTo:100")
               td {{key}} 
               td {{value.status}}

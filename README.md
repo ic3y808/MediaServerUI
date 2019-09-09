@@ -13,8 +13,15 @@ A streaming media platform
 ## Media Structure
 * Alloy DB expects a structure of the following folder format:
 ```
+ {{root}}/{{artist}}/artist.nfo *lidarr format
+ {{root}}/{{artist}}/banner.jpg *optional
+ {{root}}/{{artist}}/fanart.jpg *optional
+ {{root}}/{{artist}}/folder.jpg *optional
+ {{root}}/{{artist}}/{{release name}}/album.nfo *lidarr format
+ {{root}}/{{artist}}/{{release name}}/cover.jpg * optional
  {{root}}/{{artist}}/{{release name}}/{{media_name}}.{{ext}}
 ```
+* Current support for LIdarr format music structure and metadata
 
 ## Supported Formats
 ```

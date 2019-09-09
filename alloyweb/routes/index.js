@@ -46,10 +46,6 @@ router.get("/config/:name", function (req, res) {
   res.render("index", res.locals.jadeOptions);
 });
 
-router.get("/database", function (req, res) {
-  res.render("index", res.locals.jadeOptions);
-});
-
 router.get("/fresh", function (req, res) {
   res.render("index", res.locals.jadeOptions);
 });

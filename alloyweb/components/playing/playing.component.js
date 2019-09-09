@@ -37,7 +37,6 @@ class PlayingController {
         }
 
         Promise.all([artist, album], (result) => {
-          this.AppUtilities.hideLoader();
           this.AppUtilities.apply();
         });
 
@@ -60,7 +59,7 @@ class PlayingController {
         //    nextPromise.then(function (info) { });
         //  }
         //}
-      } else { this.AppUtilities.hideLoader(); }
+      } 
     };
 
     $scope.starTrack = () => {

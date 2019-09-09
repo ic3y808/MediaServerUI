@@ -14,7 +14,6 @@ class GenreController {
     this.Backend = Backend;
     this.AlloyDbService = AlloyDbService;
     this.Logger.debug("genre-controller");
-    this.AppUtilities.showLoader();
     $scope.genre = this.$routeParams.id;
 
     $scope.refresh = () => {
