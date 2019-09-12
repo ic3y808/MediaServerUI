@@ -27,6 +27,12 @@
     background: $background-color;
   }
 
+  ::-webkit-scrollbar-thumb:hover,
+  ::-webkit-scrollbar-track:hover, 
+  ::-webkit-scrollbar:hover {
+    width: calc( #{$size} *  2.5);
+  }
+
   // For Internet Explorer
   body {
     scrollbar-face-color: $foreground-color;
