@@ -27,11 +27,12 @@
     background: $background-color;
   }
 
-  ::-webkit-scrollbar-thumb:hover,
-  ::-webkit-scrollbar-track:hover, 
-  ::-webkit-scrollbar:hover {
+
+
+  .hide-scrollbar::-webkit-scrollbar {
+    // background-color:red !important;
     width: calc( #{$size} *  2.5);
-  }
+   }
 
   // For Internet Explorer
   body {
