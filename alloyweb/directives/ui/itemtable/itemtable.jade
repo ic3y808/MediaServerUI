@@ -10,9 +10,9 @@ section.scrollable.padder-lg.w-f-md
               th(ng-if="showimages")
               th.col-sm-2.col-md-6.col-lg-6 Title
               th.col-sm-2.col-md-6.col-lg-6 Album
-              th(ng-if="showartist").col-sm-2.col-md-6.col-lg-6 Artist
-              th.col-sm-2.col-md-6.col-lg-6 Length
-              th(ng-if="$root.globals.currentUser")
+              th.col-sm-2.col-md-6.col-lg-6(ng-if="showartist").col-sm-2.col-md-6.col-lg-6 Artist
+              th.text-right(style="width:1px !important;text-align:end !important;") Length
+              th.text-right(style="width:1px !important;text-align:end !important;", ng-if="$root.globals.currentUser")
           tbody(ng-repeat="track in data | limitTo:limit")
             tr(id="{{track.id}}", data-value="track;{{track.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", title='{{track.title}}')
               td(ng-if="showimages") 
@@ -30,8 +30,8 @@ section.scrollable.padder-lg.w-f-md
                 a(data-value="track;{{track.id}}", href="/artist/{{track.artist_id}}") 
                   span.clear
                     span {{track.artist}}
-              td.col-sm-2.col-md-6.col-lg-6 {{$root.formatTime(track.duration)}}
-              td(ng-if="$root.globals.currentUser")
+              td.text-right(style="width:1px !important;text-align:end !important;") {{$root.formatTime(track.duration)}}
+              td.text-right(style="width:1px !important;text-align:end !important;", ng-if="$root.globals.currentUser")
                 a.centered-anchor(data-value="track;{{track.id}}", ng-click="$root.starTrack(track)", href="", style="height:30px;")
                   i.alloy-icon.icon(ng-class="isStarred(track)")
 

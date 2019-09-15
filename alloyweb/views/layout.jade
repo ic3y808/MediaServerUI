@@ -7,125 +7,51 @@ html.app(ng-app='alloy',lang='en')
     meta(charset='utf-8')
 
   body(style="display:none;")
-      div#loadedState(style="display:none;") {{$root.loaded}}
-      section.vbox
-        header.bg-white-only.header.header-md.navbar.navbar-fixed-top-xs
-          navbar
-        section
-          section.hbox.stretch
-            aside#nav.bg-dark.dk.aside.hidden-print.collapse(ng-if="$root.globals.currentUser")
-              section.vbox
-                sidenav
-            section#content
-              section.vbox
-                ng-view#primary-content.vbox
-                ul#autoComplete_results_list
-                a.hide.nav-off-screen-block(data-target='#nav,html', data-toggle='class:nav-off-screen,open', href='#')
-                footer.footer.bg-dark
-                  footbar
-
-    #contextMenu.dropdown.clearfix
-      ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu', style='display:block;position:static;margin-bottom:5px;')
-        li
-          a(type="Play", href='#') Play
-        li
-          a(type="Share", href='#') Share
-        li
-          a(type="Star", href='#') Star
-        li.divider
-          li.dropdown-submenu
-            a(href='#') Add to Playlist
-            ul.dropdown-menu
-              li(ng-repeat="playlist in $root.playlists")
-                a(type="AddToPlaylist", playlist-id="{{playlist.id}}") {{playlist.name}}
-
-    #addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')
-      .modal-dialog(role='document')
-        .modal-content
-          .modal-header
-            h5#addMediaPathModalLabel.modal-title Choose a Media Location
-            button.Link-link.close(type='button', data-dismiss='modal', aria-label='Close')
-              span(aria-hidden='true') ×
-          .modal-body
-            .FormGroup-group.FormGroup-large
-              .FormInputGroup-inputGroupContainer
-                .FormInputGroup-inputGroup
-                  .FormInputGroup-inputContainer
-                    input.Naming-namingInput.TextInput-input.Input-input(type='text', placeholder='Display Name', ng-model='display_name')
-            folderlist#mediaPathFolderList(currentpath='currentpath')
-          .modal-footer
-            button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-            button.btn.btn-primary(type='button', ng-click='addCurrentPath()') Add
-
-    #shareModal.modal.fade.clearfix(role='dialog')
-      .modal-dialog(role='document')
-        .modal-content
-          .modal-header
-            h5#addMediaPathModalLabel.modal-title Create new Share
-            button.Link-link.close(data-dismiss='modal', type='button', aria-label='Close')
-              span(aria-hidden='true') ×
-          .modal-body
-            .FormGroup-group.FormGroup-large
-              .FormInputGroup-inputGroupContainer
-                .FormInputGroup-inputGroup
-                  .FormInputGroup-inputContainer
-                    input.Naming-namingInput.TextInput-input.Input-input(ng-model='$root.newShare.description', type='text', placeholder='Share Title Name')
-                    input.Naming-namingInput.TextInput-input.Input-input(ng-model='$root.newShare.url', type='text', placeholder='Custom URL?')
-                    .input-group.date(data-provide='datepicker')
-                      input.form-control(ng-model='$root.newShare.expires', type='text')
-                      .input-group-addon
-                        span.glyphicon.glyphicon-th
-
-          .modal-footer
-            button.btn.btn-secondary(data-dismiss='modal', type='button') Cancel
-            button.btn.btn-primary(ng-click='$root.doShare()', type='button') Share
     
-    #createUserModal.modal.fade.clearfix(role='dialog')
-      .modal-dialog(role='document')
-        form#createUserForm(data-parsley-excluded="input[type=button], input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden", data-parsley-trigger="keyup", data-parsley-validate).modal-content
-          .modal-body
-            section.panel.panel-default
-              header.panel-heading
-                span.h4 Create new User 
-              .panel-body
-                p.text-muted Please fill the information to continue
-                .form-group
-                  label Type
-                  select.form-control(ng-model='$root.newUser.type', required)
-                    option(value='admin') Admin
-                    option(value='user') User
-                .form-group
-                  label Username
-                  input.form-control(data-parsley-trigger="change", ng-model='$root.newUser.username', type='text', required)
-                .form-group
-                  label Email
-                  input.form-control(data-parsley-trigger="change", ng-model='$root.newUser.email', data-type='email', type='text', required)
-                .form-group.pull-in.clearfix
-                  .col-sm-6
-                    label Enter password
-                    input#password1.form-control(class="password", data-parsley-errors-container=".errorspannewpassinput", data-parsley-lowercase="1", data-parsley-minlength="8", data-parsley-number="1", data-parsley-required-message="Please enter your new password.", data-parsley-special="1", data-parsley-uppercase="1", type='password', required)
-                  .col-sm-6
-                    label Confirm password
-                    input.form-control(class="password", data-parsley-equalto="#password1", data-parsley-errors-container=".errorspanconfirmnewpassinput", data-parsley-minlength="8", data-parsley-required-message="Please re-enter your new password.", ng-model='$root.newUser.password', type='password', required)
+    section.vbox
+      header.bg-white-only.header.header-md.navbar.navbar-fixed-top-xs
+        navbar
+      section
+        section.hbox.stretch
+          aside#nav.bg-dark.dk.aside.hidden-print.collapse(ng-if="$root.globals.currentUser")
+            section.vbox
+              sidenav
+              footer.footer.hidden-xs.no-padder.text-center-nav-xs.bg-dark(style="height:100%;")
+                .hidden-xs
+                  .dropdown.dropup.wrapper-sm.clearfix
+                    a.dropdown-toggle(href="/playing")
+                      span.thumb-sm.avatar.pull-left.m-l-xs
+                        img.dker(ng-src='{{$root.currentTrack.image}}', ng-show="$root.currentTrack.image", alt='...', style="height:100%")
+                      span.hidden-nav-xs.clear
+                        span.truncate.block.m-l
+                          strong.truncate.font-bold.text-lt {{$root.currentTrack.title}}
+                        span.truncate.text-muted.text-xs.block.m-l {{$root.currentTrack.artist}}
+          section#content
+            section.vbox
+              ng-view#primary-content.vbox
+              ul#autoComplete_results_list
+              a.hide.nav-off-screen-block(data-target='#nav,html', data-toggle='class:nav-off-screen,open', href='#')
+              footer.footer.bg-dark
+                footbar
 
-          .modal-footer
-            button.btn.btn-secondary(data-dismiss='modal', type='button') Cancel
-            button.btn.btn-primary(type='submit') Create
+    include context
+    include modals
 
-        video#media-player(preload='true', controls='hidden', style="display:none;")
-      script.
-        window.isCastAvailable = false;
-        window.__onGCastApiAvailable = function (isAvailable) {
-          window.isCastAvailable = isAvailable;
-        };
-      script(src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1')
-      script(src='/vendor.js', type='text/javascript')
-      - if(!dev_mode)
-        script(src='/main.js', type='text/javascript')
-    
-      - if(dev_mode)
-        script(src='/app.js', type='text/javascript')
-        script(src='http://localhost:#{jade_port}/livereload.js?snipver=1') 
+    video#media-player(preload='true', controls='hidden', style="display:none;")
+    div#loadedState(style="display:none;") {{$root.loaded}}
+    script.
+      window.isCastAvailable = false;
+      window.__onGCastApiAvailable = function (isAvailable) {
+        window.isCastAvailable = isAvailable;
+      };
+    script(src='https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1')
+    script(src='/vendor.js', type='text/javascript')
+    - if(!dev_mode)
+      script(src='/main.js', type='text/javascript')
+  
+    - if(dev_mode)
+      script(src='/app.js', type='text/javascript')
+      script(src='http://localhost:#{jade_port}/livereload.js?snipver=1') 
 
 
 

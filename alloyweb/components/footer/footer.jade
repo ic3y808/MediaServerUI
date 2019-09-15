@@ -1,44 +1,36 @@
+.footer-container
+  .footer-controls
+    div
+      a(ng-click="skipBack()")
+        i.alloy-icon.icon-rewind.i-lg
+    div
+      a#playPauseButton(ng-click="playPause()", style='display: inline-block;')
+        i#playPauseIcon.alloy-icon.i-2x(ng-class="isPlaying()")
+     div
+      a(ng-click="skipNext()")
+        i.alloy-icon.icon-fast-forward.i-lg
+     div
+      a(ng-click="starTrack()", ng-if="$root.globals.currentUser", title='Star')
+        i.alloy-icon(ng-class="isStarred()")
+    .track-progress.hidden-xs
+      #clickProgress.track-progress-seek-bar.bg-dark(style='height:100%;width: 100%;')
+        #mainProgress.play-bar.bg-info(style='height:100%;width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
+        .track-title.text-lt {{$root.currentTrack.title}}
+    .hidden-xs.hidden-sm.text-xs.text-muted {{$root.MediaPlayer.currentTime}}
+    .hidden-xs.hidden-sm.text-xs.text-muted {{$root.MediaPlayer.currentDuration}}
+    .hidden-xs.hidden-sm
+      a(ng-click="toggleMute()", title='mute')
+        i.alloy-icon(ng-class="isMuted()")
 
-#jp_container_N.jp-video-270p
-  .jp-type-playlist
-    .jp-gui
-      .jp-video-play.hide(style='display: block;')
-        a.jp-video-play-icon play
-      .jp-interface
-        .jp-controls
-          div
-            a(ng-click="skipBack()")
-              i.alloy-icon.icon-rewind.i-lg
-          div
-            a#playPauseButton(ng-click="playPause()", style='display: inline-block;')
-              i#playPauseIcon.alloy-icon.i-2x(ng-class="isPlaying()")
-
-          div
-            a(ng-click="skipNext()")
-              i.alloy-icon.icon-fast-forward.i-lg
-
-          div
-            a(ng-click="starTrack()", ng-if="$root.globals.currentUser", title='Star')
-              i.alloy-icon(ng-class="isStarred()")
-          .jp-progress.hidden-xs
-            #clickProgress.jp-seek-bar.bg-dark(style='height:100%;width: 100%;')
-              #mainProgress.play-bar.bg-info(style='height:100%;width: {{$root.MediaPlayer.currentProgressPercent}}%;')  
-              .jp-title.text-lt {{$root.currentTrack.title}}
-          .hidden-xs.hidden-sm.jp-current-time.text-xs.text-muted {{$root.MediaPlayer.currentTime}}
-          .hidden-xs.hidden-sm.jp-duration.text-xs.text-muted {{$root.MediaPlayer.currentDuration}}
-          .hidden-xs.hidden-sm
-            a(ng-click="toggleMute()", title='mute')
-              i.alloy-icon(ng-class="isMuted()")
-
-          .hidden-xs.hidden-sm.jp-volume
-            volumeslider(direction='horizontal')
-          
-          div
-            a(ng-click="toggleShuffle()", title='shuffle')
-              i.alloy-icon.icon.icon-shuffle.text-muted
-          div
-            a(ng-click="toggleRepeat()", title='repeat')
-              i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
-          div
-            a
-              google-cast-launcher.alloy-icon.icon
+    .hidden-xs.hidden-sm
+      volumeslider(direction='horizontal')
+      
+    div
+      a(ng-click="toggleShuffle()", title='shuffle')
+        i.alloy-icon.icon.icon-shuffle.text-muted
+    div
+      a(ng-click="toggleRepeat()", title='repeat')
+        i.alloy-icon.icon.text-muted(ng-class="isRepeatOn()")
+    div(ng-show="$root.showCast")
+      a
+        google-cast-launcher.alloy-icon.icon

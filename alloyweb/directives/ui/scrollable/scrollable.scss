@@ -1,0 +1,28 @@
+.scrollable {
+  -webkit-overflow-scrolling: touch;
+}
+
+.scrollable {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.scrollable:hover {
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.scrollable-auto-hide {
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.scrollable-auto-hide:hover {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+@media (min-width: 768px) {
+  .scrollable {
+    -webkit-overflow-scrolling: touch;
+  }
+}

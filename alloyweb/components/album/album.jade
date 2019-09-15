@@ -29,11 +29,11 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;", ng-if="$ro
                 p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(ng-if="$root.album.tracks.length > 0") {{$root.album.tracks.length}} {{$root.album.tracks.length > 1 ? "Tracks" : "Track"}} - {{$root.album.size}}
                 .TrackListHeader__children
                   .TrackListHeader__button.TrackListHeader__button--bottom
-                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-disabled="isDisabled()", ng-click="playAlbum()") PLAY
+                    button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", ng-click="playAlbum()") PLAY
               .TrackListHeader__button.TrackListHeader__button--top
-                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-disabled="isDisabled()", ng-click="playAlbum()") PLAY  
+                button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", ng-click="playAlbum()") PLAY  
               .TrackListHeader__button.TrackListHeader__button--top
-                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-disabled="isDisabled()", title='Save to Your Library', ng-click="starAlbum()") {{$root.album.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+                button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", title='Save to Your Library', ng-click="starAlbum()") {{$root.album.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
               .TrackListHeader__button.TrackListHeader__button--top
                 starratinglabel(ng-disabled="isDisabled()", album="$root.album.album", extrastyles="btn-block")
               

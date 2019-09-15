@@ -16,6 +16,7 @@ export default class MediaPlayer {
     this.currentVolume = this.MediaElement.volume;
     this.selectedIndex = 0;
     this.repeatEnabled = false;
+    this.$rootScope.showCast = false;
     this.$rootScope.checkIfNowPlaying = this.checkIfNowPlaying;
     this.$rootScope.tracks = [];
     this.$rootScope.currentTrack = {};
@@ -24,6 +25,7 @@ export default class MediaPlayer {
     this.$rootScope.playTrack = this.playTrack;
     this.$rootScope.playAlbum = this.playAlbum;
     this.$rootScope.playArtist = this.playArtist;
+    this.$rootScope.castStatus = this.castStatus;
 
 
     this.MediaElement.addEventListener("play", () => {
@@ -144,7 +146,9 @@ export default class MediaPlayer {
       });
 
       this.castSession = cast.framework.CastContext.getInstance().getCurrentSession();
+      this.$rootScope.showCast = true;
     }
+    this.AppUtilities.apply();
   }
 
   castSession() {

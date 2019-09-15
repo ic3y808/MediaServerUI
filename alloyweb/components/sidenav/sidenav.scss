@@ -1,8 +1,47 @@
-.truncate {
-  width: 125px;
+@import "../../styles/variables";
+
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  vertical-align: baseline;
+  background-color: #999;
+  border-radius: 10px;
+}
+
+.badge:empty {
+  display: none;
+}
+
+.badge {
+  font-weight: bold;
+}
+
+.badge {
+  background-color: #aac4c8;
+}
+
+.badge.up {
+  position: relative;
+  top: -10px;
+  padding: 3px 6px;
+  margin-left: -10px;
+}
+
+.badge-sm {
+  font-size: 85%;
+  padding: 2px 5px !important;
+}
+
+.selectedMenuItem {
+  background-color: $primary-color;
+  color: choose-contrast-color($primary-color);
 }
 
 .playlist-link {
@@ -16,6 +55,7 @@
   max-height: 200px;
   overflow: hidden;
 }
+
 .sidenav-playlist-list:hover {
   overflow: auto;
 }

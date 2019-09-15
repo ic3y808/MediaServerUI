@@ -1,5 +1,6 @@
 import LazyLoad from "./lazy-load";
 import StringToNumber from "./string-to-number";
+import ContextMenu from "./ui/contextmenu";
 import ToolbarButton from "./ui/toolbarbutton";
 import ToolbarSeperator from "./ui/toolbarseperator";
 import NavButton from "./ui/navbutton";
@@ -29,6 +30,7 @@ export default angular
   .directive("lazyLoad", LazyLoad)
   .directive("toolbarbutton", ToolbarButton)
   .directive("toolbarseperator", ToolbarSeperator)
+  .directive("contextmenu", ContextMenu)
   .directive("navbutton", NavButton)
   .directive("itemtable", ItemTable)
   .directive("thumblist", ThumbList)  

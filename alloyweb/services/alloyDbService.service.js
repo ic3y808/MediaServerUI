@@ -418,13 +418,12 @@ export default class AlloyDbService {
       var ok = $(".parsley-error").length === 0;
       $(".bs-callout-info").toggleClass("hidden", !ok);
       $(".bs-callout-warning").toggleClass("hidden", ok);
-    })
-      .on("form:submit", () => {
-        var ok = $(".parsley-error").length === 0;
-        if (ok) {
-          that.$rootScope.createUser();
-        }
-      });
+    }).on("form:submit", () => {
+      var ok = $(".parsley-error").length === 0;
+      if (ok) {
+        that.$rootScope.createUser();
+      }
+    });
 
 
   }

@@ -1,0 +1,6 @@
+@import "../../../styles/variables";
+
+#volumeSliderValue {
+  height: 6px;
+  background-color: choose-contrast-color($dark-color);
+}

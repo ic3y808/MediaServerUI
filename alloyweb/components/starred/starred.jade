@@ -1,39 +1,19 @@
-
 section.scrollable.scrollsaver.padder-lg.w-f-md
-  a.pull-right.text-muted.m-t-lg(data-toggle='class:fa-spin', ng-click="refresh()")
-    i#refresh.icon-refresh.i-lg.inline
-  h2.font-thin.m-b
-    | Starred 
-    span.musicbar.inline.m-l-sm(style='width:20px;height:20px')
-      span.bar1.a1.bg-primary.lter
-      span.bar2.a2.bg-info.lt
-      span.bar3.a3.bg-success
-      span.bar4.a4.bg-warning.dk
-      span.bar5.a5.bg-danger.dker
-
   .row
     .col-md-7(ng-if="$root.starred_tracks.length > 0")
-      thumblist(data="$root.starred_tracks", title="Tracks", limit="36", type="tracks", refreshclick="refresh()", viewmorelink="/fresh")
-          
+      thumblist(data="$root.starred_tracks", title="Tracks", limit="36", type="tracks", refreshclick="refresh()", viewmorelink="/fresh")  
     .col-md-5(ng-if="$root.starred_top_tracks.length > 0")
       itemlist(data="$root.starred_top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/top_tracks")  
   .row
     .col-md-7(ng-if="$root.starred_albums.length > 0")
-      thumblist(data="$root.starred_albums", title="Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")
-          
+      thumblist(data="$root.starred_albums", title="Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")   
     .col-md-5(ng-if="$root.starred_top_albums.length > 0")
       itemlist(data="$root.starred_top_albums", title="Top Albums", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
   .row
     .col-md-7(ng-if="$root.starred_artists.length > 0")
-      thumblist(data="$root.starred_artists", title="Artists", limit="36", type="artists", refreshclick="refresh()", viewmorelink="/fresh")
-          
+      thumblist(data="$root.starred_artists", title="Artists", limit="36", type="artists", refreshclick="refresh()", viewmorelink="/fresh")    
     .col-md-5(ng-if="$root.starred_top_artists.length > 0")
       itemlist(data="$root.starred_top_artists", title="Top Artists", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
-      
-
   .row
-    .col-md-12
-      .row.row-sm
-        .col-md-12(ng-if="$root.starred_tracks.length > 0")
-          itemtable(data="$root.starred_tracks", title="All Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()", viewmorelink="/starred", showimages="true")
-   
+    .col-md-12(ng-if="$root.starred_tracks.length > 0")
+      itemtable(data="$root.starred_tracks", title="All Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()")

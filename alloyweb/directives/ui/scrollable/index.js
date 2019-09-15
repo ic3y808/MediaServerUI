@@ -1,3 +1,4 @@
+import styles from "./scrollable.scss";
 export default function () {
   "ngInject";
   return {

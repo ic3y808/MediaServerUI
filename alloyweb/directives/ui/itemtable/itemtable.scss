@@ -1,3 +1,5 @@
+@import "../../../styles/variables";
+
 .itemtable {
   table-layout: auto;
   width: 100%;
@@ -17,4 +19,33 @@
 .image-cell-container {
   text-align: left;
   width:50px;
+}
+
+.centered-anchor {
+  display: inline-block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.centered-anchor i {
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.table-now-playing {
+  background-color: $now-playing-track !important;
+  color: $now-playing-track-text !important;
+
+  a {
+    color: $now-playing-track-text !important;
+
+    span {
+      color: $now-playing-track-text !important;
+    }
+  }
 }

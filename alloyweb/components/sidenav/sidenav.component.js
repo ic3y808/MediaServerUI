@@ -50,19 +50,19 @@ class SidenavController {
       this.sidebarCollapse();
     });
 
-    $(".list-group li").click(function (e) {
-      e.preventDefault();
-      $that = $(this);
-      $that.parent().find("li").removeClass("active");
-      $that.addClass("active");
-    });
-
-    jQuery(".list-group").hover(() => {
-      jQuery(this).addClass("active");
-    },
-      () => {
-        jQuery(this).removeClass("active");
-      });
+    //$(".list-group li").click(function (e) {
+    //  e.preventDefault();
+    //  $that = $(this);
+    //  $that.parent().find("li").removeClass("active");
+    //  $that.addClass("active");
+    //});
+//
+    //jQuery(".list-group").hover(() => {
+    //  jQuery(this).addClass("active");
+    //},
+    //  () => {
+    //    jQuery(this).removeClass("active");
+    //  });
 
     $(window).on("resize", () => {
       const breakWidth = parseInt(styles.xxmed, 10);

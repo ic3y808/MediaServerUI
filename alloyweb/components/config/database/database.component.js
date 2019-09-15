@@ -87,6 +87,16 @@ class DatabaseController {
         , $remote = $this.data("remote") || $this.attr("href")
         , $modal = $("#addMediaPathModal");
       $("#primary-content").append($modal);
+      $("#addMediaPathForm").parsley().on("field:validated", () => {
+        var ok = $(".parsley-error").length === 0;
+        $(".bs-callout-info").toggleClass("hidden", !ok);
+        $(".bs-callout-warning").toggleClass("hidden", ok);
+      }).on("form:submit", () => {
+        var ok = $(".parsley-error").length === 0;
+        if (ok) {
+ 
+        }
+      });
       $modal.modal();
       // $modal.load($remote);
 

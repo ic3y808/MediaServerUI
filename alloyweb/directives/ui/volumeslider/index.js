@@ -1,3 +1,4 @@
+import styles from "./volumeslider.scss";
 export default function (MediaElement, MediaPlayer, AppUtilities) {
   "ngInject";
   return {

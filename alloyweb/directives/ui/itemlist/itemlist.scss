@@ -1,0 +1,6 @@
+@import "../../../styles/variables";
+
+.bg-normal a:hover {
+  background-color: $background-color !important;
+  color: choose-contrast-color($background-color) !important;
+}

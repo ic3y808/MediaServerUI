@@ -1,3 +1,4 @@
+import styles from "./itemlist.scss";
 export default function ($rootScope, $location, Logger, Backend, AppUtilities, MediaPlayer, AlloyDbService) {
   "ngInject";
   return {

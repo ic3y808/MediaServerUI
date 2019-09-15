@@ -2,69 +2,66 @@
 section.w-f-md.scrollable(ng-if="$root.globals.currentUser")
   nav.nav-primary.hidden-xs
     ul.nav(data-ride='collapse')
-      li
+      li(ng-class="$root.isMenuItemSelected('fresh')")
         a(href='/fresh', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-fresh
-          span.font-bold What's new
-      li
+          span What's new
+      li(ng-class="$root.isMenuItemSelected('starred')")
         a(href='/starred', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-starred
           b.badge.bg-primary.dker.pull-right {{$root.starred_tracks.length}}
-          span.font-bold Starred
-      li
+          span Starred
+      li(ng-class="$root.isMenuItemSelected('history')")
         a(href='/history', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-history
           b.badge.bg-primary.dker.pull-right {{$root.history.count}}
-          span.font-bold History
-      li
+          span History
+      li(ng-class="$root.isMenuItemSelected('artists')")
         a(href='/artists', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-artists
           b.badge.bg-primary.dker.pull-right {{$root.artists.length}}
-          span.font-bold Artists
-      li
+          span Artists
+      li(ng-class="$root.isMenuItemSelected('albums')")
         a(href='/albums', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-albums
           b.badge.bg-primary.dker.pull-right {{$root.albums.length}}
-          span.font-bold Albums
-      li
+          span Albums
+      li(ng-class="$root.isMenuItemSelected('genres')")
         a(href='/genres', ng-if="$root.globals.currentUser")
           i.alloy-icon.icon-genres
           b.badge.bg-primary.dker.pull-right {{$root.genres.length}}
-          span.font-bold Genres
-      li
+          span Genres
+      li(ng-class="$root.isMenuItemSelected('charts')")
         a(href='/charts')
           i.alloy-icon.icon-charts
           b.badge.bg-primary.dker.pull-right {{$root.rated.length}}
-          span.font-bold Charts
-      li
+          span Charts
+      li(ng-class="$root.isMenuItemSelected('status')")
         a(href='/status')
           i.alloy-icon.icon-status
-          span.font-bold Status 
+          span Status 
       li
         a.auto(href='#', ng-if="$root.globals.currentUser")
-          span.pull-right.text-muted
-            i.fa.fa-angle-left.text
-            i.fa.fa-angle-down.text-active
           i.alloy-icon.icon-settings.text-xs
           span Config
-        ul.nav.dk.text-sm
-          li(style="height:30px;")
+        ul.nav.text-sm
+          li.dker(ng-class="$root.isMenuItemSelected('configalloydb')", style="height:30px;")
             a(href='/config/alloydb', title='AlloyDB', style="height:30px;")
               i.alloy-icon.icon-alloydb.text-xs
-              span.hidden-nav-xs.font-bold Alloy
-          li(style="height:30px;")
+              span.hidden-nav-xs Alloy
+          li.dker(ng-class="$root.isMenuItemSelected('configdatabase')", style="height:30px;")
             a(href='/config/database', title='Database', style="height:30px;")
               i.alloy-icon.icon-database.text-xs
-              span.hidden-nav-xs.font-bold Database 
-          li(style="height:30px;")
+              span.hidden-nav-xs Database 
+          li.dker(ng-class="$root.isMenuItemSelected('configscheduler')", style="height:30px;")
             a.auto(href='/config/scheduler', title='Scheduler', style="height:30px;")
               i.alloy-icon.icon-scheduler.text-xs
               span.hidden-nav-xs Scheduler
-          li(style="height:30px;")
+          li.dker(ng-class="$root.isMenuItemSelected('configshares')", style="height:30px;")
             a.auto(href='/config/shares', title='Shares', style="height:30px;")
               i.alloy-icon.icon-external-link.text-xs
               span.hidden-nav-xs Shares
-          li(style="height:30px;")
+          li.dker(ng-class="$root.isMenuItemSelected('configusers')", style="height:30px;")
             a.auto(href='/config/users', title='Users', style="height:30px;")
               i.alloy-icon.icon-users.text-xs
               span.hidden-nav-xs Users
@@ -100,13 +97,3 @@ section.w-f-md.scrollable(ng-if="$root.globals.currentUser")
             button.btn.btn-secondary(data-dismiss='modal', type='button') Close
             button.btn.btn-primary(ng-click='createNewPlaylist()', type='button') Add
     // / nav
-footer.footer.hidden-xs.no-padder.text-center-nav-xs.bg-dark(style="height:100%;")
-  .hidden-xs
-    .dropdown.dropup.wrapper-sm.clearfix
-      a.dropdown-toggle(href="/playing")
-        span.thumb-sm.avatar.pull-left.m-l-xs
-          img.dker(ng-src='{{$root.currentTrack.image}}', ng-show="$root.currentTrack.image", alt='...', style="height:100%")
-        span.hidden-nav-xs.clear
-          span.truncate.block.m-l
-            strong.truncate.font-bold.text-lt {{$root.currentTrack.title}}
-          span.truncate.text-muted.text-xs.block.m-l {{$root.currentTrack.artist}}

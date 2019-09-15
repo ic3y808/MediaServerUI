@@ -66,7 +66,7 @@ class PlaylistController {
       this.MediaPlayer.loadTrack(~~($scope.info.tracks.length * Math.random()));
     };
 
-    $scope.cachePlaylistChanged = () => {
+    $scope.cachePlaylistChanged = function() {
       if ($scope.info) {
         if ($scope.info.cache === undefined || $scope.info.cache === null || $scope.info.cache === "false") {
           $scope.info.cache = "true";

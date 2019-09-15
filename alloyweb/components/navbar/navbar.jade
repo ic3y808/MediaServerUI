@@ -1,11 +1,11 @@
 section.vbox
-  .navbar-header.aside.bg-primary
-    a.btn.btn-link.visible-xs#sidenavButton(data-target='#nav,html', data-toggle='class:nav-off-screen,open', ng-if="$root.globals.currentUser")
+  .navbar-header.aside(ng-class="$root.isMenuItemSelected('', true)")
+    a.btn.text-lt.visible-xs#sidenavButton(data-target='#nav,html', data-toggle='class:nav-off-screen,open', ng-if="$root.globals.currentUser")
       i.alloy-icon.icon-menu.icon
     a.navbar-brand.text-lt(href='/')
       i.alloy-icon.icon-headphones
       span.hidden-nav-xs.m-l-sm Alloy 
-    a.btn.btn-link.visible-xs(ng-if="$root.globals.currentUser", href='/playing')
+    a.btn.text-lt.visible-xs(ng-if="$root.globals.currentUser", href='/playing')
       i.alloy-icon.icon-controls
 
   form.navbar-form.navbar-left.hidden-xs(ng-if="$root.globals.currentUser", role='search')

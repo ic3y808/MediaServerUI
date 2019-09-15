@@ -1,0 +1,14 @@
+.dropdown.clearfix
+  ul.dropdown-menu(role='menu', aria-labelledby='dropdownMenu', style='display:block;position:static;margin-bottom:5px;')
+    li
+      a(type="Play", href='#') Play
+    li
+      a(type="Share", href='#') Share
+    li
+      a(type="Star", href='#') Star
+    li.divider
+      li.dropdown-submenu
+        a(href='#') Add to Playlist
+        ul.dropdown-menu
+          li(ng-repeat="playlist in $root.playlists")
+            a(type="AddToPlaylist", playlist-id="{{playlist.id}}") {{playlist.name}}

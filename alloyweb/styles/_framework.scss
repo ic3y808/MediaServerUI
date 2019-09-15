@@ -1,5 +1,156 @@
 @import "./variables";
 
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  font-size: 62.5%;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  background-color: $background-color;
+}
+
+body {
+  margin: 0;
+  background-color: $background-color;
+  font-family: $sub-font, Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  color: $main-text-color;
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.40;
+}
+
+.app,
+.app body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.app .hbox.stretch {
+  height: 100%;
+}
+
+.app .vbox>section,
+.app .vbox>footer {
+  position: absolute;
+}
+
+.hbox {
+  display: table;
+  table-layout: fixed;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.hbox>aside,
+.hbox>section {
+  vertical-align: top;
+  // height: calc(100vh - 60px);
+  float: none;
+}
+
+.vbox {
+  display: table;
+  border-spacing: 0;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.vbox>section,
+.vbox>footer {
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.vbox>header~section {
+  top: 50px;
+}
+
+
+
+.vbox>section.w-f-md {
+  bottom: 60px;
+}
+
+.vbox>footer {
+  top: auto;
+  z-index: 1000;
+}
+
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-lg-3,
+.col-xs-6 {
+  position: relative;
+  min-height: 1px;
+  // padding-right: 15px;
+  // padding-left: 15px;
+}
+
+.col-xs-6 {
+  float: left;
+}
+
+.col-xs-6 {
+  width: 50%;
+}
+
+.col-lg-2,
+.col-sm-3,
+.col-md-3,
+.col-sm-4,
+.col-md-5,
+.col-xs-6,
+.col-sm-6,
+.col-md-7 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.clearfix:before,
+.clearfix:after,
+.row:before,
+.row:after {
+  display: table;
+  content: " ";
+}
+
+.clearfix:after,
+.row:after {
+  clear: both;
+}
+
+.col-sm-4 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.row:before,
+.row:after {
+  display: table;
+  content: " ";
+}
+
+.row:after {
+  clear: both;
+}
+
+.col-sm-6 {
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
 h1,
 h2,
 h3,
@@ -19,6 +170,248 @@ h6,
   color: inherit;
 }
 
+.h2 {
+  font-size: 30px;
+}
+
+.h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.h2,
+.h4 {
+  font-family: inherit;
+  font-weight: 300;
+  line-height: 1.1;
+  color: inherit;
+}
+
+.h3,
+.h4 {
+  margin: 0;
+}
+
+h4,
+.h3,
+.h4 {
+  font-family: inherit;
+  font-weight: 500;
+  line-height: 1.1;
+  color: inherit;
+}
+
+.h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h4,
+.h4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.h3 {
+  font-size: 24px;
+}
+
+h4,
+.h4 {
+  font-size: 18px;
+}
+
+.h4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.h4 {
+  font-size: 18px;
+}
+
 ul {
   padding: 0 !important;
+}
+
+
+a:active,
+a:hover {
+  outline: 0;
+  cursor: pointer !important;
+}
+
+a:hover,
+a:focus {
+  color: $main-link-focus-color;
+  text-decoration: none;
+  outline: none;
+  outline-offset: -2px;
+}
+
+a.hid {
+  display: none;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+
+@media (max-width: 767px) {
+
+  html,
+  body {
+    overflow-x: hidden;
+    min-height: 100%;
+  }
+
+  .app .vbox>footer {
+    position: absolute;
+    bottom: 0px;
+  }
+}
+
+@media (min-width: 768px) {
+
+  .hbox>aside,
+  .hbox>section {
+    display: table-cell;
+  }
+
+  .app .hbox.stretch {
+    height: 100%;
+  }
+
+  .app .vbox>section {
+    position: absolute;
+  }
+
+  .hbox {
+    display: table;
+    table-layout: fixed;
+    border-spacing: 0;
+    width: 100%;
+  }
+
+  .hbox>aside {
+    display: table-cell;
+    vertical-align: top;
+    height: 100%;
+    float: none;
+  }
+
+  .vbox {
+    display: table;
+    border-spacing: 0;
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  .vbox>section {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .vbox>header~section {
+    top: 50px;
+  }
+
+  .vbox>section.w-f-md {
+    bottom: 60px;
+  }
+
+  .app .vbox>footer {
+    position: absolute;
+  }
+
+  .vbox>footer {
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+
+  .vbox>footer {
+    top: auto;
+    z-index: 1000;
+  }
+
+   .aside {
+    width: 200px;
+  } 
+
+  .col-sm-3,
+  .col-sm-4,
+  .col-sm-6 {
+    float: left;
+  }
+
+  .col-sm-6 {
+    width: 50%;
+  }
+
+  .col-sm-4 {
+    width: 33.33333333%;
+  }
+
+  .col-sm-3 {
+    width: 25%;
+  }
+
+  .col-sm-4 {
+    float: left;
+  }
+
+  .col-sm-offset-4 {
+    margin-left: 33.33333333%;
+  }
+
+  .col-sm-6 {
+    float: left;
+  } 
+}
+
+@media (min-width: 1200px) {
+  .col-lg-3 {
+    float: left;
+  }
+
+  .col-lg-3 {
+    width: 25%;
+  }
+
+  .col-lg-2 {
+    float: left;
+  }
+
+  .col-lg-2 {
+    width: 16.66666667%;
+  }
+}
+
+@media (min-width: 992px) {
+
+  .col-md-3,
+  .col-md-5,
+  .col-md-7 {
+    float: left;
+  }
+
+  .col-md-7 {
+    width: 58.33333333%;
+  }
+
+  .col-md-5 {
+    width: 41.66666667%;
+  }
+
+  .col-md-3 {
+    width: 25%;
+  }
+
+  .col-md-3 {
+    float: left;
+  }
 }

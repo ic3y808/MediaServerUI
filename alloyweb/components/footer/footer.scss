@@ -1,4 +1,20 @@
-.jp-title{
+.footer {
+  min-height: 50px;
+  max-height: 60px;
+  padding: 0 15px;
+}
+
+.i-2x {
+  font-size: 2em;
+}
+
+.i-lg {
+  font-size: 1.3333333333333em;
+  line-height: 0.75em;
+  vertical-align: -15%;
+}
+
+.track-title{
   position: absolute;
   vertical-align: middle;
   align-content: center;
@@ -7,4 +23,64 @@
   left: 0;
   right: 0;
   top: 0;
+}
+
+.play-bar {
+  height: 60px;
+}
+
+.footer-controls {
+  display: table;
+  table-layout: fixed;
+  border-spacing: 0;
+  width: 100%;
+}
+
+.footer-controls a {
+  height: 60px;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  vertical-align: middle;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.footer-controls a>i {
+  line-height: 45px;
+  text-align: center;
+  vertical-align: middle;
+  padding: 0px;
+}
+
+.footer-controls>div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  width: 40px;
+  height: 100%;
+}
+
+.footer-controls a {
+  cursor: pointer;
+  display: inline-block;
+  padding: 10px 5px;
+}
+
+.footer-controls>div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+  width: 40px;
+  height: 60px;
+}
+
+div.track-progress {
+  width: 100%;
+  vertical-align: top;
+  position: relative;
+}
+
+.track-progress-seek-bar {
+  position: relative;
 }

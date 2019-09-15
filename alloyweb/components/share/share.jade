@@ -25,7 +25,7 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
+                    button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="playAlbum()") PLAY
 
               
             .col-xs-12.col-lg-9.col-xl-8
@@ -57,7 +57,7 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
                         p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
                   .TrackListHeader__button.TrackListHeader__button--top
-                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="playAlbum()") PLAY
+                    button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="playAlbum()") PLAY
 
               
             .col-xs-12.col-lg-9.col-xl-8

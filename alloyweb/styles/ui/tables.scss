@@ -1,0 +1,29 @@
+@import "../../styles/variables";
+
+.table {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.table>thead>tr>th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #ddd;
+}
+
+.table>tbody>tr {
+  cursor: pointer;
+  background-color: inherit;
+  color: $main-link-color;
+
+  a {
+    color: $main-link-color;
+
+    span {
+      color: $main-link-color;
+    }
+  }
+}
+
+.table>thead:first-child>tr:first-child>th {
+  border-top: 0;
+}

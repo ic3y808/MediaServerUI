@@ -1,12 +1,12 @@
 div
   .Table-tableContainer(ng-show="!folderlist && !driveList")
-    table.Table-table
+    table.table.table-striped.b-t.b-light
       thead
         tr
           th.TableHeaderCell-headerCell.Link-link(label='Album') | Loading...
 
-  .Table-tableContainer(ng-show="driveList")
-    table.Table-table
+  .Table-tableContainer.table-responsive(ng-show="driveList")
+    table.table.table-striped.b-t.b-light
       thead
         tr
           th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') Pick a Drive and Path
@@ -14,11 +14,16 @@ div
       tbody
         tr.TableRow-row(ng-repeat='drive in driveList')
           td.TableRowCell-cell
-            span.Link-link.ng-binding(ng-click="navigateToPath(drive.path)") {{drive.path}}
+            a(ng-click="navigateToPath(drive.path)") 
+              span.clear
+                span {{drive.path}}
+           
           td.TableRowCell-cell
             span.Link-link {{drive.size}}
+
+   
   .Table-tableContainer(ng-show="folderlist")
-    table.Table-table
+    table.table.table-striped.b-t.b-light
       thead
         tr
           th.TableHeaderCell-headerCell.Link-link(label='Pick a Drive and Path') {{currentpath}}

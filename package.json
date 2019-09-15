@@ -245,6 +245,7 @@
     "icon-font-generator": "^2.1.10",
     "image-webpack-loader": "^5.0.0",
     "imports-loader": "^0.8.0",
+    "jshint": "^2.10.2",
     "less": "~3.9.0",
     "less-loader": "^5.0.0",
     "livereload": "^0.7.0",

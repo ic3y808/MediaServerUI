@@ -32,11 +32,9 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
                 p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info {{album.tracks.length}} {{album.tracks.length > 1 ? "Tracks" : "Track"}} - {{album.size}}
                 .TrackListHeader__children
                   .TrackListHeader__button.TrackListHeader__button--bottom
-                    button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
+                    button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", title='Save to Your Library', ng-click="starAlbum()") {{selectedTrack.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
               .TrackListHeader__button.TrackListHeader__button--top
-                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
-              .TrackListHeader__button.TrackListHeader__button--top
-                button.spotify-btn.btn-block.btn-black.btn--narrow(ng-click="starTrack()", ng-disabled="isDisabled()", title='Save to Your Library') {{selectedTrack.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
+                button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="starTrack()", ng-disabled="isDisabled()", title='Save to Your Library') {{selectedTrack.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
               .TrackListHeader__button.TrackListHeader__button--top
                 starratinglabel(ng-disabled="isDisabled()", album="artist.artist", extrastyles="btn-block")
         .col-xs-12.col-lg-8.col-xl-12

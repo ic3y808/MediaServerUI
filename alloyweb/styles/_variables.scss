@@ -2,13 +2,13 @@
 @import "./constants";
 @import "./functions";
 @import "./material-colors";
-$primary-color: $clr-pink-300;
+$primary-color: $clr-pink-500;
 $lighter-color:$clr-grey-500;
 $light-color:$clr-grey-900;
 $dark-color: $clr-grey-800;
 $darker-color: $clr-grey-900;
-$edit-color:  rgba(89, 107, 38, 0.7);
-$warning-color:  rgba(107, 38, 38, 0.7);
+$edit-color: rgba(89, 107, 38, 0.7);
+$warning-color: rgba(107, 38, 38, 0.7);
 $background-color: #f2f4f8;
 $background-alt-color: #F5F5F6;
 $border-color: #868686;
@@ -117,8 +117,13 @@ $track-border-color: $alt-sub-background-color !default;
 $track-radius: 5px !default;
 $contrast: 5% !default;
 $ie-bottom-track-color: darken($track-color, $contrast) !default;
+
 //footer
-$footer-height:70px;
+
+$footer-height:60px;
+$footer-height-small:50px;
+/* Add non-firefox CSS code here */
+
 $buffer-color: rgba($primary-color, 0.25);
 $progress-color: rgba($light-color, 0.728);
 $progress-container-color: rgba($primary-color, 0.25);

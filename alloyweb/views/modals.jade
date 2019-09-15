@@ -1,0 +1,72 @@
+#addMediaPathModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='addMediaPathModalLabel', aria-hidden='true')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5#addMediaPathModalLabel.modal-title Choose a Media Location
+        button.Link-link.close(type='button', data-dismiss='modal', aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body
+        .FormGroup-group.FormGroup-large
+          .FormInputGroup-inputGroupContainer
+            .FormInputGroup-inputGroup
+              .FormInputGroup-inputContainer
+                input.Naming-namingInput.TextInput-input.Input-input(type='text', placeholder='Display Name', ng-model='display_name')
+        folderlist#mediaPathFolderList(currentpath='currentpath')
+      .modal-footer
+        button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+        button.btn.btn-primary(type='button', ng-click='addCurrentPath()') Add
+
+#shareModal.modal.fade.clearfix(role='dialog')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        h5#addMediaPathModalLabel.modal-title Create new Share
+        button.Link-link.close(data-dismiss='modal', type='button', aria-label='Close')
+          span(aria-hidden='true') ×
+      .modal-body
+        .FormGroup-group.FormGroup-large
+          .FormInputGroup-inputGroupContainer
+            .FormInputGroup-inputGroup
+              .FormInputGroup-inputContainer
+                input.Naming-namingInput.TextInput-input.Input-input(ng-model='$root.newShare.description', type='text', placeholder='Share Title Name')
+                input.Naming-namingInput.TextInput-input.Input-input(ng-model='$root.newShare.url', type='text', placeholder='Custom URL?')
+                .input-group.date(data-provide='datepicker')
+                  input.form-control(ng-model='$root.newShare.expires', type='text')
+                  .input-group-addon
+                    span.glyphicon.glyphicon-th
+
+      .modal-footer
+        button.btn.btn-secondary(data-dismiss='modal', type='button') Cancel
+        button.btn.btn-primary(ng-click='$root.doShare()', type='button') Share
+
+#createUserModal.modal.fade.clearfix(role='dialog')
+  .modal-dialog(role='document')
+    form#createUserForm(data-parsley-excluded="input[type=button], input[type=submit], input[type=reset], input[type=hidden], [disabled], :hidden", data-parsley-trigger="keyup", data-parsley-validate).modal-content
+      .modal-body
+        section.panel.panel-default
+          header.panel-heading
+            span.h4 Create new User 
+          .panel-body
+            p.text-muted Please fill the information to continue
+            .form-group
+              label Type
+              select.form-control(ng-model='$root.newUser.type', required)
+                option(value='admin') Admin
+                option(value='user') User
+            .form-group
+              label Username
+              input.form-control(data-parsley-trigger="change", ng-model='$root.newUser.username', type='text', required)
+            .form-group
+              label Email
+              input.form-control(data-parsley-trigger="change", ng-model='$root.newUser.email', data-type='email', type='text', required)
+            .form-group.pull-in.clearfix
+              .col-sm-6
+                label Enter password
+                input#password1.form-control(class="password", data-parsley-errors-container=".errorspannewpassinput", data-parsley-lowercase="1", data-parsley-minlength="8", data-parsley-number="1", data-parsley-required-message="Please enter your new password.", data-parsley-special="1", data-parsley-uppercase="1", type='password', required)
+              .col-sm-6
+                label Confirm password
+                input.form-control(class="password", data-parsley-equalto="#password1", data-parsley-errors-container=".errorspanconfirmnewpassinput", data-parsley-minlength="8", data-parsley-required-message="Please re-enter your new password.", ng-model='$root.newUser.password', type='password', required)
+
+      .modal-footer
+        button.btn.btn-secondary(data-dismiss='modal', type='button') Cancel
+        button.btn.btn-primary(type='submit') Create
