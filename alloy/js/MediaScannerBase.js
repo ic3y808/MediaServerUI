@@ -2,10 +2,12 @@ const _ = require("lodash");
 const moment = require("moment");
 const path = require("path");
 const mime = require("mime-types");
+const klawSync = require("klaw-sync");
 const fs = require("fs");
 const del = require("del");
 const shell = require("shelljs");
 const jimp = require("jimp");
+const parser = require("xml2json");
 //const escape = require("escape-string-regexp");
 
 const { ipcRenderer } = require("electron");
@@ -37,11 +39,21 @@ module.exports = class MediaScannerBase {
     return this.scanStatus.shouldCancel;
   }
 
+  abortQueue() {
+    if (this.queue._tickets) {
+      var keys = Object.keys(this.queue._tickets);
+      keys.forEach((key) => {
+        this.queue.cancel(key);
+      });
+    }
+  }
+
   cancelScan() {
     if (this.isScanning()) {
       this.updateStatus("Cancelling scan", false);
       this.info("Cancelling scan");
       this.scanStatus.shouldCancel = true;
+      this.abortQueue();
       setTimeout(() => {
         this.scanStatus.shouldCancel = false;
       }, 5000);
@@ -96,8 +108,111 @@ module.exports = class MediaScannerBase {
     return this.scanStatus;
   }
 
+  checkDBLinks(artist) {
+    if (artist && artist.links) {
+      artist.links.forEach((link) => {
+        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.id);
+        if (existingLink.length === 0) {
+          link.artist_id = artist.id;
+          this.writeDb(link, "Links");
+        }
+      });
+    }
+  }
+
+  async getArtist(dir) {
+    if (!fs.existsSync(path.join(dir, process.env.ARTIST_NFO))) { return null; }
+    var data = fs.readFileSync(path.join(dir, process.env.ARTIST_NFO));
+    var json = JSON.parse(parser.toJson(data));
+    var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.4/artist/" + json.artist.musicbrainzartistid;
+    var result = await this.downloadPage(artistUrl);
+    var artistInfo = JSON.parse(result);
+    if (artistInfo.error) {
+      this.updateStatus("Failed, " + artistInfo.error + " " + artistUrl, true);
+      return null;
+    } else {
+      this.checkDBLinks(artistInfo);
+      var mappedArtist = {
+        id: artistInfo.id,
+        name: utils.isStringValid(artistInfo.artistname, ""),
+        sort_name: utils.isStringValid(artistInfo.sortName, ""),
+        biography: JSON.parse(JSON.stringify((utils.isStringValid(artistInfo.overview, "")))),
+        status: utils.isStringValid(artistInfo.status, ""),
+        rating: artistInfo.rating.count,
+        type: utils.isStringValid(artistInfo.type, ""),
+        disambiguation: utils.isStringValid(artistInfo.disambiguation, ""),
+        overview: JSON.parse(JSON.stringify((utils.isStringValid(artistInfo.overview, ""))))
+      };
+      mappedArtist.path = dir;
+      this.checkDBArtistExists(mappedArtist);
+      return mappedArtist;
+    }
+  }
+
+  async getAlbum(artist, dir) {
+    if (!fs.existsSync(path.join(dir, process.env.ALBUM_NFO))) { return null; }
+    this.debug("Scanning Album " + dir);
+    var json = JSON.parse(parser.toJson(fs.readFileSync(path.join(dir, process.env.ALBUM_NFO))));
+    var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.4/album/" + json.album.musicbrainzalbumid;
+    const albumTracks = klawSync(dir, { nodir: true });
+    var validTracks = [];
+    albumTracks.forEach((track) => {
+      if (utils.isFileValid(track.path)) {
+        validTracks.push(track);
+      }
+    });
+    var albumInfo = await this.downloadPage(albumUrl);
+    if (albumInfo) {
+      var mappedAlbum = {
+        id: json.album.musicbrainzalbumid,
+        artist: utils.isStringValid(artist.name, ""),
+        artist_id: artist.id,
+        name: utils.isStringValid(albumInfo.title, ""),
+        path: dir,
+        created: json.album.releasedate,
+        type: utils.isStringValid(albumInfo.type, ""),
+        rating: albumInfo.Rating ? albumInfo.rating.Count : 0,
+        track_count: validTracks.length
+      };
+      var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
+      var existingAlbum = stmt.all(mappedAlbum.id);
+      if (existingAlbum.length === 0) {
+        this.writeDb(mappedAlbum, "Albums");
+        this.writeScanEvent("insert-album", mappedAlbum, "Inserted mapped album", "success");
+        this.updateStatus("Inserted mapped album " + mappedAlbum.name, true);
+      }
+      mappedAlbum.releases = [];
+      if (albumInfo.releases) {
+        albumInfo.releases.forEach((release) => {
+          mappedAlbum.releases.push(release);
+        });
+      }
+      return mappedAlbum;
+    }
+  }
+
+  async getArtistAlbums(artist) {
+    const albumDirs = klawSync(artist.path, {
+      nofile: true
+    });
+    var mappedAlbums = [];
+    for (let index = 0; index < albumDirs.length; index++) {
+      var mappedAlbum = await this.getAlbum(artist, albumDirs[index].path);
+      if (mappedAlbum) { mappedAlbums.push(mappedAlbum) }
+    }
+    return mappedAlbums;
+  }
+
   isScanning() {
     return this.scanStatus.isScanning;
+  }
+
+  isArtistDir(dir) {
+    return fs.existsSync(path.join(dir, process.env.ARTIST_NFO));
+  }
+
+  isAlbumDir(dir) {
+    return fs.existsSync(path.join(dir, process.env.ALBUM_NFO));
   }
 
   downloadPage(url, method = "GET") {

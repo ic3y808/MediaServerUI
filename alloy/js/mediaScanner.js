@@ -12,7 +12,6 @@ var structures = {};
 var MediaScannerBase = {};
 var mm = {};
 var watchers = [];
-var currentQueue = [];
 var scanner = {};
 
 process.env = remote.getGlobal("process").env;
@@ -47,12 +46,12 @@ class MediaScanner extends MediaScannerBase {
         cb(null, null);
       }
     }, {
-        concurrent: 1,
-        id: function (task, cb) {
-          // Compute the ID
-          cb(null, task);
-        }
-      });
+      concurrent: 1,
+      id: function (task, cb) {
+        // Compute the ID
+        cb(null, task);
+      }
+    });
 
     this.queue.on("batch_finish", () => {
       this.checkQueue();
@@ -84,17 +83,7 @@ class MediaScanner extends MediaScannerBase {
     }
   }
 
-  checkDBLinks(artist) {
-    if (artist && artist.links) {
-      artist.links.forEach((link) => {
-        var existingLink = this.db.prepare("SELECT * FROM Links WHERE type=? AND target=? AND artist_id=?").all(link.type, link.target, artist.id);
-        if (existingLink.length === 0) {
-          link.artist_id = artist.id;
-          this.writeDb(link, "Links");
-        }
-      });
-    }
-  }
+
 
   checkDBArtistExists(artist) {
     var stmt = this.db.prepare("SELECT * FROM Artists WHERE id = ?");
@@ -114,65 +103,7 @@ class MediaScanner extends MediaScannerBase {
     }
   }
 
-  checkDBAlbumsExist(artist) {
-    return new Promise((resolve, reject) => {
-      const albumDirs = klawSync(artist.path, {
-        nofile: true
-      });
-      var mappedAlbums = [];
-      var promises = [];
-      albumDirs.forEach((dir) => {
-        if (fs.existsSync(path.join(dir.path, process.env.ALBUM_NFO))) {
-          this.debug("Scanning Album " + dir.path);
-          var json = JSON.parse(parser.toJson(fs.readFileSync(path.join(dir.path, process.env.ALBUM_NFO))));
-          var albumUrl = process.env.BRAINZ_API_URL + "/api/v0.4/album/" + json.album.musicbrainzalbumid;
-          const albumTracks = klawSync(dir.path, { nodir: true });
-          var validTracks = [];
-          albumTracks.forEach((track) => {
-            if (utils.isFileValid(track.path)) {
-              validTracks.push(track);
-            }
-          });
-          var albumPromise = this.downloadPage(albumUrl);
-          promises.push(albumPromise);
-          albumPromise.then((result) => {
-            var albumInfo = JSON.parse(result);
-            if (albumInfo) {
-              var mappedAlbum = {
-                id: json.album.musicbrainzalbumid,
-                artist: utils.isStringValid(artist.name, ""),
-                artist_id: artist.id,
-                name: utils.isStringValid(albumInfo.title, ""),
-                path: dir.path,
-                created: json.album.releasedate,
-                type: utils.isStringValid(albumInfo.type, ""),
-                rating: albumInfo.Rating ? albumInfo.rating.Count : 0,
-                track_count: validTracks.length
-              };
-              var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
-              var existingAlbum = stmt.all(mappedAlbum.id);
-              if (existingAlbum.length === 0) {
-                this.writeDb(mappedAlbum, "Albums");
-                this.writeScanEvent("insert-album", mappedAlbum, "Inserted mapped album", "success");
-                this.updateStatus("Inserted mapped album " + mappedAlbum.name, true);
-              }
-              mappedAlbum.releases = [];
-              if (albumInfo.releases) {
-                albumInfo.releases.forEach((release) => {
-                  mappedAlbum.releases.push(release);
-                });
-              }
-              mappedAlbums.push(mappedAlbum);
-            }
-          });
-        }
-      });
 
-      Promise.all(promises).then(() => {
-        resolve(mappedAlbums);
-      });
-    });
-  }
 
   checkDBGenreExist(track) {
     try {
@@ -291,106 +222,92 @@ class MediaScanner extends MediaScannerBase {
     };
   }
 
-  async scanArtist(artist) {
+  async scanAlbum(artist, album) {
 
     if (this.shouldCancel()) { return; }
-    this.updateStatus("Scanning Artist ", true, { path: artist.path });
-    this.debug("Scanning Artist " + artist.path);
-    if (!fs.existsSync(path.join(artist.path, process.env.ARTIST_NFO))) { return; }
-    var data = fs.readFileSync(path.join(artist.path, process.env.ARTIST_NFO));
-    var json = JSON.parse(parser.toJson(data));
-    var artistUrl = process.env.BRAINZ_API_URL + "/api/v0.4/artist/" + json.artist.musicbrainzartistid;
-    var result = await this.downloadPage(artistUrl);
-    try {
-      var artistInfo = JSON.parse(result);
-      if (artistInfo.error) {
-        this.updateStatus("Failed, " + artistInfo.error + " " + artistUrl, true);
-      } else {
-        this.checkDBLinks(artistInfo);
-        var mappedArtist = {
-          id: json.artist.musicbrainzartistid,
-          name: utils.isStringValid(json.artist.title, ""),
-          sort_name: utils.isStringValid(artistInfo.sortName, ""),
-          biography: JSON.parse(JSON.stringify((utils.isStringValid(json.artist.biography, "")))),
-          status: utils.isStringValid(artistInfo.status, ""),
-          rating: artistInfo.rating.count,
-          type: utils.isStringValid(artistInfo.type, ""),
-          disambiguation: utils.isStringValid(artistInfo.disambiguation, ""),
-          overview: JSON.parse(JSON.stringify((utils.isStringValid(artistInfo.overview, ""))))
-        };
+    this.updateStatus("Scanning Album ", true, { path: album.path });
+    this.debug("Scanning Album " +  album.path);
+    if (fs.existsSync(album.path)) {
+      const albumTracks = klawSync(album.path, { nodir: true });
 
-        Object.assign(artist, mappedArtist);
-        this.checkDBArtistExists(artist);
-        var albums = await this.checkDBAlbumsExist(artist);
-        var allMetaPromises = [];
-        for (const album of albums) {
-          if (fs.existsSync(album.path)) {
-            const albumTracks = klawSync(album.path, { nodir: true });
+      for (const track of albumTracks) {
+        try {
+          if (utils.isFileValid(track.path)) {
+            var metadata = await mm.parseFile(track.path);
+            var processed_track = new structures.Song();
+            processed_track = this.checkExistingTrack(processed_track, metadata);
+            processed_track.path = track.path;
+            processed_track.artist = utils.isStringValid(artist.name, "");
+            processed_track.artist_id = artist.id;
+            processed_track.album = utils.isStringValid(album.name, "");
+            processed_track.album_path = album.path;
+            processed_track.getStats();
 
-            for (const track of albumTracks) {
-              try {
-                if (utils.isFileValid(track.path)) {
-                  var metadata = await mm.parseFile(track.path);
-                  var processed_track = new structures.Song();
-                  processed_track = this.checkExistingTrack(processed_track, metadata);
-                  processed_track.path = track.path;
-                  processed_track.artist = utils.isStringValid(artist.name, "");
-                  processed_track.artist_id = artist.id;
-                  processed_track.album = utils.isStringValid(album.name, "");
-                  processed_track.album_path = album.path;
-                  processed_track.getStats();
+            processed_track.album_id = album.id;
 
-                  processed_track.album_id = album.id;
+            album.releases.forEach((release) => {
+              if (release.Tracks) {
+                release.Tracks.forEach((albumTrack) => {
+                  if (!processed_track.id) {
+                    var msCompare = processed_track.duration === parseInt(albumTrack.DurationMs / 1000, 10);
+                    var tracknumCompare = processed_track.no === albumTrack.TrackPosition;
+                    var mediumCompare = processed_track.of === release.TrackCount;
 
-                  album.releases.forEach((release) => {
-                    if (release.Tracks) {
-                      release.Tracks.forEach((albumTrack) => {
-                        if (!processed_track.id) {
-                          var msCompare = processed_track.duration === parseInt(albumTrack.DurationMs / 1000, 10);
-                          var tracknumCompare = processed_track.no === albumTrack.TrackPosition;
-                          var mediumCompare = processed_track.of === release.TrackCount;
-
-                          if (msCompare && tracknumCompare && mediumCompare) {
-                            processed_track.id = albumTrack.RecordingId;
-                            processed_track.title = albumTrack.TrackName;
-                          }
-                        } else if (processed_track.id === albumTrack.RecordingId) {
-                          processed_track.title = albumTrack.TrackName;
-                        }
-                      });
+                    if (msCompare && tracknumCompare && mediumCompare) {
+                      processed_track.id = albumTrack.RecordingId;
+                      processed_track.title = albumTrack.TrackName;
                     }
-                  });
-
-                  processed_track = this.checkAlbumArt(processed_track, metadata);
-
-                  this.writeDb(processed_track, "Tracks");
-                  this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
-
-                }
-              } catch (err) {
-                this.error(err);
-                this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
+                  } else if (processed_track.id === albumTrack.RecordingId) {
+                    processed_track.title = albumTrack.TrackName;
+                  }
+                });
               }
-            }
+            });
+
+            processed_track = this.checkAlbumArt(processed_track, metadata);
+
+            this.writeDb(processed_track, "Tracks");
+            this.writeScanEvent("insert-track", processed_track, "Inserted mapped track", "success");
+
           }
+        } catch (err) {
+          this.error(err);
+          this.writeScanEvent("insert-track", track, "Failed to insert mapped track", "failed");
+        }
+      }
+    }
+  }
+
+  async scanArtist(dir) {
+
+    if (this.shouldCancel()) { return; }
+    this.updateStatus("Scanning Artist ", true, { path: dir });
+    this.debug("Scanning Artist " + dir);
+    var mappedArtist = await this.getArtist(dir);
+
+    try {
+      if (mappedArtist) {
+        var albums = await this.getArtistAlbums(mappedArtist);
+
+        for (const album of albums) {
+          this.scanAlbum(mappedArtist, album);
         }
       }
     } catch (err) {
       this.error(err);
-      this.updateStatus("Failed to fetch URL " + artistUrl, true);
     }
   }
 
   async scanPath(dir) {
     try {
       if (fs.existsSync(dir)) {
-        var pathToCheck = dir;
-        if (!fs.lstatSync(dir).isDirectory()) { pathToCheck = path.dirname(dir); }
-
-        if (fs.existsSync(path.join(pathToCheck, process.env.ARTIST_NFO))) {
-          await this.scanArtist({ path: pathToCheck });
-        } else if (fs.existsSync(path.join(pathToCheck, process.env.ALBUM_NFO))) {
-          await this.scanArtist({ path: path.dirname(pathToCheck) });
+        if (this.isAlbumDir(dir)) {
+          var parent = path.dirname(dir);
+          var mappedArtist = await this.getArtist(parent);
+          var mappedAlbum = await this.getAlbum(mappedArtist, dir);
+          await this.scanAlbum(mappedArtist, mappedAlbum);
+        } else if (this.isArtistDir(dir)) {
+          await this.scanArtist(dir);
         }
       }
     } catch (err) {

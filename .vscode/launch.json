@@ -10,8 +10,7 @@
       "cwd": "${workspaceFolder}",
       "timeout": 5000000,
       "env": {
-        "MODE": "dev",
-        "DEBUG": "music-metadata:parser:ID3"
+        "MODE": "dev"
       },
       "runtimeArgs": [
         "--remote-debugging-port=9223",
@@ -31,8 +30,7 @@
       "cwd": "${workspaceFolder}",
       "timeout": 5000000,
       "env": {
-        "MODE": "prod",
-        "DEBUG": "music-metadata:parser:ID3"
+        "MODE": "prod"
       },
       "runtimeArgs": [
         "--remote-debugging-port=9223",
