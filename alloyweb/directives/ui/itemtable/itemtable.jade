@@ -81,6 +81,7 @@ section.scrollable.padder-lg.w-f-md
             tr
               th(ng-if="showimages", style="width:1px !important;")
               th.col-sm-2.col-md-6.col-lg-6 Genre
+              th.col-sm-2.col-md-6.col-lg-6 Plays
               th.col-sm-2.col-md-6.col-lg-6 Artists
               th.col-sm-2.col-md-6.col-lg-6 Albums
               th.col-sm-2.col-md-6.col-lg-6 Tracks
@@ -91,6 +92,7 @@ section.scrollable.padder-lg.w-f-md
                   img.img-thumbnail(alt='{{genre.name}}', lazy-load, tempData="{{genre.image}}")
               td.col-sm-2.col-md-6.col-lg-6 
                 a(data-value="genre;{{genre.id}}", href="/genre/{{genre.id}}") {{genre.name}}
+              td.col-sm-2.col-md-6.col-lg-6 {{genre.play_count}}
               td.col-sm-2.col-md-6.col-lg-6 {{genre.artist_count}}
               td.col-sm-2.col-md-6.col-lg-6 {{genre.album_count}}
               td.col-sm-2.col-md-6.col-lg-6 {{genre.track_count}}

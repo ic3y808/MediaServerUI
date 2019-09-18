@@ -14,6 +14,7 @@ exports.up = function (db) {
       track_count: { type: "int", defaultValue: 0 },
       artist_count: { type: "int", defaultValue: 0 },
       album_count: { type: "int", defaultValue: 0 },
+      play_count: { type: "int", defaultValue: 0 },
     },
     ifNotExists: true
   };

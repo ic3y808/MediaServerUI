@@ -18,12 +18,12 @@ class GenreController {
 
     $scope.refresh = () => {
       this.Logger.debug("refresh genre");
-     this.AlloyDbService.refreshGenre(this.$routeParams.id);
+      this.AlloyDbService.refreshGenre(this.$routeParams.id);
     };
 
     $scope.shuffle = () => {
       this.Logger.debug("shuffle play");
-      $rootScope.tracks = AppUtilities.shuffle($scope.info.tracks);
+      $rootScope.tracks = AppUtilities.shuffle($rootScope.genre.tracks);
       MediaPlayer.loadTrack(0);
     };
 

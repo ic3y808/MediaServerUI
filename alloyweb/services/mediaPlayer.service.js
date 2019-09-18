@@ -122,8 +122,12 @@ export default class MediaPlayer {
     if (this.castStatus()) {
       var options = {};
       // options.receiverApplicationId = "DAB06F7C";
-      options.receiverApplicationId = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
-      options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+      if(chrome.cast){
+        options.receiverApplicationId = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
+        options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
+      }
+      
+      
       cast.framework.CastContext.getInstance().setOptions(options);
       this.remotePlayer = new cast.framework.RemotePlayer();
       this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);

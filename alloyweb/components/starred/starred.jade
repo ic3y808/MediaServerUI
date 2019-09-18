@@ -16,4 +16,4 @@ section.scrollable.scrollsaver.padder-lg.w-f-md
       itemlist(data="$root.starred_top_artists", title="Top Artists", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
   .row
     .col-md-12(ng-if="$root.starred_tracks.length > 0")
-      itemtable(data="$root.starred_tracks", title="All Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()")
+      itemtable(data="$root.starred_tracks", title="All Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()", showartist="true")

@@ -121,9 +121,6 @@ router.get("/artist", function (req, res) {
     }
   });
 
-  //result.prev = res.locals.db.prepare("SELECT id, name FROM Artists WHERE sort_order=?").get(result.artist.sort_order - 1);
-  //result.next = res.locals.db.prepare("SELECT id, name FROM Artists WHERE sort_order=?").get(result.artist.sort_order + 1);
-
   var totalSize = 0;
   result.tracks.forEach((track) => {
     totalSize += track.size;

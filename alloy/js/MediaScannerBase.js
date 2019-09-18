@@ -2,18 +2,22 @@ const _ = require("lodash");
 const moment = require("moment");
 const path = require("path");
 const mime = require("mime-types");
+const uuidv3 = require("uuid/v3");
 const klawSync = require("klaw-sync");
 const fs = require("fs");
 const del = require("del");
 const shell = require("shelljs");
 const jimp = require("jimp");
 const parser = require("xml2json");
+const watch = require("node-watch");
+var Queue = require("better-queue");
 //const escape = require("escape-string-regexp");
 
 const { ipcRenderer } = require("electron");
 var loggerTag = "MediaScannerBase";
 var LastFM = require(path.join(process.env.APP_DIR, "common", "simple-lastfm"));
 var utils = require(path.join(process.env.APP_DIR, "common", "utils"));
+var watchers = [];
 
 module.exports = class MediaScannerBase {
 
@@ -108,6 +112,201 @@ module.exports = class MediaScannerBase {
     return this.scanStatus;
   }
 
+  configureQueue() {
+    this.queue = new Queue(async (input, cb) => {
+      if (this.shouldCancel()) {
+        cb(null, null);
+      } else {
+        await this.scanPath(input);
+        this.checkQueue();
+        cb(null, null);
+      }
+    }, {
+      concurrent: 1,
+      id: function (task, cb) {
+        // Compute the ID
+        cb(null, task);
+      }
+    });
+
+    this.queue.on("batch_finish", () => {
+      this.checkQueue();
+      if (Object.keys(this.tickets).length > 0) { return; }
+      this.db.checkpoint();
+      this.cleanup();
+      this.resetStatus();
+      this.updateStatus("Scan Complete", false);
+      ipcRenderer.send("system-get-stats");
+    });
+  }
+
+  configFileWatcher() {
+    watchers.forEach((watcher) => {
+      if (!watcher.isClosed()) {
+        watcher.close();
+      }
+    });
+    watchers = [];
+
+    var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
+
+    if (mediaPaths.length === 0) {
+      this.info("No Media Path Defined ");
+      return;
+    }
+    mediaPaths.forEach((mediaPath) => {
+      if (mediaPath.path && fs.existsSync(mediaPath.path)) {
+        watchers.push(watch(mediaPath.path, { recursive: true }, (evt, name) => {
+          var fileName = name;
+          if (fs.existsSync(fileName)) {
+            if (fs.lstatSync(fileName).isDirectory()) {
+
+              this.tickets[fileName] = this.queue.push(fileName);
+            }
+            else {
+              this.tickets[path.dirname(fileName)] = this.queue.push(path.dirname(fileName));
+            }
+          }
+        }));
+      }
+    });
+  }
+
+  checkDBArtistExists(artist) {
+    var stmt = this.db.prepare("SELECT * FROM Artists WHERE id = ?");
+    var existingArtist = stmt.all(artist.id);
+    if (existingArtist.length === 0) {
+      const artistTracks = klawSync(artist.path, { nodir: true });
+      var validTracks = [];
+      artistTracks.forEach((track) => {
+        if (utils.isFileValid(track.path)) {
+          validTracks.push(track);
+        }
+      });
+      artist.track_count = validTracks.length;
+      this.writeDb(artist, "Artists");
+      this.writeScanEvent("insert-artist", artist, "Inserted mapped artist", "success");
+      this.updateStatus("Inserted mapped artist " + artist.name, true);
+    }
+  }
+
+  checkDBGenreExist(track) {
+    try {
+      var genre = track.genre.split("/");
+
+      if (genre.length > 0) {
+        track.genre = genre[0];
+      }
+      track.tags = "";
+
+      for (var i = 1; i < genre.length; i++) {
+        track.tags += genre[i];
+        if (i < genre.length - 1) { track.tags += "|"; }
+      }
+
+      var tempGenreId = "genre_" + uuidv3(track.genre, process.env.UUID_BASE).split("-")[0];
+      var existingGenre = this.db.prepare("SELECT * FROM Genres WHERE id = ? OR name = ?").all(tempGenreId, track.genre);
+      if (existingGenre.length === 0) {
+        track.genre_id = tempGenreId;
+        var stmt = this.db.prepare("INSERT INTO Genres (id, name) VALUES (?,?)");
+        var info = stmt.run(track.genre_id, track.genre);
+      } else {
+        track.genre_id = existingGenre[0].id;
+      }
+    } catch (err) {
+      this.error(err);
+    }
+    return track;
+  }
+
+  checkExistingTrack(track, metadata) {
+    track.id = utils.isStringValid(metadata.common.musicbrainz_recordingid, "");
+
+    var existingDbTrack = this.db.prepare("SELECT * FROM Tracks WHERE id = ?").get(track.id);
+
+    if (existingDbTrack) {
+      Object.assign(track, existingDbTrack);
+    }
+    track.artist = utils.isStringValid(metadata.common.artist, "No Artist");
+    track.title = utils.isStringValid(metadata.common.title, "");
+    track.album = utils.isStringValid(metadata.common.album, "No Album");
+
+
+    track.genre = utils.isStringValid((metadata.common.genre !== undefined && metadata.common.genre[0] !== undefined && metadata.common.genre[0] !== "") ? metadata.common.genre[0] : "No Genre");
+    this.checkDBGenreExist(track);
+
+    track.bpm = utils.isStringValid(metadata.common.bpm, "");
+    track.year = metadata.common.year;
+    track.suffix = utils.isStringValid(metadata.common.suffix, "");
+    track.no = metadata.common.track.no;
+    track.of = metadata.common.track.of;
+    return track;
+  }
+
+  checkAlbumArt(track, metadata) {
+    if (metadata.common.picture) {
+
+      var coverId = "cvr_" + track.album_id;
+      var coverFile = path.join(process.env.COVER_ART_DIR, coverId + ".jpg");
+
+      var stmt = this.db.prepare("SELECT * FROM CoverArt WHERE id = ?");
+      var existingCover = stmt.all(coverId);
+
+      if (existingCover.length === 0) {
+        this.db.prepare("INSERT INTO CoverArt (id, album) VALUES (?, ?)").run(coverId, track.album);
+      }
+
+      track.cover_art = coverId;
+
+      if (!fs.existsSync(coverFile)) {
+        var data = metadata.common.picture[0].data;
+        if (data) {
+          fs.writeFile(coverFile, data, function (err) {
+            if (err) {
+              this.error(err);
+            }
+          });
+        }
+      }
+    }
+    return track;
+  }
+
+  collectArtists() {
+    var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
+
+    if (mediaPaths.length === 0) {
+      this.updateStatus("No Media Path Defined ", false);
+      return null;
+    }
+    this.updateStatus("Collecting mapped and unmapped artist folders", true);
+    this.debug("Collecting mapped and unmapped artist folders");
+
+    var mappedArtistDirectories = [];
+    var unmappedArtistDirectories = [];
+
+    mediaPaths.forEach((mediaPath) => {
+      const artistDirs = klawSync(mediaPath.path, { nofile: true, depthLimit: 0 });
+
+      artistDirs.forEach((dir) => {
+        if (fs.existsSync(path.join(dir.path, process.env.ARTIST_NFO))) {
+          mappedArtistDirectories.push({
+            path: dir.path
+          });
+        } else {
+          unmappedArtistDirectories.push({
+            path: dir.path
+          });
+        }
+      });
+    });
+
+    return {
+      mappedArtists: mappedArtistDirectories,
+      unmappedArtists: unmappedArtistDirectories
+    };
+  }
+
   checkDBLinks(artist) {
     if (artist && artist.links) {
       artist.links.forEach((link) => {
@@ -135,7 +334,6 @@ module.exports = class MediaScannerBase {
       var mappedArtist = {
         id: artistInfo.id,
         name: utils.isStringValid(artistInfo.artistname, ""),
-        sort_name: utils.isStringValid(artistInfo.sortName, ""),
         biography: JSON.parse(JSON.stringify((utils.isStringValid(artistInfo.overview, "")))),
         status: utils.isStringValid(artistInfo.status, ""),
         rating: artistInfo.rating.count,
@@ -161,33 +359,45 @@ module.exports = class MediaScannerBase {
         validTracks.push(track);
       }
     });
-    var albumInfo = await this.downloadPage(albumUrl);
-    if (albumInfo) {
-      var mappedAlbum = {
-        id: json.album.musicbrainzalbumid,
-        artist: utils.isStringValid(artist.name, ""),
-        artist_id: artist.id,
-        name: utils.isStringValid(albumInfo.title, ""),
-        path: dir,
-        created: json.album.releasedate,
-        type: utils.isStringValid(albumInfo.type, ""),
-        rating: albumInfo.Rating ? albumInfo.rating.Count : 0,
-        track_count: validTracks.length
-      };
-      var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
-      var existingAlbum = stmt.all(mappedAlbum.id);
-      if (existingAlbum.length === 0) {
-        this.writeDb(mappedAlbum, "Albums");
-        this.writeScanEvent("insert-album", mappedAlbum, "Inserted mapped album", "success");
-        this.updateStatus("Inserted mapped album " + mappedAlbum.name, true);
+    var result = await this.downloadPage(albumUrl);
+    var albumInfo = JSON.parse(result);
+    if (albumInfo.error) {
+      this.updateStatus("Failed, " + albumInfo.error + " " + albumUrl, true);
+      return null;
+    } else {
+      if (albumInfo) {
+        var mappedAlbum = {
+          id: json.album.musicbrainzalbumid,
+          artist: utils.isStringValid(artist.name, ""),
+          artist_id: artist.id,
+          name: utils.isStringValid(albumInfo.title, ""),
+          path: dir,
+          created: json.album.releasedate,
+          type: utils.isStringValid(albumInfo.type, ""),
+          rating: albumInfo.Rating ? albumInfo.rating.Count : 0,
+          track_count: validTracks.length
+        };
+        var stmt = this.db.prepare("SELECT * FROM Albums WHERE id = ?");
+        var existingAlbum = stmt.get(mappedAlbum.id);
+        if (!existingAlbum) {
+          this.writeDb(mappedAlbum, "Albums");
+          this.writeScanEvent("insert-album", mappedAlbum, "Inserted mapped album", "success");
+          this.updateStatus("Inserted mapped album " + mappedAlbum.name, true);
+        } else {
+          mappedAlbum = Object.assign(existingAlbum, mappedAlbum);
+          this.writeDb(mappedAlbum, "Albums");
+          this.writeScanEvent("update-album", mappedAlbum, "Updated mapped album", "success");
+          this.updateStatus("Updated mapped album " + mappedAlbum.name, true);
+        }
+
+        mappedAlbum.releases = [];
+        if (albumInfo.releases) {
+          albumInfo.releases.forEach((release) => {
+            mappedAlbum.releases.push(release);
+          });
+        }
+        return mappedAlbum;
       }
-      mappedAlbum.releases = [];
-      if (albumInfo.releases) {
-        albumInfo.releases.forEach((release) => {
-          mappedAlbum.releases.push(release);
-        });
-      }
-      return mappedAlbum;
     }
   }
 
@@ -212,7 +422,16 @@ module.exports = class MediaScannerBase {
   }
 
   isAlbumDir(dir) {
-    return fs.existsSync(path.join(dir, process.env.ALBUM_NFO));
+    var parent = path.dirname(dir);
+    var mediaPaths = this.db.prepare("SELECT * FROM MediaPaths").all();
+    var isAlbum = true;
+    mediaPaths.forEach((mediaPath) => {
+      if (parent === mediaPath.path) { isAlbum = false; }
+    });
+    if (isAlbum === false) { return false; }
+    else {
+      return fs.existsSync(path.join(dir, process.env.ALBUM_NFO));
+    }
   }
 
   downloadPage(url, method = "GET") {
@@ -224,72 +443,46 @@ module.exports = class MediaScannerBase {
   checkCounts() {
     this.info("checking counts");
     this.updateStatus("checking counts", true);
-    var genres = this.db.prepare("SELECT id FROM Genres").all();
-    genres.forEach((g) => {
-      var albums = [];
-      var artists = [];
-      var tracks = this.db.prepare("SELECT artist_id, album_id FROM Tracks WHERE genre_id=?").all(g.id);
-      tracks.forEach((track) => {
-        artists.push(track.artist_id);
-        albums.push(track.album_id);
-      });
-      albums = _.uniq(albums);
-      artists = _.uniq(artists);
-      this.db.prepare("UPDATE Genres SET track_count=?, artist_count=?, album_count=? WHERE id=?").run(tracks.length, artists.length, albums.length, g.id);
-    });
 
-    var albums = this.db.prepare("SELECT * FROM Albums").all();
-    albums.forEach((a) => {
-      var tracks = this.db.prepare("SELECT id FROM Tracks WHERE album_id=?").all(a.id);
-      this.db.prepare("UPDATE Albums SET track_count=? WHERE id=?").run(tracks.length, a.id);
-    });
-  }
+    var genreCounts = this.db.prepare("SELECT genre_id as id, count(*) as track_count, count(distinct Tracks.artist_id) as artist_count, count(distinct Tracks.album_id) as album_count, sum(Tracks.play_count) as plays FROM Tracks INNER JOIN Genres ON Genres.id = Tracks.genre_id group by genre_id").all();
+    genreCounts.forEach((g) => {
+      this.db.prepare("UPDATE Genres SET track_count=?, artist_count=?, album_count=?, play_count=? WHERE id=?").run(g.track_count, g.artist_count, g.album_count, g.plays, g.id);
+    })
 
-  checkSortOrder() {
-    this.info("checking table sort orders");
-    this.updateStatus("checking base sort order", true);
-    var allArtists = this.db.prepare("SELECT * FROM Artists ORDER BY name COLLATE NOCASE ASC").all();
-    for (var i = 0; i < allArtists.length; ++i) {
-      this.db.prepare("UPDATE Artists SET sort_order=? WHERE id=?").run(i, allArtists[i].id);
-    }
+    var albumCounts = this.db.prepare("SELECT album_id as id, count(*) as track_count, sum(Tracks.play_count) as plays FROM Tracks INNER JOIN Albums ON Albums.id = Tracks.album_id group by album_id").all();
+
+    albumCounts.forEach((album) => {
+      this.db.prepare("UPDATE Albums SET track_count=?, play_count=? WHERE id=?").run(album.track_count, album.plays, album.id);
+    });
   }
 
   checkEmptyArtists() {
     this.info("checking empty artists");
     this.updateStatus("checking missing media", true);
-    var allMedia = this.db.prepare("SELECT * FROM Artists").all();
+    var allMedia = this.db.prepare("SELECT id FROM Artists WHERE id NOT IN (SELECT artist_id FROM Tracks)").all();
     allMedia.forEach((artist) => {
-      var anyArtists = this.db.prepare("SELECT * FROM Tracks WHERE artist_id=?").all(artist.id);
-      if (anyArtists.length === 0) {
-        this.db.prepare("DELETE FROM Artists WHERE id=?").run(artist.id);
-        this.writeScanEvent("delete-artist", artist, "Deleted mapped artist because it was empty", "success");
-      }
+      this.db.prepare("DELETE FROM Artists WHERE id=?").run(artist.id);
+      this.writeScanEvent("delete-artist", artist, "Deleted mapped artist because it was empty", "success");
     });
   }
 
   checkEmptyAlbums() {
     this.info("checking empty albums");
     this.updateStatus("checking missing albums", true);
-    var allMedia = this.db.prepare("SELECT * FROM Albums").all();
+    var allMedia = this.db.prepare("SELECT id FROM Albums WHERE id NOT IN (SELECT album_id FROM Tracks)").all();
     allMedia.forEach((album) => {
-      var anyTracks = this.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
-      if (anyTracks.length === 0) {
-        this.db.prepare("DELETE FROM Albums WHERE id=?").run(album.id);
-        this.writeScanEvent("delete-album", album, "Deleted mapped album because it was empty", "success");
-      }
+      this.db.prepare("DELETE FROM Albums WHERE id=?").run(album.id);
+      this.writeScanEvent("delete-album", album, "Deleted mapped album because it was empty", "success");
     });
   }
 
   checkEmptyGenres() {
     this.info("checking empty genres");
     this.updateStatus("checking empty genres", true);
-    var allMedia = this.db.prepare("SELECT * FROM Genres").all();
+    var allMedia = this.db.prepare("SELECT id FROM Genres WHERE id NOT IN (SELECT genre_id FROM Tracks)").all();
     allMedia.forEach((genre) => {
-      var anyGenres = this.db.prepare("SELECT * FROM Tracks WHERE genre_id=?").all(genre.id);
-      if (anyGenres.length === 0) {
-        this.db.prepare("DELETE FROM Genres WHERE id=?").run(genre.id);
-        this.writeScanEvent("delete-genre", genre, "Deleted mapped genre because it was empty", "success");
-      }
+      this.db.prepare("DELETE FROM Genres WHERE id=?").run(genre.id);
+      this.writeScanEvent("delete-genre", genre, "Deleted mapped genre because it was empty", "success");
     });
   }
 
@@ -483,7 +676,6 @@ module.exports = class MediaScannerBase {
     this.checkEmptyPlaylists();
     this.checkEmptyArtists();
     this.checkEmptyGenres();
-    this.checkSortOrder();
     this.checkCounts();
     this.checkHistory();
     this.checkCache();

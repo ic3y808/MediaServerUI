@@ -13,7 +13,7 @@ export default function ($rootScope, $location, Logger, Backend, AppUtilities, M
       viewmorelink: "@"
 
     },
-    templateUrl: "template/itemlist.jade",
+    templateUrl: "/template/itemlist.jade",
 
     replace: true,
     link: (scope, elm, attrs) => {
