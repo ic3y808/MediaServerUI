@@ -1,5 +1,4 @@
 import _ from "lodash";
-
 export default function ($rootScope, $location, $timeout, Logger) {
   "ngInject";
   return {
@@ -10,13 +9,11 @@ export default function ($rootScope, $location, $timeout, Logger) {
       data: "="
     },
     link: function (scope, element, attrs) {
-      "ngInject";
-      var debounce = _.debounce(()=>{
+      var debounce = _.debounce(() => {
         var pos = $rootScope.scrollPos[$location.path()];
         $(".scrollsaver").scrollTop(pos);
         $rootScope.okSaveScroll = true;
-        Logger.debug("set page position")
-      },500)
+      }, 500)
       var observer = new MutationObserver(function (mutations) {
         $timeout(debounce);
       });
@@ -36,7 +33,6 @@ export default function ($rootScope, $location, $timeout, Logger) {
 
       element.bind("scroll", (event) => {
         if ($rootScope.okSaveScroll) {
-          Logger.debug("saving position for " + $location.path() + " at " +  $(".scrollsaver").scrollTop())
           $rootScope.scrollPos[$location.path()] = $(".scrollsaver").scrollTop();
         }
       });
