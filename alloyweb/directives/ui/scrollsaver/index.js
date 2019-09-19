@@ -9,13 +9,12 @@ export default function ($rootScope, $location, $timeout, Logger) {
       data: "="
     },
     link: function (scope, element, attrs) {
-      var debounce = _.debounce(() => {
-        var pos = $rootScope.scrollPos[$location.path()];
-        $(".scrollsaver").scrollTop(pos);
-        $rootScope.okSaveScroll = true;
-      }, 500)
       var observer = new MutationObserver(function (mutations) {
-        $timeout(debounce);
+        $timeout(() => {
+          var pos = $rootScope.scrollPos[$location.path()];
+          $(".scrollsaver").scrollTop(pos);
+          $rootScope.okSaveScroll = true;
+        });
       });
 
       observer.observe(element[0], {

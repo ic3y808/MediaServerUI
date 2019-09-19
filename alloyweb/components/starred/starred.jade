@@ -3,17 +3,17 @@ section.scrollable.scrollsaver.padder-lg.w-f-md
     .col-md-7(ng-if="$root.starred_tracks.length > 0")
       thumblist(data="$root.starred_tracks", title="Tracks", limit="36", type="tracks", refreshclick="refresh()", viewmorelink="/fresh")  
     .col-md-5(ng-if="$root.starred_top_tracks.length > 0")
-      itemlist(data="$root.starred_top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/top_tracks")  
+      itemlist(data="$root.starred_top_tracks", title="Top Tracks", limit="10", type="tracks", refreshclick="refresh()", viewmorelink="/top_tracks", showindex="true")  
   .row
     .col-md-7(ng-if="$root.starred_albums.length > 0")
       thumblist(data="$root.starred_albums", title="Albums", limit="36", type="albums", refreshclick="refresh()", viewmorelink="/fresh")   
     .col-md-5(ng-if="$root.starred_top_albums.length > 0")
-      itemlist(data="$root.starred_top_albums", title="Top Albums", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
+      itemlist(data="$root.starred_top_albums", title="Top Albums", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played", showindex="true")  
   .row
     .col-md-7(ng-if="$root.starred_artists.length > 0")
       thumblist(data="$root.starred_artists", title="Artists", limit="36", type="artists", refreshclick="refresh()", viewmorelink="/fresh")    
     .col-md-5(ng-if="$root.starred_top_artists.length > 0")
-      itemlist(data="$root.starred_top_artists", title="Top Artists", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played")  
+      itemlist(data="$root.starred_top_artists", title="Top Artists", limit="10", type="albums", refreshclick="refresh()", viewmorelink="/never_played", showindex="true")  
   .row
     .col-md-12(ng-if="$root.starred_tracks.length > 0")
       itemtable(data="$root.starred_tracks", title="All Tracks", limit="$root.starred_tracks.length", type="tracks", refreshclick="refresh()", showartist="true")

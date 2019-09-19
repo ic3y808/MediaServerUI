@@ -6,8 +6,8 @@ section.scrollable.padder-lg.w-f-md
   .row 
     ul.list-group.bg-white.list-group-lg.no-bg.auto(ng-if="type === 'tracks'")
       li.list-group-item.clearfix.pointer(data-value="track;{{track.id}}", ng-class="{'list-group-item-now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}", ng-click="$root.MediaPlayer.playTrack(track, data)", ng-repeat="track in data | limitTo:itemLimit")
-        span.pull-right.text-muted.m-l {{$index + 1}}
-        span.pull-left.thumb-sm.avatar.m-r
+        span(ng-if="showindex").item-number.pull-left.thumb-sm.avatar.m-r.text-muted {{$index + 1}}
+        span(ng-if="showcover").pull-left.thumb-sm.avatar.m-r
           img.img-thumbnail(alt='{{track.album}}', lazy-load, tempData="{{track.image}}")
         span.clear
           span(data-value="track;{{track.id}}") {{track.title}}

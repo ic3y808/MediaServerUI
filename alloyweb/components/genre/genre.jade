@@ -45,12 +45,12 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.genre", style="padd
             .col-md-7(ng-if="$root.genre.artists.length > 0")
               thumblist(type="artists", title="Artists", data="$root.genre.artists", limit="36", refreshclick="refresh()", origin="genre", viewmorelink="/genres")
             .col-md-5(ng-if="$root.genre.popular_tracks.length > 0")
-              itemlist(type="tracks", title="Popular", data="$root.genre.popular_tracks", limit="9", refreshclick="refresh()", viewmorelink="/", showviewmore="true")
+              itemlist(type="tracks", title="Popular", data="$root.genre.popular_tracks", limit="9", refreshclick="refresh()", viewmorelink="/", showviewmore="true", showindex="true")
           .row
             .col-md-7(ng-if="$root.genre.albums.length > 0")
               thumblist(type="albums", title="Albums", data="$root.genre.albums", limit="36", refreshclick="refresh()", viewmorelink="/")
             .col-md-5(ng-if="$root.genre.never_played.length > 0")
-              itemlist(type="tracks", title="Never Played", data="$root.genre.never_played", limit="9", refreshclick="refresh()", viewmorelink="/")  
+              itemlist(type="tracks", title="Never Played", data="$root.genre.never_played", limit="9", refreshclick="refresh()", viewmorelink="/", showindex="true")  
           .row
             .col-md-12(ng-if="$root.genre.tracks.length > 0")
               itemtable(type="tracks", title="Tracks", data="$root.genre.tracks", limit="$root.genre.tracks.length", refreshclick="refresh()", viewmorelink="/", showartist="true")
