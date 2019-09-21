@@ -79,9 +79,9 @@ namespace Alloy.Widgets
 			TypedArray typedArray = context.Theme.ObtainStyledAttributes(attrs, Resource.Styleable.FastScrollRecyclerView, 0, 0);
 			try
 			{
-				mAutoHideEnabled = typedArray.GetBoolean(Resource.Styleable.FastScrollRecyclerView_fastScrollAutoHide, true);
+				//mAutoHideEnabled = typedArray.GetBoolean(Resource.Styleable.FastScrollRecyclerView_fastScrollAutoHide, true);
 				mAutoHideDelay = typedArray.GetInteger(Resource.Styleable.FastScrollRecyclerView_fastScrollAutoHideDelay, DEFAULT_AUTO_HIDE_DELAY);
-				mThumbInactiveState = typedArray.GetBoolean(Resource.Styleable.FastScrollRecyclerView_fastScrollEnableThumbInactiveColor, true);
+				//mThumbInactiveState = typedArray.GetBoolean(Resource.Styleable.FastScrollRecyclerView_fastScrollEnableThumbInactiveColor, true);
 				mThumbActiveColor = typedArray.GetColor(Resource.Styleable.FastScrollRecyclerView_fastScrollThumbColor, 0x79000000);
 				mThumbInactiveColor = typedArray.GetColor(Resource.Styleable.FastScrollRecyclerView_fastScrollThumbInactiveColor, 0x79000000);
 

@@ -107,7 +107,7 @@ html(ng-app='alloydb', lang='en-us')
               #overview.tab-pane.active
                 .row
                   library-stats
-   
+
                   .col-lg-4.col-md-12
                     .card
                       .card-header.card-header-tabs.card-header-primary
@@ -147,6 +147,21 @@ html(ng-app='alloydb', lang='en-us')
                                 td.td-actions.text-right
                                   button#launchWebUiButton.btn.btn-success.btn-link.btn-sm(data-original-title='Open the Web UI', type='button', title='', rel='tooltip', ng-click="launchWebUIDesktop()")
                                     i.material-icons launch
+                  if api_enabled
+                    .col-lg-12.col-md-12
+                      .card
+                        .card-header.card-header-tabs.card-header-primary
+                          .nav-tabs-navigation
+                            .nav-tabs-wrapper
+                              span.nav-tabs-title API
+                        .card-body
+                          table.table
+                            tbody                             
+                              tr
+                                td API Key: #{api_key}
+        
+                              
+                  
                 media-path-picker
               
               if web_ui_enabled

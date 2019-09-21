@@ -1,0 +1,39 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "0.1.0",
+  "command": "msbuild",
+  "args": [
+     "alloydroid/Alloy.csproj",
+      "/p:Configuration=Release"
+  ],
+  "tasks": [
+      {
+          "taskName": "build",
+          "suppressTaskName": true,
+          "args": [
+              "/restore"
+          ],
+          "showOutput": "always",
+          "problemMatcher": "$msCompile"
+      },
+      {
+          "taskName": "install",
+          "suppressTaskName": true,
+          "args": [
+              "/t:Install"
+          ],
+          "showOutput": "always",
+          "problemMatcher": "$msCompile"
+      },
+      {
+          "taskName": "clean",
+          "suppressTaskName": true,
+          "args": [
+              "/t:Clean"
+          ],
+          "showOutput": "always",
+          "problemMatcher": "$msCompile"
+      }
+  ]
+}

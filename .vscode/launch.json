@@ -77,13 +77,19 @@
       "webRoot": "${workspaceFolder}"
     },
     {
-      "name": "Api-Docs",
+      "name": "Alloy: Android",
+      "type": "xamarin",
+      "request": "launch",
+      "packageName": "com.d3bug.alloy"
+    },
+    {
+      "name": "Alloy: Api-Docs",
       "type": "chrome",
       "request": "launch",
       "port": 9222,
       "url": "http://localhost:4000/api-docs",
       "webRoot": "${workspaceFolder}"
-    },
+    },   
     {
       "type": "node",
       "request": "launch",

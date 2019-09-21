@@ -135,7 +135,7 @@ namespace Alloy.Widgets
 			mIndicatorHeight = a.GetDimensionPixelSize(Resource.Styleable.PagerSlidingTabStrip_pstsIndicatorHeight, mIndicatorHeight);
 			mUnderlineColor = a.GetColor(Resource.Styleable.PagerSlidingTabStrip_pstsUnderlineColor, mUnderlineColor);
 			mUnderlineHeight = a.GetDimensionPixelSize(Resource.Styleable.PagerSlidingTabStrip_pstsUnderlineHeight, mUnderlineHeight);
-			mDividerColor = a.GetColor(Resource.Styleable.PagerSlidingTabStrip_pstsDividerColor, mDividerColor);
+			//mDividerColor = a.GetColor(Resource.Styleable.PagerSlidingTabStrip_pstsDividerColor, mDividerColor);
 			mDividerWidth = a.GetDimensionPixelSize(Resource.Styleable.PagerSlidingTabStrip_pstsDividerWidth, mDividerWidth);
 			mDividerPadding = a.GetDimensionPixelSize(Resource.Styleable.PagerSlidingTabStrip_pstsDividerPadding, mDividerPadding);
 			isExpandTabs = a.GetBoolean(Resource.Styleable.PagerSlidingTabStrip_pstsShouldExpand, isExpandTabs);

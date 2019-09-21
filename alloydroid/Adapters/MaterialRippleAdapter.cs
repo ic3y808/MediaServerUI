@@ -157,14 +157,14 @@ namespace Alloy.Adapters
 				}
 				else
 				{
-					Wave.Visibility = ViewStates.Gone;
+					Wave.Visibility = ViewStates.Visible;
 					Wave.setProgress(0);
 				}
 			}
 
 			public void OnClick(View v)
 			{
-				SetWave(true);
+				//SetWave(true);
 				TrackClick?.Invoke(this, new TrackViewHolderEvent { Position = AdapterPosition, Songs = Songs });
 				AlbumClick?.Invoke(this, new AlbumViewHolderEvent { Position = AdapterPosition, Albums = Albums });
 				ArtistClick?.Invoke(this, new ArtistViewHolderEvent { Position = AdapterPosition, Artists = Artists });

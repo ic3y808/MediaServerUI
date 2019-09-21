@@ -554,6 +554,7 @@ function createBaseServer() {
       res.locals.jadeOptions = {
         title: "Alloy (Preview)",
         jade_port: process.env.JADE_PORT,
+        api_key: process.env.API_KEY,
         api_port: process.env.API_PORT,
         web_ui_port: process.env.API_UI_PORT,
         web_ui_public_url: "http://" + process.env.EXTERNAL_IP + ":" + process.env.API_UI_PORT,

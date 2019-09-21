@@ -97,7 +97,7 @@ namespace Alloy.Widgets
 			rippleOverlay = a.GetBoolean(Resource.Styleable.MaterialRippleLayout_mrl_rippleOverlay, DEFAULT_RIPPLE_OVERLAY);
 			rippleHover = a.GetBoolean(Resource.Styleable.MaterialRippleLayout_mrl_rippleHover, DEFAULT_HOVER);
 			rippleDuration = a.GetInt(Resource.Styleable.MaterialRippleLayout_mrl_rippleDuration, DEFAULT_DURATION);
-			rippleAlpha = (int)(255 * a.GetFloat(Resource.Styleable.MaterialRippleLayout_mrl_rippleAlpha, DEFAULT_ALPHA));
+			rippleAlpha = (int)(255 * 0.2);
 			rippleDelayClick = a.GetBoolean(Resource.Styleable.MaterialRippleLayout_mrl_rippleDelayClick, DEFAULT_DELAY_CLICK);
 			rippleFadeDuration = a.GetInteger(Resource.Styleable.MaterialRippleLayout_mrl_rippleFadeDuration, DEFAULT_FADE_DURATION);
 			rippleBackground = new ColorDrawable(a.GetColor(Resource.Styleable.MaterialRippleLayout_mrl_rippleBackground, DEFAULT_BACKGROUND));

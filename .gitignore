@@ -17,6 +17,9 @@ alloyweb/styles/fonts/alloyicons.woff2
 
 alloy/css/
 
+#output
+_Output/
+
 # Runtime data
 pids
 *.pid
