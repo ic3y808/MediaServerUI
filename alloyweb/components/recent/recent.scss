@@ -1,0 +1,21 @@
+div.dataTables_length {
+  display: none;
+}
+
+#recent-table {
+  padding-bottom: 20px;
+}
+
+table.dataTable tbody td,
+table.dataTable tbody th {
+  padding: 0px !important;
+}
+
+.table>thead>tr>th,
+.table>tbody>tr>th,
+.table>tfoot>tr>th,
+.table>thead>tr>td,
+.table>tbody>tr>td,
+.table>tfoot>tr>td {
+  vertical-align: middle !important;
+}

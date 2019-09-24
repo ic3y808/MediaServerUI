@@ -14,6 +14,8 @@
   text-align: left;
   table-layout: fixed;
   white-space: nowrap;
+  word-break: none;
+  white-space: nowrap;
 }
 
 .image-cell-container {
@@ -35,17 +37,4 @@
   vertical-align: middle;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
-}
-
-.table-now-playing {
-  background-color: $now-playing-track !important;
-  color: $now-playing-track-text !important;
-
-  a {
-    color: $now-playing-track-text !important;
-
-    span {
-      color: $now-playing-track-text !important;
-    }
-  }
 }

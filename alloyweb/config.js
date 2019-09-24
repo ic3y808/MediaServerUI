@@ -3,9 +3,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   // adding a new route requires that route to also be added to backend/routes/index.js
   // this allows the variables to be passed when navigating directly to that page instead of linking to that page. 
   var buildRoute = (route, element) => {
-    $routeProvider.when(route, {
-      template: element,
-    });
+    $routeProvider.when(route, { template: element, });
   };
 
   buildRoute("/", "<home/>");
@@ -33,6 +31,7 @@ export default function ApplicationConfig($routeProvider, $locationProvider) {
   buildRoute("/playlist/:id", "<playlist/>");
   buildRoute("/playlist/:id/trackid", "<playlist/>");
   buildRoute("/register", "<register/>");
+  buildRoute("/recent", "<recent/>");
   buildRoute("/share/:id", "<share/>");
   buildRoute("/starred", "<starred/>");
   buildRoute("/status", "<status/>");

@@ -223,6 +223,12 @@ export default class AlloyDbService {
     else { return false; }
   }
 
+  getRecent(limit = 20, offset = 0) {
+    this.doLogin();
+    if (this.isLoggedIn) { return this.alloydb.getRecent(limit, offset); }
+    else { return false; }
+  }
+
   scanStart() {
     this.doLogin();
     if (this.isLoggedIn) { return this.alloydb.scanStart(); }
@@ -557,13 +563,12 @@ export default class AlloyDbService {
   }
 
   loadFresh(data) {
-
     if (data) {
       data.forEach((info) => {
         if (info.fresh) {
           var albumTracks = [];
-          this.$rootScope.recently_added = info.fresh.recently_added;
-          this.$rootScope.recently_added.forEach((album) => {
+          this.$rootScope.recently_added_albums = info.fresh.recently_added_albums;
+          this.$rootScope.recently_added_albums.forEach((album) => {
             album.image = this.getCoverArt({ album_id: album.id });
             album.tracks.forEach((track) => {
               track.image = this.getCoverArt({ track_id: track.cover_art });
@@ -605,6 +610,20 @@ export default class AlloyDbService {
           this.$rootScope.history = info;
           this.$rootScope.history.history.forEach((item) => {
             item.image = this.getCoverArt({ track_id: item.id });
+          });
+          this.AppUtilities.apply();
+        }
+      });
+    }
+  }
+
+  loadRecent(data) {
+    if (data) {
+      data.forEach((info) => {
+        if (info.recently_added_albums) {
+          this.$rootScope.recently_added_albums = info.recently_added_albums;
+          this.$rootScope.recently_added_albums.forEach((item) => {
+            item.image = this.getCoverArt({ album_id: item.id });
           });
           this.AppUtilities.apply();
         }
@@ -675,7 +694,6 @@ export default class AlloyDbService {
   }
 
   loadGenres(data) {
-
     if (data) {
       data.forEach((info) => {
         if (info.genres) {
@@ -687,7 +705,6 @@ export default class AlloyDbService {
   }
 
   loadStarred(data) {
-
     if (data) {
       data.forEach((info) => {
         if (info.starred) {
@@ -728,7 +745,6 @@ export default class AlloyDbService {
   }
 
   loadIndex(data) {
-
     if (data) {
       data.forEach((info) => {
         if (info.index) {
@@ -740,7 +756,6 @@ export default class AlloyDbService {
   }
 
   loadRandom(data) {
-
     if (data) {
       data.forEach((info) => {
         if (info.random) {
@@ -831,7 +846,6 @@ export default class AlloyDbService {
   }
 
   refreshArtists() {
-
     var artists = this.getArtists();
     if (artists) {
       artists.then((info) => {
@@ -841,7 +855,6 @@ export default class AlloyDbService {
   }
 
   refreshFresh() {
-
     var fresh = this.getFresh(20);
     if (fresh) {
       fresh.then((info) => {
@@ -851,11 +864,19 @@ export default class AlloyDbService {
   }
 
   refreshHistory() {
-
     var history = this.getHistory();
     if (history) {
       history.then((info) => {
         this.loadHistory([info]);
+      });
+    }
+  }
+
+  refreshRecent(limit, offset) {
+    var recent = this.getRecent(limit, offset);
+    if (recent) {
+      recent.then((info) => {
+        this.loadRecent([info]);
       });
     }
   }
@@ -892,7 +913,6 @@ export default class AlloyDbService {
   }
 
   refreshGenres() {
-
     var genres = this.getGenres();
     if (genres) {
       genres.then((info) => {
@@ -902,7 +922,6 @@ export default class AlloyDbService {
   }
 
   refreshStarred() {
-
     var starred = this.getStarred();
     if (starred) {
       starred.then((info) => {
@@ -912,7 +931,6 @@ export default class AlloyDbService {
   }
 
   refreshIndex() {
-
     var index = this.getArtistsIndex();
     if (index) {
       index.then((info) => {
@@ -922,7 +940,6 @@ export default class AlloyDbService {
   }
 
   refreshRandom() {
-
     var random = this.getRandomSongs();
     if (random) {
       random.then((info) => {
@@ -932,7 +949,6 @@ export default class AlloyDbService {
   }
 
   refreshCharts() {
-
     var chartTopTracks = this.getCharts();
     if (chartTopTracks) {
       chartTopTracks.then((info) => {
@@ -942,7 +958,6 @@ export default class AlloyDbService {
   }
 
   refreshPlaylists() {
-
     var playlists = this.getPlaylists();
     if (playlists) {
       playlists.then((info) => {
@@ -1028,6 +1043,7 @@ export default class AlloyDbService {
         case "/albums": this.refreshAlbums(); break;
         case "/genres": this.refreshGenres(); break;
         case "/history": this.refreshHistory(); break;
+        case "/recent": this.refreshRecent(200,0); break;
         case "/starred": this.refreshStarred(); break;
         case "/shares": this.refreshShares(); break;
         case "/users": this.refreshUsers(); break;

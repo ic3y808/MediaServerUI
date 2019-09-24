@@ -24,6 +24,23 @@
   }
 }
 
+.table span {
+  white-space: nowrap;
+}
+
 .table>thead:first-child>tr:first-child>th {
   border-top: 0;
+}
+
+.table-now-playing {
+  background-color: $now-playing-track !important;
+  color: $now-playing-track-text !important;
+
+  a {
+    color: $now-playing-track-text !important;
+
+    span {
+      color: $now-playing-track-text !important;
+    }
+  }
 }

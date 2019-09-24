@@ -13,10 +13,13 @@ import "angular-chart.js";
 import "angular-bootstrap-contextmenu/contextMenu";
 import "bootstrap-datepicker";
 import "bootstrap/dist/js/bootstrap.min";
+import "datatables.net";
+import "angular-datatables";
 import "parsleyjs";
 import "./API/alloy.db";
 import "./API/angular-auto-complete";
 import "./API/jquery.sortable";
+import "./API/dataTables.pageResize";
 
 import Directives from "./directives";
 import Components from "./components";
@@ -24,8 +27,7 @@ import Services from "./services";
 import ApplicationConfig from "./config.js";
 import ApplicationRun from "./run.js";
 
-
-angular.module("alloy", ["ng", angularRoute, "ngCookies", "ngSanitize", "autoCompleteModule", "ui.bootstrap.contextMenu", "chart.js", Services.name, Directives.name, Components.name])
+angular.module("alloy", ["ng", angularRoute, "ngCookies", "ngSanitize", "datatables", "autoCompleteModule", "ui.bootstrap.contextMenu", "chart.js", Services.name, Directives.name, Components.name])
   .config(ApplicationConfig)
   .run(ApplicationRun);
 

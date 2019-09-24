@@ -946,11 +946,7 @@ module.exports = class MediaScannerBase {
         var settings = JSON.parse(settingsResult.settings_value);
         if (settings) {
 
-          if (settings.alloydb_streaming_format === "Unchanged") {
-            this.updateStatus("Recache Finished, Cannot use setting: Unchanged", false);
-            this.info("Recache Finished, Cannot use setting: Unchanged");
-            return;
-          }
+   
           var tracksToCache = [];
           var starredTracks = this.db.prepare("SELECT * FROM Tracks WHERE starred=?").all("true");
           var topTracks = this.db.prepare("SELECT * FROM Tracks WHERE starred=? ORDER BY play_count DESC LIMIT 25").all("true");

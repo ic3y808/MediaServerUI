@@ -1,7 +1,7 @@
 section.padder-lg.w-f-md
   .row(ng-show="title")
-    h2.clear.font-thin {{title}}
-      a(href="{{viewmorelink}}", ng-show="showviewmore").u.h6.text-muted.m-l View More
+    h2(ng-hide="showviewmore").clear.font-thin {{title}}
+    a(ng-if="showviewmore", href="{{viewmorelink}}").h2.clear.font-thin {{title}}
   .row(style='overflow:hidden;')
     .grid(ng-if="type === 'tracks'")
       .item(data-value="track;{{track.id}}", ng-repeat="track in data | limitTo:limit", style="background-image:url('{{track.image}}');",ng-click="$root.MediaPlayer.playTrack(track, data)", ng-class="{'item--now-playing': $root.MediaPlayer.checkIfNowPlaying('track', track.id) == true}")

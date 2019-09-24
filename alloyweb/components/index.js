@@ -25,6 +25,7 @@ import ConfigSchedulerComponent from "./config/scheduler/configScheduler.compone
 import ConfigSharesComponent from "./config/shares/configShares.component";
 import ConfigUsersComponent from "./config/users/configUsers.component";
 import RegisterComponent from "./register/register.component";
+import RecentComponent from "./recent/recent.component";
 import ShareComponent from "./share/share.component";
 import StarredComponent from "./starred/starred.component";
 import StatusComponent from "./status/status.component";
@@ -56,6 +57,7 @@ export default angular
   .component("configshares", ConfigSharesComponent)
   .component("configusers", ConfigUsersComponent)
   .component("register", RegisterComponent)
+  .component("recent", RecentComponent)
   .component("share", ShareComponent)
   .component("starred", StarredComponent)
   .component("status", StatusComponent)

@@ -14,3 +14,5 @@ import "./fonts/alloyicons.css";
 import "./mixins.scss";
 import "./debug.scss";
 import "./ui/starratinglabel.scss";
+import "datatables.net-dt/css/jquery.dataTables.min.css"
+import "angular-datatables/dist/css/angular-datatables.min.css"

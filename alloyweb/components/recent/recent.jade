@@ -1,0 +1,31 @@
+section.scrollable.scrollsaver.padder.w-f-md.animated.fadeInRight
+  
+  table#recent-table.table.table-responsive.pageResize.row-border.hover(datatable='ng' dt-options='tableOptions' dt-column-defs='dtColumnDefs' dt-instance='instanceCallback')
+    thead
+      tr
+        th(style="width:1px !important;text-align:start !important;")  
+        th Album
+        th(style="width:1px !important;text-align:end !important;") Artist
+        th(style="width:1px !important;text-align:end !important;") Created
+        th(style="width:1px !important;text-align:end !important;") Tracks
+        th(style="width:1px !important;text-align:end !important;") 
+    tbody
+      tr(id="{{album.id}}", data-value="album;{{album.id}}", ng-class="{'table-now-playing': $root.MediaPlayer.checkIfNowPlaying('album', album.id) == true}", ng-repeat='album in $root.recently_added_albums')
+        td(style="width:1px !important;text-align:start !important;")  
+          a(data-value="album;{{album.id}}", ng-click="playAlbum(album)")
+            i.alloy-icon.icon.icon-play
+        td.col-sm-2.col-md-6.col-lg-6 
+          a(data-value="album;{{album.id}}", href="/album/{{album.id}}")
+            span.clear
+              span {{album.name}}
+        td.text-right(style="width:1px !important;text-align:end !important;")
+          a(data-value="artist;{{album.artist_id}}", href="/artist/{{album.artist_id}}") 
+            span.clear
+              span {{album.artist}}
+
+        td.text-right(style="width:1px !important;text-align:end !important;") {{album.created}}
+        td.text-right(style="width:1px !important;text-align:end !important;") {{album.track_count}}
+
+        td.text-right(style="width:1px !important;text-align:end !important;", ng-if="$root.globals.currentUser")
+          a.centered-anchor(data-value="album;{{album.id}}", ng-click="$root.starAlbum(album)", href="", style="height:30px;")
+            i.alloy-icon.icon(ng-class="isStarred(album)")

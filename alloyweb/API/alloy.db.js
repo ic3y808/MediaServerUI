@@ -239,6 +239,10 @@ export default class AlloyApi {
     return this._get("browse/history");
   }
 
+  getRecent(limit, offset) {
+    return this._get("browse/recent", { limit, offset });
+  }
+
   getArtists() {
     return this._get("browse/artists");
   }

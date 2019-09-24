@@ -373,6 +373,17 @@ router.get("/charts", function (req, res) {
   res.json(result).end();
 });
 
+var getRecentAlbums = function (res, limit, offset = 0) {
+  var recently_added_albums = [];
+  var albumIds = res.locals.db.prepare("SELECT DISTINCT album_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ? OFFSET ?").all(limit, offset);
+  albumIds.forEach((id) => {
+    var album = res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id.album_id);
+    album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
+    recently_added_albums.push(album);
+  });
+  return recently_added_albums;
+}
+
 /**
  * This function comment is parsed by doctrine
  * @route GET /browse/fresh
@@ -388,13 +399,12 @@ router.get("/fresh", function (req, res) {
   var result = {
     fresh: {
       albums: [],
-      recently_added: [],
+      recently_added_albums: [],
       quick_picks: [],
       artists: [],
       tracks: []
     }
   };
-  //var tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE CAST((last_modified/1000) AS LONG) >= strftime("%s", "now", "-" + days_back + " day");").all()
   var albumIds = res.locals.db.prepare("SELECT DISTINCT album_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit);
   var artistsIds = res.locals.db.prepare("SELECT DISTINCT artist_id FROM Tracks ORDER BY last_modified DESC, album ASC, no ASC, of ASC LIMIT ?").all(limit);
   result.fresh.tracks = [];
@@ -408,17 +418,36 @@ router.get("/fresh", function (req, res) {
   albumIds.forEach((id) => {
     var album = res.locals.db.prepare("SELECT * FROM Albums WHERE id=?").get(id.album_id);
     album.tracks = res.locals.db.prepare("SELECT * FROM Tracks WHERE album_id=?").all(album.id);
-    result.fresh.recently_added.push(album);
     result.fresh.albums.push(album);
     album.tracks.forEach((track) => {
       result.fresh.tracks.push(track);
     });
   });
+
   result.fresh.quick_picks = _.shuffle(result.fresh.tracks).slice(0, 15);
   result.fresh.artists = _.shuffle(result.fresh.artists);
   result.fresh.albums = _.shuffle(result.fresh.albums);
   result.fresh.tracks = _.shuffle(result.fresh.tracks).slice(0, limit);
+  result.fresh.recently_added_albums = getRecentAlbums(res, limit);
   res.json(result).end();
+});
+
+/**
+ * This function comment is parsed by doctrine
+ * @route GET /browse/recent
+ * @produces application/json 
+ * @consumes application/json 
+ * @group browse - Browse API
+ * @param {string} limit.query
+ * @param {string} offset.query
+ * @returns {Object} 200 - Returns the newest additions to the library
+ * @security ApiKeyAuth
+ */
+router.get("/recent", function (req, res) {
+  var limit = req.query.limit === undefined ? 15 : req.query.limit;
+  var offset = req.query.offset === undefined ? 0 : req.query.offset;
+  var recently_added_albums = getRecentAlbums(res, limit, offset);
+  res.json({ recently_added_albums: recently_added_albums }).end();
 });
 
 

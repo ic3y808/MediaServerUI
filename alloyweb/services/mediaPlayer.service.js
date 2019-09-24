@@ -122,12 +122,12 @@ export default class MediaPlayer {
     if (this.castStatus()) {
       var options = {};
       // options.receiverApplicationId = "DAB06F7C";
-      if(chrome.cast){
+      if (chrome.cast) {
         options.receiverApplicationId = chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID;
         options.autoJoinPolicy = chrome.cast.AutoJoinPolicy.ORIGIN_SCOPED;
       }
-      
-      
+
+
       cast.framework.CastContext.getInstance().setOptions(options);
       this.remotePlayer = new cast.framework.RemotePlayer();
       this.remotePlayerController = new cast.framework.RemotePlayerController(this.remotePlayer);
@@ -170,6 +170,7 @@ export default class MediaPlayer {
   }
 
   selectedTrack() {
+    if (!this.$rootScope.tracks || this.$rootScope.tracks.length === 0 || this.selectedIndex < 0 || this.selectedIndex > this.$rootScope.tracks.length) { return null; }
     return this.$rootScope.tracks[this.selectedIndex];
   }
 
