@@ -567,8 +567,8 @@ export default class AlloyDbService {
       data.forEach((info) => {
         if (info.fresh) {
           var albumTracks = [];
-          this.$rootScope.recently_added_albums = info.fresh.recently_added_albums;
-          this.$rootScope.recently_added_albums.forEach((album) => {
+          this.$rootScope.fresh_recently_added_albums = info.fresh.recently_added_albums;
+          this.$rootScope.fresh_recently_added_albums.forEach((album) => {
             album.image = this.getCoverArt({ album_id: album.id });
             album.tracks.forEach((track) => {
               track.image = this.getCoverArt({ track_id: track.cover_art });

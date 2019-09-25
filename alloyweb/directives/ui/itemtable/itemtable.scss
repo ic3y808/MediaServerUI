@@ -4,11 +4,13 @@
   table-layout: auto;
   width: 100%;
 }
-.itemtable tbody>tr>td{
+
+.itemtable tbody>tr>td {
   text-align: left;
   align-content: flex-start;
   white-space: nowrap;
 }
+
 .itemtable thead>tr>td {
   width: 1px !important;
   text-align: left;
@@ -20,7 +22,7 @@
 
 .image-cell-container {
   text-align: left;
-  width:50px;
+  width: 50px;
 }
 
 .centered-anchor {

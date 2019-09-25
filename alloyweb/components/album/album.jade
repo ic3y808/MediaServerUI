@@ -4,7 +4,7 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;", ng-if="$ro
       div.padder.m-t-sm
         .col-xs-12.col-lg-3.col-xl-4
           div
-            header.TrackListHeader
+            header.general-container-header
               div
                 div(draggable='true')
                   .media-object
@@ -18,23 +18,23 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;", ng-if="$ro
                     .mo-meta.ellipsis-one-line
                       a.text-muted(dir='auto' href='/artist/{{$root.album.artist.id}}') {{$root.album.artist.name}}
               
-              .TrackListHeader__body
-                .TrackListHeader__entity-name
+              .general-container-header__body
+                .general-container-header__entity-name
                   h2
                     span(dir='auto') {{$root.album.album.name}}
                   div
-                    span.TrackListHeader__entity-by By 
-                    span.TrackListHeader__owner(dir='auto')
+                    span.general-container-header__entity-by By 
+                    span.general-container-header__owner(dir='auto')
                       a.text-muted(href='/artist/{{$root.album.artist.id}}') {{$root.album.artist.name}}
-                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(ng-if="$root.album.tracks.length > 0") {{$root.album.tracks.length}} {{$root.album.tracks.length > 1 ? "Tracks" : "Track"}} - {{$root.album.size}}
-                .TrackListHeader__children
-                  .TrackListHeader__button.TrackListHeader__button--bottom
+                p.general-container-header__text-silence.general-container-header__entity-additional-info(ng-if="$root.album.tracks.length > 0") {{$root.album.tracks.length}} {{$root.album.tracks.length > 1 ? "Tracks" : "Track"}} - {{$root.album.size}}
+                .general-container-header__children
+                  .general-container-header__button.general-container-header__button--bottom
                     button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", ng-click="playAlbum()") PLAY
-              .TrackListHeader__button.TrackListHeader__button--top
+              .general-container-header__button.general-container-header__button--top
                 button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", ng-click="playAlbum()") PLAY  
-              .TrackListHeader__button.TrackListHeader__button--top
+              .general-container-header__button.general-container-header__button--top
                 button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-disabled="isDisabled()", title='Save to Your Library', ng-click="starAlbum()") {{$root.album.album.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
-              .TrackListHeader__button.TrackListHeader__button--top
+              .general-container-header__button.general-container-header__button--top
                 starratinglabel(ng-disabled="isDisabled()", album="$root.album.album", extrastyles="btn-block")
               
         .col-xs-12.col-lg-9.col-xl-8

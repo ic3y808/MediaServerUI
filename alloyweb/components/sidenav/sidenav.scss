@@ -15,6 +15,10 @@
   border-radius: 10px;
 }
 
+.nav-xs .badge {
+  display:none;
+}
+
 .badge:empty {
   display: none;
 }

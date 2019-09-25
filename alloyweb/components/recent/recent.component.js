@@ -18,6 +18,12 @@ class RecentController {
       pageResize: true
     };
 
+    this.$scope.refresh = () => {
+      if (!this.$rootScope.recently_added_albums || this.$rootScope.recently_added_albums.length === 0) {
+        this.AlloyDbService.refreshRecent(200);
+      }
+    };
+
     this.$scope.isStarred = (album) => {
       if (album) {
         if (album.starred === "true") { return "icon-star"; }
@@ -26,11 +32,16 @@ class RecentController {
     };
 
     this.$rootScope.$on("windowResized", (event, data) => {
-      this.table.draw();
+      if (this.table) { this.table.draw(); }
     });
 
     this.$rootScope.$watch("recently_added_albums", (old, neew) => {
-      this.table.draw();
+      if (this.table) { this.table.draw(); }
+    });
+
+    $rootScope.$on("loginStatusChange", (event, data) => {
+      this.Logger.debug("Fresh reload on loginsatuschange");
+      this.$scope.refresh();
     });
 
     this.$scope.playAlbum = (album) => {
@@ -41,9 +52,7 @@ class RecentController {
       });
     }
 
-    if (this.$rootScope.recently_added_albums && this.$rootScope.recently_added_albums.length < 50) {
-      this.AlloyDbService.refreshRecent();
-    }
+    this.$scope.refresh();
   }
 
   $onInit() {

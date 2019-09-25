@@ -4,7 +4,7 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.genre", style="padd
       div.padder.m-t-sm
         .col-xs-12.col-lg-3.col-xl-4
           div
-            header.TrackListHeader
+            header.general-container-header
               div
                 div(draggable='true')
                   .media-object
@@ -17,20 +17,20 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.genre", style="padd
                           span(dir='auto') {{$root.genre.genre.name}}
               
               
-              .TrackListHeader__body
-                .TrackListHeader__entity-name
+              .general-container-header__body
+                .general-container-header__entity-name
                   h2
                     span(dir='auto') {{$root.genre.genre.name}}
 
-                p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info {{$root.genre.total_tracks}} {{$root.genre.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.genre.size}}
-                .TrackListHeader__children
-                  .TrackListHeader__button.TrackListHeader__button--bottom
+                p.general-container-header__text-silence.general-container-header__entity-additional-info {{$root.genre.total_tracks}} {{$root.genre.total_tracks > 1 ? "Tracks" : "Track"}} - {{$root.genre.size}}
+                .general-container-header__children
+                  .general-container-header__button.general-container-header__button--bottom
                     button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
-              .TrackListHeader__button.TrackListHeader__button--top
+              .general-container-header__button.general-container-header__button--top
                 button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
-              .TrackListHeader__button.TrackListHeader__button--top
+              .general-container-header__button.general-container-header__button--top
                 button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="starArtist()", ng-disabled="isDisabled()", title='Save to Your Library') {{$root.genre.genre.starred ===  'true' ? "Remove from Starred" : "Add to Starred"}}
-              .TrackListHeader__button.TrackListHeader__button--top
+              .general-container-header__button.general-container-header__button--top
                 starratinglabel(ng-disabled="isDisabled()", album="$root.genre.genre", extrastyles="btn-block")
         .col-xs-12.col-lg-8.col-xl-12
           .row

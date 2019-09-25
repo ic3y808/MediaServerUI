@@ -4,7 +4,7 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.artist", style="pad
       div.padder.m-t-sm
         .col-xs-12.col-lg-3.col-xl-4
           div
-            header.TrackListHeader
+            header.general-container-header
               div
                 div(draggable='true')
                   .media-object
@@ -17,15 +17,15 @@ section.scrollable.no-padder.w-f-md.scrollsaver(ng-if="$root.artist", style="pad
                           span(dir='auto') {{$root.artist.artist.name}}
               
               
-              .TrackListHeader__body
-                .TrackListHeader__entity-name
+              .general-container-header__body
+                .general-container-header__entity-name
                   h2
                     span(dir='auto') {{$root.artist.artist.name}}
 
-                .TrackListHeader__children
-                  .TrackListHeader__button.TrackListHeader__button--bottom(ng-if="$root.artist.tracks")
+                .general-container-header__children
+                  .general-container-header__button.general-container-header__button--bottom(ng-if="$root.artist.tracks")
                     button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY
-              .TrackListHeader__button.TrackListHeader__button--top(ng-if="$root.artist.tracks")
+              .general-container-header__button.general-container-header__button--top(ng-if="$root.artist.tracks")
                 button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="shuffle()", ng-disabled="isDisabled()") PLAY  
 
         .col-xs-12.col-lg-8.col-xl-12

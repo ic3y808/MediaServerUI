@@ -1,12 +1,12 @@
 section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
   div(ng-if="info.share.type==='track'")
     .contentSpacing.no-padder
-      section.content.album-content
+      section.content.padder-top-sm
         .container-fluid
-          .album-container
+          .general-container
             .col-xs-12.col-lg-3.col-xl-4
-              .album-header-container
-                header.TrackListHeader
+              .general-container-header-container
+                header.general-container-header
                   .media-object
                     .row
                       .col-xs-12
@@ -22,9 +22,9 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
                     .mo-meta.ellipsis-one-line
                       
                         a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
-                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
-                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
-                  .TrackListHeader__button.TrackListHeader__button--top
+                        p.general-container-header__text-silence.general-container-header__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
+                        p.general-container-header__text-silence.general-container-header__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
+                  .general-container-header__button.general-container-header__button--top
                     button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="playAlbum()") PLAY
 
               
@@ -33,12 +33,12 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
 
   div(ng-if="info.share.type==='album'")
     .contentSpacing.no-padder
-      section.content.album-content
+      section.content.padder-top-sm
         .container-fluid
-          .album-container
+          .general-container
             .col-xs-12.col-lg-3.col-xl-4
-              .album-header-container
-                header.TrackListHeader
+              .general-container-header-container
+                header.general-container-header
                   .media-object
                     .row
                       .col-xs-12
@@ -54,9 +54,9 @@ section.scrollable.scrollsaver.no-padder.w-f-md(style="padding:0px;")
                     .mo-meta.ellipsis-one-line
                       
                         a(dir='auto', href='/artist/{{info.artist.id}}') {{info.artist.name}}
-                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
-                        p.TrackListHeader__text-silence.TrackListHeader__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
-                  .TrackListHeader__button.TrackListHeader__button--top
+                        p.general-container-header__text-silence.general-container-header__entity-additional-info(dir='auto', ng-if="info.album.created") Released {{info.album.created}}{{info.tracks.length}}
+                        p.general-container-header__text-silence.general-container-header__entity-additional-info(dir='auto', ng-if="info.tracks.length > 0") {{info.tracks.length}} {{info.tracks.length > 1 ? "Tracks" : "Track"}} - {{info.size}}
+                  .general-container-header__button.general-container-header__button--top
                     button.spotify-btn.btn-block.btn-primary.btn--narrow(ng-click="playAlbum()") PLAY
 
               
